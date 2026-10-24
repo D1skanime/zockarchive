@@ -46,7 +46,7 @@ The validation document contains:
 - `backend`: exactly eight SQL-profile shards each for MariaDB and PostgreSQL, with
   `dialect`, `shard`, complete ordered `files`, `source`, `action`,
   `tests`, `failures`, `errors`, `skipped`, `passed`,
-  ordered `file_results` and explicit `skip_cases`. Each file result has
+  ordered `file_results`, explicit `skip_cases` and `replacement_cases`. Each file result has
   `file`, `tests`, `passed`, `failures`, `errors`, `skipped` counts,
   summing exactly to shard totals. Every selected file must have a positive
   successful executed-case count. A selected file with zero collected or only
@@ -71,7 +71,8 @@ The validation document contains:
   A redirect to another location does not establish current-link proof.
 - Separate nonempty explanations for `artwork`, `physical_controller`,
   `native_desktop`, `registry`, `production_portainer` and
-  `optional_real_rvz_fixtures` in `limitations`.
+  `optional_real_rvz_fixtures`, `baseline_root_permission` and
+  `superseded_delete_cases` in `limitations`.
 - `later_ref_changes` entries with `ref`, nullable `before`, `after` and
   `reason` (`feature-push` or `metadata-push`). An empty list is valid
   when no later ref changes occurred.
@@ -108,10 +109,24 @@ configuration or new dependencies. The operational-doc verifier expects the
 current product guide's heading while retaining its exact read-only mount and
 writable-storage separation requirements.
 
-Only the two pre-existing optional real-game RVZ cases may be recorded as
-unavailable SQL test cases. Each skip must use its exact node ID and exact
-missing-fixture reason from OPTIONAL_RVZ_SKIPS. Duplicate identities, other skipped
-cases, wrong reasons or inconsistent per-file counts fail. These cases remain
-skipped and explicitly disclosed, never counted as passed. The validator still
-rejects skipped required Actions jobs, missing shards and any skipped host suite.
-No private games, real NAS or invented fixture is used to remove this limitation.
+Only exact identities and reasons in BASELINE_SKIP_REASONS may be classified as
+baseline skips: two missing optional real GameCube/Wii RVZ fixtures, seven obsolete
+legacy deletion expectations superseded by bounded external denial, and one CHD
+permission-bit case unavailable to the root runner. All ten cases per SQL dialect
+remain skipped and explicitly disclosed, never counted as passed. This inventory
+was checked against every JUnit shard of the baseline run.
+
+The seven superseded cases additionally require actual successful same-dialect
+JUnit observations for the three exact REPLACEMENT_DENIAL_CASES in the storage
+policy suite. Its gate carries `replacement_cases` with `nodeid`, `tests: 1`,
+`passed: 1` and zero `failures`, `errors`, `skipped`. Their file must be in
+that shard's selected membership, their identities and counts must be exact, and
+their passed count cannot exceed the file's observed successful cases. Empty
+replacement proof is required in other shards. Missing, failed, foreign or
+wrong-dialect replacement proof fails.
+
+Duplicate skipped identities, other skipped tests, changed reasons or inconsistent
+per-file counts fail. Every selected file must still execute successful cases.
+Skipped required Actions jobs, missing shards and skipped host suites remain
+failures. No private games, real NAS, unskipped obsolete expectations or invented
+fixtures are used to remove these baseline limitations.

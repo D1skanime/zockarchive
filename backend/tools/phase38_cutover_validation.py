@@ -19,6 +19,8 @@ LIMITATIONS = {
     "registry",
     "production_portainer",
     "optional_real_rvz_fixtures",
+    "baseline_root_permission",
+    "superseded_delete_cases",
 }
 SCHEMA_STEPS = ["upgrade-head", "downgrade-base", "upgrade-head"]
 
@@ -27,9 +29,66 @@ OPTIONAL_RVZ_SKIPS = {
     "tests/utils/test_rvz_hasher.py::test_real_wii_rvz_matches_retroachievements_hash": "mock Wii RVZ not present",
 }
 
+REPLACEMENT_FILE = "tests/endpoints/test_storage_policy_denials.py"
+REPLACEMENT_DENIAL_CASES = (
+    REPLACEMENT_FILE + "::test_real_rom_mutation_routes_use_trusted_policy_provider"
+    "[roms/files.py-delete_rom_file-DELETE-legacy_external_storage]",
+    REPLACEMENT_FILE + "::test_phase6_external_mutations_are_denied_before_io[delete]",
+    REPLACEMENT_FILE + "::test_caller_text_cannot_replace_provider_identity",
+)
+SUPERSEDED_DELETE_SKIPS = {
+    "tests/endpoints/roms/test_files.py::test_delete_rom_file_"
+    + suffix: "Superseded by bounded external denial matrix"
+    for suffix in (
+        "success",
+        "wrong_rom_returns_404",
+        "unknown_file_returns_404",
+        "tolerates_missing_disk_file",
+        "forbidden_viewer",
+        "forbidden_without_delete_grant",
+        "allowed_for_editor",
+    )
+}
+BASELINE_SKIP_REASONS = {
+    **OPTIONAL_RVZ_SKIPS,
+    **SUPERSEDED_DELETE_SKIPS,
+    "tests/handler/filesystem/test_roms_handler.py::TestExtractCHDHash"
+    "::test_extract_chd_hash_permission_error": "root bypasses file permission bits",
+}
+
+
+def replacement_denials(gate):
+    cases = gate["replacement_cases"]
+    if REPLACEMENT_FILE not in gate["files"]:
+        require(not cases, "replacement proof assigned to wrong shard")
+        return False
+    require(
+        [case["nodeid"] for case in cases] == list(REPLACEMENT_DENIAL_CASES),
+        "missing or changed replacement denial identities",
+    )
+    require(
+        all(
+            all(
+                type(case.get(k)) is int and case[k] == expected
+                for k, expected in (
+                    ("tests", 1),
+                    ("passed", 1),
+                    ("failures", 0),
+                    ("errors", 0),
+                    ("skipped", 0),
+                )
+            )
+            for case in cases
+        ),
+        "replacement denial case did not pass",
+    )
+    observed = next(r for r in gate["file_results"] if r["file"] == REPLACEMENT_FILE)
+    require(observed["passed"] >= len(cases), "replacement proof exceeds file results")
+    return True
+
 
 def backend_observations(gate):
-    """Preserve explicit unavailable real-game cases without calling them passed."""
+    """Preserve exact baseline skips without counting them as passed."""
     results = gate["file_results"]
     require(
         [r["file"] for r in results] == gate["files"],
@@ -44,7 +103,8 @@ def backend_observations(gate):
     for case in cases:
         require(
             set(case) == {"nodeid", "reason"}
-            and OPTIONAL_RVZ_SKIPS.get(case["nodeid"]) == case["reason"]
+            and case["nodeid"] in BASELINE_SKIP_REASONS
+            and BASELINE_SKIP_REASONS[case["nodeid"]] == case["reason"]
             and case["nodeid"].split("::", 1)[0] in gate["files"],
             "unexpected skipped test or unavailable-fixture reason",
         )
@@ -139,6 +199,8 @@ def validate(row):
     source_proof(host["source"], head, "full")
     action(host["action"], head)
     seen = set()
+    replacement_dialects = set()
+    superseded_dialects = set()
     for gate in row["backend"]:
         key = (gate["dialect"], gate["shard"])
         require(key not in seen, "duplicate backend shard")
@@ -164,11 +226,21 @@ def validate(row):
             "backend failed or unobserved",
         )
         backend_observations(gate)
+        if replacement_denials(gate):
+            replacement_dialects.add(gate["dialect"])
+        if any(
+            case["nodeid"] in SUPERSEDED_DELETE_SKIPS for case in gate["skip_cases"]
+        ):
+            superseded_dialects.add(gate["dialect"])
         source_proof(gate["source"], head, "full")
         action(gate["action"], head)
     require(
         seen == {(d, s) for d in ("mariadb", "postgresql") for s in range(1, 9)},
         "missing complete dual-SQL matrix",
+    )
+    require(
+        superseded_dialects.issubset(replacement_dialects),
+        "superseded tests lack same-dialect successful denial proof",
     )
     seen = set()
     for gate in row["schema_gates"]:

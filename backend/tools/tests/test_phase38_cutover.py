@@ -268,6 +268,19 @@ def proof():
     }
 
 
+def receipt_profiles():
+    return classify_test_files(
+        [
+            *[f"tests/test_{i}.py" for i in range(1, 9)],
+            *HOST_TEST_FILES,
+            "tests/utils/test_rvz_hasher.py",
+            "tests/endpoints/roms/test_files.py",
+            "tests/handler/filesystem/test_roms_handler.py",
+            "tests/endpoints/test_storage_policy_denials.py",
+        ]
+    )
+
+
 def acceptance():
     source = proof()
     action = {
@@ -278,13 +291,7 @@ def acceptance():
         "status": "completed",
         "conclusion": "success",
     }
-    profiles = classify_test_files(
-        [
-            *[f"tests/test_{i}.py" for i in range(1, 9)],
-            "tests/utils/test_rvz_hasher.py",
-            *HOST_TEST_FILES,
-        ]
-    )
+    profiles = receipt_profiles()
     rows = []
     for dialect in ("mariadb", "postgresql"):
         for shard in range(1, 9):
@@ -305,6 +312,22 @@ def acceptance():
                         for name in profiles["sql"][shard - 1 :: 8]
                     ],
                     "skip_cases": [],
+                    "replacement_cases": (
+                        [
+                            {
+                                "nodeid": node,
+                                "tests": 1,
+                                "passed": 1,
+                                "failures": 0,
+                                "errors": 0,
+                                "skipped": 0,
+                            }
+                            for node in validation.REPLACEMENT_DENIAL_CASES
+                        ]
+                        if validation.REPLACEMENT_FILE
+                        in profiles["sql"][shard - 1 :: 8]
+                        else []
+                    ),
                     "source": source,
                     "action": action,
                     "tests": 10 * len(profiles["sql"][shard - 1 :: 8]),
@@ -382,13 +405,7 @@ class ValidationTests(unittest.TestCase):
         mocked = patch.object(
             validation,
             "test_membership",
-            return_value=classify_test_files(
-                [
-                    *[f"tests/test_{i}.py" for i in range(1, 9)],
-                    "tests/utils/test_rvz_hasher.py",
-                    *HOST_TEST_FILES,
-                ]
-            ),
+            return_value=receipt_profiles(),
         )
         mocked.start()
         self.addCleanup(mocked.stop)
@@ -398,9 +415,19 @@ class ValidationTests(unittest.TestCase):
 
     def optional_rvz_skips(self):
         row = copy.deepcopy(self.row)
-        gate = row["backend"][0]
+        gate = next(
+            g
+            for g in row["backend"]
+            if g["dialect"] == "mariadb"
+            and "tests/utils/test_rvz_hasher.py" in g["files"]
+        )
         gate["skipped"] = 2
-        gate["file_results"][-1].update(skipped=2, passed=8)
+        result = next(
+            r
+            for r in gate["file_results"]
+            if r["file"] == "tests/utils/test_rvz_hasher.py"
+        )
+        result.update(skipped=2, passed=8)
         gate["skip_cases"] = [
             {
                 "nodeid": "tests/utils/test_rvz_hasher.py::test_real_gamecube_rvz_matches_retroachievements_hash",
@@ -426,8 +453,9 @@ class ValidationTests(unittest.TestCase):
 
     def test_selected_file_with_only_optional_skips_fails(self):
         row = self.optional_rvz_skips()
-        gate = row["backend"][0]
-        gate["file_results"][-1].update(tests=2, passed=0)
+        gate = next(g for g in row["backend"] if g["skip_cases"])
+        result = next(r for r in gate["file_results"] if r["skipped"])
+        result.update(tests=2, passed=0)
         gate["tests"] = sum(result["tests"] for result in gate["file_results"])
         with self.assertRaises(ValueError):
             validation.validate(row)
@@ -436,6 +464,9 @@ class ValidationTests(unittest.TestCase):
         changes = [
             lambda g: g["skip_cases"][0].update(nodeid="tests/test_auth.py::missing"),
             lambda g: g["skip_cases"][0].update(reason="some optional fixture"),
+            lambda g: g["skip_cases"][0].update(
+                nodeid="tests/utils/test_rvz_hasher.py::unexpected", reason=None
+            ),
             lambda g: g["skip_cases"].append(copy.deepcopy(g["skip_cases"][0])),
             lambda g: g["file_results"].pop(),
             lambda g: g["file_results"][0].update(tests=999),
@@ -443,10 +474,49 @@ class ValidationTests(unittest.TestCase):
         ]
         for change in changes:
             row = self.optional_rvz_skips()
-            change(row["backend"][0])
+            change(next(g for g in row["backend"] if g["skip_cases"]))
             with self.subTest(change=change):
                 with self.assertRaises((ValueError, RuntimeError)):
                     validation.validate(row)
+
+    def complete_baseline_skips(self):
+        row = self.optional_rvz_skips()
+        for node, reason in validation.BASELINE_SKIP_REASONS.items():
+            if node in validation.OPTIONAL_RVZ_SKIPS:
+                continue
+            filename = node.split("::", 1)[0]
+            gate = next(
+                g
+                for g in row["backend"]
+                if g["dialect"] == "mariadb" and filename in g["files"]
+            )
+            gate["skip_cases"].append({"nodeid": node, "reason": reason})
+            gate["skipped"] += 1
+            result = next(r for r in gate["file_results"] if r["file"] == filename)
+            result["skipped"] += 1
+            result["passed"] -= 1
+        return row
+
+    def test_exact_baseline_skips_require_actual_replacement_denials(self):
+        validation.validate(self.complete_baseline_skips())
+
+    def test_missing_failed_or_foreign_replacement_proof_fails(self):
+        changes = [
+            lambda g: g.update(replacement_cases=[]),
+            lambda g: g["replacement_cases"][0].update(passed=0),
+            lambda g: g["replacement_cases"][0].update(nodeid="other::delete"),
+        ]
+        for change in changes:
+            row = self.complete_baseline_skips()
+            gate = next(
+                g
+                for g in row["backend"]
+                if g["dialect"] == "mariadb"
+                and validation.REPLACEMENT_FILE in g["files"]
+            )
+            change(gate)
+            with self.assertRaises(ValueError):
+                validation.validate(row)
 
     def test_missing_failed_skipped_stale_and_wrong_membership_fail(self):
         changes = [
