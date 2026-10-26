@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: awaiting_human_review
-stopped_at: Phase38 source implementation independently reviewed; cutover and exact-source CI outcomes recorded separately
-last_updated: "2026-10-24T19:19:09.243Z"
-last_activity: 2026-10-24
+status: phase_complete
+stopped_at: Phase38 accepted with limitations; KI setup deferred until separate Claude phase is complete
+last_updated: 2026-10-26T09:18:55.104Z
+last_activity: 2026-10-26
 progress:
   total_phases: 38
   completed_phases: 24
   total_plans: 308
-  completed_plans: 268
-  percent: 87
+  completed_plans: 269
+  percent: 63
 ---
 
 # Project State
@@ -21,20 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase38 ZockArchive product and repository rebranding;9 independently checked plans, executed sequentially on codex/phase-38-zockarchive-rebranding.
+**Current focus:** Phase38 live UAT closed with accepted limitations; no next phase started.
 
 ## Current Position
 
 Phase:38 (zockarchive-product-and-repository-rebranding)
-Plan:9 of9; source implementation complete and independently reviewed
-Status: Human review pending; external delivery/acceptance outcomes are separate receipts
-Last activity:2026-10-24
+Plan:9 of9 complete
+Status: Phase accepted with documented limitations; broader milestone acceptance remains open
+Last activity:2026-10-26
 
-The source includes the reviewed read-only cutover verifier and required complete-checkout
-host-contract CI job. All16 SQL shards, the host Actions job and actual same-ID cutover
-must be verified independently. Their final observed results belong to ignored
-38-CUTOVER.md,38-09-SUMMARY.md and evidence/cutover/validation.json, not an advance
-claim in this frozen source status. No main merge or deployment is authorized.
+The user accepted the browser branding, German/English, both themes and narrow-layout UAT on2026-10-26. Physical controller testing was unavailable, and the user explicitly accepted the documented native-client limitation. Technical coverage remains20/21; no native upgrade test is claimed. PR7 was previously merged at467e03dca and Dev deployed under explicit authorization. Read38-UAT.md,38-HUMAN-UAT.md and38-DEV-DEPLOYMENT.md. Historical milestone/production/NAS/artwork gates remain separate. KI setup stays deferred until the separate Claude phase is finished. No phase39, new deployment or push is started.
 
 ## Phase38 owned integration proof
 
@@ -86,7 +82,7 @@ The user confirmed the tested live UAT scope on 2026-10-20: "gut uat so weit bes
 
 **Velocity:**
 
-- Total plans completed: 64
+- Total plans completed: 73
 - Average duration: 10 min
 - Total execution time: 1.41 hours
 
@@ -99,6 +95,7 @@ The user confirmed the tested live UAT scope on 2026-10-20: "gut uat so weit bes
 | 14    | 4     | -     | -        |
 | 18    | 15    | -     | -        |
 | 36 | 17 | - | - |
+| 38 | 9 | - | - |
 
 **Recent Trend:**
 
@@ -607,8 +604,8 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-10-24T19:18:30.801Z
-Stopped at: Completed 38-08-PLAN.md; ready for independent review and 38-09
+Last session: 2026-10-26T09:19:58.998384+00:00
+Stopped at: Phase38 live UAT closed with accepted limitations; no next phase started
 Resume file: None
 
 - Phase 25 added: Scan-/Medien-Integration härten
@@ -681,3 +678,7 @@ All twelve requirements and thirteen decisions are covered by four executable pl
 ## Phase37 Dev UAT deployment
 
 User-authorized Dev integration is deployed from fb2efea9b563946dbb220f7f87a97eef705d4457 on codex/dev-phase37-suppression-uat. It combines the verified UI and backend suppression implementations without merging main. Provider copy now matches permanent suppression across18 locales; three captioned actions follow the reference colors and outlined deletion. The user explicitly declined a hide action or hide follow-up. Additional focused checks passed302 component/message tests and16 mutation controls plus typecheck, maintainability, locales and scoped Trunk. Read37-DEV-DEPLOYMENT.md and evidence/live-deployment/deployment-receipt.json. Only pgdp-dev was recreated; DB/Redis/Team4s and37games/1user/8platforms/schema0142, authentication/storage/schedule digests are preserved. Private SQL backup: /home/d1sk/pgdp-dev-backups/20261023T214756Z-phase37-suppression-uat. Human UAT remains pending.
+
+## Phase38 human closure (2026-10-26)
+
+All9 plan summaries exist. Joint UAT recorded2 passed browser checks and2 reasoned skips (physical controller unavailable; existing native desktop limitation explicitly accepted). The phase.complete helper updated phase progress; its last-phase milestone_complete inference was narrowed to phase_complete because the user authorized only phase closure and historical acceptance gates remain open. Its needs-human-verification warning is retained through the original technical report and this accepted limitation, not silently converted to passing native evidence. No application code, runtime, data, unrelated local work or KI setup was changed.
