@@ -222,6 +222,41 @@ class Run:
                 raise RuntimeError("cleanup refused: ownership mismatch for " + kind)
         return identities
 
+    def container_volumes(self, containers):
+        """Return volume names mounted by containers already verified for this run."""
+        volumes = []
+        for identity in containers:
+            item = self.inspect("container", identity)
+            labels = item.get("Config", {}).get("Labels", {})
+            if (
+                labels.get(LABEL) != self.token
+                or labels.get("com.docker.compose.project") != self.project
+            ):
+                raise RuntimeError("cleanup refused: mounted volume owner mismatch")
+            for mount in item.get("Mounts", []):
+                if not isinstance(mount, dict):
+                    raise RuntimeError("cleanup refused: invalid container mount")
+                if mount.get("Type") != "volume":
+                    continue
+                name = mount.get("Name")
+                if not isinstance(name, str) or not name:
+                    raise RuntimeError("cleanup refused: invalid mounted volume")
+                volumes.append(name)
+        return sorted(set(volumes))
+
+    def remaining_volumes(self, volumes):
+        """Prove that every volume observed on a verified container is gone."""
+        remaining = []
+        for identity in volumes:
+            result = self.command(
+                ["docker", "volume", "inspect", identity], check=False
+            )
+            if result.returncode == 0:
+                remaining.append(identity)
+            elif result.returncode != 1:
+                raise RuntimeError("cleanup refused: volume inspection failed")
+        return remaining
+
     def start(self):
         games, snapshot = prepare(self.root, REPO)
         code = code_manifest(snapshot)
@@ -357,10 +392,17 @@ class Run:
         resources = {
             kind: self.owned(kind) for kind in ("container", "volume", "network")
         }
+        resources["volume"] = sorted(
+            set(resources["volume"])
+            | set(self.container_volumes(resources["container"]))
+        )
         restore_generated_owner(self, resources)
         # Compose scopes anonymous image volumes to this verified disposable project.
         self.compose("down", "--volumes")
         remaining = {kind: self.owned(kind) for kind in resources}
+        remaining["volume"] = sorted(
+            set(remaining["volume"]) | set(self.remaining_volumes(resources["volume"]))
+        )
         clean = not any(remaining.values())
         (self.evidence / "cleanup.json").write_text(
             json.dumps(

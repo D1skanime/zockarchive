@@ -216,7 +216,7 @@ The Git-based production contract is examples/portainer-stack.yml. It builds doc
 
 ### Configuration and verification
 
-env.template is the canonical environment list. backend/config/**init**.py loads database, Redis, auth, OIDC, provider, Steam language, scan, upload, sync and observability variables. ROMM_AUTH_SECRET_KEY is required at import time. Tests live in backend/tests and cross-dialect/storage checks are in backend/tools. The disposable Phase 34 runner verifies all labelled resources before teardown, then runs `docker compose down --volumes` only with its generated `pgdp34-<token>` project. This removes its anonymous SQL and Redis image volumes without pruning or modifying any durable stack, and the cleanup receipt records that no project volumes remain.
+env.template is the canonical environment list. backend/config/**init**.py loads database, Redis, auth, OIDC, provider, Steam language, scan, upload, sync and observability variables. ROMM_AUTH_SECRET_KEY is required at import time. Tests live in backend/tests and cross-dialect/storage checks are in backend/tools. The disposable Phase 34 runner verifies all labelled resources and every volume mounted by its verified containers before teardown, then runs `docker compose down --volumes` only with its generated `pgdp34-<token>` project. It re-inspects those known volume names after teardown, covering anonymous SQL and Redis image volumes without pruning or modifying any durable stack, and records that no project volumes remain.
 
 ## Product display and retained identities
 
