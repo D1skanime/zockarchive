@@ -11,24 +11,29 @@ import tempfile
 import uuid
 from pathlib import Path
 
+from phase34_cleanup import close_run, container_volumes, owned, remaining_volumes
+from phase34_execution import execute as execute_run
+from phase34_execution import safe_test_args as validate_test_args
 from phase34_fixtures import (
-    JOB_IDENTITY,
-    LIFECYCLE,
     SQL_IMAGES,
-    backend_command,
-    cleanup_snapshot,
+)
+from phase34_fixtures import cleanup_snapshot as cleanup_snapshot  # noqa: F401
+from phase34_fixtures import (
     code_manifest,
-    expected_red,
-    frontend_command,
     prepare,
-    quality,
-    redact_evidence,
+)
+from phase34_fixtures import redact_evidence as redact_evidence  # noqa: F401
+from phase34_fixtures import (
     redact_output,
-    restore_generated_owner,
-    schema_commands,
+)
+from phase34_fixtures import (  # noqa: F401
+    restore_generated_owner as restore_generated_owner,
+)
+from phase34_fixtures import (
     source_manifest,
 )
-from phase34_target_guard import LABEL, expected_environment, validate_target
+from phase34_target_guard import LABEL as LABEL  # noqa: F401
+from phase34_target_guard import expected_environment, validate_target
 
 REPO = Path(__file__).resolve().parents[2]
 COMPOSE = Path(__file__).with_name("phase34.compose.yml")
@@ -200,27 +205,13 @@ class Run:
         return json.loads(self.command(["docker", kind, "inspect", identity]).stdout)[0]
 
     def owned(self, kind):
-        result = self.command(
-            [
-                "docker",
-                kind,
-                "ls",
-                "-q",
-                "--filter",
-                "label=com.docker.compose.project=" + self.project,
-            ]
-        )
-        identities = result.stdout.split()
-        for identity in identities:
-            item = self.inspect(kind, identity)
-            labels = (
-                item.get("Config", {}).get("Labels")
-                if kind == "container"
-                else item.get("Labels")
-            )
-            if not labels or labels.get(LABEL) != self.token:
-                raise RuntimeError("cleanup refused: ownership mismatch for " + kind)
-        return identities
+        return owned(self, kind)
+
+    def container_volumes(self, containers):
+        return container_volumes(self, containers)
+
+    def remaining_volumes(self, volumes):
+        return remaining_volumes(self, volumes)
 
     def start(self):
         games, snapshot = prepare(self.root, REPO)
@@ -349,135 +340,15 @@ class Run:
         )
 
     def close(self):
-        after = (
-            source_manifest(self.root / "Games") if self.before is not None else None
-        )
-        (self.evidence / "source-after.json").write_text(json.dumps(after, indent=2))
-        # Enumerate first. Any ownership mismatch stops all deletion.
-        resources = {
-            kind: self.owned(kind) for kind in ("container", "volume", "network")
-        }
-        restore_generated_owner(self, resources)
-        for kind, identities in resources.items():
-            for identity in identities:
-                args = ["docker", kind, "rm"]
-                if kind == "container":
-                    args.append("-f")
-                self.command([*args, identity])
-        remaining = {kind: self.owned(kind) for kind in resources}
-        clean = not any(remaining.values())
-        (self.evidence / "cleanup.json").write_text(
-            json.dumps(
-                {
-                    "exact_resources": resources,
-                    "remaining": remaining,
-                    "clean": clean,
-                    "snapshot_removed": False,
-                    "source_unchanged": self.before == after,
-                },
-                indent=2,
-            )
-        )
-        if not clean or self.before != after:
-            raise RuntimeError("cleanup or source immutability gate failed")
-        redact_evidence(self.evidence, self.token)
-        cleanup_snapshot(self.root, self.project)
-        cleanup_path = self.evidence / "cleanup.json"
-        cleanup = json.loads(cleanup_path.read_text())
-        cleanup["snapshot_removed"] = not (self.root / "checkout").exists()
-        cleanup_path.write_text(json.dumps(cleanup, indent=2))
-        print("PASS cleanup and source immutability", flush=True)
+        close_run(self)
 
 
 def safe_test_args(args, frontend=False):
-    if not args:
-        raise RuntimeError("explicit test paths required (or backend --smoke)")
-    paths = []
-    expression = False
-    base = REPO / ("frontend" if frontend else "backend")
-    for arg in args:
-        if expression:
-            if "\x00" in arg or "\n" in arg:
-                raise RuntimeError("unsafe test expression")
-            expression = False
-            continue
-        if arg in ("-k", "-m"):
-            expression = True
-            continue
-        if arg in ("-q", "-v", "-vv", "-x", "--collect-only"):
-            continue
-        if arg.startswith("--maxfail=") and arg.split("=", 1)[1].isdigit():
-            continue
-        name = arg.split("::", 1)[0]
-        target = (base / name).resolve()
-        if (
-            not name.startswith("src/" if frontend else "tests/")
-            or "\x00" in name
-            or "\n" in name
-            or ".." in Path(name).parts
-            or not target.is_relative_to(base)
-            or not target.is_file()
-        ):
-            raise RuntimeError("unsafe or missing test file")
-        paths.append(name)
-    if not paths or expression:
-        raise RuntimeError("explicit existing test files required")
+    return validate_test_args(args, REPO, frontend)
 
 
 def execute(mode, args):
-    run = Run(args.dialect if hasattr(args, "dialect") else "mariadb")
-    succeeded = False
-    try:
-        run.start()
-        if mode == "backend":
-            if args.tests == ["--smoke"]:
-                # Uses real conftest, pytest-env, migrations and destructive fixture guards.
-                probe = run.root / "checkout/backend/tests/test_phase34_smoke.py"
-                probe.write_text(
-                    "def test_disposable_target():\n"
-                    "    from config.config_manager import ConfigManager\n"
-                    "    from tools.phase34_target_guard import validate_target\n"
-                    "    validate_target(resolved_url=ConfigManager.get_db_engine())\n"
-                )
-                run.exec(backend_command(["tests/test_phase34_smoke.py", "-q"]))
-            else:
-                run.exec(
-                    backend_command(args.tests), timeout=getattr(args, "timeout", 180)
-                )
-        elif mode == "frontend":
-            run.exec(frontend_command(args.tests), frontend=True)
-        elif mode == "schema":
-            for command in schema_commands():
-                run.exec(command)
-        elif mode == "reproduce":
-            back = run.exec(
-                backend_command([JOB_IDENTITY, "-q"], "rq-red"), check=False
-            )
-            front = run.exec(
-                frontend_command([LIFECYCLE], "vue-red"), frontend=True, check=False
-            )
-            if back.returncode != 1 or front.returncode != 1:
-                raise RuntimeError(
-                    "RED rejected: both suites must fail assertions with exit 1"
-                )
-            proof = {
-                "backend": expected_red(run.evidence / "rq-red.xml", RED_BACKEND),
-                "frontend": expected_red(run.evidence / "vue-red.xml", RED_FRONTEND),
-            }
-            (run.evidence / "red-proof.json").write_text(json.dumps(proof, indent=2))
-            print(json.dumps(proof), flush=True)
-        elif mode == "quality":
-            quality(run, args, REPO)
-        succeeded = True
-    finally:
-        try:
-            run.close()
-        finally:
-            if (run.evidence / "cleanup.json").exists():
-                from phase34_evidence import retain_run
-
-                gate = "schema:" + run.driver if mode == "schema" else mode
-                retain_run(run, gate, succeeded)
+    return execute_run(mode, args, Run, REPO, RED_BACKEND, RED_FRONTEND)
 
 
 def main():
