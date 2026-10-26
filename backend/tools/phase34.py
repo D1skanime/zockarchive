@@ -358,12 +358,8 @@ class Run:
             kind: self.owned(kind) for kind in ("container", "volume", "network")
         }
         restore_generated_owner(self, resources)
-        for kind, identities in resources.items():
-            for identity in identities:
-                args = ["docker", kind, "rm"]
-                if kind == "container":
-                    args.append("-f")
-                self.command([*args, identity])
+        # Compose scopes anonymous image volumes to this verified disposable project.
+        self.compose("down", "--volumes")
         remaining = {kind: self.owned(kind) for kind in resources}
         clean = not any(remaining.values())
         (self.evidence / "cleanup.json").write_text(
@@ -372,6 +368,7 @@ class Run:
                     "exact_resources": resources,
                     "remaining": remaining,
                     "clean": clean,
+                    "project_volumes_removed": not remaining["volume"],
                     "snapshot_removed": False,
                     "source_unchanged": self.before == after,
                 },

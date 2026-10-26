@@ -92,6 +92,7 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(
             command[:5], ["docker", "compose", "--env-file", "/dev/null", "-p"]
         )
+        self.assertEqual(command[5], run.project)
         self.assertEqual(command[command.index("-f") + 1], str(runner.COMPOSE))
         self.assertNotIn("docker-compose.override.yml", command)
 
@@ -130,7 +131,7 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(run.command.call_count, 1)
         self.assertNotIn("rm", run.command.call_args.args[0])
 
-    def test_cleanup_removes_only_verified_exact_resources(self):
+    def test_cleanup_removes_only_verified_project_resources_and_volumes(self):
         with tempfile.TemporaryDirectory() as temp:
             run: Any = runner.Run.__new__(runner.Run)
             run.root = Path(temp)
@@ -150,19 +151,31 @@ class RunnerTests(unittest.TestCase):
                 ]
             )
             run.command = Mock()
+            run.compose = Mock()
             run.close()
             commands = [call.args[0] for call in run.command.call_args_list]
-            self.assertEqual(
-                commands,
-                [
-                    ["docker", "container", "rm", "-f", "exact-container"],
-                    ["docker", "volume", "rm", "exact-volume"],
-                    ["docker", "network", "rm", "exact-network"],
-                ],
-            )
+            self.assertEqual(commands, [])
+            run.compose.assert_called_once_with("down", "--volumes")
             self.assertTrue(
                 json.loads((Path(temp) / "cleanup.json").read_text())["clean"]
             )
+            self.assertTrue(
+                json.loads((Path(temp) / "cleanup.json").read_text())[
+                    "project_volumes_removed"
+                ]
+            )
+
+    def test_cleanup_refuses_foreign_resources_before_project_teardown(self):
+        with tempfile.TemporaryDirectory() as temp:
+            run: Any = runner.Run.__new__(runner.Run)
+            run.root = Path(temp)
+            run.evidence = Path(temp)
+            run.before = []
+            run.owned = Mock(side_effect=RuntimeError("ownership mismatch"))
+            run.compose = Mock()
+            with self.assertRaisesRegex(RuntimeError, "ownership mismatch"):
+                run.close()
+            run.compose.assert_not_called()
 
     def test_snapshot_cleanup_preserves_evidence_and_rejects_symlinks(self):
         project = "pgdp34-" + "a" * 32
