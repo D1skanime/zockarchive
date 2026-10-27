@@ -10,24 +10,31 @@ import VersionTag from "@/v2/components/shared/VersionTag.vue";
 
 describe("ProjectBrand", () => {
   it.each(["auth", "navigation", "about"] as const)(
-    "renders truthful semantic %s identity without artwork or extra focus stops",
+    "renders the approved %s artwork without extra focus stops",
     (variant) => {
       const wrapper = mount(ProjectBrand, { props: { variant } });
-      expect(wrapper.text()).toContain(
-        variant === "auth" ? "ZockArchive" : "ZA",
+      expect(wrapper.get(".project-brand__wordmark").attributes("src")).toBe(
+        "/assets/zockarchive/wordmark.svg",
       );
-      expect(
-        wrapper.find("img, svg, a, button, [tabindex], [role]").exists(),
-      ).toBe(false);
+      expect(wrapper.get(".project-brand__wordmark").attributes("alt")).toBe(
+        "ZockArchive",
+      );
+      expect(wrapper.find("a, button, [tabindex], [role]").exists()).toBe(
+        false,
+      );
       expect(wrapper.attributes("aria-label")).toBeUndefined();
-      expect(wrapper.text()).not.toMatch(/PGDP|RomM/);
+      expect(wrapper.find(".project-brand__mark").exists()).toBe(
+        variant === "navigation",
+      );
     },
   );
 
-  it("keeps both navigation words while allowing the expanded word alone to hide", () => {
+  it("keeps the compact gamepad mark beside the expanded navigation wordmark", () => {
     const wrapper = mount(ProjectBrand, { props: { variant: "navigation" } });
-    expect(wrapper.get(".project-brand__short").text()).toBe("ZA");
-    expect(wrapper.get(".project-brand__word").text()).toBe("ZockArchive");
+    expect(wrapper.get(".project-brand__mark").attributes("alt")).toBe("");
+    expect(wrapper.get(".project-brand__mark").attributes("src")).toBe(
+      "/assets/zockarchive/mark.svg",
+    );
   });
 
   it("allows the home link owner to suppress redundant announcements", () => {
@@ -60,7 +67,9 @@ describe("brand consumers", () => {
         },
       },
     });
-    expect(wrapper.text()).toBe("ZockArchive");
+    expect(wrapper.get(".project-brand__wordmark").attributes("alt")).toBe(
+      "ZockArchive",
+    );
     expect(wrapper.find("input").exists()).toBe(true);
     expect(wrapper.find("r-img-stub").exists()).toBe(false);
   });
@@ -78,7 +87,9 @@ describe("brand consumers", () => {
     expect(home.attributes("href")).toBe("/");
     expect(home.attributes("aria-label")).toBe("common.home");
     expect(home.get(".project-brand").attributes("aria-hidden")).toBe("true");
-    expect(home.text()).toContain("ZockArchive");
+    expect(home.get(".project-brand__wordmark").attributes("alt")).toBe(
+      "ZockArchive",
+    );
     expect(wrapper.find("r-img-stub").exists()).toBe(false);
   });
 

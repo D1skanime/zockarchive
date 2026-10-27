@@ -13,8 +13,8 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#123c78",
+  "background_color": "#f3f7fd",
   "display": "standalone",
   "description": "A self-hosted PC and console game archive"
 }

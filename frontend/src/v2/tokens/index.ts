@@ -7,26 +7,23 @@
 // kept in sync.
 
 export const colorBrand = {
-  // Match v1's purple-first palette (dark-mode values). The original RomM
-  // accent colour; `primaryHover` and `primaryPressed` line up with v1's
-  // `primary-lighten` / `primary-darken`.
-  primary: "#8B74E8",
-  primaryHover: "#A18FFF",
-  primaryPressed: "#6043C8",
-  // Secondary mirrors v1's secondary purple for chips / inactive bits.
-  secondary: "#9E8CD6",
-  secondaryHover: "#EBE7FA",
-  secondaryPressed: "#7A6BB4",
-  // Accent is v1's salmon/peach — used sparingly for emphasis.
-  accent: "#E1A38D",
-  accentHover: "#F0C8B8",
+  // ZockArchive's blue glass accent. Hover lightens over dark artwork;
+  // pressed tightens back toward the archive-blue base.
+  primary: "#63A4F7",
+  primaryHover: "#93C5FD",
+  primaryPressed: "#3578D4",
+  secondary: "#7DB5F5",
+  secondaryHover: "#DCEBFF",
+  secondaryPressed: "#4B8DDF",
+  accent: "#7CC4FF",
+  accentHover: "#B7DDFF",
   // Favorite state — distinct from primary so a "selected" item and a
   // "favourite" item read differently.
   fav: "#FF4F6B",
   // User-avatar gradient picks up the primary palette so everything stays
   // in-family. (The mockup's red-to-magenta gradient is dropped here to
   // align with v1.)
-  avatarGradient: "linear-gradient(135deg, #A18FFF, #6043C8)",
+  avatarGradient: "linear-gradient(135deg, #93C5FD, #3578D4)",
   // Legacy semantic colours available for specific chips / icons.
   rommRed: "#DA3633",
   rommGreen: "#3FB950",
@@ -44,11 +41,11 @@ export const colorBrand = {
 // Hover/pressed deepen further (a light page gains emphasis by going darker,
 // the inverse of dark mode where hover goes lighter).
 export const colorBrandLight = {
-  primary: "#553E98",
-  primaryHover: "#452788",
-  primaryPressed: "#371F69",
-  secondary: "#6E5CA8",
-  accent: "#A85530",
+  primary: "#1D5FB8",
+  primaryHover: "#164B94",
+  primaryPressed: "#123C78",
+  secondary: "#346FAF",
+  accent: "#1769C2",
   // Rating stars (RRating) read as bright neon gold on dark; on the light
   // page that washes out, so deepen to a darkgoldenrod that still reads
   // unmistakably as gold.
@@ -122,9 +119,9 @@ export const colorProvider = {
 // inverted alpha scheme that still reads as translucent glass.
 export const colorDark = {
   bg: "#07070f",
-  bgElevated: "rgba(255, 255, 255, 0.045)",
-  surface: "rgba(255, 255, 255, 0.07)",
-  surfaceHover: "rgba(255, 255, 255, 0.12)",
+  bgElevated: "rgba(255, 255, 255, 0.06)",
+  surface: "rgba(255, 255, 255, 0.06)",
+  surfaceHover: "rgba(255, 255, 255, 0.1)",
   fg: "#ffffff",
   // Page-title heading ink. Pure white on dark needs no softening; the light
   // theme overrides this to a slightly-muted near-black (white-on-dark titles
@@ -134,8 +131,10 @@ export const colorDark = {
   fgMuted: "rgba(255, 255, 255, 0.45)",
   fgFaint: "rgba(255, 255, 255, 0.25)",
   fgFaintHard: "rgba(255, 255, 255, 0.05)",
-  border: "rgba(255, 255, 255, 0.07)",
-  borderStrong: "rgba(255, 255, 255, 0.15)",
+  border: "rgba(255, 255, 255, 0.14)",
+  borderStrong: "rgba(255, 255, 255, 0.22)",
+  glassTint: "hsl(222 70% 62% / 12%)",
+  glassShadow: "rgba(30, 50, 80, 0.16)",
   // Used by global.css to draw the focus ring; translucent over dark surfaces.
   focus: "rgba(255, 255, 255, 0.45)",
   // Distinctive deep glass for menu/dialog panels — paired with --r-color-panel-border.
@@ -154,6 +153,8 @@ export const colorDark = {
   // Auth-card glass tone — fixed deep-blue glass that reads on the
   // background art regardless of theme.
   authGlass: "rgba(13, 17, 23, 0.65)",
+  authGlassHover: "rgba(13, 17, 23, 0.78)",
+  authGlassBorder: "hsl(222 70% 62% / 32%)",
   // Toast/notification background — opaque deep card.
   toastBg: "rgba(13, 17, 23, 0.92)",
   // RSwitch ON knob — dark ink that pops on the bright dark-theme track.
@@ -165,15 +166,15 @@ export const colorDark = {
 } as const;
 
 export const colorLight = {
-  bg: "#f5f5fa",
+  bg: "#f3f7fd",
   // Text and borders run stronger than a naive inversion of dark (muted/faint
   // at <0.45 disappear on the off-white page), but the surface FILLS stay
   // light: translucent-black panels read as muddy grey on a light page, so
   // keep their alpha low and lean on borders + shadow for separation. Hover
   // still darkens enough to register as feedback.
-  bgElevated: "rgba(0, 0, 0, 0.025)",
-  surface: "rgba(0, 0, 0, 0.035)",
-  surfaceHover: "rgba(0, 0, 0, 0.1)",
+  bgElevated: "rgba(255, 255, 255, 0.52)",
+  surface: "rgba(255, 255, 255, 0.58)",
+  surfaceHover: "rgba(255, 255, 255, 0.78)",
   fg: "#111117",
   // Large bold page titles in pure near-black read harsh on the off-white
   // page; soften them a touch while body text stays at full `fg`.
@@ -181,8 +182,10 @@ export const colorLight = {
   fgSecondary: "rgba(17, 17, 23, 0.82)",
   fgMuted: "rgba(17, 17, 23, 0.74)",
   fgFaint: "rgba(17, 17, 23, 0.58)",
-  border: "rgba(0, 0, 0, 0.1)",
-  borderStrong: "rgba(0, 0, 0, 0.22)",
+  border: "hsl(222 45% 35% / 18%)",
+  borderStrong: "hsl(222 45% 35% / 30%)",
+  glassTint: "hsl(222 70% 62% / 12%)",
+  glassShadow: "rgba(30, 50, 80, 0.08)",
   focus: "rgba(0, 0, 0, 0.45)",
   // Menus / selects / dialogs. Pure white popped hard against the faintly
   // lavender page; sit just a hair above the bg tone instead and rely on the
@@ -202,6 +205,8 @@ export const colorLight = {
   coverPlaceholder: "#e4e2ef",
   coverPlaceholderBright: "#efeef7",
   authGlass: "rgba(245, 245, 250, 0.85)",
+  authGlassHover: "rgba(245, 245, 250, 0.94)",
+  authGlassBorder: "hsl(222 70% 62% / 32%)",
   toastBg: "rgba(245, 245, 250, 0.95)",
   // RSwitch ON knob — white knob so it pops on light theme's deep-purple
   // track instead of sinking into it as a dark blob.

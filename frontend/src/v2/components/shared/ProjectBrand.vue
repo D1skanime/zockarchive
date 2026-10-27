@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// Text identity owns in-app presentation until supplied product artwork is available.
-import { PROJECT_NAME, PROJECT_SHORT_NAME } from "@/v2/config/project";
+// Shared product identity keeps artwork placement consistent between the
+// navigation, auth frame and about surfaces.
 
 interface Props {
   variant: "auth" | "navigation" | "about";
@@ -14,37 +14,52 @@ defineProps<Props>();
     class="project-brand d-inline-flex align-center"
     :class="`project-brand--${variant}`"
   >
-    <span v-if="variant !== 'auth'" class="project-brand__short">{{
-      PROJECT_SHORT_NAME
-    }}</span>
-    <span v-if="variant !== 'about'" class="project-brand__word">{{
-      PROJECT_NAME
-    }}</span>
+    <img
+      v-if="variant === 'navigation'"
+      class="project-brand__mark"
+      src="/assets/zockarchive/mark.svg"
+      alt=""
+    />
+    <img
+      class="project-brand__wordmark"
+      src="/assets/zockarchive/wordmark.svg"
+      alt="ZockArchive"
+    />
   </span>
 </template>
 
 <style scoped>
 .project-brand {
-  gap: 10px;
-  color: var(--r-color-fg);
-  font-family: var(--r-font-family-display);
-  font-weight: var(--r-font-weight-semibold);
-  line-height: var(--r-line-height-tight);
   white-space: nowrap;
 }
+.project-brand__mark,
+.project-brand__wordmark {
+  display: block;
+  object-fit: contain;
+}
 .project-brand--auth {
-  font-size: var(--r-font-size-3xl);
+  width: min(100%, 260px);
 }
-.project-brand--navigation .project-brand__short {
-  font-size: var(--r-font-size-2xl);
+.project-brand--auth .project-brand__wordmark {
+  width: 100%;
 }
-.project-brand--navigation .project-brand__word {
-  font-size: var(--r-font-size-xl);
+.project-brand--navigation {
+  gap: var(--r-space-2);
+  height: var(--r-touch-target);
 }
-.project-brand--about {
-  font-size: var(--r-font-size-md);
+.project-brand--navigation .project-brand__mark {
+  width: 30px;
+  height: 30px;
 }
-html[data-bp~="xs"] .project-brand--navigation .project-brand__word {
+.project-brand--navigation .project-brand__wordmark {
+  width: 124px;
+  max-height: 42px;
+}
+.project-brand--about .project-brand__wordmark {
+  width: 118px;
+  max-height: 34px;
+}
+html[data-bp~="xs"] .project-brand--navigation .project-brand__wordmark {
   display: none;
 }
 </style>

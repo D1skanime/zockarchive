@@ -225,7 +225,7 @@ The old console application is not mounted as a separate runtime. /console URLs 
 
 ## 12. Theming & Styling
 
-frontend/src/styles/themes.ts defines Vuetify dark, light, and auto themes. useThemeMode combines settings.theme with prefers-color-scheme. v2 token source is frontend/src/v2/tokens/index.ts and generated CSS is frontend/src/v2/styles/tokens.css. v2 uses CSS custom properties for colors, statuses, surfaces, borders, spacing, radii, typography, focus, overlays, and responsive dimensions.
+frontend/src/styles/themes.ts defines Vuetify dark, light, and auto themes. useThemeMode combines settings.theme with prefers-color-scheme. v2 token source is frontend/src/v2/tokens/index.ts and generated CSS is frontend/src/v2/styles/tokens.css. v2 uses CSS custom properties for colors, statuses, surfaces, borders, spacing, radii, typography, focus, overlays, and responsive dimensions. The shared blue-glass vocabulary, including glass tint/shadow and auth glass variants, is defined there for both themes; components consume semantic variables instead of local color literals.
 
 useBreakpoint mirrors values to html[data-bp]. AppLayout reserves top and mobile bottom navigation safe-area space; AuthLayout bounds auth cards on phones; SettingsLayout removes its sidebar on small screens and supports fill mode for logs. Input modality distinguishes keyboard, pointer, touch, and gamepad. Reduced motion is mirrored as r-v2-reduced-motion. BackgroundArt uses two layers and a dwell before cross-fading.
 
@@ -265,12 +265,13 @@ parameters change, and teardown never restores an obsolete title. Keep stores,
 router, API clients and application initialization out of this config so build
 tooling and browser startup can safely share it.
 
-The domain shared composite `components/shared/ProjectBrand.vue` presents that
-metadata as text through auth, navigation and about variants. AuthCard owns the
-shared login/register/reset/setup frame; AppNav retains the localized Home link
-and hides its redundant brand text from assistive technology. Only the expanded
-navigation word hides on xs. About and pairing use the compact ZA text. The
-pairing QR remains unmodified, with product identity outside its encoded area.
+The domain shared composite `components/shared/ProjectBrand.vue` presents the
+approved wordmark through auth, navigation and about variants. It adds the
+approved gamepad mark on wide navigation, while the xs breakpoint keeps only
+that mark inside AppNav's existing localized Home link. AuthCard owns the shared
+login/register/reset/setup frame; the labelled Home link hides redundant brand
+artwork from assistive technology. The pairing QR remains unmodified, with
+product identity outside its encoded area.
 VersionTag, AboutDialog and NewVersionBanner share `projectReleaseTagUrl`;
 the banner fetches the canonical release API and preserves its age/dismissal
 rules. About links current documentation to repository docs and labels the
@@ -287,9 +288,12 @@ platform/storage confirmation fallbacks consume PROJECT_NAME and preserve the
 distinction between catalog or mapping removal and deleting original files.
 
 The application bootstrap filename remains `src/PGDP.vue` for compatibility.
-ProjectBrand owns later supplied in-app artwork integration. Public browser/PWA
-icons and desktop packaging icons have separate owners and remain pending supplied
-assets; retained image binaries are not represented as ZockArchive artwork.
+Approved public artwork is stored in `public/assets/zockarchive/`; `index.html`
+and `site.webmanifest` own favicon, Apple touch and Android install declarations.
+`BrandMotionPreview.stories.ts` provides UAT-only static and decorative WebM
+proposals. The runtime login uses the recommended static overlay, and reduced
+motion never requires video decoding. Retained image binaries are not represented
+as ZockArchive artwork.
 Provider artwork and license attribution retain their upstream identity.
 
 Important v2 composables include useCan, useLibraryOperation, useProviderResolution, useManualDescription, useGameDetailsMedia, useBackgroundArt, useBackgroundAudio, useCoverArt, useWebpSupport, useBreakpoint, useResponsiveColumns, useInputModality, useGamepad, useGridNav, useRightStickScroll, useGallerySelectionInput, useGlobalHotkeys, useThemeMode, useReducedMotion, useCrtMode, useFullscreenPref, useGalleryFilterUrl, useGalleryViewModeUrl, useTileSearchUrl, useGalleryProvenance, usePageTitle, useServerConnection, useSnackbar, useConfirm, useSocketEvent, useScanLifecycle, useBrowserDownloadQueue, and usePlaySession. v2/utils covers route-query validation, artwork, collection covers, player helpers, ROM verification/status, download manifest paths, provider labels, CSS checks, and input helpers. frontend/src/utils contains form-data, task, cover, and IndexedDB helpers.

@@ -57,32 +57,29 @@ onMounted(installInputModality);
      bits like the RSteps connector lines and dots. CSS custom properties
      inherit into descendants, and the override is scoped to .r-v2-auth so
      those shared components stay theme-driven elsewhere. */
-  --r-color-fg: #ffffff;
-  --r-color-fg-secondary: rgba(255, 255, 255, 0.75);
-  --r-color-fg-muted: rgba(255, 255, 255, 0.45);
-  --r-color-fg-faint: rgba(255, 255, 255, 0.25);
-  --r-color-surface: rgba(255, 255, 255, 0.07);
-  --r-color-surface-hover: rgba(255, 255, 255, 0.12);
-  --r-color-border: rgba(255, 255, 255, 0.07);
-  --r-color-border-strong: rgba(255, 255, 255, 0.15);
+  --r-color-fg: var(--r-color-overlay-fg);
+  --r-color-fg-secondary: var(--r-color-overlay-fg-secondary);
+  --r-color-fg-muted: var(--r-color-overlay-fg-muted);
+  --r-color-fg-faint: var(--r-color-overlay-fg-muted);
+  --r-color-surface: var(--r-color-auth-glass);
+  --r-color-surface-hover: var(--r-color-auth-glass-hover);
+  --r-color-border: var(--r-color-auth-glass-border);
+  --r-color-border-strong: var(--r-color-auth-glass-border);
 }
 
 .r-v2-auth__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/auth_background.svg");
+  background-image:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--r-color-canvas-bg-deep) 46%, transparent),
+      color-mix(in srgb, var(--r-color-canvas-bg-deep) 74%, transparent)
+    ),
+    url("/assets/zockarchive/overlay.png");
   background-size: cover;
   background-position: center;
   z-index: 0;
-}
-
-/* Firefox: WebRender re-rasterizes the animated SVG every frame, pegging the
-   GPU. Swap to the static variant in Gecko only (the empty `url-prefix()`
-   hack matches all Firefox pages and stays enabled by default). */
-@-moz-document url-prefix() {
-  .r-v2-auth__bg {
-    background-image: url("/assets/auth_background_static.svg");
-  }
 }
 
 .r-v2-auth__stage {

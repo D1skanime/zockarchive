@@ -258,8 +258,13 @@ html.r-v2-reduced-motion *::after {
 /* ── Utility classes ───────────────────────────────────────── */
 
 .r-v2-surface {
-  background: var(--r-color-surface);
+  background: linear-gradient(
+    135deg,
+    var(--r-color-glass-tint),
+    var(--r-color-surface)
+  );
   border: 1px solid var(--r-color-border-strong);
+  box-shadow: 0 8px 24px var(--r-color-glass-shadow);
   backdrop-filter: blur(20px);
 }
 
