@@ -38,16 +38,27 @@ for (const theme of ["dark", "light"] as const) {
         "aria-hidden",
         "true",
       );
+      const navigationMark = home.locator(".project-brand__mark");
+      const navigationWordmark = home.locator(".project-brand__wordmark");
+      await expect(navigationMark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/mark.svg",
+      );
+      await expect(navigationMark).toHaveAttribute("alt", "");
+      await expect(navigationWordmark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/wordmark.svg",
+      );
+      await expect(navigationWordmark).toHaveAttribute("alt", "ZockArchive");
       for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
         await page.setViewportSize({ width, height: 1000 });
         await expect(page.locator("html")).toHaveAttribute(
           "data-bp",
           width < 600 ? /\bxs\b/ : /./,
         );
-        await expect(home.locator(".project-brand__short")).toBeVisible();
-        if (width < 600)
-          await expect(home.locator(".project-brand__word")).toBeHidden();
-        else await expect(home.locator(".project-brand__word")).toBeVisible();
+        await expect(navigationMark).toBeVisible();
+        if (width < 600) await expect(navigationWordmark).toBeHidden();
+        else await expect(navigationWordmark).toBeVisible();
         const box = await home.boundingBox();
         expect(box!.height).toBeGreaterThanOrEqual(44);
         expect(box!.width).toBeGreaterThanOrEqual(44);
@@ -113,7 +124,12 @@ for (const theme of ["dark", "light"] as const) {
       await page.getByText("About", { exact: true }).click();
       const about = page.locator(".r-v2-about");
       await expect(about).toBeVisible();
-      await expect(about.locator(".project-brand--about")).toHaveText("ZA");
+      const aboutWordmark = about.locator(".project-brand__wordmark");
+      await expect(aboutWordmark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/wordmark.svg",
+      );
+      await expect(aboutWordmark).toHaveAttribute("alt", "ZockArchive");
       await expect(about.locator("a").first()).toHaveAttribute(
         "href",
         "https://github.com/D1skanime/zockarchive/releases/tag/fixture",
@@ -167,9 +183,14 @@ for (const theme of ["dark", "light"] as const) {
       "/reset-password",
     ]) {
       await page.goto(path);
-      await expect(page.locator(".auth-card .project-brand--auth")).toHaveText(
-        "ZockArchive",
+      const authWordmark = page.locator(
+        ".auth-card .project-brand--auth .project-brand__wordmark",
       );
+      await expect(authWordmark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/wordmark.svg",
+      );
+      await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
       for (const width of [320, 600, 960, 1280, 3840]) {
         await page.setViewportSize({ width, height: 1000 });
         await expect(page.locator(".auth-card")).toBeVisible();

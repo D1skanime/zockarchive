@@ -16,6 +16,8 @@
 - Split palette ownership into `tokens/colors.ts` after the deterministic
   size gate identified the public token entry point as oversized; its existing
   exports and generated CSS contract remain unchanged.
+- Updated both brand E2E specs from removed text nodes to the approved image
+  selectors, including their `alt` and public asset-path contracts.
 
 ## Validation
 
@@ -25,6 +27,8 @@
 - Temporary-output Vite production build passed. The normal `dist/` target is
   owned by `nobody:nogroup` and not writable in this checkout.
 - `trunk fmt && trunk check` passed for 22 modified files.
+- The isolated Chromium preview ran all four `project-brand.spec.ts` cases
+  successfully in both themes after the image assertions were added.
 - The full Vitest run aborts before suite reporting with `ECONNRESET`; this
   was reproduced with one worker and no tests were changed or disabled.
 

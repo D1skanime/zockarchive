@@ -11,6 +11,9 @@ verified: 2026-10-27
 - Approved source archive SHA-256 and SVG/XML/resource checks passed.
 - Token generation, TypeScript typecheck, focused identity tests, temporary
   production build and changed-file Trunk formatting/checks passed.
+- The dedicated static Chromium preview passed all four `project-brand.spec.ts`
+  cases after both brand E2E specs were updated to assert logo image selectors,
+  accessible names and public asset paths instead of removed text markup.
 - Full Vitest is inconclusive: it aborts with `ECONNRESET` before reporting
   test results, including at one worker.
 

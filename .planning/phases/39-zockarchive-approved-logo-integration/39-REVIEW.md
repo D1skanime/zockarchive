@@ -27,7 +27,8 @@ No correctness, security or architecture finding blocks the implementation.
 
 ## Residual validation limits
 
-Visual browser confirmation is deferred to UAT because Chromium is absent.
-The existing full Vitest runner also resets its socket before reporting a
-suite. Focused tests, typecheck, build and Trunk checks are recorded in the
-plan summary.
+The static Chromium preview covers the isolated logo surfaces. Interactive
+product UAT and the Phase 38 data-owning browser runner remain separate from
+this checkout. The existing full Vitest runner also resets its socket before
+reporting a suite. Focused tests, typecheck, build and Trunk checks are
+recorded in the plan summary.
