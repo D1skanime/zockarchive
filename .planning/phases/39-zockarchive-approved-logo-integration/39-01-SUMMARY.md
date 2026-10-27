@@ -13,6 +13,9 @@
   optional animation/placement proposals. The WebM remains muted, decorative,
   and hidden under `prefers-reduced-motion`.
 - Updated frontend architecture documentation and focused identity tests.
+- Split palette ownership into `tokens/colors.ts` after the deterministic
+  size gate identified the public token entry point as oversized; its existing
+  exports and generated CSS contract remain unchanged.
 
 ## Validation
 
