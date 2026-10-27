@@ -15,9 +15,10 @@ No correctness, security or architecture finding blocks the implementation.
 - `ProjectBrand` remains the sole active in-app identity owner. Its images add
   no focus target, navigation remains labelled by AppNav, and xs retains the
   compact gamepad mark.
-- Supplied SVGs are loaded as public files only after XML/resource validation;
-  they are not inlined and contain no scripts, event handlers, foreign objects
-  or external resource attributes.
+- The approved source SVGs remain public provenance assets after XML/resource
+  validation. `ProjectBrand` serves checked-in, viewport-sized WebP derivatives
+  from the approved PNGs so persistent navigation avoids their embedded image
+  payload.
 - Token values are centralised in the v2 token source and regenerated. Status
   colors and focus token ownership are unchanged.
 - The runtime does not autoplay the WebM. The review story is decorative,

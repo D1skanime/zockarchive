@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 // Shared product identity keeps artwork placement consistent between the
 // navigation, auth frame and about surfaces.
 
@@ -6,7 +8,13 @@ interface Props {
   variant: "auth" | "navigation" | "about";
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const wordmarkSource = computed(() =>
+  props.variant === "auth"
+    ? "/assets/zockarchive/wordmark-auth.webp"
+    : "/assets/zockarchive/wordmark-header.webp",
+);
 </script>
 
 <template>
@@ -17,12 +25,12 @@ defineProps<Props>();
     <img
       v-if="variant === 'navigation'"
       class="project-brand__mark"
-      src="/assets/zockarchive/mark.svg"
+      src="/assets/zockarchive/mark-header.webp"
       alt=""
     />
     <img
       class="project-brand__wordmark"
-      src="/assets/zockarchive/wordmark.svg"
+      :src="wordmarkSource"
       alt="ZockArchive"
     />
   </span>

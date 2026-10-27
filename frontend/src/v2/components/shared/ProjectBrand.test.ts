@@ -9,12 +9,18 @@ import ProjectBrand from "@/v2/components/shared/ProjectBrand.vue";
 import VersionTag from "@/v2/components/shared/VersionTag.vue";
 
 describe("ProjectBrand", () => {
+  const wordmarkAsset = {
+    auth: "/assets/zockarchive/wordmark-auth.webp",
+    navigation: "/assets/zockarchive/wordmark-header.webp",
+    about: "/assets/zockarchive/wordmark-header.webp",
+  } as const;
+
   it.each(["auth", "navigation", "about"] as const)(
-    "renders the approved %s artwork without extra focus stops",
+    "renders the optimized approved %s artwork without extra focus stops",
     (variant) => {
       const wrapper = mount(ProjectBrand, { props: { variant } });
       expect(wrapper.get(".project-brand__wordmark").attributes("src")).toBe(
-        "/assets/zockarchive/wordmark.svg",
+        wordmarkAsset[variant],
       );
       expect(wrapper.get(".project-brand__wordmark").attributes("alt")).toBe(
         "ZockArchive",
@@ -33,7 +39,7 @@ describe("ProjectBrand", () => {
     const wrapper = mount(ProjectBrand, { props: { variant: "navigation" } });
     expect(wrapper.get(".project-brand__mark").attributes("alt")).toBe("");
     expect(wrapper.get(".project-brand__mark").attributes("src")).toBe(
-      "/assets/zockarchive/mark.svg",
+      "/assets/zockarchive/mark-header.webp",
     );
   });
 

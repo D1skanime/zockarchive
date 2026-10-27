@@ -42,12 +42,12 @@ for (const theme of ["dark", "light"] as const) {
       const navigationWordmark = home.locator(".project-brand__wordmark");
       await expect(navigationMark).toHaveAttribute(
         "src",
-        "/assets/zockarchive/mark.svg",
+        "/assets/zockarchive/mark-header.webp",
       );
       await expect(navigationMark).toHaveAttribute("alt", "");
       await expect(navigationWordmark).toHaveAttribute(
         "src",
-        "/assets/zockarchive/wordmark.svg",
+        "/assets/zockarchive/wordmark-header.webp",
       );
       await expect(navigationWordmark).toHaveAttribute("alt", "ZockArchive");
       for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
@@ -127,7 +127,7 @@ for (const theme of ["dark", "light"] as const) {
       const aboutWordmark = about.locator(".project-brand__wordmark");
       await expect(aboutWordmark).toHaveAttribute(
         "src",
-        "/assets/zockarchive/wordmark.svg",
+        "/assets/zockarchive/wordmark-header.webp",
       );
       await expect(aboutWordmark).toHaveAttribute("alt", "ZockArchive");
       await expect(about.locator("a").first()).toHaveAttribute(
@@ -188,7 +188,7 @@ for (const theme of ["dark", "light"] as const) {
       );
       await expect(authWordmark).toHaveAttribute(
         "src",
-        "/assets/zockarchive/wordmark.svg",
+        "/assets/zockarchive/wordmark-auth.webp",
       );
       await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
       for (const width of [320, 600, 960, 1280, 3840]) {

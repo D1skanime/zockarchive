@@ -18,6 +18,9 @@
   exports and generated CSS contract remain unchanged.
 - Updated both brand E2E specs from removed text nodes to the approved image
   selectors, including their `alt` and public asset-path contracts.
+- Replaced the large embedded-PNG SVG exports on persistent identity surfaces
+  with checked-in, viewport-sized WebP derivatives made from the approved PNG
+  assets. The header now requests 14,192 bytes of logo media instead of 953,360.
 
 ## Validation
 

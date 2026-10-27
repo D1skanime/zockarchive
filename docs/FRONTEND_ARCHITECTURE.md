@@ -266,11 +266,14 @@ router, API clients and application initialization out of this config so build
 tooling and browser startup can safely share it.
 
 The domain shared composite `components/shared/ProjectBrand.vue` presents the
-approved wordmark through auth, navigation and about variants. It adds the
-approved gamepad mark on wide navigation, while the xs breakpoint keeps only
-that mark inside AppNav's existing localized Home link. AuthCard owns the shared
-login/register/reset/setup frame; the labelled Home link hides redundant brand
-artwork from assistive technology. The pairing QR remains unmodified, with
+approved wordmark through auth, navigation and about variants. It uses
+viewport-sized WebP derivatives of the approved package, so the persistent
+header does not download the large source exports; the original approved SVGs
+remain preserved public provenance assets. It adds the approved gamepad mark on
+wide navigation, while the xs breakpoint keeps only that mark inside AppNav's
+existing localized Home link. AuthCard owns the shared login/register/reset/setup
+frame; the labelled Home link hides redundant brand artwork from assistive
+technology. The pairing QR remains unmodified, with
 product identity outside its encoded area.
 VersionTag, AboutDialog and NewVersionBanner share `projectReleaseTagUrl`;
 the banner fetches the canonical release API and preserves its age/dismissal

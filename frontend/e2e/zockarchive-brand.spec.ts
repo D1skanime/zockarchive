@@ -29,12 +29,12 @@ for (const theme of ["dark", "light"]) {
     const navigationWordmark = home.locator(".project-brand__wordmark");
     await expect(navigationMark).toHaveAttribute(
       "src",
-      "/assets/zockarchive/mark.svg",
+      "/assets/zockarchive/mark-header.webp",
     );
     await expect(navigationMark).toHaveAttribute("alt", "");
     await expect(navigationWordmark).toHaveAttribute(
       "src",
-      "/assets/zockarchive/wordmark.svg",
+      "/assets/zockarchive/wordmark-header.webp",
     );
     await expect(navigationWordmark).toHaveAttribute("alt", "ZockArchive");
     for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
@@ -64,7 +64,7 @@ for (const theme of ["dark", "light"]) {
     const aboutWordmark = about.locator(".project-brand__wordmark");
     await expect(aboutWordmark).toHaveAttribute(
       "src",
-      "/assets/zockarchive/wordmark.svg",
+      "/assets/zockarchive/wordmark-header.webp",
     );
     await expect(aboutWordmark).toHaveAttribute("alt", "ZockArchive");
     await expect(
@@ -81,7 +81,7 @@ for (const theme of ["dark", "light"]) {
     const authWordmark = page.locator(".auth-card .project-brand__wordmark");
     await expect(authWordmark).toHaveAttribute(
       "src",
-      "/assets/zockarchive/wordmark.svg",
+      "/assets/zockarchive/wordmark-auth.webp",
     );
     await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
     await expect(page).toHaveTitle("Login");
@@ -106,7 +106,7 @@ test("real invitation registration and rejected credentials", async ({
   const registerWordmark = page.locator(".auth-card .project-brand__wordmark");
   await expect(registerWordmark).toHaveAttribute(
     "src",
-    "/assets/zockarchive/wordmark.svg",
+    "/assets/zockarchive/wordmark-auth.webp",
   );
   await expect(registerWordmark).toHaveAttribute("alt", "ZockArchive");
   await page.getByLabel("Username", { exact: true }).fill("phase38-registered");
@@ -175,7 +175,7 @@ test("actual German auth and about identity", async ({ page }) => {
   const authWordmark = page.locator(".auth-card .project-brand__wordmark");
   await expect(authWordmark).toHaveAttribute(
     "src",
-    "/assets/zockarchive/wordmark.svg",
+    "/assets/zockarchive/wordmark-auth.webp",
   );
   await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
   await expect(
