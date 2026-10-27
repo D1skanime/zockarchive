@@ -292,7 +292,13 @@ distinction between catalog or mapping removal and deleting original files.
 
 The application bootstrap filename remains `src/PGDP.vue` for compatibility.
 Approved public artwork is stored in `public/assets/zockarchive/`; `index.html`
-and `site.webmanifest` own favicon, Apple touch and Android install declarations.
+owns the approved 16px/32px PNG favicon and Apple-touch declarations, while
+`public/favicon.ico` packages those same approved favicon sizes for default
+browser requests. `site.webmanifest` is the sole install-manifest owner: it
+declares only the approved `android-chrome-192x192.png` and
+`android-chrome-512x512.png` assets with the token-derived `#123c78` theme and
+`#f3f7fd` background colors. VitePWA generates the service worker but has its
+manifest generation disabled, so it cannot inject a competing manifest link.
 `BrandMotionPreview.stories.ts` provides UAT-only static and decorative WebM
 proposals. The runtime login uses the recommended static overlay, and reduced
 motion never requires video decoding. Retained image binaries are not represented
@@ -326,13 +332,11 @@ Run commands from frontend:
 | npm run test:e2e:ui        | Playwright UI mode                  |
 
 Before JavaScript starts, `index.html` renders centered ZockArchive text and
-the initial title. Both `public/site.webmanifest` and the VitePWA-generated
-`manifest.webmanifest` expose ZockArchive / ZA and the same description.
-VitePWA imports the pure identity config; the static HTML/manifest literals
-are checked against it by `node --import tsx scripts/check-project-manifests.ts
-<output-directory>` after a build. The checker reads actual emitted HTML links
-and both JSON payloads. Existing icon binaries remain pending supplied artwork;
-start URLs, scope, colors, display and service-worker/cache identity are preserved.
+the initial title. It links exactly one manifest, `public/site.webmanifest`.
+`node --import tsx scripts/check-project-manifests.ts <output-directory>` checks
+the emitted HTML link, absence of a VitePWA-generated competing manifest,
+product identity, approved Android icon list and token-derived colors. Start
+URLs, scope, display and service-worker/cache identity are preserved.
 
 package.json declares Node 24, npm >=11.10, and npm@11.13.0. vite.config.js defines @ and @v2, Vue/Vuetify/Tailwind/VitePWA/mkcert plugins, browser-derived CSS targets, PWA support, and proxies for /api, /ws, /netplay, and /openapi.json. DEV_PORT defaults to 5000; HTTP dev uses 3000 and DEV_HTTPS uses 8443. ROM resources are ignored by the watcher.
 

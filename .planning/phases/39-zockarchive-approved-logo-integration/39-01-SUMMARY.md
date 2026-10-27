@@ -21,6 +21,9 @@
 - Replaced the large embedded-PNG SVG exports on persistent identity surfaces
   with checked-in, viewport-sized WebP derivatives made from the approved PNG
   assets. The header now requests 14,192 bytes of logo media instead of 953,360.
+- Made `site.webmanifest` the only install-manifest owner. VitePWA continues
+  generating the service worker but no longer injects a second manifest; the
+  rebuilt ICO packages the approved 16px and 32px favicon PNGs.
 
 ## Validation
 

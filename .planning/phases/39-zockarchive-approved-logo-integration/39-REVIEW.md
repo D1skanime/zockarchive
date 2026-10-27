@@ -19,6 +19,9 @@ No correctness, security or architecture finding blocks the implementation.
   validation. `ProjectBrand` serves checked-in, viewport-sized WebP derivatives
   from the approved PNGs so persistent navigation avoids their embedded image
   payload.
+- `site.webmanifest` is the sole install-manifest owner. VitePWA still owns
+  service-worker generation but has no manifest output or HTML manifest-link
+  injection; the default ICO packages the approved favicon PNGs.
 - Token values are centralised in the v2 token source and regenerated. Status
   colors and focus token ownership are unchanged.
 - The runtime does not autoplay the WebM. The review story is decorative,

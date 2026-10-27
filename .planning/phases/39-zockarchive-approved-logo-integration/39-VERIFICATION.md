@@ -16,6 +16,8 @@ verified: 2026-10-27
   accessible names and public asset paths instead of removed text markup.
 - `ProjectBrand` unit tests assert the compact header and larger auth WebP asset
   routes, which prevents returning to the large source SVG exports.
+- The emitted-manifest contract checks one `site.webmanifest` link, no VitePWA
+  manifest file, the approved Android icon list and the blue token colors.
 - Full Vitest is inconclusive: it aborts with `ECONNRESET` before reporting
   test results, including at one worker.
 

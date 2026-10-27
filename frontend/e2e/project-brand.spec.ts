@@ -1,6 +1,36 @@
 import { expect, test } from "@playwright/test";
 import { mountGallery } from "./fixtures/screenshot-management";
 
+test("static preview has one approved ZockArchive PWA manifest", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const manifest = page.locator('link[rel="manifest"]');
+  await expect(manifest).toHaveCount(1);
+  await expect(manifest).toHaveAttribute("href", "/site.webmanifest");
+
+  const response = await page.request.get("/site.webmanifest");
+  expect(response.ok()).toBe(true);
+  await expect(response.json()).resolves.toMatchObject({
+    name: "ZockArchive",
+    short_name: "ZA",
+    icons: [
+      {
+        src: "/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        src: "/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+    theme_color: "#123c78",
+    background_color: "#f3f7fd",
+  });
+});
+
 for (const theme of ["dark", "light"] as const) {
   test(
     "shared shell identity geometry and interactions " + theme,
