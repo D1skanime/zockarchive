@@ -50,3 +50,6 @@ read-only archive boundaries unchanged.
   `prefers-reduced-motion` remains available to all unrelated components.
   Storybook retains one German final-background story with ZA reduced-motion
   and speed controls.
+- Auth, setup and pairing cards use the existing shared auth-glass token family
+  in both themes. The light theme retains dark readable form text and stronger
+  placeholder contrast; dark-theme bands use higher opacity only.

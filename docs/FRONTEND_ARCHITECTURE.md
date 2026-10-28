@@ -316,6 +316,12 @@ with German preview-only controls for `ZA-Reduzierte Bewegung` and
 `Animationsgeschwindigkeit` from 0,5× through 2×. Those controls do not alter
 runtime settings. The retired `auth_background.svg` and Gecko static SVG have
 no remaining runtime owner and are removed.
+
+Authentication, setup and pairing cards consume the shared `auth-glass` token
+family. It provides a light translucent blue-glass surface with dark readable
+text in light theme, and a blue-black glass surface with light readable text in
+dark theme. AuthLayout raises placeholder contrast to the secondary-text token;
+the existing field focus and semantic error/warning owners remain unchanged.
 Provider artwork and license attribution retain their upstream identity.
 
 Important v2 composables include useCan, useLibraryOperation, useProviderResolution, useManualDescription, useGameDetailsMedia, useBackgroundArt, useBackgroundAudio, useCoverArt, useWebpSupport, useBreakpoint, useResponsiveColumns, useInputModality, useGamepad, useGridNav, useRightStickScroll, useGallerySelectionInput, useGlobalHotkeys, useThemeMode, useReducedMotion, useCrtMode, useFullscreenPref, useGalleryFilterUrl, useGalleryViewModeUrl, useTileSearchUrl, useGalleryProvenance, usePageTitle, useServerConnection, useSnackbar, useConfirm, useSocketEvent, useScanLifecycle, useBrowserDownloadQueue, and usePlaySession. v2/utils covers route-query validation, artwork, collection covers, player helpers, ROM verification/status, download manifest paths, provider labels, CSS checks, and input helpers. frontend/src/utils contains form-data, task, cover, and IndexedDB helpers.

@@ -34,16 +34,6 @@ useReducedMotionRootClass();
   place-items: center;
   padding: var(--r-space-6);
   overflow: hidden;
-
-  /* The auth background and the glass card are always dark
-     (--r-color-canvas-bg-deep) regardless of theme, so pin the foreground and
-     borders to the always-light overlay tokens — the same fixed values that
-     ride over cover art — so text stays legible in v2-light too. */
-  --r-color-fg: var(--r-color-overlay-fg);
-  --r-color-fg-secondary: var(--r-color-overlay-fg-secondary);
-  --r-color-fg-muted: var(--r-color-overlay-fg-muted);
-  --r-color-border: var(--r-color-overlay-border);
-  --r-color-border-strong: var(--r-color-overlay-border-strong);
 }
 
 .r-v2-devpair-shell__bg {

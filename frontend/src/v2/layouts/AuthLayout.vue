@@ -51,22 +51,9 @@ onMounted(installInputModality);
   padding: var(--r-space-6);
   overflow: hidden;
 
-  /* The auth background and the AuthCard/Setup glass are always dark
-     (--r-color-canvas-bg-deep) regardless of theme, so the light-mode
-     foreground/border tokens (near-black) would be unreadable here. Force
-     the dark-mode palette for everything inside the auth layout — the page
-     text, the LanguageSelector, the VersionTag, and surface/border-driven
-     bits like the RSteps connector lines and dots. CSS custom properties
-     inherit into descendants, and the override is scoped to .r-v2-auth so
-     those shared components stay theme-driven elsewhere. */
-  --r-color-fg: var(--r-color-overlay-fg);
-  --r-color-fg-secondary: var(--r-color-overlay-fg-secondary);
-  --r-color-fg-muted: var(--r-color-overlay-fg-muted);
-  --r-color-fg-faint: var(--r-color-overlay-fg-muted);
-  --r-color-surface: var(--r-color-auth-glass);
-  --r-color-surface-hover: var(--r-color-auth-glass-hover);
-  --r-color-border: var(--r-color-auth-glass-border);
-  --r-color-border-strong: var(--r-color-auth-glass-border);
+  /* Form placeholders inherit the faint token. Keep them at the secondary
+     text contrast level over the translucent auth glass in both themes. */
+  --r-color-fg-faint: var(--r-color-fg-secondary);
 }
 
 .r-v2-auth__bg {

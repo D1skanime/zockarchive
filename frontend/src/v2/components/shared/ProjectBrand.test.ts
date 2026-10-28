@@ -1,5 +1,6 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { shallowMount } from "@vue/test-utils";
+import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import AppNav from "@/v2/components/AppShell/AppNav.vue";
 import AboutDialog from "@/v2/components/Dialogs/AboutDialog.vue";
@@ -57,6 +58,15 @@ vi.mock("@/v2/data/adapters/legacy/stores/heartbeat", () => ({
 }));
 
 describe("brand consumers", () => {
+  it("uses the shared auth glass tokens instead of a fixed dark canvas", () => {
+    const source = readFileSync(
+      "src/v2/components/shared/AuthCard.vue",
+      "utf8",
+    );
+    expect(source).toContain("var(--r-color-auth-glass)");
+    expect(source).toContain("backdrop-filter");
+    expect(source).not.toContain("var(--r-color-canvas-bg-deep) 65%");
+  });
   it("renders auth identity while preserving form slot and frame", () => {
     const wrapper = shallowMount(AuthCard, {
       slots: { default: '<input aria-label="Username" />' },

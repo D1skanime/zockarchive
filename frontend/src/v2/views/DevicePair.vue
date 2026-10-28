@@ -306,12 +306,8 @@ async function deny() {
 
 <style scoped>
 .r-v2-devpair {
-  background: color-mix(
-    in srgb,
-    var(--r-color-canvas-bg-deep) 72%,
-    transparent
-  );
-  border: 1px solid var(--r-color-border-strong);
+  background: var(--r-color-auth-glass);
+  border: 1px solid var(--r-color-auth-glass-border);
   border-radius: var(--r-radius-lg);
   backdrop-filter: blur(22px);
   padding: 32px;
