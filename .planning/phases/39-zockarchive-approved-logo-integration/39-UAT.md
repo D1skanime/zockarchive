@@ -4,7 +4,7 @@
 
 - `http://<ZA-host>/login`
 - `http://<ZA-host>/` after login
-- `http://<storybook-host>/?path=/story/brand-animation-proposals--review-variants`
+- `http://<storybook-host>/?path=/story/brand-za-background-proposals--compare-variants`
 
 ## Checklist
 
@@ -15,8 +15,9 @@
    and touch.
 3. Reload once and inspect browser tab favicon. Install the PWA where supported
    and inspect the device/app icon.
-4. In the Storybook preview, compare the recommended static archive backdrop,
-   optional WebM gamepad drift and optional static shell wash. Choose whether
-   any optional variant should become future product behavior.
-5. Enable OS or application reduced motion and confirm the preview uses static
-   media. A real controller test is optional and must be recorded separately.
+4. In the Storybook comparison, evaluate Azure drift, Archive current and
+   Glass refraction in both themes. Azure drift is a recommendation only;
+   choose whether any proposal should become future product behavior.
+5. Confirm every proposal has a visible static fallback and respects OS or
+   application reduced motion. A real controller test is optional and must be
+   recorded separately.

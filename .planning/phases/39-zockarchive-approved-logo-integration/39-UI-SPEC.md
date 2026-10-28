@@ -18,15 +18,13 @@ static and transitions opacity only.
 
 ## Animation proposals for UAT
 
-1. **Recommended, static blue archive backdrop:** the approved `za-overlay`
-   creates a low-contrast login backdrop. It has no motion and is suitable for
-   all devices.
-2. **Optional gamepad-mark drift:** the supplied WebM loops muted behind the
-   login card at reduced opacity. It is hidden when the user or OS requests
-   reduced motion and swaps to the static overlay.
-3. **Optional shell archive wash:** the static overlay enriches the existing
-   BackgroundArt fallback only. It does not replace game cover art and uses no
-   continuous animation.
+1. **Recommended, Azure drift:** blue gradient orbs drift slowly behind a
+   quiet glass wash. It is the builder recommendation only, not a product
+   selection.
+2. **Archive current:** a restrained archive-card grid pans beneath a blue
+   haze, communicating the library context without using the approved logo.
+3. **Glass refraction:** low-intensity diagonal light bands move across a blue
+   field, giving the least literal direction.
 
 The delivered Storybook preview labels these as proposals and makes each
 variant inspectable without persisting a user preference.
@@ -39,4 +37,5 @@ variant inspectable without persisting a user preference.
   audio.
 - Focus rings follow the current modality system. Existing product controls
   retain keyboard, touch and gamepad behavior without a new interaction owner.
-- Reduced motion always selects the static fallback and stops video decoding.
+- Reduced motion always stops the CSS animation and leaves each proposal as a
+  static token-driven backdrop.

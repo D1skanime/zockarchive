@@ -28,9 +28,9 @@ verified: 2026-10-27
 2. At a wide authenticated route, verify header wordmark plus gamepad mark;
    at 320px verify mark-only navigation and its accessible Home control.
 3. Confirm tab favicon and installed PWA icon use the supplied gamepad mark.
-4. In Storybook, open `Brand/Animation proposals/ReviewVariants`, compare all
-   three proposals and confirm the recommended static option versus optional
-   WebM drift and shell wash. With reduced motion enabled, video must not show.
+4. In Storybook, open `Brand/ZA background proposals/CompareVariants`, compare
+   Azure drift, Archive current and Glass refraction in both themes. Confirm
+   every static fallback disables its decorative motion.
 5. Exercise keyboard and touch navigation. Do not claim physical gamepad
    validation unless a real controller is used.
 

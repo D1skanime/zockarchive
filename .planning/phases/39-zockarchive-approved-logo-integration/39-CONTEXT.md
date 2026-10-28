@@ -45,3 +45,13 @@ read-only archive boundaries unchanged.
 Human UAT chooses whether either animation proposal graduates from preview to
 default product behavior. This phase recommends static, subtle blue archive
 backdrop as the safe default and does not claim animation approval.
+
+## 2026-10-28 UAT replacement proposals
+
+- The active inherited owner is `AppShell/BackgroundArt.vue`, with global
+  `.r-v2-bg__layer` fallback art from `assets/auth_background.svg`. It remains
+  unchanged until a product decision.
+- The earlier asset-preview story is replaced by three ZA-specific, CSS-only
+  review variants: Azure drift, Archive current and Glass refraction.
+- Each proposal renders both themes beside a static reduced-motion fallback.
+  Azure drift is the builder recommendation only, not a selected default.

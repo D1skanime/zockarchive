@@ -21,8 +21,8 @@
   declarations are XML namespace metadata, not remote loads.
 - The supplied PNGs match their names: favicons 16 and 32 px, Apple 180 px,
   Android 192 and 512 px, mark 382x352 px, and wordmark/overlay 750x510 px.
-- The supplied WebM is 68,203 bytes. It is kept decorative and never given
-  audio controls or an assistive-technology name.
+- The supplied WebM is 68,203 bytes and remains retained approved artwork.
+  The replacement review variants do not load it, avoiding video decode work.
 
 ## Compatibility findings
 

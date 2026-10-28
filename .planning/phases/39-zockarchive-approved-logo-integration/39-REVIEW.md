@@ -24,8 +24,9 @@ No correctness, security or architecture finding blocks the implementation.
   injection; the default ICO packages the approved favicon PNGs.
 - Token values are centralised in the v2 token source and regenerated. Status
   colors and focus token ownership are unchanged.
-- The runtime does not autoplay the WebM. The review story is decorative,
-  muted and has a reduced-motion static fallback.
+- The runtime does not change the inherited RomM background. The review story
+  uses decorative, CSS-only ZA variants and every reduced-motion path is
+  static.
 - No backend, storage, authentication, API, Docker or external-media path was
   changed.
 

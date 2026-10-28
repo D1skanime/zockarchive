@@ -302,10 +302,16 @@ declares only the approved `android-chrome-192x192.png` and
 `android-chrome-512x512.png` assets with the token-derived `#123c78` theme and
 `#f3f7fd` background colors. VitePWA generates the service worker but has its
 manifest generation disabled, so it cannot inject a competing manifest link.
-`BrandMotionPreview.stories.ts` provides UAT-only static and decorative WebM
-proposals. The runtime login uses the recommended static overlay, and reduced
-motion never requires video decoding. Retained image binaries are not represented
-as ZockArchive artwork.
+`AppShell/BackgroundArt.vue` remains the runtime owner of the inherited RomM
+backdrop. Its two `.r-v2-bg__layer` elements cross-fade selected cover art,
+while `global.css` supplies `assets/auth_background.svg` as the animated RomM
+fallback and its static Gecko alternative. `BrandBackgroundVariant.vue` is a
+Storybook-only ZA review surface, not a runtime replacement. It offers the
+CSS-only Azure drift, Archive current and Glass refraction proposals in
+`Brand/ZA background proposals`, each with dark/light previews and an explicit
+static reduced-motion fallback. The runtime login continues to use the static
+approved ZA overlay until a human selects a proposal. Retained image binaries
+are not represented as ZockArchive artwork.
 Provider artwork and license attribution retain their upstream identity.
 
 Important v2 composables include useCan, useLibraryOperation, useProviderResolution, useManualDescription, useGameDetailsMedia, useBackgroundArt, useBackgroundAudio, useCoverArt, useWebpSupport, useBreakpoint, useResponsiveColumns, useInputModality, useGamepad, useGridNav, useRightStickScroll, useGallerySelectionInput, useGlobalHotkeys, useThemeMode, useReducedMotion, useCrtMode, useFullscreenPref, useGalleryFilterUrl, useGalleryViewModeUrl, useTileSearchUrl, useGalleryProvenance, usePageTitle, useServerConnection, useSnackbar, useConfirm, useSocketEvent, useScanLifecycle, useBrowserDownloadQueue, and usePlaySession. v2/utils covers route-query validation, artwork, collection covers, player helpers, ROM verification/status, download manifest paths, provider labels, CSS checks, and input helpers. frontend/src/utils contains form-data, task, cover, and IndexedDB helpers.

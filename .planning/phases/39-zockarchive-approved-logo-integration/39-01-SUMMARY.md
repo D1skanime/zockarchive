@@ -9,9 +9,9 @@
 - Migrated v2 brand and shared glass semantic tokens from purple to blue,
   retaining independent warning, error and focus semantic tokens.
 - Made the static blue archive overlay the production login backdrop.
-- Added a Storybook-only preview of the recommended static variant plus two
-  optional animation/placement proposals. The WebM remains muted, decorative,
-  and hidden under `prefers-reduced-motion`.
+- Added Storybook-only ZA background proposals. Azure drift, Archive current
+  and Glass refraction are CSS-only, decorative and static under reduced
+  motion; Azure drift is a recommendation, not an approved default.
 - Updated frontend architecture documentation and focused identity tests.
 - Split palette ownership into `tokens/colors.ts` after the deterministic
   size gate identified the public token entry point as oversized; its existing
