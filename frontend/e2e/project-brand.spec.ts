@@ -69,17 +69,14 @@ for (const theme of ["dark", "light"] as const) {
         "true",
       );
       const navigationMark = home.locator(".project-brand__mark");
-      const navigationWordmark = home.locator(".project-brand__wordmark");
+      const navigationWordmark = home.locator(".project-brand__name");
       await expect(navigationMark).toHaveAttribute(
         "src",
         "/assets/zockarchive/mark-header.webp",
       );
       await expect(navigationMark).toHaveAttribute("alt", "");
-      await expect(navigationWordmark).toHaveAttribute(
-        "src",
-        "/assets/zockarchive/wordmark-header.webp",
-      );
-      await expect(navigationWordmark).toHaveAttribute("alt", "ZockArchive");
+      await expect(navigationWordmark).toHaveText("ZockArchive");
+      await expect(home.locator("img")).toHaveCount(1);
       for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
         await page.setViewportSize({ width, height: 1000 });
         await expect(page.locator("html")).toHaveAttribute(
@@ -240,3 +237,40 @@ for (const theme of ["dark", "light"] as const) {
     expect(mutations).toEqual([]);
   });
 }
+
+test("runtime logo assets retain transparent backgrounds", async ({ page }) => {
+  await page.goto("/");
+  for (const asset of [
+    "mark-header.webp",
+    "wordmark-header.webp",
+    "wordmark-auth.webp",
+  ]) {
+    const alpha = await page.evaluate(async (asset) => {
+      const image = new Image();
+      image.src = "/assets/zockarchive/" + asset;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const context = canvas.getContext("2d")!;
+      context.drawImage(image, 0, 0);
+      const pixels = context.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+      ).data;
+      let transparent = 0;
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i]! < 10) transparent++;
+      }
+      return {
+        corner: pixels[3],
+        fraction: transparent / (canvas.width * canvas.height),
+      };
+    }, asset);
+    expect(alpha.corner).toBeLessThan(10);
+    expect(alpha.fraction).toBeGreaterThan(0.15);
+    expect(alpha.fraction).toBeLessThan(0.95);
+  }
+});

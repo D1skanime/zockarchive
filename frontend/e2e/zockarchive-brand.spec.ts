@@ -26,17 +26,14 @@ for (const theme of ["dark", "light"]) {
     const home = page.locator(".r-v2-nav__logo");
     await expect(home).toHaveAttribute("aria-label", "Home");
     const navigationMark = home.locator(".project-brand__mark");
-    const navigationWordmark = home.locator(".project-brand__wordmark");
+    const navigationWordmark = home.locator(".project-brand__name");
     await expect(navigationMark).toHaveAttribute(
       "src",
       "/assets/zockarchive/mark-header.webp",
     );
     await expect(navigationMark).toHaveAttribute("alt", "");
-    await expect(navigationWordmark).toHaveAttribute(
-      "src",
-      "/assets/zockarchive/wordmark-header.webp",
-    );
-    await expect(navigationWordmark).toHaveAttribute("alt", "ZockArchive");
+    await expect(navigationWordmark).toHaveText("ZockArchive");
+    await expect(home.locator("img")).toHaveCount(1);
     for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
       await page.setViewportSize({ width, height: 1000 });
       await expect(navigationMark).toBeVisible();
