@@ -7,6 +7,7 @@ import LanguageSelector from "@/v2/components/shared/LanguageSelector.vue";
 import VersionTag from "@/v2/components/shared/VersionTag.vue";
 import { installBreakpointAttribute } from "@/v2/composables/useBreakpoint";
 import { useInputModality } from "@/v2/composables/useInputModality";
+import { useReducedMotionRootClass } from "@/v2/composables/useReducedMotionRootClass";
 
 // The auth / setup flow runs under THIS layout, not AppLayout, so it must
 // install the same `<html>` mirrors. Without them no `data-bp` responsive
@@ -14,12 +15,13 @@ import { useInputModality } from "@/v2/composables/useInputModality";
 // wizard's columns wouldn't even collapse on a phone).
 installBreakpointAttribute();
 const { install: installInputModality } = useInputModality();
+useReducedMotionRootClass();
 onMounted(installInputModality);
 </script>
 
 <template>
   <div class="r-v2-auth">
-    <div class="r-v2-auth__bg" />
+    <div class="r-v2-auth__bg r-v2-za-glass-background" />
     <main class="r-v2-auth__stage">
       <router-view />
     </main>
@@ -70,15 +72,6 @@ onMounted(installInputModality);
 .r-v2-auth__bg {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--r-color-canvas-bg-deep) 46%, transparent),
-      color-mix(in srgb, var(--r-color-canvas-bg-deep) 74%, transparent)
-    ),
-    url("/assets/zockarchive/overlay.png");
-  background-size: cover;
-  background-position: center;
   z-index: 0;
 }
 

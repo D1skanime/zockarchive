@@ -302,23 +302,19 @@ declares only the approved `android-chrome-192x192.png` and
 `android-chrome-512x512.png` assets with the token-derived `#123c78` theme and
 `#f3f7fd` background colors. VitePWA generates the service worker but has its
 manifest generation disabled, so it cannot inject a competing manifest link.
-`AppShell/BackgroundArt.vue` remains the runtime owner of the inherited RomM
-backdrop. Its two `.r-v2-bg__layer` elements cross-fade selected cover art,
-while `global.css` supplies `assets/auth_background.svg` as the animated RomM
-fallback and its static Gecko alternative. `BrandBackgroundVariant.vue` is a
-Storybook-only ZA review surface, not a runtime replacement. It offers three
-CSS-only ZA proposals in `Marke/ZA-Hintergrundvorschläge`: Azurdrift,
-ZA-Gamepad-Strömung and Glasreflexion. The gamepad proposal reuses the
-unchanged transparent `mark-header.webp` identity asset as a decorative moving
-pattern; it does not alter the artwork. The comparison also renders the
-current inherited RomM backdrop as a fourth, explicitly non-ZA candidate. ZA
-layers use compositor opacity and transform motion over seven to twelve
-seconds; all have a static reduced-motion fallback. Storybook alone exposes
-`Animation erzwingen` to override an OS reduced-motion preference for review,
-and an `Animationsgeschwindigkeit` control from 0,5× through 2×. Neither
-control is consumed by the application. The runtime login continues to use the
-static approved ZA overlay until a human selects a proposal. Retained image
-binaries are not represented as ZockArchive artwork.
+`AppShell/BackgroundArt.vue` owns selected-cover cross-fades and applies the
+shared `r-v2-za-glass-background` fallback when no cover is selected. The
+same token-driven CSS background is used by login and device-pair shells.
+It replaces the inherited RomM SVG backgrounds with Glasreflexion B: cyan and
+sparingly light-cyan bands from the approved ZA logo palette move with
+composited opacity and transforms over nine and eleven seconds. The
+`r-v2-reduced-motion` setting and `prefers-reduced-motion` freeze those bands
+without removing the static background. `BrandBackgroundVariant.vue` provides
+the one matching Storybook review story, `Marke/ZA-Hintergrund/Glasreflexion B`,
+with German preview-only controls for `Animation erzwingen` and
+`Animationsgeschwindigkeit` from 0,5× through 2×. Those controls do not alter
+runtime settings. The retired `auth_background.svg` and Gecko static SVG have
+no remaining runtime owner and are removed.
 Provider artwork and license attribution retain their upstream identity.
 
 Important v2 composables include useCan, useLibraryOperation, useProviderResolution, useManualDescription, useGameDetailsMedia, useBackgroundArt, useBackgroundAudio, useCoverArt, useWebpSupport, useBreakpoint, useResponsiveColumns, useInputModality, useGamepad, useGridNav, useRightStickScroll, useGallerySelectionInput, useGlobalHotkeys, useThemeMode, useReducedMotion, useCrtMode, useFullscreenPref, useGalleryFilterUrl, useGalleryViewModeUrl, useTileSearchUrl, useGalleryProvenance, usePageTitle, useServerConnection, useSnackbar, useConfirm, useSocketEvent, useScanLifecycle, useBrowserDownloadQueue, and usePlaySession. v2/utils covers route-query validation, artwork, collection covers, player helpers, ROM verification/status, download manifest paths, provider labels, CSS checks, and input helpers. frontend/src/utils contains form-data, task, cover, and IndexedDB helpers.

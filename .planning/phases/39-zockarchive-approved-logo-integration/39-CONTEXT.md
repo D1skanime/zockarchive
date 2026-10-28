@@ -24,37 +24,28 @@ read-only archive boundaries unchanged.
   direction. No component-level color literals or parallel theme pipeline may
   be added. Dark and light values must preserve legibility and status/focus
   semantics.
-- Animation is intentionally not selected as a product default. The build
-  must expose reviewable, optional proposals with a recommendation. Decorative
-  media is muted, inaccessible to assistive technology, performance-bounded,
-  and has reduced-motion/static fallbacks.
+- Glasreflexion B is the selected product background. Its decorative CSS layers
+  are inaccessible to assistive technology, performance-bounded and have
+  reduced-motion/static fallbacks.
 
 ## Builder assumptions
 
 - Use the supplied SVGs as externally loaded image assets after validating
   they contain no executable or remote content. Do not inline or recolor them.
-- Use `za-overlay.png` as the static fallback for the recommended login
-  proposal. Keep `za-animated.webm` available as an opt-in preview only,
-  rather than making it a permanent animated page backdrop.
+- Do not use the supplied WebM or overlay image as a runtime background. The
+  final background is a token-driven CSS treatment with no media decode cost.
 - Adopt the Team4s reference as token semantics: translucent glass surfaces,
   blue primary tint, subtle borders and blur. Translate values for the
   established ZA dark/light palettes instead of copying feature CSS.
 
-## Deferred product decision
+## 2026-10-28 final background decision
 
-Human UAT chooses whether either animation proposal graduates from preview to
-default product behavior. This phase recommends static, subtle blue archive
-backdrop as the safe default and does not claim animation approval.
-
-## 2026-10-28 UAT replacement proposals
-
-- The active inherited owner is `AppShell/BackgroundArt.vue`, with global
-  `.r-v2-bg__layer` fallback art from `assets/auth_background.svg`. It remains
-  unchanged until a product decision.
-- The review surface has three ZA-specific CSS-only variants: Azurdrift,
-  ZA-Gamepad-Strömung and Glasreflexion. The unchanged current RomM background
-  is a fourth comparison tile, not a ZA proposal.
-- Each proposal renders both themes beside a static reduced-motion fallback.
-  Storybook supplies review-only German controls to force motion and select
-  0,5×–2× speed. Azurdrift is the builder recommendation only, not a selected
-  default.
+- The human selected Glasreflexion B as the product background. All alternative
+  proposal code, stories, tests and documentation are removed.
+- `AppShell/BackgroundArt.vue` remains the owner for selected-cover cross-fades
+  and uses the shared token-driven ZA glass fallback when no cover is selected.
+  Login and device-pair shells use the same background utility.
+- The cyan and light-cyan bands animate only with compositor opacity and
+  transforms. Both `prefers-reduced-motion` and the ZA reduced-motion setting
+  freeze them in place. Storybook retains one German final-background story
+  with review-only force-motion and speed controls.

@@ -18,9 +18,9 @@ verified: 2026-10-28
   routes, which prevents returning to the large source SVG exports.
 - The emitted-manifest contract checks one `site.webmanifest` link, no VitePWA
   manifest file, the approved Android icon list and the blue token colors.
-- Focused Storybook motion tests cover all three ZA proposals, the retained
-  RomM comparison, explicit static fallback, preview-only forced motion and
-  the speed value passed to the decorative component.
+- Focused final-background tests cover the sole Storybook story, explicit
+  static fallback, preview-only forced motion, its speed value and the
+  `BackgroundArt` fallback-versus-selected-cover boundary.
 - Storybook builds successfully when its cache and output are placed in a
   temporary writable directory. The checkout's pre-existing
   `node_modules/.cache/storybook` is not writable, so its default cache path
@@ -30,18 +30,18 @@ verified: 2026-10-28
 
 ## Human verification required
 
-1. At `/login`, verify the approved wordmark, static blue archive backdrop,
-   readable form controls and both light/dark theme behavior.
+1. At `/login`, verify the approved wordmark, animated Glasreflexion B
+   backdrop, readable form controls and both light/dark theme behavior.
 2. At a wide authenticated route, verify header wordmark plus gamepad mark;
    at 320px verify mark-only navigation and its accessible Home control.
 3. Confirm tab favicon and installed PWA icon use the supplied gamepad mark.
 4. In Storybook, open
-   `http://localhost:6006/?path=/story/marke-za-hintergrundvorschl%C3%A4ge--compare-variants`
-   and compare Azurdrift, ZA-Gamepad-Strömung and Glasreflexion with the fourth
-   current-RomM tile in both themes. Toggle `Animation erzwingen` while an OS
-   reduced-motion preference is active and move `Animationsgeschwindigkeit`
-   between 0,5× and 2×. Confirm every static fallback remains still. The
-   controls are review-only and do not activate a product background.
+   `http://localhost:6006/?path=/story/marke-za-hintergrund--glasreflexion-blue&args=forceMotion:true`.
+   Inspect animated and static dark/light frames. Toggle `Animation erzwingen`
+   while an OS reduced-motion preference is active and move
+   `Animationsgeschwindigkeit` between 0,5× and 2×. Confirm the static
+   fallback remains still. The controls are review-only and do not alter app
+   settings.
 5. Exercise keyboard and touch navigation. Do not claim physical gamepad
    validation unless a real controller is used.
 

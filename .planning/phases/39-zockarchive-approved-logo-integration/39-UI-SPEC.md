@@ -16,22 +16,15 @@ canvas, white translucent surfaces and dark blue readable brand text. Warning,
 danger and focus values retain their semantic owners. Background blur is
 static and transitions opacity only.
 
-## Animation proposals for UAT
+## Final background
 
-1. **Recommended, Azurdrift:** visible blue gradient orbs cross a quiet glass
-   wash over nine and twelve seconds. It is the builder recommendation only,
-   not a product selection.
-2. **ZA-Gamepad-Strömung:** the unchanged transparent gamepad monogram drifts
-   diagonally under a light-blue glass haze over seven and ten seconds.
-3. **Glasreflexion:** higher-contrast diagonal glass-light bands cross the
-   blue field over eight and eleven seconds.
-4. **Current RomM background:** the inherited runtime animation appears only
-   as a fourth comparison tile, never as a ZA selection proposal.
-
-The delivered Storybook preview labels these as proposals and makes each
-variant inspectable without persisting a user preference. Its German
-`Animation erzwingen` control overrides OS reduced motion only for animated
-preview frames, and `Animationsgeschwindigkeit` ranges from 0,5× to 2×.
+Glasreflexion B is the selected product background. Token-driven cyan bands
+with a sparing light-cyan glow cross the blue glass field over nine and eleven
+seconds. The existing `BackgroundArt` owner applies it only when no game cover
+is selected, preserving cover-art cross-fades. Login and pair shells consume
+the same shared CSS utility. Storybook retains one final-background story with
+German `Animation erzwingen` and `Animationsgeschwindigkeit` controls from
+0,5× to 2×; neither persists a preference.
 
 ## Responsive and accessibility contract
 
@@ -41,6 +34,6 @@ preview frames, and `Animationsgeschwindigkeit` ranges from 0,5× to 2×.
   audio.
 - Focus rings follow the current modality system. Existing product controls
   retain keyboard, touch and gamepad behavior without a new interaction owner.
-- Reduced motion always stops the CSS animation and leaves each proposal as a
-  static token-driven backdrop. An explicitly static preview stays static even
+- Reduced motion always stops the CSS animation and leaves the final
+  token-driven backdrop static. An explicitly static preview stays static even
   when Storybook forces motion for the adjacent animated preview.

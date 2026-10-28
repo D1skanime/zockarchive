@@ -4,12 +4,15 @@
 // nested <router-view>; the shell inlines Pair.vue instead.
 import LanguageSelector from "@/v2/components/shared/LanguageSelector.vue";
 import VersionTag from "@/v2/components/shared/VersionTag.vue";
+import { useReducedMotionRootClass } from "@/v2/composables/useReducedMotionRootClass";
 import Pair from "@/v2/views/Pair.vue";
+
+useReducedMotionRootClass();
 </script>
 
 <template>
   <div class="r-v2-pair-shell">
-    <div class="r-v2-pair-shell__bg" />
+    <div class="r-v2-pair-shell__bg r-v2-za-glass-background" />
     <main class="r-v2-pair-shell__stage">
       <Pair />
     </main>
@@ -33,19 +36,7 @@ import Pair from "@/v2/views/Pair.vue";
 .r-v2-pair-shell__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/auth_background.svg");
-  background-size: cover;
-  background-position: center;
   z-index: 0;
-}
-
-/* Firefox: WebRender re-rasterizes the animated SVG every frame, pegging the
-   GPU. Swap to the static variant in Gecko only (the empty `url-prefix()`
-   hack matches all Firefox pages and stays enabled by default). */
-@-moz-document url-prefix() {
-  .r-v2-pair-shell__bg {
-    background-image: url("/assets/auth_background_static.svg");
-  }
 }
 
 .r-v2-pair-shell__stage {

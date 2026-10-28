@@ -12,6 +12,11 @@ export const colorBrand = {
   secondaryPressed: "#4B8DDF",
   accent: "#7CC4FF",
   accentHover: "#B7DDFF",
+  // Approved ZA logo palette used by the shared glass-refraction background.
+  glassDark: "#0127C8",
+  glassMedium: "#006AFA",
+  glassCyan: "#05CCFC",
+  glassLight: "#CCFAFC",
   fav: "#FF4F6B",
   avatarGradient: "linear-gradient(135deg, #93C5FD, #3578D4)",
   rommRed: "#DA3633",

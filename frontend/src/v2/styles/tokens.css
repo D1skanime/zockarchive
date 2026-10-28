@@ -19,6 +19,10 @@
   --r-color-brand-secondary-pressed: #4b8ddf;
   --r-color-brand-accent: #7cc4ff;
   --r-color-brand-accent-hover: #b7ddff;
+  --r-color-brand-glass-dark: #0127c8;
+  --r-color-brand-glass-medium: #006afa;
+  --r-color-brand-glass-cyan: #05ccfc;
+  --r-color-brand-glass-light: #ccfafc;
   --r-color-fav: #ff4f6b;
   --r-color-avatar-gradient: linear-gradient(135deg, #93c5fd, #3578d4);
   --r-color-romm-red: #da3633;

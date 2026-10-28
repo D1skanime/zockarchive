@@ -1,5 +1,6 @@
 <script setup lang="ts">
-// BackgroundArt — the two-layer cross-fading backdrop. Views paint a cover
+// BackgroundArt owns the selected-cover cross-fade and the ZA glass fallback.
+// Views paint a cover
 // URL via the injected `r-v2-set-background-art` provider; we swap between
 // layer A and layer B so there's always a smooth transition, never a flash.
 
@@ -14,18 +15,20 @@ defineProps<{
 
 <template>
   <div class="r-v2-bg">
-    <!-- Fallback art (no cover) comes from the CSS `background-image` on
-         `.r-v2-bg__layer` so Firefox can swap it for the static variant via
-         `@-moz-document`; an inline style here would win over that override.
-         A real cover URL still sets the inline background-image. -->
     <div
       class="r-v2-bg__layer r-v2-bg__layer--a"
-      :class="{ 'r-v2-bg__layer--active': activeLayer === 'a' }"
+      :class="{
+        'r-v2-bg__layer--active': activeLayer === 'a',
+        'r-v2-za-glass-background': !layerA,
+      }"
       :style="layerA ? { backgroundImage: `url('${layerA}')` } : {}"
     />
     <div
       class="r-v2-bg__layer r-v2-bg__layer--b"
-      :class="{ 'r-v2-bg__layer--active': activeLayer === 'b' }"
+      :class="{
+        'r-v2-bg__layer--active': activeLayer === 'b',
+        'r-v2-za-glass-background': !layerB,
+      }"
       :style="layerB ? { backgroundImage: `url('${layerB}')` } : {}"
     />
   </div>

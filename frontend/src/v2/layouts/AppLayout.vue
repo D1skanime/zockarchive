@@ -33,7 +33,7 @@ import { useGamepad } from "@/v2/composables/useGamepad";
 import { useGlobalHotkeys } from "@/v2/composables/useGlobalHotkeys";
 import { useInputModality } from "@/v2/composables/useInputModality";
 import { prefetchPlatformIcons } from "@/v2/composables/usePlatformIconCache";
-import { useReducedMotion } from "@/v2/composables/useReducedMotion";
+import { useReducedMotionRootClass } from "@/v2/composables/useReducedMotionRootClass";
 import { installScanLifecycle } from "@/v2/composables/useScanLifecycle";
 import { installBackMorph } from "@/v2/composables/useViewTransition";
 import storeCollections from "@/v2/data/adapters/legacy/stores/collections";
@@ -57,14 +57,7 @@ installBreakpointAttribute();
 // (not the shell root) for the same reason as the theme classes: Vuetify
 // teleports overlays outside the app tree, and this keeps the flag reachable
 // there too.
-const { enabled: reducedMotion } = useReducedMotion();
-watch(
-  reducedMotion,
-  (on) => {
-    document.documentElement.classList.toggle("r-v2-reduced-motion", on);
-  },
-  { immediate: true },
-);
+useReducedMotionRootClass();
 
 const collectionsStore = storeCollections();
 const platformsStore = storePlatforms();

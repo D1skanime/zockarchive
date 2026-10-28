@@ -8,13 +8,12 @@
   supplied archive and provenance in the phase assets directory.
 - Migrated v2 brand and shared glass semantic tokens from purple to blue,
   retaining independent warning, error and focus semantic tokens.
-- Made the static blue archive overlay the production login backdrop.
-- Added Storybook-only ZA background proposals. Azurdrift,
-  ZA-Gamepad-Strömung and Glasreflexion are CSS-only, decorative and static
-  under reduced motion; the unchanged current RomM background is a fourth
-  comparison tile. Storybook provides German review controls for forced motion
-  and 0,5×–2× speed, while Azurdrift remains only a recommendation, not an
-  approved default.
+- Selected Glasreflexion B after UAT and made it the shared CSS-only production
+  backdrop for the application fallback, login and device-pair shells. The
+  retired RomM SVG/PNG backgrounds and all unselected variants are removed.
+- Retained one Storybook final-background story with dark/light animated and
+  static fallback frames plus German review controls for forced motion and
+  0,5×–2× speed.
 - Updated frontend architecture documentation and focused identity tests.
 - Split palette ownership into `tokens/colors.ts` after the deterministic
   size gate identified the public token entry point as oversized; its existing
@@ -40,6 +39,8 @@
   successfully in both themes after the image assertions were added.
 - The full Vitest run aborts before suite reporting with `ECONNRESET`; this
   was reproduced with one worker and no tests were changed or disabled.
+- Final-background focused tests cover the single Storybook export, preview
+  controls, static fallback and the `BackgroundArt` fallback/cover boundary.
 
 ## Human follow-up
 
