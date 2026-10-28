@@ -4,7 +4,7 @@
 
 - `http://<ZA-host>/login`
 - `http://<ZA-host>/` after login
-- `http://<storybook-host>/?path=/story/marke-za-hintergrund--glasreflexion-blue&args=forceMotion:true`
+- `http://<storybook-host>/?path=/story/marke-za-hintergrund--glasreflexion-blue&args=reducedMotion:false`
 
 ## Checklist
 
@@ -17,7 +17,9 @@
    and inspect the device/app icon.
 4. In Storybook, evaluate the final Glasreflexion B background in both themes,
    including the adjacent static reduced-motion fallback.
-5. Set `Animation erzwingen` while OS reduced motion is active, then try
-   `Animationsgeschwindigkeit` from 0,5× through 2×. Confirm the static
-   fallback remains still. These preview controls do not change application
-   settings. A real controller test is optional and must be recorded separately.
+5. Toggle `ZA-Reduzierte Bewegung`, then try `Animationsgeschwindigkeit` from
+   0,5× through 2×. Confirm the animated frame moves even when the operating
+   system requests reduced motion, while the static fallback remains still.
+   The preview control does not change application settings. The matching app
+   setting is under Einstellungen → Benutzeroberfläche → Reduzierte Bewegung.
+   A real controller test is optional and must be recorded separately.

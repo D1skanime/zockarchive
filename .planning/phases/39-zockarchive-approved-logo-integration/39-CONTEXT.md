@@ -46,6 +46,7 @@ read-only archive boundaries unchanged.
   and uses the shared token-driven ZA glass fallback when no cover is selected.
   Login and device-pair shells use the same background utility.
 - The cyan and light-cyan bands animate only with compositor opacity and
-  transforms. Both `prefers-reduced-motion` and the ZA reduced-motion setting
-  freeze them in place. Storybook retains one German final-background story
-  with review-only force-motion and speed controls.
+  transforms. Only the ZA reduced-motion setting freezes them in place;
+  `prefers-reduced-motion` remains available to all unrelated components.
+  Storybook retains one German final-background story with ZA reduced-motion
+  and speed controls.

@@ -36,12 +36,12 @@ verified: 2026-10-28
    at 320px verify mark-only navigation and its accessible Home control.
 3. Confirm tab favicon and installed PWA icon use the supplied gamepad mark.
 4. In Storybook, open
-   `http://localhost:6006/?path=/story/marke-za-hintergrund--glasreflexion-blue&args=forceMotion:true`.
-   Inspect animated and static dark/light frames. Toggle `Animation erzwingen`
-   while an OS reduced-motion preference is active and move
-   `Animationsgeschwindigkeit` between 0,5× and 2×. Confirm the static
-   fallback remains still. The controls are review-only and do not alter app
-   settings.
+   `http://localhost:6006/?path=/story/marke-za-hintergrund--glasreflexion-blue&args=reducedMotion:false`.
+   Inspect animated and static dark/light frames. The animated frame must keep
+   moving while an OS reduced-motion preference is active. Toggle
+   `ZA-Reduzierte Bewegung` and move `Animationsgeschwindigkeit` between 0,5×
+   and 2×. Confirm the static fallback remains still. The control is review-only
+   and does not alter app settings.
 5. Exercise keyboard and touch navigation. Do not claim physical gamepad
    validation unless a real controller is used.
 

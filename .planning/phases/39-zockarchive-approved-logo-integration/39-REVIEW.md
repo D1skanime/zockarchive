@@ -27,7 +27,8 @@ No correctness, security or architecture finding blocks the implementation.
 - Glasreflexion B is the sole runtime ZA backdrop. The shared CSS owner uses
   token-driven cyan bands with transform/opacity animation, while the existing
   `BackgroundArt` owner still cross-fades an explicitly selected cover.
-  `prefers-reduced-motion` and the persisted ZA setting both freeze the bands.
+  Only the persisted ZA setting freezes the bands; unrelated components retain
+  their existing `prefers-reduced-motion` behavior.
 - No backend, storage, authentication, API, Docker or external-media path was
   changed.
 

@@ -296,17 +296,6 @@ html.r-v2-reduced-motion .r-v2-za-glass-background::after {
   animation: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .r-v2-za-glass-background:not(
-      .r-v2-za-glass-background--force-motion
-    )::before,
-  .r-v2-za-glass-background:not(
-      .r-v2-za-glass-background--force-motion
-    )::after {
-    animation: none;
-  }
-}
-
 /* Light backdrops have no blur, so reduced-motion can keep the selected
    artwork as a static, low-cost image instead of replacing it with grey. */
 html.r-v2-reduced-motion.r-v2-light .r-v2-bg,

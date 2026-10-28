@@ -308,10 +308,11 @@ same token-driven CSS background is used by login and device-pair shells.
 It replaces the inherited RomM SVG backgrounds with Glasreflexion B: cyan and
 sparingly light-cyan bands from the approved ZA logo palette move with
 composited opacity and transforms over nine and eleven seconds. The
-`r-v2-reduced-motion` setting and `prefers-reduced-motion` freeze those bands
-without removing the static background. `BrandBackgroundVariant.vue` provides
+`r-v2-reduced-motion` setting freezes those bands without removing the static
+background. The background intentionally ignores `prefers-reduced-motion` to
+retain the historic ZA animation behavior. `BrandBackgroundVariant.vue` provides
 the one matching Storybook review story, `Marke/ZA-Hintergrund/Glasreflexion B`,
-with German preview-only controls for `Animation erzwingen` and
+with German preview-only controls for `ZA-Reduzierte Bewegung` and
 `Animationsgeschwindigkeit` from 0,5× through 2×. Those controls do not alter
 runtime settings. The retired `auth_background.svg` and Gecko static SVG have
 no remaining runtime owner and are removed.

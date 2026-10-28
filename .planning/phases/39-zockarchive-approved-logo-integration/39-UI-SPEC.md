@@ -23,7 +23,7 @@ with a sparing light-cyan glow cross the blue glass field over nine and eleven
 seconds. The existing `BackgroundArt` owner applies it only when no game cover
 is selected, preserving cover-art cross-fades. Login and pair shells consume
 the same shared CSS utility. Storybook retains one final-background story with
-German `Animation erzwingen` and `Animationsgeschwindigkeit` controls from
+German `ZA-Reduzierte Bewegung` and `Animationsgeschwindigkeit` controls from
 0,5× to 2×; neither persists a preference.
 
 ## Responsive and accessibility contract
@@ -34,6 +34,6 @@ German `Animation erzwingen` and `Animationsgeschwindigkeit` controls from
   audio.
 - Focus rings follow the current modality system. Existing product controls
   retain keyboard, touch and gamepad behavior without a new interaction owner.
-- Reduced motion always stops the CSS animation and leaves the final
-  token-driven backdrop static. An explicitly static preview stays static even
-  when Storybook forces motion for the adjacent animated preview.
+- The ZA reduced-motion setting stops the CSS animation and leaves the final
+  token-driven backdrop static. The background intentionally ignores the
+  operating system's `prefers-reduced-motion` preference.

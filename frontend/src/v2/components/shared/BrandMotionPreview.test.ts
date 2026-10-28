@@ -1,4 +1,5 @@
 import { mount } from "@vue/test-utils";
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import BrandBackgroundVariant from "./BrandBackgroundVariant.vue";
 import * as stories from "./BrandMotionPreview.stories";
@@ -11,11 +12,12 @@ describe("Brand motion review story", () => {
     expect(stories.GlassRefractionBlue.name).toBe("Glasreflexion B");
   });
 
-  it("labels the preview controls in German", () => {
+  it("uses a German ZA reduced-motion control", () => {
     expect(stories.default.title).toBe("Marke/ZA-Hintergrund");
-    expect(stories.default.argTypes?.forceMotion).toMatchObject({
-      name: "Animation erzwingen",
+    expect(stories.default.argTypes?.reducedMotion).toMatchObject({
+      name: "ZA-Reduzierte Bewegung",
     });
+    expect(stories.default.argTypes).not.toHaveProperty("forceMotion");
     expect(stories.default.argTypes?.animationSpeed).toMatchObject({
       name: "Animationsgeschwindigkeit",
       control: { type: "range", min: 0.5, max: 2, step: 0.1 },
@@ -37,16 +39,10 @@ describe("BrandBackgroundVariant", () => {
     expect(wrapper.classes()).toContain("brand-background-variant--static");
   });
 
-  it("can force preview motion and apply a review-only speed", () => {
+  it("applies a review-only speed", () => {
     const wrapper = mount(BrandBackgroundVariant, {
-      props: { forceMotion: true, motionSpeed: 1.8 },
+      props: { motionSpeed: 1.8 },
     });
-    expect(wrapper.classes()).toContain(
-      "brand-background-variant--force-motion",
-    );
-    expect(wrapper.classes()).toContain(
-      "r-v2-za-glass-background--force-motion",
-    );
     expect(wrapper.attributes("style")).toContain(
       "--za-glass-motion-rate: 0.5555555555555556",
     );
@@ -59,6 +55,19 @@ describe("BrandBackgroundVariant", () => {
 
     expect(wrapper.attributes("style")).toContain(
       "--za-glass-motion-rate: 0.5",
+    );
+  });
+});
+
+describe("ZA glass background motion policy", () => {
+  const globalCss = readFileSync("src/v2/styles/global.css", "utf8");
+
+  it("freezes the background only through the ZA root class", () => {
+    expect(globalCss).toContain(
+      "html.r-v2-reduced-motion .r-v2-za-glass-background::before",
+    );
+    expect(globalCss).not.toContain(
+      ".r-v2-za-glass-background:not(\n      .r-v2-za-glass-background--force-motion",
     );
   });
 });

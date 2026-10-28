@@ -6,7 +6,7 @@ import "./BrandMotionPreview.stories.css";
 const BrandMotionPreview = defineComponent({
   components: { BrandBackgroundVariant },
   props: {
-    forceMotion: { type: Boolean, default: false },
+    reducedMotion: { type: Boolean, default: false },
     animationSpeed: { type: Number, default: 1 },
   },
   template: `
@@ -19,7 +19,7 @@ const BrandMotionPreview = defineComponent({
       <div class="brand-motion-preview__themes">
         <section v-for="theme in ['dark', 'light']" :key="theme" :class="['r-v2', 'r-v2-' + theme]" class="brand-motion-preview__theme">
           <div class="brand-motion-preview__frame">
-            <BrandBackgroundVariant :force-motion="forceMotion" :motion-speed="animationSpeed" />
+            <BrandBackgroundVariant :reduced-motion="reducedMotion" :motion-speed="animationSpeed" />
             <span class="brand-motion-preview__label">{{ theme === 'dark' ? 'Dunkel' : 'Hell' }} animiert</span>
           </div>
           <div class="brand-motion-preview__frame brand-motion-preview__frame--static">
@@ -37,13 +37,13 @@ const meta: Meta<typeof BrandMotionPreview> = {
   title: "Marke/ZA-Hintergrund",
   component: BrandMotionPreview,
   parameters: { layout: "fullscreen" },
-  args: { forceMotion: false, animationSpeed: 1 },
+  args: { reducedMotion: false, animationSpeed: 1 },
   argTypes: {
-    forceMotion: {
+    reducedMotion: {
       control: "boolean",
-      name: "Animation erzwingen",
+      name: "ZA-Reduzierte Bewegung",
       description:
-        "Ignoriert nur in dieser Vorschau die Betriebssystemeinstellung für reduzierte Bewegung.",
+        "Zeigt den statischen Fallback der ZA-Einstellung für reduzierte Bewegung.",
     },
     animationSpeed: {
       control: { type: "range", min: 0.5, max: 2, step: 0.1 },
