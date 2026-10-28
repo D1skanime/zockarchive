@@ -269,6 +269,8 @@ The domain shared composite `components/shared/ProjectBrand.vue` presents the
 transparent artwork through auth and about variants. Small WebP derivatives
 retain actual alpha in the exterior and internal dark negative spaces. The
 transparent masters are overlay-transparent.png and mark-transparent.png.
+The emblem is the single ZA monogram shaped as a gamepad, with its D-pad
+and face buttons; it has no rear server or stacked-frame motif.
 Navigation pairs a 128 by 88 px emblem with native 22 px theme-colored
 ZockArchive text in a 104 px navigation bar. Extra-small screens and medium
 desktops keep only the emblem. It never places a complete logo beside another copy of its

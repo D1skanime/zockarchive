@@ -47,3 +47,7 @@ background without floor/reflection; preserve geometry and metallic blue finish.
 The navigation emblem is 128 by 88 px, twice the previous 64 by 44 px. The shared navigation-height token is 104 px so fixed-header offsets and content remain aligned. Medium desktops show the emblem without the native name to preserve the centered navigation pill. Updated transparent masters remove the dark internal backing as well as the exterior background; the navigation derivative is 256 px wide for high-density displays. Browser checks enforce the doubled dimensions, header containment, responsive navigation separation and a negligible opaque-dark pixel fraction.
 
 Validation: typecheck passed; 152 test files and 1,707 tests passed; production build passed; all six Chromium brand checks passed in light/dark themes, 320 px through 4K, including synthetic controller input and internal transparency. Browser screenshots were inspected in both themes. Physical-controller UAT remains manual.
+
+## Gamepad-only identity
+
+Removed the rear server/stacked-frame motif from both transparent masters. The foreground ZA gamepad, controls and existing wordmark remain. Refreshed all three runtime WebP derivatives without changing the approved header dimensions. Production build and all six Chromium brand checks passed. Light/dark browser screenshots were inspected; exterior and internal alpha checks passed.
