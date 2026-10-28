@@ -127,7 +127,7 @@ export const zIndex = {
 } as const;
 
 export const layout = {
-  navHeight: "58px",
+  navHeight: "104px",
   bottomNavHeight: "58px",
   bottomNavMaxWidth: "480px",
   touchTarget: "44px",

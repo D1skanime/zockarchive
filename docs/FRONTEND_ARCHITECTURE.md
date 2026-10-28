@@ -267,10 +267,11 @@ tooling and browser startup can safely share it.
 
 The domain shared composite `components/shared/ProjectBrand.vue` presents the
 transparent artwork through auth and about variants. Small WebP derivatives
-retain actual alpha, with transparent masters preserved as
-overlay-transparent.png and mark-transparent.png. Navigation pairs one emblem
-with a 64 by 44 px emblem and native theme-colored ZockArchive text (22 px, compact 18 px on medium desktops) for header legibility; xs keeps
-only the emblem. It never places a complete logo beside another copy of its
+retain actual alpha in the exterior and internal dark negative spaces. The
+transparent masters are overlay-transparent.png and mark-transparent.png.
+Navigation pairs a 128 by 88 px emblem with native 22 px theme-colored
+ZockArchive text in a 104 px navigation bar. Extra-small screens and medium
+desktops keep only the emblem. It never places a complete logo beside another copy of its
 emblem. AuthCard owns the shared login/register/reset/setup
 frame; the labelled Home link hides redundant brand artwork from assistive
 technology. The pairing QR remains unmodified, with

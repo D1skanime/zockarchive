@@ -41,3 +41,9 @@ ZockArchive wording and arrangement; remove black/navy rectangle, floor/reflecti
 and tiny tagline; true transparent negative space; crisp edges and subtle glow.
 Icon prompt: keep only the same ZA gamepad emblem, remove all text; transparent
 background without floor/reflection; preserve geometry and metallic blue finish.
+
+## Approved size and internal transparency refinement
+
+The navigation emblem is 128 by 88 px, twice the previous 64 by 44 px. The shared navigation-height token is 104 px so fixed-header offsets and content remain aligned. Medium desktops show the emblem without the native name to preserve the centered navigation pill. Updated transparent masters remove the dark internal backing as well as the exterior background; the navigation derivative is 256 px wide for high-density displays. Browser checks enforce the doubled dimensions, header containment, responsive navigation separation and a negligible opaque-dark pixel fraction.
+
+Validation: typecheck passed; 152 test files and 1,707 tests passed; production build passed; all six Chromium brand checks passed in light/dark themes, 320 px through 4K, including synthetic controller input and internal transparency. Browser screenshots were inspected in both themes. Physical-controller UAT remains manual.

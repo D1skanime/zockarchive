@@ -18,8 +18,8 @@ defineProps<Props>();
         class="project-brand__mark"
         src="/assets/zockarchive/mark-header.webp"
         alt=""
-        width="64"
-        height="44"
+        width="128"
+        height="88"
       />
       <span class="project-brand__name">ZockArchive</span>
     </template>
@@ -54,11 +54,11 @@ defineProps<Props>();
 }
 .project-brand--navigation {
   gap: var(--r-space-2);
-  height: var(--r-touch-target);
+  height: 88px;
 }
 .project-brand--navigation .project-brand__mark {
-  width: 64px;
-  height: 44px;
+  width: 128px;
+  height: 88px;
 }
 .project-brand__name {
   color: var(--r-color-fg);
@@ -71,10 +71,8 @@ defineProps<Props>();
   width: 148px;
   height: auto;
 }
-@media (min-width: 960px) and (max-width: 1279px) {
-  .project-brand__name {
-    font-size: 18px;
-  }
+html[data-bp~="md-and-up"][data-bp~="md-and-down"] .project-brand__name {
+  display: none;
 }
 html[data-bp~="xs"] .project-brand__name {
   display: none;
