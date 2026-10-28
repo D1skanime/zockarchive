@@ -1,7 +1,7 @@
 ---
 status: human_needed
 phase: 39
-verified: 2026-10-27
+verified: 2026-10-28
 ---
 
 # Phase 39 Verification
@@ -18,6 +18,13 @@ verified: 2026-10-27
   routes, which prevents returning to the large source SVG exports.
 - The emitted-manifest contract checks one `site.webmanifest` link, no VitePWA
   manifest file, the approved Android icon list and the blue token colors.
+- Focused Storybook motion tests cover all three ZA proposals, the retained
+  RomM comparison, explicit static fallback, preview-only forced motion and
+  the speed value passed to the decorative component.
+- Storybook builds successfully when its cache and output are placed in a
+  temporary writable directory. The checkout's pre-existing
+  `node_modules/.cache/storybook` is not writable, so its default cache path
+  cannot be used in this environment.
 - Full Vitest is inconclusive: it aborts with `ECONNRESET` before reporting
   test results, including at one worker.
 
@@ -28,9 +35,13 @@ verified: 2026-10-27
 2. At a wide authenticated route, verify header wordmark plus gamepad mark;
    at 320px verify mark-only navigation and its accessible Home control.
 3. Confirm tab favicon and installed PWA icon use the supplied gamepad mark.
-4. In Storybook, open `Brand/ZA background proposals/CompareVariants`, compare
-   Azure drift, Archive current and Glass refraction in both themes. Confirm
-   every static fallback disables its decorative motion.
+4. In Storybook, open
+   `http://localhost:6006/?path=/story/marke-za-hintergrundvorschl%C3%A4ge--compare-variants`
+   and compare Azurdrift, ZA-Gamepad-Strömung and Glasreflexion with the fourth
+   current-RomM tile in both themes. Toggle `Animation erzwingen` while an OS
+   reduced-motion preference is active and move `Animationsgeschwindigkeit`
+   between 0,5× and 2×. Confirm every static fallback remains still. The
+   controls are review-only and do not activate a product background.
 5. Exercise keyboard and touch navigation. Do not claim physical gamepad
    validation unless a real controller is used.
 

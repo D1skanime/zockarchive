@@ -4,7 +4,7 @@
 
 **Goal:** Add review-only, token-driven ZA background motion variants to Storybook without changing the active background.
 
-**Architecture:** A shared Vue component exposes a closed variant union and a reduced-motion prop. Its scoped CSS draws only decorative layers from existing v2 tokens. A Storybook module provides three individual proposals and one comparison view.
+**Architecture:** A shared Vue component exposes a closed variant union, a reduced-motion fallback and Storybook-only motion controls. Its scoped CSS draws decorative layers from existing v2 tokens and reuses the unchanged transparent gamepad asset only as a pattern. A Storybook module provides three individual ZA proposals, the inherited RomM comparison and a four-tile comparison view.
 
 **Tech Stack:** Vue 3, TypeScript, scoped CSS, Storybook, Vitest.
 
@@ -37,7 +37,7 @@
 
 **Interfaces:**
 
-- Produces `BrandBackgroundVariant` with `variant: "azure-drift" | "archive-current" | "glass-refraction"` and optional `reducedMotion?: boolean`.
+- Produces `BrandBackgroundVariant` with `variant: "azure-drift" | "archive-current" | "glass-refraction" | "romm-current"`, a static `reducedMotion?: boolean` fallback, plus review-only `forceMotion?: boolean` and `motionSpeed?: number` props.
 
 - [ ] **Step 1: Write failing component tests**
 
@@ -67,7 +67,7 @@ Run: `npm run test -- --run src/v2/components/shared/BrandBackgroundVariant.test
 **Interfaces:**
 
 - Consumes `BrandBackgroundVariant` from Task 1.
-- Produces individual dark/light review stories and a comparison story.
+- Produces individual dark/light review stories, a current-RomM comparison and a comparison story with German `Animation erzwingen` and `Animationsgeschwindigkeit` controls.
 
 - [ ] **Step 1: Write a failing story export test**
 

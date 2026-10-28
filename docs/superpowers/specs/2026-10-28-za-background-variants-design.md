@@ -37,15 +37,22 @@ motion directions without changing the current application backdrop.
 
 ## Variant contract
 
-- **Azure drift:** large, low-contrast blue gradient orbs move slowly.
-- **Archive current:** a restrained archive-card grid pans horizontally behind
-  glass haze.
-- **Glass refraction:** wide glass-light bands sweep diagonally at the lowest
-  opacity.
+- **Azurdrift:** large blue gradient orbs cross the glass field with visible,
+  calm transforms over nine and twelve seconds.
+- **ZA-Gamepad-Strömung:** the unchanged transparent approved gamepad mark
+  drifts diagonally as a repeated decorative pattern over seven and ten
+  seconds.
+- **Glasreflexion:** higher-contrast glass-light bands sweep diagonally over
+  eight and eleven seconds.
+- **Current RomM background:** the inherited animation is a fourth comparison
+  tile, not a ZA candidate.
 - Each variant is `aria-hidden`, accepts `reducedMotion`, and carries a stable
-  variant data attribute for tests and Storybook comparison.
-- Individual stories expose every variant. A comparison story renders all
-  three together, with recommendation text that does not imply approval.
+  variant data attribute for tests and Storybook comparison. Preview-only
+  `forceMotion` ignores an OS preference, while an explicit static request
+  still wins. `motionSpeed` is clamped from 0,5× to 2×.
+- Individual stories expose every variant. A comparison story renders all four
+  together, with recommendation text that does not imply approval and German
+  controls for forced animation and speed.
 
 ## Builder assumptions
 

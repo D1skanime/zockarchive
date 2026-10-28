@@ -18,16 +18,20 @@ static and transitions opacity only.
 
 ## Animation proposals for UAT
 
-1. **Recommended, Azure drift:** blue gradient orbs drift slowly behind a
-   quiet glass wash. It is the builder recommendation only, not a product
-   selection.
-2. **Archive current:** a restrained archive-card grid pans beneath a blue
-   haze, communicating the library context without using the approved logo.
-3. **Glass refraction:** low-intensity diagonal light bands move across a blue
-   field, giving the least literal direction.
+1. **Recommended, Azurdrift:** visible blue gradient orbs cross a quiet glass
+   wash over nine and twelve seconds. It is the builder recommendation only,
+   not a product selection.
+2. **ZA-Gamepad-Strömung:** the unchanged transparent gamepad monogram drifts
+   diagonally under a light-blue glass haze over seven and ten seconds.
+3. **Glasreflexion:** higher-contrast diagonal glass-light bands cross the
+   blue field over eight and eleven seconds.
+4. **Current RomM background:** the inherited runtime animation appears only
+   as a fourth comparison tile, never as a ZA selection proposal.
 
 The delivered Storybook preview labels these as proposals and makes each
-variant inspectable without persisting a user preference.
+variant inspectable without persisting a user preference. Its German
+`Animation erzwingen` control overrides OS reduced motion only for animated
+preview frames, and `Animationsgeschwindigkeit` ranges from 0,5× to 2×.
 
 ## Responsive and accessibility contract
 
@@ -38,4 +42,5 @@ variant inspectable without persisting a user preference.
 - Focus rings follow the current modality system. Existing product controls
   retain keyboard, touch and gamepad behavior without a new interaction owner.
 - Reduced motion always stops the CSS animation and leaves each proposal as a
-  static token-driven backdrop.
+  static token-driven backdrop. An explicitly static preview stays static even
+  when Storybook forces motion for the adjacent animated preview.

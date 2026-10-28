@@ -51,7 +51,10 @@ backdrop as the safe default and does not claim animation approval.
 - The active inherited owner is `AppShell/BackgroundArt.vue`, with global
   `.r-v2-bg__layer` fallback art from `assets/auth_background.svg`. It remains
   unchanged until a product decision.
-- The earlier asset-preview story is replaced by three ZA-specific, CSS-only
-  review variants: Azure drift, Archive current and Glass refraction.
+- The review surface has three ZA-specific CSS-only variants: Azurdrift,
+  ZA-Gamepad-Strömung and Glasreflexion. The unchanged current RomM background
+  is a fourth comparison tile, not a ZA proposal.
 - Each proposal renders both themes beside a static reduced-motion fallback.
-  Azure drift is the builder recommendation only, not a selected default.
+  Storybook supplies review-only German controls to force motion and select
+  0,5×–2× speed. Azurdrift is the builder recommendation only, not a selected
+  default.

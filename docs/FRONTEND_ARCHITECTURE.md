@@ -306,12 +306,19 @@ manifest generation disabled, so it cannot inject a competing manifest link.
 backdrop. Its two `.r-v2-bg__layer` elements cross-fade selected cover art,
 while `global.css` supplies `assets/auth_background.svg` as the animated RomM
 fallback and its static Gecko alternative. `BrandBackgroundVariant.vue` is a
-Storybook-only ZA review surface, not a runtime replacement. It offers the
-CSS-only Azure drift, Archive current and Glass refraction proposals in
-`Brand/ZA background proposals`, each with dark/light previews and an explicit
-static reduced-motion fallback. The runtime login continues to use the static
-approved ZA overlay until a human selects a proposal. Retained image binaries
-are not represented as ZockArchive artwork.
+Storybook-only ZA review surface, not a runtime replacement. It offers three
+CSS-only ZA proposals in `Marke/ZA-Hintergrundvorschläge`: Azurdrift,
+ZA-Gamepad-Strömung and Glasreflexion. The gamepad proposal reuses the
+unchanged transparent `mark-header.webp` identity asset as a decorative moving
+pattern; it does not alter the artwork. The comparison also renders the
+current inherited RomM backdrop as a fourth, explicitly non-ZA candidate. ZA
+layers use compositor opacity and transform motion over seven to twelve
+seconds; all have a static reduced-motion fallback. Storybook alone exposes
+`Animation erzwingen` to override an OS reduced-motion preference for review,
+and an `Animationsgeschwindigkeit` control from 0,5× through 2×. Neither
+control is consumed by the application. The runtime login continues to use the
+static approved ZA overlay until a human selects a proposal. Retained image
+binaries are not represented as ZockArchive artwork.
 Provider artwork and license attribution retain their upstream identity.
 
 Important v2 composables include useCan, useLibraryOperation, useProviderResolution, useManualDescription, useGameDetailsMedia, useBackgroundArt, useBackgroundAudio, useCoverArt, useWebpSupport, useBreakpoint, useResponsiveColumns, useInputModality, useGamepad, useGridNav, useRightStickScroll, useGallerySelectionInput, useGlobalHotkeys, useThemeMode, useReducedMotion, useCrtMode, useFullscreenPref, useGalleryFilterUrl, useGalleryViewModeUrl, useTileSearchUrl, useGalleryProvenance, usePageTitle, useServerConnection, useSnackbar, useConfirm, useSocketEvent, useScanLifecycle, useBrowserDownloadQueue, and usePlaySession. v2/utils covers route-query validation, artwork, collection covers, player helpers, ROM verification/status, download manifest paths, provider labels, CSS checks, and input helpers. frontend/src/utils contains form-data, task, cover, and IndexedDB helpers.
