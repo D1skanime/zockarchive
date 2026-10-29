@@ -231,10 +231,10 @@ export const Disabled: Story = {
     components: { RChip },
     template: `
       <div style="display:flex;flex-wrap:wrap;gap:10px">
-        <RChip variant="translucent" color="primary" disabled>Disabled translucent</RChip>
-        <RChip variant="flat" color="primary" disabled>Disabled flat</RChip>
-        <RChip variant="outlined" color="primary" disabled>Disabled outlined</RChip>
-        <RChip variant="translucent" color="primary" closable disabled>With close</RChip>
+        <RChip variant="translucent" color="primary" disabled>Deaktiviert durchscheinend</RChip>
+        <RChip variant="flat" color="primary" disabled>Deaktiviert flach</RChip>
+        <RChip variant="outlined" color="primary" disabled>Deaktiviert umrandet</RChip>
+        <RChip variant="translucent" color="primary" closable disabled>Mit Schließen</RChip>
       </div>
     `,
   }),

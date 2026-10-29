@@ -7,7 +7,10 @@ import {
   primitiveDocs,
 } from "../src/v2/storybook/compositionInventory";
 import { storyTextDecisions } from "./storybookLanguageDecisions";
-import { findUnreviewedVisibleStoryText } from "./storybookLanguageGuard";
+import {
+  findSuspiciousGermanDecisions,
+  findUnreviewedVisibleStoryText,
+} from "./storybookLanguageGuard";
 
 const root = join(import.meta.dirname, "..");
 const stories = globSync("src/v2/**/*.stories.ts", { cwd: root });
@@ -27,6 +30,15 @@ const allowedGroups = new Set([
 
 function fail(message: string): never {
   throw new Error(`Storybook catalog: ${message}`);
+}
+
+const suspiciousDecisions = findSuspiciousGermanDecisions(storyTextDecisions);
+if (suspiciousDecisions.length > 0) {
+  fail(
+    `German review entries need renewed language review: ${suspiciousDecisions
+      .map(({ file, location, text }) => `${file} ${location}: ${text}`)
+      .join(", ")}`,
+  );
 }
 
 for (const story of stories) {

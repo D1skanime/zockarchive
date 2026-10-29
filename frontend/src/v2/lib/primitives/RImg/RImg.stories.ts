@@ -156,7 +156,7 @@ export const ErrorSlot: Story = {
             </div>
           </template>
         </RImg>
-        <span>The src 404s — the <code>#error</code> slot renders instead.</span>
+        <span>Die Quelle liefert 404, stattdessen rendert der <code>#error</code>-Slot.</span>
       </div>
     `,
   }),
@@ -213,7 +213,7 @@ export const LoadingSlot: Story = {
           </template>
         </RImg>
         <div style="display:flex;flex-direction:column;gap:8px;max-width:240px">
-          <span>The shimmer is forced visible for 2.5s before the image fetches. Click reload to re-trigger.</span>
+          <span>Der Schimmer bleibt 2,5 Sekunden sichtbar, bevor das Bild lädt. Klicken Sie zum erneuten Laden.</span>
           <button class="r-img-story-reload-btn" type="button" @click="reload">Neu laden</button>
         </div>
       </div>
@@ -244,7 +244,7 @@ export const DefaultSlotOverlay: Story = {
           );
           color:white;font:600 14px/1.2 sans-serif;
         ">
-          Overlay caption — composes on top of the image
+          Überlagerte Beschriftung, sie liegt über dem Bild
         </div>
       </RImg>
     `,

@@ -272,7 +272,7 @@ export const LoadingState: Story = {
         </RBtn>
         <RBtn variant="outlined" :loading="loading" @click="run">Absenden</RBtn>
         <span style="font:12px/1.4 sans-serif;color:var(--r-color-fg-muted)">
-          Click — spinner appears after the 200ms debounce; layout doesn't shift.
+          Nach dem Klick erscheint der Ladekreis nach 200 ms, ohne das Layout zu verschieben.
         </span>
       </div>
     `,
@@ -295,11 +295,11 @@ export const Disabled: Story = {
     components: { RBtn },
     template: `
       <div style="display:flex;flex-wrap:wrap;gap:10px">
-        <RBtn disabled>disabled flat</RBtn>
-        <RBtn variant="outlined" disabled>disabled outlined</RBtn>
-        <RBtn variant="translucent" color="primary" disabled>disabled translucent</RBtn>
-        <RBtn variant="text" color="danger" disabled>disabled text</RBtn>
-        <RBtn icon="mdi-delete" variant="text" disabled aria-label="disabled icon" />
+        <RBtn disabled>deaktiviert flach</RBtn>
+        <RBtn variant="outlined" disabled>deaktiviert umrandet</RBtn>
+        <RBtn variant="translucent" color="primary" disabled>deaktiviert durchscheinend</RBtn>
+        <RBtn variant="text" color="danger" disabled>deaktivierter Text</RBtn>
+        <RBtn icon="mdi-delete" variant="text" disabled aria-label="deaktiviertes Symbol" />
       </div>
     `,
   }),
@@ -333,7 +333,7 @@ export const AsLink: Story = {
           External link (&lt;a&gt;)
         </RBtn>
         <span style="font:12px/1.4 sans-serif;color:var(--r-color-fg-muted)">
-          With <code>to</code>, RBtn renders <code>&lt;router-link&gt;</code> — invisible in this story without a router, but the prop is accepted.
+          Mit <code>to</code> rendert RBtn einen <code>&lt;router-link&gt;</code>. Ohne Router ist er in dieser Story unsichtbar, die Eigenschaft wird aber akzeptiert.
         </span>
       </div>
     `,
@@ -383,11 +383,11 @@ export const SurfaceWithSlider: Story = {
     components: { RBtn },
     template: `
       <div style="display:flex;gap:8px;align-items:center;padding:16px;background:var(--r-color-bg);width:max-content">
-        <RBtn variant="outlined" surface icon="mdi-filter-variant" rounded="circle" aria-label="Filters" />
+        <RBtn variant="outlined" surface icon="mdi-filter-variant" rounded="circle" aria-label="Filter" />
         <div style="display:inline-flex;align-items:center;gap:2px;padding:2px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:999px;font-size:11px;color:var(--r-color-fg-muted)">
-          <span style="padding:4px 10px">Mock slider wrapper for comparison</span>
+          <span style="padding:4px 10px">Beispiel-Reglerhülle zum Vergleich</span>
         </div>
-        <RBtn variant="outlined" surface icon="mdi-dots-vertical" rounded="circle" aria-label="More" />
+        <RBtn variant="outlined" surface icon="mdi-dots-vertical" rounded="circle" aria-label="Mehr" />
       </div>
       <p style="margin:8px 0 0 16px;font:12px monospace;color:var(--r-color-fg-muted);max-width:480px">
         \`surface\` paints --r-color-bg-elevated so the disc-shaped icon

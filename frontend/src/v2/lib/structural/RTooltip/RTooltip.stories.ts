@@ -76,7 +76,7 @@ type Story = StoryObj<typeof RTooltip>;
 
 export const Default: Story = {
   name: "Standard · Slot-Auslöser",
-  args: { text: "Save your progress", location: "top" },
+  args: { text: "Speichern Sie Ihren Fortschritt", location: "top" },
   render: (args) => ({
     components: { RTooltip, RBtn },
     setup: () => ({ args }),
@@ -114,24 +114,24 @@ export const PlacementCardinals: Story = {
     components: { RTooltip, RBtn },
     template: `
       <div style="padding:80px;display:flex;gap:24px;flex-wrap:wrap;justify-content:center">
-        <RTooltip text="Tooltip on top" location="top">
+        <RTooltip text="Tooltip oben" location="top">
           <template #activator="{ props }">
-            <RBtn v-bind="props" icon="mdi-arrow-up" aria-label="Tooltip on top" />
+            <RBtn v-bind="props" icon="mdi-arrow-up" aria-label="Tooltip oben" />
           </template>
         </RTooltip>
-        <RTooltip text="Tooltip on end" location="end">
+        <RTooltip text="Tooltip am Ende" location="end">
           <template #activator="{ props }">
-            <RBtn v-bind="props" icon="mdi-arrow-right" aria-label="Tooltip on end" />
+            <RBtn v-bind="props" icon="mdi-arrow-right" aria-label="Tooltip am Ende" />
           </template>
         </RTooltip>
-        <RTooltip text="Tooltip on bottom" location="bottom">
+        <RTooltip text="Tooltip unten" location="bottom">
           <template #activator="{ props }">
-            <RBtn v-bind="props" icon="mdi-arrow-down" aria-label="Tooltip on bottom" />
+            <RBtn v-bind="props" icon="mdi-arrow-down" aria-label="Tooltip unten" />
           </template>
         </RTooltip>
-        <RTooltip text="Tooltip on start" location="start">
+        <RTooltip text="Tooltip am Anfang" location="start">
           <template #activator="{ props }">
-            <RBtn v-bind="props" icon="mdi-arrow-left" aria-label="Tooltip on start" />
+            <RBtn v-bind="props" icon="mdi-arrow-left" aria-label="Tooltip am Anfang" />
           </template>
         </RTooltip>
       </div>
@@ -176,12 +176,12 @@ export const FlipNearEdge: Story = {
     components: { RTooltip, RBtn },
     template: `
       <div style="height:400px;display:flex;justify-content:space-between;align-items:flex-start;padding:8px">
-        <RTooltip text="Asked for 'start' but flips to 'end' near the left edge" location="start">
+        <RTooltip text="Am linken Rand wechselt der gewünschte Anfang zum Ende" location="start">
           <template #activator="{ props }">
             <RBtn v-bind="props" prepend-icon="mdi-arrow-left">Zeige auf mich</RBtn>
           </template>
         </RTooltip>
-        <RTooltip text="Asked for 'end' but flips to 'start' near the right edge" location="end">
+        <RTooltip text="Am rechten Rand wechselt das gewünschte Ende zum Anfang" location="end">
           <template #activator="{ props }">
             <RBtn v-bind="props" prepend-icon="mdi-arrow-right">Zeige auf mich</RBtn>
           </template>
@@ -196,7 +196,7 @@ export const FlipNearEdge: Story = {
 export const LongText: Story = {
   name: "Langer Text",
   args: {
-    text: "Scans the selected library path, matches any new ROMs against the configured metadata providers, and refreshes artwork for existing entries.",
+    text: "Durchsucht den gewählten Bibliothekspfad, ordnet neue ROMs den konfigurierten Metadatenanbietern zu und aktualisiert das Artwork vorhandener Einträge.",
     location: "top",
   },
   render: (args) => ({
@@ -222,16 +222,16 @@ export const CustomContent: Story = {
       <div style="padding:80px;display:flex;justify-content:center">
         <RTooltip location="top">
           <template #activator="{ props }">
-            <RBtn v-bind="props" icon="mdi-keyboard" aria-label="Shortcuts">Shortcuts</RBtn>
+            <RBtn v-bind="props" icon="mdi-keyboard" aria-label="Tastenkürzel">Tastenkürzel</RBtn>
           </template>
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;align-items:center;gap:8px">
               <RIcon icon="mdi-keyboard-space" size="x-small" />
-              <span>Open palette</span>
+              <span>Palette öffnen</span>
             </div>
             <div style="display:flex;align-items:center;gap:8px;color:var(--r-color-fg-muted)">
               <RIcon icon="mdi-apple-keyboard-command" size="x-small" />
-              <span>+ K to focus</span>
+              <span>+ K zum Fokussieren</span>
             </div>
           </div>
         </RTooltip>
@@ -244,7 +244,11 @@ export const CustomContent: Story = {
 
 export const Disabled: Story = {
   name: "Deaktiviert (ohne Wirkung)",
-  args: { text: "You shouldn't see me", location: "top", disabled: true },
+  args: {
+    text: "Sie sollten mich nicht sehen",
+    location: "top",
+    disabled: true,
+  },
   render: (args) => ({
     components: { RTooltip, RBtn },
     setup: () => ({ args }),
@@ -252,7 +256,7 @@ export const Disabled: Story = {
       <div style="padding:48px;display:flex;justify-content:center">
         <RTooltip v-bind="args">
           <template #activator="{ props }">
-            <RBtn v-bind="props" variant="translucent">Hover me — nothing happens</RBtn>
+            <RBtn v-bind="props" variant="translucent">Zeige auf mich, nichts passiert</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -266,24 +270,24 @@ export const Delays: Story = {
     components: { RTooltip, RBtn },
     template: `
       <div style="padding:60px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap">
-        <RTooltip text="instant (0 ms)" :open-delay="0" location="top">
+        <RTooltip text="sofort (0 ms)" :open-delay="0" location="top">
           <template #activator="{ props }">
             <RBtn v-bind="props">0 ms</RBtn>
           </template>
         </RTooltip>
-        <RTooltip text="default 300 ms" location="top">
+        <RTooltip text="Standard 300 ms" location="top">
           <template #activator="{ props }">
             <RBtn v-bind="props">300 ms</RBtn>
           </template>
         </RTooltip>
-        <RTooltip text="slow 800 ms" :open-delay="800" location="top">
+        <RTooltip text="langsam 800 ms" :open-delay="800" location="top">
           <template #activator="{ props }">
             <RBtn v-bind="props">800 ms</RBtn>
           </template>
         </RTooltip>
-        <RTooltip text="sticky close · 600 ms" :close-delay="600" location="top">
+        <RTooltip text="verzögertes Schließen · 600 ms" :close-delay="600" location="top">
           <template #activator="{ props }">
-            <RBtn v-bind="props">sticky</RBtn>
+            <RBtn v-bind="props">verzögert</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -307,7 +311,7 @@ export const Controlled: Story = {
           </template>
         </RTooltip>
         <RBtn :variant="open ? 'flat' : 'translucent'" @click="open = !open">
-          {{ open ? "Hide tooltip" : "Show tooltip" }}
+          {{ open ? "Tooltip ausblenden" : "Tooltip anzeigen" }}
         </RBtn>
       </div>
     `,
@@ -322,17 +326,17 @@ export const OffsetLadder: Story = {
     components: { RTooltip, RBtn },
     template: `
       <div style="padding:80px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap">
-        <RTooltip text="offset 0 (flush)" :offset="0" location="top">
+        <RTooltip text="Abstand 0 (bündig)" :offset="0" location="top">
           <template #activator="{ props }">
             <RBtn v-bind="props">0</RBtn>
           </template>
         </RTooltip>
-        <RTooltip text="offset 6 (default)" location="top">
+        <RTooltip text="Abstand 6 (Standard)" location="top">
           <template #activator="{ props }">
             <RBtn v-bind="props">6</RBtn>
           </template>
         </RTooltip>
-        <RTooltip text="offset 14 (loose)" :offset="14" location="top">
+        <RTooltip text="Abstand 14 (weit)" :offset="14" location="top">
           <template #activator="{ props }">
             <RBtn v-bind="props">14</RBtn>
           </template>
@@ -351,19 +355,19 @@ export const IconBarRealWorld: Story = {
     template: `
       <div style="padding:48px;display:flex;justify-content:center">
         <div style="display:flex;gap:4px;padding:6px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:10px">
-          <RTooltip text="Filters" location="bottom">
+          <RTooltip text="Filter" location="bottom">
             <template #activator="{ props }">
-              <RBtn v-bind="props" icon="mdi-filter" variant="text" aria-label="Filters" />
+              <RBtn v-bind="props" icon="mdi-filter" variant="text" aria-label="Filter" />
             </template>
           </RTooltip>
-          <RTooltip text="Sort" location="bottom">
+          <RTooltip text="Sortieren" location="bottom">
             <template #activator="{ props }">
-              <RBtn v-bind="props" icon="mdi-sort-variant" variant="text" aria-label="Sort" />
+              <RBtn v-bind="props" icon="mdi-sort-variant" variant="text" aria-label="Sortieren" />
             </template>
           </RTooltip>
-          <RTooltip text="Search" location="bottom">
+          <RTooltip text="Suche" location="bottom">
             <template #activator="{ props }">
-              <RBtn v-bind="props" icon="mdi-magnify" variant="text" aria-label="Search" />
+              <RBtn v-bind="props" icon="mdi-magnify" variant="text" aria-label="Suche" />
             </template>
           </RTooltip>
           <RTooltip text="Weitere Aktionen" location="bottom">
@@ -439,7 +443,7 @@ export const OpenOnTap: Story = {
       <div class="r-v2 r-v2-dark" style="padding:48px;display:flex;justify-content:center;background:#07070f">
         <RTooltip v-bind="args">
           <template #activator="{ props }">
-            <RBtn v-bind="props">Tap target</RBtn>
+            <RBtn v-bind="props">Tippen-Ziel</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -448,7 +452,7 @@ export const OpenOnTap: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const body = within(document.body);
-    const activator = canvas.getByRole("button", { name: /tap target/i });
+    const activator = canvas.getByRole("button", { name: /tippen-ziel/i });
 
     await step("a touch tap reveals the tooltip", async () => {
       fireTap(activator, "touch");
@@ -483,12 +487,12 @@ export const FormHelper: Story = {
     template: `
       <div style="padding:32px;display:flex;flex-direction:column;gap:8px;width:320px;margin:0 auto">
         <label style="display:flex;align-items:center;gap:6px;font:12px sans-serif;color:var(--r-color-fg-muted)">
-          API token
+          API-Token
           <span
             style="display:inline-flex;width:14px;height:14px;align-items:center;justify-content:center;border-radius:50%;border:1px solid var(--r-color-border-strong);color:var(--r-color-fg-muted);font-size:10px;cursor:help"
           >
             ?
-            <RTooltip activator="parent" location="top" text="Tokens are shown once at creation — keep yours somewhere safe." />
+            <RTooltip activator="parent" location="top" text="Token werden bei der Erstellung nur einmal gezeigt, bewahren Sie Ihren sicher auf." />
           </span>
         </label>
         <div style="padding:8px 10px;border:1px solid var(--r-color-border);border-radius:6px;background:var(--r-color-bg-elevated);font:13px/1.4 monospace;color:var(--r-color-fg-muted)">

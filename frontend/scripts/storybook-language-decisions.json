@@ -410,7 +410,7 @@
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 79",
-    "text": "Save your progress",
+    "text": "Speichern Sie Ihren Fortschritt",
     "status": "german"
   },
   {
@@ -452,7 +452,7 @@
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 199",
-    "text": "Scans the selected library path, matches any new ROMs against the configured metadata providers, and refreshes artwork for existing entries.",
+    "text": "Durchsucht den gewählten Bibliothekspfad, ordnet neue ROMs den konfigurierten Metadatenanbietern zu und aktualisiert das Artwork vorhandener Einträge.",
     "status": "german"
   },
   {
@@ -473,7 +473,7 @@
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 247",
-    "text": "You shouldn't see me",
+    "text": "Sie sollten mich nicht sehen",
     "status": "german"
   },
   {
@@ -564,56 +564,56 @@
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 117",
-    "text": "Tooltip on top",
+    "text": "Tooltip oben",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 119",
-    "text": "Tooltip on top",
+    "text": "Tooltip oben",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 122",
-    "text": "Tooltip on end",
+    "text": "Tooltip am Ende",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 124",
-    "text": "Tooltip on end",
+    "text": "Tooltip am Ende",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 127",
-    "text": "Tooltip on bottom",
+    "text": "Tooltip unten",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 129",
-    "text": "Tooltip on bottom",
+    "text": "Tooltip unten",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 132",
-    "text": "Tooltip on start",
+    "text": "Tooltip am Anfang",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 134",
-    "text": "Tooltip on start",
+    "text": "Tooltip am Anfang",
     "status": "german"
   },
   {
@@ -676,14 +676,14 @@
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 179",
-    "text": "Asked for 'start' but flips to 'end' near the left edge",
+    "text": "Am linken Rand wechselt der gewünschte Anfang zum Ende",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 184",
-    "text": "Asked for 'end' but flips to 'start' near the right edge",
+    "text": "Am rechten Rand wechselt das gewünschte Ende zum Anfang",
     "status": "german"
   },
   {
@@ -711,63 +711,63 @@
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 225",
-    "text": "Shortcuts",
+    "text": "Tastenkürzel",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 225",
-    "text": "Shortcuts",
+    "text": "Tastenkürzel",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 230",
-    "text": "Open palette",
+    "text": "Palette öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 234",
-    "text": "+ K to focus",
+    "text": "+ K zum Fokussieren",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 255",
-    "text": "Hover me — nothing happens",
+    "text": "Zeige auf mich, nichts passiert",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 269",
-    "text": "instant (0 ms)",
+    "text": "sofort (0 ms)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 274",
-    "text": "default 300 ms",
+    "text": "Standard 300 ms",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 279",
-    "text": "slow 800 ms",
+    "text": "langsam 800 ms",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 284",
-    "text": "sticky close · 600 ms",
+    "text": "verzögertes Schließen · 600 ms",
     "status": "german"
   },
   {
@@ -795,7 +795,7 @@
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 286",
-    "text": "sticky",
+    "text": "verzögert",
     "status": "german"
   },
   {
@@ -816,35 +816,35 @@
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 309",
-    "text": "{{ open ? \"Hide tooltip\" : \"Show tooltip\" }}",
+    "text": "{{ open ? \"Tooltip ausblenden\" : \"Tooltip anzeigen\" }}",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 310",
-    "text": "{{ open ? \"Hide tooltip\" : \"Show tooltip\" }}",
+    "text": "{{ open ? \"Tooltip ausblenden\" : \"Tooltip anzeigen\" }}",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 325",
-    "text": "offset 0 (flush)",
+    "text": "Abstand 0 (bündig)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 330",
-    "text": "offset 6 (default)",
+    "text": "Abstand 6 (Standard)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 335",
-    "text": "offset 14 (loose)",
+    "text": "Abstand 14 (weit)",
     "status": "german"
   },
   {
@@ -872,42 +872,42 @@
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 354",
-    "text": "Filters",
+    "text": "Filter",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 356",
-    "text": "Filters",
+    "text": "Filter",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 359",
-    "text": "Sort",
+    "text": "Sortieren",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 361",
-    "text": "Sort",
+    "text": "Sortieren",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 364",
-    "text": "Search",
+    "text": "Suche",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 366",
-    "text": "Search",
+    "text": "Suche",
     "status": "german"
   },
   {
@@ -935,21 +935,21 @@
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 442",
-    "text": "Tap target",
+    "text": "Tippen-Ziel",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 491",
-    "text": "Tokens are shown once at creation — keep yours somewhere safe.",
+    "text": "Token werden bei der Erstellung nur einmal gezeigt, bewahren Sie Ihren sicher auf.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 485",
-    "text": "API token",
+    "text": "API-Token",
     "status": "german"
   },
   {
@@ -3205,7 +3205,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RImg/RImg.stories.ts",
     "location": "Zeile 159",
-    "text": "The src 404s — the",
+    "text": "Die Quelle liefert 404, stattdessen rendert der",
     "status": "german"
   },
   {
@@ -3219,7 +3219,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RImg/RImg.stories.ts",
     "location": "Zeile 159",
-    "text": "slot renders instead.",
+    "text": "-Slot.",
     "status": "german"
   },
   {
@@ -3233,7 +3233,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RImg/RImg.stories.ts",
     "location": "Zeile 216",
-    "text": "The shimmer is forced visible for 2.5s before the image fetches. Click reload to re-trigger.",
+    "text": "Der Schimmer bleibt 2,5 Sekunden sichtbar, bevor das Bild lädt. Klicken Sie zum erneuten Laden.",
     "status": "german"
   },
   {
@@ -3254,7 +3254,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RImg/RImg.stories.ts",
     "location": "Zeile 246",
-    "text": "Overlay caption — composes on top of the image",
+    "text": "Überlagerte Beschriftung, sie liegt über dem Bild",
     "status": "german"
   },
   {
@@ -3569,7 +3569,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RIcon/RIcon.stories.ts",
     "location": "Zeile 248",
-    "text": "Built-in",
+    "text": "Das eingebaute",
     "status": "german"
   },
   {
@@ -3583,7 +3583,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RIcon/RIcon.stories.ts",
     "location": "Zeile 248",
-    "text": "from",
+    "text": "aus",
     "status": "german"
   },
   {
@@ -3597,7 +3597,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RIcon/RIcon.stories.ts",
     "location": "Zeile 248",
-    "text": "composes with the base — no spin prop needed.",
+    "text": "ergänzt die Basis, keine Spin-Eigenschaft nötig.",
     "status": "german"
   },
   {
@@ -3625,7 +3625,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/REmptyState/REmptyState.stories.ts",
     "location": "Zeile 32",
-    "text": "Once you add something it will show up in this list.",
+    "text": "Sobald Sie etwas hinzufügen, erscheint es in dieser Liste.",
     "status": "german"
   },
   {
@@ -3646,7 +3646,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/REmptyState/REmptyState.stories.ts",
     "location": "Zeile 48",
-    "text": "Upload a PDF or re-download from the metadata source.",
+    "text": "Laden Sie ein PDF hoch oder erneut von der Metadatenquelle herunter.",
     "status": "german"
   },
   {
@@ -4339,28 +4339,28 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RChip/RChip.stories.ts",
     "location": "Zeile 234",
-    "text": "Disabled translucent",
+    "text": "Deaktiviert durchscheinend",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RChip/RChip.stories.ts",
     "location": "Zeile 235",
-    "text": "Disabled flat",
+    "text": "Deaktiviert flach",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RChip/RChip.stories.ts",
     "location": "Zeile 236",
-    "text": "Disabled outlined",
+    "text": "Deaktiviert umrandet",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RChip/RChip.stories.ts",
     "location": "Zeile 237",
-    "text": "With close",
+    "text": "Mit Schließen",
     "status": "german"
   },
   {
@@ -5424,7 +5424,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 274",
-    "text": "Click — spinner appears after the 200ms debounce; layout doesn't shift.",
+    "text": "Nach dem Klick erscheint der Ladekreis nach 200 ms, ohne das Layout zu verschieben.",
     "status": "german"
   },
   {
@@ -5438,35 +5438,35 @@
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 302",
-    "text": "disabled icon",
+    "text": "deaktiviertes Symbol",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 298",
-    "text": "disabled flat",
+    "text": "deaktiviert flach",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 299",
-    "text": "disabled outlined",
+    "text": "deaktiviert umrandet",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 300",
-    "text": "disabled translucent",
+    "text": "deaktiviert durchscheinend",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 301",
-    "text": "disabled text",
+    "text": "deaktivierter Text",
     "status": "german"
   },
   {
@@ -5501,7 +5501,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 335",
-    "text": "With",
+    "text": "Mit",
     "status": "german"
   },
   {
@@ -5515,7 +5515,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 336",
-    "text": ", RBtn renders",
+    "text": "rendert RBtn einen",
     "status": "german"
   },
   {
@@ -5529,7 +5529,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 336",
-    "text": "— invisible in this story without a router, but the prop is accepted.",
+    "text": ". Ohne Router ist er in dieser Story unsichtbar, die Eigenschaft wird aber akzeptiert.",
     "status": "german"
   },
   {
@@ -5599,21 +5599,21 @@
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 386",
-    "text": "Filters",
+    "text": "Filter",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 390",
-    "text": "More",
+    "text": "Mehr",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 388",
-    "text": "Mock slider wrapper for comparison",
+    "text": "Beispiel-Reglerhülle zum Vergleich",
     "status": "german"
   },
   {
@@ -10286,7 +10286,8 @@
     "file": "src/v2/lib/data/RTable/RTable.stories.ts",
     "location": "Zeile 93",
     "text": "Streets of Rage 2",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Game title, platform name or established placeholder name in displayed story data."
   },
   {
     "category": "story-name",

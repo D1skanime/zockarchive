@@ -207,6 +207,10 @@ specific scope and rationale, rather than using file-wide exemptions.
 `npm run storybook:catalog` executes this real-catalog validation and the
 frontend workflow runs it after Vitest, so CI cannot accept an unreviewed story
 text change.
+The explicit ledger remains the completeness mechanism. A deliberately weak
+English-signal scan also rejects suspicious entries marked `german`, requiring
+a renewed manual decision rather than treating that heuristic as language
+proof.
 
 Library components reuse R primitives instead of native controls whenever a
 matching primitive exists. `npm run v2:maintainability` rejects unsupported

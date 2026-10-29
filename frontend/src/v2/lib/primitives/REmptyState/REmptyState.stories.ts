@@ -29,7 +29,7 @@ export const Default: Story = {
   args: {
     icon: "mdi-tray-remove",
     title: "Noch keine Inhalte",
-    hint: "Once you add something it will show up in this list.",
+    hint: "Sobald Sie etwas hinzufügen, erscheint es in dieser Liste.",
   },
 };
 
@@ -45,7 +45,7 @@ export const WithActions: Story = {
   args: {
     icon: "mdi-book-open-page-variant-outline",
     title: "Noch kein Handbuch",
-    hint: "Upload a PDF or re-download from the metadata source.",
+    hint: "Laden Sie ein PDF hoch oder erneut von der Metadatenquelle herunter.",
   },
   render: (args) => ({
     components: { REmptyState, RBtn },

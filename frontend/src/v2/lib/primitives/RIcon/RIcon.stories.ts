@@ -245,7 +245,7 @@ export const Spinning: Story = {
         <RIcon icon="mdi-loading" size="32" color="primary" class="mdi-spin" />
         <RIcon icon="mdi-refresh" size="32" color="info" class="mdi-spin" />
         <RIcon icon="mdi-progress-helper" size="32" color="accent" class="mdi-spin" />
-        <span>Built-in <code>mdi-spin</code> from <code>@mdi/font</code> composes with the base — no spin prop needed.</span>
+        <span>Das eingebaute <code>mdi-spin</code> aus <code>@mdi/font</code> ergänzt die Basis, keine Spin-Eigenschaft nötig.</span>
       </div>
     `,
   }),

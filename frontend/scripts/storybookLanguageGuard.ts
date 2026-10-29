@@ -129,3 +129,16 @@ export function findUnreviewedVisibleStoryText(
       ),
   );
 }
+
+/** Flags likely English copy for renewed human review. This is a warning net,
+ * not the completeness mechanism, which remains the explicit ledger. */
+export function findSuspiciousGermanDecisions(
+  decisions: readonly StoryTextDecision[],
+): StoryTextDecision[] {
+  const englishSignals =
+    /\b(?:save your|the src|the shimmer|overlay caption|once you|upload a|with close|disabled (?:flat|outlined|translucent|text|icon)|click.*spinner|invisible in this story|composes with|tooltip on|asked for|open palette|nothing happens|instant \(0|slow 800|sticky close|\boffset \d|\bfilters\b|\bsort\b|tap target|you shouldn't|tokens are shown|two-factor enabled|required to|list item)\b/i;
+  return decisions.filter(
+    (decision) =>
+      decision.status === "german" && englishSignals.test(decision.text),
+  );
+}

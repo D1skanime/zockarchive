@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { phase39BrandDocsId } from "@/v2/storybook/compositionInventory";
 import {
   findUnreviewedVisibleStoryText,
+  findSuspiciousGermanDecisions,
   getVisibleStoryTextCandidates,
 } from "./storybookLanguageGuard";
 
@@ -75,5 +76,19 @@ describe("Storybook-Katalogprüfung", () => {
         },
       ]),
     ).toEqual([expect.objectContaining({ location: "Zeile 1" })]);
+  });
+
+  it("flags English text incorrectly approved as German for renewed review", () => {
+    expect(
+      findSuspiciousGermanDecisions([
+        {
+          category: "story-data",
+          file: "Example.stories.ts",
+          location: "Zeile 1",
+          status: "german",
+          text: "Save your progress",
+        },
+      ]),
+    ).toHaveLength(1);
   });
 });
