@@ -185,7 +185,7 @@ export const NoneSelected: Story = {
 
 // Empty — distinct from "no save selected".
 export const Empty: Story = {
-  name: "Empty (no saves)",
+  name: "Leer (keine Spielstände)",
   render: () => ({
     components: { AssetList },
     template: `

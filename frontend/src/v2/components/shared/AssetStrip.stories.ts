@@ -254,7 +254,7 @@ export const NoneSelected: Story = {
 
 // Empty — distinct from "no asset selected"; the strip itself is empty.
 export const EmptyStates: Story = {
-  name: "Empty (no states)",
+  name: "Leer (keine Status)",
   render: () => ({
     components: { AssetStrip },
     template: `

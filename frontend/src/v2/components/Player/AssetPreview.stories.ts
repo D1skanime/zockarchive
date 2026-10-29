@@ -119,7 +119,7 @@ export const StateNoScreenshot: Story = {
 
 // Save selected — saves don't have screenshots; we lean on metadata.
 export const SaveSelected: Story = {
-  name: "Save · selected",
+  name: "Spielstand · ausgewählt",
   render: () => ({
     components: { AssetPreview },
     setup: () => ({ asset: makeSave() }),
@@ -144,7 +144,7 @@ export const LongFilename: Story = {
 
 // No state selected — empty state with the start-fresh hint.
 export const EmptyNoState: Story = {
-  name: "Empty · no state selected",
+  name: "Leer · kein Status ausgewählt",
   render: () => ({
     components: { AssetPreview },
     template: `<AssetPreview :asset="null" type="state" />`,
@@ -152,7 +152,7 @@ export const EmptyNoState: Story = {
 };
 
 export const EmptyNoSave: Story = {
-  name: "Empty · no save selected",
+  name: "Leer · kein Spielstand ausgewählt",
   render: () => ({
     components: { AssetPreview },
     template: `<AssetPreview :asset="null" type="save" />`,

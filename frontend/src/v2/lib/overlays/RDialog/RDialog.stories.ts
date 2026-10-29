@@ -57,7 +57,7 @@ export const Basic: Story = {
 // the consumer renders them inside `#content` from REmptyState /
 // RProgressCircular. These stories demonstrate the recipe.
 export const Loading: Story = {
-  name: "Loading (composed)",
+  name: "Laden (zusammengesetzt)",
   args: { width: "420", height: "240", icon: "mdi-loading" },
   render: (args) => ({
     components: { RDialog, RBtn, RProgressCircular },
@@ -84,7 +84,7 @@ export const Loading: Story = {
 };
 
 export const EmptyState: Story = {
-  name: "Empty state (composed)",
+  name: "Leerzustand (zusammengesetzt)",
   args: { width: "420", height: "320", icon: "mdi-search-web" },
   render: (args) => ({
     components: { RDialog, RBtn, REmptyState },

@@ -92,7 +92,7 @@ export const Save: Story = {
 // ── Save without emulator chip ─────────────────────────────────
 
 export const SaveNoEmulator: Story = {
-  name: "Save (no emulator)",
+  name: "Spielstand ohne Emulator",
   render: () => ({
     components: { AssetCard },
     setup: () => ({ asset: makeSave({ emulator: null }) }),

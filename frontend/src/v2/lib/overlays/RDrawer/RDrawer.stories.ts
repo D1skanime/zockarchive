@@ -52,7 +52,7 @@ export const Default: Story = {
 // ── Left-side variant ─────────────────────────────────────────
 
 export const LeftSide: Story = {
-  name: "Left side",
+  name: "Linke Seite",
   args: { side: "left", width: 320, icon: "mdi-menu" },
   render: (args) => ({
     components: { RDrawer, RBtn },

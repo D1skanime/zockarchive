@@ -21,7 +21,7 @@ type Story = StoryObj<typeof RForm>;
 // ── Basic ──────────────────────────────────────────────────────────
 
 export const Basic: Story = {
-  name: "Basic · live validity",
+  name: "Grundlage · Live-Gültigkeit",
   render: () => ({
     components: { RForm, RTextField, RBtn },
     setup() {
@@ -177,7 +177,7 @@ export const ScrollToError: Story = {
 // ── Reset ──────────────────────────────────────────────────────────
 
 export const ResetForm: Story = {
-  name: "Reset",
+  name: "Zurücksetzen",
   render: () => ({
     components: { RForm, RTextField, RBtn },
     setup() {
