@@ -44,10 +44,8 @@ import { useRFormRegistration } from "../RForm/context";
 import RTextField from "../RTextField/RTextField.vue";
 
 defineOptions({ inheritAttrs: false });
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Rule = (value: any) => true | string;
-
 interface NormalisedItem {
   // `raw` + `value` are the consumer's source item / its key — we don't
   // know their shape but they do. Typing as `any` so `#selection` /
@@ -60,7 +58,6 @@ interface NormalisedItem {
   value: any;
   disabled?: boolean;
 }
-
 interface Props {
   modelValue?: unknown;
   items?: unknown[];
@@ -132,7 +129,6 @@ interface Props {
    *  display when nothing is selected. Defaults to "All". */
   allOptionLabel?: string;
 }
-
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   items: () => [],
@@ -170,7 +166,6 @@ const props = withDefaults(defineProps<Props>(), {
   showAllOption: false,
   allOptionLabel: "All",
 });
-
 const emit = defineEmits<{
   (e: "update:modelValue", value: unknown): void;
   (e: "update:search", value: string): void;

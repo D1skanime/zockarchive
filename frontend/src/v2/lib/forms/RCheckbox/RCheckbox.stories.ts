@@ -54,7 +54,6 @@ const meta: Meta<typeof RCheckbox> = {
 };
 
 export default meta;
-
 type Story = StoryObj<typeof RCheckbox>;
 
 // ── Defaults ────────────────────────────────────────────────────────

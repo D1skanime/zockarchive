@@ -93,7 +93,7 @@ export const Interaction: Story = {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button");
     await expect(button).toBeInTheDocument();
-    await expect(canvas.getByText("Drop files here")).toBeInTheDocument();
+    await expect(canvas.getByText("Dateien hier ablegen")).toBeInTheDocument();
     button.focus();
     await expect(button).toHaveFocus();
   },

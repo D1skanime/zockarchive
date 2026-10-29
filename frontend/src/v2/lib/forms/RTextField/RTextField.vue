@@ -3,7 +3,6 @@
 // field container. Four visual variants — `outlined` (default),
 // `filled`, `underlined`, `plain` — and three densities driving the
 // row height via CSS vars.
-//
 // `prefix-label` keeps the two v2-specific label layouts working:
 //
 //   • "stacked" — label above the field, left-aligned, small/muted.
@@ -35,14 +34,12 @@ import RTooltip from "../../structural/RTooltip/RTooltip.vue";
 import { useRFormRegistration } from "../RForm/context";
 
 defineOptions({ inheritAttrs: false });
-
 // `any` (not `unknown`) so call sites can write narrow signatures like
 // `(v: string) => true | string` without TS rejecting on variance. The
 // downside (rule callers seeing `any`) matches existing project rule
 // arrays.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Rule = (value: any) => true | string;
-
 interface Props {
   modelValue?: string | number | null;
   label?: string;

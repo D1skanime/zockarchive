@@ -6,10 +6,8 @@
 // app reads as a sibling: glass container, hairline-divided rows,
 // sortable headers with a sliding direction icon, hover tint, skeleton
 // rows during load, and an empty state when there's nothing to show.
-//
 // Generic `<T>` so consumers get full type-safety on the cell-slot
 // payload (`{ row: T }`).
-//
 // Usage:
 //   <RTable
 //     :columns="cols"
@@ -38,7 +36,6 @@ import type {
 } from "./types";
 
 defineOptions({ inheritAttrs: false });
-
 const props = withDefaults(defineProps<RTableProps<T>>(), {
   loading: false,
   loadingRows: 6,
@@ -51,16 +48,13 @@ const props = withDefaults(defineProps<RTableProps<T>>(), {
   rowClass: undefined,
   minWidth: undefined,
 });
-
 const emit = defineEmits<{
   (e: "update:sort", payload: RTableSortPayload): void;
   (e: "row:click", row: T): void;
 }>();
-
 const gridTemplate = computed(() =>
   props.columns.map((c) => c.width ?? "minmax(0, 1fr)").join(" "),
 );
-
 const gridStyle = computed(() => ({ gridTemplateColumns: gridTemplate.value }));
 
 // Optional horizontal-scroll floor. Without it columns shrink + ellipsis

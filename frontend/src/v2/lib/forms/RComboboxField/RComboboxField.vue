@@ -12,7 +12,6 @@
 //
 // The autocomplete dropdown is rendered with `@floating-ui/vue` so it
 // shares the same positioning vocabulary as RMenu / RSelect / RTooltip.
-//
 // `prefix-label` mirrors RTextField — `"stacked"` puts the label above,
 // `"inline"` puts it as a left-side chip on the field. Pass-through
 // `density` / `variant` / `disabled` / `placeholder` styling, plus
@@ -42,7 +41,6 @@ import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import RTag from "@/v2/lib/primitives/RTag/RTag.vue";
 
 defineOptions({ inheritAttrs: false });
-
 interface Props {
   modelValue?: string[];
   /** Optional suggestion list. Typed values that don't match are still
@@ -68,7 +66,6 @@ interface Props {
    *  the affordance reads identically to RTextField's clearable. */
   clearable?: boolean;
 }
-
 const props = withDefaults(defineProps<Props>(), {
   modelValue: () => [],
   items: () => [],
@@ -85,11 +82,9 @@ const props = withDefaults(defineProps<Props>(), {
   noSuggestions: false,
   clearable: false,
 });
-
 const emit = defineEmits<{
   (e: "update:modelValue", value: string[]): void;
 }>();
-
 const slots = useSlots();
 void slots;
 
