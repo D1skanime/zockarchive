@@ -472,70 +472,70 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 247",
+    "location": "Zeile 248",
     "text": "Sie sollten mich nicht sehen",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 264",
+    "location": "Zeile 268",
     "text": "Öffnungs- und Schließverzögerungen",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 295",
+    "location": "Zeile 299",
     "text": "Gesteuert (v-model)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 320",
+    "location": "Zeile 324",
     "text": "Abstandsstufen",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 348",
+    "location": "Zeile 352",
     "text": "Symbol-Werkzeugleiste (Praxisbeispiel)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 385",
+    "location": "Zeile 389",
     "text": "Berührungsbegrenzung (play)",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 386",
+    "location": "Zeile 390",
     "text": "Tooltip-Inhalt",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 428",
+    "location": "Zeile 432",
     "text": "Per Tippen öffnen (play)",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 430",
+    "location": "Zeile 434",
     "text": "Tooltip-Inhalt",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 480",
+    "location": "Zeile 484",
     "text": "Formularfeld-Hilfe (am Elternelement)",
     "status": "german"
   },
@@ -738,231 +738,231 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 255",
+    "location": "Zeile 259",
     "text": "Zeige auf mich, nichts passiert",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 269",
+    "location": "Zeile 273",
     "text": "sofort (0 ms)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 274",
+    "location": "Zeile 278",
     "text": "Standard 300 ms",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 279",
+    "location": "Zeile 283",
     "text": "langsam 800 ms",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 284",
+    "location": "Zeile 288",
     "text": "verzögertes Schließen · 600 ms",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 271",
+    "location": "Zeile 275",
     "text": "0 ms",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 276",
+    "location": "Zeile 280",
     "text": "300 ms",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 281",
+    "location": "Zeile 285",
     "text": "800 ms",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 286",
+    "location": "Zeile 290",
     "text": "verzögert",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 304",
+    "location": "Zeile 308",
     "text": "Die Schaltfläche darunter schaltet um, Hover bewirkt hier nichts.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 306",
+    "location": "Zeile 310",
     "text": "Hover-Ziel",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 309",
+    "location": "Zeile 313",
     "text": "{{ open ? \"Tooltip ausblenden\" : \"Tooltip anzeigen\" }}",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 310",
+    "location": "Zeile 314",
     "text": "{{ open ? \"Tooltip ausblenden\" : \"Tooltip anzeigen\" }}",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 325",
+    "location": "Zeile 329",
     "text": "Abstand 0 (bündig)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 330",
+    "location": "Zeile 334",
     "text": "Abstand 6 (Standard)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 335",
+    "location": "Zeile 339",
     "text": "Abstand 14 (weit)",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 327",
+    "location": "Zeile 331",
     "text": "0",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 332",
+    "location": "Zeile 336",
     "text": "6",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 337",
+    "location": "Zeile 341",
     "text": "14",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 354",
+    "location": "Zeile 358",
     "text": "Filter",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 356",
+    "location": "Zeile 360",
     "text": "Filter",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 359",
+    "location": "Zeile 363",
     "text": "Sortieren",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 361",
+    "location": "Zeile 365",
     "text": "Sortieren",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 364",
+    "location": "Zeile 368",
     "text": "Suche",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 366",
+    "location": "Zeile 370",
     "text": "Suche",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 369",
+    "location": "Zeile 373",
     "text": "Weitere Aktionen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 371",
+    "location": "Zeile 375",
     "text": "Weitere Aktionen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 394",
+    "location": "Zeile 398",
     "text": "Hover-Ziel",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 442",
+    "location": "Zeile 446",
     "text": "Tippen-Ziel",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 491",
+    "location": "Zeile 495",
     "text": "Token werden bei der Erstellung nur einmal gezeigt, bewahren Sie Ihren sicher auf.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 485",
+    "location": "Zeile 489",
     "text": "API-Token",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 489",
+    "location": "Zeile 493",
     "text": "?",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
-    "location": "Zeile 494",
+    "location": "Zeile 498",
     "text": "xxxxx-xxxxx-xxxxx-xxxxx",
     "status": "german"
   },
