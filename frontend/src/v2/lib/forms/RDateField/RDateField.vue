@@ -441,15 +441,14 @@ onBeforeUnmount(() => {
         <!-- Inline clear — wipes the value without opening the picker.
              `mousedown.prevent` keeps focus on the field so subsequent
              keypresses don't surprise the user by reaching the body. -->
-        <button
+        <RBtn
           type="button"
+          icon="mdi-close-circle"
           class="r-date-field__clear"
           :aria-label="clearLabel"
           @mousedown.prevent
           @click.stop="clearValue"
-        >
-          <RIcon icon="mdi-close-circle" size="x-small" />
-        </button>
+        />
       </template>
     </RTextField>
 
@@ -469,43 +468,39 @@ onBeforeUnmount(() => {
                outer two step a year, the inner two step a month, so the
                common moves are both one click away. -->
           <div class="r-date-cal__head">
-            <button
+            <RBtn
               type="button"
+              icon="mdi-chevron-double-left"
               class="r-date-cal__nav"
               aria-label="Previous year"
               @click="shiftYear(-1)"
-            >
-              <RIcon icon="mdi-chevron-double-left" size="x-small" />
-            </button>
-            <button
+            />
+            <RBtn
               type="button"
+              icon="mdi-chevron-left"
               class="r-date-cal__nav"
               aria-label="Previous month"
               @click="shiftMonth(-1)"
-            >
-              <RIcon icon="mdi-chevron-left" size="x-small" />
-            </button>
+            />
 
             <div class="r-date-cal__title" aria-live="polite">
               {{ monthLabel }}
             </div>
 
-            <button
+            <RBtn
               type="button"
+              icon="mdi-chevron-right"
               class="r-date-cal__nav"
               aria-label="Next month"
               @click="shiftMonth(1)"
-            >
-              <RIcon icon="mdi-chevron-right" size="x-small" />
-            </button>
-            <button
+            />
+            <RBtn
               type="button"
+              icon="mdi-chevron-double-right"
               class="r-date-cal__nav"
               aria-label="Next year"
               @click="shiftYear(1)"
-            >
-              <RIcon icon="mdi-chevron-double-right" size="x-small" />
-            </button>
+            />
           </div>
 
           <!-- Weekday header. `aria-hidden` because the day cells carry

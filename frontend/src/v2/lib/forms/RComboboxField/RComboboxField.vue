@@ -37,6 +37,7 @@ import {
   useSlots,
   watch,
 } from "vue";
+import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
 import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import RTag from "@/v2/lib/primitives/RTag/RTag.vue";
 
@@ -356,16 +357,15 @@ const showDetails = computed(
           :text="chip"
         >
           <template v-if="closableChips" #append>
-            <button
+            <RBtn
               type="button"
+              icon="mdi-close"
               class="r-combobox-field__chip-close"
               tabindex="-1"
               aria-label="Remove"
               @mousedown.prevent
               @click.stop="removeAt(i)"
-            >
-              <RIcon icon="mdi-close" size="x-small" />
-            </button>
+            />
           </template>
         </RTag>
 
@@ -389,17 +389,16 @@ const showDetails = computed(
            per-chip X (`closableChips`) still removes individual chips;
            this is the "reset the field" affordance that mirrors
            RTextField's clearable. -->
-      <button
+      <RBtn
         v-if="showClear"
         type="button"
+        icon="mdi-close-circle"
         class="r-combobox-field__clear"
         tabindex="-1"
         aria-label="Clear"
         @mousedown.prevent
         @click.stop="clearAll"
-      >
-        <RIcon icon="mdi-close-circle" size="x-small" />
-      </button>
+      />
     </label>
 
     <Teleport to="body">

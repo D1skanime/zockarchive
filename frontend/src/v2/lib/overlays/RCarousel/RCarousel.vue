@@ -209,14 +209,13 @@ function onBackdropClick(event: MouseEvent) {
       tabindex="-1"
       @click="onBackdropClick"
     >
-      <button
+      <RBtn
         type="button"
+        icon="mdi-close"
         class="r-carousel__close"
         :aria-label="closeLabel"
         @click="close"
-      >
-        <RIcon icon="mdi-close" size="20" />
-      </button>
+      />
 
       <!-- Stage: holds the transitioning active item, vertically + horizontally
            centred. The .self click dismisses on the padded backdrop area
@@ -240,26 +239,24 @@ function onBackdropClick(event: MouseEvent) {
         </Transition>
       </div>
 
-      <button
+      <RBtn
         v-if="showArrowsResolved"
         type="button"
+        icon="mdi-chevron-left"
         class="r-carousel__nav r-carousel__nav--prev"
         :aria-label="prevLabel"
         :disabled="!loop && safeIndex === 0"
         @click.stop="go(-1)"
-      >
-        <RIcon icon="mdi-chevron-left" size="36" />
-      </button>
-      <button
+      />
+      <RBtn
         v-if="showArrowsResolved"
         type="button"
+        icon="mdi-chevron-right"
         class="r-carousel__nav r-carousel__nav--next"
         :aria-label="nextLabel"
         :disabled="!loop && safeIndex === total - 1"
         @click.stop="go(1)"
-      >
-        <RIcon icon="mdi-chevron-right" size="36" />
-      </button>
+      />
 
       <!-- Footer column: thumbnails first, counter below them so the chip
            never floats over the previews. -->

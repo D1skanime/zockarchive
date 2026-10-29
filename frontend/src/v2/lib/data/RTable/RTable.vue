@@ -27,6 +27,7 @@
 // column or starting at "asc" on a new column. The store/composable
 // owns the actual sort state; RTable is pure UI.
 import { computed, onBeforeUnmount, ref, watch } from "vue";
+import RBtn from "../../primitives/RBtn/RBtn.vue";
 import RIcon from "../../primitives/RIcon/RIcon.vue";
 import RSkeletonBlock from "../../primitives/RSkeletonBlock/RSkeletonBlock.vue";
 import type {
@@ -175,9 +176,10 @@ onBeforeUnmount(() => {
                 : undefined
           "
         >
-          <button
+          <RBtn
             v-if="col.sortable"
             type="button"
+            variant="plain"
             class="r-table__header-sort"
             :class="{
               'r-table__header-sort--active': sortKey === col.key,
@@ -193,7 +195,7 @@ onBeforeUnmount(() => {
               size="14"
               class="r-table__header-icon"
             />
-          </button>
+          </RBtn>
           <span v-else class="r-table__header-label">{{ col.label }}</span>
 
           <slot :name="`header.${col.key}`" :column="col" />

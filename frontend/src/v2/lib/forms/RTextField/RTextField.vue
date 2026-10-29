@@ -28,6 +28,7 @@ import {
   useSlots,
   watch,
 } from "vue";
+import RBtn from "../../primitives/RBtn/RBtn.vue";
 import RIcon from "../../primitives/RIcon/RIcon.vue";
 import RProgressCircular from "../../primitives/RProgressCircular/RProgressCircular.vue";
 import RTooltip from "../../structural/RTooltip/RTooltip.vue";
@@ -540,17 +541,16 @@ function onAppendInnerClick(evt: MouseEvent) {
           :color="resolvedColor"
           indeterminate
         />
-        <button
+        <RBtn
           v-else-if="showClear"
           type="button"
+          icon="mdi-close-circle"
           class="r-text-field__clear"
           tabindex="-1"
           aria-label="Clear"
           @mousedown.prevent
           @click.stop="clear"
-        >
-          <RIcon icon="mdi-close-circle" size="x-small" />
-        </button>
+        />
         <slot v-else name="append-inner">
           <RIcon
             v-if="appendInnerIcon"

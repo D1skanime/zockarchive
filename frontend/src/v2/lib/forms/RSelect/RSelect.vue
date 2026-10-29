@@ -35,6 +35,7 @@ import {
   watch,
 } from "vue";
 import { shouldAutofocusSearch } from "@/v2/utils/autofocus";
+import RBtn from "../../primitives/RBtn/RBtn.vue";
 import RDivider from "../../primitives/RDivider/RDivider.vue";
 import RIcon from "../../primitives/RIcon/RIcon.vue";
 import RProgressCircular from "../../primitives/RProgressCircular/RProgressCircular.vue";
@@ -983,16 +984,15 @@ const hasPrependInner = computed(
         >
           {{ allOptionLabel }}
           <template v-if="closableChips" #append>
-            <button
+            <RBtn
               type="button"
+              icon="mdi-close"
               class="r-select__chip-close"
               tabindex="-1"
               aria-label="Remove"
               @mousedown.prevent
               @click.stop="isAllSelected = false"
-            >
-              <RIcon icon="mdi-close" size="x-small" />
-            </button>
+            />
           </template>
         </RTag>
         <span v-else-if="!hasSelection" class="r-select__placeholder">
@@ -1020,16 +1020,15 @@ const hasPrependInner = computed(
               {{ item.title }}
             </slot>
             <template v-if="closableChips" #append>
-              <button
+              <RBtn
                 type="button"
+                icon="mdi-close"
                 class="r-select__chip-close"
                 tabindex="-1"
                 aria-label="Remove"
                 @mousedown.prevent
                 @click.stop="removeSelection(item.value)"
-              >
-                <RIcon icon="mdi-close" size="x-small" />
-              </button>
+              />
             </template>
           </RTag>
           <RTag
@@ -1076,17 +1075,16 @@ const hasPrependInner = computed(
           :color="resolvedColor"
           indeterminate
         />
-        <button
+        <RBtn
           v-else-if="showClear"
           type="button"
+          icon="mdi-close-circle"
           class="r-select__clear"
           tabindex="-1"
           aria-label="Clear"
           @mousedown.prevent
           @click.stop="clear"
-        >
-          <RIcon icon="mdi-close-circle" size="x-small" />
-        </button>
+        />
         <RIcon
           v-if="appendInnerIcon"
           :icon="appendInnerIcon"
