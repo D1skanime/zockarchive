@@ -545,6 +545,7 @@ function onAppendInnerClick(evt: MouseEvent) {
           v-else-if="showClear"
           type="button"
           icon="mdi-close-circle"
+          size="x-small"
           class="r-text-field__clear"
           tabindex="-1"
           aria-label="Clear"
@@ -884,6 +885,8 @@ function onAppendInnerClick(evt: MouseEvent) {
   background: transparent;
   border: 0;
   padding: 2px;
+  height: auto;
+  min-height: 0;
   cursor: pointer;
   color: var(--r-color-fg-muted);
   border-radius: 50%;

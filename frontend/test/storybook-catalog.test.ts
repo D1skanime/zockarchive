@@ -7,6 +7,12 @@ import {
 } from "@/v2/storybook/compositionInventory";
 
 describe("Storybook-Katalog", () => {
+  it("documents the shared table sort control", () => {
+    expect(
+      compositionInventory["lib/data/RTable/RTable.stories.ts"].primitives,
+    ).toContain("RBtn");
+  });
+
   it("uses resolvable primitive docs targets in every composition", () => {
     for (const [path, entry] of Object.entries(compositionInventory)) {
       expect(path).toMatch(/(?:^InUse|\.stories\.ts$)/);

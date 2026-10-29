@@ -23,7 +23,7 @@ export const compositionInventory = {
   },
   "components/shared/AssetStrip.stories.ts": { primitives: ["RBtn", "RCard"] },
   "lib/data/RTable/RTable.stories.ts": {
-    primitives: ["RIcon", "RSkeletonBlock"],
+    primitives: ["RBtn", "RIcon", "RSkeletonBlock"],
   },
   "lib/forms/RCheckbox/RCheckbox.stories.ts": { primitives: ["RIcon"] },
   "lib/forms/RComboboxField/RComboboxField.stories.ts": {

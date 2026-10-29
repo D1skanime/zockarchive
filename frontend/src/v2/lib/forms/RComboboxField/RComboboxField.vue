@@ -360,6 +360,7 @@ const showDetails = computed(
             <RBtn
               type="button"
               icon="mdi-close"
+              size="x-small"
               class="r-combobox-field__chip-close"
               tabindex="-1"
               aria-label="Remove"
@@ -393,6 +394,7 @@ const showDetails = computed(
         v-if="showClear"
         type="button"
         icon="mdi-close-circle"
+        size="x-small"
         class="r-combobox-field__clear"
         tabindex="-1"
         aria-label="Clear"
@@ -631,6 +633,8 @@ const showDetails = computed(
   margin-left: 2px;
   margin-right: -4px;
   padding: 1px;
+  height: auto;
+  min-height: 0;
   display: inline-grid;
   place-items: center;
   border-radius: 3px;
@@ -665,6 +669,8 @@ const showDetails = computed(
   background: transparent;
   border: 0;
   padding: 2px;
+  height: auto;
+  min-height: 0;
   margin-right: var(--r-cf-pad-x);
   align-self: center;
   cursor: pointer;

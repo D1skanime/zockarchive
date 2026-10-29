@@ -180,6 +180,7 @@ onBeforeUnmount(() => {
             v-if="col.sortable"
             type="button"
             variant="plain"
+            size="x-small"
             class="r-table__header-sort"
             :class="{
               'r-table__header-sort--active': sortKey === col.key,
@@ -363,6 +364,8 @@ onBeforeUnmount(() => {
   background: transparent;
   border: 0;
   padding: 0;
+  height: auto;
+  min-height: 0;
   font: inherit;
   color: inherit;
   display: inline-flex;

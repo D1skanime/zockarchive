@@ -987,6 +987,7 @@ const hasPrependInner = computed(
             <RBtn
               type="button"
               icon="mdi-close"
+              size="x-small"
               class="r-select__chip-close"
               tabindex="-1"
               aria-label="Remove"
@@ -1023,6 +1024,7 @@ const hasPrependInner = computed(
               <RBtn
                 type="button"
                 icon="mdi-close"
+                size="x-small"
                 class="r-select__chip-close"
                 tabindex="-1"
                 aria-label="Remove"
@@ -1079,6 +1081,7 @@ const hasPrependInner = computed(
           v-else-if="showClear"
           type="button"
           icon="mdi-close-circle"
+          size="x-small"
           class="r-select__clear"
           tabindex="-1"
           aria-label="Clear"
@@ -1448,6 +1451,8 @@ const hasPrependInner = computed(
   color: inherit;
   cursor: pointer;
   padding: 0 0 0 2px;
+  height: auto;
+  min-height: 0;
   display: inline-flex;
   align-items: center;
 }
@@ -1485,6 +1490,8 @@ const hasPrependInner = computed(
   background: transparent;
   border: 0;
   padding: 2px;
+  height: auto;
+  min-height: 0;
   cursor: pointer;
   color: var(--r-color-fg-muted);
   border-radius: 50%;
