@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ref } from "vue";
 import RTextField from "@/v2/lib/forms/RTextField/RTextField.vue";
 import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import RDrawer from "./RDrawer.vue";
 
 const meta: Meta<typeof RDrawer> = {
-  title: "Overlays/RDrawer",
+  title: "Overlays/Zusammengesetzt/RDrawer",
   component: RDrawer,
+  parameters: compositionParameters("lib/overlays/RDrawer/RDrawer.stories.ts"),
   argTypes: {
     side: { control: "inline-radio", options: ["left", "right"] },
     width: { control: "text" },

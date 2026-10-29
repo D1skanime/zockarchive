@@ -3,7 +3,7 @@ import { onMounted, onScopeDispose, ref } from "vue";
 import RProgressLinear from "./RProgressLinear.vue";
 
 const meta: Meta<typeof RProgressLinear> = {
-  title: "Primitives/RProgressLinear",
+  title: "Grundelemente/Grundbaustein/RProgressLinear",
   component: RProgressLinear,
   argTypes: {
     modelValue: { control: { type: "range", min: 0, max: 100, step: 1 } },

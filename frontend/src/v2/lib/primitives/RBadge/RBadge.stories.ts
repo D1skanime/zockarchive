@@ -5,7 +5,7 @@ import RIcon from "../RIcon/RIcon.vue";
 import RBadge from "./RBadge.vue";
 
 const meta: Meta<typeof RBadge> = {
-  title: "Primitives/RBadge",
+  title: "Grundelemente/Grundbaustein/RBadge",
   component: RBadge,
   argTypes: {
     content: { control: "text" },

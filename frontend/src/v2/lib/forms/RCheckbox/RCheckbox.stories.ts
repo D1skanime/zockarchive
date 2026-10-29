@@ -19,7 +19,7 @@ const OVERRIDE_STATES: RCheckboxState[] = [
 ];
 
 const meta: Meta<typeof RCheckbox> = {
-  title: "Forms/RCheckbox",
+  title: "Formulare/Grundbaustein/RCheckbox",
   component: RCheckbox,
   argTypes: {
     label: { control: "text" },

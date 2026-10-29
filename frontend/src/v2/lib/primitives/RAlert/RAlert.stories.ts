@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ref } from "vue";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import "./RAlert.stories.css";
 import RAlert from "./RAlert.vue";
 
 const meta: Meta<typeof RAlert> = {
-  title: "Primitives/RAlert",
+  title: "Grundelemente/Zusammengesetzt/RAlert",
   component: RAlert,
+  parameters: compositionParameters("lib/primitives/RAlert/RAlert.stories.ts"),
   argTypes: {
     type: {
       control: "select",

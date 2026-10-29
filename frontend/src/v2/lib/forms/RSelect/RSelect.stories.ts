@@ -25,7 +25,7 @@ const PLATFORMS = [
 ];
 
 const meta: Meta<typeof RSelect> = {
-  title: "Forms/RSelect",
+  title: "Formulare/Grundbaustein/RSelect",
   component: RSelect,
   argTypes: {
     variant: {

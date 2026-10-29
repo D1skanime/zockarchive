@@ -89,7 +89,7 @@ export const compositionInventory = {
     primitives: ["RAvatar", "RIcon"],
   },
   "lib/structural/RTooltip/RTooltip.stories.ts": { primitives: ["RIcon"] },
-  "InUse.stories.ts": {
+  "lib/InUse.stories.ts": {
     primitives: [
       "RAlert",
       "RBtn",
@@ -97,6 +97,7 @@ export const compositionInventory = {
       "RDivider",
       "RDrawer",
       "RForm",
+      "RSelect",
       "RTextField",
     ],
   },

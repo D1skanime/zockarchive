@@ -14,7 +14,7 @@ const PANEL_STYLE = [
 ].join(";");
 
 const meta: Meta<typeof RMenuItem> = {
-  title: "Menus/RMenuItem",
+  title: "Menüs/Grundbaustein/RMenuItem",
   component: RMenuItem,
   argTypes: {
     label: { control: "text" },

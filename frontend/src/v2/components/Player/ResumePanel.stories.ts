@@ -125,7 +125,7 @@ interface Args {
 }
 
 const meta: Meta<Args> = {
-  title: "Player/ResumePanel (composition)",
+  title: "Player/Zusammengesetzt/ResumePanel",
   decorators: [
     () => ({
       template: `

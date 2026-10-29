@@ -4,7 +4,7 @@ import RBtn from "../RBtn/RBtn.vue";
 import RSteps from "./RSteps.vue";
 
 const meta: Meta<typeof RSteps> = {
-  title: "Primitives/RSteps",
+  title: "Grundelemente/Grundbaustein/RSteps",
   component: RSteps,
   argTypes: {
     current: { control: { type: "number", min: 1, max: 5 } },

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RPlatformIcon from "./RPlatformIcon.vue";
 
 const meta: Meta<typeof RPlatformIcon> = {
-  title: "Media/RPlatformIcon",
+  title: "Medien/Grundbaustein/RPlatformIcon",
   component: RPlatformIcon,
   argTypes: {
     name: { control: "text" },

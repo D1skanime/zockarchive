@@ -22,7 +22,7 @@ const spine = face("SPINE", 48, 400, "indigo");
 const wideSpine = face("SPINE", 400, 48, "indigo");
 
 const meta: Meta<typeof RBox3D> = {
-  title: "Media/RBox3D",
+  title: "Medien/Grundbaustein/RBox3D",
   component: RBox3D,
   argTypes: {
     front: { control: "text" },

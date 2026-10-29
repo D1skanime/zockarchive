@@ -3,7 +3,7 @@ import RListItem from "../RListItem/RListItem.vue";
 import RList from "./RList.vue";
 
 const meta: Meta<typeof RList> = {
-  title: "Structural/RList",
+  title: "Struktur/Grundbaustein/RList",
   component: RList,
   argTypes: {
     density: {

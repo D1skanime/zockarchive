@@ -3,7 +3,7 @@ import { ref } from "vue";
 import RDateField from "./RDateField.vue";
 
 const meta: Meta<typeof RDateField> = {
-  title: "Forms/RDateField",
+  title: "Formulare/Grundbaustein/RDateField",
   component: RDateField,
   argTypes: {
     firstDayOfWeek: {

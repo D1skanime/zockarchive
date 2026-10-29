@@ -4,7 +4,7 @@ import RList from "../RList/RList.vue";
 import RListItem from "./RListItem.vue";
 
 const meta: Meta<typeof RListItem> = {
-  title: "Structural/RListItem",
+  title: "Struktur/Grundbaustein/RListItem",
   component: RListItem,
   argTypes: {
     title: { control: "text" },

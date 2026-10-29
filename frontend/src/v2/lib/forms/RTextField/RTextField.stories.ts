@@ -4,7 +4,7 @@ import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
 import RTextField from "./RTextField.vue";
 
 const meta: Meta<typeof RTextField> = {
-  title: "Forms/RTextField",
+  title: "Formulare/Grundbaustein/RTextField",
   component: RTextField,
   argTypes: {
     variant: {

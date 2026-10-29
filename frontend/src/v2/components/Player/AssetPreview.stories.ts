@@ -64,7 +64,7 @@ function makeState(
 }
 
 const meta: Meta<typeof AssetPreview> = {
-  title: "Player/AssetPreview",
+  title: "Player/Zusammengesetzt/AssetPreview",
   component: AssetPreview,
   decorators: [
     () => ({

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RVirtualScroller from "./RVirtualScroller.vue";
 
 const meta: Meta<typeof RVirtualScroller> = {
-  title: "Structural/RVirtualScroller",
+  title: "Struktur/Grundbaustein/RVirtualScroller",
   component: RVirtualScroller,
   argTypes: {
     overscan: { control: "number" },

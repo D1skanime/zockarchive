@@ -62,7 +62,7 @@ function makeState(overrides: Partial<StateSchema> = {}): StateSchema {
 }
 
 const meta: Meta<typeof AssetCard> = {
-  title: "Media/AssetCard",
+  title: "Player/Zusammengesetzt/AssetCard",
   component: AssetCard,
   argTypes: {
     type: { control: "inline-radio", options: ["save", "state"] },

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RSkeletonBlock from "./RSkeletonBlock.vue";
 
 const meta: Meta<typeof RSkeletonBlock> = {
-  title: "Primitives/RSkeletonBlock",
+  title: "Grundelemente/Grundbaustein/RSkeletonBlock",
   component: RSkeletonBlock,
   argTypes: {
     width: { control: "text" },

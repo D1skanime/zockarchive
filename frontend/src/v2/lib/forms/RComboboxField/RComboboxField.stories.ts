@@ -3,7 +3,7 @@ import { ref } from "vue";
 import RComboboxField from "./RComboboxField.vue";
 
 const meta: Meta<typeof RComboboxField> = {
-  title: "Forms/RComboboxField",
+  title: "Formulare/Grundbaustein/RComboboxField",
   component: RComboboxField,
   argTypes: {
     label: { control: "text" },

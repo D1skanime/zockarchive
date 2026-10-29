@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { onBeforeUnmount, onMounted } from "vue";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import RTable from "./RTable.vue";
 import type { RTableColumn } from "./types";
 
@@ -7,10 +8,11 @@ import type { RTableColumn } from "./types";
 // Vue's compiled type narrows T to `unknown` here, which Storybook's
 // Meta<typeof RTable> can't reconcile with our concrete DemoRow stories.
 const meta: Meta = {
-  title: "Data/RTable",
+  title: "Daten/Zusammengesetzt/RTable",
   // RTable is generic, so its component-typed shape doesn't fit
   // Storybook's `component` slot. The cast is narrow + intentional.
   component: RTable as never,
+  parameters: compositionParameters("lib/data/RTable/RTable.stories.ts"),
   argTypes: {
     loading: { control: "boolean" },
     sortKey: { control: "text" },

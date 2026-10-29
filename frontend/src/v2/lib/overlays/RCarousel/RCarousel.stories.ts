@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { type Component, ref } from "vue";
 import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import RCarousel from "./RCarousel.vue";
 
 // RCarousel is generic (`<T>`), so its component-typed shape doesn't fit
@@ -24,8 +25,11 @@ const SAMPLES = [
 ];
 
 const meta: Meta = {
-  title: "Overlays/RCarousel",
+  title: "Overlays/Zusammengesetzt/RCarousel",
   component: RCarousel as never,
+  parameters: compositionParameters(
+    "lib/overlays/RCarousel/RCarousel.stories.ts",
+  ),
   argTypes: {
     fullscreen: { control: "boolean" },
     loop: { control: "boolean" },

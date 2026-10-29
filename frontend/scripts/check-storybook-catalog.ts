@@ -29,7 +29,9 @@ function fail(message: string): never {
 
 for (const story of stories) {
   const source = readFileSync(join(root, story), "utf8");
-  const title = source.match(/title:\s*["']([^"']+)["']/)?.[1];
+  const title = source.match(
+    /const meta[\s\S]*?title:\s*["']([^"']+)["']/,
+  )?.[1];
   if (!title) fail(`${story} has no static title`);
   if (story === "src/v2/components/shared/BrandMotionPreview.stories.ts")
     continue;
@@ -45,7 +47,6 @@ for (const story of stories) {
       "Structural",
       "Data",
       "Menus",
-      "Overlays",
       "Media",
       "Shared",
       "Brand",
@@ -57,7 +58,7 @@ for (const story of stories) {
   const record =
     compositionInventory[inventoryPath as keyof typeof compositionInventory];
   const hasDeclaration = source.includes("compositionParameters(");
-  if (record && !hasDeclaration)
+  if (record && title.includes("/Zusammengesetzt/") && !hasDeclaration)
     fail(`${story} is missing its inventory declaration`);
   if (!record && hasDeclaration)
     fail(`${story} has an unexpected inventory declaration`);

@@ -4,7 +4,7 @@ import RTag from "@/v2/lib/primitives/RTag/RTag.vue";
 import RCollapsible from "./RCollapsible.vue";
 
 const meta: Meta<typeof RCollapsible> = {
-  title: "Structural/RCollapsible",
+  title: "Struktur/Grundbaustein/RCollapsible",
   component: RCollapsible,
   argTypes: {
     title: { control: "text" },

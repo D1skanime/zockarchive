@@ -94,7 +94,7 @@ function manyStates(n: number, withScreenshots = true): StateSchema[] {
 // ── Meta ─────────────────────────────────────────────────────────
 
 const meta: Meta<typeof AssetStrip> = {
-  title: "Shared/AssetStrip",
+  title: "Geteilt/Zusammengesetzt/AssetStrip",
   component: AssetStrip,
   decorators: [
     () => ({

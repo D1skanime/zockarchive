@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RCard from "./RCard.vue";
 
 const meta: Meta<typeof RCard> = {
-  title: "Primitives/RCard",
+  title: "Grundelemente/Grundbaustein/RCard",
   component: RCard,
   argTypes: {
     variant: {

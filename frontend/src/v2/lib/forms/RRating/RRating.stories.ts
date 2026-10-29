@@ -4,7 +4,7 @@ import { ref } from "vue";
 import RRating from "./RRating.vue";
 
 const meta: Meta<typeof RRating> = {
-  title: "Forms/RRating",
+  title: "Formulare/Grundbaustein/RRating",
   component: RRating,
   argTypes: {
     length: { control: "number" },

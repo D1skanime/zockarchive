@@ -3,7 +3,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import RProgressCircular from "./RProgressCircular.vue";
 
 const meta: Meta<typeof RProgressCircular> = {
-  title: "Primitives/RProgressCircular",
+  title: "Grundelemente/Grundbaustein/RProgressCircular",
   component: RProgressCircular,
   argTypes: {
     indeterminate: { control: "boolean" },

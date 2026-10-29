@@ -3,7 +3,7 @@ import { ref } from "vue";
 import RChip from "./RChip.vue";
 
 const meta: Meta<typeof RChip> = {
-  title: "Primitives/RChip",
+  title: "Grundelemente/Grundbaustein/RChip",
   component: RChip,
   argTypes: {
     variant: {

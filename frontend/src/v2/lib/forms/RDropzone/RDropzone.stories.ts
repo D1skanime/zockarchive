@@ -4,7 +4,7 @@ import { ref } from "vue";
 import RDropzone from "./RDropzone.vue";
 
 const meta: Meta<typeof RDropzone> = {
-  title: "Forms/RDropzone",
+  title: "Formulare/Grundbaustein/RDropzone",
   component: RDropzone,
   argTypes: {
     title: { control: "text" },

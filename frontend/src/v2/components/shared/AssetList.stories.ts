@@ -44,7 +44,7 @@ function makeSave(i: number, overrides: Partial<SaveSchema> = {}): SaveSchema {
 }
 
 const meta: Meta<typeof AssetList> = {
-  title: "Shared/AssetList",
+  title: "Geteilt/Zusammengesetzt/AssetList",
   component: AssetList,
   decorators: [
     () => ({

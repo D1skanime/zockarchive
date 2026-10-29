@@ -3,7 +3,7 @@ import "./RIcon.stories.css";
 import RIcon from "./RIcon.vue";
 
 const meta: Meta<typeof RIcon> = {
-  title: "Primitives/RIcon",
+  title: "Grundelemente/Grundbaustein/RIcon",
   component: RIcon,
   argTypes: {
     icon: { control: "text" },

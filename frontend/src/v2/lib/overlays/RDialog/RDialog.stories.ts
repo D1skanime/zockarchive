@@ -3,11 +3,13 @@ import { ref } from "vue";
 import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
 import REmptyState from "@/v2/lib/primitives/REmptyState/REmptyState.vue";
 import RProgressCircular from "@/v2/lib/primitives/RProgressCircular/RProgressCircular.vue";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import RDialog from "./RDialog.vue";
 
 const meta: Meta<typeof RDialog> = {
-  title: "Overlays/RDialog",
+  title: "Overlays/Zusammengesetzt/RDialog",
   component: RDialog,
+  parameters: compositionParameters("lib/overlays/RDialog/RDialog.stories.ts"),
   argTypes: {
     icon: { control: "text" },
     width: { control: "text" },

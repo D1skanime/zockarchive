@@ -6,7 +6,7 @@ import RTextField from "../RTextField/RTextField.vue";
 import RForm from "./RForm.vue";
 
 const meta: Meta<typeof RForm> = {
-  title: "Forms/RForm",
+  title: "Formulare/Grundbaustein/RForm",
   component: RForm,
   argTypes: {
     disableEnterSubmit: { control: "boolean" },

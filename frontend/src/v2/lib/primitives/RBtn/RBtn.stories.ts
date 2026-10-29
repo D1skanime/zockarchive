@@ -3,7 +3,7 @@ import { ref } from "vue";
 import RBtn from "./RBtn.vue";
 
 const meta: Meta<typeof RBtn> = {
-  title: "Primitives/RBtn",
+  title: "Grundelemente/Grundbaustein/RBtn",
   component: RBtn,
   argTypes: {
     variant: {

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RLetterHeading from "./RLetterHeading.vue";
 
 const meta: Meta<typeof RLetterHeading> = {
-  title: "Primitives/RLetterHeading",
+  title: "Grundelemente/Grundbaustein/RLetterHeading",
   component: RLetterHeading,
   argTypes: {
     label: { control: "text" },

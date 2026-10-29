@@ -6,7 +6,7 @@ import { defineComponent, h } from "vue";
 
 const tokenSwatches = [
   {
-    title: "Brand",
+    title: "Marke/Grundbaustein",
     vars: [
       "--r-color-brand-primary",
       "--r-color-brand-primary-hover",
@@ -120,7 +120,7 @@ const VisualLanguage = defineComponent({
 });
 
 const meta: Meta<typeof VisualLanguage> = {
-  title: "Visual Language",
+  title: "Marke/Grundbaustein/Visuelle Sprache",
   component: VisualLanguage,
   parameters: {
     layout: "fullscreen",

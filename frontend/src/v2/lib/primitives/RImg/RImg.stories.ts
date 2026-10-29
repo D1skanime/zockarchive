@@ -4,7 +4,7 @@ import "./RImg.stories.css";
 import RImg from "./RImg.vue";
 
 const meta: Meta<typeof RImg> = {
-  title: "Primitives/RImg",
+  title: "Grundelemente/Grundbaustein/RImg",
   component: RImg,
   argTypes: {
     src: { control: "text" },

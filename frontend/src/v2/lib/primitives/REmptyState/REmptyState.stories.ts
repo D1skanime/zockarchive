@@ -3,7 +3,7 @@ import RBtn from "../RBtn/RBtn.vue";
 import REmptyState from "./REmptyState.vue";
 
 const meta: Meta<typeof REmptyState> = {
-  title: "Primitives/REmptyState",
+  title: "Grundelemente/Grundbaustein/REmptyState",
   component: REmptyState,
   argTypes: {
     icon: { control: "text" },

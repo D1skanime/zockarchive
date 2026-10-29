@@ -43,7 +43,7 @@ function fireTap(el: Element, pointerType: "mouse" | "touch") {
 }
 
 const meta: Meta<typeof RTooltip> = {
-  title: "Structural/RTooltip",
+  title: "Struktur/Grundbaustein/RTooltip",
   component: RTooltip,
   argTypes: {
     text: { control: "text" },

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RAvatar from "./RAvatar.vue";
 
 const meta: Meta<typeof RAvatar> = {
-  title: "Primitives/RAvatar",
+  title: "Grundelemente/Grundbaustein/RAvatar",
   component: RAvatar,
   argTypes: {
     size: { control: "text" },

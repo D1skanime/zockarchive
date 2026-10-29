@@ -5,11 +5,13 @@ import RAvatar from "@/v2/lib/primitives/RAvatar/RAvatar.vue";
 import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
 import RDivider from "@/v2/lib/primitives/RDivider/RDivider.vue";
 import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import RMenu from "./RMenu.vue";
 
 const meta: Meta<typeof RMenu> = {
-  title: "Menus/RMenu",
+  title: "Menüs/Zusammengesetzt/RMenu",
   component: RMenu,
+  parameters: compositionParameters("lib/menus/RMenu/RMenu.stories.ts"),
   argTypes: {
     location: {
       control: "inline-radio",

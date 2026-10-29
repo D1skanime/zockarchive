@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RSpinner from "./RSpinner.vue";
 
 const meta: Meta<typeof RSpinner> = {
-  title: "Primitives/RSpinner",
+  title: "Grundelemente/Grundbaustein/RSpinner",
   component: RSpinner,
   argTypes: {
     size: { control: "number" },

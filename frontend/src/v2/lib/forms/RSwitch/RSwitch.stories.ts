@@ -4,7 +4,7 @@ import { ref } from "vue";
 import RSwitch from "./RSwitch.vue";
 
 const meta: Meta<typeof RSwitch> = {
-  title: "Forms/RSwitch",
+  title: "Formulare/Grundbaustein/RSwitch",
   component: RSwitch,
   argTypes: {
     label: { control: "text" },

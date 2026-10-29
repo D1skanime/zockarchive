@@ -183,6 +183,26 @@ Gallery views combine roms, platforms, galleryFilter, galleryView, URL/query com
 
 Views are route orchestrators. Feature components own tabs, dialogs, uploads, and emits. Reusable primitives are in frontend/src/v2/lib; shared UI is in frontend/src/v2/components/shared. AppLayout mounts AppNav, BackgroundArt, BottomNav, GlobalDialogs, SoundtrackMiniPlayer, optional DebugOverlay, and CrtOverlay.
 
+The v2 Storybook catalog is German-only and keeps two complementary ways to
+find a component: the existing kind-first groups (`Grundelemente`,
+`Formulare`, `Struktur`, `Daten`, `Menüs`, `Overlays`, `Medien`, `Player`,
+`Geteilt`, and `Marke`) and the second-level discovery labels
+`Grundbaustein` or `Zusammengesetzt`. `Im Einsatz` is reserved for complete,
+page-context examples. Composite entries derive their `Besteht aus:`
+description and Storybook links from the typed composition inventory, so the
+documentation identifies actual direct primitive dependencies instead of a
+manually maintained copy. `Marke/ZA-Hintergrund/Glasreflexion B` is the
+grandfathered Phase 39 hierarchy exception and remains at that exact location.
+It retains its asset, controls, reduced-motion contract, and login-card
+behavior.
+
+Library components reuse R primitives instead of native controls whenever a
+matching primitive exists. `npm run v2:maintainability` rejects unsupported
+native `button`, `input`, `select`, and `textarea` elements below
+`src/v2/lib`; narrowly scoped semantic exceptions are documented in
+`frontend/docs/v2-lib-native-control-exceptions.md`. The exception list is
+part of the primitive contract, not a general allowlist.
+
 PlatformsIndex.vue uses PlatformTile and list rows. Gallery/Platform.vue uses PlatformHead, GalleryShell, toolbar/filter, virtual rows, card/list modes, selection, and scan actions. GameDetails.vue composes CoverColumn, GameHeader, actions, and detail tabs. PcComponents.vue shows PC components and links DLC to /rom/:rom/dlc/:component. PcDlcDetails.vue resolves a parent ROM and kind dlc component, then renders PcDlcDetail, PcDlcFiles, PcDlcMediaTab, and PcDlcNotesTab. GlobalDialogs is emitter-driven; detail interactions use GameActions, MoreMenu, DownloadSelectionDialog, DownloadManager, MatchRomDialog, RefreshMetadataDialog, EditRomDialog, and DeleteRomDialog.
 
 ---
@@ -359,7 +379,7 @@ URLs, scope, display and service-worker/cache identity are preserved.
 
 package.json declares Node 24, npm >=11.10, and npm@11.13.0. vite.config.js defines @ and @v2, Vue/Vuetify/Tailwind/VitePWA/mkcert plugins, browser-derived CSS targets, PWA support, and proxies for /api, /ws, /netplay, and /openapi.json. DEV_PORT defaults to 5000; HTTP dev uses 3000 and DEV_HTTPS uses 8443. ROM resources are ignored by the watcher.
 
-vitest.config.ts uses happy-dom, globals, vitest.setup.ts, Vuetify inlining, and src/test globs. Tests are colocated with v2 features; Storybook provides interaction/accessibility stories; Playwright is separate. Repository checks also use trunk fmt and trunk check.
+vitest.config.ts uses happy-dom, globals, vitest.setup.ts, Vuetify inlining, and src/test globs. Tests are colocated with v2 features; Storybook composes every lib story and runs its play/a11y coverage. The Storybook catalog check validates the German taxonomy, inventory-derived composition declarations, and generated docs targets after a Storybook build. Playwright is separate. Repository checks also use trunk fmt and trunk check.
 
 ---
 

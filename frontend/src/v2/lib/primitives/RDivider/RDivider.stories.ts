@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RDivider from "./RDivider.vue";
 
 const meta: Meta<typeof RDivider> = {
-  title: "Primitives/RDivider",
+  title: "Grundelemente/Grundbaustein/RDivider",
   component: RDivider,
   argTypes: {
     vertical: { control: "boolean" },

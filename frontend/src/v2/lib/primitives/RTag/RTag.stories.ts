@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import RTag from "./RTag.vue";
 
 const meta: Meta<typeof RTag> = {
-  title: "Primitives/RTag",
+  title: "Grundelemente/Grundbaustein/RTag",
   component: RTag,
   argTypes: {
     prependIcon: { control: "text" },

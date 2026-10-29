@@ -6,7 +6,7 @@ import RCard from "@/v2/lib/primitives/RCard/RCard.vue";
 import RExpandTransition from "./RExpandTransition.vue";
 
 const meta: Meta<typeof RExpandTransition> = {
-  title: "Structural/RExpandTransition",
+  title: "Struktur/Grundbaustein/RExpandTransition",
   component: RExpandTransition,
   argTypes: {
     appear: { control: "boolean" },

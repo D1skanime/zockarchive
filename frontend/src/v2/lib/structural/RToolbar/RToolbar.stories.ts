@@ -4,7 +4,7 @@ import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import RToolbar from "./RToolbar.vue";
 
 const meta: Meta<typeof RToolbar> = {
-  title: "Structural/RToolbar",
+  title: "Struktur/Grundbaustein/RToolbar",
   component: RToolbar,
   argTypes: {
     title: { control: "text" },

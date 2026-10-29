@@ -3,7 +3,7 @@ import { ref } from "vue";
 import RSlider from "./RSlider.vue";
 
 const meta: Meta<typeof RSlider> = {
-  title: "Forms/RSlider",
+  title: "Formulare/Grundbaustein/RSlider",
   component: RSlider,
   // RSlider has no visible label, so every instance needs `ariaLabel`.
   args: { ariaLabel: "Value" },

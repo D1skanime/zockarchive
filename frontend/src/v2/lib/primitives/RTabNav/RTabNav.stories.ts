@@ -4,7 +4,7 @@ import { ref } from "vue";
 import RTabNav from "./RTabNav.vue";
 
 const meta: Meta<typeof RTabNav> = {
-  title: "Primitives/RTabNav",
+  title: "Grundelemente/Grundbaustein/RTabNav",
   component: RTabNav,
   argTypes: {
     size: {
