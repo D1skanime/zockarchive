@@ -16,6 +16,15 @@ For GSD work, the chat is the control plane and `/home/d1sk/pc-game-download-por
 
 - Apply the repository-wide code-size and decomposition rules in CLAUDE.md to every implementation, regardless of which agent, model, phase, or AI tool performs the work.
 
+## ki-run jobs and live UAT
+
+Long autonomous jobs run through `ki-run` (`/home/d1sk/ki-run`) on branches `ki/za-<job-id>` in this checkout.
+
+- While `ki-run status` shows "Arbeitsbereich za: belegt durch <id>", do no manual work in this checkout: no own branch, no direct commits, no file edits.
+- During the user's live UAT of a job, never implement the user's findings yourself. Turn them into feedback and hand them back with `~/ki-run/bin/ki-run reject <id> --feedback-file -` (or `ki-run retry <id> --hint-file -` after `fehlgeschlagen`). The job agent fixes them on the job branch.
+- After every `ki-run` control command (`reject`, `retry`, `answer`, `resume`, `accept`, `uat`) run `ki-run status` and report the actual state to the user, not the expected one.
+- `ki-run accept` (merge and push) only after the user's explicit approval.
+
 ## Documentation completion rule
 
 Follow the "Documentation stays current with implementation" policy in `CLAUDE.md` for every feature and refactor. Include affected domain comments, architecture and workflow descriptions in the same task and PR. Plans, review and verification must account for this work; phase identifiers alone are not domain documentation.
