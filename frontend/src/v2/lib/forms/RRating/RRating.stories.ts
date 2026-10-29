@@ -42,8 +42,8 @@ export const Large: Story = { args: { size: "large" } };
 
 // Keyboard: Tab across the star buttons, Enter/Space commits the rating.
 export const KeyboardNav: Story = {
-  name: "Keyboard navigation (play)",
-  args: { ariaLabel: "Rating" },
+  name: "Tastaturnavigation (play)",
+  args: { ariaLabel: "Bewertung" },
   render: (args) => ({
     components: { RRating },
     setup: () => {

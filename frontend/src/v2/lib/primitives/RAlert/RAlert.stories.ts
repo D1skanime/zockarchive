@@ -45,19 +45,19 @@ export const Success: Story = {
 };
 
 export const Info: Story = {
-  args: { type: "info", text: "Library scan is in progress." },
+  args: { type: "info", text: "Die Bibliothek wird durchsucht." },
 };
 
 export const Warning: Story = {
   args: {
     type: "warning",
-    title: "Hash calculation disabled",
-    text: "ROMs will not be fingerprinted during this scan.",
+    title: "Hash-Berechnung deaktiviert",
+    text: "ROMs werden bei diesem Scan nicht mit einem Fingerabdruck versehen.",
   },
 };
 
 export const Error: Story = {
-  args: { type: "error", text: "Unable to reach the server." },
+  args: { type: "error", text: "Der Server ist nicht erreichbar." },
 };
 
 export const AllTypes: Story = {
@@ -66,10 +66,10 @@ export const AllTypes: Story = {
     components: { RAlert },
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:480px">
-        <RAlert type="success" text="Reset link sent to your email." />
-        <RAlert type="info" text="Library scan is in progress." />
-        <RAlert type="warning" text="Hash calculation is disabled — ROMs won't be fingerprinted." />
-        <RAlert type="error" text="Unable to reach the server." />
+        <RAlert type="success" text="Der Link zum Zurücksetzen wurde an Ihre E-Mail-Adresse gesendet." />
+        <RAlert type="info" text="Die Bibliothek wird durchsucht." />
+        <RAlert type="warning" text="Die Hash-Berechnung ist deaktiviert, ROMs erhalten keinen Fingerabdruck." />
+        <RAlert type="error" text="Der Server ist nicht erreichbar." />
       </div>
     `,
   }),
@@ -78,16 +78,16 @@ export const AllTypes: Story = {
 // ── Variants ────────────────────────────────────────────────────────
 
 export const Variants: Story = {
-  name: "Variants · same type",
+  name: "Varianten · gleicher Typ",
   render: () => ({
     components: { RAlert },
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:480px">
-        <RAlert type="warning" variant="translucent" text="translucent — default · soft tint" />
-        <RAlert type="warning" variant="flat" text="flat — solid colour fill, white text" />
-        <RAlert type="warning" variant="elevated" text="elevated — flat + drop shadow" />
-        <RAlert type="warning" variant="outlined" text="outlined — border only" />
-        <RAlert type="warning" variant="text" text="text — no chrome, coloured text only" />
+        <RAlert type="warning" variant="translucent" text="Durchscheinend · dezente Tönung" />
+        <RAlert type="warning" variant="flat" text="Flach · einfarbige Füllung, weißer Text" />
+        <RAlert type="warning" variant="elevated" text="Erhöht · flach mit Schlagschatten" />
+        <RAlert type="warning" variant="outlined" text="Umrandet · nur Rahmen" />
+        <RAlert type="warning" variant="text" text="Text · keine Fläche, nur farbiger Text" />
       </div>
     `,
   }),
@@ -96,14 +96,14 @@ export const Variants: Story = {
 // ── Density ────────────────────────────────────────────────────────
 
 export const Density: Story = {
-  name: "Density compression",
+  name: "Dichte-Abstufung",
   render: () => ({
     components: { RAlert },
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:480px">
-        <RAlert type="info" density="default" text="default — generous padding for prominent alerts" />
-        <RAlert type="info" density="comfortable" text="comfortable — middle ground" />
-        <RAlert type="info" density="compact" text="compact — inline form-validation feel" />
+        <RAlert type="info" density="default" text="Standard · großzügiger Abstand für wichtige Hinweise" />
+        <RAlert type="info" density="comfortable" text="Komfortabel · ausgewogene Mitte" />
+        <RAlert type="info" density="compact" text="Kompakt · für Validierung direkt im Formular" />
       </div>
     `,
   }),
@@ -118,14 +118,14 @@ export const TitleAndBody: Story = {
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:480px">
         <RAlert type="error">
-          <template #title>Config file not mounted</template>
-          The RomM container couldn't read its config file. Settings changes
-          made here won't persist until the volume is mounted.
+          <template #title>Konfigurationsdatei nicht eingebunden</template>
+          Der RomM-Container konnte seine Konfigurationsdatei nicht lesen. Hier vorgenommene
+          Einstellungsänderungen bleiben erst nach dem Einbinden des Volumes erhalten.
         </RAlert>
         <RAlert type="warning">
-          <template #title>Config file not writable</template>
-          The config file is mounted but read-only. Changes here will apply
-          for this session only.
+          <template #title>Konfigurationsdatei nicht beschreibbar</template>
+          Die Konfigurationsdatei ist eingebunden, aber schreibgeschützt. Änderungen gelten
+          nur für diese Sitzung.
         </RAlert>
       </div>
     `,
@@ -135,21 +135,21 @@ export const TitleAndBody: Story = {
 // ── Icon ───────────────────────────────────────────────────────────
 
 export const CustomIcon: Story = {
-  name: "Icon override / suppress",
+  name: "Symbol überschreiben / ausblenden",
   render: () => ({
     components: { RAlert },
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:480px;font:12px/1.4 sans-serif;color:var(--r-color-fg-muted)">
-        <RAlert type="info" text="Default — auto-picks mdi-information." />
-        <RAlert type="info" icon="mdi-rocket-launch" text="Custom icon override." />
-        <RAlert type="info" :icon="false" text="Icon suppressed — text-only banner." />
+        <RAlert type="info" text="Standard · wählt automatisch mdi-information." />
+        <RAlert type="info" icon="mdi-rocket-launch" text="Benutzerdefiniertes Symbol." />
+        <RAlert type="info" :icon="false" text="Symbol ausgeblendet · reines Textbanner." />
       </div>
     `,
   }),
 };
 
 export const PrependSlot: Story = {
-  name: "Prepend slot (custom prepend)",
+  name: "Vorangestellter Slot (benutzerdefiniert)",
   render: () => ({
     components: { RAlert },
     template: `
@@ -157,7 +157,7 @@ export const PrependSlot: Story = {
         <template #prepend>
           <div class="r-alert-story-spinner" />
         </template>
-        Scanning Nintendo 64… 42 / 128 ROMs
+        Nintendo 64 wird durchsucht … 42 / 128 ROMs
       </RAlert>
     `,
   }),
@@ -166,7 +166,7 @@ export const PrependSlot: Story = {
 // ── Closable ───────────────────────────────────────────────────────
 
 export const Closable: Story = {
-  name: "Closable (interactive)",
+  name: "Schließbar (interaktiv)",
   render: () => ({
     components: { RAlert },
     setup() {
@@ -184,8 +184,8 @@ export const Closable: Story = {
         <RAlert
           v-model="visible"
           type="success"
-          title="Token created"
-          text="Make sure to copy it now — you won't see it again."
+          title="Token erstellt"
+          text="Kopieren Sie ihn jetzt, er wird danach nicht erneut angezeigt."
           closable
         />
         <button
@@ -193,7 +193,7 @@ export const Closable: Story = {
           style="padding:6px 12px;background:var(--r-color-brand-primary);color:white;border:none;border-radius:6px;font:12px/1 sans-serif;cursor:pointer"
           @click="reset"
         >
-          Show again
+          Erneut anzeigen
         </button>
       </div>
     `,
@@ -203,35 +203,35 @@ export const Closable: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const PatcherStatus: Story = {
-  name: "Patcher status (real-world)",
+  name: "Patcher-Status (Praxisbeispiel)",
   render: () => ({
     components: { RAlert },
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:480px">
-        <RAlert type="error" density="compact" text="Unable to load patch file: invalid format." />
-        <RAlert type="info" density="compact" text="Applying patch — patience.xdelta to Game.bin" />
+        <RAlert type="error" density="compact" text="Patch-Datei kann nicht geladen werden: ungültiges Format." />
+        <RAlert type="info" density="compact" text="Patch wird angewendet: patience.xdelta auf Game.bin" />
       </div>
     `,
   }),
 };
 
 export const FormValidation: Story = {
-  name: "Form validation (inline)",
+  name: "Formularvalidierung (direkt)",
   render: () => ({
     components: { RAlert },
     template: `
       <div style="display:flex;flex-direction:column;gap:10px;width:380px;padding:18px;background:var(--r-color-bg-elevated);border-radius:12px">
         <input
           type="text"
-          placeholder="New password"
+          placeholder="Neues Passwort"
           style="padding:8px 12px;background:var(--r-color-surface);border:1px solid var(--r-color-border);border-radius:6px;color:var(--r-color-fg);font:13px/1 sans-serif"
         />
         <input
           type="text"
-          placeholder="Confirm password"
+          placeholder="Passwort bestätigen"
           style="padding:8px 12px;background:var(--r-color-surface);border:1px solid var(--r-color-danger);border-radius:6px;color:var(--r-color-fg);font:13px/1 sans-serif"
         />
-        <RAlert type="error" density="compact" :icon="false" text="Passwords do not match" />
+        <RAlert type="error" density="compact" :icon="false" text="Die Passwörter stimmen nicht überein" />
       </div>
     `,
   }),

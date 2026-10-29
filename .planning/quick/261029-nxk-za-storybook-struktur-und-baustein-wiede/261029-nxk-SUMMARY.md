@@ -15,7 +15,9 @@ quick_task: 261029-nxk
   „Im Einsatz“-Seiten für Dialog, Drawer, Formularfehler und Alerts.
 - Jede als `Zusammengesetzt` katalogisierte Story erhält ihre Beschreibung
   aus dem Inventar. Dadurch beginnen die Beschreibungen mit `Besteht aus:`
-  und die primitive targets use generated Storybook docs links.
+  und verlinken die Grundelemente über generierte Storybook-Dokumentationslinks.
+- Verbliebene sichtbare englische Story-Namen, Beschreibungen, Beispieltexte und
+  Beschriftungen wurden in allen v2-Story-Dateien automatisiert geprüft und übersetzt.
 
 ## Verifikation
 
@@ -24,14 +26,15 @@ quick_task: 261029-nxk
 - `npm run test -- --run test/storybook.test.ts scripts/check-storybook-catalog.test.ts test/storybook-catalog.test.ts` passed, 371 tests.
 - The catalog checker confirms every composed catalog entry carries its
   inventory declaration.
-- `npm run storybook:build` could not run because the pre-existing
-  `frontend/node_modules` directory is owned by `nobody:nogroup` and Storybook
-  cannot create its cache directory.
+- Der Storybook-Build läuft erfolgreich im bestehenden Container mit
+  `docker exec pgdp-dev sh -c 'cd /app/frontend && npx storybook build -o /tmp/storybook-static'`.
+  Dies ist der dokumentierte Standardweg, weil er keine Berechtigungen oder Dateien
+  in den root-eigenen Host-Abhängigkeiten verändert.
 
 ## Bekannte Einschränkungen
 
-- The Storybook build and emitted-index validation remain blocked by the local
-  node_modules permissions. No dependency files or permissions were changed.
+- Der Host-Build bleibt wegen der vorhandenen Eigentümerschaft von `node_modules`
+  ungeeignet. Der Container-Standardweg erzeugt seine Ausgabe nur temporär unter `/tmp`.
 
 ## UAT-Hinweise
 

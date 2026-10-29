@@ -35,7 +35,7 @@ export const Default: Story = {
   render: (args) => ({
     components: { RChip },
     setup: () => ({ args }),
-    template: `<RChip v-bind="args">Action</RChip>`,
+    template: `<RChip v-bind="args">Aktion</RChip>`,
   }),
 };
 
@@ -56,7 +56,7 @@ export const WithIcons: Story = {
 // ── Size ladder ─────────────────────────────────────────────────────
 
 export const SizeLadder: Story = {
-  name: "Size ladder",
+  name: "Größenabstufung",
   render: () => ({
     components: { RChip },
     template: `
@@ -146,20 +146,20 @@ export const TonesFlat: Story = {
 // ── Shape ───────────────────────────────────────────────────────────
 
 export const Label: Story = {
-  name: "Label (square corners)",
+  name: "Beschriftung (eckige Ecken)",
   render: () => ({
     components: { RChip },
     template: `
       <div style="display:flex;gap:14px;align-items:center">
-        <RChip variant="translucent" color="primary">Pill (default)</RChip>
-        <RChip variant="translucent" color="primary" label>Label · square</RChip>
+        <RChip variant="translucent" color="primary">Kapsel (Standard)</RChip>
+        <RChip variant="translucent" color="primary" label>Beschriftung · eckig</RChip>
       </div>
     `,
   }),
 };
 
 export const RoundedLadder: Story = {
-  name: "Rounded override",
+  name: "Abrundung überschreiben",
   render: () => ({
     components: { RChip },
     template: `
@@ -179,15 +179,15 @@ export const RoundedLadder: Story = {
 // ── Closable ────────────────────────────────────────────────────────
 
 export const Closable: Story = {
-  name: "Closable (interactive)",
+  name: "Schließbar (interaktiv)",
   render: () => ({
     components: { RChip },
     setup() {
       const initial = [
-        { id: 1, label: "Adventure", color: "primary" },
-        { id: 2, label: "Platformer", color: "accent" },
+        { id: 1, label: "Abenteuer", color: "primary" },
+        { id: 2, label: "Jump ’n’ Run", color: "accent" },
         { id: 3, label: "JRPG", color: "info" },
-        { id: 4, label: "Co-op", color: "success" },
+        { id: 4, label: "Koop", color: "success" },
       ];
       const tags = ref([...initial]);
       function remove(id: number) {
@@ -243,7 +243,7 @@ export const Disabled: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const GalleryTags: Story = {
-  name: "Tag row (Platform / Collection usage)",
+  name: "Tag-Zeile (Plattform / Sammlung)",
   render: () => ({
     components: { RChip },
     template: `
@@ -254,8 +254,8 @@ export const GalleryTags: Story = {
           <RChip size="x-small" variant="translucent" color="primary">USA</RChip>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:6px">
-          <RChip size="small" variant="translucent" :rounded="20">Adventure</RChip>
-          <RChip size="small" variant="translucent" :rounded="20">Platformer</RChip>
+          <RChip size="small" variant="translucent" :rounded="20">Abenteuer</RChip>
+          <RChip size="small" variant="translucent" :rounded="20">Jump ’n’ Run</RChip>
           <RChip size="small" variant="translucent" :rounded="20">2D</RChip>
         </div>
       </div>

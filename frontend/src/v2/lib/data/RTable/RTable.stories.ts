@@ -98,6 +98,7 @@ const ITEMS: DemoRow[] = [
 ];
 
 export const Default: Story = {
+  name: "Standard",
   args: {
     columns: COLUMNS,
     items: ITEMS,
@@ -118,6 +119,7 @@ export const Default: Story = {
 };
 
 export const Loading: Story = {
+  name: "Laden",
   args: {
     columns: COLUMNS,
     items: [] as DemoRow[],
@@ -136,6 +138,7 @@ export const Loading: Story = {
 };
 
 export const Empty: Story = {
+  name: "Leer",
   args: {
     columns: COLUMNS,
     items: [] as DemoRow[],
@@ -160,6 +163,7 @@ export const Empty: Story = {
 // the attribute for its lifetime and restores it on teardown. Framed at a
 // phone-ish width to mirror the real viewport.
 export const MobileCardStack: Story = {
+  name: "Mobile Kartenansicht",
   args: {
     columns: COLUMNS,
     items: ITEMS,

@@ -36,14 +36,14 @@ export const Default: Story = {
 };
 
 export const NaturalSize: Story = {
-  name: "Natural size (no width / height)",
+  name: "Natürliche Größe (ohne Breite / Höhe)",
   args: { src: LOGO, alt: "RomM logo" },
 };
 
 // ── Sizing ───────────────────────────────────────────────────────────
 
 export const WidthOnly: Story = {
-  name: "Width only — auto height",
+  name: "Nur Breite · automatische Höhe",
   render: () => ({
     components: { RImg },
     template: `
@@ -66,7 +66,7 @@ export const WidthOnly: Story = {
 };
 
 export const CoverFit: Story = {
-  name: "cover · width × height",
+  name: "Abdecken · Breite × Höhe",
   render: () => ({
     components: { RImg },
     template: `
@@ -85,7 +85,7 @@ export const CoverFit: Story = {
 };
 
 export const ContainFit: Story = {
-  name: "contain · width × height",
+  name: "Enthalten · Breite × Höhe",
   render: () => ({
     components: { RImg },
     template: `
@@ -118,7 +118,7 @@ export const ContainFit: Story = {
 };
 
 export const AspectRatio: Story = {
-  name: "aspectRatio (responsive)",
+  name: "Seitenverhältnis (responsiv)",
   render: () => ({
     components: { RImg },
     template: `
@@ -143,7 +143,7 @@ export const AspectRatio: Story = {
 // ── Slots ────────────────────────────────────────────────────────────
 
 export const ErrorSlot: Story = {
-  name: "error slot (fallback)",
+  name: "Fehler-Slot (Ersatz)",
   render: () => ({
     components: { RImg },
     template: `
@@ -152,7 +152,7 @@ export const ErrorSlot: Story = {
           <template #error>
             <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--r-color-fg-faint)">
               <i class="mdi mdi-image-broken-variant" style="font-size:24px"></i>
-              <span style="font-size:10px">missing</span>
+              <span style="font-size:10px">fehlt</span>
             </div>
           </template>
         </RImg>
@@ -163,7 +163,7 @@ export const ErrorSlot: Story = {
 };
 
 export const LoadingSlot: Story = {
-  name: "loading slot (placeholder)",
+  name: "Lade-Slot (Platzhalter)",
   render: () => ({
     components: { RImg },
     setup() {
@@ -214,7 +214,7 @@ export const LoadingSlot: Story = {
         </RImg>
         <div style="display:flex;flex-direction:column;gap:8px;max-width:240px">
           <span>The shimmer is forced visible for 2.5s before the image fetches. Click reload to re-trigger.</span>
-          <button class="r-img-story-reload-btn" type="button" @click="reload">Reload</button>
+          <button class="r-img-story-reload-btn" type="button" @click="reload">Neu laden</button>
         </div>
       </div>
     `,
@@ -222,7 +222,7 @@ export const LoadingSlot: Story = {
 };
 
 export const DefaultSlotOverlay: Story = {
-  name: "default slot (overlay over loaded image)",
+  name: "Standard-Slot (Überlagerung über geladenem Bild)",
   render: () => ({
     components: { RImg },
     template: `
@@ -254,7 +254,7 @@ export const DefaultSlotOverlay: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const Logo: Story = {
-  name: "Logo (AppNav usage)",
+  name: "Logo (AppNav-Verwendung)",
   render: () => ({
     components: { RImg },
     template: `

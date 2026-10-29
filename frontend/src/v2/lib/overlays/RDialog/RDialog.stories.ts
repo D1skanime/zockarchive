@@ -25,6 +25,7 @@ export default meta;
 type Story = StoryObj<typeof RDialog>;
 
 export const Basic: Story = {
+  name: "Grundlegend",
   args: { width: "420", icon: "mdi-information" },
   render: (args) => ({
     components: { RDialog, RBtn },
@@ -34,18 +35,18 @@ export const Basic: Story = {
     },
     template: `
       <div class="r-v2 r-v2-dark" style="padding: 48px; background: #07070f; min-height: 300px;">
-        <RBtn @click="open = true">Open dialog</RBtn>
+        <RBtn @click="open = true">Dialog öffnen</RBtn>
         <RDialog v-bind="args" v-model="open">
           <template #header>
-            <span>Dialog title</span>
+            <span>Dialogtitel</span>
           </template>
           <template #content>
-            <p>This is the dialog body. Keep content concise and actionable.</p>
+            <p>Dies ist der Dialoginhalt. Halte ihn kurz und handlungsorientiert.</p>
           </template>
           <template #footer>
-            <RBtn variant="text" @click="open = false">Cancel</RBtn>
+            <RBtn variant="text" @click="open = false">Abbrechen</RBtn>
             <div style="flex:1" />
-            <RBtn color="primary" @click="open = false">Confirm</RBtn>
+            <RBtn color="primary" @click="open = false">Bestätigen</RBtn>
           </template>
         </RDialog>
       </div>
@@ -67,10 +68,10 @@ export const Loading: Story = {
     },
     template: `
       <div class="r-v2 r-v2-dark" style="padding: 48px; background: #07070f; min-height: 300px;">
-        <RBtn @click="open = true">Open loading dialog</RBtn>
+        <RBtn @click="open = true">Ladedialog öffnen</RBtn>
         <RDialog v-bind="args" v-model="open">
           <template #header>
-            <span>Fetching…</span>
+            <span>Wird geladen…</span>
           </template>
           <template #content>
             <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:140px">
@@ -94,16 +95,16 @@ export const EmptyState: Story = {
     },
     template: `
       <div class="r-v2 r-v2-dark" style="padding: 48px; background: #07070f; min-height: 300px;">
-        <RBtn @click="open = true">Open empty dialog</RBtn>
+        <RBtn @click="open = true">Leeren Dialog öffnen</RBtn>
         <RDialog v-bind="args" v-model="open">
           <template #header>
-            <span>Match metadata</span>
+            <span>Metadaten zuordnen</span>
           </template>
           <template #content>
             <REmptyState
               icon="mdi-disc-alert"
-              title="No results"
-              hint="The game you were looking for doesn't match any provider."
+              title="Keine Ergebnisse"
+              hint="Das gesuchte Spiel passt zu keinem Anbieter."
               style="flex:1"
             />
           </template>
@@ -114,6 +115,7 @@ export const EmptyState: Story = {
 };
 
 export const WithToolbarAndFooter: Story = {
+  name: "Mit Werkzeugleiste und Fußzeile",
   args: { width: "520", icon: "mdi-pencil" },
   render: (args) => ({
     components: { RDialog, RBtn },
@@ -123,19 +125,19 @@ export const WithToolbarAndFooter: Story = {
     },
     template: `
       <div class="r-v2 r-v2-dark" style="padding: 48px; background: #07070f; min-height: 300px;">
-        <RBtn @click="open = true">Open full dialog</RBtn>
+        <RBtn @click="open = true">Vollständigen Dialog öffnen</RBtn>
         <RDialog v-bind="args" v-model="open">
-          <template #header><span>Edit ROM</span></template>
+          <template #header><span>ROM bearbeiten</span></template>
           <template #toolbar>
             <small style="color: rgba(255,255,255,0.55)">Super Mario World · Super Nintendo</small>
           </template>
           <template #content>
-            <p>Body content with form fields would go here.</p>
+            <p>Hier würde der Inhalt mit Formularfeldern stehen.</p>
           </template>
           <template #footer>
-            <RBtn variant="text" @click="open = false">Cancel</RBtn>
+            <RBtn variant="text" @click="open = false">Abbrechen</RBtn>
             <div style="flex:1" />
-            <RBtn color="primary" @click="open = false">Save</RBtn>
+            <RBtn color="primary" @click="open = false">Speichern</RBtn>
           </template>
         </RDialog>
       </div>

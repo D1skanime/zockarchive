@@ -29,10 +29,11 @@ export const Basic: Story = {
       const name = ref("");
       const email = ref("");
       const submitted = ref<string | null>(null);
-      const nameRules = [(v: unknown) => !!v || "Name is required"];
+      const nameRules = [(v: unknown) => !!v || "Name ist erforderlich"];
       const emailRules = [
-        (v: unknown) => !!v || "Email is required",
-        (v: unknown) => /.+@.+\..+/.test(String(v)) || "Email must be valid",
+        (v: unknown) => !!v || "E-Mail ist erforderlich",
+        (v: unknown) =>
+          /.+@.+\..+/.test(String(v)) || "E-Mail muss gültig sein",
       ];
       function onSubmit() {
         submitted.value = `${name.value} <${email.value}>`;
@@ -43,13 +44,13 @@ export const Basic: Story = {
       <div style="width:360px;padding:20px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px">
         <RForm v-model="valid" @submit="onSubmit">
           <div style="display:flex;flex-direction:column;gap:12px">
-            <RTextField v-model="name" prefix-label="stacked" label="Name" :rules="nameRules" placeholder="Your name" />
-            <RTextField v-model="email" prefix-label="stacked" label="Email" :rules="emailRules" placeholder="you@example.com" />
-            <RBtn type="submit" color="primary" :disabled="!valid">Submit</RBtn>
+            <RTextField v-model="name" prefix-label="stacked" label="Name" :rules="nameRules" placeholder="Ihr Name" />
+            <RTextField v-model="email" prefix-label="stacked" label="E-Mail" :rules="emailRules" placeholder="sie@beispiel.de" />
+            <RBtn type="submit" color="primary" :disabled="!valid">Absenden</RBtn>
             <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">
-              Submit is enabled while the form is valid — type something invalid (e.g., a bad email) and it disables live.
+              Absenden ist aktiv, solange das Formular gültig ist. Geben Sie einen ungültigen Wert ein, etwa eine falsche E-Mail-Adresse.
             </div>
-            <div v-if="submitted" style="color:var(--r-color-success);font:12px sans-serif">Submitted: {{ submitted }}</div>
+            <div v-if="submitted" style="color:var(--r-color-success);font:12px sans-serif">Abgesendet: {{ submitted }}</div>
           </div>
         </RForm>
       </div>
@@ -60,7 +61,7 @@ export const Basic: Story = {
 // ── Enter-to-submit ────────────────────────────────────────────────
 
 export const EnterToSubmit: Story = {
-  name: "Enter-to-submit",
+  name: "Mit Eingabetaste absenden",
   render: () => ({
     components: { RForm, RTextField, RBtn },
     setup() {
@@ -68,7 +69,7 @@ export const EnterToSubmit: Story = {
       const value = ref("");
       const submitted = ref(0);
       const rules = [
-        (v: unknown) => (String(v).length >= 3 ? true : "Too short"),
+        (v: unknown) => (String(v).length >= 3 ? true : "Zu kurz"),
       ];
       function onSubmit() {
         submitted.value++;
@@ -79,9 +80,9 @@ export const EnterToSubmit: Story = {
       <div style="width:360px;padding:20px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px">
         <RForm v-model="valid" @submit="onSubmit">
           <div style="display:flex;flex-direction:column;gap:12px">
-            <RTextField v-model="value" prefix-label="stacked" label="Search" :rules="rules" placeholder="Type 3+ chars and press Enter" />
-            <RBtn type="submit" color="primary" :disabled="!valid">Submit</RBtn>
-            <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">Submitted: {{ submitted }} time(s)</div>
+            <RTextField v-model="value" prefix-label="stacked" label="Suche" :rules="rules" placeholder="Mindestens 3 Zeichen eingeben und Eingabetaste drücken" />
+            <RBtn type="submit" color="primary" :disabled="!valid">Absenden</RBtn>
+            <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">Abgesendet: {{ submitted }} Mal</div>
           </div>
         </RForm>
       </div>
@@ -92,19 +93,19 @@ export const EnterToSubmit: Story = {
 // ── Mixed fields ───────────────────────────────────────────────────
 
 export const MixedFields: Story = {
-  name: "Mixed fields (RTextField + RSelect)",
+  name: "Gemischte Felder (RTextField + RSelect)",
   render: () => ({
     components: { RForm, RTextField, RSelect, RBtn },
     setup() {
       const valid = ref(true);
       const name = ref("");
       const role = ref<string | null>(null);
-      const nameRules = [(v: unknown) => !!v || "Name is required"];
-      const roleRules = [(v: unknown) => v != null || "Pick a role"];
+      const nameRules = [(v: unknown) => !!v || "Name ist erforderlich"];
+      const roleRules = [(v: unknown) => v != null || "Rolle auswählen"];
       const roles = [
-        { title: "Admin", value: "admin" },
-        { title: "Editor", value: "editor" },
-        { title: "Viewer", value: "viewer" },
+        { title: "Administrator", value: "admin" },
+        { title: "Redakteur", value: "editor" },
+        { title: "Betrachter", value: "viewer" },
       ];
       const submitted = ref<string | null>(null);
       function onSubmit() {
@@ -125,10 +126,10 @@ export const MixedFields: Story = {
       <div style="width:380px;padding:20px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px">
         <RForm v-model="valid" @submit="onSubmit">
           <div style="display:flex;flex-direction:column;gap:12px">
-            <RTextField v-model="name" prefix-label="stacked" label="Display name" :rules="nameRules" placeholder="Jane Doe" />
-            <RSelect v-model="role" :items="roles" prefix-label="stacked" label="Role" :rules="roleRules" placeholder="Pick a role" />
-            <RBtn type="submit" color="primary" :disabled="!valid">Create user</RBtn>
-            <div v-if="submitted" style="color:var(--r-color-success);font:12px sans-serif">Created: {{ submitted }}</div>
+            <RTextField v-model="name" prefix-label="stacked" label="Anzeigename" :rules="nameRules" placeholder="Jane Doe" />
+            <RSelect v-model="role" :items="roles" prefix-label="stacked" label="Rolle" :rules="roleRules" placeholder="Rolle auswählen" />
+            <RBtn type="submit" color="primary" :disabled="!valid">Benutzer erstellen</RBtn>
+            <div v-if="submitted" style="color:var(--r-color-success);font:12px sans-serif">Erstellt: {{ submitted }}</div>
           </div>
         </RForm>
       </div>
@@ -139,7 +140,7 @@ export const MixedFields: Story = {
 // ── Scroll-to-error ────────────────────────────────────────────────
 
 export const ScrollToError: Story = {
-  name: "Scroll-to-error",
+  name: "Zum Fehler scrollen",
   render: () => ({
     components: { RForm, RTextField, RBtn },
     setup() {
@@ -148,7 +149,7 @@ export const ScrollToError: Story = {
       const formRef = ref<{
         validate?: () => Promise<{ valid: boolean }>;
       } | null>(null);
-      const rules = [(v: unknown) => !!v || "Required"];
+      const rules = [(v: unknown) => !!v || "Erforderlich"];
       async function trigger() {
         await formRef.value?.validate?.();
       }
@@ -163,10 +164,10 @@ export const ScrollToError: Story = {
               :key="i"
               v-model="fields[i]"
               prefix-label="stacked"
-              :label="'Field ' + (i + 1)"
+              :label="'Feld ' + (i + 1)"
               :rules="rules"
             />
-            <RBtn color="primary" @click="trigger">Validate all</RBtn>
+            <RBtn color="primary" @click="trigger">Alle prüfen</RBtn>
           </div>
         </RForm>
       </div>
@@ -185,7 +186,7 @@ export const ResetForm: Story = {
       const name = ref("");
       const email = ref("");
       const formRef = ref<{ reset?: () => void } | null>(null);
-      const rules = [(v: unknown) => !!v || "Required"];
+      const rules = [(v: unknown) => !!v || "Erforderlich"];
       async function clearAll() {
         formRef.value?.reset?.();
       }
@@ -196,13 +197,13 @@ export const ResetForm: Story = {
         <RForm ref="formRef" v-model="valid">
           <div style="display:flex;flex-direction:column;gap:12px">
             <RTextField v-model="name" prefix-label="stacked" label="Name" :rules="rules" placeholder="Jane" />
-            <RTextField v-model="email" prefix-label="stacked" label="Email" :rules="rules" placeholder="you@example.com" />
+            <RTextField v-model="email" prefix-label="stacked" label="E-Mail" :rules="rules" placeholder="sie@beispiel.de" />
             <div style="display:flex;gap:8px">
-              <RBtn variant="text" @click="clearAll">Reset errors</RBtn>
-              <RBtn color="primary" type="submit" :disabled="!valid">Submit</RBtn>
+              <RBtn variant="text" @click="clearAll">Fehler zurücksetzen</RBtn>
+              <RBtn color="primary" type="submit" :disabled="!valid">Absenden</RBtn>
             </div>
             <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">
-              Trigger errors (blur both fields empty), then click Reset to clear them.
+              Fehler auslösen (beide Felder leer verlassen) und anschließend mit Zurücksetzen entfernen.
             </div>
           </div>
         </RForm>

@@ -66,7 +66,7 @@ export const Dot: Story = {
 };
 
 export const IconBadge: Story = {
-  name: "Icon content",
+  name: "Symbolinhalt",
   args: { icon: "mdi-check", color: "success" },
   render: (args) => ({
     components: { RBadge, RAvatar },
@@ -82,7 +82,7 @@ export const IconBadge: Story = {
 // ── Max / clamping ──────────────────────────────────────────────────
 
 export const MaxClamp: Story = {
-  name: "max clamping",
+  name: "Maximalwert begrenzen",
   render: () => ({
     components: { RBadge, RIcon },
     template: `
@@ -97,11 +97,11 @@ export const MaxClamp: Story = {
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <RBadge :content="100" :max="99"><RIcon icon="mdi-bell" size="28" /></RBadge>
-          <span>100 (clamped → 99+)</span>
+          <span>100 (begrenzt → 99+)</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <RBadge :content="999" :max="999"><RIcon icon="mdi-bell" size="28" /></RBadge>
-          <span>999 (max raised)</span>
+          <span>999 (Maximum erhöht)</span>
         </div>
       </div>
     `,
@@ -111,7 +111,7 @@ export const MaxClamp: Story = {
 // ── Locations ───────────────────────────────────────────────────────
 
 export const Locations: Story = {
-  name: "All 8 locations",
+  name: "Alle 8 Positionen",
   render: () => ({
     components: { RBadge, RAvatar },
     template: `
@@ -156,7 +156,7 @@ export const Locations: Story = {
 // ── Modifiers ───────────────────────────────────────────────────────
 
 export const Bordered: Story = {
-  name: "Bordered (contrast ring)",
+  name: "Umrandet (Kontrastring)",
   render: () => ({
     components: { RBadge, RAvatar },
     template: `
@@ -185,7 +185,7 @@ export const Bordered: Story = {
 };
 
 export const Floating: Story = {
-  name: "Floating (pushed further out)",
+  name: "Schwebend (weiter nach außen)",
   render: () => ({
     components: { RBadge, RIcon },
     template: `
@@ -204,16 +204,16 @@ export const Floating: Story = {
 };
 
 export const Inline: Story = {
-  name: "Inline (next to label)",
+  name: "Direkt (neben Beschriftung)",
   render: () => ({
     components: { RBadge },
     template: `
       <div style="display:flex;flex-direction:column;gap:8px;font:13px/1.4 sans-serif;color:var(--r-color-fg)">
         <RBadge inline content="4" color="primary">
-          <span>Inbox</span>
+          <span>Posteingang</span>
         </RBadge>
         <RBadge inline content="12" color="info">
-          <span>Drafts</span>
+          <span>Entwürfe</span>
         </RBadge>
         <RBadge inline content="142" :max="99" color="danger">
           <span>Spam</span>
@@ -270,7 +270,7 @@ export const Tones: Story = {
 // ── Motion ──────────────────────────────────────────────────────────
 
 export const PopAnimation: Story = {
-  name: "Pop animation (toggle modelValue)",
+  name: "Aufplopp-Animation (modelValue umschalten)",
   render: () => ({
     components: { RBadge, RAvatar },
     setup() {
@@ -287,9 +287,9 @@ export const PopAnimation: Story = {
           style="padding:8px 16px;background:var(--r-color-brand-primary);color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer"
           @click="show = !show"
         >
-          {{ show ? "Hide badge" : "Show badge" }}
+          {{ show ? "Badge ausblenden" : "Badge anzeigen" }}
         </button>
-        <span>Toggle to see the spring pop-in / quick fade-out.</span>
+        <span>Umschalten, um das federnde Einblenden und schnelle Ausblenden zu sehen.</span>
       </div>
     `,
   }),

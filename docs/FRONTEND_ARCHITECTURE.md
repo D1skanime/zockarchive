@@ -352,23 +352,23 @@ Important v2 composables include useCan, useLibraryOperation, useProviderResolut
 
 Run commands from frontend:
 
-| Command                    | Purpose                             |
-| -------------------------- | ----------------------------------- |
-| npm run dev                | Vite dev server, normally port 3000 |
-| npm run build              | Build tokens and production bundle  |
-| npm run preview            | Serve the production build          |
-| npm run build:tokens       | Generate v2 token CSS               |
-| npm run typecheck          | vue-tsc without emit                |
-| npm run v2:maintainability | v2 maintainability check            |
-| npm run generate           | Generate OpenAPI models             |
-| npm run test               | Vitest once                         |
-| npm run test:watch         | Vitest watch mode                   |
-| npm run test:ui            | Vitest UI                           |
-| npm run storybook          | Storybook on port 6006              |
-| npm run storybook:build    | Build Storybook                     |
-| npm run storybook:test     | Storybook play tests                |
-| npm run test:e2e           | Playwright tests                    |
-| npm run test:e2e:ui        | Playwright UI mode                  |
+| Command                    | Purpose                                                                                                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| npm run dev                | Vite dev server, normally port 3000                                                                                                                                             |
+| npm run build              | Build tokens and production bundle                                                                                                                                              |
+| npm run preview            | Serve the production build                                                                                                                                                      |
+| npm run build:tokens       | Generate v2 token CSS                                                                                                                                                           |
+| npm run typecheck          | vue-tsc without emit                                                                                                                                                            |
+| npm run v2:maintainability | v2 maintainability check                                                                                                                                                        |
+| npm run generate           | Generate OpenAPI models                                                                                                                                                         |
+| npm run test               | Vitest once                                                                                                                                                                     |
+| npm run test:watch         | Vitest watch mode                                                                                                                                                               |
+| npm run test:ui            | Vitest UI                                                                                                                                                                       |
+| npm run storybook          | Storybook on port 6006                                                                                                                                                          |
+| npm run storybook:build    | Build Storybook. Standard: `docker exec pgdp-dev sh -c 'cd /app/frontend && npx storybook build -o /tmp/storybook-static'`, which keeps root-owned host dependencies untouched. |
+| npm run storybook:test     | Storybook play tests                                                                                                                                                            |
+| npm run test:e2e           | Playwright tests                                                                                                                                                                |
+| npm run test:e2e:ui        | Playwright UI mode                                                                                                                                                              |
 
 Before JavaScript starts, `index.html` renders centered ZockArchive text and
 the initial title. It links exactly one manifest, `public/site.webmanifest`.

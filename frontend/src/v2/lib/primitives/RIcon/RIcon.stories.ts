@@ -23,7 +23,7 @@ export const Default: Story = {
 // ── Sizes ────────────────────────────────────────────────────────────
 
 export const SizeLadder: Story = {
-  name: "Size ladder",
+  name: "Größenabstufung",
   render: () => ({
     components: { RIcon },
     template: `
@@ -54,7 +54,7 @@ export const SizeLadder: Story = {
 };
 
 export const NumericSizes: Story = {
-  name: "Numeric sizes",
+  name: "Numerische Größen",
   render: () => ({
     components: { RIcon },
     template: `
@@ -129,7 +129,7 @@ export const Tones: Story = {
 };
 
 export const LegacyColors: Story = {
-  name: "Legacy romm-* colours",
+  name: "Veraltete romm-*-Farben",
   render: () => ({
     components: { RIcon },
     template: `
@@ -156,7 +156,7 @@ export const LegacyColors: Story = {
 };
 
 export const PassThrough: Story = {
-  name: "CSS-colour pass-through",
+  name: "CSS-Farbe durchreichen",
   render: () => ({
     components: { RIcon },
     template: `
@@ -185,22 +185,22 @@ export const PassThrough: Story = {
 // ── Composition & inheritance ────────────────────────────────────────
 
 export const InheritColor: Story = {
-  name: "Inherits parent colour",
+  name: "Übernimmt die Elternfarbe",
   render: () => ({
     components: { RIcon },
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;font:13px/1.4 sans-serif">
         <div style="color:var(--r-color-brand-primary);display:flex;align-items:center;gap:8px">
           <RIcon icon="mdi-information" />
-          <span>Wrapped in brand-primary text — icon follows.</span>
+          <span>In Text mit Marken-Primärfarbe eingebettet · das Symbol folgt.</span>
         </div>
         <div style="color:var(--r-color-danger);display:flex;align-items:center;gap:8px">
           <RIcon icon="mdi-alert-octagon" />
-          <span>Wrapped in danger text — icon follows.</span>
+          <span>In Gefahren-Text eingebettet · das Symbol folgt.</span>
         </div>
         <div style="color:var(--r-color-fg-muted);display:flex;align-items:center;gap:8px">
           <RIcon icon="mdi-help-circle" />
-          <span>Muted parent — muted icon.</span>
+          <span>Gedämpftes Elternelement · gedämpftes Symbol.</span>
         </div>
       </div>
     `,
@@ -208,7 +208,7 @@ export const InheritColor: Story = {
 };
 
 export const WithText: Story = {
-  name: "Inline with text",
+  name: "Direkt mit Text",
   render: () => ({
     components: { RIcon },
     template: `
@@ -237,7 +237,7 @@ export const WithText: Story = {
 // ── Motion demos ─────────────────────────────────────────────────────
 
 export const Spinning: Story = {
-  name: "Spinning (mdi-spin)",
+  name: "Drehend (mdi-spin)",
   render: () => ({
     components: { RIcon },
     template: `
@@ -252,7 +252,7 @@ export const Spinning: Story = {
 };
 
 export const ColorSwap: Story = {
-  name: "Hover colour swap (motion preview)",
+  name: "Farbwechsel beim Darüberfahren (Bewegungsvorschau)",
   render: () => ({
     components: { RIcon },
     template: `
@@ -260,7 +260,7 @@ export const ColorSwap: Story = {
         <RIcon icon="mdi-heart" size="32" class="r-icon-story-swap" />
         <RIcon icon="mdi-star" size="32" class="r-icon-story-swap--fav" />
         <RIcon icon="mdi-trash-can-outline" size="32" class="r-icon-story-swap--del" />
-        <span>Hover — icon transitions colour + transform smoothly.</span>
+        <span>Darüberfahren · Symbol wechselt Farbe und Transformation weich.</span>
       </div>
     `,
   }),

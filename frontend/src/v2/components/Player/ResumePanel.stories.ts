@@ -51,16 +51,16 @@ function makeSave(i: number, overrides: Partial<SaveSchema> = {}): SaveSchema {
 }
 
 const shots = [
-  { color: "2d2147", label: "Overworld" },
-  { color: "1a3d2e", label: "Forest" },
-  { color: "4a1a1a", label: "Boss+Fight" },
-  { color: "0a3a5a", label: "Underwater+Cave" },
-  { color: "5a3a0a", label: "Desert+Temple" },
-  { color: "3a0a4a", label: "Castle+Tower" },
-  { color: "0a5a3a", label: "Lake+Shore" },
-  { color: "5a0a3a", label: "Volcano" },
-  { color: "1a1a5a", label: "Sky+Realm" },
-  { color: "5a5a0a", label: "Final+Boss" },
+  { color: "2d2147", label: "Oberwelt" },
+  { color: "1a3d2e", label: "Wald" },
+  { color: "4a1a1a", label: "Bosskampf" },
+  { color: "0a3a5a", label: "Unterwasserhöhle" },
+  { color: "5a3a0a", label: "Wüstentempel" },
+  { color: "3a0a4a", label: "Schlossturm" },
+  { color: "0a5a3a", label: "Seeufer" },
+  { color: "5a0a3a", label: "Vulkan" },
+  { color: "1a1a5a", label: "Himmelsreich" },
+  { color: "5a5a0a", label: "Endboss" },
 ];
 
 function makeState(
@@ -164,12 +164,12 @@ function renderPanel(
       const tabs = computed<SliderBtnGroupItem<AssetTab>[]>(() => [
         {
           id: "save",
-          label: `Saves${saves.length ? ` · ${saves.length}` : ""}`,
+          label: `Spielstände${saves.length ? ` · ${saves.length}` : ""}`,
           icon: "mdi-content-save",
         },
         {
           id: "state",
-          label: `States${states.length ? ` · ${states.length}` : ""}`,
+          label: `Speicherstände${states.length ? ` · ${states.length}` : ""}`,
           icon: "mdi-file",
         },
       ]);
@@ -188,7 +188,7 @@ function renderPanel(
         return list.find((a) => a.id === id) ?? null;
       });
       const stripLabel = computed(() =>
-        activeTab.value === "save" ? "All saves" : "All states",
+        activeTab.value === "save" ? "Alle Spielstände" : "Alle Speicherstände",
       );
 
       function pick(a: SaveSchema | StateSchema) {
@@ -239,7 +239,7 @@ function renderPanel(
             variant="tab"
             :model-value="activeTab"
             :items="tabs"
-            aria-label="Load save or state"
+            aria-label="Spielstand oder Speicherstand laden"
             @update:model-value="setTab"
           />
         </div>
@@ -298,7 +298,7 @@ function renderPanel(
 
 // 8 states + 3 saves — the "rich" case. State tab opens by default.
 export const RichLibrary: Story = {
-  name: "Rich · 8 states + 3 saves",
+  name: "Umfangreich · 8 Speicherstände + 3 Spielstände",
   render: () => {
     const states = Array.from({ length: 8 }).map((_, i) => makeState(i, true));
     const saves = Array.from({ length: 3 }).map((_, i) => makeSave(i));
@@ -308,7 +308,7 @@ export const RichLibrary: Story = {
 
 // 15 states — overflow scenario. Strip scrolls horizontally.
 export const ManyStates: Story = {
-  name: "Many states · 15 (overflow)",
+  name: "Viele Speicherstände · 15 (Überlauf)",
   render: () => {
     const states = Array.from({ length: 15 }).map((_, i) => makeState(i, true));
     return renderPanel([], states, "state");
@@ -317,7 +317,7 @@ export const ManyStates: Story = {
 
 // Mixed — some states have screenshots, some don't.
 export const MixedScreenshots: Story = {
-  name: "States · mixed (with + without screenshots)",
+  name: "Speicherstände · gemischt (mit + ohne Bildschirmfotos)",
   render: () => {
     const states = Array.from({ length: 6 }).map((_, i) =>
       makeState(i, i % 2 === 0),
@@ -328,7 +328,7 @@ export const MixedScreenshots: Story = {
 
 // Saves only — old SNES-style 3 save slots, no states yet.
 export const SavesOnly: Story = {
-  name: "Saves only · 3 slots",
+  name: "Nur Spielstände · 3 Plätze",
   render: () => {
     const saves = Array.from({ length: 3 }).map((_, i) => makeSave(i));
     return renderPanel(saves, [], "save");
@@ -337,19 +337,19 @@ export const SavesOnly: Story = {
 
 // Single save — one save slot, no states.
 export const SingleSave: Story = {
-  name: "Single save",
+  name: "Ein Spielstand",
   render: () => renderPanel([makeSave(0)], [], "save"),
 };
 
 // First-time launch — no saves, no states.
 export const FreshGame: Story = {
-  name: "Fresh game · no saves, no states",
+  name: "Neues Spiel · keine Spiel- oder Speicherstände",
   render: () => renderPanel([], [], "state"),
 };
 
 // State tab with no compatible states (e.g. core changed).
 export const StatesEmptyAfterCoreChange: Story = {
-  name: "States · empty after core swap",
+  name: "Speicherstände · leer nach Kernwechsel",
   render: () => {
     const saves = Array.from({ length: 4 }).map((_, i) => makeSave(i));
     return renderPanel(saves, [], "state");
@@ -358,7 +358,7 @@ export const StatesEmptyAfterCoreChange: Story = {
 
 // User just deselected — nothing picked but plenty available.
 export const NoneSelectedManyAvailable: Story = {
-  name: "Many states · none selected",
+  name: "Viele Speicherstände · keiner ausgewählt",
   render: () => {
     const states = Array.from({ length: 6 }).map((_, i) => makeState(i, true));
     // Force-clear default selection via tab switch trick — the render

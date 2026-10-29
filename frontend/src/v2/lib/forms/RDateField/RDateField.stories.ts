@@ -26,13 +26,13 @@ export const Default: Story = {
       <div style="width:280px;padding:24px">
         <RDateField
           v-model="value"
-          label="Released at"
+          label="Veröffentlicht am"
           variant="outlined"
           prefix-label="stacked"
         />
         <p style="margin-top:12px;font:12px monospace;color:var(--r-color-fg-muted)">
-          Date: {{ value?.toISOString() ?? 'null' }}<br>
-          Timestamp: {{ value?.getTime() ?? 'null' }}
+          Datum: {{ value?.toISOString() ?? 'null' }}<br>
+          Zeitstempel: {{ value?.getTime() ?? 'null' }}
         </p>
       </div>
     `,
@@ -40,7 +40,7 @@ export const Default: Story = {
 };
 
 export const Preloaded: Story = {
-  name: "Pre-loaded (timestamp)",
+  name: "Vorbelegt (Zeitstempel)",
   render: () => ({
     components: { RDateField },
     setup: () => ({
@@ -50,7 +50,7 @@ export const Preloaded: Story = {
       <div style="width:280px;padding:24px">
         <RDateField
           v-model="value"
-          label="Released at"
+          label="Veröffentlicht am"
           variant="outlined"
           prefix-label="stacked"
         />
@@ -67,7 +67,7 @@ export const Compact: Story = {
       <div style="width:240px;padding:24px">
         <RDateField
           v-model="value"
-          label="Date"
+          label="Datum"
           density="compact"
           variant="outlined"
           prefix-label="inline"
@@ -78,7 +78,7 @@ export const Compact: Story = {
 };
 
 export const SundayFirst: Story = {
-  name: "Sunday-first week",
+  name: "Woche beginnt am Sonntag",
   render: () => ({
     components: { RDateField },
     setup: () => ({ value: ref<Date | null>(null) }),
@@ -86,7 +86,7 @@ export const SundayFirst: Story = {
       <div style="width:280px;padding:24px">
         <RDateField
           v-model="value"
-          label="US format"
+          label="US-Format"
           variant="outlined"
           prefix-label="stacked"
           :first-day-of-week="0"
@@ -97,7 +97,7 @@ export const SundayFirst: Story = {
 };
 
 export const WithBounds: Story = {
-  name: "Min / max",
+  name: "Minimum / Maximum",
   render: () => ({
     components: { RDateField },
     setup: () => ({
@@ -109,7 +109,7 @@ export const WithBounds: Story = {
       <div style="width:280px;padding:24px">
         <RDateField
           v-model="value"
-          label="May → June 2026 only"
+          label="Nur Mai bis Juni 2026"
           variant="outlined"
           prefix-label="stacked"
           :min="min"
@@ -121,7 +121,7 @@ export const WithBounds: Story = {
 };
 
 export const NoFooter: Story = {
-  name: "Without footer",
+  name: "Ohne Fußzeile",
   render: () => ({
     components: { RDateField },
     setup: () => ({ value: ref<Date | null>(null) }),
@@ -129,7 +129,7 @@ export const NoFooter: Story = {
       <div style="width:280px;padding:24px">
         <RDateField
           v-model="value"
-          label="No shortcuts"
+          label="Keine Schnellzugriffe"
           variant="outlined"
           prefix-label="stacked"
           hide-footer
@@ -147,7 +147,7 @@ export const Disabled: Story = {
       <div style="width:280px;padding:24px">
         <RDateField
           v-model="value"
-          label="Locked date"
+          label="Gesperrtes Datum"
           variant="outlined"
           prefix-label="stacked"
           disabled

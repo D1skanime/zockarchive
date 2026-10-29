@@ -17,9 +17,16 @@ export default meta;
 
 type Story = StoryObj<typeof RPlatformIcon>;
 
-export const Known: Story = { args: { name: "snes", size: 40 } };
-export const Unknown: Story = { args: { name: "does-not-exist", size: 40 } };
+export const Known: Story = {
+  name: "Bekannt",
+  args: { name: "snes", size: 40 },
+};
+export const Unknown: Story = {
+  name: "Unbekannt",
+  args: { name: "does-not-exist", size: 40 },
+};
 export const Row: Story = {
+  name: "Reihe",
   render: () => ({
     components: { RPlatformIcon },
     template: `
@@ -41,7 +48,7 @@ export const Row: Story = {
 // gave it, which silently shrunk it when the parent had no defined
 // extent. The badge in GameCard relies on this fix.
 export const SizeLadder: Story = {
-  name: "Size ladder",
+  name: "Größenleiter",
   render: () => ({
     components: { RPlatformIcon },
     template: `
@@ -69,7 +76,7 @@ export const SizeLadder: Story = {
     docs: {
       description: {
         story:
-          "`size` is bound to inline `width`/`height` and does not clamp to the parent — useful when the icon sits inside an indefinite-extent flex slot.",
+          "`size` wird an die Inline-Werte `width`/`height` gebunden und nicht auf das Elternelement begrenzt. Das ist nützlich, wenn das Symbol in einem Flex-Slot ohne feste Ausdehnung sitzt.",
       },
     },
   },
@@ -79,12 +86,12 @@ export const SizeLadder: Story = {
 // honoured even when the parent has no defined cross-axis extent.
 // Regression guard for the GameCard platform badge.
 export const InsideFlexParent: Story = {
-  name: "Inside indefinite-extent flex parent",
+  name: "In Flex-Elternelement ohne feste Ausdehnung",
   render: () => ({
     components: { RPlatformIcon },
     template: `
       <div style="display:flex;align-items:center;gap:6px;padding:6px;border:1px dashed var(--r-color-border);border-radius:6px">
-        <span style="font:11px sans-serif;color:var(--r-color-fg-muted)">indefinite flex parent →</span>
+        <span style="font:11px sans-serif;color:var(--r-color-fg-muted)">Flex-Elternelement ohne feste Ausdehnung →</span>
         <RPlatformIcon name="snes" :size="22" />
       </div>
     `,

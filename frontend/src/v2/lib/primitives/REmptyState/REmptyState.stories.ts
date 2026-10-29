@@ -53,8 +53,8 @@ export const WithActions: Story = {
     template: `
       <REmptyState v-bind="args">
         <template #actions>
-          <RBtn prepend-icon="mdi-cloud-upload-outline">Upload</RBtn>
-          <RBtn variant="outlined" prepend-icon="mdi-cloud-download-outline">Re-download</RBtn>
+          <RBtn prepend-icon="mdi-cloud-upload-outline">Hochladen</RBtn>
+          <RBtn variant="outlined" prepend-icon="mdi-cloud-download-outline">Erneut herunterladen</RBtn>
         </template>
       </REmptyState>
     `,

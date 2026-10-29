@@ -92,13 +92,13 @@ type Story = StoryObj<typeof AssetPreview>;
 
 // State with a screenshot — the headline case.
 export const StateWithScreenshot: Story = {
-  name: "State · with screenshot",
+  name: "Status · mit Bildschirmfoto",
   render: () => ({
     components: { AssetPreview },
     setup: () => ({
       asset: makeState(
         "before_final_boss.state",
-        "https://placehold.co/640x360/4a1a1a/ffffff?text=Before+Boss",
+        "https://placehold.co/640x360/4a1a1a/ffffff?text=Vor+dem+Boss",
       ),
     }),
     template: `<AssetPreview :asset="asset" type="state" />`,
@@ -107,7 +107,7 @@ export const StateWithScreenshot: Story = {
 
 // State that never had a screenshot — placeholder + icon.
 export const StateNoScreenshot: Story = {
-  name: "State · no screenshot",
+  name: "Status · ohne Bildschirmfoto",
   render: () => ({
     components: { AssetPreview },
     setup: () => ({
@@ -129,7 +129,7 @@ export const SaveSelected: Story = {
 
 // Long filename should ellipsis cleanly.
 export const LongFilename: Story = {
-  name: "Long filename",
+  name: "Langer Dateiname",
   render: () => ({
     components: { AssetPreview },
     setup: () => ({
@@ -144,7 +144,7 @@ export const LongFilename: Story = {
 
 // No state selected — empty state with the start-fresh hint.
 export const EmptyNoState: Story = {
-  name: "Leer · kein Status ausgewählt",
+  name: "Leer · kein Speicherstand ausgewählt",
   render: () => ({
     components: { AssetPreview },
     template: `<AssetPreview :asset="null" type="state" />`,

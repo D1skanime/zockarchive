@@ -46,33 +46,38 @@ export default meta;
 type Story = StoryObj<typeof RMenuItem>;
 
 export const Default: Story = {
-  args: { label: "Play", icon: "mdi-play" },
+  name: "Standard",
+  args: { label: "Spielen", icon: "mdi-play" },
 };
 
 export const Active: Story = {
-  args: { label: "Favorited", icon: "mdi-heart", variant: "active" },
+  name: "Aktiv",
+  args: { label: "Favorisiert", icon: "mdi-heart", variant: "active" },
 };
 
 export const Danger: Story = {
-  args: { label: "Delete…", icon: "mdi-trash-can-outline", variant: "danger" },
+  name: "Gefahr",
+  args: { label: "Löschen…", icon: "mdi-trash-can-outline", variant: "danger" },
 };
 
 export const Disabled: Story = {
-  args: { label: "Disabled", icon: "mdi-cog-outline", disabled: true },
+  name: "Deaktiviert",
+  args: { label: "Deaktiviert", icon: "mdi-cog-outline", disabled: true },
 };
 
 export const Variants: Story = {
+  name: "Varianten",
   render: () => ({
     components: { RMenuItem },
     setup: () => ({ panelStyle: PANEL_STYLE }),
     template: `
       <div style="padding:40px">
         <div :style="panelStyle">
-          <RMenuItem label="Default" icon="mdi-play" />
-          <RMenuItem label="With subtitle" icon="mdi-download-outline" />
-          <RMenuItem label="Active (favorited)" icon="mdi-heart" variant="active" />
-          <RMenuItem label="Danger / destructive" icon="mdi-trash-can-outline" variant="danger" />
-          <RMenuItem label="Disabled" icon="mdi-cog-outline" disabled />
+          <RMenuItem label="Standard" icon="mdi-play" />
+          <RMenuItem label="Mit Untertitel" icon="mdi-download-outline" />
+          <RMenuItem label="Aktiv (favorisiert)" icon="mdi-heart" variant="active" />
+          <RMenuItem label="Gefahr / zerstörerisch" icon="mdi-trash-can-outline" variant="danger" />
+          <RMenuItem label="Deaktiviert" icon="mdi-cog-outline" disabled />
         </div>
       </div>
     `,
@@ -80,6 +85,7 @@ export const Variants: Story = {
 };
 
 export const WithNavigation: Story = {
+  name: "Mit Navigation",
   render: () => ({
     components: { RMenuItem },
     setup: () => ({ panelStyle: PANEL_STYLE }),
@@ -87,8 +93,8 @@ export const WithNavigation: Story = {
     template: `
       <div style="padding:40px">
         <div :style="panelStyle" role="menu" aria-label="Navigation">
-          <RMenuItem to="/platforms" icon="mdi-gamepad-variant-outline" label="Platforms" />
-          <RMenuItem href="https://romm.app" icon="mdi-open-in-new" label="External link" />
+          <RMenuItem to="/platforms" icon="mdi-gamepad-variant-outline" label="Plattformen" />
+          <RMenuItem href="https://romm.app" icon="mdi-open-in-new" label="Externer Link" />
         </div>
       </div>
     `,
@@ -100,11 +106,11 @@ export const WithNavigation: Story = {
 // and closing would unmount the <a> before the browser opens the new tab.
 // A plain click still activates the item normally.
 export const NewTabGesture: Story = {
-  name: "New-tab gesture (Ctrl/⌘-click)",
+  name: "Neue Registerkarte (Strg/⌘-Klick)",
   args: {
     href: "#platforms",
     icon: "mdi-open-in-new",
-    label: "Open in new tab",
+    label: "In neuem Tab öffnen",
     onClick: fn(),
   },
   render: (args) => ({
@@ -112,7 +118,7 @@ export const NewTabGesture: Story = {
     setup: () => ({ args, panelStyle: PANEL_STYLE }),
     template: `
       <div style="padding:40px">
-        <div :style="panelStyle" role="menu" aria-label="Actions">
+        <div :style="panelStyle" role="menu" aria-label="Aktionen">
           <RMenuItem v-bind="args" @click="args.onClick" />
         </div>
       </div>
@@ -120,7 +126,7 @@ export const NewTabGesture: Story = {
   }),
   play: async ({ canvasElement, args, step }) => {
     const canvas = within(canvasElement);
-    const link = canvas.getByText("Open in new tab").closest("a");
+    const link = canvas.getByText("In neuem Tab öffnen").closest("a");
     if (!link) throw new Error("expected the item to render as an <a>");
 
     await step("plain click activates the item", async () => {

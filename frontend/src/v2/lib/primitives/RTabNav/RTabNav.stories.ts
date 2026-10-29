@@ -31,9 +31,9 @@ export const Default: Story = {
   args: {
     modelValue: "overview",
     items: [
-      { id: "overview", label: "Overview" },
-      { id: "media", label: "Media" },
-      { id: "notes", label: "Notes" },
+      { id: "overview", label: "Übersicht" },
+      { id: "media", label: "Medien" },
+      { id: "notes", label: "Notizen" },
     ],
   },
 };
@@ -42,10 +42,10 @@ export const WithBadges: Story = {
   args: {
     modelValue: "achievements",
     items: [
-      { id: "overview", label: "Overview" },
-      { id: "achievements", label: "Achievements", badge: "12/40" },
-      { id: "save-data", label: "Save data", badge: 7 },
-      { id: "metadata", label: "Metadata" },
+      { id: "overview", label: "Übersicht" },
+      { id: "achievements", label: "Erfolge", badge: "12/40" },
+      { id: "save-data", label: "Speicherdaten", badge: 7 },
+      { id: "metadata", label: "Metadaten" },
     ],
   },
 };
@@ -55,8 +55,8 @@ export const Subtabs: Story = {
     size: "small",
     modelValue: "saves",
     items: [
-      { id: "saves", label: "Saves", badge: 5 },
-      { id: "states", label: "States", badge: 2 },
+      { id: "saves", label: "Spielstände", badge: 5 },
+      { id: "states", label: "Zustände", badge: 2 },
     ],
   },
 };
@@ -71,13 +71,13 @@ export const VerticalPill: Story = {
     items: [
       {
         id: "saves",
-        label: "Saves",
+        label: "Spielstände",
         icon: "mdi-content-save-outline",
         badge: 5,
       },
       {
         id: "states",
-        label: "States",
+        label: "Zustände",
         icon: "mdi-camera-outline",
         badge: 2,
       },
@@ -99,9 +99,9 @@ export const HiddenItems: Story = {
   args: {
     modelValue: "overview",
     items: [
-      { id: "overview", label: "Overview" },
-      { id: "achievements", label: "Achievements", show: false },
-      { id: "metadata", label: "Metadata" },
+      { id: "overview", label: "Übersicht" },
+      { id: "achievements", label: "Erfolge", show: false },
+      { id: "metadata", label: "Metadaten" },
     ],
   },
 };
@@ -111,13 +111,13 @@ export const HiddenItems: Story = {
 // tabs in EditRomDialog (IGDB / MobyGames / etc).
 // Keyboard: Tab across the tabs, Enter/Space activates the focused one.
 export const KeyboardNav: Story = {
-  name: "Keyboard navigation (play)",
+  name: "Tastaturnavigation (Interaktionstest)",
   args: {
     modelValue: "overview",
     items: [
-      { id: "overview", label: "Overview" },
-      { id: "media", label: "Media" },
-      { id: "notes", label: "Notes" },
+      { id: "overview", label: "Übersicht" },
+      { id: "media", label: "Medien" },
+      { id: "notes", label: "Notizen" },
     ],
   },
   play: async ({ canvasElement, step }) => {
@@ -154,10 +154,10 @@ export const WithImages: Story = {
     items: [
       {
         id: "details",
-        label: "Additional details",
+        label: "Weitere Details",
         icon: "mdi-text-box-plus-outline",
       },
-      { id: "ids", label: "Metadata IDs", icon: "mdi-database" },
+      { id: "ids", label: "Metadaten-IDs", icon: "mdi-database" },
       { id: "igdb", label: "IGDB", image: "/assets/scrappers/igdb.png" },
       {
         id: "moby",

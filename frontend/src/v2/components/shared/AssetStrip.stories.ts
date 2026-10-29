@@ -44,16 +44,16 @@ function makeState(overrides: Partial<StateSchema> = {}): StateSchema {
 
 // Distinct placeholder shots so we can scan the strip visually.
 const shots: { color: string; label: string }[] = [
-  { color: "2d2147", label: "Overworld" },
-  { color: "1a3d2e", label: "Forest" },
-  { color: "4a1a1a", label: "Boss+Fight" },
-  { color: "0a3a5a", label: "Cave" },
-  { color: "5a3a0a", label: "Desert" },
-  { color: "3a0a4a", label: "Castle" },
-  { color: "0a5a3a", label: "Lake" },
-  { color: "5a0a3a", label: "Volcano" },
-  { color: "1a1a5a", label: "Sky" },
-  { color: "5a5a0a", label: "Tower" },
+  { color: "2d2147", label: "Oberwelt" },
+  { color: "1a3d2e", label: "Wald" },
+  { color: "4a1a1a", label: "Bosskampf" },
+  { color: "0a3a5a", label: "Höhle" },
+  { color: "5a3a0a", label: "Wüste" },
+  { color: "3a0a4a", label: "Schloss" },
+  { color: "0a5a3a", label: "See" },
+  { color: "5a0a3a", label: "Vulkan" },
+  { color: "1a1a5a", label: "Himmel" },
+  { color: "5a5a0a", label: "Turm" },
 ];
 
 function manyStates(n: number, withScreenshots = true): StateSchema[] {
@@ -124,7 +124,7 @@ type Story = StoryObj<typeof AssetStrip>;
 // Five states with screenshots — the headline case. Notice how the
 // selected tile carries the brand ring + check badge.
 export const FewStatesScreenshots: Story = {
-  name: "States · 5 with screenshots",
+  name: "Speicherstände · 5 mit Bildschirmfotos",
   render: () => ({
     components: { AssetStrip },
     setup() {
@@ -144,7 +144,7 @@ export const FewStatesScreenshots: Story = {
 
 // Twelve states — overflow case. Tiles scroll horizontally with snap.
 export const ManyStatesOverflow: Story = {
-  name: "States · 12 (horizontal scroll)",
+  name: "Speicherstände · 12 (horizontal scrollbar)",
   render: () => ({
     components: { AssetStrip },
     setup() {
@@ -165,7 +165,7 @@ export const ManyStatesOverflow: Story = {
 // States that never had a screenshot taken — gradient fallback with
 // the file icon. Still readable; the row doesn't feel broken.
 export const StatesNoScreenshots: Story = {
-  name: "States · 6 without screenshots",
+  name: "Speicherstände · 6 ohne Bildschirmfotos",
   render: () => ({
     components: { AssetStrip },
     setup() {
@@ -185,7 +185,7 @@ export const StatesNoScreenshots: Story = {
 
 // Long filenames should ellipsis cleanly without breaking the row.
 export const LongFilenames: Story = {
-  name: "Long filenames (ellipsis)",
+  name: "Lange Dateinamen (Auslassungspunkte)",
   render: () => ({
     components: { AssetStrip },
     setup() {
@@ -234,7 +234,7 @@ export const LongFilenames: Story = {
 
 // Nothing selected yet — still shows a strip the user can click.
 export const NoneSelected: Story = {
-  name: "States · none selected",
+  name: "Speicherstände · keiner ausgewählt",
   render: () => ({
     components: { AssetStrip },
     setup() {
@@ -254,7 +254,7 @@ export const NoneSelected: Story = {
 
 // Empty — distinct from "no asset selected"; the strip itself is empty.
 export const EmptyStates: Story = {
-  name: "Leer (keine Status)",
+  name: "Leer (keine Speicherstände)",
   render: () => ({
     components: { AssetStrip },
     template: `

@@ -43,6 +43,7 @@ type Story = StoryObj<typeof RMenu>;
 // ── Defaults ──────────────────────────────────────────────────────
 
 export const Basic: Story = {
+  name: "Grundlegend",
   render: (args) => ({
     components: { RMenu, RMenuItem, RBtn },
     setup: () => ({ args }),
@@ -51,12 +52,12 @@ export const Basic: Story = {
         <RMenu v-bind="args">
           <template #activator="{ props }">
             <RBtn v-bind="props" variant="translucent" append-icon="mdi-chevron-down">
-              Open menu
+              Menü öffnen
             </RBtn>
           </template>
-          <RMenuItem icon="mdi-play" label="Play" />
-          <RMenuItem icon="mdi-download-outline" label="Download" />
-          <RMenuItem icon="mdi-pencil-outline" label="Edit" />
+          <RMenuItem icon="mdi-play" label="Spielen" />
+          <RMenuItem icon="mdi-download-outline" label="Herunterladen" />
+          <RMenuItem icon="mdi-pencil-outline" label="Bearbeiten" />
         </RMenu>
       </div>
     `,
@@ -66,7 +67,7 @@ export const Basic: Story = {
 // ── Account menu (real-world) ─────────────────────────────────────
 
 export const AccountMenu: Story = {
-  name: "Account menu (real-world)",
+  name: "Kontomenü (Praxisbeispiel)",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn, RDivider, RAvatar },
     template: `
@@ -83,19 +84,19 @@ export const AccountMenu: Story = {
             <RAvatar size="30" />
             <div style="min-width:0">
               <div style="font:600 13px/1.3 sans-serif">Jane Doe</div>
-              <div style="font:600 10.5px/1.3 sans-serif;color:var(--r-color-fg-muted);text-transform:capitalize">Admin</div>
+              <div style="font:600 10.5px/1.3 sans-serif;color:var(--r-color-fg-muted);text-transform:capitalize">Administrator</div>
             </div>
           </div>
 
           <RDivider />
 
-          <RMenuItem icon="mdi-account-outline" label="Profile" />
-          <RMenuItem icon="mdi-palette-outline" label="Appearance" />
-          <RMenuItem icon="mdi-cog-outline" label="Settings" />
+          <RMenuItem icon="mdi-account-outline" label="Profil" />
+          <RMenuItem icon="mdi-palette-outline" label="Erscheinungsbild" />
+          <RMenuItem icon="mdi-cog-outline" label="Einstellungen" />
 
           <RDivider />
 
-          <RMenuItem icon="mdi-logout" variant="danger" label="Log out" />
+          <RMenuItem icon="mdi-logout" variant="danger" label="Abmelden" />
         </RMenu>
       </div>
     `,
@@ -105,7 +106,7 @@ export const AccountMenu: Story = {
 // ── Placements ────────────────────────────────────────────────────
 
 export const Placements: Story = {
-  name: "Placement ladder",
+  name: "Positionen",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn },
     template: `
@@ -114,9 +115,9 @@ export const Placements: Story = {
           <template #activator="{ props }">
             <RBtn v-bind="props" size="small">{{ loc }}</RBtn>
           </template>
-          <RMenuItem icon="mdi-arrow-up-right" label="One" />
-          <RMenuItem icon="mdi-arrow-up-right" label="Two" />
-          <RMenuItem icon="mdi-arrow-up-right" label="Three" />
+          <RMenuItem icon="mdi-arrow-up-right" label="Eins" />
+          <RMenuItem icon="mdi-arrow-up-right" label="Zwei" />
+          <RMenuItem icon="mdi-arrow-up-right" label="Drei" />
         </RMenu>
       </div>
     `,
@@ -138,7 +139,7 @@ const PLATFORMS = [
 ];
 
 export const Searchable: Story = {
-  name: "Searchable + filter",
+  name: "Durchsuchbar + Filter",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn },
     setup() {
@@ -158,7 +159,7 @@ export const Searchable: Story = {
         <RMenu
           :search="query"
           searchable
-          search-placeholder="Filter platforms"
+          search-placeholder="Plattformen filtern"
           width="260px"
           max-height="320px"
           :close-on-content-click="false"
@@ -166,7 +167,7 @@ export const Searchable: Story = {
         >
           <template #activator="{ props }">
             <RBtn v-bind="props" variant="translucent" prepend-icon="mdi-gamepad-variant">
-              Pick a platform
+              Plattform auswählen
             </RBtn>
           </template>
           <RMenuItem
@@ -176,7 +177,7 @@ export const Searchable: Story = {
             :label="p.name"
           />
           <div v-if="!filtered.length" style="padding:12px;font:12px sans-serif;color:var(--r-color-fg-muted);text-align:center">
-            No matches.
+            Keine Treffer.
           </div>
         </RMenu>
       </div>
@@ -187,17 +188,17 @@ export const Searchable: Story = {
 // ── Scroll on overflow ────────────────────────────────────────────
 
 export const ScrollableMaxHeight: Story = {
-  name: "Scrollable (maxHeight)",
+  name: "Scrollbar (maximale Höhe)",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn },
     setup: () => ({
-      items: Array.from({ length: 30 }, (_, i) => `Item ${i + 1}`),
+      items: Array.from({ length: 30 }, (_, i) => `Eintrag ${i + 1}`),
     }),
     template: `
       <div style="padding:48px;display:flex;justify-content:center">
         <RMenu width="220px" max-height="240px">
           <template #activator="{ props }">
-            <RBtn v-bind="props" variant="translucent">Long list</RBtn>
+            <RBtn v-bind="props" variant="translucent">Lange Liste</RBtn>
           </template>
           <RMenuItem v-for="(label, i) in items" :key="i" :label="label" icon="mdi-circle-small" />
         </RMenu>
@@ -209,7 +210,7 @@ export const ScrollableMaxHeight: Story = {
 // ── Sticky menu (close-on-content-click false) ────────────────────
 
 export const StickyMenu: Story = {
-  name: "Sticky (close-on-content-click false)",
+  name: "Geöffnet bleiben (bei Inhaltklick nicht schließen)",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn, RDivider },
     setup() {
@@ -224,18 +225,18 @@ export const StickyMenu: Story = {
         <RMenu width="220px" :close-on-content-click="false">
           <template #activator="{ props }">
             <RBtn v-bind="props" variant="translucent" prepend-icon="mdi-tune-variant">
-              Options
+              Optionen
             </RBtn>
           </template>
           <RMenuItem
             :icon="toggles.sound ? 'mdi-volume-high' : 'mdi-volume-off'"
-            label="Sound"
+            label="Ton"
             :variant="toggles.sound ? 'active' : 'default'"
             @click="flip('sound')"
           />
           <RMenuItem
             :icon="toggles.music ? 'mdi-music' : 'mdi-music-off'"
-            label="Music"
+            label="Musik"
             :variant="toggles.music ? 'active' : 'default'"
             @click="flip('music')"
           />
@@ -246,7 +247,7 @@ export const StickyMenu: Story = {
             @click="flip('vibration')"
           />
           <RDivider />
-          <RMenuItem icon="mdi-keyboard-close" label="Close menu" />
+          <RMenuItem icon="mdi-keyboard-close" label="Menü schließen" />
         </RMenu>
       </div>
     `,
@@ -256,18 +257,18 @@ export const StickyMenu: Story = {
 // ── Open-on-hover ─────────────────────────────────────────────────
 
 export const OpenOnHover: Story = {
-  name: "Open on hover",
+  name: "Beim Überfahren öffnen",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn },
     template: `
       <div style="padding:48px;display:flex;justify-content:center">
         <RMenu open-on-hover>
           <template #activator="{ props }">
-            <RBtn v-bind="props" variant="text">File</RBtn>
+            <RBtn v-bind="props" variant="text">Datei</RBtn>
           </template>
-          <RMenuItem icon="mdi-file-plus" label="New" />
-          <RMenuItem icon="mdi-folder-open-outline" label="Open…" />
-          <RMenuItem icon="mdi-content-save-outline" label="Save" />
+          <RMenuItem icon="mdi-file-plus" label="Neu" />
+          <RMenuItem icon="mdi-folder-open-outline" label="Öffnen…" />
+          <RMenuItem icon="mdi-content-save-outline" label="Speichern" />
         </RMenu>
       </div>
     `,
@@ -277,6 +278,7 @@ export const OpenOnHover: Story = {
 // ── Disabled activator ────────────────────────────────────────────
 
 export const Disabled: Story = {
+  name: "Deaktiviert",
   args: { disabled: true },
   render: (args) => ({
     components: { RMenu, RMenuItem, RBtn },
@@ -285,9 +287,9 @@ export const Disabled: Story = {
       <div style="padding:48px;display:flex;justify-content:center">
         <RMenu v-bind="args">
           <template #activator="{ props }">
-            <RBtn v-bind="props" variant="translucent" disabled>Locked</RBtn>
+            <RBtn v-bind="props" variant="translucent" disabled>Gesperrt</RBtn>
           </template>
-          <RMenuItem icon="mdi-circle" label="Never opens" />
+          <RMenuItem icon="mdi-circle" label="Öffnet sich nie" />
         </RMenu>
       </div>
     `,
@@ -297,7 +299,7 @@ export const Disabled: Story = {
 // ── Controlled open ───────────────────────────────────────────────
 
 export const Controlled: Story = {
-  name: "Controlled (v-model)",
+  name: "Gesteuert (v-model)",
   render: () => ({
     components: { RMenu, RMenuItem, RBtn, RIcon },
     setup: () => ({ open: ref(false) }),
@@ -305,13 +307,13 @@ export const Controlled: Story = {
       <div style="padding:48px;display:flex;flex-direction:column;align-items:center;gap:12px">
         <RMenu v-model="open">
           <template #activator="{ props }">
-            <RBtn v-bind="props" variant="translucent">Click target</RBtn>
+            <RBtn v-bind="props" variant="translucent">Klickziel</RBtn>
           </template>
-          <RMenuItem icon="mdi-information-outline" label="Hello" />
+          <RMenuItem icon="mdi-information-outline" label="Hallo" />
         </RMenu>
         <RBtn size="small" variant="text" @click="open = !open">
           <RIcon :icon="open ? 'mdi-eye-off' : 'mdi-eye'" size="14" />
-          <span style="margin-left:6px">{{ open ? 'Force-close' : 'Force-open' }}</span>
+          <span style="margin-left:6px">{{ open ? 'Schließen erzwingen' : 'Öffnen erzwingen' }}</span>
         </RBtn>
       </div>
     `,

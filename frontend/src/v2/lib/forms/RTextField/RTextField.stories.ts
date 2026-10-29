@@ -59,7 +59,7 @@ export const Default: Story = {
 };
 
 export const WithIcon: Story = {
-  args: { placeholder: "Search ROMs", prependInnerIcon: "mdi-magnify" },
+  args: { placeholder: "ROMs suchen", prependInnerIcon: "mdi-magnify" },
 };
 
 export const Password: Story = {
@@ -74,7 +74,7 @@ export const Password: Story = {
 // ── Variants ────────────────────────────────────────────────────────
 
 export const VariantLadder: Story = {
-  name: "Variant ladder",
+  name: "Variantenübersicht",
   render: () => ({
     components: { RTextField },
     setup: () => ({
@@ -97,7 +97,7 @@ export const VariantLadder: Story = {
 // ── Densities ──────────────────────────────────────────────────────
 
 export const DensityLadder: Story = {
-  name: "Density ladder",
+  name: "Dichteübersicht",
   render: () => ({
     components: { RTextField },
     setup: () => ({
@@ -118,26 +118,26 @@ export const DensityLadder: Story = {
 // ── Labels ──────────────────────────────────────────────────────────
 
 export const StackedLabel: Story = {
-  name: "Label · stacked (forms)",
+  name: "Beschriftung · gestapelt (Formulare)",
   args: {
     prefixLabel: "stacked",
-    label: "Display name",
+    label: "Anzeigename",
     placeholder: "Jane Doe",
-    hint: "Shown next to your avatar in chats.",
+    hint: "Wird in Chats neben Ihrem Avatar angezeigt.",
   },
 };
 
 export const InlineLabel: Story = {
-  name: "Label · inline (search bars)",
+  name: "Beschriftung · inline (Suchleisten)",
   args: {
     prefixLabel: "inline",
-    label: "Search",
-    placeholder: "Find a ROM…",
+    label: "Suche",
+    placeholder: "ROM finden…",
   },
 };
 
 export const WithSubtitle: Story = {
-  name: "Subtitle · path under field",
+  name: "Untertitel · Pfad unter dem Feld",
   render: () => ({
     components: { RTextField },
     setup: () => ({
@@ -148,7 +148,7 @@ export const WithSubtitle: Story = {
         <RTextField
           v-model="filename"
           prefix-label="stacked"
-          label="Filename"
+          label="Dateiname"
         >
           <template #subtitle>
             <span style="font-size:13px;line-height:1">📁</span>
@@ -164,38 +164,38 @@ export const WithSubtitle: Story = {
 
 export const WithHint: Story = {
   args: {
-    label: "Email address",
+    label: "E-Mail-Adresse",
     placeholder: "your@email.com",
-    hint: "We'll only contact you about account events.",
+    hint: "Wir kontaktieren Sie nur zu Kontovorgängen.",
     prependInnerIcon: "mdi-email",
   },
 };
 
 export const WithError: Story = {
   args: {
-    label: "Email address",
+    label: "E-Mail-Adresse",
     placeholder: "your@email.com",
     error: true,
-    errorMessages: "Must be a valid email address",
+    errorMessages: "Muss eine gültige E-Mail-Adresse sein",
     prependInnerIcon: "mdi-email",
   },
 };
 
 export const Validation: Story = {
-  name: "Rules · live validation",
+  name: "Regeln · Live-Validierung",
   render: () => ({
     components: { RTextField },
     setup: () => {
       const value = ref("");
       const rules = [
         (v: unknown) =>
-          !!v && String(v).length > 0 ? true : "Field is required",
+          !!v && String(v).length > 0 ? true : "Feld ist erforderlich",
         (v: unknown) =>
-          String(v).length >= 3 ? true : "Must be at least 3 characters",
+          String(v).length >= 3 ? true : "Mindestens 3 Zeichen erforderlich",
         (v: unknown) =>
           /^[a-z0-9_]+$/.test(String(v)) || !v
             ? true
-            : "Lowercase letters, digits and underscore only",
+            : "Nur Kleinbuchstaben, Ziffern und Unterstriche",
       ];
       return { value, rules };
     },
@@ -204,12 +204,12 @@ export const Validation: Story = {
         <RTextField
           v-model="value"
           prefix-label="stacked"
-          label="Username"
+          label="Benutzername"
           placeholder="snake_case_only"
           :rules="rules"
         />
         <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">
-          Try blurring with an empty value, then typing.
+          Verlassen Sie das leere Feld und beginnen Sie dann zu tippen.
         </div>
       </div>
     `,
@@ -218,7 +218,7 @@ export const Validation: Story = {
 
 export const Loading: Story = {
   args: {
-    placeholder: "Searching…",
+    placeholder: "Suche läuft…",
     loading: true,
     prependInnerIcon: "mdi-magnify",
   },
@@ -226,10 +226,10 @@ export const Loading: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: "Locked",
+    label: "Gesperrt",
     prefixLabel: "stacked",
-    placeholder: "Read-only",
-    modelValue: "Disabled value",
+    placeholder: "Schreibgeschützt",
+    modelValue: "Deaktivierter Wert",
     disabled: true,
   },
 };
@@ -249,14 +249,14 @@ export const Readonly: Story = {
 export const Clearable: Story = {
   render: () => ({
     components: { RTextField },
-    setup: () => ({ value: ref("Type something then clear me") }),
+    setup: () => ({ value: ref("Etwas eingeben und dann löschen") }),
     template: `
       <div style="width:360px">
         <RTextField
           v-model="value"
           prepend-inner-icon="mdi-pencil"
           clearable
-          placeholder="Clearable input"
+          placeholder="Löschbares Eingabefeld"
         />
       </div>
     `,
@@ -266,7 +266,7 @@ export const Clearable: Story = {
 // ── Color tones ────────────────────────────────────────────────────
 
 export const ColorLadder: Story = {
-  name: "Focus tone ladder",
+  name: "Fokusfarbenübersicht",
   render: () => ({
     components: { RTextField },
     setup: () => ({
@@ -291,7 +291,7 @@ export const ColorLadder: Story = {
 // ── Real-world ─────────────────────────────────────────────────────
 
 export const LoginForm: Story = {
-  name: "Login (underlined)",
+  name: "Anmeldung (unterstrichen)",
   render: () => ({
     components: { RTextField, RBtn },
     setup: () => ({
@@ -303,30 +303,30 @@ export const LoginForm: Story = {
       <div style="width:320px;display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px">
         <RTextField
           v-model="user"
-          label="Username"
+          label="Benutzername"
           variant="underlined"
           placeholder="username"
           prepend-inner-icon="mdi-account"
         />
         <RTextField
           v-model="pass"
-          label="Password"
+          label="Passwort"
           variant="underlined"
           :type="show ? 'text' : 'password'"
           placeholder="password"
           prepend-inner-icon="mdi-lock"
           :append-inner-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
-          :append-inner-tooltip="show ? 'Hide password' : 'Show password'"
+          :append-inner-tooltip="show ? 'Passwort ausblenden' : 'Passwort anzeigen'"
           @click:append-inner="show = !show"
         />
-        <RBtn block color="primary">Sign in</RBtn>
+        <RBtn block color="primary">Anmelden</RBtn>
       </div>
     `,
   }),
 };
 
 export const StackedForm: Story = {
-  name: "Settings form (stacked)",
+  name: "Einstellungsformular (gestapelt)",
   render: () => ({
     components: { RTextField, RBtn },
     setup: () => ({
@@ -336,12 +336,12 @@ export const StackedForm: Story = {
     }),
     template: `
       <div style="width:380px;display:flex;flex-direction:column;gap:14px;padding:20px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px">
-        <RTextField v-model="name" prefix-label="stacked" label="Display name" placeholder="How others see you" />
-        <RTextField v-model="email" prefix-label="stacked" label="Email" placeholder="you@example.com" hint="Used for recovery only." />
-        <RTextField v-model="api" prefix-label="stacked" label="API key" placeholder="Paste your API key" clearable />
+        <RTextField v-model="name" prefix-label="stacked" label="Anzeigename" placeholder="So sehen Sie andere" />
+        <RTextField v-model="email" prefix-label="stacked" label="E-Mail" placeholder="sie@beispiel.de" hint="Nur zur Wiederherstellung verwendet." />
+        <RTextField v-model="api" prefix-label="stacked" label="API-Schlüssel" placeholder="API-Schlüssel einfügen" clearable />
         <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px">
-          <RBtn variant="text">Cancel</RBtn>
-          <RBtn color="primary">Save changes</RBtn>
+          <RBtn variant="text">Abbrechen</RBtn>
+          <RBtn color="primary">Änderungen speichern</RBtn>
         </div>
       </div>
     `,
@@ -349,7 +349,7 @@ export const StackedForm: Story = {
 };
 
 export const InlineSearch: Story = {
-  name: "Inline search bar",
+  name: "Inline-Suchleiste",
   render: () => ({
     components: { RTextField },
     setup: () => ({ q: ref("") }),
@@ -358,8 +358,8 @@ export const InlineSearch: Story = {
         <RTextField
           v-model="q"
           prefix-label="inline"
-          label="Filter"
-          placeholder="Type to filter ROMs"
+          label="Filtern"
+          placeholder="Zum Filtern von ROMs tippen"
           clearable
         />
       </div>
@@ -370,7 +370,7 @@ export const InlineSearch: Story = {
 // ── Multiline (`<textarea>`) ──────────────────────────────────
 
 export const Multiline: Story = {
-  name: "Multiline (textarea)",
+  name: "Mehrzeilig (Textbereich)",
   render: () => ({
     components: { RTextField },
     setup: () => ({ text: ref("") }),
@@ -378,9 +378,9 @@ export const Multiline: Story = {
       <div style="width:480px">
         <RTextField
           v-model="text"
-          label="Notes"
+          label="Notizen"
           prefix-label="stacked"
-          placeholder="Write a longer note here…"
+          placeholder="Hier eine längere Notiz schreiben…"
           multiline
           :rows="4"
         />
@@ -390,7 +390,7 @@ export const Multiline: Story = {
 };
 
 export const MultilineMono: Story = {
-  name: "Multiline (mono / JSON editor)",
+  name: "Mehrzeilig (Mono / JSON-Editor)",
   render: () => ({
     components: { RTextField },
     setup: () => ({
@@ -406,7 +406,7 @@ export const MultilineMono: Story = {
       <div style="width:480px">
         <RTextField
           v-model="text"
-          label="Raw payload"
+          label="Rohdaten"
           prefix-label="stacked"
           variant="outlined"
           multiline

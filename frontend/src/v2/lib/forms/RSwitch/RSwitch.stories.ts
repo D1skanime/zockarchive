@@ -30,11 +30,11 @@ export default meta;
 type Story = StoryObj<typeof RSwitch>;
 
 export const Default: Story = {
-  args: { ariaLabel: "Toggle setting" },
+  args: { ariaLabel: "Einstellung umschalten" },
 };
 
 export const WithLabel: Story = {
-  args: { label: "Notifications" },
+  args: { label: "Benachrichtigungen" },
 };
 
 export const Checked: Story = {
@@ -50,21 +50,21 @@ export const Checked: Story = {
       </div>
     `,
   }),
-  args: { label: "Notifications" },
+  args: { label: "Benachrichtigungen" },
 };
 
 export const Small: Story = {
-  args: { label: "Compact toggle", size: "small" },
+  args: { label: "Kompakter Schalter", size: "small" },
 };
 
 export const Disabled: Story = {
-  args: { label: "Disabled", disabled: true },
+  args: { label: "Deaktiviert", disabled: true },
 };
 
 // Keyboard: Tab focuses the switch, Space/Enter toggle it.
 export const KeyboardToggle: Story = {
-  name: "Keyboard toggle (play)",
-  args: { label: "Notifications" },
+  name: "Tastaturumschaltung (play)",
+  args: { label: "Benachrichtigungen" },
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
     const sw = canvas.getByRole("switch");

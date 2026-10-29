@@ -19,8 +19,8 @@ const meta: Meta<typeof RDropzone> = {
     overlay: { control: "boolean" },
   },
   args: {
-    title: "Drop files here",
-    hint: "Drag and drop, or click to browse",
+    title: "Dateien hier ablegen",
+    hint: "Per Drag-and-Drop ablegen oder zum Auswählen klicken",
     activeTitle: "Release to upload",
     inputLabel: "Upload files",
     multiple: true,
@@ -57,7 +57,7 @@ export const Disabled: Story = {
 
 // Overlay mode wraps existing content; the drag-over overlay floats on top.
 export const Overlay: Story = {
-  args: { overlay: true, releaseLabel: "Release to upload" },
+  args: { overlay: true, releaseLabel: "Zum Hochladen loslassen" },
   render: (args) => ({
     components: { RDropzone },
     setup: () => ({ args }),

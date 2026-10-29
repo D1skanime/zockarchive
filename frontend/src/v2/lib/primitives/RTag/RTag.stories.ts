@@ -74,7 +74,7 @@ export const SlotContent: Story = {
   render: (args) => ({
     components: { RTag },
     setup: () => ({ args }),
-    template: `<RTag v-bind="args"><strong>Bold</strong>&nbsp;value</RTag>`,
+    template: `<RTag v-bind="args"><strong>Fetter</strong>&nbsp;Wert</RTag>`,
   }),
   args: { tone: "warning" },
 };
@@ -83,15 +83,15 @@ export const SlotContent: Story = {
 // no chip surface). Inherits parent text colour so it blends into muted
 // metadata blocks.
 export const Plain: Story = {
-  name: "Plain (no chrome)",
+  name: "Schlicht (ohne Fläche)",
   render: () => ({
     components: { RTag },
     template: `
       <div style="padding:24px;display:flex;flex-direction:column;gap:6px;color:var(--r-color-fg-muted);font-size:12px">
         <RTag tone="plain" prepend-icon="mdi-email-outline">romm@zurdi.dev</RTag>
         <div style="display:flex;gap:14px">
-          <RTag tone="plain" prepend-icon="mdi-calendar-blank-outline">Joined 2 days ago</RTag>
-          <RTag tone="plain" prepend-icon="mdi-clock-outline">Last active just now</RTag>
+          <RTag tone="plain" prepend-icon="mdi-calendar-blank-outline">Beigetreten vor 2 Tagen</RTag>
+          <RTag tone="plain" prepend-icon="mdi-clock-outline">Zuletzt gerade eben aktiv</RTag>
         </div>
       </div>
     `,

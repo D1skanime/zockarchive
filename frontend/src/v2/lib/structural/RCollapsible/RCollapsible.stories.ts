@@ -22,8 +22,8 @@ const meta: Meta<typeof RCollapsible> = {
     template: `
       <RCollapsible v-model="open" v-bind="args">
         <p style="margin: 0; font-size: 13px; line-height: 1.6; color: var(--r-color-fg-secondary);">
-          This is the content of the panel. Clicking the header toggles the open state.
-          The grid-row trick interpolates height without measuring pixels.
+          Dies ist der Inhalt des Bereichs. Ein Klick auf die Kopfzeile wechselt den Öffnungszustand.
+          Der Grid-Row-Trick interpoliert die Höhe ohne Pixel zu messen.
         </p>
       </RCollapsible>
     `,
@@ -33,21 +33,29 @@ const meta: Meta<typeof RCollapsible> = {
 export default meta;
 type Story = StoryObj<typeof RCollapsible>;
 
-export const Default: Story = { args: { title: "More details" } };
+export const Default: Story = {
+  name: "Standard",
+  args: { title: "Weitere Details" },
+};
 
 export const Open: Story = {
-  args: { title: "Already open", defaultOpen: true },
+  name: "Bereits geöffnet",
+  args: { title: "Bereits geöffnet", defaultOpen: true },
 };
 
 export const WithIcon: Story = {
-  args: { title: "With leading icon", icon: "mdi-information-outline" },
+  name: "Mit vorangestelltem Symbol",
+  args: {
+    title: "Mit vorangestelltem Symbol",
+    icon: "mdi-information-outline",
+  },
 };
 
 // `#header-append` slot — content between the title and the chevron.
 // Used by ScanPlatform for ROM-count / firmware / "not identified"
 // chips, but generic enough for any badge / counter use.
 export const WithHeaderAppend: Story = {
-  name: "Header append (chips)",
+  name: "Kopfzeilen-Anhang (Chips)",
   render: () => ({
     components: { RCollapsible, RTag },
     setup: () => ({ open: ref(false) }),
@@ -59,8 +67,8 @@ export const WithHeaderAppend: Story = {
             <RTag tone="warning" size="x-small" icon="mdi-memory" text="3" />
           </template>
           <p style="margin: 0; font-size: 13px; color: var(--r-color-fg-secondary);">
-            Slot content sits between the title and the chevron — perfect for counts,
-            status pills, or quick-action buttons that should travel with the header.
+            Slot-Inhalt steht zwischen Titel und Chevron, ideal für Zähler,
+            Status-Chips oder Schnellaktionen in der Kopfzeile.
           </p>
         </RCollapsible>
       </div>
@@ -69,7 +77,8 @@ export const WithHeaderAppend: Story = {
 };
 
 export const Disabled: Story = {
-  args: { title: "Locked", disabled: true },
+  name: "Deaktiviert",
+  args: { title: "Gesperrt", disabled: true },
 };
 
 // Headless mode — no internal header, panel driven entirely by an
@@ -96,11 +105,11 @@ export const Headless: Story = {
             font-family: inherit; font-size: 12px; font-weight: 500;
           "
         >
-          External trigger ({{ open ? 'open' : 'closed' }})
+          Externer Auslöser ({{ open ? 'geöffnet' : 'geschlossen' }})
         </button>
         <RCollapsible :model-value="open">
           <div style="padding: 12px; font-size: 12px; color: var(--r-color-fg-secondary);">
-            Headless: the parent owns the toggle, the primitive only animates.
+            Headless: Die übergeordnete Komponente steuert den Wechsel, das Grundelement animiert nur.
           </div>
         </RCollapsible>
       </div>
@@ -133,11 +142,11 @@ export const Attached: Story = {
             border-bottom: none;
           "
         >
-          Trigger row (rounded top only)
+          Auslöserzeile (nur oben abgerundet)
         </button>
         <RCollapsible :model-value="open" attached>
           <div style="padding: 12px 14px; font-size: 12px; color: var(--r-color-fg-secondary);">
-            Attached: panel keeps bottom radius, drops top — visually merges with trigger.
+            Angedockt: Der Bereich behält die untere Rundung und verschmilzt visuell mit dem Auslöser.
           </div>
         </RCollapsible>
       </div>

@@ -78,6 +78,7 @@ type Story = StoryObj<typeof AssetCard>;
 // ── Save (no screenshot) ────────────────────────────────────────
 
 export const Save: Story = {
+  name: "Spielstand",
   render: () => ({
     components: { AssetCard },
     setup: () => ({ asset: makeSave() }),
@@ -107,6 +108,7 @@ export const SaveNoEmulator: Story = {
 // ── State (with screenshot) ─────────────────────────────────────
 
 export const State: Story = {
+  name: "Status",
   render: () => ({
     components: { AssetCard },
     setup: () => ({ asset: makeState() }),
@@ -121,7 +123,7 @@ export const State: Story = {
 // ── State without a screenshot (placeholder pattern) ────────────
 
 export const StateNoScreenshot: Story = {
-  name: "State (placeholder screenshot)",
+  name: "Status (Platzhalterbild)",
   render: () => ({
     components: { AssetCard },
     setup: () => ({
@@ -141,7 +143,7 @@ export const StateNoScreenshot: Story = {
 // ── Long filename — ellipsis path ──────────────────────────────
 
 export const LongFilename: Story = {
-  name: "Long filename",
+  name: "Langer Dateiname",
   render: () => ({
     components: { AssetCard },
     setup: () => ({
@@ -162,7 +164,7 @@ export const LongFilename: Story = {
 // ── Grid layout (real picker context) ──────────────────────────
 
 export const Grid: Story = {
-  name: "Grid (picker layout)",
+  name: "Raster (Auswahllayout)",
   render: () => ({
     components: { AssetCard },
     setup: () => {

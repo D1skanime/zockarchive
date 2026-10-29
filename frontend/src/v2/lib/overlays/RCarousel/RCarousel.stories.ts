@@ -41,6 +41,11 @@ const meta: Meta = {
     nextLabel: { control: "text" },
     ariaLabel: { control: "text" },
   },
+  args: {
+    closeLabel: "Schließen",
+    prevLabel: "Zurück",
+    nextLabel: "Weiter",
+  },
 };
 
 export default meta;
@@ -48,11 +53,12 @@ export default meta;
 type Story = StoryObj;
 
 export const Inline: Story = {
+  name: "Inline",
   args: {
     items: SAMPLES,
     loop: true,
     showThumbnails: true,
-    ariaLabel: "Image carousel",
+    ariaLabel: "Bildkarussell",
   },
   render: (args) => ({
     components: { RCarousel: RCarouselStory },
@@ -68,7 +74,7 @@ export const Inline: Story = {
           style="width: 720px; height: 460px;"
         >
           <template #default="{ item, index }">
-            <img :src="item" :alt="'Slide ' + (index + 1)" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
+            <img :src="item" :alt="'Folie ' + (index + 1)" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
           </template>
           <template #thumbnail="{ item }">
             <img :src="item" alt="" />
@@ -86,21 +92,21 @@ export const Inline: Story = {
     });
 
     await step("clicking next advances the index", async () => {
-      const next = canvas.getByRole("button", { name: "Next" });
+      const next = canvas.getByRole("button", { name: "Weiter" });
       await userEvent.click(next);
       const counter = await canvas.findByText("2 / 5");
       expect(counter).toBeInTheDocument();
     });
 
     await step("clicking prev rewinds", async () => {
-      const prev = canvas.getByRole("button", { name: "Previous" });
+      const prev = canvas.getByRole("button", { name: "Zurück" });
       await userEvent.click(prev);
       const counter = await canvas.findByText("1 / 5");
       expect(counter).toBeInTheDocument();
     });
 
     await step("loop wraps from first to last on prev", async () => {
-      const prev = canvas.getByRole("button", { name: "Previous" });
+      const prev = canvas.getByRole("button", { name: "Zurück" });
       await userEvent.click(prev);
       const counter = await canvas.findByText("5 / 5");
       expect(counter).toBeInTheDocument();
@@ -116,6 +122,7 @@ export const Inline: Story = {
 };
 
 export const InlineLight: Story = {
+  name: "Inline, hell",
   args: {
     items: SAMPLES,
     showThumbnails: true,
@@ -134,7 +141,7 @@ export const InlineLight: Story = {
           style="width: 720px; height: 460px;"
         >
           <template #default="{ item, index }">
-            <img :src="item" :alt="'Slide ' + (index + 1)" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
+            <img :src="item" :alt="'Folie ' + (index + 1)" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
           </template>
           <template #thumbnail="{ item }">
             <img :src="item" alt="" />
@@ -146,12 +153,13 @@ export const InlineLight: Story = {
 };
 
 export const Fullscreen: Story = {
+  name: "Vollbild",
   args: {
     items: SAMPLES,
     fullscreen: true,
     loop: true,
     showThumbnails: true,
-    ariaLabel: "Screenshot lightbox",
+    ariaLabel: "Bildschirmfoto-Leuchtkasten",
   },
   render: (args) => ({
     components: { RCarousel: RCarouselStory, RBtn },
@@ -162,7 +170,7 @@ export const Fullscreen: Story = {
     },
     template: `
       <div class="r-v2 r-v2-dark" style="padding: 32px; background: #07070f; min-height: 540px;">
-        <RBtn @click="index = 0">Open lightbox</RBtn>
+        <RBtn @click="index = 0">Leuchtkasten öffnen</RBtn>
         <RCarousel
           v-if="index !== null"
           v-bind="args"
@@ -170,7 +178,7 @@ export const Fullscreen: Story = {
           @close="onClose"
         >
           <template #default="{ item, index }">
-            <img :src="item" :alt="'Slide ' + (index + 1)" />
+            <img :src="item" :alt="'Folie ' + (index + 1)" />
           </template>
           <template #thumbnail="{ item }">
             <img :src="item" />
@@ -182,6 +190,7 @@ export const Fullscreen: Story = {
 };
 
 export const NoLoop: Story = {
+  name: "Ohne Schleife",
   args: {
     items: SAMPLES.slice(0, 3),
     loop: false,
@@ -200,7 +209,7 @@ export const NoLoop: Story = {
           style="width: 560px; height: 320px;"
         >
           <template #default="{ item, index }">
-            <img :src="item" :alt="'Slide ' + (index + 1)" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
+            <img :src="item" :alt="'Folie ' + (index + 1)" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
           </template>
         </RCarousel>
       </div>
@@ -209,6 +218,7 @@ export const NoLoop: Story = {
 };
 
 export const SingleItem: Story = {
+  name: "Ein Element",
   args: {
     items: SAMPLES.slice(0, 1),
   },
@@ -226,7 +236,7 @@ export const SingleItem: Story = {
           style="width: 560px; height: 320px;"
         >
           <template #default="{ item }">
-            <img :src="item" alt="Single slide" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
+            <img :src="item" alt="Einzelne Folie" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;" />
           </template>
         </RCarousel>
       </div>

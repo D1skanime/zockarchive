@@ -60,11 +60,11 @@ type Story = StoryObj<typeof RCheckbox>;
 // ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  args: { label: "Remember me" },
+  args: { label: "Angemeldet bleiben" },
 };
 
 export const Checked: Story = {
-  args: { label: "Auto-login next time" },
+  args: { label: "Beim nächsten Mal automatisch anmelden" },
   render: (args) => ({
     components: { RCheckbox },
     setup: () => {
@@ -76,14 +76,14 @@ export const Checked: Story = {
 };
 
 export const Indeterminate: Story = {
-  args: { label: "Some items selected", indeterminate: true },
+  args: { label: "Einige Elemente ausgewählt", indeterminate: true },
 };
 
 export const NoLabel: Story = {
   render: () => ({
     components: { RCheckbox },
     setup: () => ({ value: ref(false) }),
-    template: `<RCheckbox v-model="value" aria-label="Accept" />`,
+    template: `<RCheckbox v-model="value" aria-label="Akzeptieren" />`,
   }),
 };
 
@@ -94,7 +94,7 @@ export const NoLabel: Story = {
 // the ordered list (first = empty); a state with a `color` fills the box
 // and with an `icon` shows that glyph (else the check tick).
 export const MultiState: Story = {
-  name: "Multi-state (none / full / own)",
+  name: "Mehrere Zustände (keine / vollständig / eigene)",
   render: () => ({
     components: { RCheckbox },
     setup() {
@@ -106,10 +106,10 @@ export const MultiState: Story = {
         <RCheckbox
           v-model:state-value="state"
           :states="GRANT_STATES"
-          aria-label="Permission"
-          label="Click to cycle: none → full → own"
+          aria-label="Berechtigung"
+          label="Zum Wechseln klicken: keine → vollständig → eigene"
         />
-        <span>Current value: <strong>{{ state }}</strong></span>
+        <span>Aktueller Wert: <strong>{{ state }}</strong></span>
       </div>
     `,
   }),
@@ -144,7 +144,7 @@ export const MultiState: Story = {
 // The override flavour cycles through four states — inherit, grant
 // (primary), grant-own (accent), revoke (danger).
 export const MultiStateLadder: Story = {
-  name: "Multi-state ladder (4-state override)",
+  name: "Mehrere Zustände (4-stufige Überschreibung)",
   render: () => ({
     components: { RCheckbox },
     setup() {
@@ -156,10 +156,10 @@ export const MultiStateLadder: Story = {
     },
     template: `
       <div style="display:flex;flex-direction:column;gap:10px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
-        <RCheckbox v-model:state-value="inherit" :states="OVERRIDE_STATES" label="inherit — defer to group" />
-        <RCheckbox v-model:state-value="grant" :states="OVERRIDE_STATES" label="grant — force allow (primary)" />
-        <RCheckbox v-model:state-value="grantOwn" :states="OVERRIDE_STATES" label="grant-own — allow own items (accent)" />
-        <RCheckbox v-model:state-value="revoke" :states="OVERRIDE_STATES" label="revoke — force deny (danger)" />
+        <RCheckbox v-model:state-value="inherit" :states="OVERRIDE_STATES" label="vererben, Gruppe entscheidet" />
+        <RCheckbox v-model:state-value="grant" :states="OVERRIDE_STATES" label="gewähren, Zugriff erzwingen (primär)" />
+        <RCheckbox v-model:state-value="grantOwn" :states="OVERRIDE_STATES" label="eigene gewähren, eigene Elemente erlauben (Akzent)" />
+        <RCheckbox v-model:state-value="revoke" :states="OVERRIDE_STATES" label="entziehen, Zugriff verweigern (Gefahr)" />
       </div>
     `,
   }),
@@ -168,7 +168,7 @@ export const MultiStateLadder: Story = {
 // ── Sizes ───────────────────────────────────────────────────────────
 
 export const SizeLadder: Story = {
-  name: "Size ladder (xs / sm / md / lg)",
+  name: "Größenübersicht (xs / sm / md / lg)",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -192,7 +192,7 @@ export const SizeLadder: Story = {
 // ── Shapes ──────────────────────────────────────────────────────────
 
 export const ShapeLadder: Story = {
-  name: "Shape ladder (square / rounded / circle)",
+  name: "Formenübersicht (eckig / abgerundet / Kreis)",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -203,9 +203,9 @@ export const ShapeLadder: Story = {
     },
     template: `
       <div style="display:flex;flex-direction:column;gap:10px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
-        <RCheckbox v-model="a" shape="square" label="square (default · 4 px radius)" />
-        <RCheckbox v-model="b" shape="rounded" label="rounded (8 px radius)" />
-        <RCheckbox v-model="c" shape="circle" label="circle (50% — radio-button look)" />
+        <RCheckbox v-model="a" shape="square" label="eckig (Standard · 4 px Radius)" />
+        <RCheckbox v-model="b" shape="rounded" label="abgerundet (8 px Radius)" />
+        <RCheckbox v-model="c" shape="circle" label="Kreis (50 %, wie ein Optionsfeld)" />
       </div>
     `,
   }),
@@ -214,7 +214,7 @@ export const ShapeLadder: Story = {
 // ── Colors ──────────────────────────────────────────────────────────
 
 export const ColorLadder: Story = {
-  name: "Color ladder",
+  name: "Farbübersicht",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -247,11 +247,11 @@ export const ColorLadder: Story = {
 // ── States ──────────────────────────────────────────────────────────
 
 export const Disabled: Story = {
-  args: { label: "Disabled checkbox", disabled: true },
+  args: { label: "Deaktiviertes Kontrollkästchen", disabled: true },
 };
 
 export const DisabledChecked: Story = {
-  args: { label: "Disabled and checked", disabled: true },
+  args: { label: "Deaktiviert und ausgewählt", disabled: true },
   render: (args) => ({
     components: { RCheckbox },
     setup: () => {
@@ -263,24 +263,25 @@ export const DisabledChecked: Story = {
 };
 
 export const Error: Story = {
-  args: { label: "I agree to the terms" },
+  args: { label: "Ich stimme den Bedingungen zu" },
   render: (args) => ({
     components: { RCheckbox },
     setup: () => {
       const value = ref(false);
       return { args, value };
     },
-    template: `<RCheckbox v-model="value" v-bind="args" :error="true" error-messages="This field is required" />`,
+    template: `<RCheckbox v-model="value" v-bind="args" :error="true" error-messages="Dieses Feld ist erforderlich" />`,
   }),
 };
 
 // ── Subtitle ────────────────────────────────────────────────────────
 
 export const WithSubtitle: Story = {
-  name: "With subtitle",
+  name: "Mit Untertitel",
   args: {
-    label: "Send weekly digest",
-    subtitle: "We'll email you a Friday recap of new ROMs and scans.",
+    label: "Wöchentliche Zusammenfassung senden",
+    subtitle:
+      "Wir senden Ihnen freitags eine Zusammenfassung neuer ROMs und Scans.",
   },
   render: (args) => ({
     components: { RCheckbox },

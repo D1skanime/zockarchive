@@ -9,7 +9,7 @@ that an existing primitive cannot preserve.
 | Path                                           | Tag        | Line | Required semantics and reason                                                                                                |
 | ---------------------------------------------- | ---------- | ---: | ---------------------------------------------------------------------------------------------------------------------------- |
 | `lib/forms/RCheckbox/RCheckbox.vue`            | `input`    |  210 | The primitive owns a native checkbox so browsers expose checked, indeterminate, label, and form-submission semantics.        |
-| `lib/forms/RComboboxField/RComboboxField.vue`  | `input`    |  372 | The editable combobox requires a real text input to maintain the input-to-listbox keyboard and IME contract.                 |
+| `lib/forms/RComboboxField/RComboboxField.vue`  | `input`    |  373 | The editable combobox requires a real text input to maintain the input-to-listbox keyboard and IME contract.                 |
 | `lib/forms/RDateField/RDateField.vue`          | `button`   |  510 | Calendar cells require roving tabindex, `aria-selected`, and disabled-day semantics in a grid.                               |
 | `lib/forms/RDropzone/RDropzone.vue`            | `input`    |  100 | A visually hidden file input is required to open the browser file chooser and transfer selected files.                       |
 | `lib/forms/RRating/RRating.vue`                | `button`   |  187 | Radio-style star controls use native buttons for the required roving keyboard and disabled semantics.                        |

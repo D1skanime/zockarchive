@@ -5,6 +5,7 @@ import RBtn from "./RBtn.vue";
 const meta: Meta<typeof RBtn> = {
   title: "Grundelemente/Grundbaustein/RBtn",
   component: RBtn,
+  tags: ["autodocs"],
   argTypes: {
     variant: {
       control: "select",
@@ -45,7 +46,7 @@ export const Default: Story = {
   render: (args) => ({
     components: { RBtn },
     setup: () => ({ args }),
-    template: `<RBtn v-bind="args">Click me</RBtn>`,
+    template: `<RBtn v-bind="args">Klick mich</RBtn>`,
   }),
 };
 
@@ -54,7 +55,7 @@ export const Primary: Story = {
   render: (args) => ({
     components: { RBtn },
     setup: () => ({ args }),
-    template: `<RBtn v-bind="args">Primary action</RBtn>`,
+    template: `<RBtn v-bind="args">Primäre Aktion</RBtn>`,
   }),
 };
 
@@ -79,7 +80,7 @@ export const Variants: Story = {
 // ── Size ladder ─────────────────────────────────────────────────────
 
 export const SizeLadder: Story = {
-  name: "Size ladder",
+  name: "Größenabstufung",
   render: () => ({
     components: { RBtn },
     template: `
@@ -95,7 +96,7 @@ export const SizeLadder: Story = {
 };
 
 export const Density: Story = {
-  name: "Density compression",
+  name: "Dichte-Abstufung",
   render: () => ({
     components: { RBtn },
     template: `
@@ -111,7 +112,7 @@ export const Density: Story = {
 // ── Tones ───────────────────────────────────────────────────────────
 
 export const Tones: Story = {
-  name: "Tones · flat",
+  name: "Farbtöne · flach",
   render: () => ({
     components: { RBtn },
     template: `
@@ -130,7 +131,7 @@ export const Tones: Story = {
 };
 
 export const TonesTranslucent: Story = {
-  name: "Tones · translucent",
+  name: "Farbtöne · durchscheinend",
   render: () => ({
     components: { RBtn },
     template: `
@@ -150,31 +151,31 @@ export const TonesTranslucent: Story = {
 // ── Icons ───────────────────────────────────────────────────────────
 
 export const WithIcons: Story = {
-  name: "Prepend / append icons",
+  name: "Vorangestellte / angehängte Symbole",
   render: () => ({
     components: { RBtn },
     template: `
       <div style="display:flex;flex-wrap:wrap;gap:10px">
-        <RBtn color="primary" prepend-icon="mdi-login">Sign in</RBtn>
-        <RBtn color="success" prepend-icon="mdi-content-save">Save</RBtn>
-        <RBtn variant="outlined" append-icon="mdi-open-in-new">Open docs</RBtn>
-        <RBtn variant="translucent" color="primary" prepend-icon="mdi-filter" append-icon="mdi-menu-down">Filter</RBtn>
+        <RBtn color="primary" prepend-icon="mdi-login">Anmelden</RBtn>
+        <RBtn color="success" prepend-icon="mdi-content-save">Speichern</RBtn>
+        <RBtn variant="outlined" append-icon="mdi-open-in-new">Dokumentation öffnen</RBtn>
+        <RBtn variant="translucent" color="primary" prepend-icon="mdi-filter" append-icon="mdi-menu-down">Filtern</RBtn>
       </div>
     `,
   }),
 };
 
 export const IconOnly: Story = {
-  name: "Icon-only buttons",
+  name: "Schaltflächen nur mit Symbol",
   render: () => ({
     components: { RBtn },
     template: `
       <div style="display:flex;align-items:center;gap:10px">
-        <RBtn icon="mdi-pencil" variant="text" aria-label="Edit" />
-        <RBtn icon="mdi-delete" variant="text" color="danger" aria-label="Delete" />
-        <RBtn icon="mdi-heart" variant="translucent" color="primary" aria-label="Favorite" />
-        <RBtn icon="mdi-refresh" variant="outlined" aria-label="Refresh" />
-        <RBtn icon="mdi-plus" color="primary" aria-label="Add" />
+        <RBtn icon="mdi-pencil" variant="text" aria-label="Bearbeiten" />
+        <RBtn icon="mdi-delete" variant="text" color="danger" aria-label="Löschen" />
+        <RBtn icon="mdi-heart" variant="translucent" color="primary" aria-label="Favorit" />
+        <RBtn icon="mdi-refresh" variant="outlined" aria-label="Aktualisieren" />
+        <RBtn icon="mdi-plus" color="primary" aria-label="Hinzufügen" />
       </div>
     `,
   }),
@@ -251,7 +252,7 @@ export const Rounded: Story = {
 // ── Loading ─────────────────────────────────────────────────────────
 
 export const LoadingState: Story = {
-  name: "Loading (interactive)",
+  name: "Wird geladen (interaktiv)",
   render: () => ({
     components: { RBtn },
     setup() {
@@ -267,9 +268,9 @@ export const LoadingState: Story = {
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
         <RBtn color="primary" :loading="loading" prepend-icon="mdi-content-save" @click="run">
-          Save changes
+          Änderungen speichern
         </RBtn>
-        <RBtn variant="outlined" :loading="loading" @click="run">Submit</RBtn>
+        <RBtn variant="outlined" :loading="loading" @click="run">Absenden</RBtn>
         <span style="font:12px/1.4 sans-serif;color:var(--r-color-fg-muted)">
           Click — spinner appears after the 200ms debounce; layout doesn't shift.
         </span>
@@ -285,7 +286,7 @@ export const Block: Story = {
   render: (args) => ({
     components: { RBtn },
     setup: () => ({ args }),
-    template: `<div style="width:360px"><RBtn v-bind="args">Submit</RBtn></div>`,
+    template: `<div style="width:360px"><RBtn v-bind="args">Absenden</RBtn></div>`,
   }),
 };
 
@@ -360,14 +361,14 @@ export const Toolbar: Story = {
 };
 
 export const FormActions: Story = {
-  name: "Form actions row",
+  name: "Zeile mit Formularaktionen",
   render: () => ({
     components: { RBtn },
     template: `
       <div style="display:flex;gap:10px;justify-content:flex-end;padding:14px;background:var(--r-color-bg-elevated);border-radius:10px;width:420px">
-        <RBtn variant="text">Cancel</RBtn>
-        <RBtn variant="outlined">Save draft</RBtn>
-        <RBtn color="primary" prepend-icon="mdi-send">Publish</RBtn>
+        <RBtn variant="text">Abbrechen</RBtn>
+        <RBtn variant="outlined">Entwurf speichern</RBtn>
+        <RBtn color="primary" prepend-icon="mdi-send">Veröffentlichen</RBtn>
       </div>
     `,
   }),

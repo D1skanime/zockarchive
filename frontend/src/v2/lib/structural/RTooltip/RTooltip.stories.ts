@@ -75,7 +75,7 @@ type Story = StoryObj<typeof RTooltip>;
 // ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  name: "Default · slot activator",
+  name: "Standard · Slot-Auslöser",
   args: { text: "Save your progress", location: "top" },
   render: (args) => ({
     components: { RTooltip, RBtn },
@@ -93,7 +93,7 @@ export const Default: Story = {
 };
 
 export const ParentAttach: Story = {
-  name: "Parent attach (no slot)",
+  name: "An Elternelement anhängen (ohne Slot)",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -109,7 +109,7 @@ export const ParentAttach: Story = {
 // ── Placements ──────────────────────────────────────────────────────
 
 export const PlacementCardinals: Story = {
-  name: "Placement · cardinals",
+  name: "Positionierung · Himmelsrichtungen",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -140,7 +140,7 @@ export const PlacementCardinals: Story = {
 };
 
 export const PlacementDiagonals: Story = {
-  name: "Placement · diagonals",
+  name: "Positionierung · Diagonalen",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -171,7 +171,7 @@ export const PlacementDiagonals: Story = {
 };
 
 export const FlipNearEdge: Story = {
-  name: "Auto-flip near viewport edge",
+  name: "Automatisches Umklappen am Fensterrand",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -194,7 +194,7 @@ export const FlipNearEdge: Story = {
 // ── Content variants ────────────────────────────────────────────────
 
 export const LongText: Story = {
-  name: "Long-form text",
+  name: "Langer Text",
   args: {
     text: "Scans the selected library path, matches any new ROMs against the configured metadata providers, and refreshes artwork for existing entries.",
     location: "top",
@@ -215,7 +215,7 @@ export const LongText: Story = {
 };
 
 export const CustomContent: Story = {
-  name: "Custom slot content",
+  name: "Benutzerdefinierter Slot-Inhalt",
   render: () => ({
     components: { RTooltip, RBtn, RIcon },
     template: `
@@ -243,7 +243,7 @@ export const CustomContent: Story = {
 // ── States ──────────────────────────────────────────────────────────
 
 export const Disabled: Story = {
-  name: "Disabled (no-op)",
+  name: "Deaktiviert (ohne Wirkung)",
   args: { text: "You shouldn't see me", location: "top", disabled: true },
   render: (args) => ({
     components: { RTooltip, RBtn },
@@ -261,7 +261,7 @@ export const Disabled: Story = {
 };
 
 export const Delays: Story = {
-  name: "Open / close delays",
+  name: "Öffnungs- und Schließverzögerungen",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -292,7 +292,7 @@ export const Delays: Story = {
 };
 
 export const Controlled: Story = {
-  name: "Controlled (v-model)",
+  name: "Gesteuert (v-model)",
   render: () => ({
     components: { RTooltip, RBtn },
     setup: () => {
@@ -317,7 +317,7 @@ export const Controlled: Story = {
 // ── Offset ──────────────────────────────────────────────────────────
 
 export const OffsetLadder: Story = {
-  name: "Offset ladder",
+  name: "Abstandsstufen",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -345,7 +345,7 @@ export const OffsetLadder: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const IconBarRealWorld: Story = {
-  name: "Icon toolbar (real-world)",
+  name: "Symbol-Werkzeugleiste (Praxisbeispiel)",
   render: () => ({
     components: { RTooltip, RBtn },
     template: `
@@ -382,7 +382,7 @@ export const IconBarRealWorld: Story = {
 // tooltip there would linger over whatever the tap opened. The tooltip must
 // reveal for mouse/pen hover only, and a click must always dismiss it.
 export const TouchGating: Story = {
-  name: "Touch gating (play)",
+  name: "Touch-Begrenzung (play)",
   args: { text: "Tooltip body text", location: "top", openDelay: 0 },
   render: (args) => ({
     components: { RTooltip, RBtn },
@@ -425,7 +425,7 @@ export const TouchGating: Story = {
 // `open-on-tap` — a standalone info affordance that must reveal on touch too
 // (tap toggles; a mouse click opens rather than closing a hover-revealed tip).
 export const OpenOnTap: Story = {
-  name: "Open on tap (play)",
+  name: "Per Tippen öffnen (play)",
   args: {
     text: "Tooltip body text",
     location: "top",

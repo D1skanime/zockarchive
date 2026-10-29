@@ -25,13 +25,13 @@ export const Default: Story = {};
 // ── Variants ─────────────────────────────────────────────────────────
 
 export const WithText: Story = {
-  name: "With text (default slot)",
+  name: "Mit Text (Standard-Slot)",
   render: (args) => ({
     components: { RDivider },
     setup: () => ({ args }),
     template: `
       <div style="width:320px;color:var(--r-color-fg)">
-        <RDivider v-bind="args">or</RDivider>
+        <RDivider v-bind="args">oder</RDivider>
       </div>
     `,
   }),
@@ -44,25 +44,25 @@ export const Vertical: Story = {
     setup: () => ({ args }),
     template: `
       <div style="height:60px;display:flex;align-items:center;gap:16px;color:var(--r-color-fg)">
-        <span>Left</span>
+        <span>Links</span>
         <RDivider v-bind="args" />
-        <span>Right</span>
+        <span>Rechts</span>
       </div>
     `,
   }),
 };
 
 export const VerticalWithText: Story = {
-  name: "Vertical with text",
+  name: "Vertikal mit Text",
   args: { vertical: true },
   render: (args) => ({
     components: { RDivider },
     setup: () => ({ args }),
     template: `
       <div style="height:120px;display:flex;align-items:stretch;gap:16px;color:var(--r-color-fg)">
-        <div style="display:flex;align-items:center;padding:0 16px;background:var(--r-color-surface);border-radius:8px">Top</div>
-        <RDivider v-bind="args">or</RDivider>
-        <div style="display:flex;align-items:center;padding:0 16px;background:var(--r-color-surface);border-radius:8px">Bottom</div>
+        <div style="display:flex;align-items:center;padding:0 16px;background:var(--r-color-surface);border-radius:8px">Oben</div>
+        <RDivider v-bind="args">oder</RDivider>
+        <div style="display:flex;align-items:center;padding:0 16px;background:var(--r-color-surface);border-radius:8px">Unten</div>
       </div>
     `,
   }),
@@ -71,26 +71,26 @@ export const VerticalWithText: Story = {
 // ── Thickness ─────────────────────────────────────────────────────────
 
 export const ThicknessLadder: Story = {
-  name: "Thickness ladder",
+  name: "Stärkenabstufung",
   render: () => ({
     components: { RDivider },
     template: `
       <div style="width:320px;display:flex;flex-direction:column;gap:18px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div>
           <RDivider :thickness="1" />
-          <div style="margin-top:6px">thickness: 1 (default)</div>
+          <div style="margin-top:6px">Stärke: 1 (Standard)</div>
         </div>
         <div>
           <RDivider :thickness="2" />
-          <div style="margin-top:6px">thickness: 2</div>
+          <div style="margin-top:6px">Stärke: 2</div>
         </div>
         <div>
           <RDivider :thickness="4" />
-          <div style="margin-top:6px">thickness: 4</div>
+          <div style="margin-top:6px">Stärke: 4</div>
         </div>
         <div>
           <RDivider :thickness="8" />
-          <div style="margin-top:6px">thickness: 8</div>
+          <div style="margin-top:6px">Stärke: 8</div>
         </div>
       </div>
     `,
@@ -98,7 +98,7 @@ export const ThicknessLadder: Story = {
 };
 
 export const ThicknessWithText: Story = {
-  name: "Thickness — with text",
+  name: "Stärke · mit Text",
   render: () => ({
     components: { RDivider },
     template: `
@@ -114,16 +114,16 @@ export const ThicknessWithText: Story = {
 // ── Inset ────────────────────────────────────────────────────────────
 
 export const FullWidth: Story = {
-  name: "Full-width (bleed past parent padding)",
+  name: "Volle Breite (über den Innenabstand hinaus)",
   args: { fullWidth: true },
   render: (args) => ({
     components: { RDivider },
     setup: () => ({ args }),
     template: `
       <div style="width:320px;background:var(--r-color-surface);border:1px solid var(--r-color-border);border-radius:12px;padding:18px 16px;font:13px/1.4 sans-serif;color:var(--r-color-fg)">
-        <div style="padding-block:6px">Top section sits inside the 16px padding</div>
+        <div style="padding-block:6px">Der obere Abschnitt liegt innerhalb des 16-px-Innenabstands</div>
         <RDivider v-bind="args" />
-        <div style="padding-block:6px">Bottom section — divider runs edge-to-edge</div>
+        <div style="padding-block:6px">Unterer Abschnitt · die Trennlinie reicht von Kante zu Kante</div>
       </div>
     `,
   }),
@@ -158,16 +158,16 @@ export const Inset: Story = {
 // ── Real-world examples ─────────────────────────────────────────────
 
 export const InCard: Story = {
-  name: "Inside a card (section break)",
+  name: "In einer Karte (Abschnittstrennung)",
   render: () => ({
     components: { RDivider },
     template: `
       <div style="width:360px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px;overflow:hidden;font:13px/1.4 sans-serif;color:var(--r-color-fg)">
-        <div style="padding:14px 16px;font-weight:600">Display preferences</div>
+        <div style="padding:14px 16px;font-weight:600">Anzeigeeinstellungen</div>
         <RDivider />
-        <div style="padding:14px 16px;color:var(--r-color-fg-muted)">Theme, density, boxart style…</div>
+        <div style="padding:14px 16px;color:var(--r-color-fg-muted)">Thema, Dichte, Boxart-Stil …</div>
         <RDivider />
-        <div style="padding:14px 16px;color:var(--r-color-fg-muted)">Show stats summary on home page.</div>
+        <div style="padding:14px 16px;color:var(--r-color-fg-muted)">Statistikübersicht auf der Startseite anzeigen.</div>
       </div>
     `,
   }),
@@ -192,18 +192,18 @@ export const ConsumerOverride: Story = {
 };
 
 export const Toolbar: Story = {
-  name: "Vertical inside a toolbar",
+  name: "Vertikal in einer Werkzeugleiste",
   render: () => ({
     components: { RDivider },
     template: `
       <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:var(--r-color-surface);border-radius:8px;color:var(--r-color-fg);font:13px/1 sans-serif">
-        <span>File</span>
+        <span>Datei</span>
         <RDivider vertical />
-        <span>Edit</span>
+        <span>Bearbeiten</span>
         <RDivider vertical />
-        <span>View</span>
+        <span>Ansicht</span>
         <RDivider vertical />
-        <span>Help</span>
+        <span>Hilfe</span>
       </div>
     `,
   }),

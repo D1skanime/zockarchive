@@ -48,8 +48,8 @@ export const Segmented: Story = {
         v-bind="args"
         :model-value="layout"
         :items="[
-          { id: 'grid', icon: 'mdi-view-grid-outline', ariaLabel: 'Grid', title: 'Grid' },
-          { id: 'list', icon: 'mdi-view-list', ariaLabel: 'List', title: 'List' },
+          { id: 'grid', icon: 'mdi-view-grid-outline', ariaLabel: 'Raster', title: 'Raster' },
+          { id: 'list', icon: 'mdi-view-list', ariaLabel: 'Liste', title: 'Liste' },
         ]"
         @update:model-value="(v) => (layout = v)"
       />
@@ -70,9 +70,9 @@ export const Tab: Story = {
         v-bind="args"
         :model-value="active"
         :items="[
-          { id: 'home', label: 'Home' },
-          { id: 'favorites', label: 'Favorites' },
-          { id: 'platforms', label: 'Platforms' },
+          { id: 'home', label: 'Startseite' },
+          { id: 'favorites', label: 'Favoriten' },
+          { id: 'platforms', label: 'Plattformen' },
         ]"
         @update:model-value="(v) => (active = v)"
       />
@@ -96,8 +96,8 @@ export const VerticalTab: Story = {
           v-bind="args"
           :model-value="tool"
           :items="[
-            { id: 'scan', icon: 'mdi-magnify-scan', label: 'Scan', ariaLabel: 'Scan' },
-            { id: 'upload', icon: 'mdi-cloud-upload-outline', label: 'Upload', ariaLabel: 'Upload' },
+            { id: 'scan', icon: 'mdi-magnify-scan', label: 'Durchsuchen', ariaLabel: 'Durchsuchen' },
+            { id: 'upload', icon: 'mdi-cloud-upload-outline', label: 'Hochladen', ariaLabel: 'Hochladen' },
             { id: 'patcher', icon: 'mdi-file-cog-outline', label: 'Patcher', ariaLabel: 'Patcher' },
           ]"
           style="min-width: 200px;"
@@ -131,9 +131,9 @@ export const VerticalSegmented: Story = {
         v-bind="args"
         :model-value="view"
         :items="[
-          { id: 'grid', icon: 'mdi-view-grid-outline', ariaLabel: 'Grid', title: 'Grid' },
-          { id: 'list', icon: 'mdi-view-list', ariaLabel: 'List', title: 'List' },
-          { id: 'compact', icon: 'mdi-view-sequential', ariaLabel: 'Compact', title: 'Compact' },
+          { id: 'grid', icon: 'mdi-view-grid-outline', ariaLabel: 'Raster', title: 'Raster' },
+          { id: 'list', icon: 'mdi-view-list', ariaLabel: 'Liste', title: 'Liste' },
+          { id: 'compact', icon: 'mdi-view-sequential', ariaLabel: 'Kompakt', title: 'Kompakt' },
         ]"
         @update:model-value="(v) => (view = v)"
       />
@@ -154,8 +154,8 @@ export const Disabled: Story = {
         v-bind="args"
         :model-value="group"
         :items="[
-          { id: 'none', icon: 'mdi-view-agenda-outline', ariaLabel: 'Flat' },
-          { id: 'letter', icon: 'mdi-alphabetical-variant', ariaLabel: 'By letter', disabled: true },
+          { id: 'none', icon: 'mdi-view-agenda-outline', ariaLabel: 'Flach' },
+          { id: 'letter', icon: 'mdi-alphabetical-variant', ariaLabel: 'Nach Buchstaben', disabled: true },
         ]"
         @update:model-value="(v) => (group = v)"
       />

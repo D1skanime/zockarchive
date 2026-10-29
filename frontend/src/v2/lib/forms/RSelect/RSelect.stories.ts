@@ -4,10 +4,10 @@ import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import RSelect from "./RSelect.vue";
 
 const ROLES = [
-  { title: "Admin", value: "admin" },
-  { title: "Editor", value: "editor" },
-  { title: "Viewer", value: "viewer" },
-  { title: "Guest", value: "guest", disabled: true },
+  { title: "Administrator", value: "admin" },
+  { title: "Redakteur", value: "editor" },
+  { title: "Betrachter", value: "viewer" },
+  { title: "Gast", value: "guest", disabled: true },
 ];
 
 const PLATFORMS = [
@@ -87,21 +87,21 @@ type Story = StoryObj<typeof RSelect>;
 // ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  args: { placeholder: "Pick a platform" },
+  args: { placeholder: "Plattform auswählen" },
 };
 
 export const Preselected: Story = {
   render: () => ({
     components: { RSelect },
     setup: () => ({ value: ref("psx"), items: PLATFORMS }),
-    template: `<div style="width:340px"><RSelect v-model="value" :items="items" placeholder="Pick a platform" /></div>`,
+    template: `<div style="width:340px"><RSelect v-model="value" :items="items" placeholder="Plattform auswählen" /></div>`,
   }),
 };
 
 // ── Variants ────────────────────────────────────────────────────────
 
 export const VariantLadder: Story = {
-  name: "Variant ladder",
+  name: "Variantenübersicht",
   render: () => ({
     components: { RSelect },
     setup: () => ({
@@ -113,10 +113,10 @@ export const VariantLadder: Story = {
     }),
     template: `
       <div style="display:flex;flex-direction:column;gap:16px;width:340px">
-        <RSelect v-model="outlined" :items="items" variant="outlined" placeholder="outlined (default)" />
-        <RSelect v-model="filled" :items="items" variant="filled" placeholder="filled" />
-        <RSelect v-model="underlined" :items="items" variant="underlined" placeholder="underlined" />
-        <RSelect v-model="plain" :items="items" variant="plain" placeholder="plain" />
+        <RSelect v-model="outlined" :items="items" variant="outlined" placeholder="umrandet (Standard)" />
+        <RSelect v-model="filled" :items="items" variant="filled" placeholder="gefüllt" />
+        <RSelect v-model="underlined" :items="items" variant="underlined" placeholder="unterstrichen" />
+        <RSelect v-model="plain" :items="items" variant="plain" placeholder="schlicht" />
       </div>
     `,
   }),
@@ -125,7 +125,7 @@ export const VariantLadder: Story = {
 // ── Densities ──────────────────────────────────────────────────────
 
 export const DensityLadder: Story = {
-  name: "Density ladder",
+  name: "Dichteübersicht",
   render: () => ({
     components: { RSelect },
     setup: () => ({
@@ -136,9 +136,9 @@ export const DensityLadder: Story = {
     }),
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;width:340px">
-        <RSelect v-model="a" :items="items" density="default" placeholder="default · 48px" />
-        <RSelect v-model="b" :items="items" density="comfortable" placeholder="comfortable · 40px" />
-        <RSelect v-model="c" :items="items" density="compact" placeholder="compact · 32px" />
+        <RSelect v-model="a" :items="items" density="default" placeholder="Standard · 48px" />
+        <RSelect v-model="b" :items="items" density="comfortable" placeholder="komfortabel · 40px" />
+        <RSelect v-model="c" :items="items" density="compact" placeholder="kompakt · 32px" />
       </div>
     `,
   }),
@@ -147,20 +147,20 @@ export const DensityLadder: Story = {
 // ── Labels ──────────────────────────────────────────────────────────
 
 export const StackedLabel: Story = {
-  name: "Label · stacked",
+  name: "Beschriftung · gestapelt",
   args: {
     prefixLabel: "stacked",
-    label: "Default platform",
-    placeholder: "Pick one",
+    label: "Standardplattform",
+    placeholder: "Eine auswählen",
   },
 };
 
 export const InlineLabel: Story = {
-  name: "Label · inline",
+  name: "Beschriftung · inline",
   args: {
     prefixLabel: "inline",
-    label: "Platform",
-    placeholder: "Pick one",
+    label: "Plattform",
+    placeholder: "Eine auswählen",
   },
 };
 
@@ -168,41 +168,41 @@ export const InlineLabel: Story = {
 
 export const Disabled: Story = {
   args: {
-    label: "Platform",
+    label: "Plattform",
     prefixLabel: "stacked",
     disabled: true,
-    placeholder: "Locked",
+    placeholder: "Gesperrt",
     modelValue: "psx",
   },
 };
 
 export const Loading: Story = {
-  args: { placeholder: "Loading platforms…", loading: true },
+  args: { placeholder: "Plattformen werden geladen…", loading: true },
 };
 
 export const WithError: Story = {
   args: {
-    placeholder: "Pick a platform",
+    placeholder: "Plattform auswählen",
     error: true,
-    errorMessages: "Required",
+    errorMessages: "Erforderlich",
   },
 };
 
 export const Validation: Story = {
-  name: "Rules · live validation",
+  name: "Regeln · Live-Validierung",
   render: () => ({
     components: { RSelect },
     setup: () => {
       const value = ref<string | null>(null);
       const rules = [
-        (v: unknown) => (v != null && v !== "" ? true : "Pick a platform"),
+        (v: unknown) => (v != null && v !== "" ? true : "Plattform auswählen"),
       ];
       return { value, rules, items: PLATFORMS };
     },
     template: `
       <div style="width:340px;display:flex;flex-direction:column;gap:8px">
-        <RSelect v-model="value" :items="items" prefix-label="stacked" label="Platform" :rules="rules" placeholder="Pick one" />
-        <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">Open and close without picking — the error appears on blur.</div>
+        <RSelect v-model="value" :items="items" prefix-label="stacked" label="Plattform" :rules="rules" placeholder="Eine auswählen" />
+        <div style="font:11px sans-serif;color:var(--r-color-fg-muted)">Ohne Auswahl öffnen und schließen. Der Fehler erscheint beim Verlassen.</div>
       </div>
     `,
   }),
@@ -215,18 +215,18 @@ export const Clearable: Story = {
   render: () => ({
     components: { RSelect },
     setup: () => ({ value: ref("psx"), items: PLATFORMS }),
-    template: `<div style="width:340px"><RSelect v-model="value" :items="items" placeholder="Clearable" clearable /></div>`,
+    template: `<div style="width:340px"><RSelect v-model="value" :items="items" placeholder="Löschbar" clearable /></div>`,
   }),
 };
 
 // ── Multiple ───────────────────────────────────────────────────────
 
 export const Multiple: Story = {
-  name: "Multiple (chips)",
+  name: "Mehrfachauswahl (Chips)",
   render: () => ({
     components: { RSelect },
     setup: () => ({ value: ref(["psx", "snes"]), items: PLATFORMS }),
-    template: `<div style="width:480px"><RSelect v-model="value" :items="items" multiple chips closable-chips placeholder="Pick platforms" /></div>`,
+    template: `<div style="width:480px"><RSelect v-model="value" :items="items" multiple chips closable-chips placeholder="Plattformen auswählen" /></div>`,
   }),
 };
 
@@ -234,16 +234,16 @@ export const Multiple: Story = {
 // separator must read "A, B" — a space on both sides means the separator
 // picked up the value row's flex gap.
 export const MultipleText: Story = {
-  name: "Multiple (no chips)",
+  name: "Mehrfachauswahl (ohne Chips)",
   render: () => ({
     components: { RSelect },
     setup: () => ({ value: ref(["psx", "snes"]), items: PLATFORMS }),
-    template: `<div style="width:480px"><RSelect v-model="value" :items="items" multiple placeholder="Pick platforms" /></div>`,
+    template: `<div style="width:480px"><RSelect v-model="value" :items="items" multiple placeholder="Plattformen auswählen" /></div>`,
   }),
 };
 
 export const MultipleOverflow: Story = {
-  name: "Multiple · dynamic overflow",
+  name: "Mehrfachauswahl · dynamischer Überlauf",
   render: () => ({
     components: { RSelect },
     setup: () => ({
@@ -254,13 +254,13 @@ export const MultipleOverflow: Story = {
     template: `
       <div style="display:flex;flex-direction:column;gap:18px">
         <div style="width:240px">
-          <RSelect v-model="narrow" :items="items" multiple chips closable-chips placeholder="Pick platforms" />
+          <RSelect v-model="narrow" :items="items" multiple chips closable-chips placeholder="Plattformen auswählen" />
         </div>
         <div style="width:520px">
-          <RSelect v-model="wide" :items="items" multiple chips closable-chips placeholder="Pick platforms" />
+          <RSelect v-model="wide" :items="items" multiple chips closable-chips placeholder="Plattformen auswählen" />
         </div>
         <div style="font:11px sans-serif;color:var(--r-color-fg-muted);max-width:520px">
-          Same 5 selections, different activator widths — the narrow one collapses to "+N" sooner, the wide one fits more chips. Resize the Storybook frame to watch it recompute live.
+          Dieselben 5 Auswahlen bei unterschiedlicher Breite. Die schmale Ansicht fasst früher zu „+N“ zusammen. Ändern Sie die Breite des Storybook-Fensters, um die Aktualisierung zu sehen.
         </div>
       </div>
     `,
@@ -277,7 +277,7 @@ export const Searchable: Story = {
   render: () => ({
     components: { RSelect },
     setup: () => ({ value: ref<string | null>(null), items: PLATFORMS }),
-    template: `<div style="width:340px"><RSelect v-model="value" :items="items" searchable search-placeholder="Filter platforms" placeholder="Pick a platform" /></div>`,
+    template: `<div style="width:340px"><RSelect v-model="value" :items="items" searchable search-placeholder="Plattformen filtern" placeholder="Plattform auswählen" /></div>`,
   }),
   parameters: {
     docs: {
@@ -290,7 +290,7 @@ export const Searchable: Story = {
 };
 
 export const SearchableExternal: Story = {
-  name: "Searchable · external v-model:search",
+  name: "Durchsuchbar · externes v-model:search",
   render: () => ({
     components: { RSelect },
     setup: () => {
@@ -300,8 +300,8 @@ export const SearchableExternal: Story = {
     },
     template: `
       <div style="width:340px;display:flex;flex-direction:column;gap:8px">
-        <RSelect v-model="value" v-model:search="search" :items="items" searchable search-placeholder="Filter platforms" placeholder="Pick a platform" />
-        <span style="font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">External query: <code>{{ search || '∅' }}</code></span>
+        <RSelect v-model="value" v-model:search="search" :items="items" searchable search-placeholder="Plattformen filtern" placeholder="Plattform auswählen" />
+        <span style="font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">Externe Suchanfrage: <code>{{ search || '∅' }}</code></span>
       </div>
     `,
   }),
@@ -314,7 +314,7 @@ export const SearchableExternal: Story = {
 // pill background entirely (used by PlatformSelect to let icons read
 // without surrounding colour); the rest pick a semantic tone.
 export const ChipTones: Story = {
-  name: "Chip tones (multiple)",
+  name: "Chip-Farben (Mehrfachauswahl)",
   render: () => ({
     components: { RSelect },
     setup: () => ({
@@ -327,11 +327,11 @@ export const ChipTones: Story = {
     }),
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;width:340px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
-        <div><span>brand (default)</span><RSelect v-model="a" :items="items" multiple chips chip-tone="brand" placeholder="Platforms" /></div>
-        <div><span>plain (no fill)</span><RSelect v-model="b" :items="items" multiple chips chip-tone="plain" placeholder="Platforms" /></div>
-        <div><span>neutral</span><RSelect v-model="c" :items="items" multiple chips chip-tone="neutral" placeholder="Platforms" /></div>
-        <div><span>success</span><RSelect v-model="d" :items="items" multiple chips chip-tone="success" placeholder="Platforms" /></div>
-        <div><span>danger</span><RSelect v-model="e" :items="items" multiple chips chip-tone="danger" placeholder="Platforms" /></div>
+        <div><span>Marke (Standard)</span><RSelect v-model="a" :items="items" multiple chips chip-tone="brand" placeholder="Plattformen" /></div>
+        <div><span>schlicht (ohne Füllung)</span><RSelect v-model="b" :items="items" multiple chips chip-tone="plain" placeholder="Plattformen" /></div>
+        <div><span>neutral</span><RSelect v-model="c" :items="items" multiple chips chip-tone="neutral" placeholder="Plattformen" /></div>
+        <div><span>Erfolg</span><RSelect v-model="d" :items="items" multiple chips chip-tone="success" placeholder="Plattformen" /></div>
+        <div><span>Gefahr</span><RSelect v-model="e" :items="items" multiple chips chip-tone="danger" placeholder="Plattformen" /></div>
       </div>
     `,
   }),
@@ -339,7 +339,7 @@ export const ChipTones: Story = {
     docs: {
       description: {
         story:
-          'Use `chip-tone="plain"` when chips carry their own visual weight (e.g. PlatformSelect\'s icon-only chips) and the pill background would be visual noise.',
+          'Verwenden Sie `chip-tone="plain"`, wenn Chips selbst genug visuelles Gewicht haben, etwa bei Chips nur mit Plattform-Symbolen.',
       },
     },
   },
@@ -351,7 +351,7 @@ export const ChipTones: Story = {
 // default label/title with a custom layout (icon, avatar, mini-card).
 // The slot receives the active item; styling falls back to chipTone.
 export const ChipSlotIconOnly: Story = {
-  name: "#chip slot — icon-only chips",
+  name: "#chip-Slot · Chips nur mit Symbol",
   render: () => ({
     components: { RSelect, RIcon },
     setup: () => ({
@@ -360,7 +360,7 @@ export const ChipSlotIconOnly: Story = {
     }),
     template: `
       <div style="width:340px">
-        <RSelect v-model="value" :items="items" multiple chips chip-tone="plain" placeholder="Platforms">
+        <RSelect v-model="value" :items="items" multiple chips chip-tone="plain" placeholder="Plattformen">
           <template #chip="{ item }">
             <span style="display:inline-flex;align-items:center;gap:6px">
               <RIcon
@@ -387,13 +387,13 @@ export const ChipSlotIconOnly: Story = {
 // ── Custom slots ───────────────────────────────────────────────────
 
 export const CustomSelectionSlot: Story = {
-  name: "#selection slot — custom display",
+  name: "#selection-Slot · eigene Anzeige",
   render: () => ({
     components: { RSelect, RIcon },
     setup: () => ({ value: ref("admin"), items: ROLES }),
     template: `
       <div style="width:340px">
-        <RSelect v-model="value" :items="items" prefix-label="stacked" label="Role">
+        <RSelect v-model="value" :items="items" prefix-label="stacked" label="Rolle">
           <template #selection="{ item }">
             <span style="display:inline-flex;align-items:center;gap:6px">
               <RIcon :icon="item.value === 'admin' ? 'mdi-shield-crown' : item.value === 'editor' ? 'mdi-pencil' : item.value === 'viewer' ? 'mdi-eye' : 'mdi-account'" size="x-small" />
@@ -407,13 +407,13 @@ export const CustomSelectionSlot: Story = {
 };
 
 export const CustomItemSlot: Story = {
-  name: "#item slot — custom rows",
+  name: "#item-Slot · eigene Zeilen",
   render: () => ({
     components: { RSelect, RIcon },
     setup: () => ({ value: ref("editor"), items: ROLES }),
     template: `
       <div style="width:340px">
-        <RSelect v-model="value" :items="items" prefix-label="stacked" label="Role">
+        <RSelect v-model="value" :items="items" prefix-label="stacked" label="Rolle">
           <template #item="{ item, props, selected, active }">
             <li v-bind="props" :style="{
               display:'flex',
@@ -445,7 +445,7 @@ export const CustomItemSlot: Story = {
 // ── Real-world ────────────────────────────────────────────────────
 
 export const FormRow: Story = {
-  name: "Form row (real-world)",
+  name: "Formularzeile (Praxisbeispiel)",
   render: () => ({
     components: { RSelect },
     setup: () => ({
@@ -456,8 +456,8 @@ export const FormRow: Story = {
     }),
     template: `
       <div style="width:380px;display:flex;flex-direction:column;gap:14px;padding:20px;background:var(--r-color-bg-elevated);border:1px solid var(--r-color-border);border-radius:12px">
-        <RSelect v-model="role" :items="roles" prefix-label="stacked" label="Role" />
-        <RSelect v-model="platform" :items="platforms" prefix-label="stacked" label="Default platform" searchable />
+        <RSelect v-model="role" :items="roles" prefix-label="stacked" label="Rolle" />
+        <RSelect v-model="platform" :items="platforms" prefix-label="stacked" label="Standardplattform" searchable />
       </div>
     `,
   }),

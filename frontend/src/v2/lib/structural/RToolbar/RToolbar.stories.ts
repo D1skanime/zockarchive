@@ -26,7 +26,8 @@ type Story = StoryObj<typeof RToolbar>;
 // ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  args: { title: "Platforms" },
+  name: "Standard",
+  args: { title: "Plattformen" },
   render: (args) => ({
     components: { RToolbar },
     setup: () => ({ args }),
@@ -39,8 +40,8 @@ export const Default: Story = {
 };
 
 export const WithActions: Story = {
-  name: "Title + append actions",
-  args: { title: "Platforms" },
+  name: "Titel mit angehängten Aktionen",
+  args: { title: "Plattformen" },
   render: (args) => ({
     components: { RToolbar, RBtn },
     setup: () => ({ args }),
@@ -48,8 +49,8 @@ export const WithActions: Story = {
       <div style="width:720px;border-radius:8px;overflow:hidden;border:1px solid var(--r-color-border)">
         <RToolbar v-bind="args">
           <template #append>
-            <RBtn variant="text" prepend-icon="mdi-filter">Filters</RBtn>
-            <RBtn variant="text" prepend-icon="mdi-sort">Sort</RBtn>
+            <RBtn variant="text" prepend-icon="mdi-filter">Filter</RBtn>
+            <RBtn variant="text" prepend-icon="mdi-sort">Sortieren</RBtn>
           </template>
         </RToolbar>
       </div>
@@ -58,7 +59,7 @@ export const WithActions: Story = {
 };
 
 export const WithPrepend: Story = {
-  name: "Prepend (back button)",
+  name: "Vorangestellt (Zurück-Schaltfläche)",
   args: { title: "Super Mario Bros." },
   render: (args) => ({
     components: { RToolbar, RBtn },
@@ -67,11 +68,11 @@ export const WithPrepend: Story = {
       <div style="width:720px;border-radius:8px;overflow:hidden;border:1px solid var(--r-color-border)">
         <RToolbar v-bind="args">
           <template #prepend>
-            <RBtn icon="mdi-arrow-left" variant="text" aria-label="Back" />
+            <RBtn icon="mdi-arrow-left" variant="text" aria-label="Zurück" />
           </template>
           <template #append>
-            <RBtn icon="mdi-pencil" variant="text" aria-label="Edit" />
-            <RBtn icon="mdi-dots-vertical" variant="text" aria-label="More" />
+            <RBtn icon="mdi-pencil" variant="text" aria-label="Bearbeiten" />
+            <RBtn icon="mdi-dots-vertical" variant="text" aria-label="Mehr" />
           </template>
         </RToolbar>
       </div>
@@ -82,29 +83,29 @@ export const WithPrepend: Story = {
 // ── Density ─────────────────────────────────────────────────────────
 
 export const DensityLadder: Story = {
-  name: "Density ladder",
+  name: "Dichtestufen",
   render: () => ({
     components: { RToolbar, RBtn },
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;width:720px">
         <div style="border-radius:8px;overflow:hidden;border:1px solid var(--r-color-border)">
-          <RToolbar title="Default · 64px">
+          <RToolbar title="Standard · 64px">
             <template #append>
-              <RBtn variant="text" size="small">Action</RBtn>
+              <RBtn variant="text" size="small">Aktion</RBtn>
             </template>
           </RToolbar>
         </div>
         <div style="border-radius:8px;overflow:hidden;border:1px solid var(--r-color-border)">
-          <RToolbar density="comfortable" title="Comfortable · 56px">
+          <RToolbar density="comfortable" title="Komfortabel · 56px">
             <template #append>
-              <RBtn variant="text" size="small">Action</RBtn>
+              <RBtn variant="text" size="small">Aktion</RBtn>
             </template>
           </RToolbar>
         </div>
         <div style="border-radius:8px;overflow:hidden;border:1px solid var(--r-color-border)">
-          <RToolbar density="compact" title="Compact · 48px">
+          <RToolbar density="compact" title="Kompakt · 48px">
             <template #append>
-              <RBtn variant="text" size="small">Action</RBtn>
+              <RBtn variant="text" size="small">Aktion</RBtn>
             </template>
           </RToolbar>
         </div>

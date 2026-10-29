@@ -6,7 +6,7 @@ const meta: Meta<typeof RSlider> = {
   title: "Formulare/Grundbaustein/RSlider",
   component: RSlider,
   // RSlider has no visible label, so every instance needs `ariaLabel`.
-  args: { ariaLabel: "Value" },
+  args: { ariaLabel: "Wert" },
   argTypes: {
     min: { control: "number" },
     max: { control: "number" },
@@ -31,7 +31,7 @@ const meta: Meta<typeof RSlider> = {
       <div style="padding:24px;min-width:380px">
         <RSlider v-bind="args" v-model="value" />
         <div style="margin-top:12px;font-size:11px;color:var(--r-color-fg-muted)">
-          value: {{ value }}
+          Wert: {{ value }}
         </div>
       </div>
     `,
@@ -48,29 +48,29 @@ export const Default: Story = { args: { modelValue: 50 } };
 // ── Value badges ───────────────────────────────────────────────────
 
 export const ValueRight: Story = {
-  name: "Badge · right",
+  name: "Wertanzeige · rechts",
   args: { modelValue: 42, valuePosition: "right", valueSuffix: "%" },
 };
 
 export const ValueLeft: Story = {
-  name: "Badge · left",
+  name: "Wertanzeige · links",
   args: { modelValue: 42, valuePosition: "left", valueSuffix: "%" },
 };
 
 export const ValueThumb: Story = {
-  name: "Badge · floating thumb",
+  name: "Wertanzeige · schwebender Regler",
   args: { modelValue: 30, valuePosition: "thumb", valueSuffix: "%" },
 };
 
 // ── Steps + ticks ──────────────────────────────────────────────────
 
 export const Stepped: Story = {
-  name: "Stepped (10s)",
+  name: "Schrittweise (10er)",
   args: { modelValue: 30, step: 10, showTicks: true },
 };
 
 export const FineSteps: Story = {
-  name: "Fine steps (0.5)",
+  name: "Feine Schritte (0,5)",
   args: { modelValue: 50, min: 0, max: 100, step: 0.5 },
 };
 
@@ -102,7 +102,7 @@ export const Temperature: Story = {
 // ── Color tones ────────────────────────────────────────────────────
 
 export const ColorLadder: Story = {
-  name: "Color ladder",
+  name: "Farbübersicht",
   render: () => ({
     components: { RSlider },
     setup: () => ({
@@ -114,10 +114,10 @@ export const ColorLadder: Story = {
     }),
     template: `
       <div style="display:flex;flex-direction:column;gap:18px;padding:24px;min-width:380px">
-        <RSlider v-model="primary" color="primary" value-position="right" value-suffix="%" aria-label="Primary" />
-        <RSlider v-model="success" color="success" value-position="right" value-suffix="%" aria-label="Success" />
-        <RSlider v-model="warning" color="warning" value-position="right" value-suffix="%" aria-label="Warning" />
-        <RSlider v-model="danger" color="danger" value-position="right" value-suffix="%" aria-label="Danger" />
+        <RSlider v-model="primary" color="primary" value-position="right" value-suffix="%" aria-label="Primär" />
+        <RSlider v-model="success" color="success" value-position="right" value-suffix="%" aria-label="Erfolg" />
+        <RSlider v-model="warning" color="warning" value-position="right" value-suffix="%" aria-label="Warnung" />
+        <RSlider v-model="danger" color="danger" value-position="right" value-suffix="%" aria-label="Gefahr" />
         <RSlider v-model="info" color="info" value-position="right" value-suffix="%" aria-label="Info" />
       </div>
     `,
@@ -137,7 +137,7 @@ export const Readonly: Story = {
 // ── Commit-on-end pattern ──────────────────────────────────────────
 
 export const CommitOnEnd: Story = {
-  name: "Commit-on-end (@end)",
+  name: "Übernahme am Ende (@end)",
   render: () => ({
     components: { RSlider },
     setup: () => {
@@ -150,12 +150,12 @@ export const CommitOnEnd: Story = {
     },
     template: `
       <div style="padding:24px;min-width:380px;display:flex;flex-direction:column;gap:10px">
-        <RSlider v-model="preview" value-position="thumb" value-suffix="%" aria-label="Volume" @end="onEnd" />
+        <RSlider v-model="preview" value-position="thumb" value-suffix="%" aria-label="Lautstärke" @end="onEnd" />
         <div style="font:12px sans-serif;color:var(--r-color-fg-muted)">
-          previewing: {{ preview }} · last committed: {{ committed }}
+          Vorschau: {{ preview }} · zuletzt übernommen: {{ committed }}
         </div>
         <div style="font:11px sans-serif;color:var(--r-color-fg-faint)">
-          Drag the thumb — preview updates live, committed only fires on release.
+          Ziehen Sie den Regler. Die Vorschau aktualisiert sich sofort, übernommen wird erst beim Loslassen.
         </div>
       </div>
     `,

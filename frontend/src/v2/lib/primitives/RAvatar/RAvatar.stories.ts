@@ -43,7 +43,7 @@ export const Image: Story = {
 // ── Size ladder ─────────────────────────────────────────────────────
 
 export const SizeLadder: Story = {
-  name: "Size ladder",
+  name: "Größenabstufung",
   render: () => ({
     components: { RAvatar },
     template: `
@@ -74,7 +74,7 @@ export const SizeLadder: Story = {
 };
 
 export const NumericSizes: Story = {
-  name: "Numeric sizes",
+  name: "Numerische Größen",
   render: () => ({
     components: { RAvatar },
     template: `
@@ -143,7 +143,7 @@ export const Variants: Story = {
 // ── Tones ───────────────────────────────────────────────────────────
 
 export const Tones: Story = {
-  name: "Tones · flat",
+  name: "Farbtöne · flach",
   render: () => ({
     components: { RAvatar },
     template: `
@@ -178,7 +178,7 @@ export const Tones: Story = {
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
           <RAvatar size="40" icon="mdi-account" />
-          <span>no colour</span>
+          <span>ohne Farbe</span>
         </div>
       </div>
     `,
@@ -186,7 +186,7 @@ export const Tones: Story = {
 };
 
 export const TonesTranslucent: Story = {
-  name: "Tones · translucent",
+  name: "Farbtöne · durchscheinend",
   render: () => ({
     components: { RAvatar },
     template: `
@@ -206,7 +206,7 @@ export const TonesTranslucent: Story = {
 // ── Shapes ──────────────────────────────────────────────────────────
 
 export const Rounded: Story = {
-  name: "Rounded ladder",
+  name: "Abrundungsabstufung",
   render: () => ({
     components: { RAvatar },
     template: `
@@ -233,7 +233,7 @@ export const Rounded: Story = {
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <RAvatar rounded="circle" color="primary" size="48">R</RAvatar>
-          <span>circle (default)</span>
+          <span>Kreis (Standard)</span>
         </div>
       </div>
     `,
@@ -243,7 +243,7 @@ export const Rounded: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const UserRow: Story = {
-  name: "Inside a user row",
+  name: "In einer Benutzerzeile",
   render: () => ({
     components: { RAvatar },
     template: `
@@ -252,21 +252,21 @@ export const UserRow: Story = {
           <RAvatar image="/assets/isotipo.svg" size="36" />
           <div style="display:flex;flex-direction:column;gap:2px">
             <span style="font-weight:600">RomM Admin</span>
-            <span style="color:var(--r-color-fg-muted);font-size:11px">admin · last seen 3 min ago</span>
+            <span style="color:var(--r-color-fg-muted);font-size:11px">Admin · zuletzt vor 3 Min. gesehen</span>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--r-color-border)">
           <RAvatar color="accent" size="36">EM</RAvatar>
           <div style="display:flex;flex-direction:column;gap:2px">
             <span style="font-weight:600">Emma</span>
-            <span style="color:var(--r-color-fg-muted);font-size:11px">editor</span>
+            <span style="color:var(--r-color-fg-muted);font-size:11px">Redaktion</span>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--r-color-border)">
           <RAvatar variant="translucent" color="info" size="36" icon="mdi-account-question" />
           <div style="display:flex;flex-direction:column;gap:2px">
-            <span style="font-weight:600">Guest</span>
-            <span style="color:var(--r-color-fg-muted);font-size:11px">viewer · pending</span>
+            <span style="font-weight:600">Gast</span>
+            <span style="color:var(--r-color-fg-muted);font-size:11px">Betrachtung · ausstehend</span>
           </div>
         </div>
       </div>
@@ -275,7 +275,7 @@ export const UserRow: Story = {
 };
 
 export const StackedGroup: Story = {
-  name: "Stacked group (avatar group)",
+  name: "Gestapelte Gruppe (Avatar-Gruppe)",
   render: () => ({
     components: { RAvatar },
     template: `

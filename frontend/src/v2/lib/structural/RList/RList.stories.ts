@@ -32,11 +32,11 @@ export const Navigation: Story = {
     template: `
       <div ${SHELL}>
         <RList v-bind="args">
-          <RListItem prepend-icon="mdi-home" title="Home" active />
-          <RListItem prepend-icon="mdi-controller" title="Platforms" />
-          <RListItem prepend-icon="mdi-bookmark-box-multiple" title="Collections" />
-          <RListItem prepend-icon="mdi-magnify" title="Search" />
-          <RListItem prepend-icon="mdi-cog" title="Settings" />
+          <RListItem prepend-icon="mdi-home" title="Startseite" active />
+          <RListItem prepend-icon="mdi-controller" title="Plattformen" />
+          <RListItem prepend-icon="mdi-bookmark-box-multiple" title="Sammlungen" />
+          <RListItem prepend-icon="mdi-magnify" title="Suche" />
+          <RListItem prepend-icon="mdi-cog" title="Einstellungen" />
         </RList>
       </div>
     `,
@@ -46,30 +46,30 @@ export const Navigation: Story = {
 // ── Density ─────────────────────────────────────────────────────────
 
 export const Density: Story = {
-  name: "Density compression",
+  name: "Dichtekomprimierung",
   render: () => ({
     components: { RList, RListItem },
     template: `
       <div style="display:flex;gap:18px">
         <div ${SHELL}>
           <RList density="default">
-            <RListItem prepend-icon="mdi-home" title="Default" />
-            <RListItem prepend-icon="mdi-controller" title="Density" />
-            <RListItem prepend-icon="mdi-magnify" title="Spacious" />
+            <RListItem prepend-icon="mdi-home" title="Standard" />
+            <RListItem prepend-icon="mdi-controller" title="Dichte" />
+            <RListItem prepend-icon="mdi-magnify" title="Geräumig" />
           </RList>
         </div>
         <div ${SHELL}>
           <RList density="comfortable">
-            <RListItem prepend-icon="mdi-home" title="Comfortable" />
-            <RListItem prepend-icon="mdi-controller" title="Density" />
-            <RListItem prepend-icon="mdi-magnify" title="Mid-tight" />
+            <RListItem prepend-icon="mdi-home" title="Komfortabel" />
+            <RListItem prepend-icon="mdi-controller" title="Dichte" />
+            <RListItem prepend-icon="mdi-magnify" title="Mitteldicht" />
           </RList>
         </div>
         <div ${SHELL}>
           <RList density="compact">
-            <RListItem prepend-icon="mdi-home" title="Compact" />
-            <RListItem prepend-icon="mdi-controller" title="Density" />
-            <RListItem prepend-icon="mdi-magnify" title="Tight rows" />
+            <RListItem prepend-icon="mdi-home" title="Kompakt" />
+            <RListItem prepend-icon="mdi-controller" title="Dichte" />
+            <RListItem prepend-icon="mdi-magnify" title="Dichte Zeilen" />
           </RList>
         </div>
       </div>
@@ -80,7 +80,7 @@ export const Density: Story = {
 // ── Active tone ─────────────────────────────────────────────────────
 
 export const ActiveColor: Story = {
-  name: "Active tone (color prop)",
+  name: "Aktiver Farbton (color-Eigenschaft)",
   render: () => ({
     components: { RList, RListItem },
     template: `
@@ -88,19 +88,19 @@ export const ActiveColor: Story = {
         <div ${SHELL}>
           <RList color="primary">
             <RListItem prepend-icon="mdi-home" title="primary" active />
-            <RListItem prepend-icon="mdi-controller" title="active tone" />
+            <RListItem prepend-icon="mdi-controller" title="Aktiver Farbton" />
           </RList>
         </div>
         <div ${SHELL}>
           <RList color="success">
             <RListItem prepend-icon="mdi-home" title="success" active />
-            <RListItem prepend-icon="mdi-controller" title="active tone" />
+            <RListItem prepend-icon="mdi-controller" title="Aktiver Farbton" />
           </RList>
         </div>
         <div ${SHELL}>
           <RList color="danger">
             <RListItem prepend-icon="mdi-home" title="danger" active />
-            <RListItem prepend-icon="mdi-controller" title="active tone" />
+            <RListItem prepend-icon="mdi-controller" title="Aktiver Farbton" />
           </RList>
         </div>
       </div>
@@ -111,14 +111,14 @@ export const ActiveColor: Story = {
 // ── Background paint ────────────────────────────────────────────────
 
 export const SelfPainted: Story = {
-  name: "Self-painted list (bgColor)",
+  name: "Eigenständig gefärbte Liste (bgColor)",
   render: () => ({
     components: { RList, RListItem },
     template: `
       <RList bg-color="var(--r-color-bg-elevated)" style="width:280px;border:1px solid var(--r-color-border)">
-        <RListItem prepend-icon="mdi-account" title="With bgColor set" />
-        <RListItem prepend-icon="mdi-bell" title="No outer wrapper needed" />
-        <RListItem prepend-icon="mdi-cog" title="List paints itself" />
+        <RListItem prepend-icon="mdi-account" title="Mit gesetztem bgColor" />
+        <RListItem prepend-icon="mdi-bell" title="Kein äußerer Wrapper nötig" />
+        <RListItem prepend-icon="mdi-cog" title="Liste färbt sich selbst" />
       </RList>
     `,
   }),
@@ -127,18 +127,18 @@ export const SelfPainted: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const SidebarNav: Story = {
-  name: "Sidebar nav (Settings sidebar)",
+  name: "Seitennavigation (Einstellungsleiste)",
   render: () => ({
     components: { RList, RListItem },
     template: `
       <div ${SHELL}>
         <RList>
-          <RListItem prepend-icon="mdi-account-circle" title="User profile" />
-          <RListItem prepend-icon="mdi-palette" title="User interface" active />
-          <RListItem prepend-icon="mdi-key-variant" title="Client API tokens" />
-          <RListItem prepend-icon="mdi-shield-account" title="Administration" />
-          <RListItem prepend-icon="mdi-folder-multiple-outline" title="Library management" />
-          <RListItem prepend-icon="mdi-database" title="Metadata sources" />
+          <RListItem prepend-icon="mdi-account-circle" title="Benutzerprofil" />
+          <RListItem prepend-icon="mdi-palette" title="Benutzeroberfläche" active />
+          <RListItem prepend-icon="mdi-key-variant" title="Client-API-Token" />
+          <RListItem prepend-icon="mdi-shield-account" title="Verwaltung" />
+          <RListItem prepend-icon="mdi-folder-multiple-outline" title="Bibliotheksverwaltung" />
+          <RListItem prepend-icon="mdi-database" title="Metadatenquellen" />
         </RList>
       </div>
     `,
@@ -146,7 +146,7 @@ export const SidebarNav: Story = {
 };
 
 export const UserMenu: Story = {
-  name: "User menu (with subtitle)",
+  name: "Benutzermenü (mit Untertitel)",
   render: () => ({
     components: { RList, RListItem },
     template: `
@@ -155,12 +155,12 @@ export const UserMenu: Story = {
           <RListItem
             prepend-avatar="/assets/isotipo.svg"
             title="RomM Admin"
-            subtitle="admin · last seen 3 min ago"
+            subtitle="Admin · zuletzt vor 3 Min. gesehen"
           />
-          <RListItem prepend-icon="mdi-account" title="Your profile" />
-          <RListItem prepend-icon="mdi-cog" title="Settings" />
-          <RListItem prepend-icon="mdi-theme-light-dark" title="Toggle theme" append-icon="mdi-chevron-right" />
-          <RListItem prepend-icon="mdi-logout" title="Sign out" />
+          <RListItem prepend-icon="mdi-account" title="Dein Profil" />
+          <RListItem prepend-icon="mdi-cog" title="Einstellungen" />
+          <RListItem prepend-icon="mdi-theme-light-dark" title="Farbschema wechseln" append-icon="mdi-chevron-right" />
+          <RListItem prepend-icon="mdi-logout" title="Abmelden" />
         </RList>
       </div>
     `,

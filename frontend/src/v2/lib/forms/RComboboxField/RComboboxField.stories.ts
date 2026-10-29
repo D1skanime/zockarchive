@@ -32,7 +32,7 @@ type Story = StoryObj<typeof RComboboxField>;
 // ── Free-text, no suggestions ─────────────────────────────────
 
 export const FreeText: Story = {
-  name: "Free text (no items)",
+  name: "Freitext (keine Einträge)",
   render: () => ({
     components: { RComboboxField },
     setup: () => ({ value: ref<string[]>([]) }),
@@ -40,10 +40,10 @@ export const FreeText: Story = {
       <div style="width:320px;padding:24px">
         <RComboboxField
           v-model="value"
-          label="Companies"
+          label="Unternehmen"
           prefix-label="stacked"
           variant="outlined"
-          placeholder="Type and press Enter / comma to add"
+          placeholder="Zum Hinzufügen eingeben und Eingabe oder Komma drücken"
         />
         <p style="margin-top:12px;font:12px monospace;color:var(--r-color-fg-muted)">
           {{ value }}
@@ -56,7 +56,7 @@ export const FreeText: Story = {
 // ── With autocomplete suggestions ─────────────────────────────
 
 export const WithSuggestions: Story = {
-  name: "With autocomplete suggestions",
+  name: "Mit Autovervollständigungsvorschlägen",
   render: () => ({
     components: { RComboboxField },
     setup: () => ({
@@ -75,11 +75,11 @@ export const WithSuggestions: Story = {
         <RComboboxField
           v-model="value"
           :items="items"
-          label="Game modes"
+          label="Spielmodi"
           prefix-label="stacked"
           variant="outlined"
-          placeholder="Pick or type"
-          hint="Suggestions filter as you type. Custom values still commit."
+          placeholder="Auswählen oder eingeben"
+          hint="Vorschläge werden beim Tippen gefiltert. Eigene Werte werden übernommen."
         />
       </div>
     `,
@@ -89,7 +89,7 @@ export const WithSuggestions: Story = {
 // ── Pre-loaded with values ────────────────────────────────────
 
 export const Preloaded: Story = {
-  name: "Pre-loaded value",
+  name: "Vorbelegter Wert",
   render: () => ({
     components: { RComboboxField },
     setup: () => ({
@@ -99,7 +99,7 @@ export const Preloaded: Story = {
       <div style="width:340px;padding:24px">
         <RComboboxField
           v-model="value"
-          label="Companies"
+          label="Unternehmen"
           prefix-label="stacked"
           variant="outlined"
         />
@@ -131,7 +131,7 @@ export const Compact: Story = {
 // ── Error state ──────────────────────────────────────────────
 
 export const WithError: Story = {
-  name: "Error state",
+  name: "Fehlerzustand",
   render: () => ({
     components: { RComboboxField },
     setup: () => ({ value: ref<string[]>([]) }),
@@ -139,10 +139,10 @@ export const WithError: Story = {
       <div style="width:320px;padding:24px">
         <RComboboxField
           v-model="value"
-          label="Required tags"
+          label="Erforderliche Schlagwörter"
           prefix-label="stacked"
           variant="outlined"
-          error-messages="At least one tag is required."
+          error-messages="Mindestens ein Schlagwort ist erforderlich."
         />
       </div>
     `,
@@ -154,12 +154,12 @@ export const WithError: Story = {
 export const Disabled: Story = {
   render: () => ({
     components: { RComboboxField },
-    setup: () => ({ value: ref<string[]>(["Locked", "Read only"]) }),
+    setup: () => ({ value: ref<string[]>(["Gesperrt", "Schreibgeschützt"]) }),
     template: `
       <div style="width:320px;padding:24px">
         <RComboboxField
           v-model="value"
-          label="Locked field"
+          label="Gesperrtes Feld"
           prefix-label="stacked"
           variant="outlined"
           disabled
@@ -172,15 +172,15 @@ export const Disabled: Story = {
 // ── Non-removable chips ──────────────────────────────────────
 
 export const NonRemovable: Story = {
-  name: "Non-removable chips",
+  name: "Nicht entfernbare Chips",
   render: () => ({
     components: { RComboboxField },
-    setup: () => ({ value: ref<string[]>(["Frozen", "Tag"]) }),
+    setup: () => ({ value: ref<string[]>(["Fixiert", "Schlagwort"]) }),
     template: `
       <div style="width:320px;padding:24px">
         <RComboboxField
           v-model="value"
-          label="Frozen tags"
+          label="Fixierte Schlagwörter"
           prefix-label="stacked"
           variant="outlined"
           :closable-chips="false"

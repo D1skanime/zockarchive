@@ -69,7 +69,7 @@ export const Indeterminate: Story = {
 // ── Buffered (streaming) ────────────────────────────────────
 
 export const Buffered: Story = {
-  name: "Buffered (streaming)",
+  name: "Gepuffert (Streaming)",
   render: () => ({
     components: { RProgressLinear },
     setup: () => ({ value: 42, buffer: 78 }),
@@ -77,7 +77,7 @@ export const Buffered: Story = {
       <div style="width:360px;padding:24px">
         <RProgressLinear :model-value="value" :buffer-value="buffer" />
         <p style="margin-top:8px;font-size:12px;color:var(--r-color-fg-muted)">
-          Played: {{ value }}% · Buffered: {{ buffer }}%
+          Abgespielt: {{ value }} % · Gepuffert: {{ buffer }} %
         </p>
       </div>
     `,
@@ -103,7 +103,7 @@ export const Heights: Story = {
 // ── Striped (active emphasis) ─────────────────────────────
 
 export const Striped: Story = {
-  name: "Striped (active emphasis)",
+  name: "Gestreift (aktive Hervorhebung)",
   args: { modelValue: 65, striped: true, height: 12, color: "primary" },
   render: (args) => ({
     components: { RProgressLinear },
@@ -119,14 +119,14 @@ export const Striped: Story = {
 // ── With external label (typical compose pattern) ──────────
 
 export const WithLabel: Story = {
-  name: "With external label",
+  name: "Mit externer Beschriftung",
   render: () => ({
     components: { RProgressLinear },
     setup: () => ({ value: ref(72) }),
     template: `
       <div style="width:360px;padding:24px;display:flex;flex-direction:column;gap:8px">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--r-color-fg-muted)">
-          <span>Uploading mega-man-x.zip</span>
+          <span>mega-man-x.zip wird hochgeladen</span>
           <span>{{ value }}%</span>
         </div>
         <RProgressLinear :model-value="value" />
@@ -138,7 +138,7 @@ export const WithLabel: Story = {
 // ── Live ticker (animated demo) ────────────────────────────
 
 export const LiveTicker: Story = {
-  name: "Live ticker (animated)",
+  name: "Live-Anzeige (animiert)",
   render: () => ({
     components: { RProgressLinear },
     setup() {

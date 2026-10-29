@@ -33,6 +33,7 @@ export default meta;
 type Story = StoryObj<typeof GameCard>;
 
 export const Default: Story = {
+  name: "Standard",
   render: (args) => ({
     components: { GameCard },
     setup: () => ({ args, rom: sampleRom }),
@@ -41,16 +42,19 @@ export const Default: Story = {
 };
 
 export const Focused: Story = {
+  name: "Fokussiert",
   ...Default,
   args: { focused: true },
 };
 
 export const Hero: Story = {
+  name: "Hervorgehoben",
   ...Default,
   args: { hero: true },
 };
 
 export const Grid: Story = {
+  name: "Raster",
   render: () => ({
     components: { GameCard },
     setup: () => {

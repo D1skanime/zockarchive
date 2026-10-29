@@ -30,22 +30,22 @@ export const Default: Story = {
     setup: () => ({ args }),
     template: `
       <RCard v-bind="args" style="width: 360px; padding: var(--r-space-5);">
-        Content goes here. RCard has a muted border and an elevated
-        background from the v2 tokens.
+        Hier steht Inhalt. RCard hat einen dezenten Rahmen und einen erhöhten
+        Hintergrund aus den v2-Tokens.
       </RCard>
     `,
   }),
 };
 
 export const WithTitle: Story = {
-  args: { title: "Recent scans", subtitle: "Last 24 hours" },
+  args: { title: "Letzte Scans", subtitle: "Letzte 24 Stunden" },
   render: (args) => ({
     components: { RCard },
     setup: () => ({ args }),
     template: `
       <RCard v-bind="args" style="width: 360px;">
         <div style="padding: 12px 20px 18px; color: var(--r-color-fg-muted); font: 13px/1.4 sans-serif;">
-          3 platforms scanned · 18 new ROMs · 4 missing.
+          3 Plattformen durchsucht · 18 neue ROMs · 4 fehlen.
         </div>
       </RCard>
     `,
@@ -94,7 +94,7 @@ export const Tones: Story = {
 // ── Elevation ───────────────────────────────────────────────────────
 
 export const ElevationLadder: Story = {
-  name: "Elevation ladder",
+  name: "Erhöhungsabstufung",
   render: () => ({
     components: { RCard },
     template: `
@@ -135,7 +135,7 @@ export const ElevationLadder: Story = {
 // ── Rounded ─────────────────────────────────────────────────────────
 
 export const RoundedLadder: Story = {
-  name: "Rounded ladder",
+  name: "Abrundungsabstufung",
   render: () => ({
     components: { RCard },
     template: `
@@ -172,12 +172,12 @@ export const RoundedLadder: Story = {
 // ── Loading ─────────────────────────────────────────────────────────
 
 export const Loading: Story = {
-  name: "Loading bar",
+  name: "Ladebalken",
   render: () => ({
     components: { RCard },
     template: `
       <div style="display:flex;flex-direction:column;gap:18px;width:360px">
-        <RCard loading title="Fetching metadata" subtitle="Connecting to IGDB…">
+        <RCard loading title="Metadaten werden geladen" subtitle="Verbindung mit IGDB wird hergestellt …">
           <div style="padding:8px 20px 18px;color:var(--r-color-fg-muted);font:12px/1.4 sans-serif">
             Card content stays visible while the bar slides at the top.
           </div>
@@ -202,8 +202,8 @@ export const AuthCardSim: Story = {
       <RCard variant="elevated" :elevation="4" style="width:320px">
         <div style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:24px">
           <div style="width:80px;height:80px;border-radius:18px;background:var(--r-color-brand-primary);display:flex;align-items:center;justify-content:center;color:white;font:700 22px/1 sans-serif">R</div>
-          <h2 style="margin:0;font:600 18px/1.2 sans-serif">Welcome back</h2>
-          <p style="margin:0;color:var(--r-color-fg-muted);font:13px/1.4 sans-serif;text-align:center">Sign in to your RomM library</p>
+          <h2 style="margin:0;font:600 18px/1.2 sans-serif">Willkommen zurück</h2>
+          <p style="margin:0;color:var(--r-color-fg-muted);font:13px/1.4 sans-serif;text-align:center">Melden Sie sich bei Ihrer RomM-Bibliothek an</p>
         </div>
       </RCard>
     `,

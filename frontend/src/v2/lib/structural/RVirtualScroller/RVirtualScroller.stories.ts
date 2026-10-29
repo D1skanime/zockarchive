@@ -16,7 +16,7 @@ type Story = StoryObj<typeof RVirtualScroller>;
 
 const longList = Array.from({ length: 5000 }, (_, i) => ({
   id: i,
-  label: `Row ${i + 1}`,
+  label: `Zeile ${i + 1}`,
 }));
 
 export const FiveThousandRows: Story = {
@@ -63,13 +63,13 @@ export const PrependAndStickyToolbar: Story = {
         <RVirtualScroller v-bind="args">
           <template #prepend>
             <div style="padding: var(--r-space-4); background: var(--r-color-bg-subtle); border-bottom: 1px solid var(--r-color-border);">
-              <div style="font-weight: var(--r-font-weight-bold); font-size: var(--r-font-size-lg);">Hero</div>
-              <div style="opacity: 0.7; font-size: var(--r-font-size-sm)">Scrolls with the list</div>
+              <div style="font-weight: var(--r-font-weight-bold); font-size: var(--r-font-size-lg);">Kopfbereich</div>
+              <div style="opacity: 0.7; font-size: var(--r-font-size-sm)">Scrollt mit der Liste</div>
             </div>
           </template>
           <template #sticky>
             <div style="display:flex;align-items:center;height:48px;padding:0 var(--r-space-3);background: var(--r-color-bg-elevated);border-bottom: 1px solid var(--r-color-border);font-size:var(--r-font-size-sm);font-weight: var(--r-font-weight-semibold);">
-              Sticky toolbar (pins on scroll)
+              Fixierte Werkzeugleiste (bleibt beim Scrollen sichtbar)
             </div>
           </template>
           <template #default="{ item, index }">
@@ -87,7 +87,7 @@ export const PrependAndStickyToolbar: Story = {
 // Variable per-row heights — exercises binary search and exact offsets.
 const variableList = Array.from({ length: 1000 }, (_, i) => ({
   id: i,
-  label: `Row ${i + 1}`,
+  label: `Zeile ${i + 1}`,
   size: i % 5 === 0 ? "tall" : "short",
 }));
 
@@ -116,7 +116,7 @@ export const VariableHeights: Story = {
               fontWeight: item.size === 'tall' ? 'var(--r-font-weight-semibold)' : 'normal',
             }">
               <span style="opacity:0.5;width:48px">#{{ index }}</span>
-              <span>{{ item.label }} ({{ item.size }})</span>
+              <span>{{ item.label }} ({{ item.size === 'tall' ? 'hoch' : 'niedrig' }})</span>
             </div>
           </template>
         </RVirtualScroller>

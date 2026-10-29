@@ -34,7 +34,11 @@ export const Labelled: Story = {
     components: { RSteps },
     setup: () => ({
       args,
-      steps: [{ label: "Library" }, { label: "Admin" }, { label: "Sources" }],
+      steps: [
+        { label: "Bibliothek" },
+        { label: "Verwaltung" },
+        { label: "Quellen" },
+      ],
     }),
     template: `<RSteps v-bind="args" :steps="steps" />`,
   }),
@@ -59,8 +63,8 @@ export const Interactive: Story = {
       <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
         <RSteps v-bind="args" :current="current" :direction="direction" />
         <div style="display: flex; gap: 8px;">
-          <RBtn variant="text" prepend-icon="mdi-chevron-left" :disabled="current === 1" @click="go(-1)">Previous</RBtn>
-          <RBtn variant="flat" color="primary" append-icon="mdi-chevron-right" :disabled="current === 3" @click="go(1)">Next</RBtn>
+          <RBtn variant="text" prepend-icon="mdi-chevron-left" :disabled="current === 1" @click="go(-1)">Zurück</RBtn>
+          <RBtn variant="flat" color="primary" append-icon="mdi-chevron-right" :disabled="current === 3" @click="go(1)">Weiter</RBtn>
         </div>
       </div>
     `,

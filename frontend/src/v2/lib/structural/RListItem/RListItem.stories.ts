@@ -70,7 +70,7 @@ export const Disabled: Story = {
 // ── Prepend zone ────────────────────────────────────────────────────
 
 export const PrependVariants: Story = {
-  name: "Prepend · icon / avatar / slot",
+  name: "Vorangestellt · Symbol / Avatar / Slot",
   render: () => ({
     components: { RList, RListItem },
     template: `
@@ -90,7 +90,7 @@ export const PrependVariants: Story = {
 };
 
 export const AppendIcon: Story = {
-  name: "Append icon (chevron right)",
+  name: "Angehängtes Symbol (Chevron rechts)",
   render: () => ({
     components: { RList, RListItem },
     template: `

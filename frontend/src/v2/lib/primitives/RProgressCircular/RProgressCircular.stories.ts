@@ -31,14 +31,14 @@ export const Determinate: Story = {
     modelValue: 65,
     size: 64,
     width: 4,
-    label: "Download progress",
+    label: "Download-Fortschritt",
   },
 };
 
 // ── Size ladder ─────────────────────────────────────────────────────
 
 export const SizeLadder: Story = {
-  name: "Size ladder · indeterminate",
+  name: "Größenabstufung · unbestimmt",
   render: () => ({
     components: { RProgressCircular },
     template: `
@@ -69,7 +69,7 @@ export const SizeLadder: Story = {
 };
 
 export const DeterminateLadder: Story = {
-  name: "Determinate · stepped values",
+  name: "Bestimmt · abgestufte Werte",
   render: () => ({
     components: { RProgressCircular },
     template: `
@@ -146,7 +146,7 @@ export const Tones: Story = {
 // ── Slot ─────────────────────────────────────────────────────────────
 
 export const WithLabel: Story = {
-  name: "Default slot (percentage label)",
+  name: "Standard-Slot (Prozentbeschriftung)",
   render: () => ({
     components: { RProgressCircular },
     template: `
@@ -171,7 +171,7 @@ export const WithLabel: Story = {
 // ── Live progress ───────────────────────────────────────────────────
 
 export const Animated: Story = {
-  name: "Animated progress (live update)",
+  name: "Animierter Fortschritt (Live-Aktualisierung)",
   render: () => ({
     components: { RProgressCircular },
     setup() {
@@ -193,7 +193,7 @@ export const Animated: Story = {
         <RProgressCircular :indeterminate="false" :model-value="value" :size="80" :width="5" color="primary">
           <span style="font-size:14px;font-weight:600">{{ value }}%</span>
         </RProgressCircular>
-        <span>Value advances every 400ms — note the smooth fill transition.</span>
+          <span>Der Wert steigt alle 400 ms, beachten Sie den weichen Füllübergang.</span>
       </div>
     `,
   }),
@@ -202,7 +202,7 @@ export const Animated: Story = {
 // ── Comparison ──────────────────────────────────────────────────────
 
 export const InContext: Story = {
-  name: "Inline in buttons / dialogs",
+  name: "Direkt in Schaltflächen / Dialogen",
   render: () => ({
     components: { RProgressCircular },
     template: `
@@ -218,8 +218,8 @@ export const InContext: Story = {
         <div style="display:flex;align-items:center;gap:14px;padding:16px;background:var(--r-color-surface);border-radius:12px;align-self:flex-start">
           <RProgressCircular indeterminate :size="36" :width="3" color="primary" />
           <div style="display:flex;flex-direction:column;gap:2px">
-            <span style="font-weight:600">Fetching metadata</span>
-            <span style="color:var(--r-color-fg-muted);font-size:11px">This may take a few seconds…</span>
+            <span style="font-weight:600">Metadaten werden geladen</span>
+            <span style="color:var(--r-color-fg-muted);font-size:11px">Dies kann einige Sekunden dauern …</span>
           </div>
         </div>
       </div>
