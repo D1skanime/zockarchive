@@ -41,7 +41,7 @@ type Story = StoryObj<typeof RAlert>;
 // ── Tones ───────────────────────────────────────────────────────────
 
 export const Success: Story = {
-  args: { type: "success", text: "Reset link sent to your email." },
+  args: { type: "success", text: "Der Link zum Zurücksetzen wurde versendet." },
 };
 
 export const Info: Story = {
@@ -61,7 +61,7 @@ export const Error: Story = {
 };
 
 export const AllTypes: Story = {
-  name: "All types · translucent",
+  name: "Alle Typen · transparent",
   render: () => ({
     components: { RAlert },
     template: `
@@ -112,7 +112,7 @@ export const Density: Story = {
 // ── Title + body ────────────────────────────────────────────────────
 
 export const TitleAndBody: Story = {
-  name: "Title + body slot",
+  name: "Titel und Inhalts-Slot",
   render: () => ({
     components: { RAlert },
     template: `

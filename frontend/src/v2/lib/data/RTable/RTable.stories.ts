@@ -39,27 +39,27 @@ interface DemoRow {
 const COLUMNS: RTableColumn[] = [
   {
     key: "name",
-    label: "Title",
+    label: "Titel",
     sortable: true,
     width: "minmax(0, 1.6fr)",
   },
   {
     key: "size",
-    label: "Size",
+    label: "Größe",
     sortable: true,
     width: "120px",
     skeletonWidth: 60,
   },
   {
     key: "added",
-    label: "Added",
+    label: "Hinzugefügt",
     sortable: true,
     width: "140px",
     skeletonWidth: 80,
   },
   {
     key: "rating",
-    label: "Rating",
+    label: "Bewertung",
     sortable: true,
     width: "80px",
     skeletonWidth: 30,
@@ -141,7 +141,7 @@ export const Empty: Story = {
     items: [] as DemoRow[],
     itemKey: "id",
     emptyIcon: "mdi-folder-search-outline",
-    emptyMessage: "No rows to show",
+    emptyMessage: "Keine Einträge vorhanden",
   },
   render: (args) => ({
     components: { RTable },

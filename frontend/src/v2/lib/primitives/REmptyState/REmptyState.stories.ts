@@ -28,7 +28,7 @@ type Story = StoryObj<typeof REmptyState>;
 export const Default: Story = {
   args: {
     icon: "mdi-tray-remove",
-    title: "Nothing here yet",
+    title: "Noch keine Inhalte",
     hint: "Once you add something it will show up in this list.",
   },
 };
@@ -37,14 +37,14 @@ export const Compact: Story = {
   args: {
     size: "small",
     icon: "mdi-music-note-outline",
-    title: "No tracks",
+    title: "Keine Titel",
   },
 };
 
 export const WithActions: Story = {
   args: {
     icon: "mdi-book-open-page-variant-outline",
-    title: "No manual yet",
+    title: "Noch kein Handbuch",
     hint: "Upload a PDF or re-download from the metadata source.",
   },
   render: (args) => ({
