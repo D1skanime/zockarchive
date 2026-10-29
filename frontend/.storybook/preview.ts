@@ -74,13 +74,17 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          "Primitives",
-          "Forms",
-          "Structural",
-          "Data",
-          "Menus",
+          "Grundelemente",
+          "Formulare",
+          "Struktur",
+          "Daten",
+          "Menüs",
           "Overlays",
-          "Media",
+          "Medien",
+          "Player",
+          "Geteilt",
+          "Marke",
+          "Im Einsatz",
         ],
       },
     },
