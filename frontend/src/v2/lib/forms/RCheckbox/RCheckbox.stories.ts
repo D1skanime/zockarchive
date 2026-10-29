@@ -345,14 +345,14 @@ export const CardVariantColored: Story = {
           variant="card"
           color="success"
           label="Bestätigte E-Mail"
-          subtitle="Required to recover your account."
+          subtitle="Zum Wiederherstellen Ihres Kontos erforderlich."
         />
         <RCheckbox
           v-model="b"
           variant="card"
           color="success"
-          label="Two-factor enabled"
-          subtitle="Adds a one-time code at sign-in."
+          label="Zwei-Faktor-Authentifizierung aktiviert"
+          subtitle="Fügt bei der Anmeldung einen Einmalcode hinzu."
         />
       </div>
     `,

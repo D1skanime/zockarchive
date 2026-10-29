@@ -59,12 +59,12 @@ export const Variants: Story = {
     components: { RCard },
     template: `
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:720px">
-        <RCard variant="flat" style="padding:18px"><strong>flat</strong> · default surface + border</RCard>
-        <RCard variant="elevated" style="padding:18px"><strong>elevated</strong> · surface + shadow</RCard>
-        <RCard variant="translucent" color="primary" style="padding:18px"><strong>translucent</strong> · tinted</RCard>
-        <RCard variant="outlined" style="padding:18px"><strong>outlined</strong> · border-only</RCard>
-        <RCard variant="text" color="primary" style="padding:18px"><strong>text</strong> · just coloured text</RCard>
-        <RCard variant="plain" style="padding:18px"><strong>plain</strong> · zero chrome</RCard>
+        <RCard variant="flat" style="padding:18px"><strong>flach</strong> · Standardfläche + Rand</RCard>
+        <RCard variant="elevated" style="padding:18px"><strong>erhöht</strong> · Fläche + Schatten</RCard>
+        <RCard variant="translucent" color="primary" style="padding:18px"><strong>durchscheinend</strong> · getönt</RCard>
+        <RCard variant="outlined" style="padding:18px"><strong>umrandet</strong> · nur Rand</RCard>
+        <RCard variant="text" color="primary" style="padding:18px"><strong>Text</strong> · nur eingefärbter Text</RCard>
+        <RCard variant="plain" style="padding:18px"><strong>schlicht</strong> · ohne Gestaltung</RCard>
       </div>
     `,
   }),
@@ -211,7 +211,7 @@ export const AuthCardSim: Story = {
 };
 
 export const SettingsPanel: Story = {
-  name: "Settings panel (Player usage)",
+  name: "Einstellungsbereich (Player-Verwendung)",
   render: () => ({
     components: { RCard },
     template: `

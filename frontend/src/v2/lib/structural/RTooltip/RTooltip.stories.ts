@@ -84,7 +84,7 @@ export const Default: Story = {
       <div style="padding:48px;display:flex;justify-content:center">
         <RTooltip v-bind="args">
           <template #activator="{ props }">
-            <RBtn v-bind="props" prepend-icon="mdi-content-save">Save</RBtn>
+          <RBtn v-bind="props" prepend-icon="mdi-content-save">Speichern</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -98,8 +98,8 @@ export const ParentAttach: Story = {
     components: { RTooltip, RBtn },
     template: `
       <div style="padding:48px;display:flex;justify-content:center">
-        <RBtn icon="mdi-delete" variant="translucent" aria-label="Delete this item">
-          <RTooltip activator="parent" text="Delete this item" location="top" />
+        <RBtn icon="mdi-delete" variant="translucent" aria-label="Diesen Eintrag löschen">
+          <RTooltip activator="parent" text="Diesen Eintrag löschen" location="top" />
         </RBtn>
       </div>
     `,
@@ -178,12 +178,12 @@ export const FlipNearEdge: Story = {
       <div style="height:400px;display:flex;justify-content:space-between;align-items:flex-start;padding:8px">
         <RTooltip text="Asked for 'start' but flips to 'end' near the left edge" location="start">
           <template #activator="{ props }">
-            <RBtn v-bind="props" prepend-icon="mdi-arrow-left">Hover me</RBtn>
+            <RBtn v-bind="props" prepend-icon="mdi-arrow-left">Zeige auf mich</RBtn>
           </template>
         </RTooltip>
         <RTooltip text="Asked for 'end' but flips to 'start' near the right edge" location="end">
           <template #activator="{ props }">
-            <RBtn v-bind="props" prepend-icon="mdi-arrow-right">Hover me</RBtn>
+            <RBtn v-bind="props" prepend-icon="mdi-arrow-right">Zeige auf mich</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -206,7 +206,7 @@ export const LongText: Story = {
       <div style="padding:80px;display:flex;justify-content:center">
         <RTooltip v-bind="args">
           <template #activator="{ props }">
-            <RBtn v-bind="props" prepend-icon="mdi-refresh">Full scan</RBtn>
+            <RBtn v-bind="props" prepend-icon="mdi-refresh">Vollständiger Scan</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -301,9 +301,9 @@ export const Controlled: Story = {
     },
     template: `
       <div style="padding:60px;display:flex;flex-direction:column;gap:24px;align-items:center">
-        <RTooltip v-model="open" text="Toggled by the button below — hover does nothing here." location="top">
+        <RTooltip v-model="open" text="Die Schaltfläche darunter schaltet um, Hover bewirkt hier nichts." location="top">
           <template #activator="{ props }">
-            <RBtn v-bind="props" prepend-icon="mdi-cursor-default-outline">Hover target</RBtn>
+            <RBtn v-bind="props" prepend-icon="mdi-cursor-default-outline">Hover-Ziel</RBtn>
           </template>
         </RTooltip>
         <RBtn :variant="open ? 'flat' : 'translucent'" @click="open = !open">
@@ -366,9 +366,9 @@ export const IconBarRealWorld: Story = {
               <RBtn v-bind="props" icon="mdi-magnify" variant="text" aria-label="Search" />
             </template>
           </RTooltip>
-          <RTooltip text="More actions" location="bottom">
+          <RTooltip text="Weitere Aktionen" location="bottom">
             <template #activator="{ props }">
-              <RBtn v-bind="props" icon="mdi-dots-vertical" variant="text" aria-label="More actions" />
+              <RBtn v-bind="props" icon="mdi-dots-vertical" variant="text" aria-label="Weitere Aktionen" />
             </template>
           </RTooltip>
         </div>
@@ -383,7 +383,7 @@ export const IconBarRealWorld: Story = {
 // reveal for mouse/pen hover only, and a click must always dismiss it.
 export const TouchGating: Story = {
   name: "Berührungsbegrenzung (play)",
-  args: { text: "Tooltip body text", location: "top", openDelay: 0 },
+  args: { text: "Tooltip-Inhalt", location: "top", openDelay: 0 },
   render: (args) => ({
     components: { RTooltip, RBtn },
     setup: () => ({ args }),
@@ -391,7 +391,7 @@ export const TouchGating: Story = {
       <div class="r-v2 r-v2-dark" style="padding:48px;display:flex;justify-content:center;background:#07070f">
         <RTooltip v-bind="args">
           <template #activator="{ props }">
-            <RBtn v-bind="props">Hover target</RBtn>
+            <RBtn v-bind="props">Hover-Ziel</RBtn>
           </template>
         </RTooltip>
       </div>
@@ -401,7 +401,7 @@ export const TouchGating: Story = {
     const canvas = within(canvasElement);
     // The tooltip teleports to <body>, outside canvasElement.
     const body = within(document.body);
-    const activator = canvas.getByRole("button", { name: /hover target/i });
+    const activator = canvas.getByRole("button", { name: /hover-ziel/i });
 
     await step("a touch hover does NOT reveal the tooltip", async () => {
       firePointerEnter(activator, "touch");
@@ -412,7 +412,7 @@ export const TouchGating: Story = {
     await step("a mouse hover reveals it", async () => {
       firePointerEnter(activator, "mouse");
       const tip = await body.findByRole("tooltip");
-      expect(tip).toHaveTextContent("Tooltip body text");
+      expect(tip).toHaveTextContent("Tooltip-Inhalt");
     });
 
     await step("a click dismisses it", async () => {
@@ -427,7 +427,7 @@ export const TouchGating: Story = {
 export const OpenOnTap: Story = {
   name: "Per Tippen öffnen (play)",
   args: {
-    text: "Tooltip body text",
+    text: "Tooltip-Inhalt",
     location: "top",
     openOnTap: true,
     openDelay: 0,
@@ -453,7 +453,7 @@ export const OpenOnTap: Story = {
     await step("a touch tap reveals the tooltip", async () => {
       fireTap(activator, "touch");
       const tip = await body.findByRole("tooltip");
-      expect(tip).toHaveTextContent("Tooltip body text");
+      expect(tip).toHaveTextContent("Tooltip-Inhalt");
     });
 
     await step("a second touch tap toggles it closed", async () => {

@@ -138,17 +138,17 @@ export const Inset: Story = {
       <div style="width:320px;background:var(--r-color-surface);border-radius:8px;overflow:hidden;font:13px/1.4 sans-serif;color:var(--r-color-fg)">
         <div style="display:flex;align-items:center;gap:16px;padding:10px 16px">
           <div style="width:40px;height:40px;border-radius:50%;background:var(--r-color-brand-primary)"></div>
-          <span>List item one</span>
+          <span>Listeneintrag eins</span>
         </div>
         <RDivider v-bind="args" />
         <div style="display:flex;align-items:center;gap:16px;padding:10px 16px">
           <div style="width:40px;height:40px;border-radius:50%;background:var(--r-color-brand-accent)"></div>
-          <span>List item two</span>
+          <span>Listeneintrag zwei</span>
         </div>
         <RDivider v-bind="args" />
         <div style="display:flex;align-items:center;gap:16px;padding:10px 16px">
           <div style="width:40px;height:40px;border-radius:50%;background:var(--r-color-success)"></div>
-          <span>List item three</span>
+          <span>Listeneintrag drei</span>
         </div>
       </div>
     `,

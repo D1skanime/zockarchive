@@ -204,6 +204,9 @@ visible story data and controls, template attributes, text nodes, and dynamic
 template interpolations. The check fails for an added or changed candidate
 until a German review entry is added. Entries marked `proper-name` retain a
 specific scope and rationale, rather than using file-wide exemptions.
+`npm run storybook:catalog` executes this real-catalog validation and the
+frontend workflow runs it after Vitest, so CI cannot accept an unreviewed story
+text change.
 
 Library components reuse R primitives instead of native controls whenever a
 matching primitive exists. `npm run v2:maintainability` rejects unsupported

@@ -37,6 +37,8 @@ quick_task: 261029-nxk
   (Spieletitel, Plattformnamen und der Platzhaltername Jane Doe) stehen mit
   Geltungsbereich und Begründung in
   `frontend/scripts/storybook-language-decisions.json`.
+- `npm run storybook:catalog` führt dieselbe Prüfung gegen den tatsächlichen
+  Katalog aus und ist als eigener Schritt im Frontend-CI-Workflow verdrahtet.
 
 ## Bekannte Einschränkungen
 

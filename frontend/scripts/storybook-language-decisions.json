@@ -515,7 +515,7 @@
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 386",
-    "text": "Tooltip body text",
+    "text": "Tooltip-Inhalt",
     "status": "german"
   },
   {
@@ -529,7 +529,7 @@
     "category": "story-data",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 430",
-    "text": "Tooltip body text",
+    "text": "Tooltip-Inhalt",
     "status": "german"
   },
   {
@@ -543,21 +543,21 @@
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 87",
-    "text": "Save",
+    "text": "Speichern",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 101",
-    "text": "Delete this item",
+    "text": "Diesen Eintrag löschen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 102",
-    "text": "Delete this item",
+    "text": "Diesen Eintrag löschen",
     "status": "german"
   },
   {
@@ -690,21 +690,21 @@
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 181",
-    "text": "Hover me",
+    "text": "Zeige auf mich",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 186",
-    "text": "Hover me",
+    "text": "Zeige auf mich",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 209",
-    "text": "Full scan",
+    "text": "Vollständiger Scan",
     "status": "german"
   },
   {
@@ -802,14 +802,14 @@
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 304",
-    "text": "Toggled by the button below — hover does nothing here.",
+    "text": "Die Schaltfläche darunter schaltet um, Hover bewirkt hier nichts.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 306",
-    "text": "Hover target",
+    "text": "Hover-Ziel",
     "status": "german"
   },
   {
@@ -914,21 +914,21 @@
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 369",
-    "text": "More actions",
+    "text": "Weitere Aktionen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 371",
-    "text": "More actions",
+    "text": "Weitere Aktionen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/RTooltip/RTooltip.stories.ts",
     "location": "Zeile 394",
-    "text": "Hover target",
+    "text": "Hover-Ziel",
     "status": "german"
   },
   {
@@ -3835,21 +3835,21 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RDivider/RDivider.stories.ts",
     "location": "Zeile 141",
-    "text": "List item one",
+    "text": "Listeneintrag eins",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RDivider/RDivider.stories.ts",
     "location": "Zeile 146",
-    "text": "List item two",
+    "text": "Listeneintrag zwei",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RDivider/RDivider.stories.ts",
     "location": "Zeile 151",
-    "text": "List item three",
+    "text": "Listeneintrag drei",
     "status": "german"
   },
   {
@@ -4465,7 +4465,7 @@
     "category": "story-name",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 214",
-    "text": "Settings panel (Player usage)",
+    "text": "Einstellungsbereich (Player-Verwendung)",
     "status": "german"
   },
   {
@@ -4486,84 +4486,84 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 62",
-    "text": "flat",
+    "text": "flach",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 62",
-    "text": "· default surface + border",
+    "text": "· Standardfläche + Rand",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 63",
-    "text": "elevated",
+    "text": "erhöht",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 63",
-    "text": "· surface + shadow",
+    "text": "· Fläche + Schatten",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 64",
-    "text": "translucent",
+    "text": "durchscheinend",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 64",
-    "text": "· tinted",
+    "text": "· getönt",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 65",
-    "text": "outlined",
+    "text": "umrandet",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 65",
-    "text": "· border-only",
+    "text": "· nur Rand",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 66",
-    "text": "text",
+    "text": "Text",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 66",
-    "text": "· just coloured text",
+    "text": "· nur eingefärbter Text",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 67",
-    "text": "plain",
+    "text": "schlicht",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/RCard/RCard.stories.ts",
     "location": "Zeile 67",
-    "text": "· zero chrome",
+    "text": "· ohne Gestaltung",
     "status": "german"
   },
   {
@@ -5319,28 +5319,28 @@
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 211",
-    "text": "Image button",
+    "text": "Bildschaltfläche",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 212",
-    "text": "Platform",
+    "text": "Plattform",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 214",
-    "text": "Emoji button",
+    "text": "Emoji-Schaltfläche",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/RBtn/RBtn.stories.ts",
     "location": "Zeile 217",
-    "text": "Mixed content",
+    "text": "Gemischter Inhalt",
     "status": "german"
   },
   {
@@ -7887,7 +7887,7 @@
     "category": "story-data",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 58",
-    "text": "username",
+    "text": "Benutzername",
     "status": "german"
   },
   {
@@ -8099,28 +8099,28 @@
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 88",
-    "text": "outlined (default)",
+    "text": "umrandet (Standard)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 89",
-    "text": "filled",
+    "text": "gefüllt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 90",
-    "text": "underlined",
+    "text": "unterstrichen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 91",
-    "text": "plain",
+    "text": "schlicht",
     "status": "german"
   },
   {
@@ -8274,7 +8274,7 @@
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 308",
-    "text": "username",
+    "text": "Benutzername",
     "status": "german"
   },
   {
@@ -8288,7 +8288,7 @@
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RTextField/RTextField.stories.ts",
     "location": "Zeile 316",
-    "text": "password",
+    "text": "Passwort",
     "status": "german"
   },
   {
@@ -10128,21 +10128,21 @@
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RCheckbox/RCheckbox.stories.ts",
     "location": "Zeile 348",
-    "text": "Required to recover your account.",
+    "text": "Zum Wiederherstellen Ihres Kontos erforderlich.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RCheckbox/RCheckbox.stories.ts",
     "location": "Zeile 354",
-    "text": "Two-factor enabled",
+    "text": "Zwei-Faktor-Authentifizierung aktiviert",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/RCheckbox/RCheckbox.stories.ts",
     "location": "Zeile 355",
-    "text": "Adds a one-time code at sign-in.",
+    "text": "Fügt bei der Anmeldung einen Einmalcode hinzu.",
     "status": "german"
   },
   {

@@ -55,7 +55,7 @@ type Story = StoryObj<typeof RTextField>;
 // ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  args: { placeholder: "username" },
+  args: { placeholder: "Benutzername" },
 };
 
 export const WithIcon: Story = {
@@ -85,10 +85,10 @@ export const VariantLadder: Story = {
     }),
     template: `
       <div style="display:flex;flex-direction:column;gap:16px;width:360px">
-        <RTextField v-model="outlined" variant="outlined" placeholder="outlined (default)" prepend-inner-icon="mdi-account" />
-        <RTextField v-model="filled" variant="filled" placeholder="filled" prepend-inner-icon="mdi-account" />
-        <RTextField v-model="underlined" variant="underlined" placeholder="underlined" prepend-inner-icon="mdi-account" />
-        <RTextField v-model="plain" variant="plain" placeholder="plain" prepend-inner-icon="mdi-account" />
+        <RTextField v-model="outlined" variant="outlined" placeholder="umrandet (Standard)" prepend-inner-icon="mdi-account" />
+        <RTextField v-model="filled" variant="filled" placeholder="gefüllt" prepend-inner-icon="mdi-account" />
+        <RTextField v-model="underlined" variant="underlined" placeholder="unterstrichen" prepend-inner-icon="mdi-account" />
+        <RTextField v-model="plain" variant="plain" placeholder="schlicht" prepend-inner-icon="mdi-account" />
       </div>
     `,
   }),
@@ -305,7 +305,7 @@ export const LoginForm: Story = {
           v-model="user"
           label="Benutzername"
           variant="underlined"
-          placeholder="username"
+          placeholder="Benutzername"
           prepend-inner-icon="mdi-account"
         />
         <RTextField
@@ -313,7 +313,7 @@ export const LoginForm: Story = {
           label="Passwort"
           variant="underlined"
           :type="show ? 'text' : 'password'"
-          placeholder="password"
+          placeholder="Passwort"
           prepend-inner-icon="mdi-lock"
           :append-inner-icon="show ? 'mdi-eye-off' : 'mdi-eye'"
           :append-inner-tooltip="show ? 'Passwort ausblenden' : 'Passwort anzeigen'"

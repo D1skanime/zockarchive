@@ -208,13 +208,13 @@ export const IconSlotCustom: Story = {
     components: { RBtn },
     template: `
       <div style="display:flex;align-items:center;gap:10px">
-        <RBtn icon variant="translucent" color="primary" aria-label="Image button" style="width:auto;min-width:0;padding:3px">
-          <img src="https://placehold.co/22x22/A66/fff?text=P" alt="Platform" style="display:block;width:22px;height:22px;border-radius:3px" />
+        <RBtn icon variant="translucent" color="primary" aria-label="Bildschaltfläche" style="width:auto;min-width:0;padding:3px">
+          <img src="https://placehold.co/22x22/A66/fff?text=P" alt="Plattform" style="display:block;width:22px;height:22px;border-radius:3px" />
         </RBtn>
-        <RBtn icon variant="text" aria-label="Emoji button" style="width:auto;min-width:0;padding:3px">
+        <RBtn icon variant="text" aria-label="Emoji-Schaltfläche" style="width:auto;min-width:0;padding:3px">
           <span style="font-size:18px;line-height:1">🎮</span>
         </RBtn>
-        <RBtn icon variant="outlined" aria-label="Mixed content" style="width:auto;min-width:0;padding:3px 8px">
+        <RBtn icon variant="outlined" aria-label="Gemischter Inhalt" style="width:auto;min-width:0;padding:3px 8px">
           <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px">⭐ <span>9</span></span>
         </RBtn>
       </div>
