@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import type { SaveSchema, StateSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetPreview from "./AssetPreview.vue";
 
 function makeSave(overrides: Partial<SaveSchema> = {}): SaveSchema {
@@ -66,6 +67,9 @@ function makeState(
 const meta: Meta<typeof AssetPreview> = {
   title: "Player/Zusammengesetzt/AssetPreview",
   component: AssetPreview,
+  parameters: compositionParameters(
+    "components/Player/AssetPreview.stories.ts",
+  ),
   decorators: [
     () => ({
       template: `

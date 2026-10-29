@@ -1,5 +1,5 @@
 ---
-status: incomplete
+status: complete
 quick_task: 261029-nxk
 ---
 
@@ -13,12 +13,17 @@ quick_task: 261029-nxk
   Ausnahmen.
 - Storybook besitzt die deutsche Taxonomie, ein Kompositionsinventar sowie
   „Im Einsatz“-Seiten für Dialog, Drawer, Formularfehler und Alerts.
+- Jede als `Zusammengesetzt` katalogisierte Story erhält ihre Beschreibung
+  aus dem Inventar. Dadurch beginnen die Beschreibungen mit `Besteht aus:`
+  und die primitive targets use generated Storybook docs links.
 
 ## Verifikation
 
 - `npm run v2:maintainability` passed.
 - `npm run typecheck` passed.
 - `npm run test -- --run test/storybook.test.ts scripts/check-storybook-catalog.test.ts test/storybook-catalog.test.ts` passed, 371 tests.
+- The catalog checker confirms every composed catalog entry carries its
+  inventory declaration.
 - `npm run storybook:build` could not run because the pre-existing
   `frontend/node_modules` directory is owned by `nobody:nogroup` and Storybook
   cannot create its cache directory.

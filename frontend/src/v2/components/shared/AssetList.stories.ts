@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ref } from "vue";
 import type { SaveSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetList from "./AssetList.vue";
 
 // ── Mock builders ────────────────────────────────────────────────
@@ -46,6 +47,7 @@ function makeSave(i: number, overrides: Partial<SaveSchema> = {}): SaveSchema {
 const meta: Meta<typeof AssetList> = {
   title: "Geteilt/Zusammengesetzt/AssetList",
   component: AssetList,
+  parameters: compositionParameters("components/shared/AssetList.stories.ts"),
   decorators: [
     () => ({
       template: `

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import type { SimpleRom } from "@/stores/roms";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import GameCard from "./GameCard.vue";
 
 const sampleRom = {
@@ -19,6 +20,7 @@ const sampleRom = {
 const meta: Meta<typeof GameCard> = {
   title: "Medien/Zusammengesetzt/GameCard",
   component: GameCard,
+  parameters: compositionParameters("components/GameCard/GameCard.stories.ts"),
   argTypes: {
     hero: { control: "boolean" },
     focused: { control: "boolean" },

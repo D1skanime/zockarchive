@@ -8,6 +8,7 @@ import { RCard, RSliderBtnGroup } from "@v2/lib";
 import type { SliderBtnGroupItem } from "@v2/lib/primitives/RSliderBtnGroup/types";
 import { computed, ref } from "vue";
 import type { SaveSchema, StateSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetList from "../shared/AssetList.vue";
 import AssetStrip from "../shared/AssetStrip.vue";
 import AssetPreview from "./AssetPreview.vue";
@@ -126,6 +127,7 @@ interface Args {
 
 const meta: Meta<Args> = {
   title: "Player/Zusammengesetzt/ResumePanel",
+  parameters: compositionParameters("components/Player/ResumePanel.stories.ts"),
   decorators: [
     () => ({
       template: `

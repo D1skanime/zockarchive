@@ -4,6 +4,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ref } from "vue";
 import type { StateSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetStrip from "./AssetStrip.vue";
 
 // ── Mock builders ────────────────────────────────────────────────
@@ -96,6 +97,7 @@ function manyStates(n: number, withScreenshots = true): StateSchema[] {
 const meta: Meta<typeof AssetStrip> = {
   title: "Geteilt/Zusammengesetzt/AssetStrip",
   component: AssetStrip,
+  parameters: compositionParameters("components/shared/AssetStrip.stories.ts"),
   decorators: [
     () => ({
       template: `

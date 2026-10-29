@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import type { SaveSchema, StateSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetCard from "./AssetCard.vue";
 
 // Helper builders — avoid spamming the same shape into every story.
@@ -64,6 +65,7 @@ function makeState(overrides: Partial<StateSchema> = {}): StateSchema {
 const meta: Meta<typeof AssetCard> = {
   title: "Player/Zusammengesetzt/AssetCard",
   component: AssetCard,
+  parameters: compositionParameters("components/Player/AssetCard.stories.ts"),
   argTypes: {
     type: { control: "inline-radio", options: ["save", "state"] },
   },
