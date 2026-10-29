@@ -11,16 +11,20 @@
  */
 
 .r-v2 {
-  --r-color-brand-primary: #8b74e8;
-  --r-color-brand-primary-hover: #a18fff;
-  --r-color-brand-primary-pressed: #6043c8;
-  --r-color-brand-secondary: #9e8cd6;
-  --r-color-brand-secondary-hover: #ebe7fa;
-  --r-color-brand-secondary-pressed: #7a6bb4;
-  --r-color-brand-accent: #e1a38d;
-  --r-color-brand-accent-hover: #f0c8b8;
+  --r-color-brand-primary: #63a4f7;
+  --r-color-brand-primary-hover: #93c5fd;
+  --r-color-brand-primary-pressed: #3578d4;
+  --r-color-brand-secondary: #7db5f5;
+  --r-color-brand-secondary-hover: #dcebff;
+  --r-color-brand-secondary-pressed: #4b8ddf;
+  --r-color-brand-accent: #7cc4ff;
+  --r-color-brand-accent-hover: #b7ddff;
+  --r-color-brand-glass-dark: #0127c8;
+  --r-color-brand-glass-medium: #006afa;
+  --r-color-brand-glass-cyan: #05ccfc;
+  --r-color-brand-glass-light: #ccfafc;
   --r-color-fav: #ff4f6b;
-  --r-color-avatar-gradient: linear-gradient(135deg, #a18fff, #6043c8);
+  --r-color-avatar-gradient: linear-gradient(135deg, #93c5fd, #3578d4);
   --r-color-romm-red: #da3633;
   --r-color-romm-green: #3fb950;
   --r-color-romm-blue: #0070f3;
@@ -123,7 +127,7 @@
   --r-motion-ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
   --r-focus-ring-width: 2px;
   --r-focus-ring-offset: 3px;
-  --r-nav-h: 58px;
+  --r-nav-h: 104px;
   --r-bottom-nav-h: 58px;
   --r-bottom-nav-max-w: 480px;
   --r-touch-target: 44px;
@@ -174,17 +178,19 @@ html[data-input="pad"] .r-v2 {
 /* Dark surface palette — translucent white over the near-black base. */
 .r-v2.r-v2-dark {
   --r-color-bg: #07070f;
-  --r-color-bg-elevated: rgba(255, 255, 255, 0.045);
-  --r-color-surface: rgba(255, 255, 255, 0.07);
-  --r-color-surface-hover: rgba(255, 255, 255, 0.12);
+  --r-color-bg-elevated: rgba(255, 255, 255, 0.06);
+  --r-color-surface: rgba(255, 255, 255, 0.06);
+  --r-color-surface-hover: rgba(255, 255, 255, 0.1);
   --r-color-fg: #ffffff;
   --r-color-fg-heading: #ffffff;
   --r-color-fg-secondary: rgba(255, 255, 255, 0.75);
   --r-color-fg-muted: rgba(255, 255, 255, 0.45);
   --r-color-fg-faint: rgba(255, 255, 255, 0.25);
   --r-color-fg-faint-hard: rgba(255, 255, 255, 0.05);
-  --r-color-border: rgba(255, 255, 255, 0.07);
-  --r-color-border-strong: rgba(255, 255, 255, 0.15);
+  --r-color-border: rgba(255, 255, 255, 0.14);
+  --r-color-border-strong: rgba(255, 255, 255, 0.22);
+  --r-color-glass-tint: hsl(222 70% 62% / 12%);
+  --r-color-glass-shadow: rgba(30, 50, 80, 0.16);
   --r-color-focus: rgba(255, 255, 255, 0.45);
   --r-color-panel: rgba(16, 12, 28, 0.97);
   --r-color-panel-border: rgba(255, 255, 255, 0.1);
@@ -194,6 +200,8 @@ html[data-input="pad"] .r-v2 {
   --r-color-cover-placeholder: #1a1a2e;
   --r-color-cover-placeholder-bright: #252540;
   --r-color-auth-glass: rgba(13, 17, 23, 0.65);
+  --r-color-auth-glass-hover: rgba(13, 17, 23, 0.78);
+  --r-color-auth-glass-border: hsl(222 70% 62% / 32%);
   --r-color-toast-bg: rgba(13, 17, 23, 0.92);
   --r-color-switch-knob-on: #111117;
   --r-color-title-shadow: rgba(0, 0, 0, 0.5);
@@ -201,17 +209,19 @@ html[data-input="pad"] .r-v2 {
 
 /* Light surface palette — translucent black over the off-white base. */
 .r-v2.r-v2-light {
-  --r-color-bg: #f5f5fa;
-  --r-color-bg-elevated: rgba(0, 0, 0, 0.025);
-  --r-color-surface: rgba(0, 0, 0, 0.035);
-  --r-color-surface-hover: rgba(0, 0, 0, 0.1);
+  --r-color-bg: #f3f7fd;
+  --r-color-bg-elevated: rgba(255, 255, 255, 0.52);
+  --r-color-surface: rgba(255, 255, 255, 0.58);
+  --r-color-surface-hover: rgba(255, 255, 255, 0.78);
   --r-color-fg: #111117;
   --r-color-fg-heading: rgba(17, 17, 23, 0.86);
   --r-color-fg-secondary: rgba(17, 17, 23, 0.82);
   --r-color-fg-muted: rgba(17, 17, 23, 0.74);
   --r-color-fg-faint: rgba(17, 17, 23, 0.58);
-  --r-color-border: rgba(0, 0, 0, 0.1);
-  --r-color-border-strong: rgba(0, 0, 0, 0.22);
+  --r-color-border: hsl(222 45% 35% / 18%);
+  --r-color-border-strong: hsl(222 45% 35% / 30%);
+  --r-color-glass-tint: hsl(222 70% 62% / 12%);
+  --r-color-glass-shadow: rgba(30, 50, 80, 0.08);
   --r-color-focus: rgba(0, 0, 0, 0.45);
   --r-color-panel: rgba(240, 240, 246, 0.98);
   --r-color-panel-border: rgba(17, 17, 23, 0.1);
@@ -221,6 +231,8 @@ html[data-input="pad"] .r-v2 {
   --r-color-cover-placeholder: #e4e2ef;
   --r-color-cover-placeholder-bright: #efeef7;
   --r-color-auth-glass: rgba(245, 245, 250, 0.85);
+  --r-color-auth-glass-hover: rgba(245, 245, 250, 0.94);
+  --r-color-auth-glass-border: hsl(222 70% 62% / 32%);
   --r-color-toast-bg: rgba(245, 245, 250, 0.95);
   --r-color-switch-knob-on: rgba(255, 255, 255, 0.95);
   --r-color-title-shadow: transparent;
@@ -230,10 +242,10 @@ html[data-input="pad"] .r-v2 {
   --r-color-info: #2563eb;
   --r-color-warning-fg: #854d0e;
   --r-color-danger-fg: #b91c1c;
-  --r-color-brand-primary: #553e98;
-  --r-color-brand-primary-hover: #452788;
-  --r-color-brand-primary-pressed: #371f69;
-  --r-color-brand-secondary: #6e5ca8;
-  --r-color-brand-accent: #a85530;
+  --r-color-brand-primary: #1d5fb8;
+  --r-color-brand-primary-hover: #164b94;
+  --r-color-brand-primary-pressed: #123c78;
+  --r-color-brand-secondary: #346faf;
+  --r-color-brand-accent: #1769c2;
   --r-color-romm-gold: #b8860b;
 }

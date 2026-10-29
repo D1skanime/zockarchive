@@ -1105,3 +1105,14 @@ Plans:
 - [x] 38-07-PLAN.md: Adapt exact repository guards and current naming/install verifiers
 - [x] 38-08-PLAN.md: Prove compatible identity on owned browser, SQL and populated-install targets
 - [x] 38-09-PLAN.md: Perform verified same-repository rename and deliver reviewed feature integration (source implemented; external acceptance recorded in ignored cutover/summary receipts)
+
+### Phase 39: ZockArchive approved logo integration
+
+**Goal:** Integrate the supplied approved ZockArchive wordmark and gamepad mark into relevant active product branding and favicon/PWA icon surfaces while preserving Phase 38 compatibility boundaries.
+**Requirements**: TBD
+**Depends on:** Phase 38
+**Plans:** 1/1 plans complete
+**Status:** Implementation complete, human UAT pending (2026-10-27). No deployment or Phase 38 compatibility change.
+
+Plans:
+- [x] 39-01-PLAN.md: Approved identity assets, blue-glass tokens, static login backdrop, UAT animation variants and frontend documentation.

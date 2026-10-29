@@ -1,6 +1,36 @@
 import { expect, test } from "@playwright/test";
 import { mountGallery } from "./fixtures/screenshot-management";
 
+test("static preview has one approved ZockArchive PWA manifest", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const manifest = page.locator('link[rel="manifest"]');
+  await expect(manifest).toHaveCount(1);
+  await expect(manifest).toHaveAttribute("href", "/site.webmanifest");
+
+  const response = await page.request.get("/site.webmanifest");
+  expect(response.ok()).toBe(true);
+  await expect(response.json()).resolves.toMatchObject({
+    name: "ZockArchive",
+    short_name: "ZA",
+    icons: [
+      {
+        src: "/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        src: "/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+    theme_color: "#123c78",
+    background_color: "#f3f7fd",
+  });
+});
+
 for (const theme of ["dark", "light"] as const) {
   test(
     "shared shell identity geometry and interactions " + theme,
@@ -38,16 +68,33 @@ for (const theme of ["dark", "light"] as const) {
         "aria-hidden",
         "true",
       );
+      const navigationMark = home.locator(".project-brand__mark");
+      const navigationWordmark = home.locator(".project-brand__name");
+      await expect(navigationMark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/mark-header.webp",
+      );
+      await expect(navigationMark).toHaveAttribute("alt", "");
+      await expect(navigationWordmark).toHaveText("ZockArchive");
+      await expect(home.locator("img")).toHaveCount(1);
       for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
         await page.setViewportSize({ width, height: 1000 });
         await expect(page.locator("html")).toHaveAttribute(
           "data-bp",
           width < 600 ? /\bxs\b/ : /./,
         );
-        await expect(home.locator(".project-brand__short")).toBeVisible();
-        if (width < 600)
-          await expect(home.locator(".project-brand__word")).toBeHidden();
-        else await expect(home.locator(".project-brand__word")).toBeVisible();
+        await expect(navigationMark).toBeVisible();
+        const markBox = await navigationMark.boundingBox();
+        expect(markBox!.width).toBe(128);
+        expect(markBox!.height).toBe(88);
+        const headerBox = await page.locator(".r-v2-nav-bar").boundingBox();
+        expect(markBox!.y).toBeGreaterThanOrEqual(headerBox!.y);
+        expect(markBox!.y + markBox!.height).toBeLessThanOrEqual(
+          headerBox!.y + headerBox!.height,
+        );
+        if (width < 600 || (width >= 960 && width < 1280))
+          await expect(navigationWordmark).toBeHidden();
+        else await expect(navigationWordmark).toBeVisible();
         const box = await home.boundingBox();
         expect(box!.height).toBeGreaterThanOrEqual(44);
         expect(box!.width).toBeGreaterThanOrEqual(44);
@@ -113,7 +160,12 @@ for (const theme of ["dark", "light"] as const) {
       await page.getByText("About", { exact: true }).click();
       const about = page.locator(".r-v2-about");
       await expect(about).toBeVisible();
-      await expect(about.locator(".project-brand--about")).toHaveText("ZA");
+      const aboutWordmark = about.locator(".project-brand__wordmark");
+      await expect(aboutWordmark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/wordmark-header.webp",
+      );
+      await expect(aboutWordmark).toHaveAttribute("alt", "ZockArchive");
       await expect(about.locator("a").first()).toHaveAttribute(
         "href",
         "https://github.com/D1skanime/zockarchive/releases/tag/fixture",
@@ -167,9 +219,14 @@ for (const theme of ["dark", "light"] as const) {
       "/reset-password",
     ]) {
       await page.goto(path);
-      await expect(page.locator(".auth-card .project-brand--auth")).toHaveText(
-        "ZockArchive",
+      const authWordmark = page.locator(
+        ".auth-card .project-brand--auth .project-brand__wordmark",
       );
+      await expect(authWordmark).toHaveAttribute(
+        "src",
+        "/assets/zockarchive/wordmark-auth.webp",
+      );
+      await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
       for (const width of [320, 600, 960, 1280, 3840]) {
         await page.setViewportSize({ width, height: 1000 });
         await expect(page.locator(".auth-card")).toBeVisible();
@@ -189,3 +246,48 @@ for (const theme of ["dark", "light"] as const) {
     expect(mutations).toEqual([]);
   });
 }
+
+test("runtime logo assets retain transparent backgrounds", async ({ page }) => {
+  await page.goto("/");
+  for (const asset of [
+    "mark-header.webp",
+    "wordmark-header.webp",
+    "wordmark-auth.webp",
+  ]) {
+    const alpha = await page.evaluate(async (asset) => {
+      const image = new Image();
+      image.src = "/assets/zockarchive/" + asset;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const context = canvas.getContext("2d")!;
+      context.drawImage(image, 0, 0);
+      const pixels = context.getImageData(
+        0,
+        0,
+        canvas.width,
+        canvas.height,
+      ).data;
+      let transparent = 0;
+      let darkOpaque = 0;
+      for (let i = 3; i < pixels.length; i += 4) {
+        if (pixels[i]! < 10) transparent++;
+        if (
+          pixels[i]! > 240 &&
+          Math.max(pixels[i - 3]!, pixels[i - 2]!, pixels[i - 1]!) < 40
+        )
+          darkOpaque++;
+      }
+      return {
+        corner: pixels[3],
+        fraction: transparent / (canvas.width * canvas.height),
+        darkFraction: darkOpaque / (canvas.width * canvas.height),
+      };
+    }, asset);
+    expect(alpha.corner).toBeLessThan(10);
+    expect(alpha.darkFraction).toBeLessThan(0.01);
+    expect(alpha.fraction).toBeGreaterThan(0.15);
+    expect(alpha.fraction).toBeLessThan(0.95);
+  }
+});

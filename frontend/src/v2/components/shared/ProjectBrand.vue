@@ -1,7 +1,6 @@
 <script setup lang="ts">
-// Text identity owns in-app presentation until supplied product artwork is available.
-import { PROJECT_NAME, PROJECT_SHORT_NAME } from "@/v2/config/project";
-
+// Product artwork is a transparent overlay. Navigation pairs one emblem
+// with native text so the name remains readable at header sizes.
 interface Props {
   variant: "auth" | "navigation" | "about";
 }
@@ -14,37 +13,68 @@ defineProps<Props>();
     class="project-brand d-inline-flex align-center"
     :class="`project-brand--${variant}`"
   >
-    <span v-if="variant !== 'auth'" class="project-brand__short">{{
-      PROJECT_SHORT_NAME
-    }}</span>
-    <span v-if="variant !== 'about'" class="project-brand__word">{{
-      PROJECT_NAME
-    }}</span>
+    <template v-if="variant === 'navigation'">
+      <img
+        class="project-brand__mark"
+        src="/assets/zockarchive/mark-header.webp"
+        alt=""
+        width="128"
+        height="88"
+      />
+      <span class="project-brand__name">ZockArchive</span>
+    </template>
+    <img
+      v-else
+      class="project-brand__wordmark"
+      :src="
+        variant === 'auth'
+          ? '/assets/zockarchive/wordmark-auth.webp'
+          : '/assets/zockarchive/wordmark-header.webp'
+      "
+      alt="ZockArchive"
+    />
   </span>
 </template>
 
 <style scoped>
 .project-brand {
-  gap: 10px;
-  color: var(--r-color-fg);
-  font-family: var(--r-font-family-display);
-  font-weight: var(--r-font-weight-semibold);
-  line-height: var(--r-line-height-tight);
   white-space: nowrap;
+  background: transparent;
+}
+.project-brand__mark,
+.project-brand__wordmark {
+  display: block;
+  object-fit: contain;
 }
 .project-brand--auth {
-  font-size: var(--r-font-size-3xl);
+  width: min(100%, 260px);
 }
-.project-brand--navigation .project-brand__short {
-  font-size: var(--r-font-size-2xl);
+.project-brand--auth .project-brand__wordmark {
+  width: 100%;
 }
-.project-brand--navigation .project-brand__word {
-  font-size: var(--r-font-size-xl);
+.project-brand--navigation {
+  gap: var(--r-space-2);
+  height: 88px;
 }
-.project-brand--about {
-  font-size: var(--r-font-size-md);
+.project-brand--navigation .project-brand__mark {
+  width: 128px;
+  height: 88px;
 }
-html[data-bp~="xs"] .project-brand--navigation .project-brand__word {
+.project-brand__name {
+  color: var(--r-color-fg);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+.project-brand--about .project-brand__wordmark {
+  width: 148px;
+  height: auto;
+}
+html[data-bp~="md-and-up"][data-bp~="md-and-down"] .project-brand__name {
+  display: none;
+}
+html[data-bp~="xs"] .project-brand__name {
   display: none;
 }
 </style>

@@ -145,9 +145,6 @@ html[data-input="pad"] .r-v2 * {
 .r-v2-bg__layer {
   position: absolute;
   inset: 0;
-  /* Fallback art when no cover is set (settings, admin, etc.). Kept in CSS
-     rather than inline so Firefox can swap it for the static variant below. */
-  background-image: url("/assets/auth_background.svg");
   background-size: cover;
   background-position: center 20%;
   background-repeat: no-repeat;
@@ -157,12 +154,104 @@ html[data-input="pad"] .r-v2 * {
   will-change: opacity;
 }
 
-/* Firefox: use the static fallback SVG in Gecko to avoid rerasterizing
-   animated artwork during page transitions. Cover art is raster, so it is
-   unaffected. */
-@-moz-document url-prefix() {
-  .r-v2-bg__layer {
-    background-image: url("/assets/auth_background_static.svg");
+/* The approved ZA fallback is shared by app, auth and device-pair shells.
+   It uses only composited transform and opacity movement, so no video or
+   rerasterized animated asset is needed. */
+.r-v2-za-glass-background {
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(
+      circle at 18% 22%,
+      color-mix(in srgb, var(--r-color-brand-glass-medium) 62%, transparent),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--r-color-canvas-bg-deep) 84%,
+        var(--r-color-brand-glass-dark)
+      ),
+      color-mix(
+        in srgb,
+        var(--r-color-bg) 72%,
+        var(--r-color-brand-glass-medium)
+      )
+    );
+}
+
+.r-v2-za-glass-background::before,
+.r-v2-za-glass-background::after {
+  position: absolute;
+  content: "";
+  inset: -38%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.r-v2-dark .r-v2-za-glass-background::before {
+  opacity: 1;
+}
+
+.r-v2-dark .r-v2-za-glass-background::after {
+  opacity: 0.78;
+}
+
+/* The shared fallback is already contrast-tuned. Do not dim its cyan bands
+   with the cover-art treatment above. The dedicated overlay still protects
+   application content. */
+.r-v2-bg__layer.r-v2-za-glass-background {
+  filter: none;
+}
+
+.r-v2-za-glass-background::before {
+  background: linear-gradient(
+    116deg,
+    transparent 39%,
+    color-mix(in srgb, var(--r-color-brand-glass-cyan) 72%, transparent) 45%,
+    color-mix(in srgb, var(--r-color-brand-glass-light) 82%, transparent) 50%,
+    color-mix(in srgb, var(--r-color-brand-glass-cyan) 72%, transparent) 55%,
+    transparent 61%
+  );
+  opacity: 0.9;
+  animation: r-v2-za-glass-sweep calc(9s * var(--za-glass-motion-rate, 1))
+    ease-in-out infinite alternate;
+}
+
+.r-v2-za-glass-background::after {
+  background:
+    linear-gradient(
+      116deg,
+      transparent 35%,
+      color-mix(in srgb, var(--r-color-brand-glass-cyan) 48%, transparent) 49%,
+      transparent 63%
+    ),
+    radial-gradient(
+      circle,
+      color-mix(in srgb, var(--r-color-brand-glass-cyan) 46%, transparent),
+      transparent 62%
+    );
+  opacity: 0.62;
+  animation: r-v2-za-glass-sweep-reverse
+    calc(11s * var(--za-glass-motion-rate, 1)) ease-in-out infinite alternate;
+}
+
+@keyframes r-v2-za-glass-sweep {
+  from {
+    transform: translate3d(-19%, -11%, 0) rotate(-5deg);
+  }
+  to {
+    transform: translate3d(21%, 12%, 0) rotate(4deg);
+  }
+}
+
+@keyframes r-v2-za-glass-sweep-reverse {
+  from {
+    transform: translate3d(18%, 11%, 0) rotate(5deg);
+  }
+  to {
+    transform: translate3d(-20%, -10%, 0) rotate(-4deg);
   }
 }
 
@@ -180,12 +269,39 @@ html[data-input="pad"] .r-v2 * {
   transform: none;
 }
 
+.r-v2-light .r-v2-za-glass-background {
+  background:
+    radial-gradient(
+      circle at 18% 22%,
+      color-mix(in srgb, var(--r-color-brand-glass-cyan) 52%, transparent),
+      transparent 43%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--r-color-bg) 74%,
+        var(--r-color-brand-glass-light)
+      ),
+      color-mix(
+        in srgb,
+        var(--r-color-bg) 65%,
+        var(--r-color-brand-glass-medium)
+      )
+    );
+}
+
 /* Reduced-motion mode keeps the selected art static and removes the
    transition, avoiding unnecessary work on devices where motion is disabled. */
 html.r-v2-reduced-motion .r-v2-bg__layer {
   filter: none;
   transform: none;
   transition: none;
+}
+
+html.r-v2-reduced-motion .r-v2-za-glass-background::before,
+html.r-v2-reduced-motion .r-v2-za-glass-background::after {
+  animation: none;
 }
 
 /* Light backdrops have no blur, so reduced-motion can keep the selected
@@ -258,8 +374,13 @@ html.r-v2-reduced-motion *::after {
 /* ── Utility classes ───────────────────────────────────────── */
 
 .r-v2-surface {
-  background: var(--r-color-surface);
+  background: linear-gradient(
+    135deg,
+    var(--r-color-glass-tint),
+    var(--r-color-surface)
+  );
   border: 1px solid var(--r-color-border-strong);
+  box-shadow: 0 8px 24px var(--r-color-glass-shadow);
   backdrop-filter: blur(20px);
 }
 

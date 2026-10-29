@@ -23,11 +23,9 @@ defineOptions({ inheritAttrs: false });
   min-width: 0;
   border-radius: var(--r-radius-lg) !important;
   box-shadow: var(--r-elev-4) !important;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--r-color-canvas-bg-deep) 65%, transparent) 0%,
-    color-mix(in srgb, var(--r-color-canvas-bg-deep) 65%, transparent) 100%
-  );
+  background: var(--r-color-auth-glass);
+  border: 1px solid var(--r-color-auth-glass-border) !important;
+  backdrop-filter: blur(20px) saturate(1.12);
 }
 
 .auth-card__inner {

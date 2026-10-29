@@ -6,11 +6,6 @@ import { defineConfig, loadEnv } from "vite";
 import mkcert from "vite-plugin-mkcert";
 import { VitePWA } from "vite-plugin-pwa";
 import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
-import {
-  PROJECT_DESCRIPTION,
-  PROJECT_NAME,
-  PROJECT_SHORT_NAME,
-} from "./src/v2/config/project.ts";
 
 // Vuetify components to preoptimize for faster dev startup
 const VUETIFY_COMPONENTS = [
@@ -133,19 +128,9 @@ export default defineConfig(({ mode }) => {
       }),
       VitePWA({
         injectRegister: null,
-        manifest: {
-          name: PROJECT_NAME,
-          short_name: PROJECT_SHORT_NAME,
-          description: PROJECT_DESCRIPTION,
-          icons: [
-            {
-              src: "favicon.ico",
-              sizes: "256x256",
-              type: "image/ico",
-              purpose: "any maskable",
-            },
-          ],
-        },
+        // index.html links the reviewed site.webmanifest. Keeping one explicit
+        // owner prevents VitePWA from injecting a second generated manifest.
+        manifest: false,
         devOptions: {
           enabled: pwaDevEnabled,
           type: "module",

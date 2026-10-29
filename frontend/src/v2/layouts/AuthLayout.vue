@@ -7,6 +7,7 @@ import LanguageSelector from "@/v2/components/shared/LanguageSelector.vue";
 import VersionTag from "@/v2/components/shared/VersionTag.vue";
 import { installBreakpointAttribute } from "@/v2/composables/useBreakpoint";
 import { useInputModality } from "@/v2/composables/useInputModality";
+import { useReducedMotionRootClass } from "@/v2/composables/useReducedMotionRootClass";
 
 // The auth / setup flow runs under THIS layout, not AppLayout, so it must
 // install the same `<html>` mirrors. Without them no `data-bp` responsive
@@ -14,12 +15,13 @@ import { useInputModality } from "@/v2/composables/useInputModality";
 // wizard's columns wouldn't even collapse on a phone).
 installBreakpointAttribute();
 const { install: installInputModality } = useInputModality();
+useReducedMotionRootClass();
 onMounted(installInputModality);
 </script>
 
 <template>
   <div class="r-v2-auth">
-    <div class="r-v2-auth__bg" />
+    <div class="r-v2-auth__bg r-v2-za-glass-background" />
     <main class="r-v2-auth__stage">
       <router-view />
     </main>
@@ -49,40 +51,15 @@ onMounted(installInputModality);
   padding: var(--r-space-6);
   overflow: hidden;
 
-  /* The auth background and the AuthCard/Setup glass are always dark
-     (--r-color-canvas-bg-deep) regardless of theme, so the light-mode
-     foreground/border tokens (near-black) would be unreadable here. Force
-     the dark-mode palette for everything inside the auth layout — the page
-     text, the LanguageSelector, the VersionTag, and surface/border-driven
-     bits like the RSteps connector lines and dots. CSS custom properties
-     inherit into descendants, and the override is scoped to .r-v2-auth so
-     those shared components stay theme-driven elsewhere. */
-  --r-color-fg: #ffffff;
-  --r-color-fg-secondary: rgba(255, 255, 255, 0.75);
-  --r-color-fg-muted: rgba(255, 255, 255, 0.45);
-  --r-color-fg-faint: rgba(255, 255, 255, 0.25);
-  --r-color-surface: rgba(255, 255, 255, 0.07);
-  --r-color-surface-hover: rgba(255, 255, 255, 0.12);
-  --r-color-border: rgba(255, 255, 255, 0.07);
-  --r-color-border-strong: rgba(255, 255, 255, 0.15);
+  /* Form placeholders inherit the faint token. Keep them at the secondary
+     text contrast level over the translucent auth glass in both themes. */
+  --r-color-fg-faint: var(--r-color-fg-secondary);
 }
 
 .r-v2-auth__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/auth_background.svg");
-  background-size: cover;
-  background-position: center;
   z-index: 0;
-}
-
-/* Firefox: WebRender re-rasterizes the animated SVG every frame, pegging the
-   GPU. Swap to the static variant in Gecko only (the empty `url-prefix()`
-   hack matches all Firefox pages and stays enabled by default). */
-@-moz-document url-prefix() {
-  .r-v2-auth__bg {
-    background-image: url("/assets/auth_background_static.svg");
-  }
 }
 
 .r-v2-auth__stage {

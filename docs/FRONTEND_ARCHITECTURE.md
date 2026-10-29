@@ -225,7 +225,7 @@ The old console application is not mounted as a separate runtime. /console URLs 
 
 ## 12. Theming & Styling
 
-frontend/src/styles/themes.ts defines Vuetify dark, light, and auto themes. useThemeMode combines settings.theme with prefers-color-scheme. v2 token source is frontend/src/v2/tokens/index.ts and generated CSS is frontend/src/v2/styles/tokens.css. v2 uses CSS custom properties for colors, statuses, surfaces, borders, spacing, radii, typography, focus, overlays, and responsive dimensions.
+frontend/src/styles/themes.ts defines Vuetify dark, light, and auto themes. useThemeMode combines settings.theme with prefers-color-scheme. `frontend/src/v2/tokens/index.ts` is the v2 public token entry point, while its cohesive color palette groups live in `frontend/src/v2/tokens/colors.ts`; generated CSS is `frontend/src/v2/styles/tokens.css`. v2 uses CSS custom properties for colors, statuses, surfaces, borders, spacing, radii, typography, focus, overlays, and responsive dimensions. The shared blue-glass vocabulary, including glass tint/shadow and auth glass variants, is defined there for both themes; components consume semantic variables instead of local color literals.
 
 useBreakpoint mirrors values to html[data-bp]. AppLayout reserves top and mobile bottom navigation safe-area space; AuthLayout bounds auth cards on phones; SettingsLayout removes its sidebar on small screens and supports fill mode for logs. Input modality distinguishes keyboard, pointer, touch, and gamepad. Reduced motion is mirrored as r-v2-reduced-motion. BackgroundArt uses two layers and a dwell before cross-fading.
 
@@ -265,12 +265,19 @@ parameters change, and teardown never restores an obsolete title. Keep stores,
 router, API clients and application initialization out of this config so build
 tooling and browser startup can safely share it.
 
-The domain shared composite `components/shared/ProjectBrand.vue` presents that
-metadata as text through auth, navigation and about variants. AuthCard owns the
-shared login/register/reset/setup frame; AppNav retains the localized Home link
-and hides its redundant brand text from assistive technology. Only the expanded
-navigation word hides on xs. About and pairing use the compact ZA text. The
-pairing QR remains unmodified, with product identity outside its encoded area.
+The domain shared composite `components/shared/ProjectBrand.vue` presents the
+transparent artwork through auth and about variants. Small WebP derivatives
+retain actual alpha in the exterior and internal dark negative spaces. The
+transparent masters are overlay-transparent.png and mark-transparent.png.
+The emblem is the single ZA monogram shaped as a gamepad, with its D-pad
+and face buttons; it has no rear server or stacked-frame motif.
+Navigation pairs a 128 by 88 px emblem with native 22 px theme-colored
+ZockArchive text in a 104 px navigation bar. Extra-small screens and medium
+desktops keep only the emblem. It never places a complete logo beside another copy of its
+emblem. AuthCard owns the shared login/register/reset/setup
+frame; the labelled Home link hides redundant brand artwork from assistive
+technology. The pairing QR remains unmodified, with
+product identity outside its encoded area.
 VersionTag, AboutDialog and NewVersionBanner share `projectReleaseTagUrl`;
 the banner fetches the canonical release API and preserves its age/dismissal
 rules. About links current documentation to repository docs and labels the
@@ -287,9 +294,34 @@ platform/storage confirmation fallbacks consume PROJECT_NAME and preserve the
 distinction between catalog or mapping removal and deleting original files.
 
 The application bootstrap filename remains `src/PGDP.vue` for compatibility.
-ProjectBrand owns later supplied in-app artwork integration. Public browser/PWA
-icons and desktop packaging icons have separate owners and remain pending supplied
-assets; retained image binaries are not represented as ZockArchive artwork.
+Approved public artwork is stored in `public/assets/zockarchive/`; `index.html`
+owns the approved 16px/32px PNG favicon and Apple-touch declarations, while
+`public/favicon.ico` packages those same approved favicon sizes for default
+browser requests. `site.webmanifest` is the sole install-manifest owner: it
+declares only the approved `android-chrome-192x192.png` and
+`android-chrome-512x512.png` assets with the token-derived `#123c78` theme and
+`#f3f7fd` background colors. VitePWA generates the service worker but has its
+manifest generation disabled, so it cannot inject a competing manifest link.
+`AppShell/BackgroundArt.vue` owns selected-cover cross-fades and applies the
+shared `r-v2-za-glass-background` fallback when no cover is selected. The
+same token-driven CSS background is used by login and device-pair shells.
+It replaces the inherited RomM SVG backgrounds with Glasreflexion B: cyan and
+sparingly light-cyan bands from the approved ZA logo palette move with
+composited opacity and transforms over nine and eleven seconds. The
+`r-v2-reduced-motion` setting freezes those bands without removing the static
+background. The background intentionally ignores `prefers-reduced-motion` to
+retain the historic ZA animation behavior. `BrandBackgroundVariant.vue` provides
+the one matching Storybook review story, `Marke/ZA-Hintergrund/Glasreflexion B`,
+with German preview-only controls for `ZA-Reduzierte Bewegung` and
+`Animationsgeschwindigkeit` from 0,5× through 2×. Those controls do not alter
+runtime settings. The retired `auth_background.svg` and Gecko static SVG have
+no remaining runtime owner and are removed.
+
+Authentication, setup and pairing cards consume the shared `auth-glass` token
+family. It provides a light translucent blue-glass surface with dark readable
+text in light theme, and a blue-black glass surface with light readable text in
+dark theme. AuthLayout raises placeholder contrast to the secondary-text token;
+the existing field focus and semantic error/warning owners remain unchanged.
 Provider artwork and license attribution retain their upstream identity.
 
 Important v2 composables include useCan, useLibraryOperation, useProviderResolution, useManualDescription, useGameDetailsMedia, useBackgroundArt, useBackgroundAudio, useCoverArt, useWebpSupport, useBreakpoint, useResponsiveColumns, useInputModality, useGamepad, useGridNav, useRightStickScroll, useGallerySelectionInput, useGlobalHotkeys, useThemeMode, useReducedMotion, useCrtMode, useFullscreenPref, useGalleryFilterUrl, useGalleryViewModeUrl, useTileSearchUrl, useGalleryProvenance, usePageTitle, useServerConnection, useSnackbar, useConfirm, useSocketEvent, useScanLifecycle, useBrowserDownloadQueue, and usePlaySession. v2/utils covers route-query validation, artwork, collection covers, player helpers, ROM verification/status, download manifest paths, provider labels, CSS checks, and input helpers. frontend/src/utils contains form-data, task, cover, and IndexedDB helpers.
@@ -319,13 +351,11 @@ Run commands from frontend:
 | npm run test:e2e:ui        | Playwright UI mode                  |
 
 Before JavaScript starts, `index.html` renders centered ZockArchive text and
-the initial title. Both `public/site.webmanifest` and the VitePWA-generated
-`manifest.webmanifest` expose ZockArchive / ZA and the same description.
-VitePWA imports the pure identity config; the static HTML/manifest literals
-are checked against it by `node --import tsx scripts/check-project-manifests.ts
-<output-directory>` after a build. The checker reads actual emitted HTML links
-and both JSON payloads. Existing icon binaries remain pending supplied artwork;
-start URLs, scope, colors, display and service-worker/cache identity are preserved.
+the initial title. It links exactly one manifest, `public/site.webmanifest`.
+`node --import tsx scripts/check-project-manifests.ts <output-directory>` checks
+the emitted HTML link, absence of a VitePWA-generated competing manifest,
+product identity, approved Android icon list and token-derived colors. Start
+URLs, scope, display and service-worker/cache identity are preserved.
 
 package.json declares Node 24, npm >=11.10, and npm@11.13.0. vite.config.js defines @ and @v2, Vue/Vuetify/Tailwind/VitePWA/mkcert plugins, browser-derived CSS targets, PWA support, and proxies for /api, /ws, /netplay, and /openapi.json. DEV_PORT defaults to 5000; HTTP dev uses 3000 and DEV_HTTPS uses 8443. ROM resources are ignored by the watcher.
 

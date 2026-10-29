@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: phase_complete
-stopped_at: Phase38 accepted with limitations; KI setup deferred until separate Claude phase is complete
-last_updated: 2026-10-26T09:18:55.104Z
-last_activity: 2026-10-26
+status: phase_human_verification
+stopped_at: Phase39 implementation complete; awaiting human browser UAT
+last_updated: 2026-10-27T08:24:00Z
+last_activity: 2026-10-27
 progress:
-  total_phases: 38
+  total_phases: 39
   completed_phases: 24
   total_plans: 308
   completed_plans: 269
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase38 live UAT closed with accepted limitations; no next phase started.
+**Current focus:** Phase39 approved logo integration is implemented and awaiting human browser UAT. Phase38 remains accepted with its documented limitations.
 
 ## Current Position
 
-Phase:38 (zockarchive-product-and-repository-rebranding)
-Plan:9 of9 complete
-Status: Phase accepted with documented limitations; broader milestone acceptance remains open
-Last activity:2026-10-26
+Phase:39 (zockarchive-approved-logo-integration)
+Plan:1/1
+Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
+Last activity: 2026-10-28 - Completed quick task 261028-bt1: transparent logo overlays
 
-The user accepted the browser branding, German/English, both themes and narrow-layout UAT on2026-10-26. Physical controller testing was unavailable, and the user explicitly accepted the documented native-client limitation. Technical coverage remains20/21; no native upgrade test is claimed. PR7 was previously merged at467e03dca and Dev deployed under explicit authorization. Read38-UAT.md,38-HUMAN-UAT.md and38-DEV-DEPLOYMENT.md. Historical milestone/production/NAS/artwork gates remain separate. KI setup stays deferred until the separate Claude phase is finished. No phase39, new deployment or push is started.
+The user accepted the browser branding, German/English, both themes and narrow-layout UAT on2026-10-26. Physical controller testing was unavailable, and the user explicitly accepted the documented native-client limitation. Technical coverage remains20/21; no native upgrade test is claimed. PR7 was previously merged at467e03dca and Dev deployed under explicit authorization. Read38-UAT.md,38-HUMAN-UAT.md and38-DEV-DEPLOYMENT.md. Historical milestone/production/NAS/artwork gates remain separate. KI setup stays deferred until the separate Claude phase is finished. Phase39 now integrates the approved assets, blue-glass token direction and UAT-only animation proposals without deployment, push, storage/auth/API change or external-media mutation. See39-VERIFICATION.md and39-UAT.md for remaining browser checks.
 
 ## Phase38 owned integration proof
 
@@ -244,6 +244,7 @@ _Updated after each plan completion_
 
 ### Roadmap Evolution
 
+- Phase39 added: ZockArchive approved logo integration, using the user-supplied approved logo package. Awaiting discussion and planning; Phase38 acceptance remains intact.
 - Phase38 added: ZockArchive product and repository rebranding, based on the user-supplied complete specification.
 
 - Phase 34 added: Reliable fresh installation and scan lifecycle.
@@ -546,6 +547,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261028-bt1 | Transparent logo overlays and readable navigation identity | 2026-10-28 | 649c44c6e | [261028-bt1-polish-zockarchive-branding-with-transpa](./quick/261028-bt1-polish-zockarchive-branding-with-transpa/) |
 | 261026-phase34 | Remove disposable Compose volumes after Phase 34 CI runs | 2026-10-26 | 14f51fe8d | [261026-phase34-disposable-volume-cleanup](./quick/261026-phase34-disposable-volume-cleanup/) |
 | 261023-urj | Polish screenshot identity icons, selected glass actions and sticky cloud upload | 2026-10-24 | a6d1f044d | [261023-urj-polish-screenshot-icons-buttons-and-uplo](./quick/261023-urj-polish-screenshot-icons-buttons-and-uplo/) |
 | 261016-cgq               | Fix storage preview button state and translations                                                                                | 2026-10-16 | 37e73ab3e   | [261016-cgq-fix-storage-preview-button-state-and-tra](./quick/261016-cgq-fix-storage-preview-button-state-and-tra/) |

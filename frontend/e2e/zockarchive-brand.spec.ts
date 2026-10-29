@@ -25,12 +25,20 @@ for (const theme of ["dark", "light"]) {
     await page.goto("/");
     const home = page.locator(".r-v2-nav__logo");
     await expect(home).toHaveAttribute("aria-label", "Home");
+    const navigationMark = home.locator(".project-brand__mark");
+    const navigationWordmark = home.locator(".project-brand__name");
+    await expect(navigationMark).toHaveAttribute(
+      "src",
+      "/assets/zockarchive/mark-header.webp",
+    );
+    await expect(navigationMark).toHaveAttribute("alt", "");
+    await expect(navigationWordmark).toHaveText("ZockArchive");
+    await expect(home.locator("img")).toHaveCount(1);
     for (const width of [320, 599, 600, 959, 960, 1280, 1920, 3840]) {
       await page.setViewportSize({ width, height: 1000 });
-      await expect(home.locator(".project-brand__short")).toHaveText("ZA");
-      if (width < 600)
-        await expect(home.locator(".project-brand__word")).toBeHidden();
-      else await expect(home.locator(".project-brand__word")).toBeVisible();
+      await expect(navigationMark).toBeVisible();
+      if (width < 600) await expect(navigationWordmark).toBeHidden();
+      else await expect(navigationWordmark).toBeVisible();
       const bounds = await home.boundingBox();
       expect(bounds!.width).toBeGreaterThanOrEqual(44);
       expect(bounds!.height).toBeGreaterThanOrEqual(44);
@@ -50,7 +58,12 @@ for (const theme of ["dark", "light"]) {
     await page.getByText("About", { exact: true }).click();
     const about = page.locator(".r-v2-about");
     await expect(about).toContainText("ZockArchive");
-    await expect(about.locator(".project-brand--about")).toHaveText("ZA");
+    const aboutWordmark = about.locator(".project-brand__wordmark");
+    await expect(aboutWordmark).toHaveAttribute(
+      "src",
+      "/assets/zockarchive/wordmark-header.webp",
+    );
+    await expect(aboutWordmark).toHaveAttribute("alt", "ZockArchive");
     await expect(
       about.locator('a[href*="D1skanime/zockarchive/releases"]'),
     ).toBeVisible();
@@ -62,9 +75,12 @@ for (const theme of ["dark", "light"]) {
     });
     expect(logout.ok()).toBe(true);
     await page.goto("/login");
-    await expect(page.locator(".auth-card .project-brand")).toHaveText(
-      "ZockArchive",
+    const authWordmark = page.locator(".auth-card .project-brand__wordmark");
+    await expect(authWordmark).toHaveAttribute(
+      "src",
+      "/assets/zockarchive/wordmark-auth.webp",
     );
+    await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
     await expect(page).toHaveTitle("Login");
     await login(page);
     await expect(page.locator(".r-v2-user__name")).toHaveText(
@@ -84,9 +100,12 @@ test("real invitation registration and rejected credentials", async ({
   const token = (await invite.json()).token;
   await page.request.post("/api/logout", { headers: await csrf(page) });
   await page.goto("/register?token=" + encodeURIComponent(token));
-  await expect(page.locator(".auth-card .project-brand")).toHaveText(
-    "ZockArchive",
+  const registerWordmark = page.locator(".auth-card .project-brand__wordmark");
+  await expect(registerWordmark).toHaveAttribute(
+    "src",
+    "/assets/zockarchive/wordmark-auth.webp",
   );
+  await expect(registerWordmark).toHaveAttribute("alt", "ZockArchive");
   await page.getByLabel("Username", { exact: true }).fill("phase38-registered");
   await page.getByLabel("Email", { exact: true }).fill("phase38@example.test");
   await page.getByLabel("Password", { exact: true }).fill(identity().password);
@@ -150,9 +169,12 @@ test("actual German auth and about identity", async ({ page }) => {
   await ensureSetup(page);
   await page.request.post("/api/logout", { headers: await csrf(page) });
   await page.goto("/login");
-  await expect(page.locator(".auth-card .project-brand")).toHaveText(
-    "ZockArchive",
+  const authWordmark = page.locator(".auth-card .project-brand__wordmark");
+  await expect(authWordmark).toHaveAttribute(
+    "src",
+    "/assets/zockarchive/wordmark-auth.webp",
   );
+  await expect(authWordmark).toHaveAttribute("alt", "ZockArchive");
   await expect(
     page.locator("form.r-v2-login-form button[type=submit]"),
   ).toHaveText("Einloggen");

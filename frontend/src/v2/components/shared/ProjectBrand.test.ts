@@ -1,5 +1,6 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { shallowMount } from "@vue/test-utils";
+import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import AppNav from "@/v2/components/AppShell/AppNav.vue";
 import AboutDialog from "@/v2/components/Dialogs/AboutDialog.vue";
@@ -9,25 +10,32 @@ import ProjectBrand from "@/v2/components/shared/ProjectBrand.vue";
 import VersionTag from "@/v2/components/shared/VersionTag.vue";
 
 describe("ProjectBrand", () => {
-  it.each(["auth", "navigation", "about"] as const)(
-    "renders truthful semantic %s identity without artwork or extra focus stops",
+  it.each(["auth", "about"] as const)(
+    "renders transparent %s artwork without extra focus stops",
     (variant) => {
       const wrapper = mount(ProjectBrand, { props: { variant } });
-      expect(wrapper.text()).toContain(
-        variant === "auth" ? "ZockArchive" : "ZA",
+      expect(wrapper.get(".project-brand__wordmark").attributes("src")).toBe(
+        variant === "auth"
+          ? "/assets/zockarchive/wordmark-auth.webp"
+          : "/assets/zockarchive/wordmark-header.webp",
       );
-      expect(
-        wrapper.find("img, svg, a, button, [tabindex], [role]").exists(),
-      ).toBe(false);
-      expect(wrapper.attributes("aria-label")).toBeUndefined();
-      expect(wrapper.text()).not.toMatch(/PGDP|RomM/);
+      expect(wrapper.get("img").attributes("alt")).toBe("ZockArchive");
+      expect(wrapper.find("a, button, [tabindex], [role]").exists()).toBe(
+        false,
+      );
     },
   );
 
-  it("keeps both navigation words while allowing the expanded word alone to hide", () => {
+  it("uses one emblem and readable native text in navigation", () => {
     const wrapper = mount(ProjectBrand, { props: { variant: "navigation" } });
-    expect(wrapper.get(".project-brand__short").text()).toBe("ZA");
-    expect(wrapper.get(".project-brand__word").text()).toBe("ZockArchive");
+    expect(wrapper.findAll("img")).toHaveLength(1);
+    expect(wrapper.get(".project-brand__mark").attributes("alt")).toBe("");
+    expect(wrapper.get(".project-brand__mark").attributes("src")).toBe(
+      "/assets/zockarchive/mark-header.webp",
+    );
+    expect(wrapper.get(".project-brand__name").text()).toBe("ZockArchive");
+    expect(wrapper.find(".project-brand__wordmark").exists()).toBe(false);
+    expect(wrapper.find("a, button, [tabindex], [role]").exists()).toBe(false);
   });
 
   it("allows the home link owner to suppress redundant announcements", () => {
@@ -50,6 +58,15 @@ vi.mock("@/v2/data/adapters/legacy/stores/heartbeat", () => ({
 }));
 
 describe("brand consumers", () => {
+  it("uses the shared auth glass tokens instead of a fixed dark canvas", () => {
+    const source = readFileSync(
+      "src/v2/components/shared/AuthCard.vue",
+      "utf8",
+    );
+    expect(source).toContain("var(--r-color-auth-glass)");
+    expect(source).toContain("backdrop-filter");
+    expect(source).not.toContain("var(--r-color-canvas-bg-deep) 65%");
+  });
   it("renders auth identity while preserving form slot and frame", () => {
     const wrapper = shallowMount(AuthCard, {
       slots: { default: '<input aria-label="Username" />' },
@@ -60,7 +77,9 @@ describe("brand consumers", () => {
         },
       },
     });
-    expect(wrapper.text()).toBe("ZockArchive");
+    expect(wrapper.get(".project-brand__wordmark").attributes("alt")).toBe(
+      "ZockArchive",
+    );
     expect(wrapper.find("input").exists()).toBe(true);
     expect(wrapper.find("r-img-stub").exists()).toBe(false);
   });
@@ -78,7 +97,7 @@ describe("brand consumers", () => {
     expect(home.attributes("href")).toBe("/");
     expect(home.attributes("aria-label")).toBe("common.home");
     expect(home.get(".project-brand").attributes("aria-hidden")).toBe("true");
-    expect(home.text()).toContain("ZockArchive");
+    expect(home.get(".project-brand__name").text()).toBe("ZockArchive");
     expect(wrapper.find("r-img-stub").exists()).toBe(false);
   });
 

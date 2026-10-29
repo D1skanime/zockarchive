@@ -277,11 +277,12 @@ onMounted(async () => {
   height: min(86dvh, 880px);
   display: flex;
   flex-direction: column;
-  background: var(--r-color-canvas-bg-deep);
-  border: 1px solid var(--r-color-border);
+  background: var(--r-color-auth-glass);
+  border: 1px solid var(--r-color-auth-glass-border);
   border-radius: var(--r-radius-lg);
   box-shadow: var(--r-elev-4);
   overflow: hidden;
+  backdrop-filter: blur(20px) saturate(1.12);
 }
 .r-v2-setup__header {
   display: grid;

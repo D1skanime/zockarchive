@@ -7,12 +7,15 @@
  */
 import LanguageSelector from "@/v2/components/shared/LanguageSelector.vue";
 import VersionTag from "@/v2/components/shared/VersionTag.vue";
+import { useReducedMotionRootClass } from "@/v2/composables/useReducedMotionRootClass";
 import DevicePair from "@/v2/views/DevicePair.vue";
+
+useReducedMotionRootClass();
 </script>
 
 <template>
   <div class="r-v2-devpair-shell">
-    <div class="r-v2-devpair-shell__bg" />
+    <div class="r-v2-devpair-shell__bg r-v2-za-glass-background" />
     <main class="r-v2-devpair-shell__stage">
       <DevicePair />
     </main>
@@ -31,34 +34,12 @@ import DevicePair from "@/v2/views/DevicePair.vue";
   place-items: center;
   padding: var(--r-space-6);
   overflow: hidden;
-
-  /* The auth background and the glass card are always dark
-     (--r-color-canvas-bg-deep) regardless of theme, so pin the foreground and
-     borders to the always-light overlay tokens — the same fixed values that
-     ride over cover art — so text stays legible in v2-light too. */
-  --r-color-fg: var(--r-color-overlay-fg);
-  --r-color-fg-secondary: var(--r-color-overlay-fg-secondary);
-  --r-color-fg-muted: var(--r-color-overlay-fg-muted);
-  --r-color-border: var(--r-color-overlay-border);
-  --r-color-border-strong: var(--r-color-overlay-border-strong);
 }
 
 .r-v2-devpair-shell__bg {
   position: absolute;
   inset: 0;
-  background-image: url("/assets/auth_background.svg");
-  background-size: cover;
-  background-position: center;
   z-index: 0;
-}
-
-/* Firefox: WebRender re-rasterizes the animated SVG every frame, pegging the
-   GPU. Swap to the static variant in Gecko only (the empty `url-prefix()`
-   hack matches all Firefox pages and stays enabled by default). */
-@-moz-document url-prefix() {
-  .r-v2-devpair-shell__bg {
-    background-image: url("/assets/auth_background_static.svg");
-  }
 }
 
 .r-v2-devpair-shell__stage {
