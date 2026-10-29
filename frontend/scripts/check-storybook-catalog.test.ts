@@ -1,18 +1,79 @@
 import { describe, expect, it } from "vitest";
 import { phase39BrandDocsId } from "@/v2/storybook/compositionInventory";
-import { findEnglishStoryNames } from "./storybookLanguageGuard";
+import {
+  findUnreviewedVisibleStoryText,
+  getVisibleStoryTextCandidates,
+} from "./storybookLanguageGuard";
 
 describe("Storybook-Katalogprüfung", () => {
   it("protects the grandfathered Phase-39 docs id", () => {
     expect(phase39BrandDocsId).toContain("glasreflexion-b");
   });
 
-  it("rejects visible English story names but allows German names", () => {
-    expect(findEnglishStoryNames('name: "Flat (no bottom border)"')).toEqual([
-      "Flat (no bottom border)",
-    ]);
+  it("captures every supported visible-text category with its source location", () => {
+    const source = `
+      export const Beispiel = {
+        name: "Deutscher Story-Name",
+        args: { title: "Deutscher Beispieltext", label: "Beschriftung" },
+        parameters: { docs: { description: { story: "Deutsche Beschreibung" } } },
+        render: () => ({ template: \`<RBtn title="Deutscher Hinweis">Sichtbarer Text</RBtn>\` }),
+      };
+    `;
+
+    expect(getVisibleStoryTextCandidates(source, "Example.stories.ts")).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          category: "story-name",
+          text: "Deutscher Story-Name",
+        }),
+        expect.objectContaining({
+          category: "story-data",
+          text: "Deutscher Beispieltext",
+        }),
+        expect.objectContaining({
+          category: "story-data",
+          text: "Beschriftung",
+        }),
+        expect.objectContaining({
+          category: "docs-description",
+          text: "Deutsche Beschreibung",
+        }),
+        expect.objectContaining({
+          category: "template-attribute",
+          text: "Deutscher Hinweis",
+        }),
+        expect.objectContaining({
+          category: "template-text",
+          text: "Sichtbarer Text",
+        }),
+      ]),
+    );
+  });
+
+  it("rejects every new visible text until it receives an explicit decision", () => {
+    const source =
+      'export const Beispiel = { name: "Ungeprüfter sichtbarer Text" };';
+
     expect(
-      findEnglishStoryNames('name: "Flach (ohne untere Trennlinie)"'),
-    ).toEqual([]);
+      findUnreviewedVisibleStoryText(source, "Example.stories.ts", []),
+    ).toEqual([
+      expect.objectContaining({ text: "Ungeprüfter sichtbarer Text" }),
+    ]);
+  });
+
+  it("does not let a duplicate text inherit approval from another source location", () => {
+    const source = 'export const Beispiel = { name: "Geprüfter Text" };';
+
+    expect(
+      findUnreviewedVisibleStoryText(source, "Example.stories.ts", [
+        {
+          category: "story-name",
+          file: "Example.stories.ts",
+          location: "Zeile 99",
+          status: "german",
+          text: "Geprüfter Text",
+        },
+      ]),
+    ).toEqual([expect.objectContaining({ location: "Zeile 1" })]);
   });
 });

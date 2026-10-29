@@ -16,9 +16,10 @@ quick_task: 261029-nxk
 - Jede als `Zusammengesetzt` katalogisierte Story erhält ihre Beschreibung
   aus dem Inventar. Dadurch beginnen die Beschreibungen mit `Besteht aus:`
   und verlinken die Grundelemente über generierte Storybook-Dokumentationslinks.
-- Der Katalog-Lint prüft in allen v2-Story-Dateien explizite sichtbare
-  `name:`-Story-Namen gegen englische Begriffe. Nach der Übersetzung liefert er
-  null Treffer; Komponentenbezeichner und technische Prop-Werte sind ausgenommen.
+- Der Katalog-Lint inventarisiert alle statischen sichtbaren Story-Texte nach
+  Datei, Zeile und Kategorie. Die explizite Prüfliste trennt deutsche Freigaben
+  von begründeten Eigennamen und lässt neue oder geänderte Texte nicht ohne
+  Entscheidung passieren.
 
 ## Verifikation
 
@@ -31,8 +32,11 @@ quick_task: 261029-nxk
   `docker exec pgdp-dev sh -c 'cd /app/frontend && npx storybook build -o /tmp/storybook-static'`.
   Dies ist der dokumentierte Standardweg, weil er keine Berechtigungen oder Dateien
   in den root-eigenen Host-Abhängigkeiten verändert.
-- `npx tsx scripts/check-storybook-catalog.ts` prüft den deutschen
-  Story-Namen-Katalog mit null verbliebenen englischen Treffern.
+- `npx tsx scripts/check-storybook-catalog.ts` prüft 53 Story-Dateien mit
+  1.558 Textkandidaten und meldet 0 offene Treffer. Die konkreten Eigennamen
+  (Spieletitel, Plattformnamen und der Platzhaltername Jane Doe) stehen mit
+  Geltungsbereich und Begründung in
+  `frontend/scripts/storybook-language-decisions.json`.
 
 ## Bekannte Einschränkungen
 

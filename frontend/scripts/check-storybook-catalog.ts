@@ -6,7 +6,8 @@ import {
   phase39BrandDocsId,
   primitiveDocs,
 } from "../src/v2/storybook/compositionInventory";
-import { findEnglishStoryNames } from "./storybookLanguageGuard";
+import { storyTextDecisions } from "./storybookLanguageDecisions";
+import { findUnreviewedVisibleStoryText } from "./storybookLanguageGuard";
 
 const root = join(import.meta.dirname, "..");
 const stories = globSync("src/v2/**/*.stories.ts", { cwd: root });
@@ -34,9 +35,15 @@ for (const story of stories) {
     /const meta[\s\S]*?title:\s*["']([^"']+)["']/,
   )?.[1];
   if (!title) fail(`${story} has no static title`);
-  const englishNames = findEnglishStoryNames(source);
-  if (englishNames.length > 0) {
-    fail(`${story} retains English story names: ${englishNames.join(", ")}`);
+  const unreviewedText = findUnreviewedVisibleStoryText(
+    source,
+    story,
+    storyTextDecisions,
+  );
+  if (unreviewedText.length > 0) {
+    fail(
+      `${story} has unreviewed visible text: ${unreviewedText.map(({ category, location, text }) => `${location} (${category}): ${text}`).join(", ")}`,
+    );
   }
   if (story === "src/v2/components/shared/BrandMotionPreview.stories.ts")
     continue;

@@ -196,6 +196,15 @@ grandfathered Phase 39 hierarchy exception and remains at that exact location.
 It retains its asset, controls, reduced-motion contract, and login-card
 behavior.
 
+`frontend/scripts/check-storybook-catalog.ts` also inventories every static
+visible text candidate emitted from v2 story sources. The ledger in
+`frontend/scripts/storybook-language-decisions.json` records its file, source
+line, category, text, and review result. It covers catalog names, descriptions,
+visible story data and controls, template attributes, text nodes, and dynamic
+template interpolations. The check fails for an added or changed candidate
+until a German review entry is added. Entries marked `proper-name` retain a
+specific scope and rationale, rather than using file-wide exemptions.
+
 Library components reuse R primitives instead of native controls whenever a
 matching primitive exists. `npm run v2:maintainability` rejects unsupported
 native `button`, `input`, `select`, and `textarea` elements below

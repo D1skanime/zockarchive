@@ -39,29 +39,29 @@ const SHELL = `style="width:300px;border:1px solid var(--r-color-border);border-
 // ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
-  args: { title: "Plain item" },
+  args: { title: "Einfacher Eintrag" },
 };
 
 export const WithIcon: Story = {
-  args: { title: "With prepend icon", prependIcon: "mdi-play" },
+  args: { title: "Mit vorangestelltem Symbol", prependIcon: "mdi-play" },
 };
 
 export const TwoLine: Story = {
   args: {
-    title: "Two-line row",
-    subtitle: "Subtitle lives here",
+    title: "Zweizeilige Zeile",
+    subtitle: "Untertitel steht hier",
     prependIcon: "mdi-star",
   },
 };
 
 export const Active: Story = {
-  args: { title: "Active state", prependIcon: "mdi-cog", active: true },
+  args: { title: "Aktiver Zustand", prependIcon: "mdi-cog", active: true },
 };
 
 export const Disabled: Story = {
   args: {
-    title: "Disabled item",
-    subtitle: "Pointer events suppressed",
+    title: "Deaktivierter Eintrag",
+    subtitle: "Zeigerereignisse unterdrückt",
     prependIcon: "mdi-lock",
     disabled: true,
   },
@@ -76,9 +76,9 @@ export const PrependVariants: Story = {
     template: `
       <div ${SHELL}>
         <RList>
-          <RListItem prepend-icon="mdi-account" title="Prepend icon" />
-          <RListItem prepend-avatar="/assets/isotipo.svg" title="Prepend avatar" />
-          <RListItem title="Custom prepend slot">
+          <RListItem prepend-icon="mdi-account" title="Vorangestelltes Symbol" />
+          <RListItem prepend-avatar="/assets/isotipo.svg" title="Vorangestellter Avatar" />
+          <RListItem title="Benutzerdefinierter vorangestellter Slot">
             <template #prepend>
               <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:var(--r-color-success);color:white;font:600 11px/1 sans-serif">7</span>
             </template>
@@ -96,9 +96,9 @@ export const AppendIcon: Story = {
     template: `
       <div ${SHELL}>
         <RList>
-          <RListItem prepend-icon="mdi-account" title="Profile" append-icon="mdi-chevron-right" />
-          <RListItem prepend-icon="mdi-bell" title="Notifications" append-icon="mdi-chevron-right" />
-          <RListItem prepend-icon="mdi-cog" title="Settings" append-icon="mdi-chevron-right" />
+          <RListItem prepend-icon="mdi-account" title="Profil" append-icon="mdi-chevron-right" />
+          <RListItem prepend-icon="mdi-bell" title="Benachrichtigungen" append-icon="mdi-chevron-right" />
+          <RListItem prepend-icon="mdi-cog" title="Einstellungen" append-icon="mdi-chevron-right" />
         </RList>
       </div>
     `,
@@ -108,13 +108,13 @@ export const AppendIcon: Story = {
 // ── Interactive ────────────────────────────────────────────────────
 
 export const Interactive: Story = {
-  name: "Click handler (interactive)",
+  name: "Klickbehandlung (interaktiv)",
   render: () => ({
     components: { RList, RListItem },
     setup() {
       const log = ref<string[]>([]);
       function fire(name: string) {
-        log.value = [...log.value, `Clicked ${name}`].slice(-4);
+        log.value = [...log.value, `Geklickt: ${name}`].slice(-4);
       }
       return { log, fire };
     },
@@ -122,16 +122,16 @@ export const Interactive: Story = {
       <div style="display:flex;gap:20px;align-items:flex-start">
         <div ${SHELL}>
           <RList>
-            <RListItem prepend-icon="mdi-pencil" title="Edit" @click="fire('Edit')" />
-            <RListItem prepend-icon="mdi-content-copy" title="Duplicate" @click="fire('Duplicate')" />
-            <RListItem prepend-icon="mdi-share-variant" title="Share" @click="fire('Share')" />
-            <RListItem prepend-icon="mdi-delete" title="Delete" @click="fire('Delete')" />
+            <RListItem prepend-icon="mdi-pencil" title="Bearbeiten" @click="fire('Bearbeiten')" />
+            <RListItem prepend-icon="mdi-content-copy" title="Duplizieren" @click="fire('Duplizieren')" />
+            <RListItem prepend-icon="mdi-share-variant" title="Teilen" @click="fire('Teilen')" />
+            <RListItem prepend-icon="mdi-delete" title="Löschen" @click="fire('Löschen')" />
           </RList>
         </div>
         <div style="font:12px/1.5 monospace;color:var(--r-color-fg-muted);min-width:160px">
-          <div style="margin-bottom:6px;color:var(--r-color-fg-faint)">log:</div>
+          <div style="margin-bottom:6px;color:var(--r-color-fg-faint)">Protokoll:</div>
           <div v-for="(l, i) in log" :key="i">{{ l }}</div>
-          <div v-if="!log.length">(no clicks yet)</div>
+          <div v-if="!log.length">(noch keine Klicks)</div>
         </div>
       </div>
     `,
@@ -139,14 +139,14 @@ export const Interactive: Story = {
 };
 
 export const NonInteractive: Story = {
-  name: "Display-only (no hover)",
+  name: "Nur Anzeige (ohne Hover)",
   render: () => ({
     components: { RList, RListItem },
     template: `
       <div ${SHELL}>
         <RList>
-          <RListItem prepend-icon="mdi-information" title="Read-only row" subtitle="Hover doesn't tint" />
-          <RListItem prepend-icon="mdi-format-list-bulleted" title="No click handler" subtitle="No to / href / @click" />
+          <RListItem prepend-icon="mdi-information" title="Schreibgeschützte Zeile" subtitle="Hover färbt nicht ein" />
+          <RListItem prepend-icon="mdi-format-list-bulleted" title="Keine Klickbehandlung" subtitle="Kein to / href / @click" />
         </RList>
       </div>
     `,
@@ -156,7 +156,7 @@ export const NonInteractive: Story = {
 // ── Polymorphic ─────────────────────────────────────────────────────
 
 export const AsLink: Story = {
-  name: "Polymorphic (href / to)",
+  name: "Polymorph (href / to)",
   render: () => ({
     components: { RList, RListItem },
     template: `
@@ -167,14 +167,14 @@ export const AsLink: Story = {
             target="_blank"
             prepend-icon="mdi-link-variant"
             append-icon="mdi-open-in-new"
-            title="External link (&lt;a&gt;)"
-            subtitle="opens in new tab"
+            title="Externer Link (&lt;a&gt;)"
+            subtitle="öffnet in neuem Tab"
           />
           <RListItem
             href="#"
             prepend-icon="mdi-account"
-            title="Anchor disabled"
-            subtitle="href stripped — keyboard inert"
+            title="Deaktivierter Anker"
+            subtitle="href entfernt, Tastatur ohne Wirkung"
             disabled
           />
         </RList>
@@ -191,14 +191,14 @@ export const Gallery: Story = {
     template: `
       <div ${SHELL}>
         <RList>
-          <RListItem title="Plain item" />
-          <RListItem prepend-icon="mdi-play" title="With prepend icon" />
-          <RListItem prepend-icon="mdi-star" title="Two-line row" subtitle="Subtitle lives here" />
-          <RListItem prepend-icon="mdi-cog" title="Active state" active />
-          <RListItem prepend-icon="mdi-lock" title="Disabled" disabled />
+          <RListItem title="Einfacher Eintrag" />
+          <RListItem prepend-icon="mdi-play" title="Mit vorangestelltem Symbol" />
+          <RListItem prepend-icon="mdi-star" title="Zweizeilige Zeile" subtitle="Untertitel steht hier" />
+          <RListItem prepend-icon="mdi-cog" title="Aktiver Zustand" active />
+          <RListItem prepend-icon="mdi-lock" title="Deaktiviert" disabled />
           <RListItem
             prepend-avatar="/assets/isotipo.svg"
-            title="With avatar"
+            title="Mit Avatar"
             append-icon="mdi-chevron-right"
           />
         </RList>

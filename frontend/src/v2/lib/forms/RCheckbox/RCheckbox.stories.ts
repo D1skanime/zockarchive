@@ -366,7 +366,7 @@ export const CardVariantColored: Story = {
 // Used when the consumer owns the layout (overlay corners, list-row
 // columns, dense table cells) and wants the checkbox to sit flush.
 export const Bare: Story = {
-  name: "Bare (no breathing padding)",
+  name: "Ohne Außenabstand",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -377,12 +377,12 @@ export const Bare: Story = {
     template: `
       <div style="display:flex;gap:24px;align-items:flex-start;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px dashed var(--r-color-border);border-radius:6px">
-          <span>default (with padding)</span>
-          <RCheckbox v-model="normal" label="Default row" />
+          <span>Standard (mit Außenabstand)</span>
+          <RCheckbox v-model="normal" label="Standardzeile" />
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;padding:12px;border:1px dashed var(--r-color-border);border-radius:6px">
-          <span>bare (flush)</span>
-          <RCheckbox v-model="bare" bare label="Bare row" />
+          <span>ohne Außenabstand (bündig)</span>
+          <RCheckbox v-model="bare" bare label="Bündige Zeile" />
         </div>
       </div>
     `,
@@ -391,7 +391,7 @@ export const Bare: Story = {
     docs: {
       description: {
         story:
-          "Use `bare` when the consumer owns the surrounding layout (e.g. GameCard overlay corner, list-row checkbox column).",
+          "Verwenden Sie `bare`, wenn der Verbraucher das umgebende Layout besitzt, etwa eine GameCard-Overlayecke oder eine Checkbox-Spalte in einer Listenzeile.",
       },
     },
   },
@@ -409,8 +409,8 @@ export const Toggle: Story = {
     },
     template: `
       <div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px;font:12px/1.4 sans-serif;color:var(--r-color-fg-muted)">
-        <RCheckbox v-model="value" label="Click me — watch the glyph spring in" />
-        <span>The check icon scales 0 → 1 with the same RSwitch overshoot easing.</span>
+        <RCheckbox v-model="value" label="Klicken Sie mich, das Symbol federt ein" />
+        <span>Das Häkchen skaliert mit derselben Überschwingung wie RSwitch von 0 → 1.</span>
       </div>
     `,
   }),

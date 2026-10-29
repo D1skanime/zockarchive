@@ -283,7 +283,7 @@ export const Searchable: Story = {
     docs: {
       description: {
         story:
-          "Internal search state — no `v-model:search` binding required. Parents that *do* want to react to the query can still bind `v-model:search` and it syncs both ways.",
+          "Interner Suchzustand, keine `v-model:search`-Bindung erforderlich. Eltern, die auf die Anfrage reagieren möchten, können weiterhin `v-model:search` binden; die Synchronisierung erfolgt in beide Richtungen.",
       },
     },
   },
@@ -378,7 +378,7 @@ export const ChipSlotIconOnly: Story = {
     docs: {
       description: {
         story:
-          "The `#chip` slot replaces only the chip content — chip-tone still controls the pill background. PlatformSelect uses this pattern to show platform icons (and only icons, with a tooltip) as compact chips.",
+          "Der `#chip`-Slot ersetzt nur den Chip-Inhalt, `chip-tone` steuert weiterhin den Pillen-Hintergrund. PlatformSelect nutzt dieses Muster, um Plattform-Symbole, bei Bedarf nur Symbole mit Tooltip, als kompakte Chips anzuzeigen.",
       },
     },
   },

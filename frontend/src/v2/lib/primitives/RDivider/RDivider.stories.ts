@@ -174,18 +174,18 @@ export const InCard: Story = {
 };
 
 export const ConsumerOverride: Story = {
-  name: "Consumer style override (the Login 'or')",
+  name: 'Stilüberschreibung im Verbraucher (Login-"oder")',
   render: () => ({
     components: { RDivider },
     template: `
       <div style="width:320px;display:flex;flex-direction:column;gap:8px;padding:24px;background:var(--r-color-bg);border-radius:12px">
-        <div style="height:40px;background:var(--r-color-surface);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--r-color-fg-muted)">Username field</div>
-        <div style="height:40px;background:var(--r-color-surface);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--r-color-fg-muted)">Password field</div>
-        <div style="height:36px;border-radius:6px;background:var(--r-color-brand-primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:600">Sign in</div>
+        <div style="height:40px;background:var(--r-color-surface);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--r-color-fg-muted)">Benutzername</div>
+        <div style="height:40px;background:var(--r-color-surface);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--r-color-fg-muted)">Passwort</div>
+        <div style="height:36px;border-radius:6px;background:var(--r-color-brand-primary);color:white;display:flex;align-items:center;justify-content:center;font-weight:600">Anmelden</div>
         <RDivider style="margin: 12px 0; color: var(--r-color-fg-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;">
-          or
+          oder
         </RDivider>
-        <div style="height:36px;border-radius:6px;background:var(--r-color-surface);color:var(--r-color-fg);display:flex;align-items:center;justify-content:center;font-weight:500">Continue with OIDC</div>
+        <div style="height:36px;border-radius:6px;background:var(--r-color-surface);color:var(--r-color-fg);display:flex;align-items:center;justify-content:center;font-weight:500">Mit OIDC fortfahren</div>
       </div>
     `,
   }),

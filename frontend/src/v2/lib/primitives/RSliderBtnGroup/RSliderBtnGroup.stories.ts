@@ -26,7 +26,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          "Segmented control / tab pill with a sliding indicator. Consumer controls the active id via `v-model`; for nav-style tabs, items may declare a `to` path and render as router-links.",
+          "Segmentierte Steuerung mit gleitender Anzeige. Verbraucher steuern die aktive ID über `v-model`; für Navigationsreiter dürfen Einträge einen `to`-Pfad angeben und als Router-Links gerendert werden.",
       },
     },
   },
@@ -110,7 +110,7 @@ export const VerticalTab: Story = {
     docs: {
       description: {
         story:
-          "Vertical orientation stacks items in a column with the indicator sliding along the Y axis. Identical visual language to the horizontal tab pill.",
+          "Die vertikale Ausrichtung stapelt Einträge in einer Spalte, während die Anzeige entlang der Y-Achse gleitet. Die visuelle Sprache entspricht dem horizontalen Reiter.",
       },
     },
   },
