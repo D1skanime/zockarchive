@@ -21,6 +21,7 @@
 // X emits `click:close` and flips `modelValue` to false; the leave
 // transition runs before the DOM is removed.
 import { computed, useSlots } from "vue";
+import RBtn from "../RBtn/RBtn.vue";
 import RIcon from "../RIcon/RIcon.vue";
 
 defineOptions({ inheritAttrs: false });
@@ -163,15 +164,14 @@ function close(evt: MouseEvent) {
       </span>
 
       <!-- Close button — only rendered when `closable`. -->
-      <button
+      <RBtn
         v-if="closable"
+        icon="mdi-close"
         type="button"
         class="r-alert__close"
         :aria-label="'Close'"
         @click="close"
-      >
-        <RIcon icon="mdi-close" class="r-alert__close-icon" />
-      </button>
+      />
     </div>
   </Transition>
 </template>
@@ -249,17 +249,11 @@ function close(evt: MouseEvent) {
 
 /* ── Close button — own hover halo so it reads as separate ────── */
 .r-alert__close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
   width: 26px;
   height: 26px;
   margin-right: -4px;
-  background: transparent;
-  border: none;
   color: inherit;
-  cursor: pointer;
   border-radius: 50%;
   opacity: 0.7;
   transition:

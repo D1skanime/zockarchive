@@ -18,6 +18,8 @@
 // firmware drawers when they get migrated), context-driven settings
 // flyouts, etc.
 import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from "vue";
+import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
+import RDivider from "@/v2/lib/primitives/RDivider/RDivider.vue";
 import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import {
   type EscapableEntry,
@@ -182,16 +184,19 @@ const transitionName = computed(() =>
             <div class="r-drawer__header-slot">
               <slot name="header" />
             </div>
-            <button
+            <RBtn
               v-if="!hideClose"
+              icon="mdi-close"
               type="button"
               class="r-drawer__close"
               aria-label="Close"
               @click="closeDrawer"
-            >
-              <RIcon icon="mdi-close" size="16" />
-            </button>
+            />
           </header>
+          <RDivider
+            v-if="slots.header || !hideClose"
+            class="r-drawer__divider"
+          />
 
           <!-- Body — consumer-owned content. -->
           <div
@@ -202,9 +207,10 @@ const transitionName = computed(() =>
           </div>
 
           <!-- Footer bar -->
-          <footer v-if="slots.footer" class="r-drawer__footer">
-            <slot name="footer" />
-          </footer>
+          <template v-if="slots.footer">
+            <RDivider class="r-drawer__divider" />
+            <footer class="r-drawer__footer"><slot name="footer" /></footer>
+          </template>
         </div>
       </div>
     </Transition>
@@ -276,7 +282,6 @@ html[data-bp~="xs"] .r-drawer__panel {
   align-items: center;
   gap: 8px;
   padding: 12px 14px;
-  border-bottom: 1px solid var(--r-color-border);
 }
 .r-drawer__lead-icon {
   color: var(--r-color-fg-secondary);
@@ -293,21 +298,10 @@ html[data-bp~="xs"] .r-drawer__panel {
   gap: 8px;
 }
 .r-drawer__close {
-  appearance: none;
-  background: transparent;
-  border: 0;
   border-radius: 6px;
   width: 28px;
   height: 28px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   color: var(--r-color-fg-muted);
-  cursor: pointer;
-  transition:
-    background var(--r-motion-fast) var(--r-motion-ease-out),
-    color var(--r-motion-fast) var(--r-motion-ease-out),
-    transform var(--r-motion-fast) cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .r-drawer__close:hover {
   background: color-mix(in srgb, var(--r-color-fg) 10%, transparent);
@@ -342,7 +336,6 @@ html[data-bp~="xs"] .r-drawer__panel {
   display: flex;
   gap: 8px;
   padding: 12px 14px;
-  border-top: 1px solid var(--r-color-border);
 }
 
 /* ── Open / close motion ──────────────────────────────────────── */

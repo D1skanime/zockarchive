@@ -16,6 +16,8 @@
 // belong inside the consumer's `#content` slot — composed from
 // REmptyState / RProgressCircular / RSpinner as needed.
 import { computed, nextTick, onBeforeUnmount, ref, useSlots, watch } from "vue";
+import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
+import RDivider from "@/v2/lib/primitives/RDivider/RDivider.vue";
 import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import { createBodyScrollLock, overlayCount } from "../bodyScrollLock";
 import {
@@ -220,20 +222,21 @@ const panelStyle = computed(() => {
             <div class="r-dialog__header-slot">
               <slot name="header" />
             </div>
-            <button
+            <RBtn
+              icon="mdi-close"
               type="button"
               class="r-dialog__close"
               aria-label="Close"
               @click="closeDialog"
-            >
-              <RIcon icon="mdi-close" size="16" />
-            </button>
+            />
           </header>
+          <RDivider class="r-dialog__divider" />
 
           <!-- Optional secondary toolbar -->
           <div v-if="slots.toolbar" class="r-dialog__toolbar">
             <slot name="toolbar" />
           </div>
+          <RDivider v-if="slots.toolbar" class="r-dialog__divider" />
 
           <!-- Body — content is the consumer's responsibility (loading,
                empty, results, forms, …). The primitive just provides the
@@ -251,9 +254,10 @@ const panelStyle = computed(() => {
           </div>
 
           <!-- Footer bar -->
-          <footer v-if="slots.footer" class="r-dialog__footer">
-            <slot name="footer" />
-          </footer>
+          <template v-if="slots.footer">
+            <RDivider class="r-dialog__divider" />
+            <footer class="r-dialog__footer"><slot name="footer" /></footer>
+          </template>
         </div>
       </div>
     </Transition>
@@ -340,7 +344,6 @@ html[data-bp~="sm-and-down"]
   align-items: center;
   gap: 10px;
   padding: 12px 10px 12px 16px;
-  border-bottom: 1px solid var(--r-color-border);
 }
 .r-dialog__lead-icon {
   flex-shrink: 0;
@@ -354,19 +357,10 @@ html[data-bp~="sm-and-down"]
   color: var(--r-color-fg);
 }
 .r-dialog__close {
-  appearance: none;
-  background: transparent;
-  border: 0;
   width: 28px;
   height: 28px;
-  display: grid;
-  place-items: center;
   border-radius: 6px;
   color: var(--r-color-fg-secondary);
-  cursor: pointer;
-  transition:
-    background var(--r-motion-fast) var(--r-motion-ease-out),
-    color var(--r-motion-fast) var(--r-motion-ease-out);
 }
 .r-dialog__close:hover {
   background: var(--r-color-surface);
@@ -377,7 +371,6 @@ html[data-bp~="sm-and-down"]
 .r-dialog__toolbar {
   padding: 8px 14px;
   background: var(--r-color-bg-elevated);
-  border-bottom: 1px solid var(--r-color-border);
 }
 .r-dialog__append {
   padding: 0;
@@ -407,7 +400,6 @@ html[data-bp~="sm-and-down"]
 }
 .r-dialog__footer {
   padding: 10px 14px;
-  border-top: 1px solid var(--r-color-border);
   display: flex;
   align-items: center;
   gap: 8px;
