@@ -21,8 +21,8 @@ const meta: Meta<typeof RDropzone> = {
   args: {
     title: "Dateien hier ablegen",
     hint: "Per Drag-and-Drop ablegen oder zum Auswählen klicken",
-    activeTitle: "Release to upload",
-    inputLabel: "Upload files",
+    activeTitle: "Zum Hochladen loslassen",
+    inputLabel: "Dateien hochladen",
     multiple: true,
   },
   render: (args) => ({
@@ -38,7 +38,7 @@ const meta: Meta<typeof RDropzone> = {
       <div style="max-width: 520px">
         <RDropzone v-bind="args" @files="onFiles" />
         <p v-if="picked.length" style="margin-top: 12px; font-size: 12px">
-          Picked: {{ picked.join(", ") }}
+          Ausgewählt: {{ picked.join(", ") }}
         </p>
       </div>
     `,

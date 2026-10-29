@@ -77,7 +77,7 @@ export const FineSteps: Story = {
 // ── Range examples ─────────────────────────────────────────────────
 
 export const Volume: Story = {
-  name: "Volume (0–100)",
+  name: "Lautstärke (0–100)",
   args: {
     modelValue: 65,
     valuePosition: "right",
@@ -87,7 +87,7 @@ export const Volume: Story = {
 };
 
 export const Temperature: Story = {
-  name: "Temperature",
+  name: "Temperatur",
   args: {
     modelValue: 22,
     min: 16,

@@ -295,7 +295,7 @@ export const WithSubtitle: Story = {
 // ── Card variant ────────────────────────────────────────────────────
 
 export const CardVariant: Story = {
-  name: "Card variant",
+  name: "Kartenvariante",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -309,20 +309,20 @@ export const CardVariant: Story = {
         <RCheckbox
           v-model="a"
           variant="card"
-          label="Copy token to clipboard"
-          subtitle="Shown once — keep it safe."
+          label="Token in die Zwischenablage kopieren"
+          subtitle="Wird nur einmal angezeigt, sicher aufbewahren."
         />
         <RCheckbox
           v-model="b"
           variant="card"
-          label="Pair device"
-          subtitle="Scan a QR code with your phone."
+          label="Gerät koppeln"
+          subtitle="QR-Code mit dem Smartphone scannen."
         />
         <RCheckbox
           v-model="c"
           variant="card"
-          label="Email me the link"
-          subtitle="Sent to your registered address."
+          label="Link per E-Mail senden"
+          subtitle="Wird an Ihre registrierte Adresse gesendet."
         />
       </div>
     `,
@@ -330,7 +330,7 @@ export const CardVariant: Story = {
 };
 
 export const CardVariantColored: Story = {
-  name: "Card variant · success tone",
+  name: "Kartenvariante · Erfolgston",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -344,7 +344,7 @@ export const CardVariantColored: Story = {
           v-model="a"
           variant="card"
           color="success"
-          label="Verified email"
+          label="Bestätigte E-Mail"
           subtitle="Required to recover your account."
         />
         <RCheckbox
@@ -471,7 +471,7 @@ export const SelectAll: Story = {
         <RCheckbox
           :model-value="allChecked"
           :indeterminate="headerIndeterminate"
-          label="Select all scopes"
+          label="Alle Berechtigungen auswählen"
           hide-details
           @update:model-value="toggleAll"
         />

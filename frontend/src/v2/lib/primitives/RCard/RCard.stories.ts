@@ -195,7 +195,7 @@ export const Loading: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const AuthCardSim: Story = {
-  name: "AuthCard reproduction",
+  name: "AuthCard-Nachbildung",
   render: () => ({
     components: { RCard },
     template: `

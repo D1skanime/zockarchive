@@ -224,7 +224,7 @@ export const IconSlotCustom: Story = {
     docs: {
       description: {
         story:
-          "Pass `icon` as a flag and put custom content in the default slot. RBtn renders the content inside `.r-btn__icon-slot` with `line-height: 0` so descender gaps from text/icons don't shift the centering.",
+          "Übergeben Sie `icon` als Kennzeichen und legen Sie benutzerdefinierten Inhalt in den Standard-Slot. RBtn rendert ihn in `.r-btn__icon-slot` mit `line-height: 0`, damit Unterlängen die Zentrierung nicht verschieben.",
       },
     },
   },
