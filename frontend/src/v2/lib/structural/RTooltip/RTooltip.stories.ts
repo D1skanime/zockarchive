@@ -382,7 +382,7 @@ export const IconBarRealWorld: Story = {
 // tooltip there would linger over whatever the tap opened. The tooltip must
 // reveal for mouse/pen hover only, and a click must always dismiss it.
 export const TouchGating: Story = {
-  name: "Touch-Begrenzung (play)",
+  name: "Berührungsbegrenzung (play)",
   args: { text: "Tooltip body text", location: "top", openDelay: 0 },
   render: (args) => ({
     components: { RTooltip, RBtn },
@@ -477,7 +477,7 @@ export const OpenOnTap: Story = {
 };
 
 export const FormHelper: Story = {
-  name: "Form-field helper (parent-attach)",
+  name: "Formularfeld-Hilfe (am Elternelement)",
   render: () => ({
     components: { RTooltip },
     template: `

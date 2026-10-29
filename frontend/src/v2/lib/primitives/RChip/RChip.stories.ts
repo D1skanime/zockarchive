@@ -126,7 +126,7 @@ export const Tones: Story = {
 };
 
 export const TonesFlat: Story = {
-  name: "Tones · flat",
+  name: "Farbtöne · flach",
   render: () => ({
     components: { RChip },
     template: `

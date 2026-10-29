@@ -182,7 +182,7 @@ export const IconOnly: Story = {
 };
 
 export const IconSizeLadder: Story = {
-  name: "Icon-only · size ladder",
+  name: "Nur Symbol · Größenstufen",
   render: () => ({
     components: { RBtn },
     template: `
@@ -203,7 +203,7 @@ export const IconSizeLadder: Story = {
 // content like GameCard's platform badge, where the "icon" is an
 // RPlatformIcon SVG rather than an MDI codepoint.
 export const IconSlotCustom: Story = {
-  name: "Icon-mode · custom slot content",
+  name: "Symbolmodus · benutzerdefinierter Slot-Inhalt",
   render: () => ({
     components: { RBtn },
     template: `
@@ -233,7 +233,7 @@ export const IconSlotCustom: Story = {
 // ── Rounded ─────────────────────────────────────────────────────────
 
 export const Rounded: Story = {
-  name: "Rounded ladder",
+  name: "Abrundungsstufen",
   render: () => ({
     components: { RBtn },
     template: `
@@ -308,7 +308,7 @@ export const Disabled: Story = {
 // ── Border modifier ─────────────────────────────────────────────────
 
 export const BorderModifier: Story = {
-  name: "Border modifier (chip-style activator)",
+  name: "Rahmenmodifikator (Auslöser im Chip-Stil)",
   render: () => ({
     components: { RBtn },
     template: `
@@ -343,7 +343,7 @@ export const AsLink: Story = {
 // ── Real-world stacks ───────────────────────────────────────────────
 
 export const Toolbar: Story = {
-  name: "Toolbar row",
+  name: "Werkzeugleistenzeile",
   render: () => ({
     components: { RBtn },
     template: `
@@ -378,7 +378,7 @@ export const FormActions: Story = {
 // `RSliderBtnGroup` segmented cluster so both share the same tinted
 // chrome. Used in `GalleryToolbar` for filter / kebab buttons.
 export const SurfaceWithSlider: Story = {
-  name: "Surface modifier (icon button next to slider)",
+  name: "Flächenmodifikator (Symbolschaltfläche neben dem Regler)",
   render: () => ({
     components: { RBtn },
     template: `

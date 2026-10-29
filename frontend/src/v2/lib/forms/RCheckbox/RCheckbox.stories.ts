@@ -400,7 +400,7 @@ export const Bare: Story = {
 // ── Motion ──────────────────────────────────────────────────────────
 
 export const Toggle: Story = {
-  name: "Toggle animation",
+  name: "Umschaltanimation",
   render: () => ({
     components: { RCheckbox },
     setup: () => {
@@ -440,7 +440,7 @@ export const Group: Story = {
 // ── Real-world — "select all" indeterminate ─────────────────────────
 
 export const SelectAll: Story = {
-  name: "Select-all (indeterminate header)",
+  name: "Alle auswählen (unbestimmte Kopfzeile)",
   render: () => ({
     components: { RCheckbox },
     setup() {

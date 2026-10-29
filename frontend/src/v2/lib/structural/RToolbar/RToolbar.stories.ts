@@ -117,8 +117,8 @@ export const DensityLadder: Story = {
 // ── Variants ────────────────────────────────────────────────────────
 
 export const Flat: Story = {
-  name: "Flat (no bottom border)",
-  args: { title: "Settings", flat: true },
+  name: "Flach (ohne untere Trennlinie)",
+  args: { title: "Einstellungen", flat: true },
   render: (args) => ({
     components: { RToolbar, RBtn },
     setup: () => ({ args }),
@@ -126,12 +126,12 @@ export const Flat: Story = {
       <div style="width:720px">
         <RToolbar v-bind="args">
           <template #append>
-            <RBtn variant="text">Reset</RBtn>
-            <RBtn color="primary">Save</RBtn>
+            <RBtn variant="text">Zurücksetzen</RBtn>
+            <RBtn color="primary">Speichern</RBtn>
           </template>
         </RToolbar>
         <div style="padding:24px;color:var(--r-color-fg-muted);font:12px/1.4 sans-serif">
-          Toolbar sits flush with the body — no hairline divider.
+          Die Werkzeugleiste schließt bündig an den Inhalt an, ohne feine Trennlinie.
         </div>
       </div>
     `,
@@ -139,25 +139,25 @@ export const Flat: Story = {
 };
 
 export const Colored: Story = {
-  name: "Coloured toolbars",
+  name: "Farbige Werkzeugleisten",
   render: () => ({
     components: { RToolbar, RBtn },
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;width:720px">
-        <RToolbar color="primary" title="Primary">
+        <RToolbar color="primary" title="Primär">
           <template #append>
-            <RBtn variant="text" prepend-icon="mdi-bell" aria-label="Notifications" />
-            <RBtn variant="text" prepend-icon="mdi-account-circle" aria-label="Account" />
+            <RBtn variant="text" prepend-icon="mdi-bell" aria-label="Benachrichtigungen" />
+            <RBtn variant="text" prepend-icon="mdi-account-circle" aria-label="Konto" />
           </template>
         </RToolbar>
-        <RToolbar color="success" title="Success — scan complete">
+        <RToolbar color="success" title="Erfolg, Scan abgeschlossen">
           <template #prepend>
             <RBtn icon="mdi-check-circle" variant="text" aria-label="ok" />
           </template>
         </RToolbar>
-        <RToolbar color="danger" title="Connection lost">
+        <RToolbar color="danger" title="Verbindung verloren">
           <template #append>
-            <RBtn variant="text">Retry</RBtn>
+            <RBtn variant="text">Erneut versuchen</RBtn>
           </template>
         </RToolbar>
       </div>
@@ -168,19 +168,19 @@ export const Colored: Story = {
 // ── Rounded + height ────────────────────────────────────────────────
 
 export const RoundedAndHeight: Story = {
-  name: "Rounded + custom height",
+  name: "Abgerundet mit benutzerdefinierter Höhe",
   render: () => ({
     components: { RToolbar, RBtn },
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;width:720px">
         <RToolbar rounded="lg" title="rounded='lg'">
           <template #append>
-            <RBtn variant="text" prepend-icon="mdi-cog">Settings</RBtn>
+            <RBtn variant="text" prepend-icon="mdi-cog">Einstellungen</RBtn>
           </template>
         </RToolbar>
-        <RToolbar :height="80" title="height=80 (taller)">
+        <RToolbar :height="80" title="height=80 (höher)">
           <template #append>
-            <RBtn color="primary" prepend-icon="mdi-plus">Add</RBtn>
+            <RBtn color="primary" prepend-icon="mdi-plus">Hinzufügen</RBtn>
           </template>
         </RToolbar>
       </div>
@@ -191,24 +191,24 @@ export const RoundedAndHeight: Story = {
 // ── Real-world ──────────────────────────────────────────────────────
 
 export const GalleryHeader: Story = {
-  name: "Gallery header (real-world)",
+  name: "Galerie-Kopfzeile (Praxisbeispiel)",
   render: () => ({
     components: { RToolbar, RBtn, RIcon },
     template: `
       <div style="width:720px;border-radius:12px;overflow:hidden;border:1px solid var(--r-color-border);background:var(--r-color-bg-elevated)">
         <RToolbar title="Nintendo 64" flat>
           <template #prepend>
-            <RBtn icon="mdi-arrow-left" variant="text" aria-label="Back" />
+            <RBtn icon="mdi-arrow-left" variant="text" aria-label="Zurück" />
           </template>
           <template #append>
-            <RBtn variant="text" prepend-icon="mdi-magnify" aria-label="Search" />
-            <RBtn variant="text" prepend-icon="mdi-filter">Filters</RBtn>
-            <RBtn variant="text" prepend-icon="mdi-sort-variant">Sort</RBtn>
-            <RBtn icon="mdi-dots-vertical" variant="text" aria-label="More" />
+            <RBtn variant="text" prepend-icon="mdi-magnify" aria-label="Suche" />
+            <RBtn variant="text" prepend-icon="mdi-filter">Filter</RBtn>
+            <RBtn variant="text" prepend-icon="mdi-sort-variant">Sortieren</RBtn>
+            <RBtn icon="mdi-dots-vertical" variant="text" aria-label="Mehr" />
           </template>
         </RToolbar>
         <div style="padding:20px;color:var(--r-color-fg-muted);font:13px/1.5 sans-serif">
-          128 ROMs · 4 missing · last scan 3 hours ago
+          128 ROMs · 4 fehlen · letzter Scan vor 3 Stunden
         </div>
       </div>
     `,
@@ -216,18 +216,18 @@ export const GalleryHeader: Story = {
 };
 
 export const DialogTitleRow: Story = {
-  name: "Dialog title row",
+  name: "Dialog-Titelzeile",
   render: () => ({
     components: { RToolbar, RBtn },
     template: `
       <div style="width:480px;border-radius:12px;overflow:hidden;border:1px solid var(--r-color-border);background:var(--r-color-bg-elevated);box-shadow:0 12px 30px color-mix(in srgb, black 30%, transparent)">
-        <RToolbar density="compact" title="Edit ROM" flat>
+        <RToolbar density="compact" title="ROM bearbeiten" flat>
           <template #append>
-            <RBtn icon="mdi-close" variant="text" aria-label="Close" />
+            <RBtn icon="mdi-close" variant="text" aria-label="Schließen" />
           </template>
         </RToolbar>
         <div style="padding:18px 16px;color:var(--r-color-fg-muted);font:13px/1.5 sans-serif">
-          Dialog body — toolbar acts as the title row.
+          Dialoginhalt, die Werkzeugleiste dient als Titelzeile.
         </div>
       </div>
     `,
