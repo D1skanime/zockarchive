@@ -8,7 +8,7 @@ import {
 } from "../src/v2/storybook/compositionInventory";
 import { storyTextDecisions } from "./storybookLanguageDecisions";
 import {
-  findSuspiciousGermanDecisions,
+  findNonGermanDecisions,
   findUnreviewedVisibleStoryText,
 } from "./storybookLanguageGuard";
 
@@ -32,10 +32,10 @@ function fail(message: string): never {
   throw new Error(`Storybook catalog: ${message}`);
 }
 
-const suspiciousDecisions = findSuspiciousGermanDecisions(storyTextDecisions);
-if (suspiciousDecisions.length > 0) {
+const nonGermanDecisions = findNonGermanDecisions(storyTextDecisions);
+if (nonGermanDecisions.length > 0) {
   fail(
-    `German review entries need renewed language review: ${suspiciousDecisions
+    `German review entries failed independent language detection: ${nonGermanDecisions
       .map(({ file, location, text }) => `${file} ${location}: ${text}`)
       .join(", ")}`,
   );

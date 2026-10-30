@@ -313,9 +313,9 @@ export const BorderModifier: Story = {
     components: { ZABtn },
     template: `
       <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-        <ZABtn variant="translucent" color="primary" border>translucent + border</ZABtn>
-        <ZABtn variant="text" color="primary" border>text + border</ZABtn>
-        <ZABtn variant="translucent" color="accent" border rounded="full">activator pill</ZABtn>
+        <ZABtn variant="translucent" color="primary" border>durchscheinend + Rahmen</ZABtn>
+        <ZABtn variant="text" color="primary" border>Text + Rahmen</ZABtn>
+        <ZABtn variant="translucent" color="accent" border rounded="full">Auslöser-Pille</ZABtn>
       </div>
     `,
   }),
@@ -324,13 +324,13 @@ export const BorderModifier: Story = {
 // ── Polymorphic root ────────────────────────────────────────────────
 
 export const AsLink: Story = {
-  name: "Polymorphic (href / to)",
+  name: "Polymorph (href / to)",
   render: () => ({
     components: { ZABtn },
     template: `
       <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
         <ZABtn href="https://romm.app" target="_blank" append-icon="mdi-open-in-new" color="primary">
-          External link (&lt;a&gt;)
+          Externer Link (&lt;a&gt;)
         </ZABtn>
         <span style="font:12px/1.4 sans-serif;color:var(--r-color-fg-muted)">
           Mit <code>to</code> rendert ZABtn einen <code>&lt;router-link&gt;</code>. Ohne Router ist er in dieser Story unsichtbar, die Eigenschaft wird aber akzeptiert.
@@ -348,12 +348,12 @@ export const Toolbar: Story = {
     components: { ZABtn },
     template: `
       <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 8px;background:var(--r-color-surface);border-radius:10px">
-        <ZABtn icon="mdi-format-bold" variant="text" size="small" aria-label="Bold" />
-        <ZABtn icon="mdi-format-italic" variant="text" size="small" aria-label="Italic" />
-        <ZABtn icon="mdi-format-underline" variant="text" size="small" aria-label="Underline" />
+        <ZABtn icon="mdi-format-bold" variant="text" size="small" aria-label="Fett" />
+        <ZABtn icon="mdi-format-italic" variant="text" size="small" aria-label="Kursiv" />
+        <ZABtn icon="mdi-format-underline" variant="text" size="small" aria-label="Unterstrichen" />
         <span style="width:1px;height:18px;background:var(--r-color-border);margin:0 4px"></span>
-        <ZABtn icon="mdi-format-list-bulleted" variant="text" size="small" aria-label="List" />
-        <ZABtn icon="mdi-format-quote-close" variant="text" size="small" aria-label="Quote" />
+        <ZABtn icon="mdi-format-list-bulleted" variant="text" size="small" aria-label="Liste" />
+        <ZABtn icon="mdi-format-quote-close" variant="text" size="small" aria-label="Zitat" />
         <ZABtn icon="mdi-link-variant" variant="text" size="small" aria-label="Link" />
       </div>
     `,

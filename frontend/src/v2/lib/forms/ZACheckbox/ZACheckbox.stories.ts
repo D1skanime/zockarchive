@@ -429,9 +429,9 @@ export const Group: Story = {
     },
     template: `
       <div style="display:flex;flex-direction:column;gap:4px">
-        <ZACheckbox v-model="a" label="Option A" hide-details />
-        <ZACheckbox v-model="b" label="Option B" hide-details />
-        <ZACheckbox v-model="c" label="Option C (longer label that wraps to test alignment)" hide-details />
+        <ZACheckbox v-model="a" label="Auswahl A" hide-details />
+        <ZACheckbox v-model="b" label="Auswahl B" hide-details />
+        <ZACheckbox v-model="c" label="Auswahl C (längerer Text zum Testen der Ausrichtung)" hide-details />
       </div>
     `,
   }),

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { phase39BrandDocsId } from "@/v2/storybook/compositionInventory";
 import {
+  findNonGermanDecisions,
   findUnreviewedVisibleStoryText,
-  findSuspiciousGermanDecisions,
   getVisibleStoryTextCandidates,
 } from "./storybookLanguageGuard";
 
@@ -83,18 +83,32 @@ describe("Storybook-Katalogprüfung", () => {
     ).toEqual([expect.objectContaining({ location: "Zeile 1" })]);
   });
 
-  it("flags English text incorrectly approved as German for renewed review", () => {
+  it("rejects English text incorrectly approved as German with language detection", () => {
     expect(
-      findSuspiciousGermanDecisions([
+      findNonGermanDecisions([
         {
           category: "story-data",
           file: "Example.stories.ts",
           location: "Zeile 1",
           status: "german",
-          text: "Save your progress",
+          text: "Card content stays visible while the bar slides at the top.",
         },
       ]),
     ).toHaveLength(1);
+  });
+
+  it("accepts a German ledger decision through language detection", () => {
+    expect(
+      findNonGermanDecisions([
+        {
+          category: "story-data",
+          file: "Example.stories.ts",
+          location: "Zeile 1",
+          status: "german",
+          text: "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
+        },
+      ]),
+    ).toHaveLength(0);
   });
 
   it("captures bare visible string arrays supplied as story data", () => {

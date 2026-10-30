@@ -86,6 +86,7 @@
     "eslint": "^10.0.3",
     "eslint-plugin-vue": "^10.8.0",
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
+    "franc-min": "^6.2.0",
     "globals": "^16.0.0",
     "happy-dom": "^20.9.0",
     "openapi-typescript-codegen": "^0.29.0",

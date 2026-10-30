@@ -1,3 +1,5 @@
+import { francAll } from "franc-min";
+
 export type StoryTextCategory =
   | "docs-description"
   | "play-step"
@@ -188,15 +190,24 @@ export function findUnreviewedVisibleStoryText(
   );
 }
 
-/** Flags likely English copy for renewed human review. This is a warning net,
- * not the completeness mechanism, which remains the explicit ledger. */
-export function findSuspiciousGermanDecisions(
+/** Validates German approvals through an independent trigram language model. */
+export function findNonGermanDecisions(
   decisions: readonly StoryTextDecision[],
 ): StoryTextDecision[] {
-  const englishSignals =
-    /\b(?:save your|the src|the shimmer|overlay caption|once you|upload a|with close|disabled (?:flat|outlined|translucent|text|icon)|click.*spinner|invisible in this story|composes with|tooltip on|asked for|open palette|nothing happens|instant \(0|slow 800|sticky close|\boffset \d|\bfilters\b|\bsort\b|tap target|you shouldn't|tokens are shown|two-factor enabled|required to|list item)\b/i;
-  return decisions.filter(
-    (decision) =>
-      decision.status === "german" && englishSignals.test(decision.text),
-  );
+  return decisions.filter((decision) => {
+    if (decision.status !== "german") return false;
+
+    const words = decision.text.match(/\p{L}+/gu) ?? [];
+    if (words.length < 5 || decision.text.length < 40) return false;
+
+    const languages = francAll(decision.text, {
+      minLength: 10,
+      only: ["deu", "eng"],
+    });
+    const english = languages.find(([language]) => language === "eng")?.[1];
+    const german = languages.find(([language]) => language === "deu")?.[1];
+    return (
+      english !== undefined && german !== undefined && english - german > 0.25
+    );
+  });
 }

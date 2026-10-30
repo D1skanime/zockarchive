@@ -3184,7 +3184,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZASpinner/ZASpinner.stories.ts",
     "location": "Zeile 23",
-    "text": "Loading library…",
+    "text": "Bibliothek wird geladen …",
     "status": "german"
   },
   {
@@ -5669,14 +5669,14 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 181",
-    "text": "Card content stays visible while the bar slides at the top.",
+    "text": "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 186",
-    "text": "Loading bar adapts to the card's tone (uses",
+    "text": "Der Ladebalken passt sich dem Farbton der Karte an (verwendet",
     "status": "german"
   },
   {
@@ -5684,7 +5684,8 @@
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 187",
     "text": "--r-card-color",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Technischer CSS-Variablenname, der im Beispiel bewusst unverändert gezeigt wird."
   },
   {
     "category": "template-text",
@@ -5816,7 +5817,7 @@
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 327",
-    "text": "Polymorphic (href / to)",
+    "text": "Polymorph (href / to)",
     "status": "german"
   },
   {
@@ -6439,28 +6440,28 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 316",
-    "text": "translucent + border",
+    "text": "durchscheinend + Rahmen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 317",
-    "text": "text + border",
+    "text": "Text + Rahmen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 318",
-    "text": "activator pill",
+    "text": "Auslöser-Pille",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 332",
-    "text": "External link (<a>)",
+    "text": "Externer Link (<a>)",
     "status": "german"
   },
   {
@@ -6502,35 +6503,35 @@
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 351",
-    "text": "Bold",
+    "text": "Fett",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 352",
-    "text": "Italic",
+    "text": "Kursiv",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 353",
-    "text": "Underline",
+    "text": "Unterstrichen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 355",
-    "text": "List",
+    "text": "Liste",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 356",
-    "text": "Quote",
+    "text": "Zitat",
     "status": "german"
   },
   {
@@ -9465,7 +9466,8 @@
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 154",
     "text": "/romm/library/snes/Super Mario World (USA).sfc",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Beispielpfad mit unverändertem Spieletitel und Dateinamen."
   },
   {
     "category": "template-attribute",
@@ -11843,21 +11845,21 @@
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 432",
-    "text": "Option A",
+    "text": "Auswahl A",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 433",
-    "text": "Option B",
+    "text": "Auswahl B",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 434",
-    "text": "Option C (longer label that wraps to test alignment)",
+    "text": "Auswahl C (längerer Text zum Testen der Ausrichtung)",
     "status": "german"
   },
   {
@@ -13096,6 +13098,13 @@
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
     "location": "Zeile 419",
     "text": "Ein zweiter Mausklick lässt ihn geöffnet (kein Umschalten)",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
+    "location": "Zeile 187",
+    "text": ", falls vorhanden).",
     "status": "german"
   }
 ]

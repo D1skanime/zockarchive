@@ -179,12 +179,12 @@ export const Loading: Story = {
       <div style="display:flex;flex-direction:column;gap:18px;width:360px">
         <ZACard loading title="Metadaten werden geladen" subtitle="Verbindung mit IGDB wird hergestellt …">
           <div style="padding:8px 20px 18px;color:var(--r-color-fg-muted);font:12px/1.4 sans-serif">
-            Card content stays visible while the bar slides at the top.
+            Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.
           </div>
         </ZACard>
         <ZACard loading variant="elevated" :elevation="4" color="primary">
           <div style="padding:18px 20px;font:12px/1.4 sans-serif">
-            Loading bar adapts to the card's tone (uses <code>--r-card-color</code> when present).
+            Der Ladebalken passt sich dem Farbton der Karte an (verwendet <code>--r-card-color</code>, falls vorhanden).
           </div>
         </ZACard>
       </div>

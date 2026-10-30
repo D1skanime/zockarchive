@@ -20,7 +20,7 @@ export const Inline: Story = {
     components: { ZASpinner },
     template: `
       <div style="display:flex;gap:1rem;align-items:center;color:var(--r-color-fg)">
-        <ZASpinner /> Loading library…
+        <ZASpinner /> Bibliothek wird geladen …
       </div>
     `,
   }),
