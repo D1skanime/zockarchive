@@ -4,43 +4,7 @@ import { ref } from "vue";
 import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
 import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
 import RTooltip from "./RTooltip.vue";
-
-// Dispatch a pointerenter with an explicit `pointerType` — `userEvent.hover`
-// can't set it, and the touch-gating branch keys off exactly that.
-function firePointerEnter(el: Element, pointerType: "mouse" | "touch") {
-  let ev: Event;
-  try {
-    ev = new PointerEvent("pointerenter", { bubbles: false, pointerType });
-  } catch {
-    ev = new Event("pointerenter", { bubbles: false });
-  }
-  if ((ev as PointerEvent).pointerType !== pointerType) {
-    Object.defineProperty(ev, "pointerType", {
-      value: pointerType,
-      configurable: true,
-    });
-  }
-  el.dispatchEvent(ev);
-}
-
-// A tap/click of a given pointer type: pointerdown (so the tooltip can read
-// the pointer type) followed by the click.
-function fireTap(el: Element, pointerType: "mouse" | "touch") {
-  let down: Event;
-  try {
-    down = new PointerEvent("pointerdown", { bubbles: true, pointerType });
-  } catch {
-    down = new Event("pointerdown", { bubbles: true });
-  }
-  if ((down as PointerEvent).pointerType !== pointerType) {
-    Object.defineProperty(down, "pointerType", {
-      value: pointerType,
-      configurable: true,
-    });
-  }
-  el.dispatchEvent(down);
-  el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-}
+import { firePointerEnter, fireTap } from "./storyInteractionEvents";
 
 const meta: Meta<typeof RTooltip> = {
   title: "Struktur/Grundbaustein/RTooltip",
@@ -71,8 +35,6 @@ const meta: Meta<typeof RTooltip> = {
 export default meta;
 
 type Story = StoryObj<typeof RTooltip>;
-
-// ── Defaults ────────────────────────────────────────────────────────
 
 export const Default: Story = {
   name: "Standard · Slot-Auslöser",
@@ -105,8 +67,6 @@ export const ParentAttach: Story = {
     `,
   }),
 };
-
-// ── Placements ──────────────────────────────────────────────────────
 
 export const PlacementCardinals: Story = {
   name: "Positionierung · Himmelsrichtungen",
@@ -191,8 +151,6 @@ export const FlipNearEdge: Story = {
   }),
 };
 
-// ── Content variants ────────────────────────────────────────────────
-
 export const LongText: Story = {
   name: "Langer Text",
   args: {
@@ -239,8 +197,6 @@ export const CustomContent: Story = {
     `,
   }),
 };
-
-// ── States ──────────────────────────────────────────────────────────
 
 export const Disabled: Story = {
   name: "Deaktiviert (ohne Wirkung)",
@@ -318,8 +274,6 @@ export const Controlled: Story = {
   }),
 };
 
-// ── Offset ──────────────────────────────────────────────────────────
-
 export const OffsetLadder: Story = {
   name: "Abstandsstufen",
   render: () => ({
@@ -345,8 +299,6 @@ export const OffsetLadder: Story = {
     `,
   }),
 };
-
-// ── Real-world ──────────────────────────────────────────────────────
 
 export const IconBarRealWorld: Story = {
   name: "Symbol-Werkzeugleiste (Praxisbeispiel)",
@@ -381,10 +333,6 @@ export const IconBarRealWorld: Story = {
   }),
 };
 
-// ── Touch gating (behavioral) ───────────────────────────────────────
-// A touch "hover" is really a tap that fires the underlying action, so a
-// tooltip there would linger over whatever the tap opened. The tooltip must
-// reveal for mouse/pen hover only, and a click must always dismiss it.
 export const TouchGating: Story = {
   name: "Berührungsbegrenzung (play)",
   args: { text: "Tooltip-Inhalt", location: "top", openDelay: 0 },
@@ -426,8 +374,6 @@ export const TouchGating: Story = {
   },
 };
 
-// `open-on-tap` — a standalone info affordance that must reveal on touch too
-// (tap toggles; a mouse click opens rather than closing a hover-revealed tip).
 export const OpenOnTap: Story = {
   name: "Per Tippen öffnen (play)",
   args: {
