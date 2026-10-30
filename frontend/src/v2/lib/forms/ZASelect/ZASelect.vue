@@ -413,7 +413,7 @@ function selectItem(item: NormalisedItem) {
     // off automatically — All and individuals are mutually exclusive,
     // but the transition is one-click instead of "first deselect All,
     // then pick". We preserve any model values that aren't part of
-    // *this* select's items so two RSelects can share a single model
+    // *this* select's items so two ZASelects can share a single model
     // (e.g., general + specific provider selects on the Scan view)
     // without clobbering each other.
     if (props.showAllOption && isAllSelected.value) {

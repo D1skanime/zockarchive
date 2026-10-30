@@ -38,7 +38,7 @@ export const SizeLadder: Story = {
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
           <ZAIcon icon="mdi-star" size="default" />
-          <span>default · 24px</span>
+          <span>Standard · 24px</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
           <ZAIcon icon="mdi-star" size="large" />
@@ -223,7 +223,7 @@ export const WithText: Story = {
         </div>
         <div style="display:inline-flex;align-items:center;gap:6px">
           <ZAIcon icon="mdi-trash-can-outline" size="16" color="danger" />
-          Delete this collection
+          Diese Sammlung löschen
         </div>
         <h2 style="display:inline-flex;align-items:center;gap:10px;margin:0">
           <ZAIcon icon="mdi-gamepad-variant" size="28" color="primary" />

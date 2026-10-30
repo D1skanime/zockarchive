@@ -3653,7 +3653,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZALetterHeading/ZALetterHeading.stories.ts",
     "location": "Zeile 34",
-    "text": "M &middot; 12 items",
+    "text": "M &middot; 12 Einträge",
     "status": "german"
   },
   {
@@ -3919,7 +3919,7 @@
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 208",
-    "text": "loading demo",
+    "text": "Ladebeispiel",
     "status": "german"
   },
   {
@@ -4045,7 +4045,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 41",
-    "text": "default · 24px",
+    "text": "Standard · 24px",
     "status": "german"
   },
   {
@@ -4248,7 +4248,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 225",
-    "text": "Delete this collection",
+    "text": "Diese Sammlung löschen",
     "status": "german"
   },
   {
@@ -12611,5 +12611,41 @@
     "text": "F-Zero",
     "status": "proper-name",
     "reason": "Game title, platform name or established placeholder name in displayed story data."
-  }
+  },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 228", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 228", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 240", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 240", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 250", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 250", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 250", "text": "n64", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 250", "text": "gba", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 250", "text": "switch", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 251", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 251", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 251", "text": "n64", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 251", "text": "gba", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 251", "text": "switch", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 321", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 321", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 322", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 322", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 323", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 323", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 324", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 324", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 325", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 325", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 358", "text": "psx", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 358", "text": "snes", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts", "location": "Zeile 358", "text": "n64", "status": "proper-name", "reason": "Plattformkennung in der sichtbaren Auswahl." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 96", "text": "Nintendo", "status": "proper-name", "reason": "Markenname." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 96", "text": "Konami", "status": "proper-name", "reason": "Markenname." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 96", "text": "Capcom", "status": "proper-name", "reason": "Markenname." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 116", "text": "Action", "status": "german" },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 116", "text": "RPG", "status": "proper-name", "reason": "Etablierte Genre-Abkürzung." },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 157", "text": "Gesperrt", "status": "german" },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 157", "text": "Schreibgeschützt", "status": "german" },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 178", "text": "Fixiert", "status": "german" },
+  { "category": "story-data", "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts", "location": "Zeile 178", "text": "Schlagwort", "status": "german" }
 ]

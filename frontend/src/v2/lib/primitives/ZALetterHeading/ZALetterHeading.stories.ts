@@ -31,7 +31,7 @@ export const SlotContent: Story = {
   render: (args) => ({
     components: { ZALetterHeading },
     setup: () => ({ args }),
-    template: `<ZALetterHeading v-bind="args">M &middot; 12 items</ZALetterHeading>`,
+    template: `<ZALetterHeading v-bind="args">M &middot; 12 Einträge</ZALetterHeading>`,
   }),
   args: {},
 };

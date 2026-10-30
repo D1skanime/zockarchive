@@ -205,7 +205,7 @@ export const LoadingSlot: Story = {
           :width="120"
           :height="120"
           cover
-          alt="loading demo"
+          alt="Ladebeispiel"
           style="border-radius:8px"
         >
           <template #loading>

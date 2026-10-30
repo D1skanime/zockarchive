@@ -358,7 +358,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <!-- 1. Providers — General + Specific RSelects. -->
+        <!-- 1. Providers — General + Specific ZASelects. -->
         <section class="r-v2-scan-plat__section">
           <h3 class="r-v2-scan-plat__section-title">
             {{ t("scan.section-providers") }}

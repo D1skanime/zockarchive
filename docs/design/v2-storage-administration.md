@@ -249,7 +249,7 @@ D-19 is satisfied by the abstract-principle, original-interpretation, token/prim
 - [x] Deep Unicode folders use arbitrary-depth breadcrumbs and one selected recursive subtree; descendants are included and siblings excluded.
 - [x] Navigation remains paginated and bounded for hundreds of folders and terabyte-scale libraries, with no size, recursive walk, full scan, or hash work before save.
 - [x] Loading, empty, health, authorization, browse, conflict, preview, problem, stale, and bounded error states have icon, localized text intent, semantic tone, recovery, redaction, and focus behavior.
-- [x] Hierarchy, Typography, Spacing, Navigation, Cards, and state presentation map to existing RomM tokens and `R*` primitives in both themes.
+- [x] Hierarchy, Typography, Spacing, Navigation, Cards, and state presentation map to existing RomM tokens and `ZA*` primitives in both themes.
 - [x] Mouse, touch, keyboard, and gamepad use the existing input and focus systems with modal scope and focus restoration.
 - [x] xs, sm, md, lg, and xl use one browser model, `useBreakpoint`, `data-bp`, mount-gated chrome, 44px targets, and full-bleed mobile overlays.
 - [x] The Principles Provenance Matrix provides original RomM interpretations and explicit no-copy confirmation for abstract Team4s principles.

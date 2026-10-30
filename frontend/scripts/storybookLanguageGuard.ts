@@ -90,8 +90,27 @@ export function getVisibleStoryTextCandidates(
     /\b(?:items|suggestions|options|values):\s*\[([\s\S]*?)\]/g,
   )) {
     const base = (array.index ?? 0) + array[0].indexOf(array[1]);
-    for (const value of array[1].matchAll(/(["'])([^"']+)\1/g))
-      add("story-data", value[2], base + (value.index ?? 0));
+    for (const value of array[1].matchAll(/(?:^|,)\s*(["'])([^"']+)\1(?=\s*(?:,|$))/g))
+      add(
+        "story-data",
+        value[2],
+        base + (value.index ?? 0) + value[0].indexOf(value[2]),
+      );
+  }
+
+  // Controlled input stories commonly seed visible chips with `ref([...])`.
+  // Include typed refs as well: Vue renders these initial values just like
+  // direct `items` arrays when the ref is bound through v-model.
+  for (const array of source.matchAll(
+    /\bref(?:<[^>]+>)?\(\s*\[([\s\S]*?)\]\s*\)/g,
+  )) {
+    const base = (array.index ?? 0) + array[0].indexOf(array[1]);
+    for (const value of array[1].matchAll(/(?:^|,)\s*(["'])([^"']+)\1(?=\s*(?:,|$))/g))
+      add(
+        "story-data",
+        value[2],
+        base + (value.index ?? 0) + value[0].indexOf(value[2]),
+      );
   }
 
   const templatePattern = /\btemplate:\s*`([\s\S]*?)`/g;

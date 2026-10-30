@@ -408,7 +408,7 @@ function stopScan() {
             {{ t("scan.section-metadata") }}
           </h3>
 
-          <!-- 2.1 providers — two RSelects sharing the same
+          <!-- 2.1 providers — two ZASelects sharing the same
                `metadataSources` model, one per category. The
                primitive's `show-all-option` is subset-safe so the
                "All" toggle in one group only affects that group's

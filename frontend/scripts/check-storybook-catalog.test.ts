@@ -111,4 +111,34 @@ describe("Storybook-Katalogprüfung", () => {
       ]),
     );
   });
+
+  it("rejects unreviewed bare suggestion values instead of silently accepting them", () => {
+    expect(
+      findUnreviewedVisibleStoryText(
+        'setup: () => ({ items: ["Single player", "Multiplayer"] })',
+        "Example.stories.ts",
+        [],
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ text: "Single player" }),
+        expect.objectContaining({ text: "Multiplayer" }),
+      ]),
+    );
+  });
+
+  it("rejects unreviewed values seeded through typed refs", () => {
+    expect(
+      findUnreviewedVisibleStoryText(
+        'setup: () => ({ value: ref<string[]>(["Action", "RPG"]) })',
+        "Example.stories.ts",
+        [],
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ text: "Action" }),
+        expect.objectContaining({ text: "RPG" }),
+      ]),
+    );
+  });
 });

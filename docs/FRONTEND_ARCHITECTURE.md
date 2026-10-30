@@ -212,7 +212,7 @@ English-signal scan also rejects suspicious entries marked `german`, requiring
 a renewed manual decision rather than treating that heuristic as language
 proof.
 
-Library components reuse R primitives instead of native controls whenever a
+Library components reuse ZA primitives instead of native controls whenever a
 matching primitive exists. `npm run v2:maintainability` rejects unsupported
 native `button`, `input`, `select`, and `textarea` elements below
 `src/v2/lib`; narrowly scoped semantic exceptions are documented in

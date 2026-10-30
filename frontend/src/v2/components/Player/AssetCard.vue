@@ -5,7 +5,7 @@
 //
 // Lives in `components/Player/` because it knows about SaveSchema /
 // StateSchema — domain coupling means it can't be a /lib primitive.
-// Built from R primitives + shared utils; no Vuetify.
+// Built from ZA primitives + shared utils; no Vuetify.
 import { ZAImg, ZATag } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
