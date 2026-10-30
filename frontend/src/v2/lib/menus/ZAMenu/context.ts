@@ -3,4 +3,4 @@
 // file because `<script setup>` cannot host `export` statements.
 import type { InjectionKey } from "vue";
 
-export const RMenuCloseKey: InjectionKey<() => void> = Symbol("RMenuClose");
+export const ZAMenuCloseKey: InjectionKey<() => void> = Symbol("ZAMenuClose");

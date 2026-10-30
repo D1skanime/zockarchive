@@ -16,7 +16,7 @@
 //
 // Action ribbon (Upload / Scan) lives inside the head component;
 // Edit (custom_name) and Delete moved inline into the Settings tab.
-import { ZADivider, type RTabNavItem } from "@v2/lib";
+import { ZADivider, type ZATabNavItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -92,7 +92,7 @@ watch(
   },
 );
 
-const tabs = computed<RTabNavItem[]>(() => [
+const tabs = computed<ZATabNavItem[]>(() => [
   { id: "library", label: t("common.library") },
   { id: "firmware", label: t("platform.firmware-bios") },
   { id: "settings", label: t("platform.settings") },

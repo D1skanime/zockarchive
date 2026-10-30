@@ -16,7 +16,7 @@
 // that provider). Cover actions, AdditionalDetails and MetadataIdSection
 // remain deep domain composites pulled from the EditRom feature folder.
 import { ZABtn, ZADialog, ZAIcon, ZATabNav, ZATextField } from "@v2/lib";
-import type { RTabNavItem } from "@v2/lib/primitives/ZATabNav/types";
+import type { ZATabNavItem } from "@v2/lib/primitives/ZATabNav/types";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -187,7 +187,7 @@ const visibleProviders = computed(() =>
   rom.value ? PROVIDERS.filter((p) => rom.value?.[p.idField]) : [],
 );
 
-const tabItems = computed<RTabNavItem[]>(() => [
+const tabItems = computed<ZATabNavItem[]>(() => [
   {
     id: "details",
     label: t("rom.additional-details"),

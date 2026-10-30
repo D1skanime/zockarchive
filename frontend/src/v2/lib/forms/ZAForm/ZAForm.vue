@@ -10,8 +10,8 @@
 //   • After a failed `validate()`, scrolls the first invalid field
 //     into view and focuses it.
 import { computed, ref, useAttrs, watch } from "vue";
-import type { RFormField } from "./context";
-import { provideRForm } from "./context";
+import type { ZAFormField } from "./context";
+import { provideZAForm } from "./context";
 
 defineOptions({ inheritAttrs: false });
 
@@ -40,16 +40,16 @@ const attrs = useAttrs();
 const formRef = ref<HTMLFormElement | null>(null);
 
 // ── Registry of descendant fields ───────────────────────────────
-const fields = ref<RFormField[]>([]);
+const fields = ref<ZAFormField[]>([]);
 
-function register(field: RFormField) {
+function register(field: ZAFormField) {
   if (!fields.value.includes(field)) fields.value.push(field);
 }
-function unregister(field: RFormField) {
+function unregister(field: ZAFormField) {
   const i = fields.value.indexOf(field);
   if (i !== -1) fields.value.splice(i, 1);
 }
-provideRForm({ register, unregister });
+provideZAForm({ register, unregister });
 
 // ── Public API ──────────────────────────────────────────────────
 async function validate(): Promise<{ valid: boolean }> {

@@ -2,14 +2,14 @@
 // with an ancestor `<ZAForm>` so the form can aggregate validity,
 // validate the whole form on demand, and reset all children at once.
 //
-// Field components inject `useRFormRegistration()` and, if a form is
+// Field components inject `useZAFormRegistration()` and, if a form is
 // present, register their `validate` + `reset` handles. The form keeps
 // the registry, surfaces it via its public `validate()` / `reset()`
 // methods, and computes `modelValue` (true when every field is valid).
 import { inject, onBeforeUnmount, provide } from "vue";
 import type { InjectionKey } from "vue";
 
-export interface RFormField {
+export interface ZAFormField {
   /** Run rules on the field; return true if no rule failed. */
   validate: () => boolean | Promise<boolean>;
   /** Clear dirty state + cached errors (does not touch the model). */
@@ -23,21 +23,21 @@ export interface RFormField {
   validity: () => boolean;
 }
 
-export interface RFormApi {
-  register: (field: RFormField) => void;
-  unregister: (field: RFormField) => void;
+export interface ZAFormApi {
+  register: (field: ZAFormField) => void;
+  unregister: (field: ZAFormField) => void;
 }
 
-export const RFormKey: InjectionKey<RFormApi> = Symbol("ZAForm");
+export const ZAFormKey: InjectionKey<ZAFormApi> = Symbol("ZAForm");
 
 /** Use inside a form field. Auto-unregisters on unmount. */
-export function useRFormRegistration(field: RFormField) {
-  const api = inject(RFormKey, null);
+export function useZAFormRegistration(field: ZAFormField) {
+  const api = inject(ZAFormKey, null);
   if (!api) return;
   api.register(field);
   onBeforeUnmount(() => api.unregister(field));
 }
 
-export function provideRForm(api: RFormApi) {
-  provide(RFormKey, api);
+export function provideZAForm(api: ZAFormApi) {
+  provide(ZAFormKey, api);
 }

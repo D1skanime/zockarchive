@@ -14,8 +14,8 @@ import {
   ZAIcon,
   ZATable,
   ZATextField,
-  type RTableColumn,
-  type RTableSortPayload,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onMounted, ref } from "vue";
@@ -84,7 +84,7 @@ const filteredTokens = computed(() => {
   );
 });
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "name",
     label: t("common.name"),
@@ -121,7 +121,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   if (key !== "name" && key !== "expires_at" && key !== "last_used_at") return;
   sortKey.value = key;
   sortDir.value = dir;

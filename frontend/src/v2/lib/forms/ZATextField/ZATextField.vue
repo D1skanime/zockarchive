@@ -31,7 +31,7 @@ import ZABtn from "../../primitives/ZABtn/ZABtn.vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZAProgressCircular from "../../primitives/ZAProgressCircular/ZAProgressCircular.vue";
 import ZATooltip from "../../structural/ZATooltip/ZATooltip.vue";
-import { useRFormRegistration } from "../ZAForm/context";
+import { useZAFormRegistration } from "../ZAForm/context";
 
 defineOptions({ inheritAttrs: false });
 // `any` (not `unknown`) so call sites can write narrow signatures like
@@ -229,7 +229,7 @@ defineExpose({ validate, reset, focus: () => inputRef.value?.focus() });
 
 // Auto-enrol with an ancestor ZAForm so `form.validate()` reaches us.
 // No-op when used outside a form.
-useRFormRegistration({
+useZAFormRegistration({
   validate,
   reset,
   el: () => inputRef.value,

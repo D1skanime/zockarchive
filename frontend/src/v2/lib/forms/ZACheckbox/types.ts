@@ -2,7 +2,7 @@
  *  "empty" / unchecked state (no fill, no glyph); later states fill the
  *  box with `color` and show `icon` — or the check tick when `icon` is
  *  omitted. The control cycles through the array in order on each click. */
-export interface RCheckboxState {
+export interface ZACheckboxState {
   /** Stable identifier — the value read from / emitted via `stateValue`. */
   value: string;
   /** mdi icon for this state. Omit to show the built-in check tick. */

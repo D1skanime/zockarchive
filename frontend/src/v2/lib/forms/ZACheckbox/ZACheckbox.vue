@@ -29,7 +29,7 @@
 // tick), all with the same draw-in / pop flourish the check uses.
 import { computed, onMounted, ref, useSlots, watch } from "vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
-import type { RCheckboxState } from "./types";
+import type { ZACheckboxState } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
@@ -42,7 +42,7 @@ interface Props {
   indeterminate?: boolean;
   /** Opt into N-state cycling. Ordered list, first entry = empty state.
    *  The current value is driven by `stateValue`. */
-  states?: RCheckboxState[];
+  states?: ZACheckboxState[];
   /** Current multi-state value (only read when `states` is set). */
   stateValue?: string;
   /** Accessible name for a labelless checkbox (e.g. matrix cells). */

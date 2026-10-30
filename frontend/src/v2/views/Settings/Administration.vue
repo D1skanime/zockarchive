@@ -8,7 +8,7 @@
 // `tasks.run` for the Tasks tab. Users tab is always visible to anyone
 // who can reach this route (route-level guard already checks
 // `app.admin`).
-import { ZATabNav, type RTabNavItem } from "@v2/lib";
+import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -67,8 +67,8 @@ watch(
   { immediate: true },
 );
 
-const tabs = computed<RTabNavItem[]>(() => {
-  const items: RTabNavItem[] = [
+const tabs = computed<ZATabNavItem[]>(() => {
+  const items: ZATabNavItem[] = [
     {
       id: "users",
       label: t("settings.users"),

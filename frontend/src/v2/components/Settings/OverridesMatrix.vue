@@ -4,7 +4,7 @@
 // inherit (defer to group) -> grant (force-allow, primary) -> grant-own
 // (force-allow own items, accent) -> revoke (force-deny, danger). The
 // model is the list of explicit overrides (absence of a cell = inherit).
-import { ZACheckbox, type RCheckboxState, ZATooltip } from "@v2/lib";
+import { ZACheckbox, type ZACheckboxState, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { OverrideSchemaIO, PermAction, PermEntity } from "@/__generated__";
@@ -38,7 +38,7 @@ function stateOf(entity: PermEntity, action: PermAction): CellState {
 
 // Cycle: inherit (empty) -> grant (primary check) -> grant-own (accent
 // person) -> revoke (danger cross).
-const OVR_STATES: RCheckboxState[] = [
+const OVR_STATES: ZACheckboxState[] = [
   { value: "inherit" },
   { value: "grant", color: "primary" },
   { value: "grant_own", color: "accent", icon: "mdi-account" },

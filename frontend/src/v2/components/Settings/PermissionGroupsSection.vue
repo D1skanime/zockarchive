@@ -10,8 +10,8 @@ import {
   ZATag,
   ZATextField,
   ZATooltip,
-  type RTableColumn,
-  type RTableSortPayload,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onMounted, ref } from "vue";
@@ -61,7 +61,7 @@ const filtered = computed(() => {
   );
 });
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "name",
     label: t("common.name"),
@@ -92,7 +92,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   if (key !== "name" && key !== "member_count") return;
   sortKey.value = key;
   sortDir.value = dir;

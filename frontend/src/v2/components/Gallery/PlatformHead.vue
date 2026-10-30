@@ -16,7 +16,7 @@
 // All admin actions are forwarded as events; permission gating lives
 // on the parent so the bar stays in sync with `useCan`.
 import { ZABtn, ZAChip, ZAPlatformIcon, ZATabNav } from "@v2/lib";
-import type { RTabNavItem } from "@v2/lib";
+import type { ZATabNavItem } from "@v2/lib";
 import { computed } from "vue";
 import InfoPanel from "@/v2/components/Gallery/InfoPanel.vue";
 import Stat from "@/v2/components/shared/Stat.vue";
@@ -41,7 +41,7 @@ interface ProviderChip {
 defineProps<{
   platform: Platform;
   tab: string;
-  tabs: RTabNavItem[];
+  tabs: ZATabNavItem[];
   tags: string[];
   /** User-authored platform description, empty when unset. */
   description: string;

@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { expect, userEvent } from "storybook/test";
 import { computed, ref } from "vue";
 import ZACheckbox from "./ZACheckbox.vue";
-import type { RCheckboxState } from "./types";
+import type { ZACheckboxState } from "./types";
 
 // Permission-matrix vocabulary: empty -> full (primary check) -> own
 // (accent person). A fourth danger state shows the 4-state override flavour.
-const GRANT_STATES: RCheckboxState[] = [
+const GRANT_STATES: ZACheckboxState[] = [
   { value: "none" },
   { value: "full", color: "primary" },
   { value: "own", color: "accent", icon: "mdi-account" },
 ];
-const OVERRIDE_STATES: RCheckboxState[] = [
+const OVERRIDE_STATES: ZACheckboxState[] = [
   { value: "inherit" },
   { value: "grant", color: "primary" },
   { value: "grant_own", color: "accent", icon: "mdi-account" },

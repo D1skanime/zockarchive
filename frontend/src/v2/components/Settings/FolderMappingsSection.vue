@@ -16,8 +16,8 @@ import {
   ZAIcon,
   ZATable,
   ZATextField,
-  type RTableColumn,
-  type RTableSortPayload,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref } from "vue";
@@ -114,7 +114,7 @@ const canEdit = computed(
     config.value.CONFIG_FILE_WRITABLE,
 );
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "fsSlug",
     label: t("settings.folder-name-header"),
@@ -145,7 +145,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   // The "platform" column header drives sorting on `displayName`.
   if (key === "platform") {
     sortKey.value = "displayName";

@@ -53,7 +53,7 @@ import {
   pushEscapable,
 } from "../../overlays/ZADialog/escapeStack.js";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
-import { RMenuCloseKey } from "./context";
+import { ZAMenuCloseKey } from "./context";
 
 defineOptions({ inheritAttrs: false });
 
@@ -165,7 +165,7 @@ function toggle() {
   else open();
 }
 
-provide(RMenuCloseKey, close);
+provide(ZAMenuCloseKey, close);
 
 // ── Refs ────────────────────────────────────────────────────────
 // The activator slot renders inside a `display: contents` span; we

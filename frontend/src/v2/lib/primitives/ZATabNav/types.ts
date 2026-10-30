@@ -1,4 +1,4 @@
-export type RTabNavItem = {
+export type ZATabNavItem = {
   id: string;
   label: string;
   /** Optional MDI icon name shown before the label. */

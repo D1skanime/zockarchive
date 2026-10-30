@@ -39,7 +39,7 @@ vi.mock("@/v2/composables/useSnackbar", () => ({
 }));
 vi.mock("@/utils", () => ({ FRONTEND_RESOURCES_PATH: "/resources" }));
 
-const RBtnStub = defineComponent({
+const ZABtnStub = defineComponent({
   inheritAttrs: false,
   props: {
     disabled: Boolean,
@@ -56,7 +56,7 @@ const RBtnStub = defineComponent({
   `,
 });
 
-const RDropzoneStub = defineComponent({
+const ZADropzoneStub = defineComponent({
   inheritAttrs: false,
   props: {
     accept: String,
@@ -114,8 +114,8 @@ const ViewerStub = defineComponent({
 const stubs = {
   MarkdownViewer: ViewerStub,
   PdfViewer: ViewerStub,
-  ZABtn: RBtnStub,
-  ZADropzone: RDropzoneStub,
+  ZABtn: ZABtnStub,
+  ZADropzone: ZADropzoneStub,
   ZAEmptyState: {
     props: ["title"],
     template: "<section data-empty-state><span>{{ title }}</span></section>",
@@ -174,7 +174,7 @@ function findDropzone(
   overlay: boolean,
 ) {
   const found = wrapper
-    .findAllComponents(RDropzoneStub)
+    .findAllComponents(ZADropzoneStub)
     .find((candidate) => candidate.props("overlay") === overlay);
   if (!found) throw new Error(`Expected overlay=${overlay} dropzone`);
   return found;

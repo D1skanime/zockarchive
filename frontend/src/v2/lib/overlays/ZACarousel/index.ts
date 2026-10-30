@@ -1,2 +1,2 @@
 export { default as ZACarousel } from "./ZACarousel.vue";
-export type { RCarouselProps } from "./types";
+export type { ZACarouselProps } from "./types";

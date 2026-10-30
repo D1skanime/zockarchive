@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { onBeforeUnmount, onMounted } from "vue";
 import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import ZATable from "./ZATable.vue";
-import type { RTableColumn } from "./types";
+import type { ZATableColumn } from "./types";
 
 // Cast through `Meta` because ZATable is a generic component (`<T>`) —
 // Vue's compiled type narrows T to `unknown` here, which Storybook's
@@ -36,7 +36,7 @@ interface DemoRow {
   rating: number;
 }
 
-const COLUMNS: RTableColumn[] = [
+const COLUMNS: ZATableColumn[] = [
   {
     key: "name",
     label: "Titel",

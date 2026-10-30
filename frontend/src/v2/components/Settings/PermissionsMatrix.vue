@@ -4,7 +4,7 @@
 // none: "none" is no grant, "full" is library-wide (primary), "own" limits
 // the grant to the user's own items (accent, own_only). The model is the list
 // of granted (entity, action) pairs; cycling rewrites the touched cell only.
-import { ZACheckbox, type RCheckboxState, ZATooltip } from "@v2/lib";
+import { ZACheckbox, type ZACheckboxState, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { GrantSchemaIO, PermAction, PermEntity } from "@/__generated__";
@@ -44,7 +44,7 @@ function stateOf(entity: PermEntity, action: PermAction): CellState {
 }
 
 // Cycle: none (empty) -> full (primary check) -> own (accent person).
-const PERM_STATES: RCheckboxState[] = [
+const PERM_STATES: ZACheckboxState[] = [
   { value: "none" },
   { value: "full", color: "primary" },
   { value: "own", color: "accent", icon: "mdi-account" },

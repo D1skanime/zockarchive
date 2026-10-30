@@ -2,7 +2,7 @@
 // ZACarousel is a generic component (`<T>`) — an inline `interface Props` leaks
 // into the compiled default export as a private name (TS4082), and `export`
 // isn't allowed inside `<script setup>`.
-export interface RCarouselProps<TItem> {
+export interface ZACarouselProps<TItem> {
   /** Active item index. */
   modelValue: number;
   /** Items array — the slot decides how each one is rendered. */

@@ -14,7 +14,7 @@
 //
 // Edit + Delete moved out of the InfoPanel `#actions` kebab and into
 // the Settings tab (editable form on top, danger zone at the bottom).
-import { ZADivider, type RTabNavItem } from "@v2/lib";
+import { ZADivider, type ZATabNavItem } from "@v2/lib";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
@@ -131,8 +131,8 @@ watch(showSettingsTab, (allowed) => {
   if (!allowed && tab.value === "settings") tab.value = "library";
 });
 
-const tabs = computed<RTabNavItem[]>(() => {
-  const out: RTabNavItem[] = [{ id: "library", label: t("common.library") }];
+const tabs = computed<ZATabNavItem[]>(() => {
+  const out: ZATabNavItem[] = [{ id: "library", label: t("common.library") }];
   if (showSettingsTab.value) {
     out.push({ id: "settings", label: t("collection.settings") });
   }

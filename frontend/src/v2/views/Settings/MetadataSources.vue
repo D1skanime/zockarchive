@@ -188,9 +188,10 @@ function statusOf(source: Source): SourceStatus {
   return "pending";
 }
 
-type RTagTone = "neutral" | "brand" | "success" | "danger" | "warning" | "info";
+type ZATagTone =
+  "neutral" | "brand" | "success" | "danger" | "warning" | "info";
 interface StatusInfo {
-  tone: RTagTone;
+  tone: ZATagTone;
   icon: string;
   label: string;
 }

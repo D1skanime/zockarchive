@@ -12,7 +12,7 @@ import ZACarousel from "./ZACarousel.vue";
 // The generic's fixed named slots also don't reconcile with Storybook's
 // `components` map (which types each entry as a plain `Component`), so the
 // render stories register the carousel through this cast alias.
-const RCarouselStory = ZACarousel as unknown as Component;
+const ZACarouselStory = ZACarousel as unknown as Component;
 
 // Sample images — picsum is deterministic by seed and works offline through
 // the Storybook CDN cache.
@@ -61,7 +61,7 @@ export const Inline: Story = {
     ariaLabel: "Bildkarussell",
   },
   render: (args) => ({
-    components: { ZACarousel: RCarouselStory },
+    components: { ZACarousel: ZACarouselStory },
     setup() {
       const index = ref(0);
       return { args, index };
@@ -128,7 +128,7 @@ export const InlineLight: Story = {
     showThumbnails: true,
   },
   render: (args) => ({
-    components: { ZACarousel: RCarouselStory },
+    components: { ZACarousel: ZACarouselStory },
     setup() {
       const index = ref(0);
       return { args, index };
@@ -162,7 +162,7 @@ export const Fullscreen: Story = {
     ariaLabel: "Bildschirmfoto-Leuchtkasten",
   },
   render: (args) => ({
-    components: { ZACarousel: RCarouselStory, ZABtn },
+    components: { ZACarousel: ZACarouselStory, ZABtn },
     setup() {
       const index = ref<number | null>(null);
       const onClose = fn(() => (index.value = null));
@@ -196,7 +196,7 @@ export const NoLoop: Story = {
     loop: false,
   },
   render: (args) => ({
-    components: { ZACarousel: RCarouselStory },
+    components: { ZACarousel: ZACarouselStory },
     setup() {
       const index = ref(0);
       return { args, index };
@@ -223,7 +223,7 @@ export const SingleItem: Story = {
     items: SAMPLES.slice(0, 1),
   },
   render: (args) => ({
-    components: { ZACarousel: RCarouselStory },
+    components: { ZACarousel: ZACarouselStory },
     setup() {
       const index = ref(0);
       return { args, index };

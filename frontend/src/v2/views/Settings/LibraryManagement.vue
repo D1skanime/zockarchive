@@ -2,7 +2,7 @@
 // LibraryManagement — v2-native rewrite. Uses the shared `ZATabNav`
 // primitive for the underline tabs (same component Game Details uses)
 // and keeps the `?tab=` query param so deep links still work.
-import { ZAAlert, ZATabNav, type RTabNavItem } from "@v2/lib";
+import { ZAAlert, ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -49,7 +49,7 @@ watch(
   { immediate: true },
 );
 
-const tabs = computed<RTabNavItem[]>(() => [
+const tabs = computed<ZATabNavItem[]>(() => [
   {
     id: "mapping",
     label: t("settings.folder-mappings"),

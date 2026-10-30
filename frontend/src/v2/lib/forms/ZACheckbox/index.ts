@@ -1,2 +1,2 @@
 export { default as ZACheckbox } from "./ZACheckbox.vue";
-export type { RCheckboxState } from "./types";
+export type { ZACheckboxState } from "./types";

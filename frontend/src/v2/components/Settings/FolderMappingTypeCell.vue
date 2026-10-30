@@ -70,8 +70,8 @@ const modelType = computed({
 
 const isEditable = computed(() => props.canEdit && !!props.row.slug);
 
-type RTagTone = "brand" | "accent" | "success";
-const tagTone = computed<RTagTone>(() => {
+type ZATagTone = "brand" | "accent" | "success";
+const tagTone = computed<ZATagTone>(() => {
   if (props.row.type === "alias") return "brand";
   if (props.row.type === "variant") return "accent";
   return "success";

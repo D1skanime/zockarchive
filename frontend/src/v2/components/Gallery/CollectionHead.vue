@@ -13,7 +13,7 @@
 //      plain scroll wrapper. The head scrolls together with the
 //      tab content.
 import { ZABtn, ZAChip, ZATabNav } from "@v2/lib";
-import type { RTabNavItem } from "@v2/lib";
+import type { ZATabNavItem } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import CollectionMosaic from "@/v2/components/Collections/CollectionMosaic.vue";
 import InfoPanel from "@/v2/components/Gallery/InfoPanel.vue";
@@ -40,7 +40,7 @@ defineProps<{
   description: string;
   covers: string[];
   tab: string;
-  tabs: RTabNavItem[];
+  tabs: ZATabNavItem[];
   canDownload: boolean;
   randomLoading?: boolean;
 }>();

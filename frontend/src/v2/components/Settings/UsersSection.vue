@@ -17,8 +17,8 @@ import {
   ZATag,
   ZATextField,
   ZATooltip,
-  type RTableColumn,
-  type RTableSortPayload,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
@@ -130,7 +130,7 @@ const filteredUsers = computed(() => {
   );
 });
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "username",
     label: t("common.name"),
@@ -175,7 +175,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   if (
     key !== "username" &&
     key !== "email" &&

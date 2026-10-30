@@ -29,14 +29,14 @@ import ZABtn from "../../primitives/ZABtn/ZABtn.vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZASkeletonBlock from "../../primitives/ZASkeletonBlock/ZASkeletonBlock.vue";
 import type {
-  RTableColumn,
-  RTableProps,
-  RTableSortDir,
-  RTableSortPayload,
+  ZATableColumn,
+  ZATableProps,
+  ZATableSortDir,
+  ZATableSortPayload,
 } from "./types";
 
 defineOptions({ inheritAttrs: false });
-const props = withDefaults(defineProps<RTableProps<T>>(), {
+const props = withDefaults(defineProps<ZATableProps<T>>(), {
   loading: false,
   loadingRows: 6,
   sortKey: null,
@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<RTableProps<T>>(), {
   minWidth: undefined,
 });
 const emit = defineEmits<{
-  (e: "update:sort", payload: RTableSortPayload): void;
+  (e: "update:sort", payload: ZATableSortPayload): void;
   (e: "row:click", row: T): void;
 }>();
 const gridTemplate = computed(() =>
@@ -98,11 +98,11 @@ function cellValue(row: T, key: string): unknown {
   return (row as Record<string, unknown>)[key] ?? "";
 }
 
-function handleSort(col: RTableColumn) {
+function handleSort(col: ZATableColumn) {
   if (!col.sortable) return;
   // Toggle direction when re-clicking the active column; new column
   // starts at ascending (mirrors VDataTable behaviour).
-  const nextDir: RTableSortDir =
+  const nextDir: ZATableSortDir =
     props.sortKey === col.key && props.sortDir === "asc" ? "desc" : "asc";
   emit("update:sort", { key: col.key, dir: nextDir });
 }

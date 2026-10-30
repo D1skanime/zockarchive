@@ -40,7 +40,7 @@ import ZADivider from "../../primitives/ZADivider/ZADivider.vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZAProgressCircular from "../../primitives/ZAProgressCircular/ZAProgressCircular.vue";
 import ZATag from "../../primitives/ZATag/ZATag.vue";
-import { useRFormRegistration } from "../ZAForm/context";
+import { useZAFormRegistration } from "../ZAForm/context";
 import ZATextField from "../ZATextField/ZATextField.vue";
 
 defineOptions({ inheritAttrs: false });
@@ -595,7 +595,7 @@ defineExpose({
   close: closeMenu,
 });
 
-useRFormRegistration({
+useZAFormRegistration({
   validate,
   reset,
   el: () => activatorRef.value,

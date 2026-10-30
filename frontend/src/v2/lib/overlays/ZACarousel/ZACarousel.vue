@@ -32,11 +32,11 @@ import {
 } from "vue";
 import ZABtn from "@/v2/lib/primitives/ZABtn/ZABtn.vue";
 import ZAIcon from "@/v2/lib/primitives/ZAIcon/ZAIcon.vue";
-import type { RCarouselProps } from "./types";
+import type { ZACarouselProps } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
-const props = withDefaults(defineProps<RCarouselProps<T>>(), {
+const props = withDefaults(defineProps<ZACarouselProps<T>>(), {
   fullscreen: false,
   loop: true,
   showCounter: undefined,

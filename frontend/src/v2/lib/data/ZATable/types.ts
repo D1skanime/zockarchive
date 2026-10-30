@@ -2,8 +2,8 @@
 // Widths are CSS grid track values (px, fr, minmax(...)) so consumers
 // can mix fixed-width metrics with flexible title columns the same way
 // the gallery list does.
-export interface RTableProps<TItem> {
-  columns: readonly RTableColumn[];
+export interface ZATableProps<TItem> {
+  columns: readonly ZATableColumn[];
   items: readonly TItem[];
   /** Stable key per row — either the property name (`"id"`) or a
    *  function returning a unique string/number. */
@@ -16,7 +16,7 @@ export interface RTableProps<TItem> {
   /** Currently-sorted column key. `null` when no sort is active. */
   sortKey?: string | null;
   /** Sort direction for the active key. */
-  sortDir?: RTableSortDir;
+  sortDir?: ZATableSortDir;
   /** Empty-state icon when `items` is empty and not loading. */
   emptyIcon?: string;
   /** Empty-state message. */
@@ -34,7 +34,7 @@ export interface RTableProps<TItem> {
   minWidth?: string | number;
 }
 
-export interface RTableColumn {
+export interface ZATableColumn {
   /** Unique column id — used as the cell-slot suffix (`cell.<key>`)
    *  and as the sort identifier emitted on header click. */
   key: string;
@@ -51,9 +51,9 @@ export interface RTableColumn {
   skeletonWidth?: number;
 }
 
-export type RTableSortDir = "asc" | "desc";
+export type ZATableSortDir = "asc" | "desc";
 
-export interface RTableSortPayload {
+export interface ZATableSortPayload {
   key: string;
-  dir: RTableSortDir;
+  dir: ZATableSortDir;
 }

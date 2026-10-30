@@ -5,7 +5,7 @@
 // tabs, tab panel) stacked in a flex-1 column on the right. Thin
 // orchestrator — data + tab state live here, every visual piece is a
 // sub-component under components/GameDetails/.
-import { ZABtn, ZATabNav, type RTabNavItem } from "@v2/lib";
+import { ZABtn, ZATabNav, type ZATabNavItem } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject, ref, watch } from "vue";
@@ -454,7 +454,7 @@ function openPcParentMatcher() {
 
 // PC games are delivered as complete downloads, so only ROM platforms expose
 // the patch workflow.
-const tabs = computed<RTabNavItem[]>(() => [
+const tabs = computed<ZATabNavItem[]>(() => [
   { id: "overview", label: t("rom.tab-overview") },
   ...(isPcRom.value
     ? [{ id: "pc-components", label: t("rom.game-downloads") }]

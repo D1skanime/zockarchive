@@ -21,13 +21,13 @@ import {
 } from "vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZAImg from "../../primitives/ZAImg/ZAImg.vue";
-import type { RTabNavItem } from "./types";
+import type { ZATabNavItem } from "./types";
 
 defineOptions({ inheritAttrs: false });
 
 interface Props {
   modelValue: string;
-  items: RTabNavItem[];
+  items: ZATabNavItem[];
   /** Size ladder shared with ZABtn / ZAChip / ZATag. */
   size?: "x-small" | "small" | "default" | "large" | "x-large";
   variant?: "underlined" | "pill";

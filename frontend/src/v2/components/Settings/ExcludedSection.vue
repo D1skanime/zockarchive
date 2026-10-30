@@ -14,8 +14,8 @@ import {
   ZAIcon,
   ZATable,
   ZATextField,
-  type RTableColumn,
-  type RTableSortPayload,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, ref } from "vue";
@@ -245,7 +245,7 @@ async function removeRow(row: Row) {
   }
 }
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "value",
     label: t("common.name"),
@@ -269,7 +269,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   if (key !== "value" && key !== "title") return;
   sortKey.value = key;
   sortDir.value = dir;
