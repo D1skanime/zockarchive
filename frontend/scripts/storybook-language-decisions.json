@@ -7537,378 +7537,378 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 44",
+    "location": "Zeile 46",
     "text": "Der Link zum Zurücksetzen wurde versendet.",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 48",
+    "location": "Zeile 50",
     "text": "Die Bibliothek wird durchsucht.",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 54",
+    "location": "Zeile 56",
     "text": "Hash-Berechnung deaktiviert",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 55",
+    "location": "Zeile 57",
     "text": "ROMs werden bei diesem Scan nicht mit einem Fingerabdruck versehen.",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 60",
+    "location": "Zeile 62",
     "text": "Der Server ist nicht erreichbar.",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 64",
+    "location": "Zeile 66",
     "text": "Alle Typen · transparent",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 81",
+    "location": "Zeile 83",
     "text": "Varianten · gleicher Typ",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 99",
+    "location": "Zeile 101",
     "text": "Dichte-Abstufung",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 115",
+    "location": "Zeile 117",
     "text": "Titel und Inhalts-Slot",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 138",
+    "location": "Zeile 140",
     "text": "Symbol überschreiben / ausblenden",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 152",
+    "location": "Zeile 154",
     "text": "Vorangestellter Slot (benutzerdefiniert)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 169",
+    "location": "Zeile 171",
     "text": "Schließbar (interaktiv)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 206",
+    "location": "Zeile 208",
     "text": "Patcher-Status (Praxisbeispiel)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 219",
+    "location": "Zeile 221",
     "text": "Formularvalidierung (direkt)",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 14",
+    "location": "Zeile 16",
     "text": "success",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 14",
+    "location": "Zeile 16",
     "text": "info",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 14",
+    "location": "Zeile 16",
     "text": "warning",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 14",
+    "location": "Zeile 16",
     "text": "error",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 18",
+    "location": "Zeile 20",
     "text": "flat",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 18",
+    "location": "Zeile 20",
     "text": "elevated",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 18",
+    "location": "Zeile 20",
     "text": "translucent",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 18",
+    "location": "Zeile 20",
     "text": "outlined",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 18",
+    "location": "Zeile 20",
     "text": "text",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 22",
+    "location": "Zeile 24",
     "text": "default",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 22",
+    "location": "Zeile 24",
     "text": "comfortable",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 22",
+    "location": "Zeile 24",
     "text": "compact",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 69",
+    "location": "Zeile 71",
     "text": "Der Link zum Zurücksetzen wurde an Ihre E-Mail-Adresse gesendet.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 70",
+    "location": "Zeile 72",
     "text": "Die Bibliothek wird durchsucht.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 71",
+    "location": "Zeile 73",
     "text": "Die Hash-Berechnung ist deaktiviert, ROMs erhalten keinen Fingerabdruck.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 72",
+    "location": "Zeile 74",
     "text": "Der Server ist nicht erreichbar.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 86",
+    "location": "Zeile 88",
     "text": "Durchscheinend · dezente Tönung",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 87",
+    "location": "Zeile 89",
     "text": "Flach · einfarbige Füllung, weißer Text",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 88",
+    "location": "Zeile 90",
     "text": "Erhöht · flach mit Schlagschatten",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 89",
+    "location": "Zeile 91",
     "text": "Umrandet · nur Rahmen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 90",
+    "location": "Zeile 92",
     "text": "Text · keine Fläche, nur farbiger Text",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 104",
+    "location": "Zeile 106",
     "text": "Standard · großzügiger Abstand für wichtige Hinweise",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 105",
+    "location": "Zeile 107",
     "text": "Komfortabel · ausgewogene Mitte",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 106",
+    "location": "Zeile 108",
     "text": "Kompakt · für Validierung direkt im Formular",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 121",
+    "location": "Zeile 123",
     "text": "Konfigurationsdatei nicht eingebunden",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 121",
+    "location": "Zeile 123",
     "text": "Der RomM-Container konnte seine Konfigurationsdatei nicht lesen. Hier vorgenommene Einstellungsänderungen bleiben erst nach dem Einbinden des Volumes erhalten.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 126",
+    "location": "Zeile 128",
     "text": "Konfigurationsdatei nicht beschreibbar",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 126",
+    "location": "Zeile 128",
     "text": "Die Konfigurationsdatei ist eingebunden, aber schreibgeschützt. Änderungen gelten nur für diese Sitzung.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 143",
+    "location": "Zeile 145",
     "text": "Standard · wählt automatisch mdi-information.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 144",
+    "location": "Zeile 146",
     "text": "Benutzerdefiniertes Symbol.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 145",
+    "location": "Zeile 147",
     "text": "Symbol ausgeblendet · reines Textbanner.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 159",
+    "location": "Zeile 161",
     "text": "Nintendo 64 wird durchsucht … 42 / 128 ROMs",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 187",
+    "location": "Zeile 189",
     "text": "Token erstellt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 188",
+    "location": "Zeile 190",
     "text": "Kopieren Sie ihn jetzt, er wird danach nicht erneut angezeigt.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 195",
+    "location": "Zeile 197",
     "text": "Erneut anzeigen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 211",
+    "location": "Zeile 213",
     "text": "Patch-Datei kann nicht geladen werden: ungültiges Format.",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 212",
+    "location": "Zeile 214",
     "text": "Patch wird angewendet: patience.xdelta auf Game.bin",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 226",
+    "location": "Zeile 228",
     "text": "Neues Passwort",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 231",
+    "location": "Zeile 233",
     "text": "Passwort bestätigen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 234",
+    "location": "Zeile 236",
     "text": "Die Passwörter stimmen nicht überein",
     "status": "german"
   },
@@ -7922,189 +7922,189 @@
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 28",
+    "location": "Zeile 30",
     "text": "Standard",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 56",
+    "location": "Zeile 58",
     "text": "Linke Seite",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 81",
+    "location": "Zeile 83",
     "text": "Hoher Inhalt (scrollbarer Bereich)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 113",
+    "location": "Zeile 115",
     "text": "Dauerhaft",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 13",
+    "location": "Zeile 15",
     "text": "left",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 13",
+    "location": "Zeile 15",
     "text": "right",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 35",
+    "location": "Zeile 37",
     "text": "Schublade öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 37",
+    "location": "Zeile 39",
     "text": "Filter",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 38",
+    "location": "Zeile 40",
     "text": "Schubladeninhalt. Wähle eine Seite, gib eine Breite an und platziere deine Steuerelemente im Standard-Slot.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 43",
+    "location": "Zeile 45",
     "text": "Abbrechen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 45",
+    "location": "Zeile 47",
     "text": "Anwenden",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 63",
+    "location": "Zeile 65",
     "text": "Linke Schublade öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 65",
+    "location": "Zeile 67",
     "text": "Navigation",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 67",
+    "location": "Zeile 69",
     "text": "Startseite",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 68",
+    "location": "Zeile 70",
     "text": "Bibliothek",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 69",
+    "location": "Zeile 71",
     "text": "Statistiken",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 70",
+    "location": "Zeile 72",
     "text": "Einstellungen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 92",
+    "location": "Zeile 94",
     "text": "Öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 94",
+    "location": "Zeile 96",
     "text": "Lange Liste",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 96",
+    "location": "Zeile 98",
     "text": "{{ r }}",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 102",
+    "location": "Zeile 104",
     "text": "Fertig",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 97",
+    "location": "Zeile 99",
     "text": "{{ r }}",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 120",
+    "location": "Zeile 122",
     "text": "Dauerhafte Schublade öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 122",
+    "location": "Zeile 124",
     "text": "Vor dem Verlassen bestätigen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 123",
+    "location": "Zeile 125",
     "text": "Klicks auf die Überlagerung und Escape sind gesperrt. Nur die Schließen-Schaltfläche oder Abbrechen / Fortfahren beendet die Schublade.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 128",
+    "location": "Zeile 130",
     "text": "Abbrechen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
-    "location": "Zeile 130",
+    "location": "Zeile 132",
     "text": "Fortfahren",
     "status": "german"
   },
@@ -8118,140 +8118,140 @@
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 28",
+    "location": "Zeile 30",
     "text": "Grundlegend",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 61",
+    "location": "Zeile 63",
     "text": "Laden (zusammengesetzt)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 88",
+    "location": "Zeile 90",
     "text": "Leerzustand (zusammengesetzt)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 118",
+    "location": "Zeile 120",
     "text": "Mit Werkzeugleiste und Fußzeile",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 38",
+    "location": "Zeile 40",
     "text": "Dialog öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 41",
+    "location": "Zeile 43",
     "text": "Dialogtitel",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 44",
+    "location": "Zeile 46",
     "text": "Dies ist der Dialoginhalt. Halte ihn kurz und handlungsorientiert.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 47",
+    "location": "Zeile 49",
     "text": "Abbrechen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 49",
+    "location": "Zeile 51",
     "text": "Bestätigen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 71",
+    "location": "Zeile 73",
     "text": "Ladedialog öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 74",
+    "location": "Zeile 76",
     "text": "Wird geladen…",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 106",
+    "location": "Zeile 108",
     "text": "Keine Ergebnisse",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 98",
+    "location": "Zeile 100",
     "text": "Leeren Dialog öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 101",
+    "location": "Zeile 103",
     "text": "Metadaten zuordnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 128",
+    "location": "Zeile 130",
     "text": "Vollständigen Dialog öffnen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 130",
+    "location": "Zeile 132",
     "text": "ROM bearbeiten",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 132",
+    "location": "Zeile 134",
     "text": "Super Mario World · Super Nintendo",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 135",
+    "location": "Zeile 137",
     "text": "Hier würde der Inhalt mit Formularfeldern stehen.",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 138",
+    "location": "Zeile 140",
     "text": "Abbrechen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZADialog/ZADialog.stories.ts",
-    "location": "Zeile 140",
+    "location": "Zeile 142",
     "text": "Speichern",
     "status": "german"
   },
@@ -12427,98 +12427,98 @@
   {
     "category": "story-data",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 167",
+    "location": "Zeile 173",
     "text": "Spielstände${saves.length ?",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 172",
+    "location": "Zeile 178",
     "text": "Speicherstände${states.length ?",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 301",
+    "location": "Zeile 307",
     "text": "Umfangreich · 8 Speicherstände + 3 Spielstände",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 311",
+    "location": "Zeile 317",
     "text": "Viele Speicherstände · 15 (Überlauf)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 320",
+    "location": "Zeile 326",
     "text": "Speicherstände · gemischt (mit + ohne Bildschirmfotos)",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 331",
+    "location": "Zeile 337",
     "text": "Nur Spielstände · 3 Plätze",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 340",
+    "location": "Zeile 346",
     "text": "Ein Spielstand",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 346",
+    "location": "Zeile 352",
     "text": "Neues Spiel · keine Spiel- oder Speicherstände",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 352",
+    "location": "Zeile 358",
     "text": "Speicherstände · leer nach Kernwechsel",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 361",
+    "location": "Zeile 367",
     "text": "Viele Speicherstände · keiner ausgewählt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 242",
+    "location": "Zeile 248",
     "text": "Spielstand oder Speicherstand laden",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 249",
+    "location": "Zeile 255",
     "text": "0\" style=\" display:flex; align-items:center; gap:6px; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--r-color-fg-secondary); margin-top:4px; \" >",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 262",
+    "location": "Zeile 268",
     "text": "{{ stripLabel }}",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/components/Player/ResumePanel.stories.ts",
-    "location": "Zeile 275",
+    "location": "Zeile 281",
     "text": "{{ activeAssets.length }}",
     "status": "german"
   },
