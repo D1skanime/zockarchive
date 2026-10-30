@@ -12,7 +12,13 @@
 // full message is also surfaced on hover via ZATooltip. Auto-tail follows
 // the newest line and pauses itself when the user scrolls up; "jump to
 // latest" re-engages it.
-import { ZABtn, ZASelect, ZATextField, ZATooltip, ZAVirtualScroller } from "@v2/lib";
+import {
+  ZABtn,
+  ZASelect,
+  ZATextField,
+  ZATooltip,
+  ZAVirtualScroller,
+} from "@v2/lib";
 import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useSnackbar } from "@/v2/composables/useSnackbar";

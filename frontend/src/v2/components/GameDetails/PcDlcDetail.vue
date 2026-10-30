@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { ZABtn, ZADialog, ZAImg, ZAMenu, ZAMenuItem, ZATabNav, ZATag } from "@v2/lib";
+import {
+  ZABtn,
+  ZADialog,
+  ZAImg,
+  ZAMenu,
+  ZAMenuItem,
+  ZATabNav,
+  ZATag,
+} from "@v2/lib";
 import type { Emitter } from "mitt";
 import { getActivePinia } from "pinia";
 import { computed, inject, ref, watch } from "vue";

@@ -90,7 +90,9 @@ export function getVisibleStoryTextCandidates(
     /\b(?:items|suggestions|options|values):\s*\[([\s\S]*?)\]/g,
   )) {
     const base = (array.index ?? 0) + array[0].indexOf(array[1]);
-    for (const value of array[1].matchAll(/(?:^|,)\s*(["'])([^"']+)\1(?=\s*(?:,|$))/g))
+    for (const value of array[1].matchAll(
+      /(?:^|,)\s*(["'])([^"']+)\1(?=\s*(?:,|$))/g,
+    ))
       add(
         "story-data",
         value[2],
@@ -105,7 +107,9 @@ export function getVisibleStoryTextCandidates(
     /\bref(?:<[^>]+>)?\(\s*\[([\s\S]*?)\]\s*\)/g,
   )) {
     const base = (array.index ?? 0) + array[0].indexOf(array[1]);
-    for (const value of array[1].matchAll(/(?:^|,)\s*(["'])([^"']+)\1(?=\s*(?:,|$))/g))
+    for (const value of array[1].matchAll(
+      /(?:^|,)\s*(["'])([^"']+)\1(?=\s*(?:,|$))/g,
+    ))
       add(
         "story-data",
         value[2],

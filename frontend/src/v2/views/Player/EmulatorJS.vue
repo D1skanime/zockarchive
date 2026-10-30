@@ -13,7 +13,14 @@
 // The running state mounts the v1 <Player> component (600 lines of EJS
 // wiring — not worth rewriting). The v1 SelectSaveDialog / SelectStateDialog
 // + CacheDialog are mounted in GlobalDialogs so the emitter bridge works.
-import { ZABtn, ZACard, ZAIcon, ZASelect, ZASliderBtnGroup, ZASwitch } from "@v2/lib";
+import {
+  ZABtn,
+  ZACard,
+  ZAIcon,
+  ZASelect,
+  ZASliderBtnGroup,
+  ZASwitch,
+} from "@v2/lib";
 import { useEventListener, useLocalStorage } from "@vueuse/core";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";

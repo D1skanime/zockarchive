@@ -199,7 +199,11 @@ function hasLiveMember(memberId: string | null) {
       data-testid="download-history-loading"
       :aria-label="t('rom.download-state-downloading')"
     />
-    <ZAAlert v-else-if="error" type="error" data-testid="download-history-error">
+    <ZAAlert
+      v-else-if="error"
+      type="error"
+      data-testid="download-history-error"
+    >
       {{ t("rom.download-failed-description") }}
     </ZAAlert>
     <ul
