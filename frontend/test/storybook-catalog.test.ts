@@ -9,8 +9,8 @@ import {
 describe("Storybook-Katalog", () => {
   it("documents the shared table sort control", () => {
     expect(
-      compositionInventory["lib/data/RTable/RTable.stories.ts"].primitives,
-    ).toContain("RBtn");
+      compositionInventory["lib/data/ZATable/ZATable.stories.ts"].primitives,
+    ).toContain("ZABtn");
   });
 
   it("uses resolvable primitive docs targets in every composition", () => {

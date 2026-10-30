@@ -14,7 +14,7 @@
 // Role is display-only here (the chip in the identity row): nobody can
 // change their own role, so an editable picker would only ever silently
 // revert. Admins change other users' roles from Settings → Administration.
-import { RBtn, RIcon, RSkeletonBlock, RTag, RTextField } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASkeletonBlock, ZATag, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject, onMounted, onUnmounted, ref } from "vue";
@@ -176,7 +176,7 @@ onUnmounted(() => {
         >
           <img :src="avatarSrc" :alt="user?.username ?? ''" />
           <span class="r-v2-profile__avatar-edit">
-            <RIcon icon="mdi-pencil" size="20" />
+            <ZAIcon icon="mdi-pencil" size="20" />
           </span>
         </button>
         <input
@@ -192,7 +192,7 @@ onUnmounted(() => {
             <span class="r-v2-profile__username">
               {{ user?.username }}
             </span>
-            <RTag
+            <ZATag
               v-if="user?.role"
               :icon="getRoleIcon(user.role)"
               :tone="roleToneFor(user.role)"
@@ -200,32 +200,32 @@ onUnmounted(() => {
               class="r-v2-profile__role-tag"
             >
               {{ user.role }}
-            </RTag>
+            </ZATag>
           </div>
           <div class="r-v2-profile__meta">
             <div v-if="user?.email" class="r-v2-profile__meta-row">
-              <RTag tone="plain" prepend-icon="mdi-email-outline">
+              <ZATag tone="plain" prepend-icon="mdi-email-outline">
                 {{ user.email }}
-              </RTag>
+              </ZATag>
             </div>
             <div
               v-if="joinedLabel || lastActiveLabel"
               class="r-v2-profile__meta-row"
             >
-              <RTag
+              <ZATag
                 v-if="joinedLabel"
                 tone="plain"
                 prepend-icon="mdi-calendar-blank-outline"
               >
                 {{ joinedLabel }}
-              </RTag>
-              <RTag
+              </ZATag>
+              <ZATag
                 v-if="lastActiveLabel"
                 tone="plain"
                 prepend-icon="mdi-clock-outline"
               >
                 {{ lastActiveLabel }}
-              </RTag>
+              </ZATag>
             </div>
           </div>
         </div>
@@ -237,7 +237,7 @@ onUnmounted(() => {
         icon="mdi-account"
       >
         <div class="r-v2-profile__field">
-          <RTextField
+          <ZATextField
             v-model="userToEdit.username"
             prefix-label="stacked"
             :rules="usersStore.usernameRules"
@@ -245,13 +245,13 @@ onUnmounted(() => {
             clearable
           >
             <template #prefix-label>
-              <RIcon icon="mdi-account-outline" size="14" />
+              <ZAIcon icon="mdi-account-outline" size="14" />
               {{ t("settings.username") }}
             </template>
-          </RTextField>
+          </ZATextField>
         </div>
         <div class="r-v2-profile__field">
-          <RTextField
+          <ZATextField
             v-model="userToEdit.email"
             prefix-label="stacked"
             :rules="usersStore.emailRules"
@@ -260,10 +260,10 @@ onUnmounted(() => {
             clearable
           >
             <template #prefix-label>
-              <RIcon icon="mdi-email-outline" size="14" />
+              <ZAIcon icon="mdi-email-outline" size="14" />
               {{ t("settings.email") }}
             </template>
-          </RTextField>
+          </ZATextField>
         </div>
 
         <!-- Password — visually identical to the other prefix-label
@@ -272,7 +272,7 @@ onUnmounted(() => {
              readonly + type=password keeps the field non-editable while
              still reading semantically as a password field. -->
         <div class="r-v2-profile__field">
-          <RTextField
+          <ZATextField
             model-value="00000000"
             type="password"
             prefix-label="stacked"
@@ -281,11 +281,11 @@ onUnmounted(() => {
             autocomplete="new-password"
           >
             <template #prefix-label>
-              <RIcon icon="mdi-key-outline" size="14" />
+              <ZAIcon icon="mdi-key-outline" size="14" />
               {{ t("settings.password") }}
             </template>
             <template #append-inner>
-              <RBtn
+              <ZABtn
                 variant="text"
                 size="small"
                 prepend-icon="mdi-key-variant"
@@ -293,13 +293,13 @@ onUnmounted(() => {
                 @click="passwordDialogOpen = true"
               >
                 {{ t("settings.change-password") }}
-              </RBtn>
+              </ZABtn>
             </template>
-          </RTextField>
+          </ZATextField>
         </div>
 
         <div class="r-v2-profile__actions">
-          <RBtn
+          <ZABtn
             variant="flat"
             color="primary"
             :loading="submitting"
@@ -308,7 +308,7 @@ onUnmounted(() => {
             @click="applyChanges"
           >
             {{ t("common.apply") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </SettingsSection>
 
@@ -318,21 +318,21 @@ onUnmounted(() => {
     <!-- Skeleton — shown until userToEdit is hydrated from auth.user. -->
     <template v-else>
       <div class="r-v2-profile__identity-row">
-        <RSkeletonBlock
+        <ZASkeletonBlock
           shape="circle"
           width="96px"
           height="96px"
           class="r-v2-profile__avatar-skeleton"
         />
         <div class="r-v2-profile__identity">
-          <RSkeletonBlock width="160px" height="22px" />
+          <ZASkeletonBlock width="160px" height="22px" />
           <div class="r-v2-profile__meta">
-            <RSkeletonBlock width="220px" height="12px" />
-            <RSkeletonBlock width="180px" height="12px" />
+            <ZASkeletonBlock width="220px" height="12px" />
+            <ZASkeletonBlock width="180px" height="12px" />
           </div>
         </div>
       </div>
-      <RSkeletonBlock width="100%" height="280px" />
+      <ZASkeletonBlock width="100%" height="280px" />
     </template>
 
     <ChangePasswordDialog
@@ -426,7 +426,7 @@ onUnmounted(() => {
   letter-spacing: -0.01em;
 }
 
-/* Role tag — RTag handles the base look + tone-based tint. `capitalize`
+/* Role tag — ZATag handles the base look + tone-based tint. `capitalize`
    only uppercases the first letter (e.g. "admin" → "Admin"); the prior
    `uppercase` rendering read as a shout next to the username. */
 .r-v2-profile__role-tag {
@@ -436,7 +436,7 @@ onUnmounted(() => {
 
 /* Secondary metadata under the username. Email sits on its own row;
    joined + last active share the row below so the eye reads identity
-   first, history second. Each item is an `<RTag tone="plain">` — the
+   first, history second. Each item is an `<ZATag tone="plain">` — the
    tag inherits the row's font-size and muted colour, so the metadata
    blends into a single sentence-style block. */
 .r-v2-profile__meta {

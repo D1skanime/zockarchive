@@ -15,8 +15,8 @@
 // appended dynamically (and disappears once the rom is unmatched from
 // that provider). Cover actions, AdditionalDetails and MetadataIdSection
 // remain deep domain composites pulled from the EditRom feature folder.
-import { RBtn, RDialog, RIcon, RTabNav, RTextField } from "@v2/lib";
-import type { RTabNavItem } from "@v2/lib/primitives/RTabNav/types";
+import { ZABtn, ZADialog, ZAIcon, ZATabNav, ZATextField } from "@v2/lib";
+import type { RTabNavItem } from "@v2/lib/primitives/ZATabNav/types";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -294,7 +294,7 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-if="rom"
     v-model="show"
     icon="mdi-pencil-box"
@@ -321,7 +321,7 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
             no-hover
           />
           <div class="r-v2-edit__cover-actions">
-            <RBtn
+            <ZABtn
               prepend-icon="mdi-image-search-outline"
               variant="outlined"
               density="compact"
@@ -336,9 +336,9 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
                   rom,
                 })
               "
-              >{{ t("rom.search-cover") }}</RBtn
+              >{{ t("rom.search-cover") }}</ZABtn
             >
-            <RBtn
+            <ZABtn
               icon="mdi-pencil"
               variant="outlined"
               density="compact"
@@ -353,7 +353,7 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
               class="r-v2-edit__file"
               @change="previewImage"
             />
-            <RBtn
+            <ZABtn
               icon="mdi-delete"
               variant="outlined"
               density="compact"
@@ -371,49 +371,53 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
         </div>
 
         <div class="r-v2-edit__fields">
-          <RTextField
+          <ZATextField
             v-model="rom.name"
             prefix-label="stacked"
             hide-details
             :rules="[(v: string) => !!v || t('common.required')]"
           >
             <template #prefix-label>
-              <RIcon icon="mdi-format-title" size="14" />
+              <ZAIcon icon="mdi-format-title" size="14" />
               {{ t("common.name") }}
             </template>
-          </RTextField>
+          </ZATextField>
 
-          <RTextField
+          <ZATextField
             v-model="rom.name_sort_key"
             prefix-label="stacked"
             hide-details
           >
             <template #prefix-label>
-              <RIcon icon="mdi-sort-alphabetical-variant" size="14" />
+              <ZAIcon icon="mdi-sort-alphabetical-variant" size="14" />
               {{ t("rom.sort-key") }}
             </template>
-          </RTextField>
+          </ZATextField>
 
-          <RTextField
+          <ZATextField
             :model-value="rom.fs_name"
             prefix-label="stacked"
             hide-details
             readonly
           >
             <template #prefix-label>
-              <RIcon
+              <ZAIcon
                 :icon="isFolderRom ? 'mdi-folder-outline' : 'mdi-file-outline'"
                 size="14"
               />
               {{ isFolderRom ? t("rom.folder-name") : t("rom.filename") }}
             </template>
             <template #subtitle>
-              <RIcon icon="mdi-folder-file-outline" size="13" color="primary" />
+              <ZAIcon
+                icon="mdi-folder-file-outline"
+                size="13"
+                color="primary"
+              />
               {{ fullPath }}
             </template>
-          </RTextField>
+          </ZATextField>
 
-          <RTextField
+          <ZATextField
             v-model="rom.summary"
             prefix-label="stacked"
             hide-details
@@ -421,10 +425,10 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
             :rows="3"
           >
             <template #prefix-label>
-              <RIcon icon="mdi-text" size="14" />
+              <ZAIcon icon="mdi-text" size="14" />
               {{ t("rom.summary") }}
             </template>
-          </RTextField>
+          </ZATextField>
         </div>
       </div>
 
@@ -433,7 +437,7 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
            after. Sits under the hero so the dialog reads top-down as
            "identity → editing surface". -->
       <div class="r-v2-edit__panels">
-        <RTabNav
+        <ZATabNav
           v-model="activeTab"
           :items="tabItems"
           variant="underlined"
@@ -464,11 +468,11 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
     </template>
 
     <template #footer>
-      <RBtn variant="text" :disabled="saving" @click="closeDialog">
+      <ZABtn variant="text" :disabled="saving" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         v-if="!rom.is_unidentified"
         variant="outlined"
         color="error"
@@ -478,8 +482,8 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
         @click="unmatchRom"
       >
         {{ t("rom.unmatch") }}
-      </RBtn>
-      <RBtn
+      </ZABtn>
+      <ZABtn
         variant="translucent"
         color="primary"
         prepend-icon="mdi-check"
@@ -488,9 +492,9 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
         @click="updateRom"
       >
         {{ t("common.apply") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

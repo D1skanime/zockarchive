@@ -2,7 +2,7 @@
 // v2 SelectSaveDialog — listens for `selectSaveDialog`, shows a grid of
 // the ROM's saves and emits `saveSelected` on click (consumed by the
 // EmulatorJS view).
-import { RBtn, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZADialog, ZAIcon } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -41,7 +41,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     id="select-save-dialog"
     v-model="show"
     icon="mdi-content-save-outline"
@@ -64,17 +64,17 @@ function closeDialog() {
         />
       </div>
       <div v-else class="r-v2-save-picker__empty">
-        <RIcon icon="mdi-help-rhombus-outline" size="48" />
+        <ZAIcon icon="mdi-help-rhombus-outline" size="48" />
         <p>{{ t("rom.no-saves-found") }}</p>
       </div>
     </template>
     <template #footer>
       <div style="flex: 1" />
-      <RBtn variant="text" @click="closeDialog">
+      <ZABtn variant="text" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

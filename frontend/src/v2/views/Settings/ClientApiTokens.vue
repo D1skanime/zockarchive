@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // ClientApiTokens — v2-native rewrite. Page chrome mirrors the mock:
-// title + Create button on the right, search bar, single RTable.
+// title + Create button on the right, search bar, single ZATable.
 //
 // Delete confirmation goes through useConfirm; create + regenerate are
 // handled by the multi-step CreateClientTokenDialog component.
@@ -9,11 +9,11 @@
 // scope instead of dumping flat chips — easier to scan when a token
 // carries the full grant set.
 import {
-  RBtn,
-  RChip,
-  RIcon,
-  RTable,
-  RTextField,
+  ZABtn,
+  ZAChip,
+  ZAIcon,
+  ZATable,
+  ZATextField,
   type RTableColumn,
   type RTableSortPayload,
 } from "@v2/lib";
@@ -193,7 +193,7 @@ onMounted(() => {
 
 <template>
   <div class="r-v2-section-stack">
-    <RTextField
+    <ZATextField
       v-model="search"
       prefix-label="inline"
       :placeholder="t('common.search')"
@@ -203,11 +203,11 @@ onMounted(() => {
       class="r-v2-tok__search"
     >
       <template #prefix-label>
-        <RIcon icon="mdi-magnify" size="15" />
+        <ZAIcon icon="mdi-magnify" size="15" />
       </template>
-    </RTextField>
+    </ZATextField>
 
-    <RTable
+    <ZATable
       :columns="columns"
       :items="filteredTokens"
       :item-key="(r) => (r as ClientTokenSchema).id"
@@ -224,7 +224,7 @@ onMounted(() => {
           <span class="r-v2-tok__name">{{
             (row as ClientTokenSchema).name
           }}</span>
-          <RChip
+          <ZAChip
             v-if="
               (row as ClientTokenSchema).device_id &&
               devicesById.get((row as ClientTokenSchema).device_id!)
@@ -238,7 +238,7 @@ onMounted(() => {
               devicesById.get((row as ClientTokenSchema).device_id!)?.name ??
               (row as ClientTokenSchema).device_id
             }}
-          </RChip>
+          </ZAChip>
         </div>
       </template>
       <template #cell.scopes="{ row }">
@@ -267,7 +267,7 @@ onMounted(() => {
       </template>
       <template #cell.actions="{ row }">
         <div class="r-v2-tok__actions">
-          <RBtn
+          <ZABtn
             variant="text"
             size="small"
             icon="mdi-refresh"
@@ -275,7 +275,7 @@ onMounted(() => {
             :title="t('settings.regenerate-token-tooltip')"
             @click="openRegenerate(row as ClientTokenSchema)"
           />
-          <RBtn
+          <ZABtn
             variant="text"
             size="small"
             icon="mdi-trash-can-outline"
@@ -287,16 +287,16 @@ onMounted(() => {
           />
         </div>
       </template>
-    </RTable>
+    </ZATable>
     <div>
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         prepend-icon="mdi-plus"
         @click="openCreate"
       >
         {{ t("common.create") }}
-      </RBtn>
+      </ZABtn>
     </div>
 
     <CreateClientTokenDialog @created="fetchTokens" />
@@ -343,7 +343,7 @@ onMounted(() => {
   gap: 4px;
 }
 
-/* Dimmed at rest, full red on hover. RBtn's text variant uses
+/* Dimmed at rest, full red on hover. ZABtn's text variant uses
    `var(--r-btn-color)` for the icon colour; setting that token directly
    on the button root drives both states without a :deep selector. */
 .r-v2-tok__delete {

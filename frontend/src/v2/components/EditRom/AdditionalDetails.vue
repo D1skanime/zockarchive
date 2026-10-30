@@ -7,7 +7,7 @@
 // admins override automatic scraper output. Emitting `update:rom` with
 // the merged shape keeps the parent in charge of when to actually
 // commit (Save button on EditRomDialog).
-import { RComboboxField, RDateField, RTextField } from "@v2/lib";
+import { ZAComboboxField, ZADateField, ZATextField } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UpdateRom } from "@/v2/data/adapters/legacy/services/api/rom";
@@ -88,7 +88,7 @@ function updateManualMetadata(
 
 <template>
   <div class="r-v2-additional">
-    <RComboboxField
+    <ZAComboboxField
       :model-value="manual.companies ?? []"
       :label="t('rom.companies')"
       prefix-label="stacked"
@@ -97,7 +97,7 @@ function updateManualMetadata(
       clearable
       @update:model-value="(v) => updateManualMetadata('companies', v)"
     />
-    <RComboboxField
+    <ZAComboboxField
       :model-value="manual.genres ?? []"
       :label="t('rom.genres')"
       prefix-label="stacked"
@@ -106,7 +106,7 @@ function updateManualMetadata(
       clearable
       @update:model-value="(v) => updateManualMetadata('genres', v)"
     />
-    <RComboboxField
+    <ZAComboboxField
       :model-value="manual.franchises ?? []"
       :label="t('rom.franchises')"
       prefix-label="stacked"
@@ -123,7 +123,7 @@ function updateManualMetadata(
       <span>{{ t("rom.crawled-release-date") }}</span>
       <span>{{ crawledReleaseDate }}</span>
     </div>
-    <RDateField
+    <ZADateField
       :model-value="manual.first_release_date ?? null"
       :label="t('rom.released-at')"
       prefix-label="stacked"
@@ -135,7 +135,7 @@ function updateManualMetadata(
           updateManualMetadata('first_release_date', d ? d.getTime() : null)
       "
     />
-    <RComboboxField
+    <ZAComboboxField
       :model-value="manual.game_modes ?? []"
       :items="GAME_MODE_ITEMS"
       :label="t('rom.game-modes')"
@@ -145,7 +145,7 @@ function updateManualMetadata(
       clearable
       @update:model-value="(v) => updateManualMetadata('game_modes', v)"
     />
-    <RComboboxField
+    <ZAComboboxField
       :model-value="ageRatingsView"
       :items="AGE_RATING_ITEMS"
       :label="t('rom.age-ratings')"

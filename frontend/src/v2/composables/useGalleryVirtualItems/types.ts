@@ -1,6 +1,6 @@
 // Discriminated union describing every kind of row that can live inside a
 // virtualised gallery scroller. The view turns this list into a single
-// RVirtualScroller and renders per kind via a template switch.
+// ZAVirtualScroller and renders per kind via a template switch.
 //
 // IMPORTANT — performance contract: row items are STRUCTURAL only. They
 // know which positions they cover but they do NOT carry the actual ROM /
@@ -12,7 +12,7 @@
 // rebuild and was the source of the scroll-freeze in earlier passes).
 
 // `hero` (header) and `toolbar` are NOT virtual items — they live in
-// `RVirtualScroller`'s `#prepend` and `#sticky` slots respectively, so
+// `ZAVirtualScroller`'s `#prepend` and `#sticky` slots respectively, so
 // the browser's compositor handles their layout (header scrolls with
 // content, toolbar pins via native `position: sticky`). Keeping them
 // out of the virtualised list avoids JS-driven scroll tracking and the

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import {
-  RAlert,
-  RBtn,
-  RDialog,
-  RDrawer,
-  RForm,
-  RSelect,
-  RTextField,
+  ZAAlert,
+  ZABtn,
+  ZADialog,
+  ZADrawer,
+  ZAForm,
+  ZASelect,
+  ZATextField,
 } from "@v2/lib";
 import { ref } from "vue";
 import { compositionParameters } from "@/v2/storybook/compositionInventory";
@@ -27,7 +27,7 @@ const cardStyle =
 export const DialogAufSeite: Story = {
   name: "Dialog auf einer Seite",
   render: () => ({
-    components: { RBtn, RDialog, RForm, RTextField, RSelect },
+    components: { ZABtn, ZADialog, ZAForm, ZATextField, ZASelect },
     setup() {
       const open = ref(false);
       const title = ref("");
@@ -48,25 +48,25 @@ export const DialogAufSeite: Story = {
           <p style="margin: 0 0 8px; color: var(--r-color-fg-muted)">Bibliothek / Spiele</p>
           <h2 style="margin: 0 0 12px">Neues Spiel anlegen</h2>
           <p style="margin: 0 0 16px">Die Dialogoberfläche bleibt im Seitenkontext sichtbar.</p>
-          <RBtn color="primary" @click="open = true">Spiel hinzufügen</RBtn>
+          <ZABtn color="primary" @click="open = true">Spiel hinzufügen</ZABtn>
         </section>
-        <RDialog v-model="open" width="520" icon="mdi-plus-box">
+        <ZADialog v-model="open" width="520" icon="mdi-plus-box">
           <template #header>Spiel hinzufügen</template>
           <template #toolbar><span style="color: var(--r-color-fg-muted)">Metadaten für die Bibliothek</span></template>
           <template #content>
-            <RForm v-model="valid">
+            <ZAForm v-model="valid">
               <div style="display: grid; gap: 14px">
-                <RTextField v-model="title" label="Titel" prefix-label="stacked" :rules="required" />
-                <RSelect v-model="platform" label="Plattform" prefix-label="stacked" :items="platforms" :rules="required" />
+                <ZATextField v-model="title" label="Titel" prefix-label="stacked" :rules="required" />
+                <ZASelect v-model="platform" label="Plattform" prefix-label="stacked" :items="platforms" :rules="required" />
               </div>
-            </RForm>
+            </ZAForm>
           </template>
           <template #footer>
-            <RBtn variant="text" @click="open = false">Abbrechen</RBtn>
+            <ZABtn variant="text" @click="open = false">Abbrechen</ZABtn>
             <div style="flex: 1" />
-            <RBtn color="primary" :disabled="!valid" @click="open = false">Speichern</RBtn>
+            <ZABtn color="primary" :disabled="!valid" @click="open = false">Speichern</ZABtn>
           </template>
-        </RDialog>
+        </ZADialog>
       </main>
     `,
   }),
@@ -75,19 +75,19 @@ export const DialogAufSeite: Story = {
 export const DrawerAufSeite: Story = {
   name: "Drawer auf einer Seite",
   render: () => ({
-    components: { RBtn, RDrawer },
+    components: { ZABtn, ZADrawer },
     setup() {
       const open = ref(false);
       return { open };
     },
     template: `
       <main :style="'${pageStyle}'">
-        <section :style="'${cardStyle}'"><h2 style="margin-top: 0">Bibliothek filtern</h2><RBtn @click="open = true">Filter öffnen</RBtn></section>
-        <RDrawer v-model="open" icon="mdi-filter-variant">
+        <section :style="'${cardStyle}'"><h2 style="margin-top: 0">Bibliothek filtern</h2><ZABtn @click="open = true">Filter öffnen</ZABtn></section>
+        <ZADrawer v-model="open" icon="mdi-filter-variant">
           <template #header>Filter</template>
           <p>Zeige nur installierte Spiele und bevorzugte Plattformen.</p>
-          <template #footer><RBtn variant="text" @click="open = false">Zurücksetzen</RBtn><div style="flex: 1" /><RBtn color="primary" @click="open = false">Anwenden</RBtn></template>
-        </RDrawer>
+          <template #footer><ZABtn variant="text" @click="open = false">Zurücksetzen</ZABtn><div style="flex: 1" /><ZABtn color="primary" @click="open = false">Anwenden</ZABtn></template>
+        </ZADrawer>
       </main>
     `,
   }),
@@ -96,7 +96,7 @@ export const DrawerAufSeite: Story = {
 export const FormularMitFehlern: Story = {
   name: "Formular mit Fehlerzuständen",
   render: () => ({
-    components: { RBtn, RForm, RTextField },
+    components: { ZABtn, ZAForm, ZATextField },
     setup() {
       const name = ref("");
       const email = ref("");
@@ -109,7 +109,7 @@ export const FormularMitFehlern: Story = {
     },
     template: `
       <main :style="'${pageStyle}'"><section :style="'${cardStyle}'"><h2 style="margin-top: 0">Profil ergänzen</h2><p>Eine leere Übermittlung zeigt die Feldfehler direkt am Eingabefeld.</p>
-        <RForm ref="form"><div style="display: grid; gap: 14px"><RTextField v-model="name" label="Anzeigename" prefix-label="stacked" :rules="required" /><RTextField v-model="email" label="E-Mail" prefix-label="stacked" :rules="required" /><RBtn color="primary" @click="submit">Prüfen</RBtn></div></RForm>
+        <ZAForm ref="form"><div style="display: grid; gap: 14px"><ZATextField v-model="name" label="Anzeigename" prefix-label="stacked" :rules="required" /><ZATextField v-model="email" label="E-Mail" prefix-label="stacked" :rules="required" /><ZABtn color="primary" @click="submit">Prüfen</ZABtn></div></ZAForm>
       </section></main>
     `,
   }),
@@ -118,15 +118,15 @@ export const FormularMitFehlern: Story = {
 export const AlertVarianten: Story = {
   name: "Alert-Varianten auf einer Seite",
   render: () => ({
-    components: { RAlert, RBtn },
+    components: { ZAAlert, ZABtn },
     setup() {
       const visible = ref(true);
       return { visible };
     },
     template: `
       <main :style="'${pageStyle}'"><section :style="'${cardStyle}'"><h2 style="margin-top: 0">Aktuelle Hinweise</h2><div style="display: grid; gap: 12px">
-        <RAlert type="success" text="Die Metadaten wurden gespeichert." /><RAlert type="info" text="Die Bibliothek wird im Hintergrund geprüft." /><RAlert type="warning" text="Einige Dateien benötigen Aufmerksamkeit." /><RAlert v-model="visible" closable type="error" text="Der Server ist derzeit nicht erreichbar." />
-        <RBtn v-if="!visible" variant="text" @click="visible = true">Fehlermeldung erneut anzeigen</RBtn>
+        <ZAAlert type="success" text="Die Metadaten wurden gespeichert." /><ZAAlert type="info" text="Die Bibliothek wird im Hintergrund geprüft." /><ZAAlert type="warning" text="Einige Dateien benötigen Aufmerksamkeit." /><ZAAlert v-model="visible" closable type="error" text="Der Server ist derzeit nicht erreichbar." />
+        <ZABtn v-if="!visible" variant="text" @click="visible = true">Fehlermeldung erneut anzeigen</ZABtn>
       </div></section></main>
     `,
   }),

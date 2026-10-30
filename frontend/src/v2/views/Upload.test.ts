@@ -66,19 +66,19 @@ describe("source-read-only upload route", () => {
             template:
               '<button class="platform-select" :data-item-key="itemKey" @click="$emit(\'update:modelValue\', \'3do\')" />',
           },
-          RDropzone: {
+          ZADropzone: {
             emits: ["files"],
             template:
               "<button class=\"dropzone\" @click=\"$emit('files', [{ name: 'game.rom', size: 3 }])\" />",
           },
-          RBtn: {
+          ZABtn: {
             props: ["disabled"],
             emits: ["click"],
             template:
               '<button class="upload" :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
           },
-          RChip: true,
-          RIcon: true,
+          ZAChip: true,
+          ZAIcon: true,
         },
       },
     });

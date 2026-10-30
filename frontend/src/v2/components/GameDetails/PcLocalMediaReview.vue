@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RDialog, REmptyState, RImg, RTag } from "@v2/lib";
+import { ZABtn, ZADialog, ZAEmptyState, ZAImg, ZATag } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type {
@@ -81,19 +81,19 @@ async function applySelection() {
 </script>
 
 <template>
-  <RBtn
+  <ZABtn
     data-testid="select-local-artwork"
     prepend-icon="mdi-image-plus-outline"
     @click="openReview"
   >
     {{ t("rom.use-local-images") }}
-  </RBtn>
+  </ZABtn>
 
-  <RDialog v-model="dialogOpen">
+  <ZADialog v-model="dialogOpen">
     <template #header>{{ t("rom.use-local-images") }}</template>
     <template #content>
       <div class="pc-local-media-review">
-        <REmptyState
+        <ZAEmptyState
           v-if="!loading && response?.candidates.length === 0"
           icon="mdi-image-off-outline"
           :title="t('rom.pc-no-components')"
@@ -113,7 +113,7 @@ async function applySelection() {
             :aria-pressed="selectedCandidate?.member_id === candidate.member_id"
             @click="selectedCandidate = candidate"
           >
-            <RImg
+            <ZAImg
               class="pc-local-media-review__preview"
               :src="candidate.preview_url"
               :alt="candidate.relative_path"
@@ -121,12 +121,12 @@ async function applySelection() {
             <span class="pc-local-media-review__evidence">
               {{ candidate.relative_path }}
             </span>
-            <RTag :text="candidate.image_type.toUpperCase()" />
+            <ZATag :text="candidate.image_type.toUpperCase()" />
           </button>
         </div>
 
         <div class="pc-local-media-review__roles">
-          <RBtn
+          <ZABtn
             v-for="role in [
               'cover',
               'background',
@@ -139,20 +139,20 @@ async function applySelection() {
             @click="selectedRole = role"
           >
             {{ roleLabel(role) }}
-          </RBtn>
+          </ZABtn>
         </div>
 
-        <RBtn
+        <ZABtn
           data-testid="apply-local-artwork"
           :disabled="!canApply || applying"
           :loading="applying"
           @click="applySelection"
         >
           {{ t("common.apply") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

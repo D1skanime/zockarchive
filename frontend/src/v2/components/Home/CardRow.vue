@@ -8,9 +8,9 @@
 // only when the track actually overflows in that direction.
 //
 // The icon slot sizes to its content — whatever size the caller's inner
-// RIcon renders at drives the layout, and the title always stays
+// ZAIcon renders at drives the layout, and the title always stays
 // vertically centred with it (flex align-items:center on the head).
-import { RBtn, RTag } from "@v2/lib";
+import { ZABtn, ZATag } from "@v2/lib";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -153,12 +153,12 @@ onBeforeUnmount(() => {
           {{ title }}
         </slot>
       </h2>
-      <RTag v-if="count != null" :text="count" size="x-small" />
+      <ZATag v-if="count != null" :text="count" size="x-small" />
       <slot name="title-append" />
     </header>
 
     <div class="card-row__wrap">
-      <RBtn
+      <ZABtn
         v-if="canLeft"
         icon="mdi-chevron-left"
         variant="translucent"
@@ -166,7 +166,7 @@ onBeforeUnmount(() => {
         :aria-label="t('common.scroll-left')"
         @click="scrollBy(-1)"
       />
-      <RBtn
+      <ZABtn
         v-if="canRight"
         icon="mdi-chevron-right"
         variant="translucent"
@@ -201,7 +201,7 @@ onBeforeUnmount(() => {
   color: var(--r-color-fg-secondary);
 }
 
-/* Icon slot — sizes to its content so the caller's RIcon `size` drives
+/* Icon slot — sizes to its content so the caller's ZAIcon `size` drives
    the layout. Flex align-items:center on the head keeps it vertically
    centred with the title at any icon size. */
 .card-row__icon {
@@ -233,10 +233,10 @@ onBeforeUnmount(() => {
   scroll-behavior: smooth;
 }
 
-/* Vertically centred, anchored to the row edges. The RBtn surface gets
+/* Vertically centred, anchored to the row edges. The ZABtn surface gets
    a dark scrim so the arrow has contrast over busy cover thumbnails —
    translucent alone reads too faint without a brand color. Override
-   RBtn's at-rest opacity (0.7) so the 85% reading comes purely from
+   ZABtn's at-rest opacity (0.7) so the 85% reading comes purely from
    the white-secondary token applied to the icon. */
 .card-row__arrow {
   position: absolute;

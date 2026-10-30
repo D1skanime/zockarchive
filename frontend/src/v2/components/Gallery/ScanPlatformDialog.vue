@@ -10,14 +10,14 @@
 // platforms" — that's a discovery scan against the whole library,
 // not a single platform).
 import {
-  RAlert,
-  RAvatar,
-  RBtn,
-  RDialog,
-  RPlatformIcon,
-  RSelect,
-  RSwitch,
-  RTooltip,
+  ZAAlert,
+  ZAAvatar,
+  ZABtn,
+  ZADialog,
+  ZAPlatformIcon,
+  ZASelect,
+  ZASwitch,
+  ZATooltip,
 } from "@v2/lib";
 import { useLocalStorage } from "@vueuse/core";
 import { storeToRefs } from "pinia";
@@ -323,7 +323,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     :model-value="modelValue"
     icon="mdi-magnify-scan"
     :width="560"
@@ -341,7 +341,7 @@ onBeforeUnmount(() => {
              scan-launching surfaces read as siblings. -->
         <div class="r-v2-scan-plat__head">
           <div class="r-v2-scan-plat__icon">
-            <RPlatformIcon
+            <ZAPlatformIcon
               :slug="platform.slug"
               :fs-slug="platform.fs_slug"
               :alt="platform.display_name"
@@ -368,7 +368,7 @@ onBeforeUnmount(() => {
             <span class="r-v2-scan-plat__providers-group-label">
               {{ t("scan.section-providers-general") }}
             </span>
-            <RSelect
+            <ZASelect
               v-model="metadataSources"
               :items="generalProviders"
               :label="t('scan.section-providers-general')"
@@ -386,25 +386,29 @@ onBeforeUnmount(() => {
               @update:all-selected="generalAllSelected = $event"
             >
               <template #chip="{ item }">
-                <RTooltip :text="item.raw.name" location="bottom">
+                <ZATooltip :text="item.raw.name" location="bottom">
                   <template #activator="{ props: tipProps }">
                     <span
                       v-bind="tipProps"
                       class="r-v2-scan-plat__provider-chip"
                       :aria-label="item.raw.name"
                     >
-                      <RAvatar
+                      <ZAAvatar
                         :image="item.raw.logo_path"
                         size="18"
                         rounded="sm"
                       />
                     </span>
                   </template>
-                </RTooltip>
+                </ZATooltip>
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <RAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
+                  <ZAAvatar
+                    :image="item.raw.logo_path"
+                    size="22"
+                    rounded="sm"
+                  />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -431,7 +435,7 @@ onBeforeUnmount(() => {
                     >
                       {{ t("platform.local-source") }}
                     </span>
-                    <RSwitch
+                    <ZASwitch
                       v-model="launchboxRemoteEnabled"
                       :disabled="!isLaunchboxSelected"
                     />
@@ -446,7 +450,7 @@ onBeforeUnmount(() => {
                   </div>
                 </li>
               </template>
-            </RSelect>
+            </ZASelect>
           </div>
 
           <div
@@ -456,7 +460,7 @@ onBeforeUnmount(() => {
             <span class="r-v2-scan-plat__providers-group-label">
               {{ t("scan.section-providers-specific") }}
             </span>
-            <RSelect
+            <ZASelect
               v-model="metadataSources"
               :items="specificProviders"
               :label="t('scan.section-providers-specific')"
@@ -474,25 +478,29 @@ onBeforeUnmount(() => {
               @update:all-selected="specificAllSelected = $event"
             >
               <template #chip="{ item }">
-                <RTooltip :text="item.raw.name" location="bottom">
+                <ZATooltip :text="item.raw.name" location="bottom">
                   <template #activator="{ props: tipProps }">
                     <span
                       v-bind="tipProps"
                       class="r-v2-scan-plat__provider-chip"
                       :aria-label="item.raw.name"
                     >
-                      <RAvatar
+                      <ZAAvatar
                         :image="item.raw.logo_path"
                         size="18"
                         rounded="sm"
                       />
                     </span>
                   </template>
-                </RTooltip>
+                </ZATooltip>
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <RAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
+                  <ZAAvatar
+                    :image="item.raw.logo_path"
+                    size="22"
+                    rounded="sm"
+                  />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -506,7 +514,7 @@ onBeforeUnmount(() => {
                   </div>
                 </li>
               </template>
-            </RSelect>
+            </ZASelect>
           </div>
         </section>
 
@@ -521,7 +529,7 @@ onBeforeUnmount(() => {
             role="group"
             :aria-label="t('rom.hash-matchers')"
           >
-            <RTooltip
+            <ZATooltip
               v-for="matcher in hashMatchers"
               :key="matcher.value"
               :text="
@@ -539,13 +547,13 @@ onBeforeUnmount(() => {
                     'r-v2-scan-plat__matcher--off': !matcher.switchEnabled,
                   }"
                 >
-                  <RAvatar
+                  <ZAAvatar
                     :image="matcher.logo"
                     size="16"
                     rounded="sm"
                     class="r-v2-scan-plat__matcher-logo"
                   />
-                  <RSwitch
+                  <ZASwitch
                     :model-value="isHashMatcherOn(matcher)"
                     :disabled="!matcher.switchEnabled"
                     :aria-label="matcher.name"
@@ -555,7 +563,7 @@ onBeforeUnmount(() => {
                   />
                 </div>
               </template>
-            </RTooltip>
+            </ZATooltip>
           </div>
         </section>
 
@@ -565,7 +573,7 @@ onBeforeUnmount(() => {
           <h3 class="r-v2-scan-plat__section-title">
             {{ t("scan.section-scan-type") }}
           </h3>
-          <RSelect
+          <ZASelect
             v-model="scanType"
             :items="scanOptions"
             :label="t('scan.scan-options')"
@@ -584,10 +592,10 @@ onBeforeUnmount(() => {
                 </div>
               </li>
             </template>
-          </RSelect>
+          </ZASelect>
         </section>
 
-        <RAlert
+        <ZAAlert
           v-if="!calculateHashes"
           type="warning"
           density="compact"
@@ -595,16 +603,16 @@ onBeforeUnmount(() => {
           class="r-v2-scan-plat__hint"
         >
           {{ t("scan.hash-calculation-disabled") }}
-        </RAlert>
+        </ZAAlert>
       </div>
     </template>
 
     <template #footer>
-      <RBtn variant="text" @click="closeDialog">
+      <ZABtn variant="text" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <span class="r-v2-scan-plat__footer-spacer" />
-      <RBtn
+      <ZABtn
         variant="translucent"
         color="primary"
         prepend-icon="mdi-magnify-scan"
@@ -614,9 +622,9 @@ onBeforeUnmount(() => {
         @click="onScan"
       >
         {{ t("scan.scan", "Scan") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

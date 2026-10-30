@@ -7,14 +7,14 @@
 // The icon swaps between off / low / medium / high based on the
 // current volume so the button reads as a level indicator at a
 // glance. Clicking the button toggles mute; the slider lives inside
-// an `RMenu` opened on hover with a horizontal pill layout that
+// an `ZAMenu` opened on hover with a horizontal pill layout that
 // matches v2's surface vocabulary (glass panel + brand-coloured fill).
-import { RMenu, RSlider } from "@v2/lib";
+import { ZAMenu, ZASlider } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import useSoundtrackPlayer from "@/v2/data/adapters/legacy/stores/soundtrackPlayer";
-import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
+import ZABtn from "@/v2/lib/primitives/ZABtn/ZABtn.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -44,14 +44,14 @@ const sliderValue = computed({
 </script>
 
 <template>
-  <RMenu
+  <ZAMenu
     open-on-hover
     :close-on-content-click="false"
     location="top"
     :offset="6"
   >
     <template #activator="{ props: activatorProps }">
-      <RBtn
+      <ZABtn
         v-bind="activatorProps"
         :icon="icon"
         variant="text"
@@ -61,7 +61,7 @@ const sliderValue = computed({
       />
     </template>
     <div class="r-v2-volume">
-      <RSlider
+      <ZASlider
         v-model="sliderValue"
         :min="0"
         :max="100"
@@ -72,7 +72,7 @@ const sliderValue = computed({
       />
       <span class="r-v2-volume__value">{{ sliderValue }}</span>
     </div>
-  </RMenu>
+  </ZAMenu>
 </template>
 
 <style scoped>

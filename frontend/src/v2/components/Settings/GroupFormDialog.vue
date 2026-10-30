@@ -4,7 +4,7 @@
 // alongside the groups table in Administration. On save it refetches the
 // shared permissionGroups store so every consumer (table, user dialogs)
 // reflects the change immediately.
-import { RBtn, RIcon, RSwitch, RTextField } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASwitch, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -15,7 +15,7 @@ import permissionsApi from "@/v2/data/adapters/legacy/services/api/permissions";
 import platformApi from "@/v2/data/adapters/legacy/services/api/platform";
 import storePermissionGroups from "@/v2/data/adapters/legacy/stores/permissionGroups";
 import type { Platform } from "@/v2/data/adapters/legacy/stores/platforms";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 import { GROUP_COLOR_PALETTE } from "@/v2/utils/groupColor";
 import HiddenGamesPicker from "./HiddenGamesPicker.vue";
 import HiddenPlatformsPicker from "./HiddenPlatformsPicker.vue";
@@ -185,7 +185,7 @@ async function save() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-shield-lock-outline"
     :width="720"
@@ -203,31 +203,31 @@ async function save() {
     <template #content>
       <div class="r-v2-group-dialog__form">
         <p v-if="isSystem" class="r-v2-group-dialog__sys-warn">
-          <RIcon icon="mdi-alert-outline" size="14" />
+          <ZAIcon icon="mdi-alert-outline" size="14" />
           {{ t("settings.group-system-warning") }}
         </p>
 
-        <RTextField v-model="name" prefix-label="stacked" required clearable>
+        <ZATextField v-model="name" prefix-label="stacked" required clearable>
           <template #prefix-label>
-            <RIcon icon="mdi-label-outline" size="14" />
+            <ZAIcon icon="mdi-label-outline" size="14" />
             {{ t("common.name") }}
           </template>
-        </RTextField>
+        </ZATextField>
 
-        <RTextField
+        <ZATextField
           v-model="description"
           prefix-label="stacked"
           multiline
           :rows="2"
         >
           <template #prefix-label>
-            <RIcon icon="mdi-text" size="14" />
+            <ZAIcon icon="mdi-text" size="14" />
             {{ t("settings.description") }}
           </template>
-        </RTextField>
+        </ZATextField>
 
         <div class="r-v2-group-dialog__default">
-          <RSwitch
+          <ZASwitch
             v-model="isDefault"
             :label="t('settings.group-is-default')"
           />
@@ -241,7 +241,7 @@ async function save() {
             {{ t("settings.group-color") }}
           </span>
           <div class="r-v2-group-dialog__swatches">
-            <RBtn
+            <ZABtn
               v-for="(swatch, i) in palette"
               :key="swatch"
               variant="text"
@@ -254,13 +254,13 @@ async function save() {
               :aria-pressed="color === swatch"
               @click="color = swatch"
             >
-              <RIcon
+              <ZAIcon
                 v-if="color === swatch"
                 icon="mdi-check"
                 size="14"
                 class="r-v2-group-dialog__swatch-check"
               />
-            </RBtn>
+            </ZABtn>
           </div>
         </div>
 
@@ -294,9 +294,11 @@ async function save() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="show = false">{{ t("common.cancel") }}</RBtn>
+      <ZABtn variant="text" @click="show = false">{{
+        t("common.cancel")
+      }}</ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         :loading="submitting"
@@ -304,9 +306,9 @@ async function save() {
         @click="save"
       >
         {{ t("common.apply") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

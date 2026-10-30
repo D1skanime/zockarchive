@@ -4,8 +4,8 @@
 // against rich mock fixtures so the design can be evaluated end to
 // end without spinning up a ROM.
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { RCard, RSliderBtnGroup } from "@v2/lib";
-import type { SliderBtnGroupItem } from "@v2/lib/primitives/RSliderBtnGroup/types";
+import { ZACard, ZASliderBtnGroup } from "@v2/lib";
+import type { SliderBtnGroupItem } from "@v2/lib/primitives/ZASliderBtnGroup/types";
 import { computed, ref } from "vue";
 import type { SaveSchema, StateSchema } from "@/__generated__";
 import { compositionParameters } from "@/v2/storybook/compositionInventory";
@@ -155,7 +155,13 @@ function renderPanel(
   tab: AssetTab,
 ) {
   return {
-    components: { AssetList, AssetPreview, AssetStrip, RCard, RSliderBtnGroup },
+    components: {
+      AssetList,
+      AssetPreview,
+      AssetStrip,
+      ZACard,
+      ZASliderBtnGroup,
+    },
     setup() {
       const activeTab = ref<AssetTab>(tab);
       const selectedSaveId = ref<number | null>(saves[0]?.id ?? null);
@@ -221,7 +227,7 @@ function renderPanel(
       };
     },
     template: `
-      <RCard
+      <ZACard
         variant="flat"
         style="
           background: var(--r-color-bg-elevated);
@@ -235,7 +241,7 @@ function renderPanel(
         "
       >
         <div style="padding:14px 14px 0;display:flex;justify-content:center">
-          <RSliderBtnGroup
+          <ZASliderBtnGroup
             variant="tab"
             :model-value="activeTab"
             :items="tabs"
@@ -289,7 +295,7 @@ function renderPanel(
             @select="pick"
           />
         </div>
-      </RCard>
+      </ZACard>
     `,
   };
 }

@@ -10,7 +10,7 @@
 //
 // Back and spine are persisted locally only when the user enabled the
 // `box2d_back` / `box2d_side` media types in `scan.media`, so `complete`
-// is false for most libraries until they opt in and re-scan. RBox3D is
+// is false for most libraries until they opt in and re-scan. ZABox3D is
 // only mounted when `complete` is true; otherwise the surface keeps the
 // flat cover.
 import {

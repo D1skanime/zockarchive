@@ -10,11 +10,11 @@
 // this section sits flush in the page; only the Summary section above
 // keeps a surface.
 import {
-  RIcon,
-  RPlatformIcon,
-  RProgressLinear,
-  RSliderBtnGroup,
-  RTextField,
+  ZAIcon,
+  ZAPlatformIcon,
+  ZAProgressLinear,
+  ZASliderBtnGroup,
+  ZATextField,
 } from "@v2/lib";
 import type { SliderBtnGroupItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
@@ -154,7 +154,7 @@ function coveragePercent(matched: number, total: number): string {
 <template>
   <section class="r-v2-plat-stats-section">
     <div class="r-v2-plat-stats__toolbar">
-      <RTextField
+      <ZATextField
         :model-value="searchQuery"
         :placeholder="t('settings.search-platforms')"
         density="comfortable"
@@ -165,10 +165,10 @@ function coveragePercent(matched: number, total: number): string {
         @update:model-value="(v) => (searchQuery = (v as string) ?? '')"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-magnify" size="16" />
+          <ZAIcon icon="mdi-magnify" size="16" />
         </template>
-      </RTextField>
-      <RSliderBtnGroup
+      </ZATextField>
+      <ZASliderBtnGroup
         :model-value="orderBy"
         :items="orderItems"
         variant="segmented"
@@ -184,7 +184,7 @@ function coveragePercent(matched: number, total: number): string {
         :key="platform.id"
         class="r-v2-plat-stats__row"
       >
-        <RPlatformIcon
+        <ZAPlatformIcon
           :slug="platform.slug"
           :name="platform.name"
           :fs-slug="platform.fs_slug"
@@ -275,7 +275,7 @@ function coveragePercent(matched: number, total: number): string {
             {{ platformPercentage(platform.fs_size_bytes).toFixed(1) }}%
           </div>
         </div>
-        <RProgressLinear
+        <ZAProgressLinear
           :model-value="platformPercentage(platform.fs_size_bytes)"
           :height="3"
           :rounded="false"
@@ -284,7 +284,7 @@ function coveragePercent(matched: number, total: number): string {
         />
       </div>
       <div v-if="sortedPlatforms.length === 0" class="r-v2-plat-stats__empty">
-        <RIcon icon="mdi-folder-question" size="22" />
+        <ZAIcon icon="mdi-folder-question" size="22" />
         <span>{{
           searchQuery.trim()
             ? t("settings.no-matching-platforms")

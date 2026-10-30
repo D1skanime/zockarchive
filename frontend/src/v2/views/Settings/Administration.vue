@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Administration — v2-native page chrome for the admin-only sections.
-// Uses the shared `RTabNav` primitive (same one Library Management
+// Uses the shared `ZATabNav` primitive (same one Library Management
 // uses) to expose Users / Groups / Tasks as sibling tabs, keeping
 // the `?tab=` query param so deep links survive a reload.
 //
@@ -8,7 +8,7 @@
 // `tasks.run` for the Tasks tab. Users tab is always visible to anyone
 // who can reach this route (route-level guard already checks
 // `app.admin`).
-import { RTabNav, type RTabNavItem } from "@v2/lib";
+import { ZATabNav, type RTabNavItem } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -99,7 +99,7 @@ const tabs = computed<RTabNavItem[]>(() => {
   return items;
 });
 
-// Bridge between RTabNav's string modelValue and our Tab union.
+// Bridge between ZATabNav's string modelValue and our Tab union.
 const tabModel = computed<string>({
   get: () => tab.value,
   set: (v) => {
@@ -110,7 +110,7 @@ const tabModel = computed<string>({
 
 <template>
   <div class="r-v2-section-stack">
-    <RTabNav v-model="tabModel" :items="tabs" />
+    <ZATabNav v-model="tabModel" :items="tabs" />
 
     <UsersSection v-if="tab === 'users'" />
     <PermissionGroupsSection v-else-if="tab === 'groups'" />

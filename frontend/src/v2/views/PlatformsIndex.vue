@@ -14,7 +14,7 @@
 // blindly. When the global groupBy lands on a value with no usable
 // data on the loaded platforms, the view falls through to flat — the
 // toolbar's mode is the user's intent, not a hard requirement.
-import { RDivider, RLetterHeading, RSkeletonBlock } from "@v2/lib";
+import { ZADivider, ZALetterHeading, ZASkeletonBlock } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -467,7 +467,7 @@ const groupedBuckets = computed<Bucket[] | null>(() => {
   <IndexShell :list-mode="layout === 'list'">
     <template #header>
       <PageHeader :title="t('common.platforms')" :count="totalCount" />
-      <RDivider class="r-v2-pidx__header-divider" />
+      <ZADivider class="r-v2-pidx__header-divider" />
     </template>
 
     <template #toolbar>
@@ -501,7 +501,7 @@ const groupedBuckets = computed<Bucket[] | null>(() => {
         v-if="fetchingPlatforms && !allPlatforms.length"
         class="r-v2-pidx__grid"
       >
-        <RSkeletonBlock
+        <ZASkeletonBlock
           v-for="n in 16"
           :key="`sk-${n}`"
           width="100%"
@@ -537,12 +537,12 @@ const groupedBuckets = computed<Bucket[] | null>(() => {
         />
       </div>
 
-      <!-- Grid mode, grouped — letter uses RLetterHeading (large
+      <!-- Grid mode, grouped — letter uses ZALetterHeading (large
            single-character glyph); family / category / generation use
            a compact section heading so multi-word labels read cleanly. -->
       <div v-else-if="groupedBuckets">
         <template v-for="g in groupedBuckets" :key="g.key">
-          <RLetterHeading v-if="groupBy === 'letter'" :label="g.label" />
+          <ZALetterHeading v-if="groupBy === 'letter'" :label="g.label" />
           <h3 v-else class="r-v2-pidx__group-heading">{{ g.label }}</h3>
           <div class="r-v2-pidx__grid">
             <PlatformTile
@@ -599,7 +599,7 @@ const groupedBuckets = computed<Bucket[] | null>(() => {
 
 /* Section heading used by family / category / generation grouping —
    compact uppercase label with the same vocabulary as
-   RLetterHeading's metadata, so the two heading styles read as
+   ZALetterHeading's metadata, so the two heading styles read as
    siblings instead of competing surfaces. The single bottom margin
    creates breathing room above the grid; vertical rhythm between
    sibling sections lives on the heading's `margin-top`. */

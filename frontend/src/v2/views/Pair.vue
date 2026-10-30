@@ -5,7 +5,7 @@
 //
 // The token-exchange flow is the
 // contract with the client device and must not drift.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -102,7 +102,7 @@ async function copyCode() {
 
     <div v-else-if="status === 'error'" class="r-v2-pair__state">
       <div class="r-v2-pair__icon-wrap r-v2-pair__icon-wrap--danger">
-        <RIcon icon="mdi-alert-circle" size="32" />
+        <ZAIcon icon="mdi-alert-circle" size="32" />
       </div>
       <p class="r-v2-pair__body">
         {{ errorMessage }}
@@ -111,7 +111,7 @@ async function copyCode() {
 
     <div v-else class="r-v2-pair__state">
       <div class="r-v2-pair__icon-wrap">
-        <RIcon icon="mdi-key-variant" size="32" />
+        <ZAIcon icon="mdi-key-variant" size="32" />
       </div>
       <p class="r-v2-pair__body">
         {{ t("settings.pair-enter-code-prompt") }}
@@ -122,14 +122,14 @@ async function copyCode() {
       >
         {{ formattedCode }}
       </div>
-      <RBtn
+      <ZABtn
         variant="translucent"
         color="primary"
         prepend-icon="mdi-content-copy"
         @click="copyCode"
       >
         {{ t("common.copy-code") }}
-      </RBtn>
+      </ZABtn>
       <p class="r-v2-pair__hint">
         {{ t("settings.pair-expires-shortly") }}
       </p>

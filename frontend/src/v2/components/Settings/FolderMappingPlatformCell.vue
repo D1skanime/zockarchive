@@ -12,7 +12,7 @@
 // The full supported-platforms list is owned by the parent
 // (`PlatformsStatsSection` / `FolderMappingsSection`) — fetch logic
 // stays out of this cell.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import CachedPlatformIcon from "@/v2/components/shared/CachedPlatformIcon.vue";
@@ -107,7 +107,7 @@ const modelSlug = computed({
     />
     <span v-if="row.slug" class="r-v2-fmpc__name">{{ row.displayName }}</span>
     <span v-else class="r-v2-fmpc__placeholder">—</span>
-    <RIcon
+    <ZAIcon
       v-if="!row.slug"
       icon="mdi-help-circle-outline"
       size="14"
@@ -117,7 +117,7 @@ const modelSlug = computed({
 </template>
 
 <style scoped>
-/* Lock the field to the column's width — PlatformSelect / RSelect
+/* Lock the field to the column's width — PlatformSelect / ZASelect
    size their inner field to content by default, which would make each
    row's cell as wide as its platform name. The visible width then
    shifts as the user scrolls the table (different rows visible,

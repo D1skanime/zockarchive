@@ -10,10 +10,10 @@ describe("findNativeControlViolations", () => {
     );
 
     expect(violations).toEqual([
-      "lib/example/RExample.vue:2 native <button>; use RBtn or document an exact semantic exception",
-      "lib/example/RExample.vue:3 native <input>; use RTextField or document an exact semantic exception",
-      "lib/example/RExample.vue:4 native <select>; use RSelect or document an exact semantic exception",
-      "lib/example/RExample.vue:5 native <textarea>; use RTextField or document an exact semantic exception",
+      "lib/example/RExample.vue:2 native <button>; use ZABtn or document an exact semantic exception",
+      "lib/example/RExample.vue:3 native <input>; use ZATextField or document an exact semantic exception",
+      "lib/example/RExample.vue:4 native <select>; use ZASelect or document an exact semantic exception",
+      "lib/example/RExample.vue:5 native <textarea>; use ZATextField or document an exact semantic exception",
     ]);
   });
 
@@ -31,7 +31,7 @@ describe("findNativeControlViolations", () => {
         new Set(["lib/example/RExample.vue|button|3"]),
       ),
     ).toEqual([
-      "lib/example/RExample.vue:4 native <button>; use RBtn or document an exact semantic exception",
+      "lib/example/RExample.vue:4 native <button>; use ZABtn or document an exact semantic exception",
     ]);
   });
 });

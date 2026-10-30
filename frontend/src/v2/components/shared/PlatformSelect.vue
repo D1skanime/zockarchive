@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// PlatformSelect — shared composite that wraps RSelect with the
+// PlatformSelect — shared composite that wraps ZASelect with the
 // platform-row visual language used across v2 (icon + display name,
 // optional category / family / missing-fs / rom-count meta).
 //
@@ -18,7 +18,7 @@
 // drive rendering from external state (FolderMapping reads from `row`
 // rather than `items` so the cell still renders during loading or
 // when the row points at a slug not in the catalogue).
-import { RAvatar, RIcon, RPlatformIcon, RSelect, RTag } from "@v2/lib";
+import { ZAAvatar, ZAIcon, ZAPlatformIcon, ZASelect, ZATag } from "@v2/lib";
 import { computed, useSlots } from "vue";
 import { useI18n } from "vue-i18n";
 import { platformCategoryToIcon } from "@/utils";
@@ -86,7 +86,7 @@ interface Props {
   multiple?: boolean;
   searchable?: boolean;
   clearable?: boolean;
-  /** When `multiple`, render each selection as a small icon-only RTag
+  /** When `multiple`, render each selection as a small icon-only ZATag
    *  with an automatic "+N" overflow pill. Defaults to `true` so the
    *  visual is consistent across every multi-platform picker; pass
    *  `:chips="false"` for the comma-separated title fallback. */
@@ -146,7 +146,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 const slots = useSlots();
 
-// Slots we forward verbatim to RSelect. `selection`, `item`, and
+// Slots we forward verbatim to ZASelect. `selection`, `item`, and
 // `chip` are handled explicitly above so the caller can choose to
 // override the platform-row defaults or use the consumer's template
 // wholesale.
@@ -173,7 +173,7 @@ function onUpdate(v: unknown) {
 </script>
 
 <template>
-  <RSelect
+  <ZASelect
     v-bind="$attrs"
     :model-value="modelValue"
     :items="items"
@@ -201,7 +201,7 @@ function onUpdate(v: unknown) {
     <template #selection="slotProps">
       <slot name="selection" v-bind="slotProps">
         <span class="r-v2-platsel__selection">
-          <RPlatformIcon
+          <ZAPlatformIcon
             v-if="platformForValue(slotProps.item.value)"
             :slug="platformForValue(slotProps.item.value)!.slug"
             :fs-slug="platformForValue(slotProps.item.value)!.fs_slug"
@@ -215,14 +215,14 @@ function onUpdate(v: unknown) {
     </template>
 
     <!-- Chip — when `chips` is on (multi-select) the activator
-         collapses each selection into a small RTag. PlatformSelect
-         renders just the platform icon inside the chip; RSelect
+         collapses each selection into a small ZATag. PlatformSelect
+         renders just the platform icon inside the chip; ZASelect
          keeps providing the "+N" overflow pill automatically. The
-         tooltip on RPlatformIcon serves the same role the title
+         tooltip on ZAPlatformIcon serves the same role the title
          text used to (hover the chip → see the platform name). -->
     <template #chip="slotProps">
       <slot name="chip" v-bind="slotProps">
-        <RPlatformIcon
+        <ZAPlatformIcon
           v-if="platformForValue(slotProps.item.value)"
           :slug="platformForValue(slotProps.item.value)!.slug"
           :fs-slug="platformForValue(slotProps.item.value)!.fs_slug"
@@ -239,7 +239,7 @@ function onUpdate(v: unknown) {
     <template #item="slotProps">
       <slot name="item" v-bind="slotProps">
         <li v-bind="slotProps.props" class="r-v2-platsel__row">
-          <RPlatformIcon
+          <ZAPlatformIcon
             :key="(slotProps.item.raw as Platform).slug"
             :slug="(slotProps.item.raw as Platform).slug"
             :fs-slug="(slotProps.item.raw as Platform).fs_slug"
@@ -250,12 +250,12 @@ function onUpdate(v: unknown) {
           <span class="r-select__item-title">{{ slotProps.item.title }}</span>
           <template v-if="showMeta">
             <span class="r-v2-platsel__meta">
-              <RTag
+              <ZATag
                 size="x-small"
                 class="r-v2-platsel__fs-slug"
                 :text="(slotProps.item.raw as Platform).fs_slug"
               />
-              <RTag
+              <ZATag
                 v-if="
                   markUnscanned &&
                   unscannedLabel &&
@@ -267,7 +267,7 @@ function onUpdate(v: unknown) {
                 class="r-v2-platsel__unscanned"
                 :text="unscannedLabel"
               />
-              <RIcon
+              <ZAIcon
                 v-if="(slotProps.item.raw as Platform).category"
                 :icon="
                   platformCategoryToIcon(
@@ -300,7 +300,7 @@ function onUpdate(v: unknown) {
               v-if="(slotProps.item.raw as Platform).is_identified"
               class="r-v2-platsel__scrappers"
             >
-              <RAvatar
+              <ZAAvatar
                 v-for="s in activeScrappers(slotProps.item.raw as Platform)"
                 :key="s.key as string"
                 :image="s.logo"
@@ -311,7 +311,7 @@ function onUpdate(v: unknown) {
                 class="r-v2-platsel__scrapper"
               />
             </span>
-            <RTag
+            <ZATag
               v-else
               size="x-small"
               tone="danger"
@@ -319,7 +319,7 @@ function onUpdate(v: unknown) {
               class="r-v2-platsel__not-identified"
               :text="t('scan.not-identified').toUpperCase()"
             />
-            <RTag
+            <ZATag
               class="r-v2-platsel__count"
               size="small"
               :text="String((slotProps.item.raw as Platform).rom_count)"
@@ -341,7 +341,7 @@ function onUpdate(v: unknown) {
     >
       <slot :name="name" v-bind="slotProps ?? {}" />
     </template>
-  </RSelect>
+  </ZASelect>
 </template>
 
 <style scoped>

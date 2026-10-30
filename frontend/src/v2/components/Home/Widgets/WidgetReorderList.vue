@@ -7,7 +7,7 @@
 // The list shows every registered widget — disabled ones (gated off
 // in their per-widget toggle) are still draggable so users can pick
 // their preferred order before enabling them.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import {
@@ -105,13 +105,13 @@ function onDragEnd() {
       @drop="onDrop($event, i)"
       @dragend="onDragEnd"
     >
-      <RIcon
+      <ZAIcon
         icon="mdi-drag-vertical"
         size="14"
         class="r-v2-widget-reorder__handle"
         :aria-label="t('settings.widget-reorder-drag')"
       />
-      <RIcon
+      <ZAIcon
         v-if="entryFor(id)?.icon"
         :icon="entryFor(id)!.icon"
         size="14"

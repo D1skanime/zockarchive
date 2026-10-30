@@ -2,13 +2,13 @@
 // Scan UI for library discovery, metadata-only, media-only, and hash operations.
 // Scan socket events are wired globally by AppLayout; this view owns presentation.
 import {
-  RAlert,
-  RAvatar,
-  RBtn,
-  RIcon,
-  RSelect,
-  RSwitch,
-  RTooltip,
+  ZAAlert,
+  ZAAvatar,
+  ZABtn,
+  ZAIcon,
+  ZASelect,
+  ZASwitch,
+  ZATooltip,
 } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from "vue";
@@ -329,7 +329,7 @@ function stopScan() {
       v-if="!mappingReady"
       class="r-v2-scan-card r-v2-scan-card--mapping"
     >
-      <RIcon icon="mdi-folder-key-outline" size="48" />
+      <ZAIcon icon="mdi-folder-key-outline" size="48" />
       <h2>
         {{ t("storage.administration") }}
       </h2>
@@ -342,21 +342,21 @@ function stopScan() {
         }}
       </p>
       <div class="r-v2-scan-card__mapping-actions">
-        <RBtn
+        <ZABtn
           variant="flat"
           color="primary"
           :to="mappingRoute"
           prepend-icon="mdi-folder-cog-outline"
         >
           {{ t("settings.add-folder-mapping") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           v-if="mappingReadiness === 'error'"
           variant="outlined"
           @click="loadMappingReadiness"
         >
           {{ t("common.retry", "Retry") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </section>
 
@@ -367,7 +367,7 @@ function stopScan() {
       :aria-label="t('scan.title')"
     >
       <div class="r-v2-scan-card__head">
-        <RBtn
+        <ZABtn
           icon="mdi-information-outline"
           variant="text"
           size="small"
@@ -422,7 +422,7 @@ function stopScan() {
               <span class="r-v2-scan-card__providers-group-label">
                 {{ t("scan.section-providers-general") }}
               </span>
-              <RSelect
+              <ZASelect
                 v-model="metadataSources"
                 :items="generalProviders"
                 :label="t('scan.section-providers-general')"
@@ -439,25 +439,25 @@ function stopScan() {
                 @update:all-selected="generalAllSelected = $event"
               >
                 <template #chip="{ item }">
-                  <RTooltip :text="item.raw.name" location="bottom">
+                  <ZATooltip :text="item.raw.name" location="bottom">
                     <template #activator="{ props: tipProps }">
                       <span
                         v-bind="tipProps"
                         class="r-v2-scan-card__provider-chip"
                         :aria-label="item.raw.name"
                       >
-                        <RAvatar
+                        <ZAAvatar
                           :image="item.raw.logo_path"
                           size="18"
                           rounded="sm"
                         />
                       </span>
                     </template>
-                  </RTooltip>
+                  </ZATooltip>
                 </template>
                 <template #item="{ props: itemProps, item }">
                   <li v-bind="itemProps">
-                    <RAvatar
+                    <ZAAvatar
                       :image="item.raw.logo_path"
                       size="22"
                       rounded="sm"
@@ -491,7 +491,7 @@ function stopScan() {
                       >
                         {{ t("rom.launchbox-local") }}
                       </span>
-                      <RSwitch
+                      <ZASwitch
                         v-model="launchboxRemoteEnabled"
                         :disabled="!isLaunchboxSelected"
                       />
@@ -507,7 +507,7 @@ function stopScan() {
                     </div>
                   </li>
                 </template>
-              </RSelect>
+              </ZASelect>
             </div>
 
             <div
@@ -517,7 +517,7 @@ function stopScan() {
               <span class="r-v2-scan-card__providers-group-label">
                 {{ t("scan.section-providers-specific") }}
               </span>
-              <RSelect
+              <ZASelect
                 v-model="metadataSources"
                 :items="specificProviders"
                 :label="t('scan.section-providers-specific')"
@@ -534,25 +534,25 @@ function stopScan() {
                 @update:all-selected="specificAllSelected = $event"
               >
                 <template #chip="{ item }">
-                  <RTooltip :text="item.raw.name" location="bottom">
+                  <ZATooltip :text="item.raw.name" location="bottom">
                     <template #activator="{ props: tipProps }">
                       <span
                         v-bind="tipProps"
                         class="r-v2-scan-card__provider-chip"
                         :aria-label="item.raw.name"
                       >
-                        <RAvatar
+                        <ZAAvatar
                           :image="item.raw.logo_path"
                           size="18"
                           rounded="sm"
                         />
                       </span>
                     </template>
-                  </RTooltip>
+                  </ZATooltip>
                 </template>
                 <template #item="{ props: itemProps, item }">
                   <li v-bind="itemProps">
-                    <RAvatar
+                    <ZAAvatar
                       :image="item.raw.logo_path"
                       size="22"
                       rounded="sm"
@@ -570,7 +570,7 @@ function stopScan() {
                     </div>
                   </li>
                 </template>
-              </RSelect>
+              </ZASelect>
             </div>
           </div>
 
@@ -584,7 +584,7 @@ function stopScan() {
               role="group"
               :aria-label="t('scan.hash-matchers')"
             >
-              <RTooltip
+              <ZATooltip
                 v-for="matcher in hashMatchers"
                 :key="matcher.value"
                 :text="
@@ -602,13 +602,13 @@ function stopScan() {
                       'r-v2-scan-card__matcher--off': !matcher.switchEnabled,
                     }"
                   >
-                    <RAvatar
+                    <ZAAvatar
                       :image="matcher.logo"
                       size="16"
                       rounded="sm"
                       class="r-v2-scan-card__matcher-logo"
                     />
-                    <RSwitch
+                    <ZASwitch
                       :model-value="isHashMatcherOn(matcher)"
                       :disabled="!matcher.switchEnabled"
                       :aria-label="matcher.name"
@@ -618,7 +618,7 @@ function stopScan() {
                     />
                   </div>
                 </template>
-              </RTooltip>
+              </ZATooltip>
             </div>
           </div>
         </section>
@@ -628,7 +628,7 @@ function stopScan() {
           <h3 class="r-v2-scan-card__section-title">
             {{ t("scan.section-scan-type") }}
           </h3>
-          <RSelect
+          <ZASelect
             v-model="scanType"
             :items="scanOptions"
             :label="t('scan.scan-options')"
@@ -648,7 +648,7 @@ function stopScan() {
                 </div>
               </li>
             </template>
-          </RSelect>
+          </ZASelect>
           <p v-if="scanType === 'quick'" class="text-body-2">
             {{ t("scan.quick-scan-help") }}
           </p>
@@ -662,7 +662,7 @@ function stopScan() {
            boundary between "config" and "actions" without a label. -->
       <footer class="r-v2-scan-card__section r-v2-scan-card__cta">
         <div class="r-v2-scan-card__hints">
-          <RAlert
+          <ZAAlert
             v-if="
               effectiveMetadataSources.length === 0 && scanType === 'update'
             "
@@ -671,8 +671,8 @@ function stopScan() {
             :icon="false"
           >
             {{ t("scan.select-one-source") }}
-          </RAlert>
-          <RAlert
+          </ZAAlert>
+          <ZAAlert
             v-if="!calculateHashes"
             type="warning"
             density="compact"
@@ -680,9 +680,9 @@ function stopScan() {
           >
             <span class="r-v2-scan-card__hash-alert">
               {{ t("scan.hash-calculation-disabled") }}
-              <RTooltip location="bottom">
+              <ZATooltip location="bottom">
                 <template #activator="{ props: tipProps }">
-                  <RIcon
+                  <ZAIcon
                     v-bind="tipProps"
                     icon="mdi-information-outline"
                     size="14"
@@ -693,12 +693,12 @@ function stopScan() {
                   class="r-v2-scan-card__hash-info-text"
                   v-html="t('scan.hashes-disabled-tooltip')"
                 />
-              </RTooltip>
+              </ZATooltip>
             </span>
-          </RAlert>
+          </ZAAlert>
         </div>
 
-        <RBtn
+        <ZABtn
           class="r-v2-scan-card__start"
           size="large"
           variant="flat"
@@ -709,16 +709,16 @@ function stopScan() {
           @click="scan()"
         >
           {{ checking ? t("scan.recovery-checking") : t("scan.scan") }}
-        </RBtn>
+        </ZABtn>
 
-        <RBtn
+        <ZABtn
           class="r-v2-scan-card__library"
           variant="outlined"
           prepend-icon="mdi-table-cog"
           :to="{ name: ROUTES.LIBRARY_MANAGEMENT }"
         >
           {{ t("common.library-management") }}
-        </RBtn>
+        </ZABtn>
       </footer>
     </section>
 
@@ -742,7 +742,7 @@ function stopScan() {
           class="r-v2-scan-live__empty"
         >
           <div class="r-v2-scan-live__empty-orb">
-            <RIcon icon="mdi-radar" size="56" />
+            <ZAIcon icon="mdi-radar" size="56" />
           </div>
           <h2 v-if="!scanning">{{ t("scan.recovery-idle") }}</h2>
           <p class="r-v2-scan-live__empty-hint">
@@ -911,7 +911,7 @@ function stopScan() {
 }
 
 /* Providers split into General / Specific groups. Each group has a
-   tiny inline caption above its RSelect — same visual rhythm as the
+   tiny inline caption above its ZASelect — same visual rhythm as the
    subsection label, indented one level deeper. */
 .r-v2-scan-card__providers-group {
   display: flex;
@@ -930,7 +930,7 @@ function stopScan() {
 
 /* Provider chip in the activator — icon-only avatar so a multi-select
    doesn't drown the field in coloured pills. The `#chip` slot renders
-   into RSelect's RTag. */
+   into ZASelect's ZATag. */
 .r-v2-scan-card__provider-chip {
   display: inline-flex;
   align-items: center;

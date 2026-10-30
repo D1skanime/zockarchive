@@ -102,10 +102,10 @@ function mountView() {
   return mount(PcDlcDetails, {
     global: {
       stubs: {
-        RBtn: {
+        ZABtn: {
           template: "<a><slot /></a>",
         },
-        REmptyState: {
+        ZAEmptyState: {
           props: ["title"],
           template: "<section><h1>{{ title }}</h1><slot /></section>",
         },

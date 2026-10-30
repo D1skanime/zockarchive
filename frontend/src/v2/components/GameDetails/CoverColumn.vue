@@ -8,10 +8,10 @@
 //
 // When the resolved boxart style is the 3D box AND the rom has the full set
 // of flat scans (front + back + spine, from ScreenScraper), the hero
-// upgrades to the interactive RBox3D the user can spin. Anything missing —
+// upgrades to the interactive ZABox3D the user can spin. Anything missing —
 // a different style, an incomplete set, or a failed image — falls straight
 // back to the flat GameCover.
-import { RBox3D } from "@v2/lib";
+import { ZABox3D } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import GameCover from "@/v2/components/shared/GameCover.vue";
@@ -44,7 +44,7 @@ const box3d = computed(() => {
 
 <template>
   <div class="r-v2-det-cover">
-    <RBox3D
+    <ZABox3D
       v-if="box3d"
       class="r-v2-det-cover__box3d"
       :front="box3d.front"

@@ -73,7 +73,7 @@ describe("brand consumers", () => {
       global: {
         stubs: {
           ProjectBrand: false,
-          RCard: { template: "<div><slot /></div>" },
+          ZACard: { template: "<div><slot /></div>" },
         },
       },
     });
@@ -107,7 +107,7 @@ describe("brand consumers", () => {
         provide: { emitter: { on: vi.fn(), off: vi.fn() } },
         stubs: {
           ProjectBrand: false,
-          RDialog: {
+          ZADialog: {
             template:
               "<section><slot name='header' /><slot name='content' /></section>",
           },
@@ -145,7 +145,7 @@ describe("rendered release identity", () => {
       global: {
         provide: { emitter: { on: vi.fn(), off: vi.fn() } },
         stubs: {
-          RDialog: { template: "<section><slot name='content' /></section>" },
+          ZADialog: { template: "<section><slot name='content' /></section>" },
         },
       },
     });
@@ -166,7 +166,7 @@ describe("rendered release identity", () => {
     } as Response);
     const open = vi.spyOn(window, "open").mockImplementation(() => null);
     const wrapper = shallowMount(NewVersionBanner, {
-      global: { stubs: { RBtn: { template: "<button><slot /></button>" } } },
+      global: { stubs: { ZABtn: { template: "<button><slot /></button>" } } },
     });
     document.dispatchEvent(new Event("network-quiesced"));
     await flushPromises();

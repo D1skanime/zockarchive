@@ -3,7 +3,7 @@
 // composite that wraps CollectionMosaic + name + count. `kind` overlays
 // "Smart" or "Virtual" badge. `variant` controls sizing ("row" = 150px
 // fixed, "grid" = fills cell).
-import { RIcon, RTooltip } from "@v2/lib";
+import { ZAIcon, ZATooltip } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -107,7 +107,7 @@ const morphStyle = computed(() =>
   >
     <div ref="coverEl" class="coll-tile__cover" :style="morphStyle">
       <CollectionMosaic :covers="covers" />
-      <RTooltip v-if="kindBadge" :text="kindBadge.label" location="top">
+      <ZATooltip v-if="kindBadge" :text="kindBadge.label" location="top">
         <template #activator="{ props: tip }">
           <span
             v-bind="tip"
@@ -115,21 +115,25 @@ const morphStyle = computed(() =>
             :class="[`coll-tile__kind--${kind}`]"
             :aria-label="kindBadge.label"
           >
-            <RIcon :icon="kindBadge.icon" size="18" />
+            <ZAIcon :icon="kindBadge.icon" size="18" />
           </span>
         </template>
-      </RTooltip>
-      <RTooltip v-if="isPrivate" :text="t('collection.private')" location="top">
+      </ZATooltip>
+      <ZATooltip
+        v-if="isPrivate"
+        :text="t('collection.private')"
+        location="top"
+      >
         <template #activator="{ props: tip }">
           <span
             v-bind="tip"
             class="coll-tile__lock"
             :aria-label="t('collection.private')"
           >
-            <RIcon icon="mdi-lock" size="18" />
+            <ZAIcon icon="mdi-lock" size="18" />
           </span>
         </template>
-      </RTooltip>
+      </ZATooltip>
     </div>
     <div class="coll-tile__name">
       {{ name }}

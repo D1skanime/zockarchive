@@ -1,5 +1,5 @@
 // scrollRestoration (v2) — remembers each route's last scrollTop on the
-// gallery views' custom scroll containers (RVirtualScroller's
+// gallery views' custom scroll containers (ZAVirtualScroller's
 // containerEl).
 //
 // Why this exists: Vue Router's built-in `scrollBehavior` only restores

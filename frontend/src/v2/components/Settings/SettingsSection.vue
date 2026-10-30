@@ -13,7 +13,7 @@
 //   • SettingsField rows (one per labeled control), or
 //   • a custom block (theme picker grid, provider grid, table).
 // The component takes no opinion — it just provides the chrome.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 
 defineOptions({ inheritAttrs: false });
 
@@ -26,7 +26,7 @@ defineProps<{
 <template>
   <section class="r-v2-settings-section">
     <header class="r-v2-settings-section__header">
-      <RIcon v-if="icon" :icon="icon" size="14" />
+      <ZAIcon v-if="icon" :icon="icon" size="14" />
       <span class="r-v2-settings-section__title">{{ title }}</span>
       <slot name="header-actions" />
     </header>

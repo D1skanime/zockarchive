@@ -7,14 +7,14 @@
 //     since they have no editable fields.
 //
 // Layout choice mirrors `Platform.vue`: `CollectionHead` (InfoPanel +
-// RTabNav) lives INSIDE the scrolling container of whichever branch
+// ZATabNav) lives INSIDE the scrolling container of whichever branch
 // is active. On Library, it rides in `GalleryShell`'s `#header` slot
 // so it scrolls away with the cards (toolbar pins below it). On
 // Settings, it sits in a plain scroll wrapper above the tab body.
 //
 // Edit + Delete moved out of the InfoPanel `#actions` kebab and into
 // the Settings tab (editable form on top, danger zone at the bottom).
-import { RDivider, type RTabNavItem } from "@v2/lib";
+import { ZADivider, type RTabNavItem } from "@v2/lib";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
@@ -423,7 +423,7 @@ async function onDelete() {
         @random="onRandomGame"
         @download="onDownload"
       />
-      <RDivider class="r-v2-coll-tabs__divider" />
+      <ZADivider class="r-v2-coll-tabs__divider" />
       <div
         v-if="editableKind && editableCollection"
         class="r-v2-coll-tabs__panel"

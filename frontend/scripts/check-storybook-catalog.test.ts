@@ -17,7 +17,7 @@ describe("Storybook-Katalogprüfung", () => {
         name: "Deutscher Story-Name",
         args: { title: "Deutscher Beispieltext", label: "Beschriftung" },
         parameters: { docs: { description: { story: "Deutsche Beschreibung" } } },
-        render: () => ({ template: \`<RBtn title="Deutscher Hinweis">Sichtbarer Text</RBtn>\` }),
+        render: () => ({ template: \`<ZABtn title="Deutscher Hinweis">Sichtbarer Text</ZABtn>\` }),
       };
     `;
 
@@ -90,5 +90,25 @@ describe("Storybook-Katalogprüfung", () => {
         },
       ]),
     ).toHaveLength(1);
+  });
+
+  it("captures bare visible string arrays supplied as story data", () => {
+    expect(
+      getVisibleStoryTextCandidates(
+        'setup: () => ({ items: ["Einzelspieler", "Mehrspieler"] })',
+        "Example.stories.ts",
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          category: "story-data",
+          text: "Einzelspieler",
+        }),
+        expect.objectContaining({
+          category: "story-data",
+          text: "Mehrspieler",
+        }),
+      ]),
+    );
   });
 });

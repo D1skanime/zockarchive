@@ -35,15 +35,15 @@ import { useSnackbar } from "@/v2/composables/useSnackbar";
 import romApi from "@/v2/data/adapters/legacy/services/api/rom";
 import sgdbApi from "@/v2/data/adapters/legacy/services/api/sgdb";
 import type { SimpleRom } from "@/v2/data/adapters/legacy/stores/roms";
-import RSelect from "@/v2/lib/forms/RSelect/RSelect.vue";
-import RSwitch from "@/v2/lib/forms/RSwitch/RSwitch.vue";
-import RTextField from "@/v2/lib/forms/RTextField/RTextField.vue";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
-import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
-import REmptyState from "@/v2/lib/primitives/REmptyState/REmptyState.vue";
-import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
-import RSpinner from "@/v2/lib/primitives/RSpinner/RSpinner.vue";
-import RCollapsible from "@/v2/lib/structural/RCollapsible/RCollapsible.vue";
+import ZASelect from "@/v2/lib/forms/ZASelect/ZASelect.vue";
+import ZASwitch from "@/v2/lib/forms/ZASwitch/ZASwitch.vue";
+import ZATextField from "@/v2/lib/forms/ZATextField/ZATextField.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
+import ZABtn from "@/v2/lib/primitives/ZABtn/ZABtn.vue";
+import ZAEmptyState from "@/v2/lib/primitives/ZAEmptyState/ZAEmptyState.vue";
+import ZAIcon from "@/v2/lib/primitives/ZAIcon/ZAIcon.vue";
+import ZASpinner from "@/v2/lib/primitives/ZASpinner/ZASpinner.vue";
+import ZACollapsible from "@/v2/lib/structural/ZACollapsible/ZACollapsible.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -265,7 +265,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-image-search-outline"
     :width="900"
@@ -278,7 +278,7 @@ function closeDialog() {
 
     <template #content>
       <div class="r-v2-sgdb__toolbar">
-        <RTextField
+        <ZATextField
           v-model="searchText"
           :placeholder="t('common.search')"
           density="comfortable"
@@ -289,10 +289,10 @@ function closeDialog() {
           @keyup.enter="doSearch"
         >
           <template #prefix-label>
-            <RIcon icon="mdi-magnify" size="16" />
+            <ZAIcon icon="mdi-magnify" size="16" />
           </template>
-        </RTextField>
-        <RBtn
+        </ZATextField>
+        <ZABtn
           variant="flat"
           color="primary"
           prepend-icon="mdi-magnify"
@@ -301,12 +301,12 @@ function closeDialog() {
           @click="doSearch"
         >
           {{ t("common.search") }}
-        </RBtn>
+        </ZABtn>
       </div>
 
       <!-- Filter bar -->
       <div v-if="hasRawResults" class="r-v2-sgdb__filters">
-        <RSelect
+        <ZASelect
           v-model="coverType"
           :items="coverTypeItems"
           density="comfortable"
@@ -315,7 +315,7 @@ function closeDialog() {
           :aria-label="t('rom.cover-type-all')"
         />
         <template v-if="hasSgdbCovers">
-          <RSelect
+          <ZASelect
             v-if="resolutionValues.length > 1"
             v-model="resolutionFilter"
             :items="resolutionItems"
@@ -324,7 +324,7 @@ function closeDialog() {
             class="r-v2-sgdb__filter"
             :aria-label="t('rom.cover-filter-resolution-all')"
           />
-          <RSelect
+          <ZASelect
             v-if="styleValues.length > 1"
             v-model="styleFilter"
             :items="styleItems"
@@ -333,7 +333,7 @@ function closeDialog() {
             class="r-v2-sgdb__filter"
             :aria-label="t('rom.cover-filter-style-all')"
           />
-          <RSelect
+          <ZASelect
             v-if="uploaderValues.length > 1"
             v-model="uploaderFilter"
             v-model:search="uploaderSearch"
@@ -354,15 +354,18 @@ function closeDialog() {
             <span class="r-v2-sgdb__sort-label">
               {{ t("rom.cover-sort-relevance") }}
             </span>
-            <RSwitch v-model="sortByVotes" :label="t('rom.cover-sort-votes')" />
+            <ZASwitch
+              v-model="sortByVotes"
+              :label="t('rom.cover-sort-votes')"
+            />
           </div>
           <div class="r-v2-sgdb__content-toggles">
-            <RSwitch v-model="showNsfw" :label="t('rom.cover-content-nsfw')" />
-            <RSwitch
+            <ZASwitch v-model="showNsfw" :label="t('rom.cover-content-nsfw')" />
+            <ZASwitch
               v-model="showHumor"
               :label="t('rom.cover-content-humor')"
             />
-            <RSwitch
+            <ZASwitch
               v-model="showEpilepsy"
               :label="t('rom.cover-content-epilepsy')"
             />
@@ -372,7 +375,7 @@ function closeDialog() {
 
       <div class="r-v2-sgdb__body">
         <div v-if="searching" class="r-v2-sgdb__loading">
-          <RSpinner :size="36" />
+          <ZASpinner :size="36" />
         </div>
 
         <div v-else-if="hasResults" class="r-v2-sgdb__results">
@@ -381,7 +384,7 @@ function closeDialog() {
                dialog was opened with a `rom` payload; the provider
                logo overlays the card so the user can read at a
                glance whose artwork they're picking. -->
-          <RCollapsible
+          <ZACollapsible
             v-if="showProviderCovers"
             :title="t('rom.metadata-providers')"
           >
@@ -410,9 +413,9 @@ function closeDialog() {
                 </span>
               </button>
             </div>
-          </RCollapsible>
+          </ZACollapsible>
 
-          <RCollapsible
+          <ZACollapsible
             v-for="game in filteredCovers"
             :key="game.name"
             :title="game.name"
@@ -444,24 +447,24 @@ function closeDialog() {
                 />
               </button>
             </div>
-          </RCollapsible>
+          </ZACollapsible>
         </div>
 
-        <REmptyState
+        <ZAEmptyState
           v-else-if="showNoFilterMatch"
           variant="boxed"
           icon="mdi-filter-remove-outline"
           :message="t('rom.no-covers-match-filters')"
         />
 
-        <REmptyState
+        <ZAEmptyState
           v-else-if="showNoServerResults"
           variant="boxed"
           icon="mdi-emoticon-confused-outline"
           :message="t('rom.no-covers-found')"
         />
 
-        <REmptyState
+        <ZAEmptyState
           v-else
           variant="boxed"
           icon="mdi-image-search-outline"
@@ -469,7 +472,7 @@ function closeDialog() {
         />
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

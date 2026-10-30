@@ -11,7 +11,7 @@
 // poll / passive DOM-event listeners / recovery watcher (idempotent). This
 // component is mounted once, under `v-if="isV2"` in PGDP.vue, so it covers both
 // the auth and main shells.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import { useServerConnection } from "@/v2/composables/useServerConnection";
 
@@ -24,7 +24,7 @@ const { isOffline, retryNow } = useServerConnection();
 <template>
   <Transition name="r-backend-banner">
     <div v-if="isOffline" class="r-backend-banner" role="alert">
-      <RIcon
+      <ZAIcon
         icon="mdi-lan-disconnect"
         size="18"
         class="r-backend-banner__icon"
@@ -32,7 +32,7 @@ const { isOffline, retryNow } = useServerConnection();
       <span class="r-backend-banner__msg">
         {{ t("common.server-offline-retrying") }}
       </span>
-      <RBtn
+      <ZABtn
         size="small"
         variant="text"
         prepend-icon="mdi-refresh"
@@ -40,7 +40,7 @@ const { isOffline, retryNow } = useServerConnection();
         @click="retryNow"
       >
         {{ t("common.try-again") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </Transition>
 </template>

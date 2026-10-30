@@ -87,7 +87,7 @@ describe("OverviewTab", () => {
         remasters: [],
         similarGames: [],
       },
-      global: { stubs: { RBtn: { template: "<button />" } } },
+      global: { stubs: { ZABtn: { template: "<button />" } } },
     });
     expect(wrapper.text()).not.toContain("Unknown legacy prose");
     expect(wrapper.text()).toContain("rom.description-empty");
@@ -190,7 +190,7 @@ describe("OverviewTab", () => {
       },
       global: {
         stubs: {
-          RCollapsible: { template: "<section><slot /></section>" },
+          ZACollapsible: { template: "<section><slot /></section>" },
           RelatedGamesGrid: {
             props: ["parentRomId", "localCandidates"],
             template:
@@ -576,12 +576,12 @@ describe("OverviewTab", () => {
         },
         global: {
           stubs: {
-            RBtn: {
+            ZABtn: {
               inheritAttrs: false,
               template:
                 "<button v-bind='$attrs' @click='$emit(\"click\")'><slot /></button>",
             },
-            RDialog: {
+            ZADialog: {
               props: ["modelValue"],
               template:
                 "<div v-if='modelValue' data-testid='description-dialog'><slot name='header' /><slot name='content' /></div>",
@@ -667,8 +667,8 @@ describe("OverviewTab", () => {
       },
       global: {
         stubs: {
-          RBtn: { template: "<button><slot /></button>" },
-          RDialog: {
+          ZABtn: { template: "<button><slot /></button>" },
+          ZADialog: {
             props: ["modelValue"],
             template: "<div v-if='modelValue'><slot /></div>",
           },

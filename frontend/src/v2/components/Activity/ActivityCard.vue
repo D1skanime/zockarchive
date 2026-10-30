@@ -8,7 +8,7 @@
 // renders). No "live" badge: every card in this view is an active session by
 // definition, so the badge carried no per-card information — the page's
 // session counter is the single live indicator.
-import { RAvatar, RIcon } from "@v2/lib";
+import { ZAAvatar, ZAIcon } from "@v2/lib";
 import type { RouteLocationRaw } from "vue-router";
 import CoverArtPip from "@/v2/components/shared/CoverArtPip.vue";
 import GameCover from "@/v2/components/shared/GameCover.vue";
@@ -61,7 +61,7 @@ defineProps<Props>();
       </div>
 
       <div class="activity-card__player">
-        <RAvatar :image="avatarSrc" size="x-small" />
+        <ZAAvatar :image="avatarSrc" size="x-small" />
         <div>
           <span class="activity-card__username" :title="username">
             {{ username }}
@@ -69,7 +69,7 @@ defineProps<Props>();
           <div class="activity-card__meta">
             {{ elapsedLabel }}
             <template v-if="deviceType">
-              <RIcon icon="mdi-circle-small" size="14" />
+              <ZAIcon icon="mdi-circle-small" size="14" />
               <span class="activity-card__device">{{ deviceType }}</span>
             </template>
           </div>

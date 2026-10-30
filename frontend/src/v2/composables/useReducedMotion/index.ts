@@ -7,7 +7,7 @@
 // root class (background blur + the global animation/transition neutralize in
 // global.css, cover blur-up in GameCover), plus the JS-driven motion gates that
 // CSS can't reach (the cover CD-spin in useCoverAnimation, view-transition
-// morphs, RExpandTransition, RBox3D's idle drift). One hook, one Settings
+// morphs, ZAExpandTransition, ZABox3D's idle drift). One hook, one Settings
 // toggle, one source of truth.
 //
 // Per-device (localStorage, not backend-synced): whether motion/effects are

@@ -5,7 +5,7 @@
 // tabs, tab panel) stacked in a flex-1 column on the right. Thin
 // orchestrator — data + tab state live here, every visual piece is a
 // sub-component under components/GameDetails/.
-import { RBtn, RTabNav, type RTabNavItem } from "@v2/lib";
+import { ZABtn, ZATabNav, type RTabNavItem } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject, ref, watch } from "vue";
@@ -497,7 +497,7 @@ const tabs = computed<RTabNavItem[]>(() => [
           :tags="tags"
         />
 
-        <RTabNav v-model="tab" :items="tabs" class="r-v2-det__tabs" />
+        <ZATabNav v-model="tab" :items="tabs" class="r-v2-det__tabs" />
 
         <div ref="panelEl" class="r-v2-det__panel">
           <OverviewTab
@@ -525,13 +525,13 @@ const tabs = computed<RTabNavItem[]>(() => [
           />
           <FilesTab v-if="tab === 'files'" :rom="currentRom" />
           <template v-if="tab === 'pc-components' && isPcRom">
-            <RBtn
+            <ZABtn
               data-testid="find-pc-parent-metadata"
               prepend-icon="mdi-magnify"
               @click="openPcParentMatcher"
             >
               {{ t("rom.pc-find-metadata") }}
-            </RBtn>
+            </ZABtn>
             <PcLocalMediaReview
               :rom-id="currentRom.id"
               @applied="refreshPcDetails"

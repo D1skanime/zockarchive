@@ -1,6 +1,6 @@
 // useGalleryVirtualItems — turns the gallery's structural state (mode,
 // total, charIndex, columns) into a flat list of body `GalleryItem`s
-// that an RVirtualScroller can render with one slot per kind.
+// that an ZAVirtualScroller can render with one slot per kind.
 //
 // Header and toolbar are NOT in this list — they live in the
 // scroller's `#prepend` and `#sticky` slots so `position: sticky`
@@ -27,7 +27,7 @@
 //
 // AlphaStrip integration is index-based: `letterToIndex` maps each
 // available letter to the index of its first item in `virtualItems`,
-// fed straight into `RVirtualScroller.scrollToIndex(idx, { stickyOffset })`.
+// fed straight into `ZAVirtualScroller.scrollToIndex(idx, { stickyOffset })`.
 // `availableLetters` derives from the server's `charIndex` so every
 // letter that exists in the gallery is clickable, even if its window
 // hasn't been fetched yet.
@@ -247,7 +247,7 @@ export function useGalleryVirtualItems(opts: Options) {
     };
   };
 
-  // `unknown` matches RVirtualScroller's generic prop. Row / skeleton-row
+  // `unknown` matches ZAVirtualScroller's generic prop. Row / skeleton-row
   // share the uniform height; every other kind is fixed.
   function getItemHeight(item: unknown): number {
     const { kind } = item as GalleryItem;

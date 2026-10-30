@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // BackBtn — pill-style "go back" button shared by gallery + detail
-// topbars. Composes RIcon; not a design-system primitive (RBtn is), just a
+// topbars. Composes ZAIcon; not a design-system primitive (ZABtn is), just a
 // recurring feature pattern that three views use verbatim.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -37,7 +37,7 @@ const tag = computed(() => (props.to ? "router-link" : "button"));
     class="back-btn"
     @click="(e: MouseEvent) => $emit('click', e)"
   >
-    <RIcon icon="mdi-chevron-left" size="16" />
+    <ZAIcon icon="mdi-chevron-left" size="16" />
     <span>{{ effectiveLabel }}</span>
   </component>
 </template>

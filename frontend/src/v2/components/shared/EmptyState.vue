@@ -4,7 +4,7 @@
 //   * "plain" — just a dim centered line of text (index views default)
 //   * "boxed" — dashed-border elevated box with an mdi icon above the
 //     message (Search view's "type to search" / "no matches")
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 
 defineOptions({ inheritAttrs: false });
 
@@ -20,7 +20,7 @@ withDefaults(
 
 <template>
   <div v-bind="$attrs" class="empty-state" :class="[`empty-state--${variant}`]">
-    <RIcon v-if="icon" :icon="icon" size="36" class="empty-state__icon" />
+    <ZAIcon v-if="icon" :icon="icon" size="36" class="empty-state__icon" />
     <slot>
       <p v-if="message" class="empty-state__msg">{{ message }}</p>
     </slot>

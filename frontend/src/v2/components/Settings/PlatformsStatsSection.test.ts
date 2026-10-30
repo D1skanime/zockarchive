@@ -54,11 +54,11 @@ function mountSection(platforms: Platform[]) {
     global: {
       plugins: [i18n],
       stubs: {
-        RIcon: true,
-        RPlatformIcon: true,
-        RProgressLinear: true,
-        RSliderBtnGroup: true,
-        RTextField: true,
+        ZAIcon: true,
+        ZAPlatformIcon: true,
+        ZAProgressLinear: true,
+        ZASliderBtnGroup: true,
+        ZATextField: true,
       },
     },
   });

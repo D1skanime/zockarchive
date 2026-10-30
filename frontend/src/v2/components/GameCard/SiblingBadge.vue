@@ -12,7 +12,7 @@
 //     one they're looking at.
 //   * Click on the chip itself doesn't navigate — the rom's card
 //     already handles its own click; the chip is a popover trigger only.
-import { RIcon, RMenu, RMenuItem } from "@v2/lib";
+import { ZAIcon, ZAMenu, ZAMenuItem } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUISettings } from "@/composables/useUISettings";
@@ -91,7 +91,7 @@ function stopCard(e: Event) {
 </script>
 
 <template>
-  <RMenu
+  <ZAMenu
     v-if="visible"
     v-model="menuOpen"
     location="bottom end"
@@ -112,12 +112,12 @@ function stopCard(e: Event) {
         @click="stopCard"
         @mousedown="stopCard"
       >
-        <RIcon icon="mdi-card-multiple-outline" size="13" />
+        <ZAIcon icon="mdi-card-multiple-outline" size="13" />
         <span class="sibling-badge__count">{{ totalCount }}</span>
       </button>
     </template>
 
-    <RMenuItem
+    <ZAMenuItem
       v-for="v in versions"
       :key="v.id"
       :to="`/rom/${v.id}`"
@@ -126,15 +126,15 @@ function stopCard(e: Event) {
       :label="v.label"
     >
       <template v-if="v.main" #append>
-        <RIcon
+        <ZAIcon
           icon="mdi-bookmark-box"
           size="14"
           class="sibling-badge__main"
           :aria-label="mainTooltip"
         />
       </template>
-    </RMenuItem>
-  </RMenu>
+    </ZAMenuItem>
+  </ZAMenu>
 </template>
 
 <style scoped>

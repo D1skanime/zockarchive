@@ -1,18 +1,18 @@
 <script setup lang="ts">
 // Shared auth frame for login, registration, password reset and setup.
-import { RCard } from "@v2/lib";
+import { ZACard } from "@v2/lib";
 import ProjectBrand from "@/v2/components/shared/ProjectBrand.vue";
 
 defineOptions({ inheritAttrs: false });
 </script>
 
 <template>
-  <RCard v-bind="$attrs" class="auth-card" variant="elevated" elevation="4">
+  <ZACard v-bind="$attrs" class="auth-card" variant="elevated" elevation="4">
     <div class="auth-card__inner">
       <ProjectBrand variant="auth" class="auth-card__brand" />
       <slot />
     </div>
-  </RCard>
+  </ZACard>
 </template>
 
 <style scoped>

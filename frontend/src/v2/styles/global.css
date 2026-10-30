@@ -323,7 +323,7 @@ html.r-v2-reduced-motion.r-v2-light .r-v2-bg__layer {
    collapses one-shot transitions. Near-zero (not zero) durations so JS still
    gets its `transitionend` / `animationend` and Vue `<transition>` teardown
    fires. `!important` intentionally overrides inline JS-set transitions (e.g.
-   RExpandTransition). JS-driven motion (the cover CD-spin, view-transition
+   ZAExpandTransition). JS-driven motion (the cover CD-spin, view-transition
    morphs) is gated separately in its composables. */
 html.r-v2-reduced-motion *,
 html.r-v2-reduced-motion *::before,

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {
-  RBtn,
-  RCheckbox,
-  RChip,
-  RImg,
-  RProgressLinear,
-  RSkeletonBlock,
+  ZABtn,
+  ZACheckbox,
+  ZAChip,
+  ZAImg,
+  ZAProgressLinear,
+  ZASkeletonBlock,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onMounted } from "vue";
@@ -161,14 +161,14 @@ onMounted(() => {
           count: queue.outstandingCount,
         })
       }}</span>
-      <RProgressLinear
+      <ZAProgressLinear
         :model-value="queue.progress"
         :aria-label="t('settings.pc-automation.progress')"
       />
     </div>
 
     <div v-if="queue.loading && queue.items.length === 0" class="pa-4">
-      <RSkeletonBlock height="96" />
+      <ZASkeletonBlock height="96" />
     </div>
 
     <div
@@ -176,9 +176,9 @@ onMounted(() => {
       class="r-v2-pc-automation__empty"
     >
       <p>{{ t("settings.pc-automation.load-failed") }}</p>
-      <RBtn variant="outlined" @click="loadQueue(true)">
+      <ZABtn variant="outlined" @click="loadQueue(true)">
         {{ t("common.retry") }}
-      </RBtn>
+      </ZABtn>
     </div>
 
     <div v-else-if="queue.items.length === 0" class="r-v2-pc-automation__empty">
@@ -190,14 +190,14 @@ onMounted(() => {
         <span>{{
           t("settings.pc-automation.selected", { count: selectedCount })
         }}</span>
-        <RBtn
+        <ZABtn
           :disabled="!selectedGroupIsSafe"
           :loading="queue.batchLoading"
           prepend-icon="mdi-check-all"
           @click="batchAccept"
         >
           {{ t("settings.pc-automation.accept-selected") }}
-        </RBtn>
+        </ZABtn>
       </div>
 
       <div class="r-v2-pc-automation__rows">
@@ -207,7 +207,7 @@ onMounted(() => {
           class="r-v2-pc-automation__row"
           :data-testid="`pc-automation-row-${item.id}`"
         >
-          <RCheckbox
+          <ZACheckbox
             data-testid="pc-automation-select"
             :model-value="queue.selection.has(item.id)"
             :aria-label="
@@ -218,7 +218,7 @@ onMounted(() => {
             bare
             @update:model-value="queue.toggleSelection(item.id)"
           />
-          <RImg
+          <ZAImg
             class="r-v2-pc-automation__cover"
             :src="item.candidate_cover_url ?? undefined"
             :alt="targetTitle(item)"
@@ -282,20 +282,20 @@ onMounted(() => {
               class="r-v2-pc-automation__tags"
               data-testid="pc-automation-tags"
             >
-              <RChip size="small">{{ item.target_kind }}</RChip>
-              <RChip v-if="item.component_kind" size="small">{{
+              <ZAChip size="small">{{ item.target_kind }}</ZAChip>
+              <ZAChip v-if="item.component_kind" size="small">{{
                 item.component_kind
-              }}</RChip>
-              <RChip v-if="item.provider" size="small">{{
+              }}</ZAChip>
+              <ZAChip v-if="item.provider" size="small">{{
                 item.provider
-              }}</RChip>
+              }}</ZAChip>
             </div>
           </div>
           <div
             class="r-v2-pc-automation__actions"
             data-testid="pc-automation-actions"
           >
-            <RBtn
+            <ZABtn
               icon="mdi-check"
               color="success"
               :loading="queue.actionLoadingIds.has(item.id)"
@@ -311,7 +311,7 @@ onMounted(() => {
               "
               @click="accept(item)"
             />
-            <RBtn
+            <ZABtn
               icon="mdi-magnify"
               :disabled="componentTarget(item) === null"
               :aria-label="
@@ -326,7 +326,7 @@ onMounted(() => {
               "
               @click="correct(item)"
             />
-            <RBtn
+            <ZABtn
               icon="mdi-skip-next"
               :loading="queue.actionLoadingIds.has(item.id)"
               :aria-label="
@@ -346,9 +346,9 @@ onMounted(() => {
       </div>
 
       <div v-if="queue.hasMore" class="r-v2-pc-automation__load-more">
-        <RBtn :loading="queue.loading" variant="outlined" @click="loadQueue()">
+        <ZABtn :loading="queue.loading" variant="outlined" @click="loadQueue()">
           {{ t("settings.pc-automation.load-more") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </template>
   </SettingsSection>

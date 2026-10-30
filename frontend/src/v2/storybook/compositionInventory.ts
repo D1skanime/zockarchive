@@ -13,92 +13,100 @@ export type CompositionRecord = {
 
 export const compositionInventory = {
   "components/GameCard/GameCard.stories.ts": {
-    primitives: ["RBtn", "RCheckbox", "RPlatformIcon", "RTooltip"],
+    primitives: ["ZABtn", "ZACheckbox", "ZAPlatformIcon", "ZATooltip"],
   },
-  "components/Player/AssetCard.stories.ts": { primitives: ["RCard", "RTag"] },
-  "components/Player/AssetPreview.stories.ts": { primitives: ["RBtn", "RImg"] },
-  "components/Player/ResumePanel.stories.ts": { primitives: ["RBtn", "RCard"] },
+  "components/Player/AssetCard.stories.ts": { primitives: ["ZACard", "ZATag"] },
+  "components/Player/AssetPreview.stories.ts": {
+    primitives: ["ZABtn", "ZAImg"],
+  },
+  "components/Player/ResumePanel.stories.ts": {
+    primitives: ["ZABtn", "ZACard"],
+  },
   "components/shared/AssetList.stories.ts": {
-    primitives: ["RList", "RListItem"],
+    primitives: ["ZAList", "ZAListItem"],
   },
-  "components/shared/AssetStrip.stories.ts": { primitives: ["RBtn", "RCard"] },
-  "lib/data/RTable/RTable.stories.ts": {
-    primitives: ["RBtn", "RIcon", "RSkeletonBlock"],
+  "components/shared/AssetStrip.stories.ts": {
+    primitives: ["ZABtn", "ZACard"],
   },
-  "lib/forms/RCheckbox/RCheckbox.stories.ts": { primitives: ["RIcon"] },
-  "lib/forms/RComboboxField/RComboboxField.stories.ts": {
-    primitives: ["RIcon", "RTag"],
+  "lib/data/ZATable/ZATable.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon", "ZASkeletonBlock"],
   },
-  "lib/forms/RDateField/RDateField.stories.ts": {
-    primitives: ["RBtn", "RIcon", "RTextField"],
+  "lib/forms/ZACheckbox/ZACheckbox.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/forms/ZAComboboxField/ZAComboboxField.stories.ts": {
+    primitives: ["ZAIcon", "ZATag"],
   },
-  "lib/forms/RDropzone/RDropzone.stories.ts": { primitives: ["RIcon"] },
-  "lib/forms/RRating/RRating.stories.ts": { primitives: ["RIcon"] },
-  "lib/forms/RSelect/RSelect.stories.ts": {
+  "lib/forms/ZADateField/ZADateField.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon", "ZATextField"],
+  },
+  "lib/forms/ZADropzone/ZADropzone.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/forms/ZARating/ZARating.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/forms/ZASelect/ZASelect.stories.ts": {
     primitives: [
-      "RDivider",
-      "RForm",
-      "RIcon",
-      "RProgressCircular",
-      "RTag",
-      "RTextField",
+      "ZADivider",
+      "ZAForm",
+      "ZAIcon",
+      "ZAProgressCircular",
+      "ZATag",
+      "ZATextField",
     ],
   },
-  "lib/forms/RTextField/RTextField.stories.ts": {
-    primitives: ["RForm", "RIcon", "RProgressCircular", "RTooltip"],
+  "lib/forms/ZATextField/ZATextField.stories.ts": {
+    primitives: ["ZAForm", "ZAIcon", "ZAProgressCircular", "ZATooltip"],
   },
-  "lib/media/RPlatformIcon/RPlatformIcon.stories.ts": {
-    primitives: ["RTooltip"],
+  "lib/media/ZAPlatformIcon/ZAPlatformIcon.stories.ts": {
+    primitives: ["ZATooltip"],
   },
-  "lib/menus/RMenu/RMenu.stories.ts": {
-    primitives: ["RDialog", "RIcon", "RTextField"],
+  "lib/menus/ZAMenu/ZAMenu.stories.ts": {
+    primitives: ["ZADialog", "ZAIcon", "ZATextField"],
   },
-  "lib/overlays/RCarousel/RCarousel.stories.ts": {
-    primitives: ["RBtn", "RIcon"],
+  "lib/overlays/ZACarousel/ZACarousel.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon"],
   },
-  "lib/overlays/RDialog/RDialog.stories.ts": {
-    primitives: ["RBtn", "RIcon", "RDivider"],
+  "lib/overlays/ZADialog/ZADialog.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon", "ZADivider"],
   },
-  "lib/overlays/RDrawer/RDrawer.stories.ts": {
-    primitives: ["RBtn", "RIcon", "RDivider"],
+  "lib/overlays/ZADrawer/ZADrawer.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon", "ZADivider"],
   },
-  "lib/primitives/RAlert/RAlert.stories.ts": { primitives: ["RBtn", "RIcon"] },
-  "lib/primitives/RAvatar/RAvatar.stories.ts": { primitives: ["RIcon"] },
-  "lib/primitives/RBadge/RBadge.stories.ts": { primitives: ["RIcon"] },
-  "lib/primitives/RBtn/RBtn.stories.ts": {
-    primitives: ["RIcon", "RProgressCircular", "RTooltip"],
+  "lib/primitives/ZAAlert/ZAAlert.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon"],
   },
-  "lib/primitives/RChip/RChip.stories.ts": { primitives: ["RIcon"] },
-  "lib/primitives/REmptyState/REmptyState.stories.ts": {
-    primitives: ["RIcon"],
+  "lib/primitives/ZAAvatar/ZAAvatar.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/primitives/ZABadge/ZABadge.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/primitives/ZABtn/ZABtn.stories.ts": {
+    primitives: ["ZAIcon", "ZAProgressCircular", "ZATooltip"],
   },
-  "lib/primitives/RSliderBtnGroup/RSliderBtnGroup.stories.ts": {
-    primitives: ["RBtn", "RIcon", "RTooltip"],
+  "lib/primitives/ZAChip/ZAChip.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/primitives/ZAEmptyState/ZAEmptyState.stories.ts": {
+    primitives: ["ZAIcon"],
   },
-  "lib/primitives/RSpinner/RSpinner.stories.ts": {
-    primitives: ["RProgressCircular"],
+  "lib/primitives/ZASliderBtnGroup/ZASliderBtnGroup.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon", "ZATooltip"],
   },
-  "lib/primitives/RTabNav/RTabNav.stories.ts": {
-    primitives: ["RIcon", "RImg"],
+  "lib/primitives/ZASpinner/ZASpinner.stories.ts": {
+    primitives: ["ZAProgressCircular"],
   },
-  "lib/primitives/RTag/RTag.stories.ts": { primitives: ["RIcon"] },
-  "lib/structural/RCollapsible/RCollapsible.stories.ts": {
-    primitives: ["RIcon"],
+  "lib/primitives/ZATabNav/ZATabNav.stories.ts": {
+    primitives: ["ZAIcon", "ZAImg"],
   },
-  "lib/structural/RListItem/RListItem.stories.ts": {
-    primitives: ["RAvatar", "RIcon"],
+  "lib/primitives/ZATag/ZATag.stories.ts": { primitives: ["ZAIcon"] },
+  "lib/structural/ZACollapsible/ZACollapsible.stories.ts": {
+    primitives: ["ZAIcon"],
   },
-  "lib/structural/RTooltip/RTooltip.stories.ts": { primitives: ["RIcon"] },
+  "lib/structural/ZAListItem/ZAListItem.stories.ts": {
+    primitives: ["ZAAvatar", "ZAIcon"],
+  },
+  "lib/structural/ZATooltip/ZATooltip.stories.ts": { primitives: ["ZAIcon"] },
   "lib/InUse.stories.ts": {
     primitives: [
-      "RAlert",
-      "RBtn",
-      "RDialog",
-      "RDivider",
-      "RDrawer",
-      "RForm",
-      "RSelect",
-      "RTextField",
+      "ZAAlert",
+      "ZABtn",
+      "ZADialog",
+      "ZADivider",
+      "ZADrawer",
+      "ZAForm",
+      "ZASelect",
+      "ZATextField",
     ],
   },
 } as const satisfies Record<string, CompositionRecord>;

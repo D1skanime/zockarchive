@@ -52,7 +52,7 @@ describe("PcLocalMediaReview", () => {
     const wrapper = mount(PcLocalMediaReview, {
       props: { romId: 1 },
       global: {
-        stubs: { RDialog: { template: "<div><slot name='content' /></div>" } },
+        stubs: { ZADialog: { template: "<div><slot name='content' /></div>" } },
       },
     });
 

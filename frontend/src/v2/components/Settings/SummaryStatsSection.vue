@@ -3,7 +3,7 @@
 // `Settings/ServerStats/SummaryStats.vue`. 6-card mock-faithful grid
 // inside a SettingsSection: each card is a simple icon + big number +
 // uppercase label.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { formatBytes } from "@/utils";
@@ -73,7 +73,7 @@ const cards = computed<StatCard[]>(() => [
         :key="card.label"
         class="r-v2-stats-summary__card"
       >
-        <RIcon :icon="card.icon" size="22" />
+        <ZAIcon :icon="card.icon" size="22" />
         <div class="r-v2-stats-summary__value">{{ card.value }}</div>
         <div class="r-v2-stats-summary__label">{{ card.label }}</div>
       </div>

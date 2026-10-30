@@ -15,7 +15,7 @@
 // URL-persistent subtab selection via `?subtab=` so deep-linking
 // into a specific list works and stale state doesn't leak when the
 // user navigates to a sibling tab.
-import { RBtn, RDropzone, RIcon } from "@v2/lib";
+import { ZABtn, ZADropzone, ZAIcon } from "@v2/lib";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
@@ -130,8 +130,8 @@ const subtabDefs = computed<SubtabDef[]>(() => [
 // Overlay-mode dropzone refs so the section-header "Upload" buttons can
 // open the native picker via `.open()`; the empty-state CTA dropzones
 // are self-contained (click-to-browse + drag-and-drop).
-const saveDz = ref<InstanceType<typeof RDropzone> | null>(null);
-const stateDz = ref<InstanceType<typeof RDropzone> | null>(null);
+const saveDz = ref<InstanceType<typeof ZADropzone> | null>(null);
+const stateDz = ref<InstanceType<typeof ZADropzone> | null>(null);
 const uploadingSaves = ref(false);
 const uploadingStates = ref(false);
 
@@ -336,7 +336,7 @@ async function toggleStateVisibility(state: StateSchema) {
             :aria-selected="subTab === tab.id"
             @click="subTab = tab.id"
           >
-            <RIcon :icon="tab.icon" size="16" />
+            <ZAIcon :icon="tab.icon" size="16" />
             <span class="r-v2-saves__subtab-label">{{ tab.label }}</span>
             <span
               v-if="
@@ -364,7 +364,7 @@ async function toggleStateVisibility(state: StateSchema) {
                 {{ t("rom.saves-section-mine") }}
               </h3>
             </div>
-            <RBtn
+            <ZABtn
               v-if="mySaves.length > 0"
               variant="outlined"
               size="small"
@@ -374,10 +374,10 @@ async function toggleStateVisibility(state: StateSchema) {
               @click="saveDz?.open()"
             >
               {{ t("common.upload") }}
-            </RBtn>
+            </ZABtn>
           </header>
 
-          <RDropzone
+          <ZADropzone
             v-if="mySaves.length === 0"
             :title="t('rom.saves-empty')"
             :hint="t('common.dropzone-hint')"
@@ -388,7 +388,7 @@ async function toggleStateVisibility(state: StateSchema) {
             @files="onSaveUpload"
           />
 
-          <RDropzone
+          <ZADropzone
             v-else
             ref="saveDz"
             overlay
@@ -405,7 +405,7 @@ async function toggleStateVisibility(state: StateSchema) {
               :scrollable="false"
             >
               <template #actions="{ asset }">
-                <RBtn
+                <ZABtn
                   :icon="asset.is_public ? 'mdi-lock-open-variant' : 'mdi-lock'"
                   variant="text"
                   size="small"
@@ -425,7 +425,7 @@ async function toggleStateVisibility(state: StateSchema) {
                   "
                   @click="toggleSaveVisibility(asSave(asset))"
                 />
-                <RBtn
+                <ZABtn
                   icon="mdi-download-outline"
                   variant="text"
                   size="small"
@@ -435,7 +435,7 @@ async function toggleStateVisibility(state: StateSchema) {
                   "
                   @click="downloadAsset(asset)"
                 />
-                <RBtn
+                <ZABtn
                   icon="mdi-delete-outline"
                   variant="text"
                   size="small"
@@ -446,7 +446,7 @@ async function toggleStateVisibility(state: StateSchema) {
                 />
               </template>
             </AssetList>
-          </RDropzone>
+          </ZADropzone>
         </div>
 
         <!-- Community -->
@@ -466,7 +466,7 @@ async function toggleStateVisibility(state: StateSchema) {
             show-owner
           >
             <template #actions="{ asset }">
-              <RBtn
+              <ZABtn
                 icon="mdi-download-outline"
                 variant="text"
                 size="small"
@@ -489,7 +489,7 @@ async function toggleStateVisibility(state: StateSchema) {
                 {{ t("rom.states-section-mine") }}
               </h3>
             </div>
-            <RBtn
+            <ZABtn
               v-if="myStates.length > 0"
               variant="outlined"
               size="small"
@@ -499,10 +499,10 @@ async function toggleStateVisibility(state: StateSchema) {
               @click="stateDz?.open()"
             >
               {{ t("common.upload") }}
-            </RBtn>
+            </ZABtn>
           </header>
 
-          <RDropzone
+          <ZADropzone
             v-if="myStates.length === 0"
             :title="t('rom.states-empty')"
             :hint="t('common.dropzone-hint')"
@@ -513,7 +513,7 @@ async function toggleStateVisibility(state: StateSchema) {
             @files="onStateUpload"
           />
 
-          <RDropzone
+          <ZADropzone
             v-else
             ref="stateDz"
             overlay
@@ -530,7 +530,7 @@ async function toggleStateVisibility(state: StateSchema) {
               wrap
             >
               <template #actions="{ asset }">
-                <RBtn
+                <ZABtn
                   :icon="asset.is_public ? 'mdi-lock-open-variant' : 'mdi-lock'"
                   variant="text"
                   size="small"
@@ -550,7 +550,7 @@ async function toggleStateVisibility(state: StateSchema) {
                   "
                   @click="toggleStateVisibility(asState(asset))"
                 />
-                <RBtn
+                <ZABtn
                   icon="mdi-download-outline"
                   variant="text"
                   size="small"
@@ -560,7 +560,7 @@ async function toggleStateVisibility(state: StateSchema) {
                   "
                   @click="downloadAsset(asset)"
                 />
-                <RBtn
+                <ZABtn
                   icon="mdi-delete-outline"
                   variant="text"
                   size="small"
@@ -571,7 +571,7 @@ async function toggleStateVisibility(state: StateSchema) {
                 />
               </template>
             </AssetStrip>
-          </RDropzone>
+          </ZADropzone>
         </div>
 
         <!-- Community -->
@@ -591,7 +591,7 @@ async function toggleStateVisibility(state: StateSchema) {
             show-owner
           >
             <template #actions="{ asset }">
-              <RBtn
+              <ZABtn
                 icon="mdi-download-outline"
                 variant="text"
                 size="small"

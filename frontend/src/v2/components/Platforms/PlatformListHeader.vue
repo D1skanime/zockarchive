@@ -8,7 +8,7 @@
 // below) so the row stays legible on mobile without horizontal scroll.
 // The grid template flips in the same breakpoint so the cells re-align
 // with the row's compact layout.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import {
   PLATFORM_COLUMNS,
   type PlatformColumn,
@@ -60,7 +60,7 @@ function handleClick(col: PlatformColumn) {
       @click="handleClick(col)"
     >
       <span class="plat-list-header__label">{{ col.label }}</span>
-      <RIcon
+      <ZAIcon
         v-if="col.sortable && sortKey === col.key"
         :icon="sortDir === 'asc' ? 'mdi-arrow-up-thin' : 'mdi-arrow-down-thin'"
         size="14"

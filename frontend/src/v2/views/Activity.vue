@@ -7,7 +7,7 @@
 // Elapsed-time labels are recomputed off a `now` ref that ticks every
 // 30s, so "5m ago" advances without a full refetch. The grid is wired
 // to `useWrapGridNav` so arrow keys / gamepad move across the cards.
-import { RIcon, RSkeletonBlock, RTooltip } from "@v2/lib";
+import { ZAIcon, ZASkeletonBlock, ZATooltip } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -121,18 +121,18 @@ function elapsedLabel(startedAt: string): string {
         class="r-v2-activity__total"
         :class="{ 'r-v2-activity__total--live': activities.length > 0 }"
       >
-        <RIcon
+        <ZAIcon
           icon="mdi-access-point"
           size="16"
           class="r-v2-activity__total-icon"
         />
         <span class="r-v2-activity__total-count">{{ activities.length }}</span>
-        <RTooltip activator="parent" :text="t('activity.total-sessions')" />
+        <ZATooltip activator="parent" :text="t('activity.total-sessions')" />
       </div>
     </div>
 
     <div v-if="loading" class="r-v2-activity__grid">
-      <RSkeletonBlock
+      <ZASkeletonBlock
         v-for="n in 8"
         :key="`sk-${n}`"
         width="100%"

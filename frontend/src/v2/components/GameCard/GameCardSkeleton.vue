@@ -10,12 +10,12 @@
 // shape must match the cards that replace it so the layout doesn't
 // jump when data arrives.
 //
-// Sizing is passed via props (not CSS classes) because RSkeletonBlock
+// Sizing is passed via props (not CSS classes) because ZASkeletonBlock
 // renders its width/height as inline styles, and inline styles win
 // over scoped class CSS — so a `.r-gcs__art { height: ... }` rule
 // would be ignored. The CSS vars resolve at render time, so the
 // skeleton still picks up theme/density token changes automatically.
-import { RSkeletonBlock } from "@v2/lib";
+import { ZASkeletonBlock } from "@v2/lib";
 import { computed } from "vue";
 
 interface Props {
@@ -43,12 +43,16 @@ const artHeight = computed(() =>
     class="r-gcs"
     :class="[size !== 'md' && `r-gcs--size-${size}`, { 'r-gcs--hero': hero }]"
   >
-    <RSkeletonBlock
+    <ZASkeletonBlock
       :width="artWidth"
       :height="artHeight"
       :rounded="hero ? 'lg' : 'md'"
     />
-    <RSkeletonBlock class="r-gcs__label" width="60%" :height="hero ? 14 : 11" />
+    <ZASkeletonBlock
+      class="r-gcs__label"
+      width="60%"
+      :height="hero ? 14 : 11"
+    />
   </div>
 </template>
 

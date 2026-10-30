@@ -13,7 +13,7 @@
 // between curated/computed and dynamic-grouping collections is obvious
 // at a glance. The kind filter (toolbar slider) narrows this further to
 // one group when the user wants to focus.
-import { RDivider, RLetterHeading, RSkeletonBlock, RIcon } from "@v2/lib";
+import { ZADivider, ZALetterHeading, ZASkeletonBlock, ZAIcon } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -482,7 +482,7 @@ const showListHeader = computed(
   <IndexShell :list-mode="showListHeader">
     <template #header>
       <PageHeader :title="t('common.collections')" :count="totalCount" />
-      <RDivider class="r-v2-cidx__header-divider" />
+      <ZADivider class="r-v2-cidx__header-divider" />
     </template>
 
     <template #toolbar>
@@ -512,7 +512,7 @@ const showListHeader = computed(
 
     <div ref="gridRoot">
       <div v-if="isLoading && !totalCount" class="r-v2-cidx__grid">
-        <RSkeletonBlock
+        <ZASkeletonBlock
           v-for="n in 12"
           :key="`sk-${n}`"
           width="100%"
@@ -552,14 +552,14 @@ const showListHeader = computed(
            view. Stays out of the way when nothing curated matches. -->
         <section v-if="showCuratedSection" class="r-v2-cidx__panel">
           <h3 class="r-v2-cidx__panel-title">
-            <RIcon
+            <ZAIcon
               icon="mdi-bookmark"
               class="r-v2-cidx__panel-icon"
             />Collections
           </h3>
           <template v-if="showLetterGroups">
             <template v-for="g in curatedLetterGroups" :key="`cur-${g.letter}`">
-              <RLetterHeading :label="g.letter" />
+              <ZALetterHeading :label="g.letter" />
               <div class="r-v2-cidx__grid">
                 <CollectionTile
                   v-for="(c, i) in g.items"
@@ -601,13 +601,13 @@ const showListHeader = computed(
            virtual type ("all") is still being fetched. -->
         <section v-if="showVirtualLoading" class="r-v2-cidx__virtual">
           <h3 class="r-v2-cidx__section-title">
-            <RIcon
+            <ZAIcon
               icon="mdi-bookmark-box"
               class="r-v2-cidx__panel-icon"
             />Virtual
           </h3>
           <div class="r-v2-cidx__grid">
-            <RSkeletonBlock
+            <ZASkeletonBlock
               v-for="n in 6"
               :key="`vsk-${n}`"
               width="100%"
@@ -622,14 +622,14 @@ const showListHeader = computed(
            above. -->
         <section v-else-if="showVirtualSection" class="r-v2-cidx__virtual">
           <h3 v-if="showCuratedSection" class="r-v2-cidx__section-title">
-            <RIcon
+            <ZAIcon
               icon="mdi-bookmark-box"
               class="r-v2-cidx__panel-icon"
             />Virtual
           </h3>
           <template v-if="showLetterGroups">
             <template v-for="g in virtualLetterGroups" :key="`vir-${g.letter}`">
-              <RLetterHeading :label="g.letter" />
+              <ZALetterHeading :label="g.letter" />
               <div class="r-v2-cidx__grid">
                 <CollectionTile
                   v-for="(c, i) in g.items"
@@ -688,7 +688,7 @@ const showListHeader = computed(
 }
 
 /* Curated panel — translucent container (same vocabulary as the
-   related-games surface in the game detail view via RCollapsible).
+   related-games surface in the game detail view via ZACollapsible).
    Acts as the visual "this is one cohesive group" cue against the
    loose virtual section that follows. */
 .r-v2-cidx__panel {

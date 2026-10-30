@@ -22,7 +22,7 @@
 //   * One row per file with checkbox, relative path, category chip,
 //     size, per-file hashes (click to copy), and per-row Download +
 //     Copy-link buttons.
-import { RBtn, RCheckbox, REmptyState, RIcon } from "@v2/lib";
+import { ZABtn, ZACheckbox, ZAEmptyState, ZAIcon } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -480,7 +480,7 @@ async function copySelectedLink() {
             :aria-selected="subTab === tab.id"
             @click="subTab = tab.id"
           >
-            <RIcon :icon="tab.icon" size="16" />
+            <ZAIcon :icon="tab.icon" size="16" />
             <span class="r-v2-files__subtab-label">{{ tab.label }}</span>
             <span v-if="tab.count > 0" class="r-v2-files__subtab-badge">
               {{ tab.count }}
@@ -495,9 +495,9 @@ async function copySelectedLink() {
         <strong
           >{{ t("rom.files") }}: {{ selectedComponent.relative_path }}</strong
         >
-        <RBtn variant="text" size="small" @click="clearComponentFilter">
+        <ZABtn variant="text" size="small" @click="clearComponentFilter">
           {{ t("common.clear") }}
-        </RBtn>
+        </ZABtn>
       </div>
       <FilesSummary :rom="rom" />
 
@@ -507,7 +507,7 @@ async function copySelectedLink() {
            checked. -->
       <div v-if="filteredFiles.length > 0" class="r-v2-files__toolbar">
         <div class="r-v2-files__toolbar-select">
-          <RCheckbox
+          <ZACheckbox
             :model-value="visibleAllSelected"
             :indeterminate="visibleSomeSelected"
             size="sm"
@@ -534,35 +534,35 @@ async function copySelectedLink() {
         </div>
 
         <div v-if="selectedCount > 0" class="r-v2-files__toolbar-actions">
-          <RBtn
+          <ZABtn
             variant="outlined"
             prepend-icon="mdi-cloud-download-outline"
             size="small"
             @click="downloadSelected"
           >
             {{ t("rom.download-selected") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             variant="outlined"
             prepend-icon="mdi-link-variant"
             size="small"
             @click="copySelectedLink"
           >
             {{ t("rom.copy-link-action") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             variant="text"
             prepend-icon="mdi-close"
             size="small"
             @click="clearSelection"
           >
             {{ t("common.clear") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </div>
 
       <!-- File list / empty state. -->
-      <REmptyState
+      <ZAEmptyState
         v-if="filteredFiles.length === 0"
         icon="mdi-folder-off-outline"
         :title="t('rom.no-files-in-category')"
@@ -722,7 +722,7 @@ async function copySelectedLink() {
   gap: 12px;
   padding: 6px 4px;
   flex-shrink: 0;
-  /* Reserve the height of the action cluster (small RBtn = 32px +
+  /* Reserve the height of the action cluster (small ZABtn = 32px +
      6px×2 vertical padding) so toggling the selection state doesn't
      cause the toolbar to jump in height when the action buttons
      fade in. */

@@ -5,7 +5,7 @@
 //
 // Provider / region / language identifiers are proper nouns or codes, so
 // they stay as data constants; only descriptive prose goes through i18n.
-import { RAlert, RIcon, RSelect, RBtn, RSpinner } from "@v2/lib";
+import { ZAAlert, ZAIcon, ZASelect, ZABtn, ZASpinner } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -329,29 +329,29 @@ onBeforeUnmount(() =>
 
 <template>
   <div v-if="loading" class="r-v2-scan-settings__loading">
-    <RSpinner />
+    <ZASpinner />
   </div>
   <div v-else-if="loadError" class="r-v2-section-stack r-v2-scan-settings">
-    <RAlert type="error">
+    <ZAAlert type="error">
       <template #title>
         {{ t("settings.scan-settings-load-error-title") }}
       </template>
       {{ t("settings.scan-settings-load-error-desc") }}
       <template #actions>
-        <RBtn variant="text" :loading="loading" @click="loadConfig">
+        <ZABtn variant="text" :loading="loading" @click="loadConfig">
           {{ t("common.try-again") }}
-        </RBtn>
+        </ZABtn>
       </template>
-    </RAlert>
+    </ZAAlert>
   </div>
   <div v-else class="r-v2-section-stack r-v2-scan-settings">
-    <RAlert v-if="!config.CONFIG_FILE_MOUNTED" type="error">
+    <ZAAlert v-if="!config.CONFIG_FILE_MOUNTED" type="error">
       <template #title>
         {{ t("settings.config-file-not-mounted-title") }}
       </template>
       {{ t("settings.config-file-not-mounted-desc") }}
-    </RAlert>
-    <RAlert
+    </ZAAlert>
+    <ZAAlert
       v-if="config.CONFIG_FILE_MOUNTED && config.CONFIG_FILE_PARSE_ERROR"
       type="error"
     >
@@ -363,8 +363,8 @@ onBeforeUnmount(() =>
           error: config.CONFIG_FILE_PARSE_ERROR,
         })
       }}
-    </RAlert>
-    <RAlert
+    </ZAAlert>
+    <ZAAlert
       v-if="config.CONFIG_FILE_MOUNTED && !config.CONFIG_FILE_WRITABLE"
       type="warning"
     >
@@ -372,7 +372,7 @@ onBeforeUnmount(() =>
         {{ t("settings.config-file-not-writable-title") }}
       </template>
       {{ t("settings.config-file-not-writable-desc") }}
-    </RAlert>
+    </ZAAlert>
 
     <!-- Metadata priority -->
     <SettingsSection
@@ -486,7 +486,7 @@ onBeforeUnmount(() =>
         <p class="r-v2-scan-settings__desc">
           {{ t("settings.scan-media-desc") }}
         </p>
-        <RSelect
+        <ZASelect
           :model-value="form.media"
           :items="mediaItems"
           multiple
@@ -497,7 +497,7 @@ onBeforeUnmount(() =>
           @update:model-value="setMedia"
         />
         <p class="r-v2-scan-settings__note">
-          <RIcon icon="mdi-information-outline" size="13" />
+          <ZAIcon icon="mdi-information-outline" size="13" />
           {{ t("settings.scan-media-note") }}
         </p>
       </div>
@@ -521,7 +521,7 @@ onBeforeUnmount(() =>
       <div
         class="r-v2-scan-settings__field r-v2-scan-settings__field--bordered"
       >
-        <RSelect
+        <ZASelect
           v-model="form.gamelistThumbnail"
           :items="thumbnailItems"
           prefix-label="stacked"
@@ -531,8 +531,8 @@ onBeforeUnmount(() =>
           <template #prefix-label>
             {{ t("settings.scan-gamelist-thumbnail") }}
           </template>
-        </RSelect>
-        <RSelect
+        </ZASelect>
+        <ZASelect
           v-model="form.gamelistImage"
           :items="imageItems"
           prefix-label="stacked"
@@ -542,7 +542,7 @@ onBeforeUnmount(() =>
           <template #prefix-label>
             {{ t("settings.scan-gamelist-image") }}
           </template>
-        </RSelect>
+        </ZASelect>
       </div>
     </SettingsSection>
 
@@ -571,10 +571,10 @@ onBeforeUnmount(() =>
           {{ t("settings.scan-unsaved-changes") }}
         </span>
         <div class="r-v2-scan-settings__bar-actions">
-          <RBtn variant="text" :disabled="saving" @click="onReset">
+          <ZABtn variant="text" :disabled="saving" @click="onReset">
             {{ t("common.discard") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             variant="flat"
             color="primary"
             prepend-icon="mdi-content-save-outline"
@@ -582,7 +582,7 @@ onBeforeUnmount(() =>
             @click="onSave"
           >
             {{ t("common.save") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </div>
     </Transition>

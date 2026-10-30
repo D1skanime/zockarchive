@@ -30,15 +30,15 @@ describe("StorageRootsSection", () => {
     const wrapper = mount(StorageRootsSection, {
       global: {
         stubs: {
-          RAlert: {
+          ZAAlert: {
             template:
               "<div><slot /><slot name='title' /><slot name='append' /></div>",
           },
-          RBtn: { template: "<button><slot /></button>" },
-          RCard: { template: "<div><slot /></div>" },
-          RList: { template: "<div><slot /></div>" },
-          RListItem: true,
-          RSkeletonBlock: true,
+          ZABtn: { template: "<button><slot /></button>" },
+          ZACard: { template: "<div><slot /></div>" },
+          ZAList: { template: "<div><slot /></div>" },
+          ZAListItem: true,
+          ZASkeletonBlock: true,
           PlatformSelect: true,
         },
       },

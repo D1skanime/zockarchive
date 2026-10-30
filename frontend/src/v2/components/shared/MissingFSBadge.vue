@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // MissingFSBadge — tiny warning pill used in platform/ROM pickers to flag
 // entries whose file is missing from disk. Replaces v1's
-// `common/MissingFromFSIcon.vue` inside v2 contexts. Uses RTooltip so the
+// `common/MissingFromFSIcon.vue` inside v2 contexts. Uses ZATooltip so the
 // tooltip styling matches the rest of v2.
-import { RIcon, RTooltip } from "@v2/lib";
+import { ZAIcon, ZATooltip } from "@v2/lib";
 
 defineOptions({ inheritAttrs: false });
 
@@ -20,8 +20,8 @@ withDefaults(
 
 <template>
   <span class="r-v2-missing-fs" role="img" :aria-label="text">
-    <RTooltip :text="text" location="top" activator="parent" />
-    <RIcon icon="mdi-folder-question" :size="size" />
+    <ZATooltip :text="text" location="top" activator="parent" />
+    <ZAIcon icon="mdi-folder-question" :size="size" />
   </span>
 </template>
 

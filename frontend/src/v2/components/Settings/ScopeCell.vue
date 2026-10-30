@@ -3,12 +3,12 @@
 //
 // In the table the cell renders only a small pill ("3 scopes") so rows
 // stay at the same height as Name / Expires / Last used. Clicking
-// opens an RMenu popover with the full per-scope ScopeTree.
+// opens an ZAMenu popover with the full per-scope ScopeTree.
 //
 // Scope rule mirrors ScopeTree: everything before the last dot, so
 // `roms.user.read` and `roms.user.write` share the `roms.user` scope;
 // single-segment permissions (`invite`, `reset`) keep their own label.
-import { RBtn, RIcon, RMenu } from "@v2/lib";
+import { ZABtn, ZAIcon, ZAMenu } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ScopeTree from "./ScopeTree.vue";
@@ -39,7 +39,7 @@ const scopeLabel = computed(() =>
 </script>
 
 <template>
-  <RMenu
+  <ZAMenu
     v-model="open"
     location="bottom start"
     :offset="8"
@@ -48,7 +48,7 @@ const scopeLabel = computed(() =>
     :close-on-content-click="false"
   >
     <template #activator="{ props: menuProps }">
-      <RBtn
+      <ZABtn
         v-bind="menuProps"
         variant="translucent"
         size="small"
@@ -56,17 +56,21 @@ const scopeLabel = computed(() =>
         class="r-v2-scope-cell__chip"
         :aria-label="`${scopeCount} ${scopeLabel}`"
       >
-        <RIcon icon="mdi-key-outline" size="14" class="r-v2-scope-cell__icon" />
+        <ZAIcon
+          icon="mdi-key-outline"
+          size="14"
+          class="r-v2-scope-cell__icon"
+        />
         <span class="r-v2-scope-cell__count">{{ scopeCount }}</span>
         <span class="r-v2-scope-cell__label">
           {{ scopeLabel }}
         </span>
-        <RIcon
+        <ZAIcon
           icon="mdi-chevron-down"
           size="14"
           class="r-v2-scope-cell__chevron r-chevron-toggle"
         />
-      </RBtn>
+      </ZABtn>
     </template>
 
     <!-- Panel width follows its content — ScopeTree's two-column grid
@@ -75,7 +79,7 @@ const scopeLabel = computed(() =>
     <div class="r-v2-scope-cell__body">
       <ScopeTree :scopes="scopes" />
     </div>
-  </RMenu>
+  </ZAMenu>
 </template>
 
 <style scoped>

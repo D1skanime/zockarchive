@@ -1,6 +1,6 @@
 // Shared, reference-counted body scroll lock for v2 overlays.
 //
-// Every overlay that covers the page (RDialog, RDrawer, ...) hides the
+// Every overlay that covers the page (ZADialog, ZADrawer, ...) hides the
 // body scrollbar while open. They MUST share a single counter and a
 // single saved-overflow value: with per-type counters, a dialog stacked
 // over a drawer (or vice versa) would restore `body` overflow off its

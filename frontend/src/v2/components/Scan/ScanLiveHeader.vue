@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RProgressLinear } from "@v2/lib";
+import { ZABtn, ZAProgressLinear } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { ScanStatsTransport } from "@/v2/data/contracts";
@@ -24,7 +24,7 @@ const progress = computed(() =>
   <header class="r-v2-scan-live-header pa-4 d-flex flex-column ga-4">
     <div class="d-flex align-center justify-space-between ga-4">
       <span>{{ label }}</span>
-      <RBtn
+      <ZABtn
         v-if="scanning && canManage"
         icon="mdi-stop-circle-outline"
         variant="text"
@@ -35,7 +35,7 @@ const progress = computed(() =>
     <p v-if="total !== undefined && current !== undefined">
       {{ t("scan.recovery-progress", { current, total }) }}
     </p>
-    <RProgressLinear
+    <ZAProgressLinear
       v-if="scanning"
       :indeterminate="progress === undefined"
       :model-value="progress ?? 0"

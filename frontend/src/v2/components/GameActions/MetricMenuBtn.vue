@@ -8,7 +8,7 @@
 // MetricSection (also used by the mobile status sheet). Picking a
 // rating closes the popup; the slider commits on drag-end and keeps
 // the popup open.
-import { RIcon, RMenu } from "@v2/lib";
+import { ZAIcon, ZAMenu } from "@v2/lib";
 import { computed, ref } from "vue";
 import MetricSection from "@/v2/components/GameActions/MetricSection.vue";
 
@@ -48,7 +48,7 @@ const valueLabel = computed(() => {
 </script>
 
 <template>
-  <RMenu
+  <ZAMenu
     v-model="open"
     :offset="8"
     :close-on-content-click="false"
@@ -67,7 +67,7 @@ const valueLabel = computed(() => {
         :disabled="disabled"
         :aria-label="`${label}: ${value > 0 ? valueLabel : 'unset'}`"
       >
-        <RIcon :icon="value > 0 ? iconFull : iconEmpty" />
+        <ZAIcon :icon="value > 0 ? iconFull : iconEmpty" />
         <span class="r-v2-metric-btn__value">{{ valueLabel }}</span>
       </button>
     </template>
@@ -84,12 +84,12 @@ const valueLabel = computed(() => {
       @update:value="(v) => emit('update:value', v)"
       @close="open = false"
     />
-  </RMenu>
+  </ZAMenu>
 </template>
 
 <style scoped>
 /* Trigger — parallels .r-v2-game-btn--surface so it sits in the
-   action row without visual breaks. Translucent grey RTag-style
+   action row without visual breaks. Translucent grey ZATag-style
    surface, not the dark cover-overlay scrim. */
 .r-v2-metric-btn {
   appearance: none;

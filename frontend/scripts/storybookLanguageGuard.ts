@@ -83,6 +83,17 @@ export function getVisibleStoryTextCandidates(
   ))
     add("docs-description", description[2], description.index ?? 0);
 
+  // Story setup data often uses a bare string array for rendered suggestions,
+  // chips, or select items. Those values are visible even without a key/value
+  // property and therefore need individual ledger decisions.
+  for (const array of source.matchAll(
+    /\b(?:items|suggestions|options|values):\s*\[([\s\S]*?)\]/g,
+  )) {
+    const base = (array.index ?? 0) + array[0].indexOf(array[1]);
+    for (const value of array[1].matchAll(/(["'])([^"']+)\1/g))
+      add("story-data", value[2], base + (value.index ?? 0));
+  }
+
   const templatePattern = /\btemplate:\s*`([\s\S]*?)`/g;
   for (const template of source.matchAll(templatePattern)) {
     const markup = template[1];

@@ -83,7 +83,7 @@ function mountTab(firmwareList: FirmwareSchema[]) {
     global: {
       // The whole tab is wrapped in a dropzone whose default slot holds
       // the list, and a stubbed component does not render its slots.
-      stubs: { RDropzone: { template: "<div><slot /></div>" } },
+      stubs: { ZADropzone: { template: "<div><slot /></div>" } },
     },
   });
 }
@@ -107,8 +107,8 @@ describe("FirmwareTab", () => {
     );
     const serviceSource = readFileSync("src/services/api/firmware.ts", "utf8");
 
-    expect(wrapper.findAllComponents({ name: "RDropzone" })).toHaveLength(0);
-    expect(tabSource).not.toMatch(/uploadFirmware|pendingFiles|RDropzone/);
+    expect(wrapper.findAllComponents({ name: "ZADropzone" })).toHaveLength(0);
+    expect(tabSource).not.toMatch(/uploadFirmware|pendingFiles|ZADropzone/);
     expect(dialogSource).not.toMatch(/deleteFromFs|filesystem|from disk/);
     expect(serviceSource).not.toMatch(/uploadFirmware|delete_from_fs/);
     expect(serviceSource).toMatch(/firmware:\s*firmware\.map/);

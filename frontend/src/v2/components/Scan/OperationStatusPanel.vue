@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RAlert, RBtn, RCheckbox, RProgressLinear } from "@v2/lib";
+import { ZAAlert, ZABtn, ZACheckbox, ZAProgressLinear } from "@v2/lib";
 import { computed, onBeforeUpdate, onUpdated, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import InventoryStatusSummary from "@/v2/components/Scan/InventoryStatusSummary.vue";
@@ -135,7 +135,7 @@ function select(id: number, value: boolean | null) {
     </h2>
     <p v-if="disconnected">{{ t("scan.recovery-disconnected") }}</p>
     <p v-else-if="reconciling">{{ t("scan.recovery-reconciling") }}</p>
-    <RProgressLinear
+    <ZAProgressLinear
       v-if="running"
       :indeterminate="progress === undefined"
       :model-value="progress ?? 0"
@@ -154,34 +154,34 @@ function select(id: number, value: boolean | null) {
       :loading-more="loadingMore"
       @load-more="emit('loadMore')"
     />
-    <RAlert v-if="cause" type="warning" role="alert">
+    <ZAAlert v-if="cause" type="warning" role="alert">
       <p>{{ t("scan.recovery-cause-" + cause) }}</p>
       <p>{{ t("scan.recovery-action-" + cause) }}</p>
-    </RAlert>
+    </ZAAlert>
     <div class="d-flex flex-wrap ga-3">
-      <RBtn
+      <ZABtn
         v-if="cause === 'permission'"
         :to="{ name: 'login', query: { next: '/scan' } }"
-        >{{ t("scan.recovery-action-permission") }}</RBtn
+        >{{ t("scan.recovery-action-permission") }}</ZABtn
       >
-      <RBtn
+      <ZABtn
         v-if="uncertain || disconnected || actionError"
         :disabled="checking"
         @click="emit('retryStatus')"
-        >{{ t("scan.recovery-retry-status") }}</RBtn
+        >{{ t("scan.recovery-retry-status") }}</ZABtn
       >
-      <RBtn
+      <ZABtn
         v-if="
           canManage && (running || ['blocked', 'interrupted'].includes(status))
         "
         :disabled="status === 'stopping' || checking"
         @click="emit('stop')"
-        >{{ t("scan.recovery-stop") }}</RBtn
+        >{{ t("scan.recovery-stop") }}</ZABtn
       >
-      <RBtn
+      <ZABtn
         v-if="canManage && ['cancelled', 'interrupted'].includes(status)"
         @click="emit('resume')"
-        >{{ t("scan.recovery-resume") }}</RBtn
+        >{{ t("scan.recovery-resume") }}</ZABtn
       >
     </div>
     <fieldset v-if="warnings.length" class="pa-3">
@@ -191,7 +191,7 @@ function select(id: number, value: boolean | null) {
         :key="item.id"
         class="d-flex align-center ga-2"
       >
-        <RCheckbox
+        <ZACheckbox
           :model-value="selected.includes(item.id)"
           :disabled="!canManage"
           :label="
@@ -203,11 +203,11 @@ function select(id: number, value: boolean | null) {
           @update:model-value="select(item.id, $event)"
         />
       </div>
-      <RBtn
+      <ZABtn
         v-if="canManage"
         :disabled="!selected.length || running"
         @click="emit('retry', selected.map(String))"
-        >{{ t("scan.recovery-retry-metadata") }}</RBtn
+        >{{ t("scan.recovery-retry-metadata") }}</ZABtn
       >
     </fieldset>
   </section>

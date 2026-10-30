@@ -128,13 +128,13 @@ vi.mock("@v2/lib", async () => {
   const { defineComponent } = await import("vue");
   return Object.fromEntries(
     [
-      "RBtn",
-      "RDialog",
-      "RIcon",
-      "RSelect",
-      "RSliderBtnGroup",
-      "RSpinner",
-      "RTextField",
+      "ZABtn",
+      "ZADialog",
+      "ZAIcon",
+      "ZASelect",
+      "ZASliderBtnGroup",
+      "ZASpinner",
+      "ZATextField",
     ].map((key) => [
       key,
       defineComponent({ name: key, template: "<div><slot /></div>" }),
@@ -205,8 +205,8 @@ function mountDialog() {
     global: {
       provide: { emitter },
       stubs: {
-        RDialog: {
-          name: "RDialog",
+        ZADialog: {
+          name: "ZADialog",
           props: ["modelValue"],
           template:
             "<div><slot name='toolbar' /><slot name='content' /><slot name='footer' /></div>",
@@ -216,7 +216,7 @@ function mountDialog() {
   });
   const search = async () => {
     wrapper
-      .findComponent({ name: "RTextField" })
+      .findComponent({ name: "ZATextField" })
       .vm.$emit("keyup", { key: "Enter" });
     await flushPromises();
   };
@@ -400,7 +400,7 @@ describe("matching captured language event flow", () => {
     });
     await ui.search();
     ui.wrapper
-      .findComponent({ name: "RTextField" })
+      .findComponent({ name: "ZATextField" })
       .vm.$emit("update:modelValue", "Changed input");
     dialogMocks.locale.value = "fr";
     dialogMocks.selectPcMetadataCandidate.mockRejectedValueOnce(
@@ -520,7 +520,7 @@ describe("matching captured language event flow", () => {
     expect(dialogMocks.update).not.toHaveBeenCalled();
     expect(dialogMocks.success).not.toHaveBeenCalled();
     expect(
-      ui.wrapper.findComponent({ name: "RDialog" }).props("modelValue"),
+      ui.wrapper.findComponent({ name: "ZADialog" }).props("modelValue"),
     ).toBe(true);
   });
 });

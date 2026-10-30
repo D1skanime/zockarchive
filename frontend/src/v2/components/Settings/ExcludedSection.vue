@@ -6,14 +6,14 @@
 //
 // Visuals follow the mock's settings table pattern (subtle borders,
 // uppercase column heads, hairline-divided rows). The "Add" flow opens
-// a local RDialog that walks the user through type selection + value
+// a local ZADialog that walks the user through type selection + value
 // entry.
 import {
-  RBtn,
-  REmptyState,
-  RIcon,
-  RTable,
-  RTextField,
+  ZABtn,
+  ZAEmptyState,
+  ZAIcon,
+  ZATable,
+  ZATextField,
   type RTableColumn,
   type RTableSortPayload,
 } from "@v2/lib";
@@ -24,7 +24,7 @@ import { useCan } from "@/v2/composables/useCan";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 import configApi from "@/v2/data/adapters/legacy/services/api/config";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -280,7 +280,7 @@ function onSort({ key, dir }: RTableSortPayload) {
   <div class="r-v2-excluded">
     <!-- Toolbar: search + add -->
     <div class="r-v2-excluded__toolbar">
-      <RTextField
+      <ZATextField
         v-model="search"
         prefix-label="inline"
         :placeholder="t('common.search')"
@@ -289,19 +289,19 @@ function onSort({ key, dir }: RTableSortPayload) {
         class="r-v2-excluded__search"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-magnify" size="14" />
+          <ZAIcon icon="mdi-magnify" size="14" />
         </template>
-      </RTextField>
+      </ZATextField>
     </div>
 
     <!-- Active exclusions table or empty state -->
     <div v-if="exclusions.length === 0" class="r-v2-excluded__empty">
-      <REmptyState
+      <ZAEmptyState
         icon="mdi-format-list-bulleted"
         :message="t('settings.exclusions-none')"
       />
     </div>
-    <RTable
+    <ZATable
       v-else
       :columns="columns"
       :items="filteredExclusions"
@@ -318,12 +318,12 @@ function onSort({ key, dir }: RTableSortPayload) {
       </template>
       <template #cell.title="{ row }">
         <span class="r-v2-excluded__type">
-          <RIcon :icon="(row as Row).icon" size="14" />
+          <ZAIcon :icon="(row as Row).icon" size="14" />
           {{ (row as Row).title }}
         </span>
       </template>
       <template #cell.actions="{ row }">
-        <RBtn
+        <ZABtn
           v-if="canEdit"
           variant="text"
           size="small"
@@ -334,9 +334,9 @@ function onSort({ key, dir }: RTableSortPayload) {
           @click="removeRow(row as Row)"
         />
       </template>
-    </RTable>
+    </ZATable>
     <div>
-      <RBtn
+      <ZABtn
         v-if="canEdit"
         variant="flat"
         :block="false"
@@ -345,7 +345,7 @@ function onSort({ key, dir }: RTableSortPayload) {
         @click="openCreate"
       >
         {{ t("common.add") }}
-      </RBtn>
+      </ZABtn>
     </div>
 
     <!-- Defaults (read-only) -->
@@ -359,7 +359,7 @@ function onSort({ key, dir }: RTableSortPayload) {
           :key="d.value"
           class="r-v2-excluded__defaults-item"
         >
-          <RIcon :icon="d.icon" size="14" />
+          <ZAIcon :icon="d.icon" size="14" />
           <span class="r-v2-excluded__defaults-value">{{ d.value }}</span>
           <span class="r-v2-excluded__defaults-type">{{ d.title }}</span>
         </li>
@@ -367,7 +367,7 @@ function onSort({ key, dir }: RTableSortPayload) {
     </div>
 
     <!-- Add exclusion dialog -->
-    <RDialog
+    <ZADialog
       v-model="dialogOpen"
       icon="mdi-cancel"
       :width="540"
@@ -395,14 +395,14 @@ function onSort({ key, dir }: RTableSortPayload) {
             :aria-pressed="newType === def.key"
             @click="newType = def.key"
           >
-            <RIcon :icon="def.icon" size="22" />
+            <ZAIcon :icon="def.icon" size="22" />
             <span class="r-v2-excluded__type-card-title">{{ def.title }}</span>
             <span class="r-v2-excluded__type-card-desc">
               {{ def.description }}
             </span>
           </button>
         </div>
-        <RTextField
+        <ZATextField
           v-model="newValue"
           prefix-label="stacked"
           :disabled="!newType"
@@ -410,21 +410,21 @@ function onSort({ key, dir }: RTableSortPayload) {
           @keyup.enter="submitExclusion"
         >
           <template #prefix-label>
-            <RIcon
+            <ZAIcon
               v-if="selectedDef?.icon"
               :icon="selectedDef.icon"
               size="14"
             />
             {{ t("settings.exclusion-value") }}
           </template>
-        </RTextField>
+        </ZATextField>
       </template>
       <template #footer>
-        <RBtn variant="text" @click="closeCreate">
+        <ZABtn variant="text" @click="closeCreate">
           {{ t("common.cancel") }}
-        </RBtn>
+        </ZABtn>
         <div style="flex: 1" />
-        <RBtn
+        <ZABtn
           variant="flat"
           color="primary"
           :loading="submitting"
@@ -432,9 +432,9 @@ function onSort({ key, dir }: RTableSortPayload) {
           @click="submitExclusion"
         >
           {{ t("common.confirm") }}
-        </RBtn>
+        </ZABtn>
       </template>
-    </RDialog>
+    </ZADialog>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RTextField } from "@v2/lib";
+import { ZABtn, ZATextField } from "@v2/lib";
 import { onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -62,7 +62,7 @@ onBeforeMount(() => {
 <template>
   <AuthCard>
     <form class="r-v2-register__form" @submit.prevent="register">
-      <RTextField
+      <ZATextField
         v-model="username"
         :label="t('settings.username')"
         type="text"
@@ -72,7 +72,7 @@ onBeforeMount(() => {
         autocomplete="username"
         :disabled="submitting"
       />
-      <RTextField
+      <ZATextField
         v-model="email"
         :label="t('settings.email')"
         type="email"
@@ -89,7 +89,7 @@ onBeforeMount(() => {
         :rules="usersStore.passwordRules"
         :disabled="submitting"
       />
-      <RBtn
+      <ZABtn
         type="submit"
         variant="flat"
         color="primary"
@@ -99,7 +99,7 @@ onBeforeMount(() => {
         :disabled="submitting || !username || !email || !password"
       >
         {{ t("common.create") }}
-      </RBtn>
+      </ZABtn>
     </form>
 
     <AuthBackLink />

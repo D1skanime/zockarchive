@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// HashChip — click-to-copy chip wrapping the shared RTag primitive so
+// HashChip — click-to-copy chip wrapping the shared ZATag primitive so
 // the visual matches MetadataTab's hash row and the rest of v2's
 // `label + mono value` pills (single source of truth for tone, border,
 // surface colour). Adds:
@@ -18,7 +18,7 @@
 // `compact` switches to the `x-small` size — useful for in-row
 // hash clusters where vertical breathing room is tight. The trailing
 // icon stays in both sizes so the click affordance is consistent.
-import { RTag } from "@v2/lib";
+import { ZATag } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useClipboard } from "@/v2/composables/useClipboard";
@@ -94,7 +94,7 @@ async function copy() {
     :title="`${label}: ${value}`"
     @click="copy"
   >
-    <RTag
+    <ZATag
       :label="label"
       :text="displayed"
       :append-icon="appendIcon"
@@ -105,7 +105,7 @@ async function copy() {
 </template>
 
 <style scoped>
-/* The button is just the interactive shell — RTag owns the visuals.
+/* The button is just the interactive shell — ZATag owns the visuals.
    Stripping the native chrome so hover / focus styles can lean on
    the inner tag via :deep(). */
 .r-v2-hash-chip {

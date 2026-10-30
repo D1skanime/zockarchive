@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RCarousel, RDropzone, REmptyState, RSelect } from "@v2/lib";
+import { ZABtn, ZACarousel, ZADropzone, ZAEmptyState, ZASelect } from "@v2/lib";
 import { computed, nextTick, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type {
@@ -60,7 +60,7 @@ const mediaUrls = computed(() =>
 );
 const gallery = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);
-const dropzone = ref<InstanceType<typeof RDropzone> | null>(null);
+const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
 const { columns } = useResponsiveColumns(gallery, { cardWidth: 200, gap: 12 });
 useWrapGridNav(root, { cellSelector: "button:not([disabled])" });
 const lightboxIndex = ref(0);
@@ -196,14 +196,14 @@ async function remove(mediaId: number) {
     <h2 id="pc-dlc-media-heading" class="pc-dlc-media__heading">
       {{ t("rom.media") }}
     </h2>
-    <RSelect
+    <ZASelect
       v-model="role"
       :items="roleItems"
       item-title="title"
       item-value="value"
       :label="t('rom.media')"
     />
-    <RDropzone
+    <ZADropzone
       ref="dropzone"
       overlay
       :disabled="busy || !componentVersion || !canEdit"
@@ -224,15 +224,15 @@ async function remove(mediaId: number) {
       </header>
       <div v-if="needsRefresh" role="alert" class="d-flex align-center ga-3">
         <span>{{ t("common.error") }}</span>
-        <RBtn
+        <ZABtn
           :loading="recovering"
           :disabled="recovering"
           :aria-label="t('common.try-again')"
           @click="retryReconciliation"
-          >{{ t("common.try-again") }}</RBtn
+          >{{ t("common.try-again") }}</ZABtn
         >
       </div>
-      <REmptyState
+      <ZAEmptyState
         v-if="filteredMedia.length === 0"
         :title="t('rom.artwork-empty')"
       />
@@ -290,8 +290,8 @@ async function remove(mediaId: number) {
           </MediaManagementCard>
         </li>
       </ul>
-    </RDropzone>
-    <RCarousel
+    </ZADropzone>
+    <ZACarousel
       v-if="lightboxOpen"
       v-model="lightboxIndex"
       :items="mediaUrls"
@@ -306,7 +306,7 @@ async function remove(mediaId: number) {
       <template #thumbnail="{ item, index }">
         <img :src="item" :alt="`${t('rom.media')} ${index + 1}`" />
       </template>
-    </RCarousel>
+    </ZACarousel>
   </section>
 </template>
 

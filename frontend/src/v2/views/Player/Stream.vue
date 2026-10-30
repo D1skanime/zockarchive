@@ -15,7 +15,7 @@
 //
 // The streaming store owns the session state. This view only owns the
 // local player chrome (UI visibility, fullscreen, pending flags).
-import { RAlert, RBtn, RIcon, RSpinner } from "@v2/lib";
+import { ZAAlert, ZABtn, ZAIcon, ZASpinner } from "@v2/lib";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -481,7 +481,7 @@ const showLaunchScreen = computed(
       </aside>
 
       <div class="r-v2-stream__panel">
-        <RAlert
+        <ZAAlert
           v-if="playerState === 'error' && errorType === 'occupied'"
           type="warning"
           variant="translucent"
@@ -497,9 +497,9 @@ const showLaunchScreen = computed(
             }}
           </span>
           <span v-else>{{ t("play.stream-occupied-fallback") }}</span>
-        </RAlert>
+        </ZAAlert>
 
-        <RAlert
+        <ZAAlert
           v-else-if="playerState === 'error'"
           type="error"
           variant="translucent"
@@ -508,7 +508,7 @@ const showLaunchScreen = computed(
         />
 
         <div class="r-v2-stream__actions">
-          <RBtn
+          <ZABtn
             size="large"
             variant="flat"
             color="primary"
@@ -523,16 +523,16 @@ const showLaunchScreen = computed(
                 ? t("play.stream-try-again")
                 : t("play.play")
             }}
-          </RBtn>
+          </ZABtn>
 
-          <RBtn
+          <ZABtn
             variant="text"
             size="large"
             prepend-icon="mdi-arrow-left"
             :to="backRoute"
           >
             {{ t("play.back-to-game-details") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </div>
     </div>
@@ -582,7 +582,7 @@ const showLaunchScreen = computed(
           "
           @click="toggleMute"
         >
-          <RIcon :icon="isMuted ? 'mdi-volume-mute' : 'mdi-volume-high'" />
+          <ZAIcon :icon="isMuted ? 'mdi-volume-mute' : 'mdi-volume-high'" />
         </button>
         <input
           v-model.number="volume"
@@ -623,8 +623,8 @@ const showLaunchScreen = computed(
             "
             @click="handleSaveState"
           >
-            <RSpinner v-if="isSavingState" :size="16" />
-            <RIcon v-else icon="mdi-content-save-outline" />
+            <ZASpinner v-if="isSavingState" :size="16" />
+            <ZAIcon v-else icon="mdi-content-save-outline" />
           </button>
 
           <button
@@ -640,8 +640,8 @@ const showLaunchScreen = computed(
             "
             @click="handleLoadState"
           >
-            <RSpinner v-if="isLoadingState" :size="16" />
-            <RIcon v-else icon="mdi-restore" />
+            <ZASpinner v-if="isLoadingState" :size="16" />
+            <ZAIcon v-else icon="mdi-restore" />
           </button>
 
           <button
@@ -658,8 +658,8 @@ const showLaunchScreen = computed(
             "
             @click="handleLoadAutosave"
           >
-            <RSpinner v-if="isLoadingAutosave" :size="16" />
-            <RIcon v-else icon="mdi-history" />
+            <ZASpinner v-if="isLoadingAutosave" :size="16" />
+            <ZAIcon v-else icon="mdi-history" />
           </button>
         </template>
 
@@ -678,7 +678,7 @@ const showLaunchScreen = computed(
           "
           @click="toggleFullscreen"
         >
-          <RIcon
+          <ZAIcon
             :icon="isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'"
           />
         </button>
@@ -691,8 +691,8 @@ const showLaunchScreen = computed(
           :disabled="isSavingAndExiting"
           @click="handleSaveAndExit"
         >
-          <RSpinner v-if="isSavingAndExiting" :size="16" />
-          <RIcon v-else icon="mdi-exit-to-app" />
+          <ZASpinner v-if="isSavingAndExiting" :size="16" />
+          <ZAIcon v-else icon="mdi-exit-to-app" />
         </button>
 
         <button
@@ -703,14 +703,14 @@ const showLaunchScreen = computed(
           :disabled="isSavingAndExiting"
           @click="handleStop"
         >
-          <RIcon icon="mdi-stop" />
+          <ZAIcon icon="mdi-stop" />
         </button>
       </div>
     </div>
   </section>
 
   <section v-else class="r-v2-stream__loading">
-    <RSpinner :size="40" :aria-label="t('common.loading')" />
+    <ZASpinner :size="40" :aria-label="t('common.loading')" />
   </section>
 </template>
 

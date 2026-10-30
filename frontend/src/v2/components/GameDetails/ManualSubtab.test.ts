@@ -114,13 +114,13 @@ const ViewerStub = defineComponent({
 const stubs = {
   MarkdownViewer: ViewerStub,
   PdfViewer: ViewerStub,
-  RBtn: RBtnStub,
-  RDropzone: RDropzoneStub,
-  REmptyState: {
+  ZABtn: RBtnStub,
+  ZADropzone: RDropzoneStub,
+  ZAEmptyState: {
     props: ["title"],
     template: "<section data-empty-state><span>{{ title }}</span></section>",
   },
-  RSelect: { template: "<select />" },
+  ZASelect: { template: "<select />" },
 };
 
 const baseRom = {

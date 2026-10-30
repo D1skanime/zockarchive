@@ -16,10 +16,10 @@
 // Single-segment permissions (`invite`, `reset`) get their own group
 // with no children, surfaced as the scope's own row.
 //
-// Each leaf is an RTag tinted by action verb so the at-a-glance read
+// Each leaf is an ZATag tinted by action verb so the at-a-glance read
 // matches the rest of v2's vocabulary (read = brand, write = accent,
 // run = info, anything else = neutral).
-import { RTag } from "@v2/lib";
+import { ZATag } from "@v2/lib";
 import { computed } from "vue";
 
 interface Props {
@@ -107,7 +107,7 @@ const groups = computed<Group[]>(() => {
           <span class="r-v2-scope-tree__branch" aria-hidden="true">
             {{ i === group.leaves.length - 1 ? "└" : "├" }}
           </span>
-          <RTag :tone="leaf.tone" :text="leaf.action" size="x-small" />
+          <ZATag :tone="leaf.tone" :text="leaf.action" size="x-small" />
         </li>
       </ul>
     </div>

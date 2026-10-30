@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// VersionSwitcher — RBtn + RMenu pair that lets the user navigate
+// VersionSwitcher — ZABtn + ZAMenu pair that lets the user navigate
 // between sibling ROMs of the same game (different region / revision /
 // language). Renders nothing when the rom has no siblings.
 //
@@ -8,7 +8,7 @@
 // default" read as a single control group. The active row in the menu
 // is the rom currently in view (radio-like), so the user can confirm
 // which file they're on without scanning filenames.
-import { RBtn, RIcon, RMenu, RMenuItem } from "@v2/lib";
+import { ZABtn, ZAIcon, ZAMenu, ZAMenuItem } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
@@ -48,9 +48,9 @@ const mainTooltip = computed(() => t("rom.default-version"));
 </script>
 
 <template>
-  <RMenu v-if="visible" location="bottom start" :offset="6">
+  <ZAMenu v-if="visible" location="bottom start" :offset="6">
     <template #activator="{ props: activatorProps }">
-      <RBtn
+      <ZABtn
         v-bind="activatorProps"
         variant="outlined"
         size="small"
@@ -58,13 +58,13 @@ const mainTooltip = computed(() => t("rom.default-version"));
         class="version-switcher__btn"
         :aria-label="t('rom.switch-version')"
       >
-        <RIcon icon="mdi-card-multiple-outline" size="16" />
+        <ZAIcon icon="mdi-card-multiple-outline" size="16" />
         <span class="version-switcher__label">{{ currentLabel }}</span>
-        <RIcon icon="mdi-menu-down" size="16" />
-      </RBtn>
+        <ZAIcon icon="mdi-menu-down" size="16" />
+      </ZABtn>
     </template>
 
-    <RMenuItem
+    <ZAMenuItem
       v-for="v in versions"
       :key="v.id"
       :to="`/rom/${v.id}`"
@@ -73,15 +73,15 @@ const mainTooltip = computed(() => t("rom.default-version"));
       :label="v.label"
     >
       <template v-if="v.main" #append>
-        <RIcon
+        <ZAIcon
           icon="mdi-bookmark-box"
           size="14"
           class="version-switcher__main"
           :aria-label="mainTooltip"
         />
       </template>
-    </RMenuItem>
-  </RMenu>
+    </ZAMenuItem>
+  </ZAMenu>
 </template>
 
 <style scoped>

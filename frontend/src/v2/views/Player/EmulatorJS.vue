@@ -13,7 +13,14 @@
 // The running state mounts the v1 <Player> component (600 lines of EJS
 // wiring — not worth rewriting). The v1 SelectSaveDialog / SelectStateDialog
 // + CacheDialog are mounted in GlobalDialogs so the emitter bridge works.
-import { RBtn, RCard, RIcon, RSelect, RSliderBtnGroup, RSwitch } from "@v2/lib";
+import {
+  ZABtn,
+  ZACard,
+  ZAIcon,
+  ZASelect,
+  ZASliderBtnGroup,
+  ZASwitch,
+} from "@v2/lib";
 import { useEventListener, useLocalStorage } from "@vueuse/core";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
@@ -53,7 +60,7 @@ import storeRoms, {
   type DetailedRom,
   type SimpleRom,
 } from "@/v2/data/adapters/legacy/stores/roms";
-import type { SliderBtnGroupItem } from "@/v2/lib/primitives/RSliderBtnGroup/types";
+import type { SliderBtnGroupItem } from "@/v2/lib/primitives/ZASliderBtnGroup/types";
 import storeGalleryRoms from "@/v2/stores/galleryRoms";
 import { installIOSFullscreenShim } from "@/v2/utils/emulatorjs";
 import {
@@ -82,7 +89,7 @@ const { modality } = useInputModality();
 const playSession = usePlaySession();
 
 // Ref the Play CTA so we can imperatively focus it on enter (and again
-// when the user comes back from a running session). RBtn forwards to
+// when the user comes back from a running session). ZABtn forwards to
 // its rendered <button>/<a>, but resolving the DOM node via a class
 // query is simpler and survives the lazy-load of the inner element.
 function focusPlayButton() {
@@ -597,7 +604,7 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
     <!-- Pre-game configuration -->
     <div v-if="!gameRunning" class="r-v2-ejs__config">
       <!-- Hero: cover + title + Play CTA -->
-      <RCard class="r-v2-ejs__panel r-v2-ejs__hero" variant="flat">
+      <ZACard class="r-v2-ejs__panel r-v2-ejs__hero" variant="flat">
         <div
           class="r-v2-ejs__cover"
           :class="{ 'r-v2-ejs__cover--alt-art': heroIsAlt }"
@@ -619,7 +626,7 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
           <h1 class="r-v2-ejs__title">{{ title }}</h1>
           <p class="r-v2-ejs__subtitle">{{ platformLabel }}</p>
         </div>
-        <RBtn
+        <ZABtn
           size="x-large"
           variant="flat"
           color="primary"
@@ -631,31 +638,31 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
           @click="onPlay"
         >
           {{ t("play.play") }}
-        </RBtn>
+        </ZABtn>
         <div class="r-v2-ejs__hero-links">
-          <RBtn
+          <ZABtn
             variant="text"
             size="small"
             prepend-icon="mdi-arrow-left"
             @click="backToRom"
           >
             {{ t("play.back-to-game-details") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             variant="text"
             size="small"
             prepend-icon="mdi-view-grid-outline"
             @click="backToPlatform"
           >
             {{ t("play.back-to-gallery") }}
-          </RBtn>
+          </ZABtn>
         </div>
-      </RCard>
+      </ZACard>
 
       <!-- Resume: tabs + preview + horizontal strip -->
-      <RCard class="r-v2-ejs__panel r-v2-ejs__resume" variant="flat">
+      <ZACard class="r-v2-ejs__panel r-v2-ejs__resume" variant="flat">
         <div class="r-v2-ejs__panel-head">
-          <RSliderBtnGroup
+          <ZASliderBtnGroup
             variant="tab"
             :model-value="activeAssetTab"
             :items="assetTabs"
@@ -702,16 +709,16 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
             @select="pickAsset"
           />
         </div>
-      </RCard>
+      </ZACard>
 
       <!-- Setup: disc / core / firmware / fullscreen / clear cache -->
-      <RCard class="r-v2-ejs__panel r-v2-ejs__setup" variant="flat">
+      <ZACard class="r-v2-ejs__panel r-v2-ejs__setup" variant="flat">
         <div class="r-v2-ejs__panel-head r-v2-ejs__panel-head--label">
-          <RIcon icon="mdi-cog-outline" size="14" />
+          <ZAIcon icon="mdi-cog-outline" size="14" />
           <span>{{ t("common.settings") }}</span>
         </div>
         <div class="r-v2-ejs__setup-body">
-          <RSelect
+          <ZASelect
             v-if="(rom?.files?.length ?? 0) > 1"
             v-model="selectedDisc"
             variant="outlined"
@@ -727,7 +734,7 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
               }))
             "
           />
-          <RSelect
+          <ZASelect
             v-if="supportedCores.length > 1"
             v-model="selectedCore"
             variant="outlined"
@@ -738,7 +745,7 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
             :label="t('common.core')"
             :items="supportedCores.map((c) => ({ title: c, value: c }))"
           />
-          <RSelect
+          <ZASelect
             v-if="firmwareOptions.length > 0"
             v-model="selectedFirmware"
             variant="outlined"
@@ -752,17 +759,17 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
             item-value="id"
             return-object
           />
-          <RSwitch v-model="fullscreenOnPlay" :label="t('play.full-screen')" />
+          <ZASwitch v-model="fullscreenOnPlay" :label="t('play.full-screen')" />
           <!-- Only offered when this game actually has a bezel, so the user can
                hide a bad / misaligned one that obscures the game (#3939). -->
-          <RSwitch
+          <ZASwitch
             v-if="bezelUrl"
             v-model="showBezel"
             :label="t('play.show-bezel')"
           />
         </div>
         <div class="r-v2-ejs__setup-foot">
-          <RBtn
+          <ZABtn
             variant="text"
             size="small"
             color="error"
@@ -770,9 +777,9 @@ const selectedAsset = computed<SaveSchema | StateSchema | null>(() =>
             @click="openCacheDialog"
           >
             {{ t("play.clear-cache") }}
-          </RBtn>
+          </ZABtn>
         </div>
-      </RCard>
+      </ZACard>
 
       <div class="r-v2-ejs__brand">
         <span>{{ t("play.powered-by") }}</span>

@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RBtn, RDialog, RImg, RMenu, RMenuItem, RTabNav, RTag } from "@v2/lib";
+import {
+  ZABtn,
+  ZADialog,
+  ZAImg,
+  ZAMenu,
+  ZAMenuItem,
+  ZATabNav,
+  ZATag,
+} from "@v2/lib";
 import type { Emitter } from "mitt";
 import { getActivePinia } from "pinia";
 import { computed, inject, ref, watch } from "vue";
@@ -186,14 +194,14 @@ function showMedia() {
   <main class="r-v2-det pc-dlc-detail">
     <div class="r-v2-det__body">
       <aside class="pc-dlc-detail__cover-column">
-        <RBtn
+        <ZABtn
           class="pc-dlc-detail__back"
           :to="{ name: ROUTES.ROM, params: { rom: parent.id } }"
           variant="text"
         >
           {{ t("rom.pc-dlc-back-to-game", { game: parent.name ?? "" }) }}
-        </RBtn>
-        <RImg
+        </ZABtn>
+        <ZAImg
           v-if="cover"
           class="pc-dlc-detail__cover"
           :src="ownedMediaUrl(cover.owned_path)"
@@ -215,43 +223,43 @@ function showMedia() {
         <section class="pc-dlc-detail__hero">
           <div class="pc-dlc-detail__title-row">
             <h1 class="pc-dlc-detail__title">{{ title }}</h1>
-            <RTag :text="t('rom.category-dlc')" tone="brand" />
+            <ZATag :text="t('rom.category-dlc')" tone="brand" />
           </div>
         </section>
 
         <div class="pc-dlc-detail__tab-bar">
-          <RTabNav v-model="tab" :items="tabs" class="r-v2-det__tabs" />
-          <RMenu location="bottom end">
+          <ZATabNav v-model="tab" :items="tabs" class="r-v2-det__tabs" />
+          <ZAMenu location="bottom end">
             <template #activator="{ props: menuProps }">
-              <RBtn
+              <ZABtn
                 v-bind="menuProps"
                 icon="mdi-dots-vertical"
                 :aria-label="t('common.actions')"
               />
             </template>
-            <RMenuItem
+            <ZAMenuItem
               v-if="canEdit"
               data-testid="pc-dlc-cover-search"
               :label="t('rom.search-cover')"
               icon="mdi-image-search-outline"
               @click="openCoverSearch"
             />
-            <RMenuItem
+            <ZAMenuItem
               :label="t('rom.pc-find-metadata')"
               icon="mdi-magnify"
               @click="openMatcher"
             />
-            <RMenuItem
+            <ZAMenuItem
               :label="t('rom.artwork')"
               icon="mdi-image-plus-outline"
               @click="showMedia"
             />
-            <RMenuItem
+            <ZAMenuItem
               :label="t('rom.download')"
               icon="mdi-download"
               @click="tab = 'pc-components'"
             />
-          </RMenu>
+          </ZAMenu>
         </div>
 
         <div class="r-v2-det__panel">
@@ -272,7 +280,7 @@ function showMedia() {
                   {{ t(provenance.key, provenance.params) }}
                 </p>
               </div>
-              <RBtn
+              <ZABtn
                 v-if="canEdit"
                 data-testid="pc-dlc-description-edit"
                 size="large"
@@ -282,7 +290,7 @@ function showMedia() {
                 @click="descriptionEditorOpen = true"
               />
             </div>
-            <RDialog v-model="descriptionEditorOpen" scroll-content>
+            <ZADialog v-model="descriptionEditorOpen" scroll-content>
               <template #header>{{ t("rom.description-editor") }}</template>
               <template #content>
                 <LocalizedDescriptionEditor
@@ -302,7 +310,7 @@ function showMedia() {
                   "
                 />
               </template>
-            </RDialog>
+            </ZADialog>
             <dl class="pc-dlc-detail__facts">
               <div v-if="releaseDate" class="pc-dlc-detail__fact">
                 <dt>{{ t("rom.pc-release") }}</dt>

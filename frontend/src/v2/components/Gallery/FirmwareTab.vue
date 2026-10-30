@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { RBtn, RChip, RCheckbox, REmptyState, RIcon, RTooltip } from "@v2/lib";
+import {
+  ZABtn,
+  ZAChip,
+  ZACheckbox,
+  ZAEmptyState,
+  ZAIcon,
+  ZATooltip,
+} from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { FirmwareSchema } from "@/__generated__";
@@ -138,7 +145,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
       class="r-v2-fw__toolbar"
       :class="{ 'r-v2-fw__toolbar--active': selectedIds.size > 0 }"
     >
-      <RCheckbox
+      <ZACheckbox
         :model-value="allSelected"
         :indeterminate="someSelected"
         hide-details
@@ -154,7 +161,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
         @update:model-value="toggleAll"
       />
       <div class="r-v2-fw__toolbar-actions">
-        <RBtn
+        <ZABtn
           variant="text"
           size="small"
           prepend-icon="mdi-download"
@@ -162,8 +169,8 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
           @click="downloadSelected"
         >
           {{ t("common.download") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           v-if="canWrite"
           variant="text"
           size="small"
@@ -173,7 +180,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
           @click="openDelete(selectedFirmware)"
         >
           {{ t("common.delete") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </header>
 
@@ -187,7 +194,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
           'r-v2-fw__row--missing': f.missing_from_fs,
         }"
       >
-        <RCheckbox
+        <ZACheckbox
           :model-value="selectedIds.has(f.id)"
           hide-details
           class="r-v2-fw__row-check"
@@ -195,7 +202,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
         />
         <div class="r-v2-fw__row-body">
           <div class="r-v2-fw__row-name-line">
-            <RTooltip
+            <ZATooltip
               v-if="f.missing_from_fs"
               :text="
                 t(
@@ -205,20 +212,20 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
               "
             >
               <template #activator="{ props: act }">
-                <RIcon
+                <ZAIcon
                   v-bind="act"
                   icon="mdi-file-question-outline"
                   size="14"
                   color="var(--r-color-danger-fg)"
                 />
               </template>
-            </RTooltip>
+            </ZATooltip>
             <span class="r-v2-fw__row-name">{{ f.file_name }}</span>
           </div>
           <div class="r-v2-fw__row-chips">
-            <RChip size="x-small" variant="translucent">
+            <ZAChip size="x-small" variant="translucent">
               {{ formatBytes(f.file_size_bytes) }}
-            </RChip>
+            </ZAChip>
             <HashChip
               v-if="f.sha1_hash"
               label="SHA-1"
@@ -237,7 +244,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
               :value="f.crc_hash"
               compact
             />
-            <RChip
+            <ZAChip
               v-if="f.is_verified"
               size="x-small"
               color="success"
@@ -251,11 +258,11 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
               "
             >
               {{ t("platform.firmware-verified", "Verified") }}
-            </RChip>
+            </ZAChip>
           </div>
         </div>
         <div class="r-v2-fw__row-actions">
-          <RBtn
+          <ZABtn
             variant="text"
             size="small"
             icon="mdi-download"
@@ -263,7 +270,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
             :title="t('common.download')"
             @click="downloadOne(f)"
           />
-          <RBtn
+          <ZABtn
             v-if="canWrite"
             variant="text"
             size="small"
@@ -277,7 +284,7 @@ async function performDelete(firmware: FirmwareSchema[]): Promise<void> {
       </li>
     </ul>
 
-    <REmptyState
+    <ZAEmptyState
       v-else
       variant="boxed"
       icon="mdi-memory"

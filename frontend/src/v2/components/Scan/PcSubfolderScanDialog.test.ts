@@ -18,14 +18,14 @@ vi.mock("@/v2/composables/useWebpSupport", () => ({
 }));
 vi.mock("vue-i18n", () => ({ useI18n: () => ({ t: (key: string) => key }) }));
 vi.mock("@v2/lib", () => ({
-  RDialog: { template: "<div><slot name='content' /></div>" },
-  RBtn: { template: "<button><slot /></button>" },
-  RIcon: { template: "<span />" },
-  RImg: { template: "<img />" },
-  RTag: { template: "<span />" },
-  RPlatformIcon: { template: "<span />" },
-  RCollapsible: { template: "<div><slot /></div>" },
-  RVirtualScroller: {
+  ZADialog: { template: "<div><slot name='content' /></div>" },
+  ZABtn: { template: "<button><slot /></button>" },
+  ZAIcon: { template: "<span />" },
+  ZAImg: { template: "<img />" },
+  ZATag: { template: "<span />" },
+  ZAPlatformIcon: { template: "<span />" },
+  ZACollapsible: { template: "<div><slot /></div>" },
+  ZAVirtualScroller: {
     props: ["items"],
     template: "<div><slot v-for='item in items' :item='item' /></div>",
   },

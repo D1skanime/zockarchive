@@ -5,7 +5,7 @@
 // lifts it, blurs the rest of the grid and overlays a focused panel
 // over the body with a cover-source picker and confirm action. Click
 // the backdrop or press Esc to close.
-import { RBtn, REmptyState, RIcon, RProgressCircular } from "@v2/lib";
+import { ZABtn, ZAEmptyState, ZAIcon, ZAProgressCircular } from "@v2/lib";
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import GameCard from "@/v2/components/GameCard/GameCard.vue";
@@ -22,7 +22,7 @@ import {
   type EscapableEntry,
   popEscapable,
   pushEscapable,
-} from "@/v2/lib/overlays/RDialog/escapeStack";
+} from "@/v2/lib/overlays/ZADialog/escapeStack";
 
 defineOptions({ inheritAttrs: false });
 
@@ -81,7 +81,7 @@ function confirm() {
 
 // When the focus overlay is open it registers on the shared escape
 // stack — pressing Esc dismisses just the overlay, leaving the parent
-// RDialog open (the user can press Esc again to close that). Without
+// ZADialog open (the user can press Esc again to close that). Without
 // the stack, the dialog's own global Esc listener would fire first
 // and close everything at once.
 const overlayEscEntry: EscapableEntry = {
@@ -102,10 +102,10 @@ watch(
 
 <template>
   <div v-if="searching" class="match-grid__state">
-    <RProgressCircular indeterminate :size="40" />
+    <ZAProgressCircular indeterminate :size="40" />
   </div>
 
-  <REmptyState
+  <ZAEmptyState
     v-else-if="searched && !results.length"
     icon="mdi-disc-alert"
     :title="t('common.no-results')"
@@ -113,7 +113,7 @@ watch(
   />
 
   <div v-else-if="!searched" class="match-grid__state">
-    <REmptyState
+    <ZAEmptyState
       icon="mdi-magnify-scan"
       :title="t('rom.match-search-title')"
       :hint="t('rom.match-search-hint')"
@@ -167,7 +167,7 @@ watch(
         <section class="match-grid__panel" :aria-label="t('rom.details')">
           <header class="match-grid__head">
             <h3 class="match-grid__title">{{ activeMatch.name }}</h3>
-            <RBtn
+            <ZABtn
               icon="mdi-close"
               size="small"
               variant="outlined"
@@ -217,14 +217,14 @@ watch(
                 class="match-grid__source-check"
                 aria-hidden
               >
-                <RIcon icon="mdi-check" size="14" />
+                <ZAIcon icon="mdi-check" size="14" />
               </span>
             </button>
           </div>
 
           <div class="match-grid__footer">
             <div class="match-grid__cta">
-              <RBtn
+              <ZABtn
                 variant="flat"
                 color="primary"
                 prepend-icon="mdi-check"
@@ -232,7 +232,7 @@ watch(
                 @click="confirm"
               >
                 {{ t("rom.match-this-game") }}
-              </RBtn>
+              </ZABtn>
             </div>
           </div>
         </section>

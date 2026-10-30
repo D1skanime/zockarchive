@@ -12,7 +12,7 @@
 // The wizard owns the form draft (Setup.vue keeps the state so navigating
 // to Step 1 and back preserves what the user typed). This component is
 // pure UI: bind props in, emit input/validity out.
-import { RBtn, RForm, RIcon, RTextField, RTooltip } from "@v2/lib";
+import { ZABtn, ZAForm, ZAIcon, ZATextField, ZATooltip } from "@v2/lib";
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { defaultAvatarPath } from "@/utils";
@@ -130,7 +130,7 @@ const abilities = [
             :alt="draft.username || t('settings.change-avatar')"
           />
           <span class="r-setup-admin__avatar-edit">
-            <RIcon name="mdi-camera" :size="22" />
+            <ZAIcon name="mdi-camera" :size="22" />
           </span>
         </button>
         <input
@@ -141,9 +141,9 @@ const abilities = [
           :aria-label="t('settings.change-avatar')"
           @change="onAvatarPicked"
         />
-        <RTooltip>
+        <ZATooltip>
           <template #activator="{ props: tipProps }">
-            <RBtn
+            <ZABtn
               v-bind="tipProps"
               variant="text"
               size="small"
@@ -156,7 +156,7 @@ const abilities = [
             />
           </template>
           <span>{{ t("common.remove") }}</span>
-        </RTooltip>
+        </ZATooltip>
       </div>
 
       <p class="r-setup-admin__lead">
@@ -168,19 +168,23 @@ const abilities = [
           :key="ability.icon"
           class="r-setup-admin__ability"
         >
-          <RIcon :name="ability.icon" :size="18" color="primary" />
+          <ZAIcon :name="ability.icon" :size="18" color="primary" />
           <span>{{ t(ability.textKey) }}</span>
         </li>
       </ul>
       <div class="r-setup-admin__warning">
-        <RIcon name="mdi-key-outline" :size="16" color="warning" />
+        <ZAIcon name="mdi-key-outline" :size="16" color="warning" />
         <span>{{ t("setup.admin-credentials-warning") }}</span>
       </div>
     </aside>
 
     <!-- RIGHT: form -->
-    <RForm v-model="valid" class="r-setup-admin__form" @submit="emit('submit')">
-      <RTextField
+    <ZAForm
+      v-model="valid"
+      class="r-setup-admin__form"
+      @submit="emit('submit')"
+    >
+      <ZATextField
         :model-value="draft.username"
         :label="t('settings.username')"
         type="text"
@@ -190,7 +194,7 @@ const abilities = [
         :rules="usernameRules"
         @update:model-value="(v: string) => (draft.username = v)"
       />
-      <RTextField
+      <ZATextField
         :model-value="draft.email"
         :label="t('settings.email')"
         type="email"
@@ -215,7 +219,7 @@ const abilities = [
         class="r-setup-admin__repeat"
         @update:model-value="(v: string) => (draft.repeatPassword = v)"
       />
-    </RForm>
+    </ZAForm>
   </div>
 </template>
 

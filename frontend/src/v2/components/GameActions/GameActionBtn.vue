@@ -12,12 +12,12 @@
 //   qr          → emit showQRCodeDialog (only meaningful for NDS today)
 //   favorite    → toggleFavorite; active state when `isFavorited`
 //   collection  → open ManageCollectionsDialog; hidden if no collections
-//   status      → open status-enum picker (RMenu); icon swaps to the
+//   status      → open status-enum picker (ZAMenu); icon swaps to the
 //                 current status icon when set, dashed border when empty
 //   more        → open MoreMenu (GameActionsList dropdown)
 //
 // Sizes (controls diameter + icon size + padding) — same vocabulary as
-// RBtn / RChip / RTag:
+// ZABtn / ZAChip / ZATag:
 //   x-small → 22px
 //   small   → 28px — GameCard hover overlay
 //   default → 40px — GameDetails header
@@ -34,7 +34,7 @@
 //
 // `withLabel` turns the button into a pill with "Play" / "Download" /
 // etc. text next to the icon, matching the GameDetails Play CTA.
-import { RDivider, RIcon, RMenu, RMenuItem, RTooltip } from "@v2/lib";
+import { ZADivider, ZAIcon, ZAMenu, ZAMenuItem, ZATooltip } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref, toRef } from "vue";
 import { useI18n } from "vue-i18n";
@@ -77,12 +77,12 @@ export type GameAction =
 interface Props {
   rom: SimpleRom;
   action: GameAction;
-  /** Size ladder shared with RBtn / RChip / RTag. */
+  /** Size ladder shared with ZABtn / ZAChip / ZATag. */
   size?: "x-small" | "small" | "default" | "large" | "x-large";
   /**
    * `glass` — dark scrim, designed to read on top of cover art
    *           (GameCard hover overlay).
-   * `surface` — translucent grey surface, matches RTag tokens
+   * `surface` — translucent grey surface, matches ZATag tokens
    *             (GameDetails header where the buttons sit on the
    *             page background, not over a cover).
    * `emphasized` — primary white-on-dark CTA (Play).
@@ -252,7 +252,7 @@ const preset = computed<Preset>(() => {
       active: count > 0,
     };
   }
-  // "more" — the RMenu owns activation; no direct click handler.
+  // "more" — the ZAMenu owns activation; no direct click handler.
   return {
     icon: "mdi-dots-horizontal",
     activeIcon: null,
@@ -269,7 +269,7 @@ const displayedIcon = computed(
 const moreOpen = ref(false);
 const statusOpen = ref(false);
 // The `collection` action opens a global dialog via emitter rather than a
-// local RMenu, so we track its "pinned" lifecycle by hand: flip true on
+// local ZAMenu, so we track its "pinned" lifecycle by hand: flip true on
 // click, flip false when the dialog notifies it has closed.
 const collectionOpen = ref(false);
 const emitter = inject<Emitter<Events>>("emitter");
@@ -325,7 +325,7 @@ function onClick(e: MouseEvent) {
 <template>
   <!-- More — opens the shared GameActionsList dropdown. On phones it docks
        as a bottom sheet (content-height) instead of a floating dropdown. -->
-  <RMenu
+  <ZAMenu
     v-if="action === 'more'"
     v-model="moreOpen"
     :offset="8"
@@ -348,11 +348,11 @@ function onClick(e: MouseEvent) {
         :aria-label="preset.label"
         @click.prevent.stop
       >
-        <RIcon :icon="displayedIcon" />
+        <ZAIcon :icon="displayedIcon" />
         <span v-if="withLabel" class="r-v2-game-btn__label">
           {{ preset.label }}
         </span>
-        <RTooltip
+        <ZATooltip
           v-if="!withLabel"
           activator="parent"
           :text="preset.label"
@@ -361,14 +361,14 @@ function onClick(e: MouseEvent) {
       </button>
     </template>
     <GameActionsList :rom="rom" @close="moreOpen = false" />
-  </RMenu>
+  </ZAMenu>
 
   <!-- Status — enum picker; icon mirrors the current value, dashed
        border when no status is set. Keeps the per-ROM action set in
        one place instead of a parallel widget. With several states
        active the activator stretches into a multi-icon pill; the
        `orientation` prop chooses row (ribbon) vs column (GameCard). -->
-  <RMenu
+  <ZAMenu
     v-else-if="action === 'status'"
     v-model="statusOpen"
     :offset="8"
@@ -398,17 +398,17 @@ function onClick(e: MouseEvent) {
         @click.prevent.stop
       >
         <span v-if="activeStatusIcons.length > 1" class="r-v2-game-btn__icons">
-          <RIcon
+          <ZAIcon
             v-for="(ic, i) in activeStatusIcons"
             :key="`${ic}-${i}`"
             :icon="ic"
           />
         </span>
-        <RIcon v-else :icon="displayedIcon" />
+        <ZAIcon v-else :icon="displayedIcon" />
         <span v-if="withLabel" class="r-v2-game-btn__label">
           {{ preset.label }}
         </span>
-        <RTooltip
+        <ZATooltip
           v-if="!withLabel"
           activator="parent"
           :text="preset.label"
@@ -417,7 +417,7 @@ function onClick(e: MouseEvent) {
       </button>
     </template>
     <!-- Enum: single-pick (radio-like). Active row tints brand. -->
-    <RMenuItem
+    <ZAMenuItem
       v-for="key in ENUM_KEYS"
       :key="key"
       :icon="STATUS_ICONS[key]"
@@ -425,14 +425,14 @@ function onClick(e: MouseEvent) {
       @click="pickEnum(key)"
     >
       {{ t(romStatusMap[key].i18nKey) }}
-    </RMenuItem>
+    </ZAMenuItem>
 
-    <RDivider />
+    <ZADivider />
 
     <!-- Play-status flags: independent toggles (checkbox-like). Active
            rows tint text + icon brand-primary AND show a trailing check,
            so the multi-select reads distinct from the radio-style enum. -->
-    <RMenuItem
+    <ZAMenuItem
       v-for="key in PLAY_FLAG_KEYS"
       :key="key"
       :icon="STATUS_ICONS[key]"
@@ -442,15 +442,15 @@ function onClick(e: MouseEvent) {
     >
       {{ t(romStatusMap[key].i18nKey) }}
       <template v-if="isFlagActive(key)" #append>
-        <RIcon icon="mdi-check" size="x-small" color="primary" />
+        <ZAIcon icon="mdi-check" size="x-small" color="primary" />
       </template>
-    </RMenuItem>
+    </ZAMenuItem>
 
-    <RDivider />
+    <ZADivider />
 
     <!-- Visibility flag — distinct category (controls library
            visibility, not play state) so it lives in its own section. -->
-    <RMenuItem
+    <ZAMenuItem
       v-for="key in VISIBILITY_FLAG_KEYS"
       :key="key"
       :icon="STATUS_ICONS[key]"
@@ -460,28 +460,28 @@ function onClick(e: MouseEvent) {
     >
       {{ t(romStatusMap[key].i18nKey) }}
       <template v-if="isFlagActive(key)" #append>
-        <RIcon icon="mdi-check" size="x-small" color="primary" />
+        <ZAIcon icon="mdi-check" size="x-small" color="primary" />
       </template>
-    </RMenuItem>
+    </ZAMenuItem>
 
     <template v-if="hasAnyStatus">
-      <RDivider />
-      <RMenuItem
+      <ZADivider />
+      <ZAMenuItem
         icon="mdi-close-circle-outline"
         variant="danger"
         @click="clearAllStatus"
       >
         {{ t("rom.clear-all") }}
-      </RMenuItem>
+      </ZAMenuItem>
     </template>
 
     <!-- Phones only: the per-user metrics (completion / rating /
          difficulty) live here as sections instead of a ribbon row. -->
     <template v-if="smAndDown && withMetrics && rom.rom_user">
-      <RDivider />
+      <ZADivider />
       <GameMetricsSections :rom="rom" />
     </template>
-  </RMenu>
+  </ZAMenu>
 
   <!-- Plain action — direct click. -->
   <button
@@ -508,11 +508,11 @@ function onClick(e: MouseEvent) {
       :alt="preset.label"
       class="r-v2-game-btn__img"
     />
-    <RIcon v-else :icon="displayedIcon" />
+    <ZAIcon v-else :icon="displayedIcon" />
     <span v-if="withLabel" class="r-v2-game-btn__label">
       {{ preset.label }}
     </span>
-    <RTooltip
+    <ZATooltip
       v-if="!withLabel"
       activator="parent"
       :text="preset.label"
@@ -640,9 +640,9 @@ function onClick(e: MouseEvent) {
   padding: 0 32px;
 }
 
-/* Surface — RTag-style translucent grey. Used in the GameDetails
+/* Surface — ZATag-style translucent grey. Used in the GameDetails
    header where buttons sit on the page background (not over cover
-   art) — matches the visual vocabulary of RTag and RSelect there. */
+   art) — matches the visual vocabulary of ZATag and ZASelect there. */
 .r-v2-game-btn--surface {
   background: var(--r-color-surface);
   border-color: var(--r-color-border-strong);

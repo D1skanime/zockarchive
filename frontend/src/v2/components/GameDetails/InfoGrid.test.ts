@@ -17,7 +17,7 @@ describe("InfoGrid", () => {
       },
       global: {
         stubs: {
-          RIcon: true,
+          ZAIcon: true,
           RouterLink: {
             props: ["to"],
             template: `<a :href="JSON.stringify(to)"><slot /></a>`,
@@ -40,7 +40,7 @@ describe("InfoGrid", () => {
           { label: "Developer", items: [{ id: "7", label: "Studio" }] },
         ],
       },
-      global: { stubs: { RIcon: true } },
+      global: { stubs: { ZAIcon: true } },
     });
 
     expect(wrapper.find("a").exists()).toBe(false);

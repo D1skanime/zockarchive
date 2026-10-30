@@ -2,7 +2,7 @@
 // v2 AboutDialog — emitter-driven. Replaces the v1 AboutDialog in the v2
 // GlobalDialogs stack so the "About" entry in UserMenu renders the v2 glass
 // panel instead of the legacy card.
-import { RDialog, RIcon } from "@v2/lib";
+import { ZADialog, ZAIcon } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -69,7 +69,7 @@ const links = computed<Link[]>(() => [
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-help-circle-outline"
     width="520"
@@ -90,17 +90,17 @@ const links = computed<Link[]>(() => [
         >
           <div class="r-v2-about__icon">
             <ProjectBrand v-if="link.isotipo" variant="about" />
-            <RIcon v-else-if="link.icon" :icon="link.icon" size="18" />
+            <ZAIcon v-else-if="link.icon" :icon="link.icon" size="18" />
           </div>
           <div class="r-v2-about__meta">
             <span class="r-v2-about__label">{{ link.label }}</span>
             <span class="r-v2-about__value">{{ link.value }}</span>
           </div>
-          <RIcon icon="mdi-open-in-new" size="14" class="r-v2-about__chev" />
+          <ZAIcon icon="mdi-open-in-new" size="14" class="r-v2-about__chev" />
         </a>
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

@@ -61,11 +61,11 @@ vi.mock("@/v2/composables/useGameActions", () => ({
     ),
 }));
 
-const RMenuItem = {
+const ZAMenuItem = {
   props: ["label"],
   template: `<li class="item">{{ label }}</li>`,
 };
-const RDivider = { template: `<hr class="divider" />` };
+const ZADivider = { template: `<hr class="divider" />` };
 
 function mountList(
   overrides: Partial<Flags> = {},
@@ -74,7 +74,7 @@ function mountList(
   Object.assign(flags, overrides);
   return mount(GameActionsList, {
     props: { rom: { id: 1, ...rom } as SimpleRom },
-    global: { stubs: { RMenuItem, RDivider } },
+    global: { stubs: { ZAMenuItem, ZADivider } },
   });
 }
 

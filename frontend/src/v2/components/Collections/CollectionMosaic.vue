@@ -9,7 +9,7 @@
 //   * 4+ covers → 2x2 grid using the first 4
 // Default aspect is portrait (140/188, same ratio game covers use) so
 // collection artwork reads as cover-art, not a square thumbnail.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 
 defineOptions({ inheritAttrs: false });
@@ -48,7 +48,7 @@ const mosaicSlots = computed(() => {
   >
     <template v-if="!displayCovers.length">
       <div class="coll-mosaic__empty">
-        <RIcon icon="mdi-bookmark-outline" size="20" />
+        <ZAIcon icon="mdi-bookmark-outline" size="20" />
       </div>
     </template>
     <template v-else-if="displayCovers.length === 1">

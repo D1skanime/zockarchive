@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// PasswordField — RTextField pre-wired with the password show/hide eye
+// PasswordField — ZATextField pre-wired with the password show/hide eye
 // toggle (with tooltip) and a reveal animation. Uses the primitive's
 // native append-inner adornment + tooltip; no slot workaround.
 //
@@ -7,7 +7,7 @@
 // wobbles letter-spacing for a moment so the password ↔ text glyph
 // swap is visually softened. The toggle icon flips on Y so its own
 // eye/eye-off swap is hidden mid-rotation.
-import { RTextField } from "@v2/lib";
+import { ZATextField } from "@v2/lib";
 import { computed, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -92,7 +92,7 @@ onBeforeUnmount(clearTimers);
 </script>
 
 <template>
-  <RTextField
+  <ZATextField
     v-bind="$attrs"
     :model-value="modelValue"
     :label="label"
@@ -109,19 +109,19 @@ onBeforeUnmount(clearTimers);
     @update:model-value="(v: string) => $emit('update:modelValue', v)"
     @click:append-inner="onToggle"
   >
-    <!-- Forward every consumer-provided RTextField slot (prefix-label,
+    <!-- Forward every consumer-provided ZATextField slot (prefix-label,
          prepend-inner, subtitle, details, …) without having to enumerate
          them. The append-inner slot is intentionally NOT forwarded — we
          own that adornment to render the eye toggle. -->
     <template v-for="(_, slot) of $slots" v-slot:[slot]="scope" :key="slot">
       <slot v-if="slot !== 'append-inner'" :name="slot" v-bind="scope" />
     </template>
-  </RTextField>
+  </ZATextField>
 </template>
 
 <style scoped>
 /* ── Reveal animation ─────────────────────────────────────────────
-   The `.r-password-field--revealing` class is applied on RTextField's
+   The `.r-password-field--revealing` class is applied on ZATextField's
    root for ~500ms after each toggle. We drive three things off it:
      1. The input text — strong blur + slight scale wobble. The
         underlying `type` swap (password ↔ text) lands at the blur
@@ -131,7 +131,7 @@ onBeforeUnmount(clearTimers);
      3. The prepend-inner adornment icon (lock by default) — short
         sway, so the field as a whole reads as "something happened".
    `:deep()` is required because the targeted nodes live inside
-   RTextField's own scoped style tree. */
+   ZATextField's own scoped style tree. */
 .r-password-field--revealing :deep(.r-text-field__input) {
   animation: r-pf-reveal-text var(--r-motion-med) var(--r-motion-ease-in-out);
   will-change: filter, letter-spacing, transform;

@@ -8,7 +8,14 @@
  * v2-only: rendered inside {@link DevicePairShell}, which owns the
  * AuthLayout-style chrome and the `.r-v2` token scope.
  */
-import { RBtn, RChip, RIcon, RSelect, RSpinner, RTextField } from "@v2/lib";
+import {
+  ZABtn,
+  ZAChip,
+  ZAIcon,
+  ZASelect,
+  ZASpinner,
+  ZATextField,
+} from "@v2/lib";
 import type { AxiosError } from "axios";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -148,14 +155,14 @@ async function deny() {
   <div class="r-v2-devpair">
     <!-- Loading -->
     <div v-if="status === 'loading'" class="r-v2-devpair__state">
-      <RSpinner :size="48" :width="3" />
+      <ZASpinner :size="48" :width="3" />
       <p class="r-v2-devpair__body">{{ t("settings.device-auth-loading") }}</p>
     </div>
 
     <!-- Error -->
     <div v-else-if="status === 'error'" class="r-v2-devpair__state">
       <div class="r-v2-devpair__icon-wrap r-v2-devpair__icon-wrap--danger">
-        <RIcon icon="mdi-alert-circle" size="32" />
+        <ZAIcon icon="mdi-alert-circle" size="32" />
       </div>
       <p class="r-v2-devpair__body">{{ errorMessage }}</p>
     </div>
@@ -163,7 +170,7 @@ async function deny() {
     <!-- Approved -->
     <div v-else-if="status === 'approved'" class="r-v2-devpair__state">
       <div class="r-v2-devpair__icon-wrap r-v2-devpair__icon-wrap--success">
-        <RIcon icon="mdi-check-circle" size="32" />
+        <ZAIcon icon="mdi-check-circle" size="32" />
       </div>
       <h2 class="r-v2-devpair__title">
         {{ t("settings.device-auth-approved-title") }}
@@ -179,7 +186,7 @@ async function deny() {
     <!-- Denied -->
     <div v-else-if="status === 'denied'" class="r-v2-devpair__state">
       <div class="r-v2-devpair__icon-wrap r-v2-devpair__icon-wrap--warning">
-        <RIcon icon="mdi-cancel" size="32" />
+        <ZAIcon icon="mdi-cancel" size="32" />
       </div>
       <h2 class="r-v2-devpair__title">
         {{ t("settings.device-auth-denied-title") }}
@@ -193,7 +200,7 @@ async function deny() {
     <div v-else class="r-v2-devpair__form">
       <div class="r-v2-devpair__header">
         <div class="r-v2-devpair__icon-wrap">
-          <RIcon icon="mdi-devices" size="32" />
+          <ZAIcon icon="mdi-devices" size="32" />
         </div>
         <h2 class="r-v2-devpair__title">
           {{ t("settings.device-auth-heading") }}
@@ -204,15 +211,15 @@ async function deny() {
       </div>
 
       <div class="r-v2-devpair__chips">
-        <RChip v-if="pending?.client" size="small" color="primary">
+        <ZAChip v-if="pending?.client" size="small" color="primary">
           {{ pending.client }}
-        </RChip>
-        <RChip v-if="pending?.platform" size="small" variant="outlined">
+        </ZAChip>
+        <ZAChip v-if="pending?.platform" size="small" variant="outlined">
           {{ pending.platform }}
-        </RChip>
-        <RChip v-if="pending?.client_version" size="small" variant="text">
+        </ZAChip>
+        <ZAChip v-if="pending?.client_version" size="small" variant="text">
           v{{ pending.client_version }}
-        </RChip>
+        </ZAChip>
       </div>
 
       <p
@@ -222,7 +229,7 @@ async function deny() {
         {{ pending.client_device_identifier }}
       </p>
 
-      <RTextField
+      <ZATextField
         v-model="editedDeviceName"
         :label="t('settings.device-auth-device-name')"
         prefix-label="stacked"
@@ -235,7 +242,7 @@ async function deny() {
           {{ t("settings.device-auth-scopes-label") }}
         </p>
         <div class="r-v2-devpair__scope-grid">
-          <RChip
+          <ZAChip
             v-for="scope in pending?.allowed_scopes ?? []"
             :key="scope"
             size="small"
@@ -253,7 +260,7 @@ async function deny() {
             @keydown.space.prevent="toggleScope(scope)"
           >
             {{ scope }}
-          </RChip>
+          </ZAChip>
         </div>
       </div>
 
@@ -262,7 +269,7 @@ async function deny() {
           {{ t("settings.device-auth-disallowed-label") }}
         </p>
         <div class="r-v2-devpair__scope-grid">
-          <RChip
+          <ZAChip
             v-for="scope in disallowedScopes"
             :key="scope"
             size="small"
@@ -271,11 +278,11 @@ async function deny() {
             disabled
           >
             {{ scope }}
-          </RChip>
+          </ZAChip>
         </div>
       </div>
 
-      <RSelect
+      <ZASelect
         v-model="expiresIn"
         :label="t('settings.device-auth-expires-in')"
         prefix-label="stacked"
@@ -287,10 +294,10 @@ async function deny() {
       />
 
       <div class="r-v2-devpair__actions">
-        <RBtn variant="text" :disabled="status === 'submitting'" @click="deny">
+        <ZABtn variant="text" :disabled="status === 'submitting'" @click="deny">
           {{ t("settings.device-auth-deny") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           variant="flat"
           color="primary"
           :loading="status === 'submitting'"
@@ -298,7 +305,7 @@ async function deny() {
           @click="approve"
         >
           {{ t("settings.device-auth-approve") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </div>
   </div>

@@ -7,12 +7,18 @@
 // ephemeral (constitution §VI.D): a capped in-memory ring buffer, no
 // store, no global lifecycle — backfill covers re-open.
 //
-// The list is windowed with RVirtualScroller. Rows are single-line
+// The list is windowed with ZAVirtualScroller. Rows are single-line
 // monospace (terminal style) and scroll horizontally for long lines; the
-// full message is also surfaced on hover via RTooltip. Auto-tail follows
+// full message is also surfaced on hover via ZATooltip. Auto-tail follows
 // the newest line and pauses itself when the user scrolls up; "jump to
 // latest" re-engages it.
-import { RBtn, RSelect, RTextField, RTooltip, RVirtualScroller } from "@v2/lib";
+import {
+  ZABtn,
+  ZASelect,
+  ZATextField,
+  ZATooltip,
+  ZAVirtualScroller,
+} from "@v2/lib";
 import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
@@ -117,7 +123,7 @@ const filtered = computed<LogRow[]>(() => {
   });
 });
 
-const scrollerRef = ref<InstanceType<typeof RVirtualScroller> | null>(null);
+const scrollerRef = ref<InstanceType<typeof ZAVirtualScroller> | null>(null);
 
 function getItemHeight() {
   return ROW_HEIGHT;
@@ -243,7 +249,7 @@ function downloadLogs() {
 <template>
   <div class="r-v2-logs">
     <div class="r-v2-logs__toolbar">
-      <RSelect
+      <ZASelect
         v-model="levelFilter"
         class="r-v2-logs__level-select"
         :items="levelItems"
@@ -254,7 +260,7 @@ function downloadLogs() {
         prepend-inner-icon="mdi-filter-variant"
         :aria-label="t('logs.level-filter')"
       />
-      <RSelect
+      <ZASelect
         v-model="moduleFilter"
         class="r-v2-logs__module-select"
         :items="moduleItems"
@@ -265,7 +271,7 @@ function downloadLogs() {
         prepend-inner-icon="mdi-cube-outline"
         :aria-label="t('logs.module-filter')"
       />
-      <RTextField
+      <ZATextField
         v-model="search"
         class="r-v2-logs__search"
         density="compact"
@@ -277,7 +283,7 @@ function downloadLogs() {
       />
       <div class="r-v2-logs__spacer" />
       <div class="r-v2-logs__actions">
-        <RBtn
+        <ZABtn
           :icon="paused ? 'mdi-play' : 'mdi-pause'"
           variant="text"
           density="compact"
@@ -286,7 +292,7 @@ function downloadLogs() {
           :aria-label="paused ? t('logs.resume') : t('logs.pause')"
           @click="togglePause"
         />
-        <RBtn
+        <ZABtn
           icon="mdi-content-copy"
           variant="text"
           density="compact"
@@ -295,7 +301,7 @@ function downloadLogs() {
           :aria-label="t('logs.copy')"
           @click="copyLogs"
         />
-        <RBtn
+        <ZABtn
           icon="mdi-download"
           variant="text"
           density="compact"
@@ -304,7 +310,7 @@ function downloadLogs() {
           :aria-label="t('logs.download')"
           @click="downloadLogs"
         />
-        <RBtn
+        <ZABtn
           icon="mdi-notification-clear-all"
           variant="text"
           density="compact"
@@ -317,7 +323,7 @@ function downloadLogs() {
     </div>
 
     <div class="r-v2-logs__panel">
-      <RVirtualScroller
+      <ZAVirtualScroller
         ref="scrollerRef"
         class="r-v2-logs__scroller"
         :style="{ overflowX: 'auto' }"
@@ -329,7 +335,7 @@ function downloadLogs() {
         <template #default="{ item }">
           <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/no-static-element-interactions -- row click is a pointer convenience for copying a single line; keyboard/AT users have the toolbar's Copy-all and Download actions -->
           <div class="r-v2-logs__row" @click="copyRow(item as LogRow)">
-            <RTooltip
+            <ZATooltip
               activator="parent"
               location="top start"
               max-width="min(80vw, 900px)"
@@ -353,13 +359,13 @@ function downloadLogs() {
             }}</span>
           </div>
         </template>
-      </RVirtualScroller>
+      </ZAVirtualScroller>
 
       <div v-if="!loading && filtered.length === 0" class="r-v2-logs__empty">
         {{ entries.length === 0 ? t("logs.empty") : t("logs.no-matches") }}
       </div>
 
-      <RBtn
+      <ZABtn
         v-if="!autoTail"
         class="r-v2-logs__jump"
         variant="flat"
@@ -369,7 +375,7 @@ function downloadLogs() {
         @click="jumpToLatest"
       >
         {{ t("logs.jump-to-latest") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </div>
 </template>

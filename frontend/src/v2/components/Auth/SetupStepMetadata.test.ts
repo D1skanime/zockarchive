@@ -35,9 +35,9 @@ function mountSetup() {
   return mount(SetupStepMetadata, {
     global: {
       stubs: {
-        RIcon: true,
-        RImg: true,
-        RTag: {
+        ZAIcon: true,
+        ZAImg: true,
+        ZATag: {
           props: ["prependIcon", "size", "tone"],
           template: '<span class="r-tag"><slot /></span>',
         },

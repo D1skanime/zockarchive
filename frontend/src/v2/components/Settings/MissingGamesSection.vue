@@ -12,17 +12,17 @@
 // unmount we restore the caller's filter so the next gallery view they
 // land on doesn't inherit `filterMissing=true`.
 //
-// Layout: a single GameListHeader on top + an RVirtualScroller of
+// Layout: a single GameListHeader on top + an ZAVirtualScroller of
 // GameListRow/GameListSkeletonRow items below. The scroller owns its
 // own scroll, so the Settings document scroll stays separate.
 import {
-  RBtn,
-  RIcon,
-  RMenu,
-  RMenuItem,
-  RSelect,
-  RTag,
-  RVirtualScroller,
+  ZABtn,
+  ZAIcon,
+  ZAMenu,
+  ZAMenuItem,
+  ZASelect,
+  ZATag,
+  ZAVirtualScroller,
 } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="r-v2-missing">
     <div class="r-v2-missing__toolbar">
-      <RSelect
+      <ZASelect
         v-model="selectedPlatformIds"
         v-model:search="platformSearch"
         :items="platformItems"
@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
         class="r-v2-missing__platform-select"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-controller" size="14" />
+          <ZAIcon icon="mdi-controller" size="14" />
           {{ t("common.platform") }}
         </template>
         <template #selection="{ item }">
@@ -331,17 +331,17 @@ onBeforeUnmount(() => {
             </span>
           </li>
         </template>
-      </RSelect>
+      </ZASelect>
       <div class="r-v2-missing__actions">
-        <RTag
+        <ZATag
           v-if="metadataLoaded"
           prepend-icon="mdi-folder-question-outline"
           :text="total"
           tone="neutral"
         />
-        <RMenu location="bottom end" :offset="6" width="220px">
+        <ZAMenu location="bottom end" :offset="6" width="220px">
           <template #activator="{ props: activatorProps }">
-            <RBtn
+            <ZABtn
               v-bind="activatorProps"
               variant="outlined"
               surface
@@ -351,14 +351,14 @@ onBeforeUnmount(() => {
               :aria-label="t('settings.missing-games-actions')"
             />
           </template>
-          <RMenuItem
+          <ZAMenuItem
             :label="t('settings.cleanup-all')"
             icon="mdi-delete-outline"
             variant="danger"
             :disabled="cleaningUp || showEmpty"
             @click="cleanupAll"
           />
-        </RMenu>
+        </ZAMenu>
       </div>
     </div>
 
@@ -370,11 +370,11 @@ onBeforeUnmount(() => {
       />
 
       <div v-if="showEmpty" class="r-v2-missing__empty">
-        <RIcon icon="mdi-folder-question-outline" :size="48" />
+        <ZAIcon icon="mdi-folder-question-outline" :size="48" />
         <p>{{ t("settings.missing-games-none") }}</p>
       </div>
 
-      <RVirtualScroller
+      <ZAVirtualScroller
         v-else
         :items="virtualItems"
         :get-item-height="vItemHeight"
@@ -390,7 +390,7 @@ onBeforeUnmount(() => {
           />
           <GameListSkeletonRow v-else />
         </template>
-      </RVirtualScroller>
+      </ZAVirtualScroller>
     </div>
   </div>
 </template>
@@ -400,14 +400,14 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  /* Definite (NOT min-) height. `height: 100%` on `RVirtualScroller`'s
+  /* Definite (NOT min-) height. `height: 100%` on `ZAVirtualScroller`'s
      wrapper resolves against the parent's `height` per the CSS spec —
      `min-height` doesn't count, the percentage falls back to `auto` and
      the scroller's `overflow-y` never engages, so every row mounts at
      once. Same trick GalleryShell uses with `height: calc(100vh - nav-h)`.
      The subtraction adds up the chrome Settings stacks above this
      section (nav 58 + content padding-top 32 + body padding-top 18 +
-     RTabNav band ~60) and leaves a bottom gap matching the horizontal
+     ZATabNav band ~60) and leaves a bottom gap matching the horizontal
      padding (~58px = 40px content + 18px body) so the list's bottom
      edge reads as the visual sibling of its left/right edges. The
      section's bottom overshoots `body`'s inner-bottom by ~20px, which

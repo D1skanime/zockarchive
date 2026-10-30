@@ -5,7 +5,7 @@
 // closed manually. Unlike v1 — which replaced a single v-snackbar on each
 // emission — v2 stacks so fast successive messages don't overwrite each
 // other. Stored colour/icon fields are preserved so existing emitters work.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -97,7 +97,7 @@ onBeforeUnmount(() => {
         :class="[`r-v2-toast--${toast.tone}`]"
         role="alert"
       >
-        <RIcon
+        <ZAIcon
           v-if="toast.icon"
           :icon="toast.icon"
           size="18"
@@ -110,7 +110,7 @@ onBeforeUnmount(() => {
           :aria-label="t('common.dismiss')"
           @click="dismiss(toast.id)"
         >
-          <RIcon icon="mdi-close" size="14" />
+          <ZAIcon icon="mdi-close" size="14" />
         </button>
       </div>
     </transition-group>

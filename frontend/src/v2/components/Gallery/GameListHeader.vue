@@ -9,7 +9,7 @@
 // Sticky positioning is owned by the parent (`GalleryShell` pins this
 // below the toolbar at `top: --r-v2-shell-toolbar-h`). The header
 // itself only paints — it doesn't manage scroll.
-import { RCheckbox, RIcon } from "@v2/lib";
+import { ZACheckbox, ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import storeGalleryRoms from "@/v2/stores/galleryRoms";
@@ -110,10 +110,10 @@ function handleClick(col: ListColumn) {
       <!-- Select-all column. Tri-state checkbox: off → some → all. The
            "loaded" qualifier is deliberate — selecting beyond what's in
            memory would require a backend round-trip we don't have a
-           cheap path for yet. RCheckbox draws the dash glyph for the
+           cheap path for yet. ZACheckbox draws the dash glyph for the
            indeterminate state and the tick for "all", so we just pipe
            the derived state through and intercept the click. -->
-      <RCheckbox
+      <ZACheckbox
         v-if="col.key === 'select'"
         class="game-list-header__check"
         :model-value="loadedSelectionState === 'all'"
@@ -152,7 +152,7 @@ function handleClick(col: ListColumn) {
         @click="handleClick(col)"
       >
         <span class="game-list-header__label">{{ col.label }}</span>
-        <RIcon
+        <ZAIcon
           v-if="col.sortable && sortKey === col.key"
           :icon="
             sortDir === 'asc' ? 'mdi-arrow-up-thin' : 'mdi-arrow-down-thin'
@@ -231,7 +231,7 @@ function handleClick(col: ListColumn) {
 }
 
 /* Select-all checkbox sitting in the leading column. Visuals come
-   from RCheckbox in bare/circle mode — same animation language as
+   from ZACheckbox in bare/circle mode — same animation language as
    the GameCard / GameListRow checkboxes so the three reads as one
    family. */
 .game-list-header__check {

@@ -13,7 +13,7 @@
 // pivot-to-search v1 offered from the same rows. Links (not click
 // handlers) so middle-click / open-in-new-tab work and the chips join
 // keyboard + spatial navigation as `a[href]`.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { ROUTES } from "@/plugins/router";
 import type { FilterType } from "@/v2/data/adapters/legacy/stores/galleryFilter";
 
@@ -57,7 +57,7 @@ const searchLocation = (
       class="r-v2-det-infogrid__item"
     >
       <div class="r-v2-det-infogrid__label">
-        <RIcon
+        <ZAIcon
           v-if="section.icon"
           :icon="section.icon"
           size="13"

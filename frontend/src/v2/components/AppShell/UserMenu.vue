@@ -15,13 +15,13 @@
 // Items inherit the same scope/role gates as their target views so
 // unauthorised users don't see options they can't open.
 import {
-  RAvatar,
-  RBtn,
-  RChip,
-  RDivider,
-  RIcon,
-  RMenu,
-  RMenuItem,
+  ZAAvatar,
+  ZABtn,
+  ZAChip,
+  ZADivider,
+  ZAIcon,
+  ZAMenu,
+  ZAMenuItem,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { getActivePinia, storeToRefs, type StateTree } from "pinia";
@@ -118,7 +118,7 @@ async function onLogout() {
 </script>
 
 <template>
-  <RMenu
+  <ZAMenu
     v-model="open"
     location="bottom end"
     :offset="8"
@@ -128,29 +128,29 @@ async function onLogout() {
     sheet-full-height
   >
     <template #activator="{ props: menuProps }">
-      <RBtn
+      <ZABtn
         v-bind="menuProps"
         variant="text"
         class="r-v2-user"
         data-user-menu-trigger
         :aria-label="`Account menu for ${user?.username ?? 'Guest'}`"
       >
-        <RAvatar :image="avatarSrc" size="30" />
+        <ZAAvatar :image="avatarSrc" size="30" />
         <span class="r-v2-user__name">
           {{ user?.username ?? "Guest" }}
         </span>
-        <RIcon
+        <ZAIcon
           icon="mdi-chevron-down"
           size="16"
           class="r-v2-user__chevron r-chevron-toggle"
         />
-      </RBtn>
+      </ZABtn>
     </template>
 
     <!-- User header — inlined; the layout is feature-specific so it
          lives at the call site, not in the lib. -->
     <div class="r-v2-user-menu__header">
-      <RAvatar :image="avatarSrc" size="30" />
+      <ZAAvatar :image="avatarSrc" size="30" />
       <div class="r-v2-user-menu__header-text">
         <div class="r-v2-user-menu__header-title">
           {{ user?.username ?? "Guest" }}
@@ -161,21 +161,21 @@ async function onLogout() {
       </div>
     </div>
 
-    <RDivider />
+    <ZADivider />
 
     <!-- Account -->
     <div class="r-v2-user-menu__group">
       <div class="r-v2-user-menu__group-label">
         {{ t("settings.group-account") }}
       </div>
-      <RMenuItem
+      <ZAMenuItem
         v-if="canSeeProfile"
         :to="{ name: ROUTES.USER_PROFILE, params: { user: user?.id } }"
         icon="mdi-account-outline"
         :label="t('common.profile')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         :to="{ name: ROUTES.USER_INTERFACE }"
         icon="mdi-palette-outline"
         :label="t('common.user-interface')"
@@ -188,35 +188,35 @@ async function onLogout() {
       <div class="r-v2-user-menu__group-label">
         {{ t("settings.group-library") }}
       </div>
-      <RMenuItem
+      <ZAMenuItem
         v-if="canScan"
         :to="{ name: ROUTES.SCAN }"
         icon="mdi-radar"
         :label="t('scan.scan')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         v-if="canSeeLibraryMgmt"
         :to="{ name: ROUTES.LIBRARY_MANAGEMENT }"
         icon="mdi-table-cog"
         :label="t('common.library-management')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         v-if="canSeeScanSettings"
         :to="{ name: ROUTES.SCAN_SETTINGS }"
         icon="mdi-magnify-scan"
         :label="t('settings.scan-settings')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         v-if="isAdmin"
         :to="{ name: ROUTES.METADATA_SOURCES }"
         icon="mdi-database-cog-outline"
         :label="t('scan.metadata-sources')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         v-if="canSeeApiTokens"
         :to="{ name: ROUTES.CLIENT_API_TOKENS }"
         icon="mdi-key-variant"
@@ -230,27 +230,27 @@ async function onLogout() {
       <div class="r-v2-user-menu__group-label">
         {{ t("settings.group-system") }}
       </div>
-      <RMenuItem
+      <ZAMenuItem
         v-if="canSeeAdmin"
         :to="{ name: ROUTES.ADMINISTRATION }"
         icon="mdi-shield-account-outline"
         :label="t('common.administration')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         :to="{ name: ROUTES.ACTIVITY }"
         icon="mdi-access-point"
         :label="t('activity.active-sessions')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         v-if="isAdmin"
         :to="{ name: ROUTES.SERVER_STATS }"
         icon="mdi-server"
         :label="t('common.server-stats')"
         @click="open = false"
       />
-      <RMenuItem
+      <ZAMenuItem
         v-if="isAdmin && logsViewerEnabled"
         :to="{ name: ROUTES.LOGS }"
         icon="mdi-text-box-search-outline"
@@ -264,46 +264,46 @@ async function onLogout() {
       <div class="r-v2-user-menu__group-label">
         {{ t("settings.group-tools") }}
       </div>
-      <RMenuItem
+      <ZAMenuItem
         :to="{ name: ROUTES.CONTROLLER_DEBUG }"
         icon="mdi-controller"
         :label="t('settings.controller-debug')"
         @click="open = false"
       >
         <template #append>
-          <RChip size="x-small" color="primary">
+          <ZAChip size="x-small" color="primary">
             {{ t("common.beta") }}
-          </RChip>
+          </ZAChip>
         </template>
-      </RMenuItem>
+      </ZAMenuItem>
     </div>
 
-    <RDivider />
+    <ZADivider />
 
     <!-- About is visible to everyone; Changelog is gated to editor+ (it
            surfaces librarian-oriented release notes). Both remain dialogs
            (no dedicated views) — see CLAUDE.md. -->
-    <RMenuItem
+    <ZAMenuItem
       icon="mdi-help-circle-outline"
       :label="t('common.about')"
       @click="showAbout"
     />
-    <RMenuItem
+    <ZAMenuItem
       v-if="canSeeChangelog"
       icon="mdi-clock-outline"
       :label="t('common.changelog')"
       @click="showChangelog"
     />
 
-    <RDivider />
+    <ZADivider />
 
-    <RMenuItem
+    <ZAMenuItem
       icon="mdi-logout"
       variant="danger"
       :label="t('common.logout')"
       @click="onLogout"
     />
-  </RMenu>
+  </ZAMenu>
 </template>
 
 <style scoped>

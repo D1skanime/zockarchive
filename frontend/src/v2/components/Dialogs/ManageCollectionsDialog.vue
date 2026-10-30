@@ -2,14 +2,14 @@
 // ManageCollectionsDialog — collection picker that matches the mockup's
 // menu-panel shape. Driven by the `showManageCollectionsDialog` emitter.
 //
-// Uses the v2 RDialog primitive — RDialog shares the RMenu visual
+// Uses the v2 ZADialog primitive — ZADialog shares the ZAMenu visual
 // language (14px radius, deep glass, menu-style shadow) so this picker
 // reads as a sibling of the user menu / ROM context menu.
 //
 // Shape (top → bottom):
 //   * Bold "Manage collections" title + muted game subtitle in the
 //     header slot (single `div` inside #header; close X is provided by
-//     RDialog).
+//     ZADialog).
 //   * "New Collection" CTA row. Collapsed: brand-tinted + tile +
 //     "New Collection" label. Click expands to an inline Create /
 //     Cancel input.
@@ -18,7 +18,7 @@
 //     circular tick when on. Clicking toggles INSTANTLY (optimistic
 //     update + API call; reverts on failure).
 //   * Empty state if no collections exist.
-import { RDialog, RDivider } from "@v2/lib";
+import { ZADialog, ZADivider } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -204,7 +204,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     :width="mdAndUp ? 440 : '95vw'"
     class="r-v2-mng-coll-dialog"
@@ -212,7 +212,7 @@ function closeDialog() {
   >
     <!-- Two-line title block replaces the single-line default so the
          bold "Manage collections" + muted game subtitle stack. Close X
-         is provided by RDialog in its own header chrome. -->
+         is provided by ZADialog in its own header chrome. -->
     <template #header>
       <div class="r-v2-mng-coll__head">
         <GameCard
@@ -245,7 +245,7 @@ function closeDialog() {
         @cancel="cancelCreate"
       />
 
-      <RDivider v-if="ownedCollections.length > 0" full-width />
+      <ZADivider v-if="ownedCollections.length > 0" full-width />
 
       <!-- Existing collection rows — instant toggle, no commit step. -->
       <ul v-if="ownedCollections.length" class="r-v2-mng-coll__list">
@@ -266,12 +266,12 @@ function closeDialog() {
         {{ t("collection.no-collections-yet-hint") }}
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>
 /* Header — optional GameCard thumbnail + stacked title (14px bold) +
-   subtitle (11.5px muted) inside RDialog's single header slot. */
+   subtitle (11.5px muted) inside ZADialog's single header slot. */
 .r-v2-mng-coll__head {
   display: flex;
   align-items: center;
@@ -305,7 +305,7 @@ function closeDialog() {
 }
 
 /* Row list — sits flush against the dialog edges. This dialog drops
-   the standard RDialog body padding (see the `:deep(.r-dialog__body)`
+   the standard ZADialog body padding (see the `:deep(.r-dialog__body)`
    override below) so rows read as menu items, not as padded cards. */
 .r-v2-mng-coll__list {
   list-style: none;
@@ -327,9 +327,9 @@ function closeDialog() {
 </style>
 
 <!-- Unscoped overrides — `.r-dialog__body` is rendered (and teleported)
-     by RDialog with its own data-v hash, so a scoped `:deep()` rule
+     by ZADialog with its own data-v hash, so a scoped `:deep()` rule
      from this component doesn't actually land on it. The unscoped
-     selector targets the body via a class we attach to RDialog's root
+     selector targets the body via a class we attach to ZADialog's root
      overlay (flows through `v-bind="$attrs"`), keeping the override
      localised to this dialog. -->
 <style>

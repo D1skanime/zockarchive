@@ -2,18 +2,18 @@
 // UserInterface — v2-native UI preferences view.
 //
 // Sections:
-//   1. Language          (RSelect — prefix-label)
+//   1. Language          (ZASelect — prefix-label)
 //   2. Theme             (3-button compact picker)
 //   3. Home              (toggle grid)
-//   4. Gallery           (toggle grid + boxart RSelect prefix-label +
+//   4. Gallery           (toggle grid + boxart ZASelect prefix-label +
 //                         advanced per-page boxart overrides)
 //   5. Gameplay          (launch-confirmation toggle)
-//   6. Virtual collections (RSelect prefix-label)
+//   6. Virtual collections (ZASelect prefix-label)
 //
 // The v1 "Platforms drawer" section was removed (no equivalent in v2).
 // `useUISettings` still exposes `platformsGroupBy` for v1 — we just
 // don't surface it here.
-import { RBtn, RIcon, RSelect, RSliderBtnGroup } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASelect, ZASliderBtnGroup } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUISettings } from "@/composables/useUISettings";
@@ -197,7 +197,7 @@ function onVirtualCollectionTypeChange(value: unknown) {
           :aria-pressed="selectedTheme === opt.value"
           @click="setTheme(opt.value)"
         >
-          <RIcon :icon="opt.icon" size="14" />
+          <ZAIcon :icon="opt.icon" size="14" />
           <span>{{ opt.label }}</span>
         </button>
       </div>
@@ -288,7 +288,7 @@ function onVirtualCollectionTypeChange(value: unknown) {
                    are stopped by the slot wrapper in SettingsToggleRow
                    so toggling the segmented control doesn't also flip
                    the row's main switch. -->
-              <RSliderBtnGroup
+              <ZASliderBtnGroup
                 v-model="libraryStatsMode"
                 :items="libraryStatsModeItems"
                 variant="segmented"
@@ -347,7 +347,7 @@ function onVirtualCollectionTypeChange(value: unknown) {
         />
       </div>
       <div class="r-v2-ui__field r-v2-ui__field--bordered">
-        <RSelect
+        <ZASelect
           :model-value="boxartGallery"
           :items="boxartStyleItems"
           prefix-label="stacked"
@@ -355,11 +355,11 @@ function onVirtualCollectionTypeChange(value: unknown) {
           @update:model-value="onBoxartStyleChange"
         >
           <template #prefix-label>
-            <RIcon icon="mdi-image-frame" size="14" />
+            <ZAIcon icon="mdi-image-frame" size="14" />
             {{ t("settings.boxart-style") }}
           </template>
-        </RSelect>
-        <RBtn
+        </ZASelect>
+        <ZABtn
           variant="text"
           size="small"
           :prepend-icon="
@@ -370,33 +370,33 @@ function onVirtualCollectionTypeChange(value: unknown) {
           @click="showAdvancedBoxart = !showAdvancedBoxart"
         >
           {{ t("settings.boxart-advanced") }}
-        </RBtn>
+        </ZABtn>
         <template v-if="showAdvancedBoxart">
           <p class="r-v2-ui__desc">
             {{ t("settings.boxart-advanced-desc") }}
           </p>
-          <RSelect
+          <ZASelect
             v-model="boxartDetailsModel"
             :items="boxartStyleItems"
             prefix-label="stacked"
             hide-details
           >
             <template #prefix-label>
-              <RIcon icon="mdi-card-text-outline" size="14" />
+              <ZAIcon icon="mdi-card-text-outline" size="14" />
               {{ t("settings.boxart-style-details") }}
             </template>
-          </RSelect>
-          <RSelect
+          </ZASelect>
+          <ZASelect
             v-model="boxartPlayerModel"
             :items="boxartStyleItems"
             prefix-label="stacked"
             hide-details
           >
             <template #prefix-label>
-              <RIcon icon="mdi-play-box-outline" size="14" />
+              <ZAIcon icon="mdi-play-box-outline" size="14" />
               {{ t("settings.boxart-style-player") }}
             </template>
-          </RSelect>
+          </ZASelect>
         </template>
       </div>
     </SettingsSection>
@@ -421,7 +421,7 @@ function onVirtualCollectionTypeChange(value: unknown) {
       icon="mdi-bookmark-box-multiple"
     >
       <div class="r-v2-ui__field">
-        <RSelect
+        <ZASelect
           :model-value="virtualCollectionType"
           :items="virtualCollectionTypeItems"
           prefix-label="stacked"
@@ -429,10 +429,10 @@ function onVirtualCollectionTypeChange(value: unknown) {
           @update:model-value="onVirtualCollectionTypeChange"
         >
           <template #prefix-label>
-            <RIcon icon="mdi-shape-outline" size="14" />
+            <ZAIcon icon="mdi-shape-outline" size="14" />
             {{ t("settings.virtual-collection-type") }}
           </template>
-        </RSelect>
+        </ZASelect>
       </div>
     </SettingsSection>
 

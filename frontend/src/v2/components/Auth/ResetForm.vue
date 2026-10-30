@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // ResetForm — username-only form that triggers a password-reset email.
 // Emits `done` on success and `cancel` when the user backs out.
-import { RBtn, RTextField } from "@v2/lib";
+import { ZABtn, ZATextField } from "@v2/lib";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
@@ -39,7 +39,7 @@ async function submit() {
 
 <template>
   <form class="r-v2-reset-form" @submit.prevent="submit">
-    <RTextField
+    <ZATextField
       v-model="forgotUser"
       :label="t('login.username')"
       type="text"
@@ -47,7 +47,7 @@ async function submit() {
       prepend-inner-icon="mdi-account"
       :disabled="sending"
     />
-    <RBtn
+    <ZABtn
       type="submit"
       variant="flat"
       color="primary"
@@ -57,8 +57,8 @@ async function submit() {
       :disabled="sending || !forgotUser"
     >
       {{ t("login.send-reset-link") }}
-    </RBtn>
-    <RBtn
+    </ZABtn>
+    <ZABtn
       variant="text"
       block
       prepend-icon="mdi-chevron-left"
@@ -68,7 +68,7 @@ async function submit() {
       "
     >
       {{ t("common.cancel") }}
-    </RBtn>
+    </ZABtn>
   </form>
 </template>
 

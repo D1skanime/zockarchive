@@ -4,7 +4,7 @@
 // matching games (cover + name); picked games render below as a removable
 // list (cover + name), with their full rom cached so covers resolve even for
 // ids that were hidden before this session.
-import { RBtn, RIcon, RSpinner, RTextField } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASpinner, ZATextField } from "@v2/lib";
 import { debounce } from "lodash";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -107,7 +107,7 @@ function remove(id: number) {
 
 <template>
   <div class="r-v2-hgames">
-    <RTextField
+    <ZATextField
       v-model="query"
       prefix-label="inline"
       density="compact"
@@ -115,12 +115,12 @@ function remove(id: number) {
       :placeholder="t('settings.hidden-games-search')"
     >
       <template #prefix-label>
-        <RIcon icon="mdi-magnify" size="15" />
+        <ZAIcon icon="mdi-magnify" size="15" />
       </template>
-    </RTextField>
+    </ZATextField>
 
     <div v-if="loading" class="r-v2-hgames__status">
-      <RSpinner :size="16" />
+      <ZASpinner :size="16" />
     </div>
     <ul v-else-if="addable.length" class="r-v2-hgames__results">
       <li v-for="rom in addable" :key="rom.id">
@@ -133,7 +133,7 @@ function remove(id: number) {
             <GameCover :rom="rom" :title="romName(rom)" />
           </span>
           <span class="r-v2-hgames__name">{{ romName(rom) }}</span>
-          <RIcon icon="mdi-plus" size="18" class="r-v2-hgames__add-icon" />
+          <ZAIcon icon="mdi-plus" size="18" class="r-v2-hgames__add-icon" />
         </button>
       </li>
     </ul>
@@ -144,7 +144,7 @@ function remove(id: number) {
           <GameCover :rom="s.rom" :title="s.name" />
         </span>
         <span class="r-v2-hgames__name">{{ s.name }}</span>
-        <RBtn
+        <ZABtn
           variant="text"
           icon="mdi-close"
           size="small"

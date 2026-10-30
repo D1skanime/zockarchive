@@ -9,7 +9,7 @@
 // Library tools (Scan / Upload) are administrative actions, not content
 // destinations — they live in the user menu's Library group, keeping the
 // primary nav focused on browsing destinations.
-import { RSliderBtnGroup } from "@v2/lib";
+import { ZASliderBtnGroup } from "@v2/lib";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ScanningIndicator from "@/v2/components/AppShell/ScanningIndicator.vue";
@@ -55,7 +55,7 @@ onBeforeUnmount(() => {
       </router-link>
 
       <div class="r-v2-nav__center">
-        <RSliderBtnGroup
+        <ZASliderBtnGroup
           :model-value="activeTab"
           :items="tabs"
           variant="tab"

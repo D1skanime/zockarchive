@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, REmptyState } from "@v2/lib";
+import { ZABtn, ZAEmptyState } from "@v2/lib";
 import { onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute } from "vue-router";
@@ -127,9 +127,9 @@ onBeforeRouteUpdate(async (to) => {
     @refresh="refreshDlc"
   />
 
-  <REmptyState v-else>
-    <RBtn :to="{ name: ROUTES.HOME }">
+  <ZAEmptyState v-else>
+    <ZABtn :to="{ name: ROUTES.HOME }">
       {{ t("common.library") }}
-    </RBtn>
-  </REmptyState>
+    </ZABtn>
+  </ZAEmptyState>
 </template>

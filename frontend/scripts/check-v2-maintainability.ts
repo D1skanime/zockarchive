@@ -8,21 +8,21 @@ const exceptionDocument = resolve(
   "docs/v2-lib-native-control-exceptions.md",
 );
 const baseline = new Map<string, number>([
-  ["lib/forms/RSelect/RSelect.vue", 1800],
+  ["lib/forms/ZASelect/ZASelect.vue", 1800],
   ["components/Gallery/GalleryShell.vue", 1350],
   ["components/GameCard/GameCard.vue", 1100],
   ["views/GameDetails.vue", 800],
   ["views/Scan.vue", 1500],
-  ["lib/forms/RTextField/RTextField.vue", 1050],
+  ["lib/forms/ZATextField/ZATextField.vue", 1050],
   ["views/Player/EmulatorJS.vue", 1100],
   ["views/Player/Stream.vue", 1000],
 ]);
 
 const advice: Record<string, string> = {
-  button: "RBtn",
-  input: "RTextField",
-  select: "RSelect",
-  textarea: "RTextField",
+  button: "ZABtn",
+  input: "ZATextField",
+  select: "ZASelect",
+  textarea: "ZATextField",
 };
 
 function template(source: string): string {

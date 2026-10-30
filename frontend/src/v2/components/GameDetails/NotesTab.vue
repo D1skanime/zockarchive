@@ -5,13 +5,13 @@
 // dialog), edits save inline, and the active note is URL-persistent via
 // `?note=<id>` so links deep-link straight to a specific note.
 import {
-  REmptyState,
-  RAvatar,
-  RBtn,
-  RIcon,
-  RTextField,
-  RTooltip,
-  RDivider,
+  ZAEmptyState,
+  ZAAvatar,
+  ZABtn,
+  ZAIcon,
+  ZATextField,
+  ZATooltip,
+  ZADivider,
 } from "@v2/lib";
 import { MdEditor, MdPreview } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
@@ -151,7 +151,7 @@ interface EditForm {
 const editForm = ref<EditForm | null>(null);
 const saving = ref(false);
 const togglingLockId = ref<number | null>(null);
-// RTextField forwards $attrs to the underlying VTextField; we focus the
+// ZATextField forwards $attrs to the underlying VTextField; we focus the
 // inner <input> by reaching through .$el. Triggered when the form opens
 // (user just clicked "Add" / "Edit"), so it's never a surprise focus.
 const titleFieldRef = ref<{ $el?: HTMLElement } | null>(null);
@@ -302,23 +302,23 @@ function fmtDate(iso: string): string {
 
 <template>
   <div class="r-v2-notes">
-    <REmptyState
+    <ZAEmptyState
       v-if="!hasAnyNotes && !editForm"
       icon="mdi-note-text-outline"
       :title="t('rom.notes-empty-title')"
       :hint="t('rom.notes-empty-hint')"
     >
       <template v-if="canCreate" #actions>
-        <RBtn
+        <ZABtn
           variant="flat"
           color="primary"
           prepend-icon="mdi-plus"
           @click="startAdd"
         >
           {{ t("rom.notes-add-first") }}
-        </RBtn>
+        </ZABtn>
       </template>
-    </REmptyState>
+    </ZAEmptyState>
 
     <div v-else class="r-v2-notes__body">
       <aside class="r-v2-notes__index">
@@ -336,7 +336,7 @@ function fmtDate(iso: string): string {
                 @click="selectNote(n.id)"
               >
                 <span class="r-v2-notes__nav-title">{{ n.title }}</span>
-                <RIcon
+                <ZAIcon
                   v-if="!n.is_public"
                   icon="mdi-lock"
                   size="13"
@@ -346,7 +346,7 @@ function fmtDate(iso: string): string {
             </li>
           </ul>
         </template>
-        <RBtn
+        <ZABtn
           :disabled="!canCreate || !!editForm"
           variant="outlined"
           prepend-icon="mdi-plus"
@@ -355,10 +355,10 @@ function fmtDate(iso: string): string {
           @click="startAdd"
         >
           {{ t("rom.notes-add") }}
-        </RBtn>
+        </ZABtn>
 
         <template v-if="communityNotes.length > 0">
-          <RDivider />
+          <ZADivider />
           <div class="r-v2-notes__group-label">
             {{ t("rom.notes-community") }}
           </div>
@@ -375,7 +375,7 @@ function fmtDate(iso: string): string {
               >
                 <span class="r-v2-notes__nav-title">{{ n.title }}</span>
                 <span class="r-v2-notes__nav-author">
-                  <RAvatar
+                  <ZAAvatar
                     :image="
                       userAvatarUrl({
                         userId: n.user_id,
@@ -396,7 +396,7 @@ function fmtDate(iso: string): string {
       <section class="r-v2-notes__pane">
         <template v-if="editForm">
           <header class="r-v2-notes__pane-head">
-            <RTextField
+            <ZATextField
               ref="titleFieldRef"
               v-model="editForm.title"
               :error-messages="titleErrors"
@@ -407,7 +407,7 @@ function fmtDate(iso: string): string {
               :disabled="saving"
             />
             <div class="r-v2-notes__actions">
-              <RTooltip
+              <ZATooltip
                 :text="
                   editForm.isPublic
                     ? t('rom.make-private')
@@ -415,7 +415,7 @@ function fmtDate(iso: string): string {
                 "
               >
                 <template #activator="{ props: activator }">
-                  <RBtn
+                  <ZABtn
                     v-bind="activator"
                     variant="text"
                     size="small"
@@ -429,16 +429,16 @@ function fmtDate(iso: string): string {
                     @click="editForm.isPublic = !editForm.isPublic"
                   />
                 </template>
-              </RTooltip>
-              <RBtn
+              </ZATooltip>
+              <ZABtn
                 variant="text"
                 size="small"
                 :disabled="saving"
                 @click="cancelEdit"
               >
                 {{ t("common.cancel") }}
-              </RBtn>
-              <RBtn
+              </ZABtn>
+              <ZABtn
                 variant="flat"
                 color="primary"
                 size="small"
@@ -448,7 +448,7 @@ function fmtDate(iso: string): string {
                 @click="saveEdit"
               >
                 {{ t("common.save") }}
-              </RBtn>
+              </ZABtn>
             </div>
           </header>
           <MdEditor
@@ -473,7 +473,7 @@ function fmtDate(iso: string): string {
                 {{ selectedNote.title }}
               </h3>
               <div v-if="!isSelectedOwn" class="r-v2-notes__author">
-                <RAvatar
+                <ZAAvatar
                   :image="
                     userAvatarUrl({
                       userId: selectedNote.user_id,
@@ -487,7 +487,7 @@ function fmtDate(iso: string): string {
               </div>
             </div>
             <div v-if="isSelectedOwn" class="r-v2-notes__actions">
-              <RTooltip
+              <ZATooltip
                 :text="
                   selectedNote.is_public
                     ? t('rom.make-private')
@@ -495,7 +495,7 @@ function fmtDate(iso: string): string {
                 "
               >
                 <template #activator="{ props: activator }">
-                  <RBtn
+                  <ZABtn
                     v-bind="activator"
                     variant="text"
                     size="small"
@@ -513,10 +513,10 @@ function fmtDate(iso: string): string {
                     @click="toggleLock(selectedNote)"
                   />
                 </template>
-              </RTooltip>
-              <RTooltip :text="t('rom.notes-edit')">
+              </ZATooltip>
+              <ZATooltip :text="t('rom.notes-edit')">
                 <template #activator="{ props: activator }">
-                  <RBtn
+                  <ZABtn
                     v-bind="activator"
                     variant="text"
                     size="small"
@@ -525,10 +525,10 @@ function fmtDate(iso: string): string {
                     @click="startEdit"
                   />
                 </template>
-              </RTooltip>
-              <RTooltip :text="t('rom.notes-delete')">
+              </ZATooltip>
+              <ZATooltip :text="t('rom.notes-delete')">
                 <template #activator="{ props: activator }">
-                  <RBtn
+                  <ZABtn
                     v-bind="activator"
                     variant="text"
                     size="small"
@@ -537,7 +537,7 @@ function fmtDate(iso: string): string {
                     @click="removeNote(selectedNote)"
                   />
                 </template>
-              </RTooltip>
+              </ZATooltip>
             </div>
           </header>
           <MdPreview
@@ -560,7 +560,7 @@ function fmtDate(iso: string): string {
           </footer>
         </template>
 
-        <REmptyState
+        <ZAEmptyState
           v-else
           size="small"
           icon="mdi-note-search-outline"

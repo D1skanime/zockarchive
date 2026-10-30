@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RSelect, RTextField } from "@v2/lib";
+import { ZABtn, ZASelect, ZATextField } from "@v2/lib";
 import { getActivePinia } from "pinia";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -151,14 +151,14 @@ async function save() {
           {{ t(provenance.key, provenance.params) }}
         </p>
       </div>
-      <RSelect
+      <ZASelect
         v-model="selectedLocale"
         :items="localeItems"
         :label="t('rom.description-locale')"
         :disabled="dirty || saving"
       />
     </div>
-    <RTextField
+    <ZATextField
       v-model="draft"
       multiline
       :rows="5"
@@ -177,21 +177,21 @@ async function save() {
       {{ t("rom.description-empty") }}
     </p>
     <div class="localized-description-editor__actions">
-      <RBtn variant="text" :disabled="!dirty || saving" @click="cancel">{{
+      <ZABtn variant="text" :disabled="!dirty || saving" @click="cancel">{{
         t("rom.description-cancel")
-      }}</RBtn>
-      <RBtn
+      }}</ZABtn>
+      <ZABtn
         variant="outlined"
         :disabled="!draft || saving || !canEdit"
         @click="reset"
-        >{{ t("rom.description-reset") }}</RBtn
+        >{{ t("rom.description-reset") }}</ZABtn
       >
-      <RBtn
+      <ZABtn
         color="primary"
         :loading="saving"
         :disabled="!dirty || saving || !canEdit || !expectedVersion"
         @click="save"
-        >{{ t("rom.description-save") }}</RBtn
+        >{{ t("rom.description-save") }}</ZABtn
       >
     </div>
     <p v-if="!canEdit" class="localized-description-editor__hint">

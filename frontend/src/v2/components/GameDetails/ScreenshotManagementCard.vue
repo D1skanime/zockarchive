@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RAvatar } from "@v2/lib";
+import { ZAAvatar } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { RomOwnedMediaSchema } from "@/__generated__";
@@ -107,7 +107,7 @@ const visibilityLabel = computed(() =>
       v-if="item.source === 'community' && item.shot.username"
       class="d-flex align-center ga-1"
     >
-      <RAvatar
+      <ZAAvatar
         :image="
           userAvatarUrl({
             userId: item.shot.userId,

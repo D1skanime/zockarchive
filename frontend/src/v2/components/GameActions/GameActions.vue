@@ -8,8 +8,8 @@
 //
 // Right-side group (desktop only): completion + rating + difficulty
 // pickers, separated from the main ribbon by a spacer. All three share
-// MetricMenuBtn — the rating/difficulty trigger an RRating popup,
-// completion triggers an RSlider popup. On phones these move into the
+// MetricMenuBtn — the rating/difficulty trigger an ZARating popup,
+// completion triggers an ZASlider popup. On phones these move into the
 // status button's sheet (GameActionBtn `withMetrics`) to save a row.
 // Writes are optimistic via useGameActions.setScore.
 import { computed, ref, toRef } from "vue";

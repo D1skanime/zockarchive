@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // ScreenshotsTab — responsive grid of 16:9 screenshot thumbnails. Clicking
-// a thumbnail opens RCarousel in fullscreen (lightbox) mode with prev/next
+// a thumbnail opens ZACarousel in fullscreen (lightbox) mode with prev/next
 // navigation, a thumbnail strip, and keyboard / gamepad arrows.
 //
 // Per-item affordances are driven by the item fields + props (the parent,
@@ -8,7 +8,7 @@
 //   * delete   — when `deletable` and the item is owned (top-right, hover)
 //   * lock     — when `togglable` and owned: public/private toggle (top-right)
 //   * username — community items (others' public shots) show an owner chip
-import { RAvatar, RBtn, RCarousel, RIcon } from "@v2/lib";
+import { ZAAvatar, ZABtn, ZACarousel, ZAIcon } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { userAvatarUrl } from "@/v2/utils/userAvatar";
@@ -44,7 +44,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// RCarousel consumes a flat list of image URLs.
+// ZACarousel consumes a flat list of image URLs.
 const urls = computed(() => props.screenshots.map((s) => s.url));
 
 const lightboxIndex = ref(0);
@@ -93,7 +93,7 @@ function canToggle(shot: ScreenshotItem): boolean {
 
       <!-- Owner chip for community (others' public) screenshots -->
       <div v-if="shot.username" class="r-v2-det-shots__owner">
-        <RAvatar
+        <ZAAvatar
           :image="
             userAvatarUrl({
               userId: shot.userId,
@@ -112,11 +112,11 @@ function canToggle(shot: ScreenshotItem): boolean {
         class="r-v2-det-shots__badge"
         :title="t('rom.screenshot-public')"
       >
-        <RIcon icon="mdi-earth" size="13" />
+        <ZAIcon icon="mdi-earth" size="13" />
       </div>
 
       <div class="r-v2-det-shots__actions">
-        <RBtn
+        <ZABtn
           v-if="canToggle(shot)"
           :icon="shot.isPublic ? 'mdi-lock-open-variant' : 'mdi-lock'"
           size="small"
@@ -135,7 +135,7 @@ function canToggle(shot: ScreenshotItem): boolean {
           "
           @click="emit('toggle-visibility', shot.id!, !shot.isPublic)"
         />
-        <RBtn
+        <ZABtn
           v-if="canDelete(shot)"
           icon="mdi-delete"
           size="small"
@@ -149,7 +149,7 @@ function canToggle(shot: ScreenshotItem): boolean {
     </div>
   </section>
 
-  <RCarousel
+  <ZACarousel
     v-if="lightboxOpen"
     v-model="lightboxIndex"
     :items="urls"
@@ -164,7 +164,7 @@ function canToggle(shot: ScreenshotItem): boolean {
     <template #thumbnail="{ item, index }">
       <img :src="item" :alt="t('rom.screenshot-num-thumb', { n: index + 1 })" />
     </template>
-  </RCarousel>
+  </ZACarousel>
 </template>
 
 <style scoped>

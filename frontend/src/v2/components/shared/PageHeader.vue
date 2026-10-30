@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // PageHeader — the top-of-page h1 + optional trailing count.
 // Used by every index view (PlatformsIndex, CollectionsIndex, Search,
-// Settings — future). Pass `count` for the default RTag pill; use the
+// Settings — future). Pass `count` for the default ZATag pill; use the
 // `#count` slot when you want richer content (icon, custom tone, etc).
 // Default slot sits at the end of the header (filters, actions, etc.).
 //
@@ -9,7 +9,7 @@
 // shell paints the divider between hero and toolbar so the three
 // gallery views (Platform / Collection / Search) share one separator
 // regardless of which header sits above it.
-import { RTag } from "@v2/lib";
+import { ZATag } from "@v2/lib";
 
 defineOptions({ inheritAttrs: false });
 
@@ -29,7 +29,7 @@ withDefaults(
         {{ title }}
       </h1>
       <slot name="count">
-        <RTag v-if="count != null" :text="count" />
+        <ZATag v-if="count != null" :text="count" />
       </slot>
     </div>
     <slot />
@@ -51,7 +51,7 @@ withDefaults(
 
 .page-header__title-wrap {
   display: flex;
-  /* Center-align so non-text counts (e.g. RChip in Search) sit on the
+  /* Center-align so non-text counts (e.g. ZAChip in Search) sit on the
      h1's optical centre instead of having their synthesized baseline
      dragged to the title baseline — that misalignment also grew the
      wrap taller than the h1 line-box and shifted the gallery down on

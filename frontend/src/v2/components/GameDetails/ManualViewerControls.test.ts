@@ -37,8 +37,8 @@ const global = {
   },
   stubs: {
     MdPreview: { template: "<article />" },
-    RIcon: { template: "<i />" },
-    RTooltip: TooltipStub,
+    ZAIcon: { template: "<i />" },
+    ZATooltip: TooltipStub,
     VuePdfApp: { template: "<div />" },
   },
 };

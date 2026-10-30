@@ -6,7 +6,7 @@
 // A directly opened ROM receives an alphabetical list for its platform.
 // Provenance prevents an old gallery index from becoming the direct page's
 // neighbour list.
-import { RBtn } from "@v2/lib";
+import { ZABtn } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -112,7 +112,7 @@ function go(position: number | null) {
 
 <template>
   <div v-if="visible" class="prev-next-nav">
-    <RBtn
+    <ZABtn
       variant="outlined"
       size="small"
       prepend-icon="mdi-chevron-left"
@@ -123,8 +123,8 @@ function go(position: number | null) {
       @click="go(prevPosition)"
     >
       {{ t("rom.previous-game") }}
-    </RBtn>
-    <RBtn
+    </ZABtn>
+    <ZABtn
       variant="outlined"
       size="small"
       append-icon="mdi-chevron-right"
@@ -135,7 +135,7 @@ function go(position: number | null) {
       @click="go(nextPosition)"
     >
       {{ t("rom.next-game") }}
-    </RBtn>
+    </ZABtn>
   </div>
 </template>
 

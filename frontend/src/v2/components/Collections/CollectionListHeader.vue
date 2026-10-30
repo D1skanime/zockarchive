@@ -3,7 +3,7 @@
 // list-mode view. Mirrors GameListHeader's anatomy: each sortable
 // column is a button that toggles asc → desc → asc on the parent's
 // sort state via the `sort` event.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import {
   COLLECTION_LIST_COLUMNS,
@@ -66,7 +66,7 @@ function handleClick(col: CollectionListColumn) {
       @click="handleClick(col)"
     >
       <span class="coll-list-header__label">{{ t(col.labelKey) }}</span>
-      <RIcon
+      <ZAIcon
         v-if="col.sortKey && sortKey === col.sortKey"
         :icon="sortDir === 'asc' ? 'mdi-arrow-up-thin' : 'mdi-arrow-down-thin'"
         size="14"

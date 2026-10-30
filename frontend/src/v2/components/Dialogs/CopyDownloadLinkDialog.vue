@@ -5,7 +5,7 @@
 // the user can copy it by hand, and offers a Retry button that tries
 // the Clipboard API once more in case the original failure was a
 // permission prompt the user has now accepted.
-import { RBtn, RDialog } from "@v2/lib";
+import { ZABtn, ZADialog } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -53,7 +53,7 @@ async function retryCopy() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-share-variant-outline"
     width="560"
@@ -71,18 +71,18 @@ async function retryCopy() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="closeDialog">{{ t("common.close") }}</RBtn>
+      <ZABtn variant="text" @click="closeDialog">{{ t("common.close") }}</ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         prepend-icon="mdi-content-copy"
         @click="retryCopy"
       >
         {{ t("common.try-again") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

@@ -5,13 +5,13 @@
 // switch on the right and an inline diff preview ("old.gba → new.gba")
 // below. The card paints brand-tinted when the toggle is on so the
 // effect is unambiguous; while off everything reads muted. Clicking
-// anywhere on the card toggles, and the RSwitch carries the actual
+// anywhere on the card toggles, and the ZASwitch carries the actual
 // visual affordance.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { SimpleRom } from "@/v2/data/adapters/legacy/stores/roms";
-import RSwitch from "@/v2/lib/forms/RSwitch/RSwitch.vue";
+import ZASwitch from "@/v2/lib/forms/ZASwitch/ZASwitch.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -58,12 +58,12 @@ function toggle() {
       @click="toggle"
     >
       <span class="rename-toggle__label">
-        <RIcon icon="mdi-file-edit-outline" size="15" />
+        <ZAIcon icon="mdi-file-edit-outline" size="15" />
         <span>{{ t("rom.match-rename-on-disk") }}</span>
       </span>
       <!-- Stop propagation so the switch click doesn't double-toggle
            via the parent button's handler. -->
-      <RSwitch
+      <ZASwitch
         :model-value="modelValue"
         :disabled="disabled"
         size="small"
@@ -76,7 +76,7 @@ function toggle() {
       <code class="rename-toggle__name rename-toggle__name--old">
         {{ rom.fs_name }}
       </code>
-      <RIcon icon="mdi-arrow-right" size="13" class="rename-toggle__arrow" />
+      <ZAIcon icon="mdi-arrow-right" size="13" class="rename-toggle__arrow" />
       <code class="rename-toggle__name rename-toggle__name--new">
         {{ newName }}
       </code>

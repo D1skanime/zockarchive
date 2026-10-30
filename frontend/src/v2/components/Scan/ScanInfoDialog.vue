@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Reference rows explain scan behavior and provider setup without changing configuration.
 // Provider links retain their upstream documentation ownership.
-import { RAvatar, RDialog, RIcon, RTabNav } from "@v2/lib";
+import { ZAAvatar, ZADialog, ZAIcon, ZATabNav } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { PROJECT_NAME } from "@/v2/config/project";
@@ -208,7 +208,7 @@ function paragraphs(text: string): string[] {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     :model-value="modelValue"
     icon="mdi-information-outline"
     width="640px"
@@ -221,7 +221,7 @@ function paragraphs(text: string): string[] {
     </template>
 
     <template #toolbar>
-      <RTabNav
+      <ZATabNav
         v-model="activeTab"
         :items="tabs"
         variant="underlined"
@@ -267,7 +267,7 @@ function paragraphs(text: string): string[] {
             class="r-v2-scan-info__row r-v2-scan-info__row--provider"
           >
             <div class="r-v2-scan-info__row-head">
-              <RAvatar
+              <ZAAvatar
                 :image="p.logo"
                 size="28"
                 rounded="sm"
@@ -279,14 +279,14 @@ function paragraphs(text: string): string[] {
               <p class="r-v2-scan-info__para">{{ t(p.descKey) }}</p>
               <div class="r-v2-scan-info__meta">
                 <span class="r-v2-scan-info__pill">
-                  <RIcon icon="mdi-cog-outline" size="11" />
+                  <ZAIcon icon="mdi-cog-outline" size="11" />
                   {{ t(p.setupKey) }}
                 </span>
                 <span
                   v-if="p.caveatKey"
                   class="r-v2-scan-info__pill r-v2-scan-info__pill--warn"
                 >
-                  <RIcon icon="mdi-alert-circle-outline" size="11" />
+                  <ZAIcon icon="mdi-alert-circle-outline" size="11" />
                   {{ t(p.caveatKey) }}
                 </span>
               </div>
@@ -308,7 +308,7 @@ function paragraphs(text: string): string[] {
             class="r-v2-scan-info__row r-v2-scan-info__row--provider"
           >
             <div class="r-v2-scan-info__row-head">
-              <RAvatar
+              <ZAAvatar
                 :image="p.logo"
                 size="28"
                 rounded="sm"
@@ -320,14 +320,14 @@ function paragraphs(text: string): string[] {
               <p class="r-v2-scan-info__para">{{ t(p.descKey) }}</p>
               <div class="r-v2-scan-info__meta">
                 <span class="r-v2-scan-info__pill">
-                  <RIcon icon="mdi-cog-outline" size="11" />
+                  <ZAIcon icon="mdi-cog-outline" size="11" />
                   {{ t(p.setupKey) }}
                 </span>
                 <span
                   v-if="p.caveatKey"
                   class="r-v2-scan-info__pill r-v2-scan-info__pill--warn"
                 >
-                  <RIcon icon="mdi-alert-circle-outline" size="11" />
+                  <ZAIcon icon="mdi-alert-circle-outline" size="11" />
                   {{ t(p.caveatKey) }}
                 </span>
               </div>
@@ -349,7 +349,7 @@ function paragraphs(text: string): string[] {
             class="r-v2-scan-info__row r-v2-scan-info__row--provider"
           >
             <div class="r-v2-scan-info__row-head">
-              <RAvatar
+              <ZAAvatar
                 :image="p.logo"
                 size="28"
                 rounded="sm"
@@ -361,14 +361,14 @@ function paragraphs(text: string): string[] {
               <p class="r-v2-scan-info__para">{{ t(p.descKey) }}</p>
               <div class="r-v2-scan-info__meta">
                 <span class="r-v2-scan-info__pill">
-                  <RIcon icon="mdi-cog-outline" size="11" />
+                  <ZAIcon icon="mdi-cog-outline" size="11" />
                   {{ t(p.setupKey) }}
                 </span>
                 <span
                   v-if="p.caveatKey"
                   class="r-v2-scan-info__pill r-v2-scan-info__pill--warn"
                 >
-                  <RIcon icon="mdi-alert-circle-outline" size="11" />
+                  <ZAIcon icon="mdi-alert-circle-outline" size="11" />
                   {{ t(p.caveatKey) }}
                 </span>
               </div>
@@ -386,10 +386,10 @@ function paragraphs(text: string): string[] {
         class="r-v2-scan-info__doc-link"
       >
         {{ t("scan.info-full-docs", "Read the full docs") }}
-        <RIcon icon="mdi-open-in-new" size="12" />
+        <ZAIcon icon="mdi-open-in-new" size="12" />
       </a>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

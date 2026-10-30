@@ -13,11 +13,11 @@
 //     `GameCard`'s morph so navigating from list / grid into the detail
 //     page lands on the same visual anchor.
 import {
-  RCheckbox,
-  RChip,
-  RPlatformIcon,
-  RSkeletonBlock,
-  RTooltip,
+  ZACheckbox,
+  ZAChip,
+  ZAPlatformIcon,
+  ZASkeletonBlock,
+  ZATooltip,
 } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -45,7 +45,7 @@ defineOptions({ inheritAttrs: false });
 // Cap on how many language/region chips render before the `+N` overflow
 // chip kicks in. Tuned so 4-chip lists fit on a single wrapped line
 // inside the pills cell; longer lists stack to a second line with the
-// `+N` chip pinned at the end. Full list lives in the RTooltip.
+// `+N` chip pinned at the end. Full list lives in the ZATooltip.
 const PILLS_VISIBLE = 4;
 
 interface Props {
@@ -281,11 +281,11 @@ function onRowPointerEnd() {
            shift-click extends the range from the last toggled position.
            Hidden at rest; reveals on row hover / focus or whenever the
            row is selected so the user always knows which rows are
-           picked. RCheckbox provides the box / fill / draw animations
+           picked. ZACheckbox provides the box / fill / draw animations
            — same animation language as the GameCard checkbox in grid
            mode. -->
       <div class="game-list-row__cell game-list-row__select">
-        <RCheckbox
+        <ZACheckbox
           v-if="!isStatic"
           class="game-list-row__check"
           :model-value="isSelected"
@@ -346,7 +346,7 @@ function onRowPointerEnd() {
                 width="14"
                 height="14"
               />
-              <RTooltip
+              <ZATooltip
                 activator="parent"
                 :text="provider.title"
                 location="top"
@@ -360,7 +360,7 @@ function onRowPointerEnd() {
         v-if="showPlatformColumn"
         class="game-list-row__cell game-list-row__platform"
       >
-        <RPlatformIcon
+        <ZAPlatformIcon
           v-if="platformMeta?.slug"
           :slug="platformMeta.slug"
           :size="24"
@@ -379,23 +379,23 @@ function onRowPointerEnd() {
 
       <div class="game-list-row__cell game-list-row__cell--pills">
         <div class="game-list-row__pills">
-          <RChip
+          <ZAChip
             v-for="l in (rom.languages ?? []).slice(0, PILLS_VISIBLE)"
             :key="`lang-${l}`"
             size="x-small"
             variant="translucent"
           >
             {{ l }}
-          </RChip>
-          <RChip
+          </ZAChip>
+          <ZAChip
             v-if="(rom.languages?.length ?? 0) > PILLS_VISIBLE"
             size="x-small"
             variant="translucent"
           >
             +{{ (rom.languages?.length ?? 0) - PILLS_VISIBLE }}
-          </RChip>
+          </ZAChip>
         </div>
-        <RTooltip
+        <ZATooltip
           v-if="(rom.languages?.length ?? 0) > PILLS_VISIBLE"
           activator="parent"
           :text="rom.languages?.join(', ')"
@@ -404,23 +404,23 @@ function onRowPointerEnd() {
       </div>
       <div class="game-list-row__cell game-list-row__cell--pills">
         <div class="game-list-row__pills">
-          <RChip
+          <ZAChip
             v-for="r in (rom.regions ?? []).slice(0, PILLS_VISIBLE)"
             :key="`reg-${r}`"
             size="x-small"
             variant="translucent"
           >
             {{ r }}
-          </RChip>
-          <RChip
+          </ZAChip>
+          <ZAChip
             v-if="(rom.regions?.length ?? 0) > PILLS_VISIBLE"
             size="x-small"
             variant="translucent"
           >
             +{{ (rom.regions?.length ?? 0) - PILLS_VISIBLE }}
-          </RChip>
+          </ZAChip>
         </div>
-        <RTooltip
+        <ZATooltip
           v-if="(rom.regions?.length ?? 0) > PILLS_VISIBLE"
           activator="parent"
           :text="rom.regions?.join(', ')"
@@ -459,19 +459,19 @@ function onRowPointerEnd() {
           v-else-if="col.key === 'name'"
           class="game-list-row__cell game-list-row__title"
         >
-          <RSkeletonBlock
+          <ZASkeletonBlock
             :width="LIST_COVER_WIDTH_PX"
             :height="LIST_COVER_HEIGHT_PX"
           />
           <div class="game-list-row__meta">
-            <RSkeletonBlock width="60%" :height="12" />
-            <RSkeletonBlock width="40%" :height="10" />
+            <ZASkeletonBlock width="60%" :height="12" />
+            <ZASkeletonBlock width="40%" :height="10" />
           </div>
         </div>
         <div v-else-if="col.key === 'platform_id'" class="game-list-row__cell">
           <div class="game-list-row__platform">
-            <RSkeletonBlock :width="24" :height="24" circle />
-            <RSkeletonBlock :width="100" :height="10" />
+            <ZASkeletonBlock :width="24" :height="24" circle />
+            <ZASkeletonBlock :width="100" :height="10" />
           </div>
         </div>
         <div
@@ -479,18 +479,18 @@ function onRowPointerEnd() {
           class="game-list-row__cell"
         >
           <div class="game-list-row__pills">
-            <RSkeletonBlock :width="28" :height="16" rounded="pill" />
-            <RSkeletonBlock :width="28" :height="16" rounded="pill" />
+            <ZASkeletonBlock :width="28" :height="16" rounded="pill" />
+            <ZASkeletonBlock :width="28" :height="16" rounded="pill" />
           </div>
         </div>
         <div
           v-else-if="col.key === 'actions'"
           class="game-list-row__cell game-list-row__cell--end"
         >
-          <RSkeletonBlock :width="18" :height="18" circle />
+          <ZASkeletonBlock :width="18" :height="18" circle />
         </div>
         <div v-else class="game-list-row__cell">
-          <RSkeletonBlock :width="col.skeletonWidth ?? 60" :height="10" />
+          <ZASkeletonBlock :width="col.skeletonWidth ?? 60" :height="10" />
         </div>
       </template>
     </template>
@@ -539,7 +539,7 @@ function onRowPointerEnd() {
   overflow: visible;
 }
 
-/* RCheckbox carries its own visual language — we only own the row's
+/* ZACheckbox carries its own visual language — we only own the row's
    reveal behaviour. Hidden at rest, visible on row hover/focus and
    whenever the row is selected. */
 .game-list-row__check {

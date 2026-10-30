@@ -23,12 +23,12 @@ vi.mock("vue-router", async (importOriginal) => ({
 }));
 
 vi.mock("@v2/lib", () => ({
-  RDivider: defineComponent({ template: "<hr />" }),
-  RLetterHeading: defineComponent({
+  ZADivider: defineComponent({ template: "<hr />" }),
+  ZALetterHeading: defineComponent({
     props: { label: { type: String, default: "" } },
     template: "<h2>{{ label }}</h2>",
   }),
-  RSkeletonBlock: defineComponent({ template: "<div />" }),
+  ZASkeletonBlock: defineComponent({ template: "<div />" }),
 }));
 
 vi.mock("@/v2/components/Gallery/GalleryToolbar.vue", () => ({

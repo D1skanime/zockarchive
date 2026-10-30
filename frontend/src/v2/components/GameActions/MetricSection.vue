@@ -2,14 +2,14 @@
 // MetricSection — inline editor body for a single per-user metric
 // (rating, difficulty, completion). Shared between MetricMenuBtn's
 // popup (desktop ribbon) and GameMetricsSections' mobile status sheet.
-// Renders a header (icon + label + live value), an RRating for 1..max
-// scales or an RSlider for 0..100 percent, and a clear button.
+// Renders a header (icon + label + live value), an ZARating for 1..max
+// scales or an ZASlider for 0..100 percent, and a clear button.
 //
 // Emits `update:value` for the write and `close` on discrete picks
 // (rating pick / clear) so a host popup can dismiss itself; the mobile
 // sheet ignores `close` and stays open. The slider commits on drag-end
 // only (no `close`), to avoid firing a write per pixel.
-import { RIcon, RRating, RSlider } from "@v2/lib";
+import { ZAIcon, ZARating, ZASlider } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -77,12 +77,12 @@ function clear() {
     :style="{ '--metric-accent': `var(--r-color-${accent})` }"
   >
     <div class="r-v2-metric-menu__header">
-      <RIcon :icon="local > 0 ? iconFull : iconEmpty" />
+      <ZAIcon :icon="local > 0 ? iconFull : iconEmpty" />
       <span class="r-v2-metric-menu__label">{{ label }}</span>
       <span class="r-v2-metric-menu__current">{{ liveLabel }}</span>
     </div>
 
-    <RRating
+    <ZARating
       v-if="kind === 'rating'"
       class="r-v2-metric-menu__rating"
       :model-value="value"
@@ -97,7 +97,7 @@ function clear() {
       @update:model-value="pickRating"
     />
 
-    <RSlider
+    <ZASlider
       v-else
       v-model="local"
       :min="0"
@@ -115,7 +115,7 @@ function clear() {
       :disabled="value === 0"
       @click="clear"
     >
-      <RIcon icon="mdi-close" size="14" />
+      <ZAIcon icon="mdi-close" size="14" />
       {{ t("rom.clear-field", { field: label.toLowerCase() }) }}
     </button>
   </div>

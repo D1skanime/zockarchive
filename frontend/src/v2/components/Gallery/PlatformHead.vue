@@ -2,7 +2,7 @@
 // PlatformHead — the platform-context strip that sits above the
 // gallery / firmware / settings tab body. Composes the InfoPanel
 // (icon + name + stats + provider chips + action ribbon) with the
-// RTabNav. Re-used in two render branches inside Platform.vue:
+// ZATabNav. Re-used in two render branches inside Platform.vue:
 //
 //   1. Library tab — passed to `GalleryShell`'s `#header` slot so the
 //      head scrolls naturally with the cards (and the toolbar pins
@@ -15,7 +15,7 @@
 //
 // All admin actions are forwarded as events; permission gating lives
 // on the parent so the bar stays in sync with `useCan`.
-import { RBtn, RChip, RPlatformIcon, RTabNav } from "@v2/lib";
+import { ZABtn, ZAChip, ZAPlatformIcon, ZATabNav } from "@v2/lib";
 import type { RTabNavItem } from "@v2/lib";
 import { computed } from "vue";
 import InfoPanel from "@/v2/components/Gallery/InfoPanel.vue";
@@ -86,7 +86,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
         class="r-v2-plat__panel-icon"
         :style="{ viewTransitionName: `platform-icon-${platform.id}` }"
       >
-        <RPlatformIcon
+        <ZAPlatformIcon
           :slug="platform.slug"
           :fs-slug="platform.fs_slug"
           :alt="platform.display_name"
@@ -96,7 +96,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
     </template>
 
     <template v-if="tags.length || description" #tags>
-      <RChip
+      <ZAChip
         v-for="tag in tags"
         :key="tag"
         size="small"
@@ -104,15 +104,15 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
         :rounded="20"
       >
         {{ tag }}
-      </RChip>
-      <RChip
+      </ZAChip>
+      <ZAChip
         v-if="description"
         size="small"
         variant="translucent"
         :rounded="20"
       >
         {{ description }}
-      </RChip>
+      </ZAChip>
     </template>
 
     <template v-if="stats.length" #stats>
@@ -157,7 +157,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
          view the platform — it's a navigation shortcut, not an admin
          action — so it sits left of the gated Upload/Scan buttons. -->
     <template #actions>
-      <RBtn
+      <ZABtn
         variant="outlined"
         surface
         icon="mdi-shuffle-variant"
@@ -167,7 +167,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
         :tooltip="labels.random"
         @click="$emit('random')"
       />
-      <RBtn
+      <ZABtn
         v-if="canDownload"
         variant="outlined"
         surface
@@ -178,7 +178,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
         :tooltip="labels.download"
         @click="$emit('download')"
       />
-      <RBtn
+      <ZABtn
         v-if="canEdit"
         variant="outlined"
         surface
@@ -188,7 +188,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
         :tooltip="labels.upload"
         @click="$emit('upload')"
       />
-      <RBtn
+      <ZABtn
         v-if="canScan"
         variant="outlined"
         surface
@@ -201,7 +201,7 @@ const iconSize = computed(() => (xs.value ? 116 : 148));
     </template>
   </InfoPanel>
 
-  <RTabNav
+  <ZATabNav
     :model-value="tab"
     :items="tabs"
     class="r-v2-plat__tabs"

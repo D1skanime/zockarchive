@@ -124,10 +124,10 @@ const RCollapsibleStub = defineComponent({
 
 const selectionGlobal = {
   stubs: {
-    RDialog: RDialogStub,
-    RCheckbox: RCheckboxStub,
-    RBtn: RBtnStub,
-    RCollapsible: RCollapsibleStub,
+    ZADialog: RDialogStub,
+    ZACheckbox: RCheckboxStub,
+    ZABtn: RBtnStub,
+    ZACollapsible: RCollapsibleStub,
     DownloadModeSelector: {
       template:
         '<label data-testid="download-mode"><input type="radio" aria-label="Standard browser download" />Standard browser download</label>',

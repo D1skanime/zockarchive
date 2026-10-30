@@ -4,7 +4,7 @@
 // the ID is set, the card renders as an `<a target=_blank>`; otherwise
 // it's a static div. Brand colour is consumed via the `accent` prop
 // (caller passes a CSS color value, typically a token reference).
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -50,7 +50,7 @@ const isClickable = computed(() => isLinked.value && Boolean(props.href));
         @error="($event.target as HTMLImageElement).style.display = 'none'"
       />
       <span class="provider-card__name">{{ name }}</span>
-      <RIcon
+      <ZAIcon
         v-if="isClickable"
         icon="mdi-open-in-new"
         size="14"

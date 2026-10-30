@@ -13,7 +13,7 @@
 // Visual: same canvas-bg-deep + blur + lg radius vocabulary as
 // UploadProgressToast. Positioned bottom-center so it never collides
 // with the upload toast (bottom-right).
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { useLocalStorage } from "@vueuse/core";
 import semver from "semver";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
   <transition name="r-v2-new-version">
     <div v-if="visible" class="r-v2-new-version" role="status">
       <div class="r-v2-new-version__head">
-        <RIcon
+        <ZAIcon
           icon="mdi-rocket-launch-outline"
           size="18"
           class="r-v2-new-version__icon"
@@ -96,7 +96,7 @@ onBeforeUnmount(() => {
         </span>
       </div>
       <div class="r-v2-new-version__actions">
-        <RBtn
+        <ZABtn
           size="small"
           variant="translucent"
           color="primary"
@@ -104,15 +104,15 @@ onBeforeUnmount(() => {
           @click="onOpenRelease"
         >
           {{ t("common.whats-new") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           size="small"
           variant="text"
           class="r-v2-new-version__dismiss"
           @click="onDismiss"
         >
           {{ t("common.dismiss") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </div>
   </transition>

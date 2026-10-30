@@ -7,7 +7,7 @@
 // outer row + tile are persistent across both states so the background
 // tint and tile-active swap transition smoothly instead of remounting;
 // only the middle (label vs input) and the trailing actions toggle.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { computed, nextTick, ref, useId, watch } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -81,7 +81,7 @@ function onInput(e: Event) {
     @click="onRowClick"
   >
     <span class="new-row__tile" :class="{ 'new-row__tile--active': expanded }">
-      <RIcon icon="mdi-plus" size="22" />
+      <ZAIcon icon="mdi-plus" size="22" />
     </span>
 
     <!-- Middle column: label (collapsed) or input (expanded). The swap
@@ -120,15 +120,15 @@ function onInput(e: Event) {
          expands/collapses without the form's unmount cutting it short. -->
     <Transition name="new-row-actions">
       <div v-if="expanded" class="new-row__actions" @click.stop>
-        <RBtn
+        <ZABtn
           variant="text"
           size="small"
           :disabled="creating"
           @click.prevent="onCancel"
         >
           {{ t("common.cancel") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           variant="translucent"
           color="primary"
           size="small"
@@ -138,7 +138,7 @@ function onInput(e: Event) {
           :loading="creating"
         >
           {{ t("common.create") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </Transition>
   </div>
@@ -146,10 +146,10 @@ function onInput(e: Event) {
 
 <style scoped>
 /* Edge-to-edge CTA row matching the picker rows below. The host
-   dialog (`ManageCollectionsDialog`) drops the standard RDialog body
+   dialog (`ManageCollectionsDialog`) drops the standard ZADialog body
    padding AND we drop the row's horizontal padding too, so the tile
    and actions go flush with the dialog walls — same "menu items, not
-   padded cards" idiom as RMenu. */
+   padded cards" idiom as ZAMenu. */
 .new-row {
   display: grid;
   /* First column tracks the configurable tile width so the label always

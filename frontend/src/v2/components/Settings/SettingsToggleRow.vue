@@ -1,13 +1,13 @@
 <script setup lang="ts">
 // SettingsToggleRow — a clickable row used inside a settings section's
 // toggle grid. Displays a label + description on the left and an
-// `RSwitch` on the right. The whole row is the click target so users
+// `ZASwitch` on the right. The whole row is the click target so users
 // don't have to aim at the switch itself.
 //
-// The visual switch is `<RSwitch static>` — purely presentational, no
+// The visual switch is `<ZASwitch static>` — purely presentational, no
 // nested button. The row's outer `<button role="switch">` owns the
 // interaction (click, keyboard, aria-checked).
-import { RSwitch } from "@v2/lib";
+import { ZASwitch } from "@v2/lib";
 import { computed, useSlots } from "vue";
 
 defineOptions({ inheritAttrs: false });
@@ -61,7 +61,7 @@ function toggle() {
          (e.g. a "Compact / Extended" segmented control for the
          Library Snapshot widget toggle). Click events stop here so
          nested interactive controls don't bubble up and flip the row
-         toggle; mousedown is stopped too so `<RSliderBtnGroup>`'s
+         toggle; mousedown is stopped too so `<ZASliderBtnGroup>`'s
          pointer-based active-pill animation doesn't trigger a row
          click on release. */
     -->
@@ -74,7 +74,7 @@ function toggle() {
     >
       <slot name="append" />
     </span>
-    <RSwitch
+    <ZASwitch
       :model-value="modelValue"
       :disabled="disabled"
       class="r-v2-toggle-row__switch"

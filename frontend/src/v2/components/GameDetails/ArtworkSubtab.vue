@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {
-  RBtn,
-  RCarousel,
-  RChip,
-  RDropzone,
-  REmptyState,
-  RSkeletonBlock,
-  RTooltip,
+  ZABtn,
+  ZACarousel,
+  ZAChip,
+  ZADropzone,
+  ZAEmptyState,
+  ZASkeletonBlock,
+  ZATooltip,
 } from "@v2/lib";
 import axios from "axios";
 import { computed, ref } from "vue";
@@ -31,7 +31,7 @@ const romsStore = storeRoms();
 const scope = { kind: "rom", id: props.rom.id } as const;
 const canManage = useCan("rom.edit", scope);
 const canRefresh = useCan("rom.refresh", scope);
-const uploadDropzone = ref<InstanceType<typeof RDropzone> | null>(null);
+const uploadDropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
 const refreshing = ref(false);
 const mutatingId = ref<number | null>(null);
 const uploading = ref(false);
@@ -234,25 +234,25 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
           <p class="r-v2-art__subtitle">{{ t("rom.owned-media-hint") }}</p>
         </div>
         <div v-if="canManage || canRefresh" class="r-v2-art__header-actions">
-          <RTooltip :text="t('common.refresh')"
-            ><RBtn
+          <ZATooltip :text="t('common.refresh')"
+            ><ZABtn
               v-if="canRefresh"
               icon="mdi-refresh"
               :loading="refreshing"
               :disabled="uploading"
               :aria-label="t('common.refresh')"
               @click="refreshProviderArtwork"
-          /></RTooltip>
-          <RBtn
+          /></ZATooltip>
+          <ZABtn
             v-if="canManage"
             prepend-icon="mdi-upload"
             :loading="uploading"
             @click="uploadDropzone?.open()"
-            >{{ t("rom.upload-artwork") }}</RBtn
+            >{{ t("rom.upload-artwork") }}</ZABtn
           >
         </div>
       </header>
-      <RDropzone
+      <ZADropzone
         ref="uploadDropzone"
         class="r-v2-art__upload"
         :title="t('rom.upload-artwork')"
@@ -276,9 +276,9 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
         {{ t("rom.backgrounds") }}
       </h3>
       <div v-if="refreshing && backgrounds.length === 0" class="r-v2-art__rows">
-        <RSkeletonBlock v-for="index in 2" :key="index" height="64" />
+        <ZASkeletonBlock v-for="index in 2" :key="index" height="64" />
       </div>
-      <REmptyState
+      <ZAEmptyState
         v-else-if="backgrounds.length === 0"
         icon="mdi-image-off-outline"
         :title="t('rom.backgrounds-empty')"
@@ -296,32 +296,32 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
           /><span class="r-v2-art__ordinal">{{ index + 1 }}</span
           ><span class="r-v2-art__row-label">{{ candidate.display_label }}</span
           ><span class="r-v2-art__origin">{{ candidate.origin }}</span>
-          <RTooltip
+          <ZATooltip
             :text="
               index === 0
                 ? t('rom.background-move-unavailable')
                 : t('common.move-up')
             "
-            ><RBtn
+            ><ZABtn
               icon="mdi-arrow-up"
               :disabled="index === 0 || mutatingId !== null"
               :aria-label="t('common.move-up')"
               @click="moveBackground(index, -1)"
-          /></RTooltip>
-          <RTooltip
+          /></ZATooltip>
+          <ZATooltip
             :text="
               index === backgrounds.length - 1
                 ? t('rom.background-move-unavailable')
                 : t('common.move-down')
             "
-            ><RBtn
+            ><ZABtn
               icon="mdi-arrow-down"
               :disabled="
                 index === backgrounds.length - 1 || mutatingId !== null
               "
               :aria-label="t('common.move-down')"
               @click="moveBackground(index, 1)"
-          /></RTooltip>
+          /></ZATooltip>
         </li>
       </ol>
     </section>
@@ -332,7 +332,7 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
       <h3 id="artwork-candidates-heading" class="r-v2-art__title">
         {{ t("rom.artwork") }}
       </h3>
-      <REmptyState
+      <ZAEmptyState
         v-if="ownedArtwork.length === 0"
         icon="mdi-image-off-outline"
         :title="t('rom.artwork-empty')"
@@ -360,11 +360,11 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
             />
           </button>
           <p class="r-v2-art__origin">{{ item.origin }}</p>
-          <RChip v-if="backgroundPosition(item) != null" size="small">
+          <ZAChip v-if="backgroundPosition(item) != null" size="small">
             {{ t("rom.backgrounds") }} #{{ backgroundPosition(item)! + 1 }}
-          </RChip>
+          </ZAChip>
           <div v-if="canManage" class="r-v2-art__actions">
-            <RBtn
+            <ZABtn
               size="small"
               :loading="mutatingId === item.id"
               :aria-label="
@@ -377,8 +377,8 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
                 hasPlacement(item, "overview")
                   ? t("rom.remove-from-overview")
                   : t("rom.add-to-overview")
-              }}</RBtn
-            ><RBtn
+              }}</ZABtn
+            ><ZABtn
               size="small"
               :loading="mutatingId === item.id"
               :aria-label="
@@ -391,22 +391,22 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
                 hasPlacement(item, "background")
                   ? t("rom.remove-as-background")
                   : t("rom.add-as-background")
-              }}</RBtn
-            ><RBtn
+              }}</ZABtn
+            ><ZABtn
               v-if="item.origin === 'upload' && canManage"
               icon="mdi-delete-outline"
               :loading="mutatingId === item.id"
               :aria-label="t('common.delete')"
               @click="deleteArtwork(item)"
-              ><RTooltip activator="parent" :text="t('common.delete')" />
-              ></RBtn
+              ><ZATooltip activator="parent" :text="t('common.delete')" />
+              ></ZABtn
             >
           </div>
         </li>
       </ul>
     </section>
   </div>
-  <RCarousel
+  <ZACarousel
     v-if="lightboxOpen"
     v-model="lightboxIndex"
     :items="artworkUrls"
@@ -418,7 +418,7 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
       ><img :src="item" :alt="ownedArtwork[index]?.display_label" /></template
     ><template #thumbnail="{ item, index }"
       ><img :src="item" :alt="ownedArtwork[index]?.display_label" /></template
-  ></RCarousel>
+  ></ZACarousel>
 </template>
 
 <style scoped>

@@ -61,15 +61,15 @@ function mountTab(p: Platform) {
     props: { platform: p },
     global: {
       stubs: {
-        RForm: {
+        ZAForm: {
           template: "<form><slot /></form>",
           methods: {
             validate: () => Promise.resolve(true),
           },
         },
-        RIcon: true,
-        RBtn: { template: "<button><slot /></button>" },
-        RTextField: {
+        ZAIcon: true,
+        ZABtn: { template: "<button><slot /></button>" },
+        ZATextField: {
           props: ["modelValue"],
           emits: ["update:modelValue"],
           template:

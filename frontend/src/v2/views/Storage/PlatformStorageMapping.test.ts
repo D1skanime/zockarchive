@@ -66,20 +66,20 @@ vi.mock("@/services/api/storage", () => ({
 }));
 
 vi.mock("@v2/lib", () => ({
-  RAlert: {
+  ZAAlert: {
     template: "<div><slot /><slot name='title' /><slot name='append' /></div>",
   },
-  RBtn: {
+  ZABtn: {
     emits: ["click"],
     template: "<button @click=\"$emit('click')\"><slot /></button>",
   },
-  RCard: { template: "<section><slot /></section>" },
-  RDivider: { template: "<hr />" },
-  REmptyState: { template: "<div><slot /></div>" },
-  RList: { template: "<div><slot /></div>" },
-  RListItem: { template: "<div><slot /></div>" },
-  RSkeletonBlock: { template: "<div />" },
-  RSteps: { template: "<div><slot /></div>" },
+  ZACard: { template: "<section><slot /></section>" },
+  ZADivider: { template: "<hr />" },
+  ZAEmptyState: { template: "<div><slot /></div>" },
+  ZAList: { template: "<div><slot /></div>" },
+  ZAListItem: { template: "<div><slot /></div>" },
+  ZASkeletonBlock: { template: "<div />" },
+  ZASteps: { template: "<div><slot /></div>" },
 }));
 
 describe("PlatformStorageMapping", () => {
