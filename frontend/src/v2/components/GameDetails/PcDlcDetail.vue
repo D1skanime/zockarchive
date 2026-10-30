@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import {
-  ZABtn,
-  ZADialog,
-  ZAImg,
-  ZAMenu,
-  ZAMenuItem,
-  ZATabNav,
-  ZATag,
-} from "@v2/lib";
+// prettier-ignore
+import { ZABtn, ZADialog, ZAImg, ZAMenu, ZAMenuItem, ZATabNav, ZATag } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { getActivePinia } from "pinia";
 import { computed, inject, ref, watch } from "vue";
@@ -184,7 +177,6 @@ function openMatcher() {
     refresh: () => emit("refresh"),
   });
 }
-
 function showMedia() {
   tab.value = "media";
 }

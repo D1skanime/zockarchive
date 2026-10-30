@@ -97,7 +97,6 @@ function progressColor(status: BrowserQueueItem["status"]) {
 function safeFilename(destination: string) {
   return destination.split("/").at(-1) || t("rom.download-file");
 }
-
 function timestamp(value: string | null) {
   return value ? new Date(value).toLocaleString() : "";
 }
@@ -199,11 +198,8 @@ function hasLiveMember(memberId: string | null) {
       data-testid="download-history-loading"
       :aria-label="t('rom.download-state-downloading')"
     />
-    <ZAAlert
-      v-else-if="error"
-      type="error"
-      data-testid="download-history-error"
-    >
+    <!-- prettier-ignore -->
+    <ZAAlert v-else-if="error" type="error" data-testid="download-history-error">
       {{ t("rom.download-failed-description") }}
     </ZAAlert>
     <ul

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// FilterDrawer (v2) — gallery filter side panel. v2-native replacement
-// for the gallery filter controls.
+// FilterDrawer (v2) is the v2-native gallery-filter side panel.
 //
 // Surface area (matches v1 1:1 so URLs stay compatible):
 //   • Tri-state boolean filters: matched / favourites / duplicates /
@@ -21,14 +20,8 @@
 // primitives. Mounted by GalleryShell so it's available everywhere a
 // gallery is rendered. The shell controls `modelValue` and forwards
 // `showPlatformsFilter`.
-import {
-  ZABtn,
-  ZADrawer,
-  ZAIcon,
-  ZASelect,
-  ZASliderBtnGroup,
-  ZATag,
-} from "@v2/lib";
+// prettier-ignore
+import { ZABtn, ZADrawer, ZAIcon, ZASelect, ZASliderBtnGroup, ZATag } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject } from "vue";

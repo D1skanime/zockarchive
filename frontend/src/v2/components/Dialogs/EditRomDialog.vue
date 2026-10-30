@@ -408,15 +408,11 @@ function handleRomUpdateFromMetadata(updatedRom: UpdateRom) {
               {{ isFolderRom ? t("rom.folder-name") : t("rom.filename") }}
             </template>
             <template #subtitle>
-              <ZAIcon
-                icon="mdi-folder-file-outline"
-                size="13"
-                color="primary"
-              />
+              <!-- prettier-ignore -->
+              <ZAIcon icon="mdi-folder-file-outline" size="13" color="primary" />
               {{ fullPath }}
             </template>
           </ZATextField>
-
           <ZATextField
             v-model="rom.summary"
             prefix-label="stacked"

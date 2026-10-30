@@ -7,18 +7,12 @@
 // ephemeral (constitution §VI.D): a capped in-memory ring buffer, no
 // store, no global lifecycle — backfill covers re-open.
 //
-// The list is windowed with ZAVirtualScroller. Rows are single-line
-// monospace (terminal style) and scroll horizontally for long lines; the
+// The list is windowed with ZAVirtualScroller. Rows are single-line monospace and scroll horizontally; the
 // full message is also surfaced on hover via ZATooltip. Auto-tail follows
 // the newest line and pauses itself when the user scrolls up; "jump to
 // latest" re-engages it.
-import {
-  ZABtn,
-  ZASelect,
-  ZATextField,
-  ZATooltip,
-  ZAVirtualScroller,
-} from "@v2/lib";
+// prettier-ignore
+import { ZABtn, ZASelect, ZATextField, ZATooltip, ZAVirtualScroller } from "@v2/lib";
 import { computed, nextTick, onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useSnackbar } from "@/v2/composables/useSnackbar";

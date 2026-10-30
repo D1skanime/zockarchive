@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// ScanPlatformDialog — kicks off a scan for a single platform with
-// the user's choice of providers, hash-matchers, and scan type.
+// ScanPlatformDialog starts a single-platform scan with provider, hash-matcher, and scan-type choices.
 //
 // Visual + interaction language mirrors `RefreshMetadataDialog`
 // (provider selects split into General / Specific, hash-matcher
@@ -33,7 +32,6 @@ import type { Platform } from "@/v2/data/adapters/legacy/stores/platforms";
 import { buildLibraryScanRequest } from "@/v2/data/operations";
 
 defineOptions({ inheritAttrs: false });
-
 const props = defineProps<{
   modelValue: boolean;
   platform: Platform;
@@ -404,11 +402,8 @@ onBeforeUnmount(() => {
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <ZAAvatar
-                    :image="item.raw.logo_path"
-                    size="22"
-                    rounded="sm"
-                  />
+                  <!-- prettier-ignore -->
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -496,11 +491,8 @@ onBeforeUnmount(() => {
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <ZAAvatar
-                    :image="item.raw.logo_path"
-                    size="22"
-                    rounded="sm"
-                  />
+                  <!-- prettier-ignore -->
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}

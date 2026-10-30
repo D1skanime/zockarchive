@@ -10,17 +10,11 @@
 //      asset, and an <AssetStrip> below to swap between options inline.
 //   3. Setup: disc / core / firmware + fullscreen + clear-cache.
 //
-// The running state mounts the v1 <Player> component (600 lines of EJS
-// wiring — not worth rewriting). The v1 SelectSaveDialog / SelectStateDialog
+// The running state mounts the v1 <Player> component (600 lines of EJS wiring).
+// The v1 SelectSaveDialog / SelectStateDialog
 // + CacheDialog are mounted in GlobalDialogs so the emitter bridge works.
-import {
-  ZABtn,
-  ZACard,
-  ZAIcon,
-  ZASelect,
-  ZASliderBtnGroup,
-  ZASwitch,
-} from "@v2/lib";
+// prettier-ignore
+import { ZABtn, ZACard, ZAIcon, ZASelect, ZASliderBtnGroup, ZASwitch } from "@v2/lib";
 import { useEventListener, useLocalStorage } from "@vueuse/core";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
@@ -100,7 +94,6 @@ function focusPlayButton() {
 const rom = ref<DetailedRom | null>(null);
 const firmwareOptions = ref<FirmwareSchema[]>([]);
 const selectedSave = ref<SaveSchema | null>(null);
-
 // Rom id straight from the route param (available before `rom` resolves),
 // so the hero cover paints its `view-transition-name` immediately and the
 // shared-element morph from the gallery / details cover pairs on entry.

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// MetadataSources — v2-native rewrite. Provider tiles grouped into
-// three categories (general catalogs, specialised sources, match
+// MetadataSources — v2-native rewrite. Provider tiles group three categories (general catalogs, specialised sources, match
 // proxies) matching the split used in the Setup wizard. Each tile
 // shows:
 //   • A circular logo
@@ -188,8 +187,8 @@ function statusOf(source: Source): SourceStatus {
   return "pending";
 }
 
-type ZATagTone =
-  "neutral" | "brand" | "success" | "danger" | "warning" | "info";
+// prettier-ignore
+type ZATagTone = "neutral" | "brand" | "success" | "danger" | "warning" | "info";
 interface StatusInfo {
   tone: ZATagTone;
   icon: string;

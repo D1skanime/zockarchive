@@ -15,8 +15,7 @@
 // endpoint returns the per-provider URLs in one call, so a parallel
 // fetch keeps the surface to a single dialog.
 //
-// Collection-cover edits don't pass a `rom` — they hit SGDB only
-// (collections don't have provider IDs in the same way).
+// Collection-cover edits do not pass a `rom`; collections use SGDB only.
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -354,10 +353,8 @@ function closeDialog() {
             <span class="r-v2-sgdb__sort-label">
               {{ t("rom.cover-sort-relevance") }}
             </span>
-            <ZASwitch
-              v-model="sortByVotes"
-              :label="t('rom.cover-sort-votes')"
-            />
+            <!-- prettier-ignore -->
+            <ZASwitch v-model="sortByVotes" :label="t('rom.cover-sort-votes')" />
           </div>
           <div class="r-v2-sgdb__content-toggles">
             <ZASwitch v-model="showNsfw" :label="t('rom.cover-content-nsfw')" />

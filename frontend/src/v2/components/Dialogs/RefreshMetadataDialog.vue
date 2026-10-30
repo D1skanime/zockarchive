@@ -32,7 +32,6 @@ import { type SimpleRom } from "@/v2/data/adapters/legacy/stores/roms";
 import { buildLibraryScanRequest } from "@/v2/data/operations";
 
 defineOptions({ inheritAttrs: false });
-
 const LOCAL_STORAGE_METADATA_SOURCES_KEY = "scan.metadataSources";
 const LOCAL_STORAGE_LAUNCHBOX_REMOTE_ENABLED_KEY =
   "scan.launchboxRemoteEnabled";
@@ -45,8 +44,7 @@ const LOCAL_STORAGE_PLAYMATCH_ENABLED_KEY = "scan.playmatchEnabled";
 // standalone sources.
 const HASH_MATCHER_KEYS = ["hasheous", "playmatch"] as const;
 
-// Provider categorisation — mirrors the Scan view's split so this
-// dialog reads as a sibling surface, not a parallel vocabulary.
+// Provider categorisation mirrors the Scan view's split so this dialog reads as a sibling surface.
 const GENERAL_PROVIDER_KEYS = new Set([
   "igdb",
   "steam",
@@ -493,11 +491,8 @@ function closeDialog() {
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <ZAAvatar
-                    :image="item.raw.logo_path"
-                    size="22"
-                    rounded="sm"
-                  />
+                  <!-- prettier-ignore -->
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -589,11 +584,8 @@ function closeDialog() {
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <ZAAvatar
-                    :image="item.raw.logo_path"
-                    size="22"
-                    rounded="sm"
-                  />
+                  <!-- prettier-ignore -->
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
