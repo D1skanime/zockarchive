@@ -19,7 +19,7 @@ describe("Storybook-Katalog", () => {
       expect(entry.primitives.length).toBeGreaterThan(0);
       for (const primitive of entry.primitives) {
         expect(primitiveDocs(primitive)).toMatch(
-          /^grundelemente-grundbaustein-r/,
+          /^grundelemente-grundbaustein-za/,
         );
       }
       expect(

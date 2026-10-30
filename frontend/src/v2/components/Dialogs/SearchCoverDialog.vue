@@ -354,10 +354,7 @@ function closeDialog() {
             <span class="r-v2-sgdb__sort-label">
               {{ t("rom.cover-sort-relevance") }}
             </span>
-            <ZASwitch
-              v-model="sortByVotes"
-              :label="t('rom.cover-sort-votes')"
-            />
+            <ZASwitch v-model="sortByVotes" :label="t('rom.cover-sort-votes')" />
           </div>
           <div class="r-v2-sgdb__content-toggles">
             <ZASwitch v-model="showNsfw" :label="t('rom.cover-content-nsfw')" />

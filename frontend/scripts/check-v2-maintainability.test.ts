@@ -4,16 +4,16 @@ import { findNativeControlViolations } from "./check-v2-maintainability";
 describe("findNativeControlViolations", () => {
   it("reports native controls in templates with an actionable replacement", () => {
     const violations = findNativeControlViolations(
-      "lib/example/RExample.vue",
+      "lib/example/ZAExample.vue",
       "<template>\n  <button>Save</button>\n  <input />\n  <select />\n  <textarea />\n</template>",
       new Set(),
     );
 
     expect(violations).toEqual([
-      "lib/example/RExample.vue:2 native <button>; use ZABtn or document an exact semantic exception",
-      "lib/example/RExample.vue:3 native <input>; use ZATextField or document an exact semantic exception",
-      "lib/example/RExample.vue:4 native <select>; use ZASelect or document an exact semantic exception",
-      "lib/example/RExample.vue:5 native <textarea>; use ZATextField or document an exact semantic exception",
+      "lib/example/ZAExample.vue:2 native <button>; use ZABtn or document an exact semantic exception",
+      "lib/example/ZAExample.vue:3 native <input>; use ZATextField or document an exact semantic exception",
+      "lib/example/ZAExample.vue:4 native <select>; use ZASelect or document an exact semantic exception",
+      "lib/example/ZAExample.vue:5 native <textarea>; use ZATextField or document an exact semantic exception",
     ]);
   });
 
@@ -26,12 +26,12 @@ describe("findNativeControlViolations", () => {
 
     expect(
       findNativeControlViolations(
-        "lib/example/RExample.vue",
+        "lib/example/ZAExample.vue",
         source,
-        new Set(["lib/example/RExample.vue|button|3"]),
+        new Set(["lib/example/ZAExample.vue|button|3"]),
       ),
     ).toEqual([
-      "lib/example/RExample.vue:4 native <button>; use ZABtn or document an exact semantic exception",
+      "lib/example/ZAExample.vue:4 native <button>; use ZABtn or document an exact semantic exception",
     ]);
   });
 });

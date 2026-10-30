@@ -21,14 +21,7 @@
 // primitives. Mounted by GalleryShell so it's available everywhere a
 // gallery is rendered. The shell controls `modelValue` and forwards
 // `showPlatformsFilter`.
-import {
-  ZABtn,
-  ZADrawer,
-  ZAIcon,
-  ZASelect,
-  ZASliderBtnGroup,
-  ZATag,
-} from "@v2/lib";
+import { ZABtn, ZADrawer, ZAIcon, ZASelect, ZASliderBtnGroup, ZATag } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject } from "vue";

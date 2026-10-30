@@ -404,11 +404,7 @@ onBeforeUnmount(() => {
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <ZAAvatar
-                    :image="item.raw.logo_path"
-                    size="22"
-                    rounded="sm"
-                  />
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -496,11 +492,7 @@ onBeforeUnmount(() => {
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <ZAAvatar
-                    :image="item.raw.logo_path"
-                    size="22"
-                    rounded="sm"
-                  />
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
