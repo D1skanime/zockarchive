@@ -73,7 +73,7 @@ export const Variants: Story = {
 // ── Tones ───────────────────────────────────────────────────────────
 
 export const Tones: Story = {
-  name: "Tones · translucent",
+  name: "Töne · durchscheinend",
   render: () => ({
     components: { ZACard },
     template: `
@@ -101,7 +101,7 @@ export const ElevationLadder: Story = {
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:36px;width:720px;padding:24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <ZACard variant="elevated" :elevation="0" style="width:160px;padding:18px">e=0</ZACard>
-          <span>0 (none)</span>
+          <span>0 (keine)</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
           <ZACard variant="elevated" :elevation="1" style="width:160px;padding:18px">e=1</ZACard>
@@ -217,10 +217,10 @@ export const SettingsPanel: Story = {
     template: `
       <ZACard variant="flat" style="width:320px">
         <div style="display:flex;align-items:center;gap:8px;padding:12px 16px;color:var(--r-color-fg-muted);font:11px/1 sans-serif;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-bottom:1px solid var(--r-color-border)">
-          Settings
+          Einstellungen
         </div>
         <div style="padding:14px 16px;font:13px/1.5 sans-serif;color:var(--r-color-fg)">
-          <div style="margin-bottom:6px;color:var(--r-color-fg-muted)">Background color</div>
+          <div style="margin-bottom:6px;color:var(--r-color-fg-muted)">Hintergrundfarbe</div>
           <div style="display:flex;gap:8px">
             <div style="width:28px;height:28px;border-radius:6px;background:var(--r-color-brand-primary);cursor:pointer"></div>
             <div style="width:28px;height:28px;border-radius:6px;background:var(--r-color-success);cursor:pointer"></div>

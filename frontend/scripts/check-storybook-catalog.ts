@@ -8,8 +8,9 @@ import {
 } from "../src/v2/storybook/compositionInventory";
 import { storyTextDecisions } from "./storybookLanguageDecisions";
 import {
-  findNonGermanDecisions,
+  findInvalidStoryTextDecisions,
   findUnreviewedVisibleStoryText,
+  getVisibleStoryTextCandidates,
 } from "./storybookLanguageGuard";
 
 const root = join(import.meta.dirname, "..");
@@ -27,22 +28,15 @@ const allowedGroups = new Set([
   "Marke",
   "Im Einsatz",
 ]);
+const visibleTextCandidates = [];
 
 function fail(message: string): never {
   throw new Error(`Storybook catalog: ${message}`);
 }
 
-const nonGermanDecisions = findNonGermanDecisions(storyTextDecisions);
-if (nonGermanDecisions.length > 0) {
-  fail(
-    `German review entries failed independent language detection: ${nonGermanDecisions
-      .map(({ file, location, text }) => `${file} ${location}: ${text}`)
-      .join(", ")}`,
-  );
-}
-
 for (const story of stories) {
   const source = readFileSync(join(root, story), "utf8");
+  visibleTextCandidates.push(...getVisibleStoryTextCandidates(source, story));
   const title = source.match(
     /const meta[\s\S]*?title:\s*["']([^"']+)["']/,
   )?.[1];
@@ -86,6 +80,21 @@ for (const story of stories) {
     fail(`${story} is missing its inventory declaration`);
   if (!record && hasDeclaration)
     fail(`${story} has an unexpected inventory declaration`);
+}
+
+const invalidDecisions = findInvalidStoryTextDecisions(
+  visibleTextCandidates,
+  storyTextDecisions,
+);
+if (invalidDecisions.length > 0) {
+  fail(
+    `language ledger contains ${invalidDecisions
+      .map(
+        ({ decision, kind }) =>
+          `${kind}: ${decision.file} ${decision.location} (${decision.category}): ${decision.text}`,
+      )
+      .join(", ")}`,
+  );
 }
 
 if (!stories.some((story) => story.endsWith("BrandMotionPreview.stories.ts"))) {

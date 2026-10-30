@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { phase39BrandDocsId } from "@/v2/storybook/compositionInventory";
 import {
-  findNonGermanDecisions,
+  findInvalidStoryTextDecisions,
   findUnreviewedVisibleStoryText,
   getVisibleStoryTextCandidates,
 } from "./storybookLanguageGuard";
@@ -83,32 +83,24 @@ describe("Storybook-Katalogprüfung", () => {
     ).toEqual([expect.objectContaining({ location: "Zeile 1" })]);
   });
 
-  it("rejects English text incorrectly approved as German with language detection", () => {
-    expect(
-      findNonGermanDecisions([
-        {
-          category: "story-data",
-          file: "Example.stories.ts",
-          location: "Zeile 1",
-          status: "german",
-          text: "Card content stays visible while the bar slides at the top.",
-        },
-      ]),
-    ).toHaveLength(1);
-  });
+  it("rejects stale and duplicate ledger decisions", () => {
+    const candidate = {
+      category: "story-name" as const,
+      file: "Example.stories.ts",
+      location: "Zeile 1",
+      text: "Geprüfter Text",
+    };
+    const decision = { ...candidate, status: "german" as const };
 
-  it("accepts a German ledger decision through language detection", () => {
     expect(
-      findNonGermanDecisions([
-        {
-          category: "story-data",
-          file: "Example.stories.ts",
-          location: "Zeile 1",
-          status: "german",
-          text: "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
-        },
-      ]),
-    ).toHaveLength(0);
+      findInvalidStoryTextDecisions(
+        [candidate],
+        [decision, decision, { ...decision, location: "Zeile 2" }],
+      ),
+    ).toEqual([
+      expect.objectContaining({ kind: "duplicate", decision }),
+      expect.objectContaining({ kind: "stale" }),
+    ]);
   });
 
   it("captures bare visible string arrays supplied as story data", () => {
@@ -210,5 +202,21 @@ describe("Storybook-Katalogprüfung", () => {
         text: "Dynamisches step()-Label: stepTitle",
       }),
     ]);
+  });
+
+  it("captures dynamically bound visible attributes for an explicit review", () => {
+    expect(
+      getVisibleStoryTextCandidates(
+        'render: () => ({ template: `<ZAChip :label="item.name" />` })',
+        "Example.stories.ts",
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          category: "template-attribute-dynamic",
+          text: "Dynamischer label-Attributwert: item.name",
+        }),
+      ]),
+    );
   });
 });

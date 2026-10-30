@@ -200,9 +200,11 @@ behavior.
 visible text candidate emitted from v2 story sources. The ledger in
 `frontend/scripts/storybook-language-decisions.json` records its file, source
 line, category, text, and review result. It covers catalog names, descriptions,
-visible story data and controls, template attributes, text nodes, and dynamic
-template interpolations. The check fails for an added or changed candidate
-until a German review entry is added. Entries marked `proper-name` retain a
+visible story data and controls, template attributes, text nodes, interaction
+steps, and bound visible attributes. Bound attributes are recorded as explicit
+runtime-source decisions. The check fails for an added or changed candidate,
+or for stale or duplicate ledger entries, until the ledger is corrected.
+Entries marked `proper-name` retain a
 specific scope and rationale, rather than using file-wide exemptions.
 `npm run storybook:catalog` executes this real-catalog validation and the
 frontend workflow runs it after Vitest, so CI cannot accept an unreviewed story

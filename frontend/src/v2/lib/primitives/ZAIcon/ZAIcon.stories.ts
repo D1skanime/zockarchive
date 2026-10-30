@@ -215,11 +215,11 @@ export const WithText: Story = {
       <div style="display:flex;flex-direction:column;gap:10px;font:14px/1.4 sans-serif;color:var(--r-color-fg)">
         <div style="display:inline-flex;align-items:center;gap:6px">
           <ZAIcon icon="mdi-clock-outline" size="16" />
-          Last played 2 hours ago
+          Vor 2 Stunden gespielt
         </div>
         <div style="display:inline-flex;align-items:center;gap:6px">
           <ZAIcon icon="mdi-content-save-outline" size="16" color="success" />
-          Saved successfully
+          Erfolgreich gespeichert
         </div>
         <div style="display:inline-flex;align-items:center;gap:6px">
           <ZAIcon icon="mdi-trash-can-outline" size="16" color="danger" />
@@ -227,7 +227,7 @@ export const WithText: Story = {
         </div>
         <h2 style="display:inline-flex;align-items:center;gap:10px;margin:0">
           <ZAIcon icon="mdi-gamepad-variant" size="28" color="primary" />
-          Library
+          Bibliothek
         </h2>
       </div>
     `,

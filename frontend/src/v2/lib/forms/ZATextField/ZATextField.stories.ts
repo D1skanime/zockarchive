@@ -165,7 +165,7 @@ export const WithSubtitle: Story = {
 export const WithHint: Story = {
   args: {
     label: "E-Mail-Adresse",
-    placeholder: "your@email.com",
+    placeholder: "sie@beispiel.de",
     hint: "Wir kontaktieren Sie nur zu Kontovorgängen.",
     prependInnerIcon: "mdi-email",
   },
@@ -174,7 +174,7 @@ export const WithHint: Story = {
 export const WithError: Story = {
   args: {
     label: "E-Mail-Adresse",
-    placeholder: "your@email.com",
+    placeholder: "sie@beispiel.de",
     error: true,
     errorMessages: "Muss eine gültige E-Mail-Adresse sein",
     prependInnerIcon: "mdi-email",
@@ -278,11 +278,11 @@ export const ColorLadder: Story = {
     }),
     template: `
       <div style="display:flex;flex-direction:column;gap:14px;width:360px">
-        <ZATextField v-model="primary" color="primary" placeholder="primary (default)" prefix-label="stacked" label="primary" />
-        <ZATextField v-model="success" color="success" placeholder="success" prefix-label="stacked" label="success" />
-        <ZATextField v-model="warning" color="warning" placeholder="warning" prefix-label="stacked" label="warning" />
-        <ZATextField v-model="danger" color="danger" placeholder="danger" prefix-label="stacked" label="danger" />
-        <ZATextField v-model="info" color="info" placeholder="info" prefix-label="stacked" label="info" />
+        <ZATextField v-model="primary" color="primary" placeholder="Primär (Standard)" prefix-label="stacked" label="Primär" />
+        <ZATextField v-model="success" color="success" placeholder="Erfolg" prefix-label="stacked" label="Erfolg" />
+        <ZATextField v-model="warning" color="warning" placeholder="Warnung" prefix-label="stacked" label="Warnung" />
+        <ZATextField v-model="danger" color="danger" placeholder="Gefahr" prefix-label="stacked" label="Gefahr" />
+        <ZATextField v-model="info" color="info" placeholder="Information" prefix-label="stacked" label="Information" />
       </div>
     `,
   }),

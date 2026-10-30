@@ -1,5 +1,3 @@
-import { francAll } from "franc-min";
-
 export type StoryTextCategory =
   | "docs-description"
   | "play-step"
@@ -7,6 +5,7 @@ export type StoryTextCategory =
   | "story-data"
   | "story-name"
   | "template-attribute"
+  | "template-attribute-dynamic"
   | "template-text"
   | "template-interpolation";
 
@@ -24,6 +23,11 @@ export interface StoryTextDecision {
   reason?: string;
   text: string;
   status: "german" | "proper-name";
+}
+
+export interface StoryTextDecisionIssue {
+  decision: StoryTextDecision;
+  kind: "duplicate" | "stale";
 }
 
 const visibleDataKeys = new Set([
@@ -147,14 +151,16 @@ export function getVisibleStoryTextCandidates(
     const markup = template[1];
     const base = (template.index ?? 0) + template[0].indexOf(markup);
     for (const attribute of markup.matchAll(
-      /\b([\w-]+)=(?:"([^"]*)"|'([^']*)')/g,
+      /(:?)([\w-]+)=(?:"([^"]*)"|'([^']*)')/g,
     )) {
-      if (templateAttributes.has(attribute[1]))
-        add(
-          "template-attribute",
-          attribute[2] ?? attribute[3] ?? "",
-          base + (attribute.index ?? 0),
-        );
+      const [, binding, name, doubleQuoted, singleQuoted] = attribute;
+      if (!templateAttributes.has(name)) continue;
+      const value = doubleQuoted ?? singleQuoted ?? "";
+      add(
+        binding === ":" ? "template-attribute-dynamic" : "template-attribute",
+        binding === ":" ? `Dynamischer ${name}-Attributwert: ${value}` : value,
+        base + (attribute.index ?? 0),
+      );
     }
     for (const textNode of markup.matchAll(/>([^<{}][^<]*?)</g))
       add(
@@ -190,24 +196,37 @@ export function findUnreviewedVisibleStoryText(
   );
 }
 
-/** Validates German approvals through an independent trigram language model. */
-export function findNonGermanDecisions(
+function candidateKey(candidate: VisibleStoryTextCandidate): string {
+  return [
+    candidate.file,
+    candidate.location,
+    candidate.category,
+    candidate.text,
+  ].join("\u0000");
+}
+
+/**
+ * Keeps the human-reviewed ledger an exact inventory of currently extracted
+ * visible text. Decisions cannot silently remain after source copy changes,
+ * and a single candidate cannot gain ambiguous duplicate approvals.
+ */
+export function findInvalidStoryTextDecisions(
+  candidates: readonly VisibleStoryTextCandidate[],
   decisions: readonly StoryTextDecision[],
-): StoryTextDecision[] {
-  return decisions.filter((decision) => {
-    if (decision.status !== "german") return false;
+): StoryTextDecisionIssue[] {
+  const candidateKeys = new Set(candidates.map(candidateKey));
+  const seenDecisionKeys = new Set<string>();
+  const issues: StoryTextDecisionIssue[] = [];
 
-    const words = decision.text.match(/\p{L}+/gu) ?? [];
-    if (words.length < 5 || decision.text.length < 40) return false;
+  for (const decision of decisions) {
+    const key = candidateKey(decision);
+    if (seenDecisionKeys.has(key)) {
+      issues.push({ decision, kind: "duplicate" });
+      continue;
+    }
+    seenDecisionKeys.add(key);
+    if (!candidateKeys.has(key)) issues.push({ decision, kind: "stale" });
+  }
 
-    const languages = francAll(decision.text, {
-      minLength: 10,
-      only: ["deu", "eng"],
-    });
-    const english = languages.find(([language]) => language === "eng")?.[1];
-    const german = languages.find(([language]) => language === "deu")?.[1];
-    return (
-      english !== undefined && german !== undefined && english - german > 0.25
-    );
-  });
+  return issues;
 }

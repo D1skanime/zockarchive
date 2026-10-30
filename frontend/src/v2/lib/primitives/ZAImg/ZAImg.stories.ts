@@ -50,15 +50,15 @@ export const WidthOnly: Story = {
       <div style="display:flex;align-items:flex-end;gap:24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
           <ZAImg src="${LOGO}" :width="32" alt="logo" />
-          <span>width 32</span>
+          <span>Breite 32</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
           <ZAImg src="${LOGO}" :width="64" alt="logo" />
-          <span>width 64</span>
+          <span>Breite 64</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
           <ZAImg src="${LOGO}" :width="128" alt="logo" />
-          <span>width 128</span>
+          <span>Breite 128</span>
         </div>
       </div>
     `,
@@ -72,12 +72,12 @@ export const CoverFit: Story = {
     template: `
       <div style="display:flex;gap:24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAImg src="${PHOTO}" :width="160" :height="100" cover alt="cover" style="border-radius:8px" />
-          <span>cover · 160×100</span>
+          <ZAImg src="${PHOTO}" :width="160" :height="100" cover alt="Zugeschnitten" style="border-radius:8px" />
+          <span>Abdecken · 160×100</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAImg src="${PHOTO_TALL}" :width="160" :height="100" cover alt="cover tall" style="border-radius:8px" />
-          <span>cover · tall src → cropped</span>
+          <ZAImg src="${PHOTO_TALL}" :width="160" :height="100" cover alt="Zugeschnittenes Hochformat" style="border-radius:8px" />
+          <span>Abdecken · Hochformat → zugeschnitten</span>
         </div>
       </div>
     `,
@@ -96,10 +96,10 @@ export const ContainFit: Story = {
             :width="160"
             :height="100"
             contain
-            alt="contain"
+            alt="Eingepasst"
             style="border-radius:8px;background:var(--r-color-surface)"
           />
-          <span>contain · letterboxed</span>
+          <span>Einpassen · mit Rändern</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAImg
@@ -107,10 +107,10 @@ export const ContainFit: Story = {
             :width="160"
             :height="100"
             contain
-            alt="contain tall"
+            alt="Eingepasstes Hochformat"
             style="border-radius:8px;background:var(--r-color-surface)"
           />
-          <span>contain · tall src → letterboxed</span>
+          <span>Einpassen · Hochformat → mit Rändern</span>
         </div>
       </div>
     `,
@@ -125,15 +125,15 @@ export const AspectRatio: Story = {
       <div style="display:flex;flex-direction:column;gap:16px;width:320px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div>
           <ZAImg src="${PHOTO}" aspect-ratio="16/9" cover style="width:100%;border-radius:8px" alt="16/9" />
-          <div style="margin-top:6px">aspectRatio "16/9" · cover · width 100%</div>
+          <div style="margin-top:6px">Seitenverhältnis "16/9" · abdecken · Breite 100 %</div>
         </div>
         <div>
           <ZAImg src="${PHOTO}" aspect-ratio="1/1" cover style="width:100%;border-radius:8px" alt="1/1" />
-          <div style="margin-top:6px">aspectRatio "1/1" · cover · width 100%</div>
+          <div style="margin-top:6px">Seitenverhältnis "1/1" · abdecken · Breite 100 %</div>
         </div>
         <div>
           <ZAImg src="${PHOTO}" aspect-ratio="4/3" cover style="width:100%;border-radius:8px" alt="4/3" />
-          <div style="margin-top:6px">aspectRatio "4/3" · cover · width 100%</div>
+          <div style="margin-top:6px">Seitenverhältnis "4/3" · abdecken · Breite 100 %</div>
         </div>
       </div>
     `,

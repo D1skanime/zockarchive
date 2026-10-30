@@ -75,23 +75,23 @@ export const DeterminateLadder: Story = {
     template: `
       <div style="display:flex;align-items:flex-end;gap:24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAProgressCircular :indeterminate="false" :model-value="0" :size="48" :width="4" label="Progress" />
+          <ZAProgressCircular :indeterminate="false" :model-value="0" :size="48" :width="4" label="Fortschritt" />
           <span>0%</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAProgressCircular :indeterminate="false" :model-value="25" :size="48" :width="4" label="Progress" />
+          <ZAProgressCircular :indeterminate="false" :model-value="25" :size="48" :width="4" label="Fortschritt" />
           <span>25%</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAProgressCircular :indeterminate="false" :model-value="50" :size="48" :width="4" label="Progress" />
+          <ZAProgressCircular :indeterminate="false" :model-value="50" :size="48" :width="4" label="Fortschritt" />
           <span>50%</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAProgressCircular :indeterminate="false" :model-value="75" :size="48" :width="4" label="Progress" />
+          <ZAProgressCircular :indeterminate="false" :model-value="75" :size="48" :width="4" label="Fortschritt" />
           <span>75%</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
-          <ZAProgressCircular :indeterminate="false" :model-value="100" :size="48" :width="4" label="Progress" />
+          <ZAProgressCircular :indeterminate="false" :model-value="100" :size="48" :width="4" label="Fortschritt" />
           <span>100%</span>
         </div>
       </div>
@@ -108,35 +108,35 @@ export const Tones: Story = {
       <div style="display:grid;grid-template-columns:repeat(4,auto);gap:24px 32px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="primary" :size="40" :width="3" />
-          <span>primary</span>
+          <span>Primär</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="secondary" :size="40" :width="3" />
-          <span>secondary</span>
+          <span>Sekundär</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="accent" :size="40" :width="3" />
-          <span>accent</span>
+          <span>Akzent</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="success" :size="40" :width="3" />
-          <span>success</span>
+          <span>Erfolg</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="warning" :size="40" :width="3" />
-          <span>warning</span>
+          <span>Warnung</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="danger" :size="40" :width="3" />
-          <span>danger</span>
+          <span>Gefahr</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="info" :size="40" :width="3" />
-          <span>info</span>
+          <span>Information</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular color="romm-gold" :size="40" :width="3" />
-          <span>romm-gold</span>
+          <span>RomM-Gold</span>
         </div>
       </div>
     `,
@@ -155,13 +155,13 @@ export const WithLabel: Story = {
           <ZAProgressCircular :indeterminate="false" :model-value="35" :size="64" :width="4">
             35%
           </ZAProgressCircular>
-          <span>numeric</span>
+          <span>numerisch</span>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
           <ZAProgressCircular :indeterminate="false" :model-value="80" :size="80" :width="5" color="success">
             <span style="font-size:14px">80%</span>
           </ZAProgressCircular>
-          <span>larger + custom font-size</span>
+          <span>größer + eigene Schriftgröße</span>
         </div>
       </div>
     `,
@@ -213,7 +213,7 @@ export const InContext: Story = {
           disabled
         >
           <ZAProgressCircular indeterminate :size="14" :width="2" color="white" />
-          Submitting…
+          Wird übermittelt…
         </button>
         <div style="display:flex;align-items:center;gap:14px;padding:16px;background:var(--r-color-surface);border-radius:12px;align-self:flex-start">
           <ZAProgressCircular indeterminate :size="36" :width="3" color="primary" />

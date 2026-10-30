@@ -107,7 +107,7 @@ export const Variants: Story = {
 // ── Tones ───────────────────────────────────────────────────────────
 
 export const Tones: Story = {
-  name: "Tones · translucent",
+  name: "Töne · durchscheinend",
   render: () => ({
     components: { ZAChip },
     template: `
@@ -217,7 +217,7 @@ export const Closable: Story = {
           style="padding:6px 12px;background:var(--r-color-brand-primary);color:white;border:none;border-radius:6px;font:12px/1 sans-serif;cursor:pointer"
           @click="reset"
         >
-          Reset
+          Zurücksetzen
         </button>
       </div>
     `,

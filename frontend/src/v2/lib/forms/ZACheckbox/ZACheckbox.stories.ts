@@ -218,14 +218,14 @@ export const ColorLadder: Story = {
     components: { ZACheckbox },
     setup: () => {
       const states = ref([
-        { color: "primary", label: "primary (default)", checked: true },
-        { color: "secondary", label: "secondary", checked: true },
-        { color: "accent", label: "accent", checked: true },
-        { color: "success", label: "success", checked: true },
-        { color: "warning", label: "warning", checked: true },
-        { color: "danger", label: "danger", checked: true },
-        { color: "info", label: "info", checked: true },
-        { color: "romm-gold", label: "romm-gold (legacy)", checked: true },
+        { color: "primary", label: "Primär (Standard)", checked: true },
+        { color: "secondary", label: "Sekundär", checked: true },
+        { color: "accent", label: "Akzent", checked: true },
+        { color: "success", label: "Erfolg", checked: true },
+        { color: "warning", label: "Warnung", checked: true },
+        { color: "danger", label: "Gefahr", checked: true },
+        { color: "info", label: "Information", checked: true },
+        { color: "romm-gold", label: "RomM-Gold (veraltet)", checked: true },
       ]);
       return { states };
     },

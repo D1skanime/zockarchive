@@ -2530,164 +2530,10 @@
     "status": "german"
   },
   {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 34",
-    "text": "Übersicht",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 35",
-    "text": "Medien",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 36",
-    "text": "Notizen",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 45",
-    "text": "Übersicht",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 46",
-    "text": "Erfolge",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 47",
-    "text": "Speicherdaten",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 48",
-    "text": "Metadaten",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 58",
-    "text": "Spielstände",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 59",
-    "text": "Zustände",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 74",
-    "text": "Spielstände",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 80",
-    "text": "Zustände",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 102",
-    "text": "Übersicht",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 103",
-    "text": "Erfolge",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 104",
-    "text": "Metadaten",
-    "status": "german"
-  },
-  {
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 114",
     "text": "Tastaturnavigation (Interaktionstest)",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 118",
-    "text": "Übersicht",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 119",
-    "text": "Medien",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 120",
-    "text": "Notizen",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 157",
-    "text": "Weitere Details",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 160",
-    "text": "Metadaten-IDs",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 161",
-    "text": "IGDB",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 164",
-    "text": "MobyGames",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 169",
-    "text": "ScreenScraper",
     "status": "german"
   },
   {
@@ -2757,21 +2603,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 34",
-    "text": "overview",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 34",
     "text": "Übersicht",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 35",
-    "text": "media",
     "status": "german"
   },
   {
@@ -2785,21 +2617,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 36",
-    "text": "notes",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 36",
     "text": "Notizen",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 45",
-    "text": "overview",
     "status": "german"
   },
   {
@@ -2813,28 +2631,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 46",
-    "text": "achievements",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 46",
     "text": "Erfolge",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 46",
-    "text": "12/40",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 47",
-    "text": "save-data",
     "status": "german"
   },
   {
@@ -2848,21 +2645,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 48",
-    "text": "metadata",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 48",
     "text": "Metadaten",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 58",
-    "text": "saves",
     "status": "german"
   },
   {
@@ -2876,21 +2659,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 59",
-    "text": "states",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 59",
     "text": "Zustände",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 73",
-    "text": "saves",
     "status": "german"
   },
   {
@@ -2903,20 +2672,6 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 75",
-    "text": "mdi-content-save-outline",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 79",
-    "text": "states",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 80",
     "text": "Zustände",
     "status": "german"
@@ -2924,29 +2679,8 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 81",
-    "text": "mdi-camera-outline",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 102",
-    "text": "overview",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 102",
     "text": "Übersicht",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 103",
-    "text": "achievements",
     "status": "german"
   },
   {
@@ -2960,21 +2694,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 104",
-    "text": "metadata",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 104",
     "text": "Metadaten",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 118",
-    "text": "overview",
     "status": "german"
   },
   {
@@ -2988,21 +2708,7 @@
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 119",
-    "text": "media",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 119",
     "text": "Medien",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 120",
-    "text": "notes",
     "status": "german"
   },
   {
@@ -3015,29 +2721,8 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 156",
-    "text": "details",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 157",
     "text": "Weitere Details",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 158",
-    "text": "mdi-text-box-plus-outline",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 160",
-    "text": "ids",
     "status": "german"
   },
   {
@@ -3050,36 +2735,8 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 160",
-    "text": "mdi-database",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 161",
-    "text": "igdb",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 161",
     "text": "IGDB",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 161",
-    "text": "/assets/scrappers/igdb.png",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 163",
-    "text": "moby",
     "status": "german"
   },
   {
@@ -3092,29 +2749,8 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 165",
-    "text": "/assets/scrappers/moby.png",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 168",
-    "text": "ss",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 169",
     "text": "ScreenScraper",
-    "status": "german"
-  },
-  {
-    "category": "story-data",
-    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
-    "location": "Zeile 170",
-    "text": "/assets/scrappers/ss.png",
     "status": "german"
   },
   {
@@ -3443,35 +3079,35 @@
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 78",
-    "text": "Progress",
+    "text": "Fortschritt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 82",
-    "text": "Progress",
+    "text": "Fortschritt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 86",
-    "text": "Progress",
+    "text": "Fortschritt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 90",
-    "text": "Progress",
+    "text": "Fortschritt",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 94",
-    "text": "Progress",
+    "text": "Fortschritt",
     "status": "german"
   },
   {
@@ -3513,56 +3149,56 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 111",
-    "text": "primary",
+    "text": "Primär",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 115",
-    "text": "secondary",
+    "text": "Sekundär",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 119",
-    "text": "accent",
+    "text": "Akzent",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 123",
-    "text": "success",
+    "text": "Erfolg",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 127",
-    "text": "warning",
+    "text": "Warnung",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 131",
-    "text": "danger",
+    "text": "Gefahr",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 135",
-    "text": "info",
+    "text": "Information",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 139",
-    "text": "romm-gold",
+    "text": "RomM-Gold",
     "status": "german"
   },
   {
@@ -3576,7 +3212,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 158",
-    "text": "numeric",
+    "text": "numerisch",
     "status": "german"
   },
   {
@@ -3590,7 +3226,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 164",
-    "text": "larger + custom font-size",
+    "text": "größer + eigene Schriftgröße",
     "status": "german"
   },
   {
@@ -3611,7 +3247,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAProgressCircular/ZAProgressCircular.stories.ts",
     "location": "Zeile 215",
-    "text": "Submitting…",
+    "text": "Wird übermittelt…",
     "status": "german"
   },
   {
@@ -3765,77 +3401,77 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 53",
-    "text": "width 32",
+    "text": "Breite 32",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 57",
-    "text": "width 64",
+    "text": "Breite 64",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 61",
-    "text": "width 128",
+    "text": "Breite 128",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 75",
-    "text": "cover",
+    "text": "Zugeschnitten",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 79",
-    "text": "cover tall",
+    "text": "Zugeschnittenes Hochformat",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 76",
-    "text": "cover · 160×100",
+    "text": "Abdecken · 160×100",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 80",
-    "text": "cover · tall src → cropped",
+    "text": "Abdecken · Hochformat → zugeschnitten",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 99",
-    "text": "contain",
+    "text": "Eingepasst",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 110",
-    "text": "contain tall",
+    "text": "Eingepasstes Hochformat",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 102",
-    "text": "contain · letterboxed",
+    "text": "Einpassen · mit Rändern",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 113",
-    "text": "contain · tall src → letterboxed",
+    "text": "Einpassen · Hochformat → mit Rändern",
     "status": "german"
   },
   {
@@ -3863,21 +3499,21 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 128",
-    "text": "aspectRatio \"16/9\" · cover · width 100%",
+    "text": "Seitenverhältnis \"16/9\" · abdecken · Breite 100 %",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 132",
-    "text": "aspectRatio \"1/1\" · cover · width 100%",
+    "text": "Seitenverhältnis \"1/1\" · abdecken · Breite 100 %",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAImg/ZAImg.stories.ts",
     "location": "Zeile 136",
-    "text": "aspectRatio \"4/3\" · cover · width 100%",
+    "text": "Seitenverhältnis \"4/3\" · abdecken · Breite 100 %",
     "status": "german"
   },
   {
@@ -4234,14 +3870,14 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 217",
-    "text": "Last played 2 hours ago",
+    "text": "Vor 2 Stunden gespielt",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 221",
-    "text": "Saved successfully",
+    "text": "Erfolgreich gespeichert",
     "status": "german"
   },
   {
@@ -4255,7 +3891,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 229",
-    "text": "Library",
+    "text": "Bibliothek",
     "status": "german"
   },
   {
@@ -4682,7 +4318,7 @@
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 110",
-    "text": "Tones · translucent",
+    "text": "Töne · durchscheinend",
     "status": "german"
   },
   {
@@ -5130,7 +4766,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 219",
-    "text": "Reset",
+    "text": "Zurücksetzen",
     "status": "german"
   },
   {
@@ -5235,7 +4871,7 @@
     "category": "story-name",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 76",
-    "text": "Tones · translucent",
+    "text": "Töne · durchscheinend",
     "status": "german"
   },
   {
@@ -5480,7 +5116,7 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 104",
-    "text": "0 (none)",
+    "text": "0 (keine)",
     "status": "german"
   },
   {
@@ -5690,13 +5326,6 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
-    "location": "Zeile 187",
-    "text": "when present).",
-    "status": "german"
-  },
-  {
-    "category": "template-text",
-    "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 204",
     "text": "R",
     "status": "german"
@@ -5719,14 +5348,14 @@
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 219",
-    "text": "Settings",
+    "text": "Einstellungen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 223",
-    "text": "Background color",
+    "text": "Hintergrundfarbe",
     "status": "german"
   },
   {
@@ -8320,38 +7949,10 @@
     "status": "german"
   },
   {
-    "category": "template-attribute",
-    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
-    "location": "Zeile 77",
-    "text": "'Folie ' + (index + 1)",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
-    "location": "Zeile 144",
-    "text": "'Folie ' + (index + 1)",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
-    "location": "Zeile 181",
-    "text": "'Folie ' + (index + 1)",
-    "status": "german"
-  },
-  {
     "category": "template-text",
     "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
     "location": "Zeile 173",
     "text": "Leuchtkasten öffnen",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
-    "location": "Zeile 212",
-    "text": "'Folie ' + (index + 1)",
     "status": "german"
   },
   {
@@ -8643,7 +8244,7 @@
     "category": "story-name",
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 191",
-    "text": "Scrollbar (maximale Höhe)",
+    "text": "Bildlaufleiste (maximale Höhe)",
     "status": "german"
   },
   {
@@ -8837,13 +8438,6 @@
     "status": "german"
   },
   {
-    "category": "template-attribute",
-    "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
-    "location": "Zeile 177",
-    "text": "p.name",
-    "status": "german"
-  },
-  {
     "category": "template-text",
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 169",
@@ -8855,13 +8449,6 @@
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 179",
     "text": "Keine Treffer.",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
-    "location": "Zeile 203",
-    "text": "label",
     "status": "german"
   },
   {
@@ -9079,7 +8666,8 @@
     "file": "src/v2/lib/media/ZABox3D/ZABox3D.stories.ts",
     "location": "Zeile 40",
     "text": "Castlevania",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Titel der gezeigten Spielverpackung."
   },
   {
     "category": "story-name",
@@ -9226,7 +8814,7 @@
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 168",
-    "text": "your@email.com",
+    "text": "sie@beispiel.de",
     "status": "german"
   },
   {
@@ -9247,7 +8835,7 @@
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 177",
-    "text": "your@email.com",
+    "text": "sie@beispiel.de",
     "status": "german"
   },
   {
@@ -9501,70 +9089,42 @@
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 281",
-    "text": "primary (default)",
+    "text": "Primär (Standard)",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 281",
-    "text": "primary",
+    "text": "Primär",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 282",
-    "text": "success",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 282",
-    "text": "success",
+    "text": "Erfolg",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 283",
-    "text": "warning",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 283",
-    "text": "warning",
+    "text": "Warnung",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 284",
-    "text": "danger",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 284",
-    "text": "danger",
+    "text": "Gefahr",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 285",
-    "text": "info",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 285",
-    "text": "info",
+    "text": "Information",
     "status": "german"
   },
   {
@@ -10876,13 +10436,6 @@
     "status": "german"
   },
   {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZAForm/ZAForm.stories.ts",
-    "location": "Zeile 167",
-    "text": "'Feld ' + (i + 1)",
-    "status": "german"
-  },
-  {
     "category": "template-text",
     "file": "src/v2/lib/forms/ZAForm/ZAForm.stories.ts",
     "location": "Zeile 170",
@@ -11230,7 +10783,8 @@
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 70",
     "text": "Battle Royale",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Etablierte Bezeichnung des in der Beispielauswahl dargestellten Spielgenres."
   },
   {
     "category": "template-attribute",
@@ -11376,56 +10930,56 @@
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 221",
-    "text": "primary (default)",
+    "text": "Primär (Standard)",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 222",
-    "text": "secondary",
+    "text": "Sekundär",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 223",
-    "text": "accent",
+    "text": "Akzent",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 224",
-    "text": "success",
+    "text": "Erfolg",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 225",
-    "text": "warning",
+    "text": "Warnung",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 226",
-    "text": "danger",
+    "text": "Gefahr",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 227",
-    "text": "info",
+    "text": "Information",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 228",
-    "text": "romm-gold (legacy)",
+    "text": "RomM-Gold (veraltet)",
     "status": "german"
   },
   {
@@ -11725,13 +11279,6 @@
   {
     "category": "template-attribute",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
-    "location": "Zeile 239",
-    "text": "s.label",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 312",
     "text": "Token in die Zwischenablage kopieren",
     "status": "german"
@@ -11867,13 +11414,6 @@
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 474",
     "text": "Alle Berechtigungen auswählen",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
-    "location": "Zeile 483",
-    "text": "item.name",
     "status": "german"
   },
   {
@@ -12596,7 +12136,8 @@
     "file": "src/v2/components/GameCard/GameCard.stories.ts",
     "location": "Zeile 69",
     "text": "Earthbound",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Titel des in der Spielkarten-Story gezeigten Spiels."
   },
   {
     "category": "story-name",
@@ -13106,5 +12647,77 @@
     "location": "Zeile 187",
     "text": ", falls vorhanden).",
     "status": "german"
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 77",
+    "text": "Dynamischer alt-Attributwert: 'Folie ' + (index + 1)",
+    "status": "german",
+    "reason": "Die Story erzeugt ausschließlich die deutsche Alternativbeschreibung Folie mit einer laufenden Nummer."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 144",
+    "text": "Dynamischer alt-Attributwert: 'Folie ' + (index + 1)",
+    "status": "german",
+    "reason": "Die Story erzeugt ausschließlich die deutsche Alternativbeschreibung Folie mit einer laufenden Nummer."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 181",
+    "text": "Dynamischer alt-Attributwert: 'Folie ' + (index + 1)",
+    "status": "german",
+    "reason": "Die Story erzeugt ausschließlich die deutsche Alternativbeschreibung Folie mit einer laufenden Nummer."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 212",
+    "text": "Dynamischer alt-Attributwert: 'Folie ' + (index + 1)",
+    "status": "german",
+    "reason": "Die Story erzeugt ausschließlich die deutsche Alternativbeschreibung Folie mit einer laufenden Nummer."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
+    "location": "Zeile 177",
+    "text": "Dynamischer label-Attributwert: p.name",
+    "status": "german",
+    "reason": "p.name stammt aus der lokalen Plattformliste der Story; die angezeigten Werte sind einzeln als Story-Daten erfasst."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
+    "location": "Zeile 203",
+    "text": "Dynamischer label-Attributwert: label",
+    "status": "german",
+    "reason": "label wird ausschließlich aus der lokalen deutschen Zeichenfolge Eintrag mit laufender Nummer erzeugt."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/forms/ZAForm/ZAForm.stories.ts",
+    "location": "Zeile 167",
+    "text": "Dynamischer label-Attributwert: 'Feld ' + (i + 1)",
+    "status": "german",
+    "reason": "Die Story erzeugt ausschließlich die deutsche Feldbeschriftung Feld mit einer laufenden Nummer."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
+    "location": "Zeile 239",
+    "text": "Dynamischer label-Attributwert: s.label",
+    "status": "german",
+    "reason": "s.label stammt aus der lokalen, einzeln erfassten deutschen Farbzustandsliste der Story."
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
+    "location": "Zeile 483",
+    "text": "Dynamischer label-Attributwert: item.name",
+    "status": "german",
+    "reason": "item.name stammt aus der lokalen, einzeln erfassten Berechtigungsliste der Story."
   }
 ]

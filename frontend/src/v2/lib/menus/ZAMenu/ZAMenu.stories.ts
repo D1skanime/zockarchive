@@ -188,7 +188,7 @@ export const Searchable: Story = {
 // ── Scroll on overflow ────────────────────────────────────────────
 
 export const ScrollableMaxHeight: Story = {
-  name: "Scrollbar (maximale Höhe)",
+  name: "Bildlaufleiste (maximale Höhe)",
   render: () => ({
     components: { ZAMenu, ZAMenuItem, ZABtn },
     setup: () => ({
