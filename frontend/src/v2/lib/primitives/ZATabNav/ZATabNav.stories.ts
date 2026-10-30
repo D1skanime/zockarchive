@@ -124,21 +124,21 @@ export const KeyboardNav: Story = {
     const canvas = within(canvasElement);
     const tabs = canvas.getAllByRole("tab");
 
-    await step("Tab focuses the tabs in DOM order", async () => {
+    await step("Tabulator fokussiert die Tabs in DOM-Reihenfolge", async () => {
       await userEvent.tab();
       expect(tabs[0]).toHaveFocus();
       await userEvent.tab();
       expect(tabs[1]).toHaveFocus();
     });
 
-    await step("Enter activates the focused tab", async () => {
+    await step("Eingabetaste aktiviert den fokussierten Tab", async () => {
       expect(tabs[1]).toHaveAttribute("aria-selected", "false");
       await userEvent.keyboard("{Enter}");
       expect(tabs[1]).toHaveAttribute("aria-selected", "true");
       expect(tabs[0]).toHaveAttribute("aria-selected", "false");
     });
 
-    await step("Space activates the next tab", async () => {
+    await step("Leertaste aktiviert den nächsten Tab", async () => {
       await userEvent.tab();
       expect(tabs[2]).toHaveFocus();
       await userEvent.keyboard(" ");

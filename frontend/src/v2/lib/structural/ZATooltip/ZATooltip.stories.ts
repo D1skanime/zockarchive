@@ -355,19 +355,19 @@ export const TouchGating: Story = {
     const body = within(document.body);
     const activator = canvas.getByRole("button", { name: /hover-ziel/i });
 
-    await step("a touch hover does NOT reveal the tooltip", async () => {
+    await step("Berührungsschweben zeigt den Tooltip NICHT", async () => {
       firePointerEnter(activator, "touch");
       await new Promise((r) => setTimeout(r, 50));
       expect(body.queryByRole("tooltip")).toBeNull();
     });
 
-    await step("a mouse hover reveals it", async () => {
+    await step("Mauszeiger zeigt ihn", async () => {
       firePointerEnter(activator, "mouse");
       const tip = await body.findByRole("tooltip");
       expect(tip).toHaveTextContent("Tooltip-Inhalt");
     });
 
-    await step("a click dismisses it", async () => {
+    await step("Klick blendet ihn aus", async () => {
       activator.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       await waitFor(() => expect(body.queryByRole("tooltip")).toBeNull());
     });
@@ -400,24 +400,24 @@ export const OpenOnTap: Story = {
     const body = within(document.body);
     const activator = canvas.getByRole("button", { name: /tippen-ziel/i });
 
-    await step("a touch tap reveals the tooltip", async () => {
+    await step("Berührungstipp zeigt den Tooltip", async () => {
       fireTap(activator, "touch");
       const tip = await body.findByRole("tooltip");
       expect(tip).toHaveTextContent("Tooltip-Inhalt");
     });
 
-    await step("a second touch tap toggles it closed", async () => {
+    await step("Ein zweiter Berührungstipp schließt ihn", async () => {
       fireTap(activator, "touch");
       await waitFor(() => expect(body.queryByRole("tooltip")).toBeNull());
     });
 
-    await step("a mouse click opens it", async () => {
+    await step("Mausklick öffnet ihn", async () => {
       fireTap(activator, "mouse");
       expect(await body.findByRole("tooltip")).toBeInTheDocument();
     });
 
     await step(
-      "a second mouse click keeps it open (no toggle-closed)",
+      "Ein zweiter Mausklick lässt ihn geöffnet (kein Umschalten)",
       async () => {
         fireTap(activator, "mouse");
         expect(body.queryByRole("tooltip")).not.toBeNull();

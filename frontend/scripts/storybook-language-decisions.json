@@ -12894,5 +12894,208 @@
     "location": "Zeile 178",
     "text": "Schlagwort",
     "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
+    "location": "Zeile 119",
+    "text": "leer → vollständig (Häkchen, primär)",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
+    "location": "Zeile 128",
+    "text": "vollständig → individuell (Konto, Akzent)",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
+    "location": "Zeile 134",
+    "text": "individuell → leer",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZARating/ZARating.stories.ts",
+    "location": "Zeile 59",
+    "text": "Tabulator fokussiert die Sterne der Reihe nach",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZARating/ZARating.stories.ts",
+    "location": "Zeile 67",
+    "text": "Eingabe wählt den fokussierten Stern",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZASwitch/ZASwitch.stories.ts",
+    "location": "Zeile 72",
+    "text": "Tabulator setzt den Fokus auf den Schalter",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZASwitch/ZASwitch.stories.ts",
+    "location": "Zeile 78",
+    "text": "Leertaste schaltet ihn ein",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZASwitch/ZASwitch.stories.ts",
+    "location": "Zeile 83",
+    "text": "Eingabetaste schaltet ihn wieder aus",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/media/ZABox3D/ZABox3D.stories.ts",
+    "location": "Zeile 89",
+    "text": "startet in der Ruheausrichtung",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/media/ZABox3D/ZABox3D.stories.ts",
+    "location": "Zeile 94",
+    "text": "Pfeil rechts dreht die Box um die Hochachse",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/media/ZABox3D/ZABox3D.stories.ts",
+    "location": "Zeile 100",
+    "text": "Pfeil hoch neigt die Box nach oben",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/media/ZABox3D/ZABox3D.stories.ts",
+    "location": "Zeile 105",
+    "text": "Neigung begrenzt, damit die Box nicht kippt",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/menus/ZAMenuItem/ZAMenuItem.stories.ts",
+    "location": "Zeile 132",
+    "text": "Einfacher Klick aktiviert den Eintrag",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/menus/ZAMenuItem/ZAMenuItem.stories.ts",
+    "location": "Zeile 139",
+    "text": "Strg-Klick wird unterdrückt (Browser öffnet einen neuen Tab)",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 89",
+    "text": "Zähler zeigt zu Beginn 1 / N",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 94",
+    "text": "Klick auf Weiter erhöht den Index",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 101",
+    "text": "Klick auf Zurück verringert den Index",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 108",
+    "text": "Zurück springt zum letzten Element",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/overlays/ZACarousel/ZACarousel.stories.ts",
+    "location": "Zeile 115",
+    "text": "Klick auf eine Vorschau springt zu diesem Index",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
+    "location": "Zeile 127",
+    "text": "Tabulator fokussiert die Tabs in DOM-Reihenfolge",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
+    "location": "Zeile 134",
+    "text": "Eingabetaste aktiviert den fokussierten Tab",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
+    "location": "Zeile 141",
+    "text": "Leertaste aktiviert den nächsten Tab",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 358",
+    "text": "Berührungsschweben zeigt den Tooltip NICHT",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 364",
+    "text": "Mauszeiger zeigt ihn",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 370",
+    "text": "Klick blendet ihn aus",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 403",
+    "text": "Berührungstipp zeigt den Tooltip",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 409",
+    "text": "Ein zweiter Berührungstipp schließt ihn",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 414",
+    "text": "Mausklick öffnet ihn",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 419",
+    "text": "Ein zweiter Mausklick lässt ihn geöffnet (kein Umschalten)",
+    "status": "german"
   }
 ]

@@ -86,33 +86,33 @@ export const Inline: Story = {
   play: async ({ canvasElement, step }) => {
     const canvas = within(canvasElement);
 
-    await step("counter renders 1 / N to start", async () => {
+    await step("Zähler zeigt zu Beginn 1 / N", async () => {
       const counter = await canvas.findByText("1 / 5");
       expect(counter).toBeInTheDocument();
     });
 
-    await step("clicking next advances the index", async () => {
+    await step("Klick auf Weiter erhöht den Index", async () => {
       const next = canvas.getByRole("button", { name: "Weiter" });
       await userEvent.click(next);
       const counter = await canvas.findByText("2 / 5");
       expect(counter).toBeInTheDocument();
     });
 
-    await step("clicking prev rewinds", async () => {
+    await step("Klick auf Zurück verringert den Index", async () => {
       const prev = canvas.getByRole("button", { name: "Zurück" });
       await userEvent.click(prev);
       const counter = await canvas.findByText("1 / 5");
       expect(counter).toBeInTheDocument();
     });
 
-    await step("loop wraps from first to last on prev", async () => {
+    await step("Zurück springt zum letzten Element", async () => {
       const prev = canvas.getByRole("button", { name: "Zurück" });
       await userEvent.click(prev);
       const counter = await canvas.findByText("5 / 5");
       expect(counter).toBeInTheDocument();
     });
 
-    await step("clicking a thumbnail jumps to that index", async () => {
+    await step("Klick auf eine Vorschau springt zu diesem Index", async () => {
       const thumbs = canvas.getAllByRole("button", { name: /^\d+ \/ 5$/ });
       await userEvent.click(thumbs[2]);
       const counter = await canvas.findByText("3 / 5");

@@ -18,6 +18,7 @@ describe("Storybook-Katalogprüfung", () => {
         args: { title: "Deutscher Beispieltext", label: "Beschriftung" },
         parameters: { docs: { description: { story: "Deutsche Beschreibung" } } },
         render: () => ({ template: \`<ZABtn title="Deutscher Hinweis">Sichtbarer Text</ZABtn>\` }),
+        play: async ({ step }) => step("Deutscher Interaktionsschritt", async () => {}),
       };
     `;
 
@@ -46,6 +47,10 @@ describe("Storybook-Katalogprüfung", () => {
         expect.objectContaining({
           category: "template-text",
           text: "Sichtbarer Text",
+        }),
+        expect.objectContaining({
+          category: "play-step",
+          text: "Deutscher Interaktionsschritt",
         }),
       ]),
     );
@@ -140,5 +145,56 @@ describe("Storybook-Katalogprüfung", () => {
         expect.objectContaining({ text: "RPG" }),
       ]),
     );
+  });
+
+  it("rejects unreviewed Interactions-panel step labels", () => {
+    expect(
+      findUnreviewedVisibleStoryText(
+        'play: async ({ step }) => step("Ungeprüfter Interaktionsschritt", async () => {})',
+        "Example.stories.ts",
+        [],
+      ),
+    ).toEqual([
+      expect.objectContaining({
+        category: "play-step",
+        text: "Ungeprüfter Interaktionsschritt",
+      }),
+    ]);
+  });
+
+  it("captures backtick Interactions-panel step labels", () => {
+    expect(
+      getVisibleStoryTextCandidates(
+        "play: async ({ step }) => step(`Deutscher Interaktionsschritt`, async () => {})",
+        "Example.stories.ts",
+      ),
+    ).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          category: "play-step",
+          text: "Deutscher Interaktionsschritt",
+        }),
+      ]),
+    );
+  });
+
+  it("never accepts a dynamically generated Interactions-panel step label", () => {
+    const source = "play: async ({ step }) => step(stepTitle, async () => {})";
+    const decision = {
+      category: "play-step-dynamic" as const,
+      file: "Example.stories.ts",
+      location: "Zeile 1",
+      status: "german" as const,
+      text: "Dynamisches step()-Label: stepTitle",
+    };
+
+    expect(
+      findUnreviewedVisibleStoryText(source, "Example.stories.ts", [decision]),
+    ).toEqual([
+      expect.objectContaining({
+        category: "play-step-dynamic",
+        text: "Dynamisches step()-Label: stepTitle",
+      }),
+    ]);
   });
 });

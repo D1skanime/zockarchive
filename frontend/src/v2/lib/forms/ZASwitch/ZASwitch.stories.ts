@@ -69,18 +69,18 @@ export const KeyboardToggle: Story = {
     const canvas = within(canvasElement);
     const sw = canvas.getByRole("switch");
 
-    await step("Tab moves focus onto the switch", async () => {
+    await step("Tabulator setzt den Fokus auf den Schalter", async () => {
       await userEvent.tab();
       expect(sw).toHaveFocus();
       expect(sw).toHaveAttribute("aria-checked", "false");
     });
 
-    await step("Space toggles it on", async () => {
+    await step("Leertaste schaltet ihn ein", async () => {
       await userEvent.keyboard(" ");
       expect(sw).toHaveAttribute("aria-checked", "true");
     });
 
-    await step("Enter toggles it back off", async () => {
+    await step("Eingabetaste schaltet ihn wieder aus", async () => {
       await userEvent.keyboard("{Enter}");
       expect(sw).toHaveAttribute("aria-checked", "false");
     });

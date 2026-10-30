@@ -86,23 +86,23 @@ export const KeyboardRotate: Story = {
     expect(root).not.toBeNull();
     expect(box).not.toBeNull();
 
-    await step("starts at the resting orientation", () => {
+    await step("startet in der Ruheausrichtung", () => {
       expect(box!.style.transform).toContain("rotateY(0deg)");
       expect(box!.style.transform).toContain("rotateX(0deg)");
     });
 
-    await step("ArrowRight yaws the box", async () => {
+    await step("Pfeil rechts dreht die Box um die Hochachse", async () => {
       root!.focus();
       await userEvent.keyboard("{ArrowRight}");
       expect(box!.style.transform).toContain("rotateY(14deg)");
     });
 
-    await step("ArrowUp pitches the box up", async () => {
+    await step("Pfeil hoch neigt die Box nach oben", async () => {
       await userEvent.keyboard("{ArrowUp}");
       expect(box!.style.transform).toContain("rotateX(-14deg)");
     });
 
-    await step("pitch clamps so the box never flips over", async () => {
+    await step("Neigung begrenzt, damit die Box nicht kippt", async () => {
       for (let i = 0; i < 6; i++) await userEvent.keyboard("{ArrowUp}");
       expect(box!.style.transform).toContain("rotateX(-32deg)");
     });

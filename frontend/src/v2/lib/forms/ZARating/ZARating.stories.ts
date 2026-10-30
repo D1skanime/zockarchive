@@ -56,7 +56,7 @@ export const KeyboardNav: Story = {
     const canvas = within(canvasElement);
     const stars = canvas.getAllByRole("radio");
 
-    await step("Tab focuses the stars in order", async () => {
+    await step("Tabulator fokussiert die Sterne der Reihe nach", async () => {
       await userEvent.tab();
       expect(stars[0]).toHaveFocus();
       await userEvent.tab();
@@ -64,7 +64,7 @@ export const KeyboardNav: Story = {
       expect(stars[2]).toHaveFocus();
     });
 
-    await step("Enter commits the focused star as the rating", async () => {
+    await step("Eingabe wählt den fokussierten Stern", async () => {
       await userEvent.keyboard("{Enter}");
       expect(stars[2]).toHaveAttribute("aria-checked", "true");
       expect(stars[0]).toHaveAttribute("aria-checked", "false");

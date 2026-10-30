@@ -116,7 +116,7 @@ export const MultiState: Story = {
     const label = canvasElement.querySelector(".r-checkbox") as HTMLElement;
     const wrap = canvasElement.querySelector(".r-checkbox-wrap") as HTMLElement;
 
-    await step("none → full (check, primary)", async () => {
+    await step("leer → vollständig (Häkchen, primär)", async () => {
       await userEvent.click(label);
       await expect(wrap.classList.contains("r-checkbox--multi-active")).toBe(
         true,
@@ -125,13 +125,13 @@ export const MultiState: Story = {
         true,
       );
     });
-    await step("full → own (account, accent)", async () => {
+    await step("vollständig → individuell (Konto, Akzent)", async () => {
       await userEvent.click(label);
       await expect(wrap.classList.contains("r-checkbox--multi-icon")).toBe(
         true,
       );
     });
-    await step("own → none (empty)", async () => {
+    await step("individuell → leer", async () => {
       await userEvent.click(label);
       await expect(wrap.classList.contains("r-checkbox--multi-active")).toBe(
         false,

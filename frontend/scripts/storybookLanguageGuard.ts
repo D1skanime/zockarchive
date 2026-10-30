@@ -1,5 +1,7 @@
 export type StoryTextCategory =
   | "docs-description"
+  | "play-step"
+  | "play-step-dynamic"
   | "story-data"
   | "story-name"
   | "template-attribute"
@@ -83,6 +85,27 @@ export function getVisibleStoryTextCandidates(
   ))
     add("docs-description", description[2], description.index ?? 0);
 
+  // Storybook shows step labels in the Interactions panel, so they need the
+  // same explicit review as text rendered in the story canvas. A dynamic
+  // expression cannot be ledger-approved because its runtime value is unknown.
+  const staticStepOffsets = new Set<number>();
+  for (const step of source.matchAll(/\bstep\(\s*(["'])([\s\S]*?)\1\s*,/g)) {
+    staticStepOffsets.add(step.index ?? 0);
+    add("play-step", step[2], step.index ?? 0);
+  }
+  for (const step of source.matchAll(/\bstep\(\s*`([^`$]*)`\s*,/g)) {
+    staticStepOffsets.add(step.index ?? 0);
+    add("play-step", step[1], step.index ?? 0);
+  }
+  for (const step of source.matchAll(/\bstep\(\s*([\s\S]*?)\s*,/g)) {
+    if (!staticStepOffsets.has(step.index ?? 0))
+      add(
+        "play-step-dynamic",
+        `Dynamisches step()-Label: ${step[1].trim()}`,
+        step.index ?? 0,
+      );
+  }
+
   // Story setup data often uses a bare string array for rendered suggestions,
   // chips, or select items. Those values are visible even without a key/value
   // property and therefore need individual ledger decisions.
@@ -154,6 +177,7 @@ export function findUnreviewedVisibleStoryText(
 ): VisibleStoryTextCandidate[] {
   return getVisibleStoryTextCandidates(source, file).filter(
     (candidate) =>
+      candidate.category === "play-step-dynamic" ||
       !decisions.some(
         (decision) =>
           decision.file === candidate.file &&

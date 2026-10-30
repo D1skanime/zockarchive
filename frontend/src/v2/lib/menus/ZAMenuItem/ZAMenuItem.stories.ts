@@ -129,7 +129,7 @@ export const NewTabGesture: Story = {
     const link = canvas.getByText("In neuem Tab öffnen").closest("a");
     if (!link) throw new Error("expected the item to render as an <a>");
 
-    await step("plain click activates the item", async () => {
+    await step("Einfacher Klick aktiviert den Eintrag", async () => {
       link.dispatchEvent(
         new MouseEvent("click", { bubbles: true, cancelable: true }),
       );
@@ -137,7 +137,7 @@ export const NewTabGesture: Story = {
     });
 
     await step(
-      "Ctrl-click is suppressed (browser opens a new tab)",
+      "Strg-Klick wird unterdrückt (Browser öffnet einen neuen Tab)",
       async () => {
         link.dispatchEvent(
           new MouseEvent("click", {
