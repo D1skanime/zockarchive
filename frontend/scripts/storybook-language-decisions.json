@@ -544,28 +544,32 @@
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
     "location": "Zeile 17",
     "text": "top",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
     "location": "Zeile 18",
     "text": "bottom",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
     "location": "Zeile 19",
     "text": "start",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
     "location": "Zeile 20",
     "text": "end",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -1126,21 +1130,24 @@
     "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
     "location": "Zeile 14",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
     "location": "Zeile 14",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
     "location": "Zeile 14",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -1728,21 +1735,24 @@
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 11",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 11",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 11",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -1847,7 +1857,8 @@
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 90",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -1861,7 +1872,8 @@
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 96",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -1875,7 +1887,8 @@
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 102",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -2401,7 +2414,8 @@
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 16",
     "text": "neutral",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -2415,77 +2429,88 @@
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 18",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 19",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 20",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 21",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 22",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 23",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 28",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 28",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 28",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 28",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATag/ZATag.stories.ts",
     "location": "Zeile 28",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -2541,63 +2566,72 @@
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 12",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 12",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 12",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 12",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 12",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 14",
     "text": "underlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 14",
     "text": "pill",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 15",
     "text": "horizontal",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZATabNav/ZATabNav.stories.ts",
     "location": "Zeile 15",
     "text": "vertical",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -2863,14 +2897,16 @@
     "file": "src/v2/lib/primitives/ZASliderBtnGroup/ZASliderBtnGroup.stories.ts",
     "location": "Zeile 20",
     "text": "horizontal",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZASliderBtnGroup/ZASliderBtnGroup.stories.ts",
     "location": "Zeile 20",
     "text": "vertical",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -3745,49 +3781,56 @@
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 100",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 104",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 108",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 112",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 116",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 120",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAIcon/ZAIcon.stories.ts",
     "location": "Zeile 124",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -3983,35 +4026,40 @@
     "file": "src/v2/lib/primitives/ZAEmptyState/ZAEmptyState.stories.ts",
     "location": "Zeile 15",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAEmptyState/ZAEmptyState.stories.ts",
     "location": "Zeile 15",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAEmptyState/ZAEmptyState.stories.ts",
     "location": "Zeile 15",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAEmptyState/ZAEmptyState.stories.ts",
     "location": "Zeile 15",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAEmptyState/ZAEmptyState.stories.ts",
     "location": "Zeile 15",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4389,77 +4437,88 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 11",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 11",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 11",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 11",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 11",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 11",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 15",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 15",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 15",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 15",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 15",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4480,7 +4539,8 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 65",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4494,7 +4554,8 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 69",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4508,7 +4569,8 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 73",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4522,7 +4584,8 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 77",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4536,7 +4599,8 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 81",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4550,147 +4614,168 @@
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 96",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 97",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 98",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 99",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 100",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 101",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 115",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 116",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 117",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 118",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 119",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 120",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 121",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 122",
     "text": "neutral",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 134",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 135",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 136",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 137",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 138",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 139",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAChip/ZAChip.stories.ts",
     "location": "Zeile 140",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -4914,42 +4999,48 @@
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 10",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 10",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 10",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 10",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 10",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 10",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -5054,56 +5145,64 @@
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 81",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 82",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 83",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 84",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 85",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 86",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 87",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
     "location": "Zeile 88",
     "text": "neutral",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -5482,98 +5581,112 @@
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 12",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 12",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 12",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 12",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 12",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 12",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 17",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 17",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 17",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 17",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 17",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 21",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 21",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 21",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -5615,203 +5728,232 @@
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 69",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 70",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 71",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 72",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 73",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 74",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 88",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 89",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 90",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 91",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 92",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 104",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 105",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 106",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 120",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 121",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 122",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 123",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 124",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 125",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 126",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 127",
     "text": "neutral",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 139",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 140",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 141",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 142",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 143",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 144",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 145",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -5881,35 +6023,40 @@
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 190",
     "text": "x-small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 191",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 192",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 193",
     "text": "large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
     "file": "src/v2/lib/primitives/ZABtn/ZABtn.stories.ts",
     "location": "Zeile 194",
     "text": "x-large",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -6273,28 +6420,32 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 17",
     "text": "top",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 18",
     "text": "bottom",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 19",
     "text": "start",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 20",
     "text": "end",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -6392,7 +6543,8 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 125",
     "text": "top",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6420,7 +6572,8 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 133",
     "text": "end",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6448,7 +6601,8 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 141",
     "text": "bottom",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6476,7 +6630,8 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 149",
     "text": "start",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6490,7 +6645,8 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 168",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6504,7 +6660,8 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 174",
     "text": "bordered",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6518,21 +6675,24 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 180",
     "text": "count + bordered",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 195",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 199",
     "text": "floating",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6560,49 +6720,56 @@
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 235",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 239",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 243",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 247",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 251",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 255",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZABadge/ZABadge.stories.ts",
     "location": "Zeile 259",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6700,42 +6867,48 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 15",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 15",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 15",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 15",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 15",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 15",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6861,7 +7034,8 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 116",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6875,7 +7049,8 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 120",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6889,7 +7064,8 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 124",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6903,7 +7079,8 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 128",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6917,7 +7094,8 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 132",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -6931,56 +7109,64 @@
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 136",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 153",
     "text": "primary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 157",
     "text": "secondary",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 161",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 165",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 169",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 173",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAvatar/ZAAvatar.stories.ts",
     "location": "Zeile 177",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -7267,21 +7453,24 @@
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 16",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 16",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 16",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -7295,56 +7484,64 @@
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 20",
     "text": "flat",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 20",
     "text": "elevated",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 20",
     "text": "translucent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 20",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 20",
     "text": "text",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 24",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 24",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
     "location": "Zeile 24",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -7582,14 +7779,16 @@
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
     "location": "Zeile 15",
     "text": "left",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/overlays/ZADrawer/ZADrawer.stories.ts",
     "location": "Zeile 15",
     "text": "right",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -8058,21 +8257,24 @@
     "file": "src/v2/lib/menus/ZAMenuItem/ZAMenuItem.stories.ts",
     "location": "Zeile 24",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/menus/ZAMenuItem/ZAMenuItem.stories.ts",
     "location": "Zeile 24",
     "text": "active",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/menus/ZAMenuItem/ZAMenuItem.stories.ts",
     "location": "Zeile 24",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -8280,28 +8482,32 @@
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 19",
     "text": "top",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 20",
     "text": "bottom",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 21",
     "text": "start",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/menus/ZAMenu/ZAMenu.stories.ts",
     "location": "Zeile 22",
     "text": "end",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -8928,7 +9134,8 @@
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 12",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -8942,35 +9149,40 @@
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 12",
     "text": "underlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 12",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 16",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 16",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
     "location": "Zeile 16",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -9307,14 +9519,16 @@
     "file": "src/v2/lib/forms/ZASwitch/ZASwitch.stories.ts",
     "location": "Zeile 11",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASwitch/ZASwitch.stories.ts",
     "location": "Zeile 11",
     "text": "small",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -9391,28 +9605,32 @@
     "file": "src/v2/lib/forms/ZASlider/ZASlider.stories.ts",
     "location": "Zeile 17",
     "text": "none",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASlider/ZASlider.stories.ts",
     "location": "Zeile 17",
     "text": "left",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASlider/ZASlider.stories.ts",
     "location": "Zeile 17",
     "text": "right",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASlider/ZASlider.stories.ts",
     "location": "Zeile 17",
     "text": "thumb",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -9802,7 +10020,8 @@
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 33",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -9816,35 +10035,40 @@
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 33",
     "text": "underlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 33",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 37",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 37",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 37",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -9865,7 +10089,8 @@
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 51",
     "text": "neutral",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -9879,42 +10104,48 @@
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 53",
     "text": "accent",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 54",
     "text": "success",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 55",
     "text": "danger",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 56",
     "text": "warning",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 57",
     "text": "info",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 58",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-attribute",
@@ -10117,7 +10348,8 @@
     "file": "src/v2/lib/forms/ZASelect/ZASelect.stories.ts",
     "location": "Zeile 332",
     "text": "neutral",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "template-text",
@@ -10215,21 +10447,24 @@
     "file": "src/v2/lib/forms/ZARating/ZARating.stories.ts",
     "location": "Zeile 18",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZARating/ZARating.stories.ts",
     "location": "Zeile 18",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZARating/ZARating.stories.ts",
     "location": "Zeile 18",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -10699,7 +10934,8 @@
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 17",
     "text": "outlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -10713,35 +10949,40 @@
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 17",
     "text": "underlined",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 17",
     "text": "plain",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 21",
     "text": "default",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 21",
     "text": "comfortable",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZAComboboxField/ZAComboboxField.stories.ts",
     "location": "Zeile 21",
     "text": "compact",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
@@ -11064,35 +11305,40 @@
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 448",
     "text": "platforms.read",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 449",
     "text": "platforms.write",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 450",
     "text": "roms.read",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 451",
     "text": "roms.write",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-name",
     "file": "src/v2/lib/forms/ZACheckbox/ZACheckbox.stories.ts",
     "location": "Zeile 452",
     "text": "users.read",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "docs-description",
@@ -11516,14 +11762,16 @@
     "file": "src/v2/lib/data/ZATable/ZATable.stories.ts",
     "location": "Zeile 21",
     "text": "asc",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/data/ZATable/ZATable.stories.ts",
     "location": "Zeile 21",
     "text": "desc",
-    "status": "german"
+    "status": "proper-name",
+    "reason": "Unveränderter technischer API-Enumwert, der in dieser Story gezielt zur Zuordnung der Komponentenvariante bzw. Steuerung angezeigt wird."
   },
   {
     "category": "story-data",
