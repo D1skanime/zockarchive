@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   compositionDescription,
@@ -32,5 +34,25 @@ describe("Storybook-Katalog", () => {
     expect(phase39BrandDocsId).toBe(
       "marke-za-hintergrund-glasreflexion-b--docs",
     );
+  });
+
+  it("keeps overlay stories in the composed overlay sidebar group", () => {
+    const overlayStories = ["ZACarousel", "ZADialog", "ZADrawer"];
+
+    for (const component of overlayStories) {
+      const source = readFileSync(
+        join(
+          import.meta.dirname,
+          "../src/v2/lib/overlays",
+          component,
+          `${component}.stories.ts`,
+        ),
+        "utf8",
+      );
+
+      expect(source).toContain(
+        `title: "Overlays/Zusammengesetzt/${component}"`,
+      );
+    }
   });
 });
