@@ -18,7 +18,7 @@
 //     the chosen tile gets a brand ring + check badge.
 //   * manage (selectable=false) — tiles are static; the `#actions` slot
 //     renders below the meta, and `showOwner` adds an author chip.
-import { RAvatar, RIcon, RTooltip } from "@v2/lib";
+import { ZAAvatar, ZAIcon, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type {
@@ -106,7 +106,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
             :style="{ backgroundImage: toCssUrl(screenshotOf(asset)!) }"
           />
           <div v-else class="r-asset-strip__thumb-icon">
-            <RIcon
+            <ZAIcon
               :icon="type === 'save' ? 'mdi-content-save' : 'mdi-file-outline'"
               size="28"
             />
@@ -116,7 +116,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
             class="r-asset-strip__check"
             aria-hidden="true"
           >
-            <RIcon icon="mdi-check" size="14" />
+            <ZAIcon icon="mdi-check" size="14" />
           </span>
         </div>
         <div class="r-asset-strip__meta">
@@ -129,7 +129,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
             <span>{{ formatBytes(asset.file_size_bytes) }}</span>
           </p>
           <span v-if="showOwner && ownerOf(asset)" class="r-asset-strip__owner">
-            <RAvatar
+            <ZAAvatar
               :image="
                 userAvatarUrl({
                   userId: ownerOf(asset)!.user_id,
@@ -145,7 +145,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
         <div v-if="!selectable" class="r-asset-strip__actions">
           <slot name="actions" :asset="asset" />
         </div>
-        <RTooltip
+        <ZATooltip
           v-if="selectable"
           activator="parent"
           location="top"
@@ -158,12 +158,12 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
               {{ formatTimestamp(asset.updated_at, locale) }}
             </span>
           </div>
-        </RTooltip>
+        </ZATooltip>
       </component>
     </div>
 
     <div v-else class="r-asset-strip__empty">
-      <RIcon
+      <ZAIcon
         :icon="
           type === 'save' ? 'mdi-content-save-outline' : 'mdi-file-outline'
         "

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, REmptyState, RTag } from "@v2/lib";
+import { ZABtn, ZAEmptyState, ZATag } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { PcComponentSchema } from "@/__generated__";
@@ -27,7 +27,7 @@ function ownedMediaDownloadUrl(mediaId: number) {
       {{ t("rom.pc-dlc-local-files") }}
     </h2>
 
-    <REmptyState
+    <ZAEmptyState
       v-if="manifestMembers.length === 0"
       :title="t('rom.pc-dlc-empty-files-title')"
       :description="t('rom.pc-dlc-empty-files-body')"
@@ -46,7 +46,7 @@ function ownedMediaDownloadUrl(mediaId: number) {
               {{ member.relative_path }}
             </dd>
           </div>
-          <RBtn
+          <ZABtn
             :href="manifestDownloadUrl(member.id)"
             icon="mdi-download"
             :aria-label="t('rom.download')"
@@ -58,7 +58,7 @@ function ownedMediaDownloadUrl(mediaId: number) {
           <div class="pc-dlc-files__field">
             <dt>SHA-256</dt>
             <dd class="pc-dlc-files__checksum" :title="member.sha256">
-              <RTag label="SHA-256" :text="member.sha256" mono />
+              <ZATag label="SHA-256" :text="member.sha256" mono />
             </dd>
           </div>
         </dl>

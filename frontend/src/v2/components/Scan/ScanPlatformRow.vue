@@ -2,10 +2,10 @@
 // ScanPlatformRow — single ROM row inside a ScanPlatform body.
 //
 // Extracted so the same row markup can be rendered both inside a plain
-// <ul> (small platforms) and inside an RVirtualScroller slot (large
+// <ul> (small platforms) and inside an ZAVirtualScroller slot (large
 // platforms, hundreds+ of ROMs streaming in during an initial scan).
 // Provider chip logic and cover-fallback selection live here.
-import { RBtn, RImg, RTag } from "@v2/lib";
+import { ZABtn, ZAImg, ZATag } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { ROUTES } from "@/plugins/router";
@@ -128,7 +128,7 @@ function coverFor(rom: SimpleRom): string {
       :to="{ name: ROUTES.ROM, params: { rom: props.rom.id } }"
       class="r-v2-scan-platform__rom-link"
     >
-      <RImg
+      <ZAImg
         :src="coverFor(props.rom)"
         :alt="displayName"
         :width="36"
@@ -153,7 +153,7 @@ function coverFor(rom: SimpleRom): string {
       </div>
       <div class="r-v2-scan-platform__rom-meta">
         <template v-if="identifying">
-          <RTag
+          <ZATag
             tone="warning"
             size="x-small"
             prepend-icon="mdi-magnify"
@@ -162,7 +162,7 @@ function coverFor(rom: SimpleRom): string {
           />
         </template>
         <template v-else>
-          <RTag
+          <ZATag
             v-if="unidentified"
             tone="danger"
             size="x-small"
@@ -170,7 +170,7 @@ function coverFor(rom: SimpleRom): string {
             :text="t('scan.not-identified')"
             :class="{ 'r-v2-scan-platform__badge-pop': !item }"
           />
-          <RTag
+          <ZATag
             v-if="compactStatus"
             size="x-small"
             :text="compactStatus"
@@ -196,7 +196,7 @@ function coverFor(rom: SimpleRom): string {
         </template>
       </div>
     </router-link>
-    <RBtn
+    <ZABtn
       v-if="canInspectFolder"
       icon="mdi-folder-search-outline"
       variant="text"
@@ -220,7 +220,7 @@ function coverFor(rom: SimpleRom): string {
   gap: 12px;
   padding: 8px 16px;
   border-top: 1px solid var(--r-color-border);
-  /* Fixed row height — required for RVirtualScroller's offset table to
+  /* Fixed row height — required for ZAVirtualScroller's offset table to
      match what the row actually renders at. Padding + 48px cover +
      border = 65px. */
   box-sizing: border-box;

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 // PlatformListRow — single row of the Platforms list-mode index.
 //
-// Anatomy mirrors GameListRow: thumb (RPlatformIcon at the same 48px
+// Anatomy mirrors GameListRow: thumb (ZAPlatformIcon at the same 48px
 // scale used in the ROM list cover slot) + name stack on the left, game
 // count column on the right. Click navigates to /platform/<id> with the
 // same shared-element morph as PlatformTile so switching between grid
 // and list modes lands on the same destination animation.
-import { RPlatformIcon } from "@v2/lib";
+import { ZAPlatformIcon } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import {
@@ -17,8 +17,8 @@ import {
   pendingMorphName,
   useViewTransition,
 } from "@/v2/composables/useViewTransition";
-import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
-import RTooltip from "@/v2/lib/structural/RTooltip/RTooltip.vue";
+import ZAIcon from "@/v2/lib/primitives/ZAIcon/ZAIcon.vue";
+import ZATooltip from "@/v2/lib/structural/ZATooltip/ZATooltip.vue";
 import {
   platformGenerationLabel,
   prettifyPlatformCategory,
@@ -94,7 +94,7 @@ function onRowClick(e: MouseEvent) {
   >
     <div class="plat-list-row__cell plat-list-row__title">
       <div ref="iconEl" class="plat-list-row__thumb" :style="morphStyle">
-        <RPlatformIcon
+        <ZAPlatformIcon
           :slug="slug"
           :fs-slug="fsSlug"
           :alt="displayName"
@@ -127,8 +127,8 @@ function onRowClick(e: MouseEvent) {
         class="plat-list-row__playable"
         :class="{ 'plat-list-row__playable--off': !playable }"
       >
-        <RIcon :icon="playable ? 'mdi-play-circle' : 'mdi-cancel'" size="18" />
-        <RTooltip activator="parent" :text="playableLabel" location="top" />
+        <ZAIcon :icon="playable ? 'mdi-play-circle' : 'mdi-cancel'" size="18" />
+        <ZATooltip activator="parent" :text="playableLabel" location="top" />
       </span>
     </div>
 

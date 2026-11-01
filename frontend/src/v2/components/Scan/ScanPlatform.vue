@@ -4,12 +4,17 @@
 // chips (ROM count, firmware count, "not identified" badge).
 //
 // Body: lists every newly-scanned ROM via ScanPlatformRow, rendered
-// inside an RVirtualScroller whose viewport always equals the total
+// inside an ZAVirtualScroller whose viewport always equals the total
 // content height. No internal scroll — the parent scan log handles
 // overflow. The scroller stays in the loop anyway because its
 // transform-based row positioning avoids reflowing existing rows
 // as new ones stream in during a live scan.
-import { RCollapsible, RPlatformIcon, RTag, RVirtualScroller } from "@v2/lib";
+import {
+  ZACollapsible,
+  ZAPlatformIcon,
+  ZATag,
+  ZAVirtualScroller,
+} from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import ScanPlatformRow from "@/v2/components/Scan/ScanPlatformRow.vue";
@@ -43,7 +48,7 @@ const ROW_HEIGHT = 65;
 
 // Viewport always matches the cumulative content height so the
 // collapsible body grows naturally with the ROM list — no internal
-// scroll. The parent scan log handles overflow. RVirtualScroller is
+// scroll. The parent scan log handles overflow. ZAVirtualScroller is
 // still useful here because its `transform: translateY` positioning
 // avoids reflowing existing rows as new ones stream in.
 const viewportHeight = computed(() => {
@@ -65,12 +70,12 @@ function getItemKey(item: unknown) {
 </script>
 
 <template>
-  <RCollapsible
+  <ZACollapsible
     :model-value="open"
     @update:model-value="(v) => $emit('update:open', v)"
   >
     <template #header-prepend>
-      <RPlatformIcon
+      <ZAPlatformIcon
         v-if="platform.slug"
         :key="platform.slug"
         :slug="platform.slug"
@@ -82,8 +87,8 @@ function getItemKey(item: unknown) {
       {{ platform.display_name }}
     </template>
     <template #header-append>
-      <RTag tone="brand" size="x-small" :text="String(platform.roms.length)" />
-      <RTag
+      <ZATag tone="brand" size="x-small" :text="String(platform.roms.length)" />
+      <ZATag
         v-if="platform.new_firmware_count > 0"
         tone="warning"
         size="x-small"
@@ -91,7 +96,7 @@ function getItemKey(item: unknown) {
         :text="String(platform.new_firmware_count)"
         :title="t('scan.firmware-found', platform.new_firmware_count)"
       />
-      <RTag
+      <ZATag
         v-if="!platform.is_identified"
         tone="danger"
         size="small"
@@ -106,7 +111,7 @@ function getItemKey(item: unknown) {
     <div v-if="platform.roms.length === 0" class="r-v2-scan-platform__empty">
       {{ t("scan.no-new-roms") }}
     </div>
-    <RVirtualScroller
+    <ZAVirtualScroller
       v-else
       :items="platform.roms"
       :get-item-height="getItemHeight"
@@ -126,8 +131,8 @@ function getItemKey(item: unknown) {
           @scan-subfolder="$emit('scan-subfolder', $event)"
         />
       </template>
-    </RVirtualScroller>
-  </RCollapsible>
+    </ZAVirtualScroller>
+  </ZACollapsible>
 </template>
 
 <style scoped>

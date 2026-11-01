@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // PlatformTile — platform card used by the Home dashboard row (variant="row",
 // 150px fixed) and the /platforms grid (variant="grid"). Feature composite
-// around RPlatformIcon; not a design-system primitive.
-import { RPlatformIcon } from "@v2/lib";
+// around ZAPlatformIcon; not a design-system primitive.
+import { ZAPlatformIcon } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import {
@@ -13,8 +13,8 @@ import {
   pendingMorphName,
   useViewTransition,
 } from "@/v2/composables/useViewTransition";
-import RIcon from "@/v2/lib/primitives/RIcon/RIcon.vue";
-import RTooltip from "@/v2/lib/structural/RTooltip/RTooltip.vue";
+import ZAIcon from "@/v2/lib/primitives/ZAIcon/ZAIcon.vue";
+import ZATooltip from "@/v2/lib/structural/ZATooltip/ZATooltip.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 const href = computed(() => props.to ?? `/platform/${props.id ?? ""}`);
 
 // Shared-element morph between the platform tile icon and the
-// RPlatformIcon shown in the Platform view's InfoPanel cover slot.
+// ZAPlatformIcon shown in the Platform view's InfoPanel cover slot.
 const router = useRouter();
 const iconEl = ref<HTMLElement | null>(null);
 const { morphTransition } = useViewTransition();
@@ -86,7 +86,7 @@ const playableLabel = computed(() => playableTooltip(emulator.value));
     @click="onTileClick"
   >
     <div ref="iconEl" class="plat-tile__icon" :style="morphStyle">
-      <RPlatformIcon
+      <ZAPlatformIcon
         :slug="slug"
         :fs-slug="fsSlug"
         :alt="displayName"
@@ -95,8 +95,8 @@ const playableLabel = computed(() => playableTooltip(emulator.value));
       />
     </div>
     <span v-if="playable" class="plat-tile__playable">
-      <RIcon icon="mdi-play-circle" size="16" />
-      <RTooltip activator="parent" :text="playableLabel" location="top" />
+      <ZAIcon icon="mdi-play-circle" size="16" />
+      <ZATooltip activator="parent" :text="playableLabel" location="top" />
     </span>
     <div class="plat-tile__name">
       {{ displayName }}

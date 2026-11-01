@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZADialog, ZAIcon } from "@v2/lib";
 import { onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import storageApi from "@/v2/data/adapters/legacy/services/api/storage";
@@ -104,7 +104,7 @@ onMounted(openDialog);
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     :model-value="modelValue"
     scroll-content
     full-height-on-mobile
@@ -126,9 +126,9 @@ onMounted(openDialog);
           {{ t("scan.scanning") }}
         </div>
         <div v-else-if="error" class="pc-subfolder-scan__state">
-          <RBtn variant="outlined" @click="browse(currentPath || parentPath)">
+          <ZABtn variant="outlined" @click="browse(currentPath || parentPath)">
             {{ t("common.retry") }}
-          </RBtn>
+          </ZABtn>
         </div>
         <div v-else-if="entries.length === 0" class="pc-subfolder-scan__state">
           {{ t("scan.no-new-roms") }}
@@ -139,9 +139,9 @@ onMounted(openDialog);
             :key="entry.relative_path"
             class="pc-subfolder-scan__entry"
           >
-            <RIcon icon="mdi-folder-outline" size="22" />
+            <ZAIcon icon="mdi-folder-outline" size="22" />
             <span class="pc-subfolder-scan__name">{{ entry.name }}</span>
-            <RBtn
+            <ZABtn
               v-if="entry.navigable"
               size="small"
               variant="outlined"
@@ -149,16 +149,16 @@ onMounted(openDialog);
               @click="select(entry.relative_path)"
             >
               {{ t("scan.scan") }}
-            </RBtn>
+            </ZABtn>
           </div>
         </div>
 
-        <RBtn variant="text" @click="close">
+        <ZABtn variant="text" @click="close">
           {{ t("common.cancel") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

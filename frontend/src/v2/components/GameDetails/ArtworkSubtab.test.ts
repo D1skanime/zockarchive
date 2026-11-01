@@ -27,7 +27,7 @@ describe("ArtworkSubtab owned artwork management", () => {
   });
 
   it("uses the owned-media upload and deletion lifecycle", () => {
-    expect(source).toContain("RDropzone");
+    expect(source).toContain("ZADropzone");
     expect(source).toContain('const canManage = useCan("rom.edit", scope)');
     expect(source).not.toContain('useCan("rom.delete", scope)');
     expect(source).toContain("uploadOwnedMedia");
@@ -47,13 +47,13 @@ describe("ArtworkSubtab owned artwork management", () => {
 
   it("keeps the uploaded artwork delete button as the visible tooltip activator", () => {
     expect(source).toMatch(
-      /<RBtn\s+v-if="item\.origin === 'upload' && canManage"\s+icon="mdi-delete-outline"\s+:loading="mutatingId === item\.id"\s+:aria-label="t\('common\.delete'\)"\s+@click="deleteArtwork\(item\)"\s+><RTooltip activator="parent" :text="t\('common\.delete'\)" \/>/,
+      /<ZABtn\s+v-if="item\.origin === 'upload' && canManage"\s+icon="mdi-delete-outline"\s+:loading="mutatingId === item\.id"\s+:aria-label="t\('common\.delete'\)"\s+@click="deleteArtwork\(item\)"\s+><ZATooltip activator="parent" :text="t\('common\.delete'\)" \/>/,
     );
     expect(source).not.toContain(
-      `<RTooltip
+      `<ZATooltip
               v-if="item.origin === 'upload' && canManage"
               :text="t('common.delete')"
-              ><RBtn`,
+              ><ZABtn`,
     );
   });
 

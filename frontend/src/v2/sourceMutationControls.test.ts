@@ -212,7 +212,7 @@ const rom = {
 };
 
 const stubs = {
-  RBtn: {
+  ZABtn: {
     props: ["disabled"],
     emits: ["click"],
     template:
@@ -222,16 +222,16 @@ const stubs = {
   MediaManagementCard: false,
   MediaManagementAction: false,
   MediaUploadControl: false,
-  RCheckbox: { template: '<input type="checkbox" />' },
-  RDropzone: {
+  ZACheckbox: { template: '<input type="checkbox" />' },
+  ZADropzone: {
     emits: ["files"],
     template:
       '<section data-dropzone><slot /><slot name="actions" /></section>',
   },
-  REmptyState: { template: "<div data-empty />" },
-  RIcon: { template: "<i />" },
-  RSelect: { template: "<select data-manual-select />" },
-  RTooltip: { template: "<span />" },
+  ZAEmptyState: { template: "<div data-empty />" },
+  ZAIcon: { template: "<i />" },
+  ZASelect: { template: "<select data-manual-select />" },
+  ZATooltip: { template: "<span />" },
   FileRow: { template: "<li />" },
   FilesSummary: { template: "<div />" },
   MarkdownViewer: {
@@ -360,10 +360,10 @@ describe("maximum-grant source mutation controls", () => {
       global: {
         provide: { emitter },
         stubs: {
-          RDialog: {
+          ZADialog: {
             template: '<section><slot name="content" /></section>',
           },
-          RTextField: {
+          ZATextField: {
             props: ["modelValue", "readonly"],
             template: '<input :data-value="modelValue" :readonly="readonly" />',
           },
@@ -387,10 +387,10 @@ describe("maximum-grant source mutation controls", () => {
         template: "<button data-game-card @click=\"$emit('click')\" />",
       },
       MatchRomRenameToggle: { template: "<div data-rename-control />" },
-      RBtn: { template: "<button><slot /></button>" },
-      REmptyState: true,
-      RIcon: true,
-      RProgressCircular: true,
+      ZABtn: { template: "<button><slot /></button>" },
+      ZAEmptyState: true,
+      ZAIcon: true,
+      ZAProgressCircular: true,
       Transition: false,
     };
     const grid = shallowMount(MatchRomBodyGrid, {
@@ -434,8 +434,8 @@ describe("external source mutation authority inventory", () => {
       global: {
         stubs: {
           RouterLink: routeStub,
-          RChip: true,
-          RIcon: true,
+          ZAChip: true,
+          ZAIcon: true,
         },
       },
     });
@@ -449,10 +449,10 @@ describe("external source mutation authority inventory", () => {
       global: {
         stubs: {
           RouterLink: routeStub,
-          RChip: true,
-          RDivider: true,
-          RIcon: true,
-          RSkeletonBlock: true,
+          ZAChip: true,
+          ZADivider: true,
+          ZAIcon: true,
+          ZASkeletonBlock: true,
         },
       },
     });

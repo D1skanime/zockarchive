@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RDropzone, REmptyState, RSlider } from "@v2/lib";
+import { ZABtn, ZADropzone, ZAEmptyState, ZASlider } from "@v2/lib";
 import axios from "axios";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
@@ -40,7 +40,7 @@ const ownedBackgroundAudioUpdating = ref(false);
 const movingId = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
 const uploadFailures = ref<string[]>([]);
-const dropzone = ref<InstanceType<typeof RDropzone> | null>(null);
+const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
 const acceptedAudioTypes = [
   "audio/mpeg",
   "audio/aac",
@@ -310,7 +310,7 @@ function fmt(seconds: number) {
         <h3 id="soundtrack-heading">{{ t("rom.soundtrack") }}</h3>
         <p>{{ t("rom.soundtrack-owned-hint") }}</p>
       </div>
-      <RBtn
+      <ZABtn
         v-if="canManage"
         :loading="uploading"
         prepend-icon="mdi-upload"
@@ -318,9 +318,9 @@ function fmt(seconds: number) {
         @click="dropzone?.open()"
       >
         {{ t("rom.upload-soundtrack") }}
-      </RBtn>
+      </ZABtn>
     </header>
-    <RDropzone
+    <ZADropzone
       v-if="canManage"
       ref="dropzone"
       :disabled="uploading"
@@ -347,7 +347,7 @@ function fmt(seconds: number) {
             <span v-if="selectedLocalTrackIds.has(file.id)">
               {{ t("rom.background-music") }}
             </span>
-            <RBtn
+            <ZABtn
               v-if="canManage"
               :loading="localBackgroundAudioUpdating"
               :disabled="localBackgroundAudioUpdating"
@@ -359,26 +359,26 @@ function fmt(seconds: number) {
                   ? t("rom.remove-as-background")
                   : t("rom.add-as-background")
               }}
-            </RBtn>
+            </ZABtn>
           </div>
         </li>
       </ul>
     </section>
     <div v-if="player.hasError" class="r-v2-stp__decode-error" role="alert">
       <span>{{ t("rom.soundtrack-playback-error") }}</span
-      ><RBtn variant="text" size="small" @click="retryActiveTrack">{{
+      ><ZABtn variant="text" size="small" @click="retryActiveTrack">{{
         t("common.retry")
-      }}</RBtn>
+      }}</ZABtn>
     </div>
     <div class="r-v2-stp__transport" :aria-label="t('rom.soundtrack-player')">
-      <RBtn
+      <ZABtn
         icon="mdi-skip-previous"
         variant="text"
         :disabled="!hasPrevious"
         :aria-label="t('rom.soundtrack-previous')"
         @click="player.previous()"
       />
-      <RBtn
+      <ZABtn
         :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'"
         variant="text"
         :disabled="!activeTrack"
@@ -387,7 +387,7 @@ function fmt(seconds: number) {
         "
         @click="player.togglePlayPause()"
       />
-      <RBtn
+      <ZABtn
         icon="mdi-skip-next"
         variant="text"
         :disabled="!hasNext"
@@ -395,7 +395,7 @@ function fmt(seconds: number) {
         @click="player.next()"
       />
       <span>{{ fmt(currentTime) }}</span
-      ><RSlider
+      ><ZASlider
         :model-value="currentTime"
         :max="duration"
         :disabled="!activeTrack"
@@ -408,7 +408,7 @@ function fmt(seconds: number) {
       <h4 id="included-soundtrack-heading">
         {{ t("rom.included-soundtrack") }}
       </h4>
-      <REmptyState
+      <ZAEmptyState
         v-if="includedTracks.length === 0"
         icon="mdi-music-note-off-outline"
         :title="t('rom.soundtrack-empty')"
@@ -420,7 +420,7 @@ function fmt(seconds: number) {
             <span v-if="selectedOwnedTrackIds.has(item.id)">
               {{ t("rom.background-music") }}
             </span>
-            <RBtn
+            <ZABtn
               v-if="canManage"
               :loading="ownedBackgroundAudioUpdating"
               :disabled="ownedBackgroundAudioUpdating"
@@ -432,14 +432,14 @@ function fmt(seconds: number) {
                   ? t("rom.remove-as-background")
                   : t("rom.add-as-background")
               }}
-            </RBtn>
-            <RBtn
+            </ZABtn>
+            <ZABtn
               icon="mdi-play"
               variant="text"
               :aria-label="t('rom.play-track', { title: item.display_label })"
               @click="selectTrack(item)"
             />
-            <RBtn
+            <ZABtn
               v-if="canManage"
               icon="mdi-arrow-up"
               variant="text"
@@ -448,7 +448,7 @@ function fmt(seconds: number) {
               :tooltip="t('rom.move-up')"
               @click="moveTrack(index, -1)"
             />
-            <RBtn
+            <ZABtn
               v-if="canManage"
               icon="mdi-arrow-down"
               variant="text"
@@ -459,21 +459,21 @@ function fmt(seconds: number) {
               :tooltip="t('rom.move-down')"
               @click="moveTrack(index, 1)"
             />
-            <RBtn
+            <ZABtn
               v-if="canManage"
               variant="text"
               :disabled="movingId !== null"
               :aria-label="`${t('rom.remove-from-soundtrack')}: ${item.display_label}`"
               @click="toggleIncluded(item)"
-              >{{ t("rom.remove-from-soundtrack") }}</RBtn
+              >{{ t("rom.remove-from-soundtrack") }}</ZABtn
             >
-            <RBtn
+            <ZABtn
               icon="mdi-download-outline"
               variant="text"
               :aria-label="`${t('common.download')}: ${item.display_label}`"
               @click="downloadTrack(item)"
             />
-            <RBtn
+            <ZABtn
               v-if="canManage"
               icon="mdi-delete-outline"
               variant="text"
@@ -495,7 +495,7 @@ function fmt(seconds: number) {
             <span v-if="selectedOwnedTrackIds.has(item.id)">
               {{ t("rom.background-music") }}
             </span>
-            <RBtn
+            <ZABtn
               v-if="canManage"
               :loading="ownedBackgroundAudioUpdating"
               :disabled="ownedBackgroundAudioUpdating"
@@ -507,21 +507,21 @@ function fmt(seconds: number) {
                   ? t("rom.remove-as-background")
                   : t("rom.add-as-background")
               }}
-            </RBtn>
-            <RBtn
+            </ZABtn>
+            <ZABtn
               v-if="canManage"
               :disabled="movingId !== null"
               :aria-label="`${t('rom.include-in-soundtrack')}: ${item.display_label}`"
               @click="toggleIncluded(item)"
-              >{{ t("rom.include-in-soundtrack") }}</RBtn
+              >{{ t("rom.include-in-soundtrack") }}</ZABtn
             >
-            <RBtn
+            <ZABtn
               icon="mdi-download-outline"
               variant="text"
               :aria-label="`${t('common.download')}: ${item.display_label}`"
               @click="downloadTrack(item)"
             />
-            <RBtn
+            <ZABtn
               v-if="canManage"
               icon="mdi-delete-outline"
               variant="text"

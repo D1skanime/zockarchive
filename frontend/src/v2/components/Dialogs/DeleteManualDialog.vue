@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // DeleteManualDialog confirms removing a primary RomM-owned manual.
-import { RBtn, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZADialog, ZAIcon } from "@v2/lib";
 import axios from "axios";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
@@ -77,7 +77,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-delete-outline"
     width="440"
@@ -89,7 +89,7 @@ function closeDialog() {
     <template #content>
       <div class="r-v2-del-manual">
         <div class="r-v2-del-manual__icon">
-          <RIcon icon="mdi-file-document-remove-outline" size="32" />
+          <ZAIcon icon="mdi-file-document-remove-outline" size="32" />
         </div>
         <p class="r-v2-del-manual__body">
           {{ t("rom.delete-manual-confirm-body") }}
@@ -97,11 +97,11 @@ function closeDialog() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" :disabled="deleting" @click="closeDialog">
+      <ZABtn variant="text" :disabled="deleting" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="translucent"
         color="error"
         prepend-icon="mdi-delete"
@@ -110,9 +110,9 @@ function closeDialog() {
         @click="deleteManual"
       >
         {{ t("rom.delete-manual-button") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

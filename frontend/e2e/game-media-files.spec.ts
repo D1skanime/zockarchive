@@ -21,7 +21,7 @@ async function openTab(page: Page, tab: string) {
 }
 
 // Media subtabs are a sidebar list of role=tab buttons, distinct from the
-// top-level RTabNav tabs.
+// top-level ZATabNav tabs.
 async function openSubtab(page: Page, subtab: string) {
   await page.locator(".r-v2-media__subtab-btn", { hasText: subtab }).click();
 }
@@ -50,7 +50,7 @@ test.describe("Media tab write affordances (read-only user)", () => {
       await openSubtab(page, subtab);
 
       const panel = visiblePanel(page);
-      // The plain REmptyState replaces the dropzone: same message, no CTA,
+      // The plain ZAEmptyState replaces the dropzone: same message, no CTA,
       // no drag-and-drop hint, no Upload button.
       await expect(panel.getByText(emptyText)).toBeVisible();
       await expect(panel.locator(".r-dropzone__cta")).toHaveCount(0);

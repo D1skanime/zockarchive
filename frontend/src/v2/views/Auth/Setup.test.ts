@@ -43,15 +43,15 @@ const namespaces = import.meta.glob<Record<string, string>>(
 );
 const locales = process.env.PGDP_TEST_LOCALES?.split(",") ?? ["en_US", "de_DE"];
 const stubs = {
-  RBtn: {
+  ZABtn: {
     props: ["disabled", "to"],
     template:
       '<button :disabled="disabled" :data-route="to?.name"><slot /></button>',
   },
-  RAlert: { template: '<div role="alert"><slot /></div>' },
-  RSteps: true,
-  RSpinner: true,
-  RIcon: true,
+  ZAAlert: { template: '<div role="alert"><slot /></div>' },
+  ZASteps: true,
+  ZASpinner: true,
+  ZAIcon: true,
   SetupStepAdmin: true,
   SetupStepMetadata: true,
   SetupStepPlatforms: {

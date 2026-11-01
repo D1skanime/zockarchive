@@ -5,14 +5,14 @@
 //
 // Mounted by UserProfile via local `v-model:open` (no emitter event)
 // because nothing else in the app needs to trigger this dialog.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import PasswordField from "@/v2/components/shared/PasswordField.vue";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 import userApi from "@/v2/data/adapters/legacy/services/api/user";
 import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -109,7 +109,7 @@ async function submit() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     :model-value="open"
     icon="mdi-key-variant"
     :width="480"
@@ -132,7 +132,7 @@ async function submit() {
         @keyup.enter="submit"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-key-plus" size="14" />
+          <ZAIcon icon="mdi-key-plus" size="14" />
           {{ t("settings.new-password") }}
         </template>
       </PasswordField>
@@ -146,21 +146,21 @@ async function submit() {
         @keyup.enter="submit"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-key-variant" size="14" />
+          <ZAIcon icon="mdi-key-variant" size="14" />
           {{ t("settings.repeat-password") }}
         </template>
       </PasswordField>
       <p class="r-v2-pwd-dialog__hint">
-        <RIcon icon="mdi-information-outline" size="14" />
+        <ZAIcon icon="mdi-information-outline" size="14" />
         <span>{{ t("common.password-length") }}</span>
       </p>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="close">
+      <ZABtn variant="text" @click="close">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         :loading="submitting"
@@ -169,9 +169,9 @@ async function submit() {
         @click="submit"
       >
         {{ t("common.confirm") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

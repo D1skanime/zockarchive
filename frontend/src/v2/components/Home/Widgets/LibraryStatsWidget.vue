@@ -11,7 +11,7 @@
 //
 // Source: GET /stats (counts) + the favorite collection's rom_ids
 // length (already loaded by the collections store on app boot).
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -125,7 +125,7 @@ onMounted(async () => {
     >
       <div v-for="row in allRows" :key="row.label" class="r-v2-widget-lib__row">
         <span class="r-v2-widget-lib__label">
-          <RIcon :icon="row.icon" size="12" />
+          <ZAIcon :icon="row.icon" size="12" />
           {{ row.label }}
         </span>
         <span class="r-v2-widget-lib__val">{{ row.value }}</span>

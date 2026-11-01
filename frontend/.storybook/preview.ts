@@ -26,7 +26,7 @@ setup((app) => {
   app.use(createPinia());
   app.use(i18n);
   // A catch-all router so primitives that render real `<router-link>`s
-  // (RBtn / RListItem / RMenuItem with `to`) resolve a proper `href`
+  // (ZABtn / ZAListItem / ZAMenuItem with `to`) resolve a proper `href`
   // instead of crashing on `router.resolve`. Any string path resolves.
   app.use(
     createRouter({
@@ -74,13 +74,17 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          "Primitives",
-          "Forms",
-          "Structural",
-          "Data",
-          "Menus",
+          "Grundelemente",
+          "Formulare",
+          "Struktur",
+          "Daten",
+          "Menüs",
           "Overlays",
-          "Media",
+          "Medien",
+          "Player",
+          "Geteilt",
+          "Marke",
+          "Im Einsatz",
         ],
       },
     },

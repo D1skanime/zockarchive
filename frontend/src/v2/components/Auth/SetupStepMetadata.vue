@@ -13,7 +13,7 @@
 //                   whether the configured key actually works
 // The combined status pill maps these to one of: disabled, missing /
 // invalid key, checking, available.
-import { RIcon, RImg, RTag } from "@v2/lib";
+import { ZAIcon, ZAImg, ZATag } from "@v2/lib";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import storeHeartbeat from "@/v2/data/adapters/legacy/stores/heartbeat";
@@ -267,7 +267,7 @@ onMounted(() => {
             class="r-setup-metadata__item"
             :data-state="itemDataState(source)"
           >
-            <RImg
+            <ZAImg
               :src="source.logoPath"
               :width="36"
               :height="36"
@@ -281,24 +281,24 @@ onMounted(() => {
               </span>
               <div class="r-setup-metadata__item-meta">
                 <span class="r-setup-metadata__pill">
-                  <RIcon icon="mdi-cog-outline" size="11" />
+                  <ZAIcon icon="mdi-cog-outline" size="11" />
                   {{ t(source.setupKey) }}
                 </span>
                 <span
                   v-if="source.caveatKey"
                   class="r-setup-metadata__pill r-setup-metadata__pill--warn"
                 >
-                  <RIcon icon="mdi-alert-circle-outline" size="11" />
+                  <ZAIcon icon="mdi-alert-circle-outline" size="11" />
                   {{ t(source.caveatKey) }}
                 </span>
-                <RTag
+                <ZATag
                   class="r-setup-metadata__status"
                   size="small"
                   :tone="statusOf(source).tone"
                   :prepend-icon="statusOf(source).icon"
                 >
                   {{ statusOf(source).label }}
-                </RTag>
+                </ZATag>
               </div>
             </div>
           </li>
@@ -323,7 +323,7 @@ onMounted(() => {
             class="r-setup-metadata__item"
             :data-state="itemDataState(source)"
           >
-            <RImg
+            <ZAImg
               :src="source.logoPath"
               :width="36"
               :height="36"
@@ -337,24 +337,24 @@ onMounted(() => {
               </span>
               <div class="r-setup-metadata__item-meta">
                 <span class="r-setup-metadata__pill">
-                  <RIcon icon="mdi-cog-outline" size="11" />
+                  <ZAIcon icon="mdi-cog-outline" size="11" />
                   {{ t(source.setupKey) }}
                 </span>
                 <span
                   v-if="source.caveatKey"
                   class="r-setup-metadata__pill r-setup-metadata__pill--warn"
                 >
-                  <RIcon icon="mdi-alert-circle-outline" size="11" />
+                  <ZAIcon icon="mdi-alert-circle-outline" size="11" />
                   {{ t(source.caveatKey) }}
                 </span>
-                <RTag
+                <ZATag
                   class="r-setup-metadata__status"
                   size="small"
                   :tone="statusOf(source).tone"
                   :prepend-icon="statusOf(source).icon"
                 >
                   {{ statusOf(source).label }}
-                </RTag>
+                </ZATag>
               </div>
             </div>
           </li>
@@ -379,7 +379,7 @@ onMounted(() => {
             class="r-setup-metadata__item"
             :data-state="itemDataState(source)"
           >
-            <RImg
+            <ZAImg
               :src="source.logoPath"
               :width="36"
               :height="36"
@@ -393,24 +393,24 @@ onMounted(() => {
               </span>
               <div class="r-setup-metadata__item-meta">
                 <span class="r-setup-metadata__pill">
-                  <RIcon icon="mdi-cog-outline" size="11" />
+                  <ZAIcon icon="mdi-cog-outline" size="11" />
                   {{ t(source.setupKey) }}
                 </span>
                 <span
                   v-if="source.caveatKey"
                   class="r-setup-metadata__pill r-setup-metadata__pill--warn"
                 >
-                  <RIcon icon="mdi-alert-circle-outline" size="11" />
+                  <ZAIcon icon="mdi-alert-circle-outline" size="11" />
                   {{ t(source.caveatKey) }}
                 </span>
-                <RTag
+                <ZATag
                   class="r-setup-metadata__status"
                   size="small"
                   :tone="statusOf(source).tone"
                   :prepend-icon="statusOf(source).icon"
                 >
                   {{ statusOf(source).label }}
-                </RTag>
+                </ZATag>
               </div>
             </div>
           </li>

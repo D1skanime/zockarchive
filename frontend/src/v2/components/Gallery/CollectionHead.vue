@@ -2,7 +2,7 @@
 // CollectionHead — the collection-context strip that sits above the
 // gallery / settings tab body. Mirrors `PlatformHead` in shape: an
 // InfoPanel (4-cover mosaic + eyebrow + name + description chip +
-// stats) plus the RTabNav underneath. Re-used in two render branches
+// stats) plus the ZATabNav underneath. Re-used in two render branches
 // inside Collection.vue:
 //
 //   1. Library tab — passed to `GalleryShell`'s `#header` slot so the
@@ -12,8 +12,8 @@
 //   2. Settings tab — rendered inline above the tab body inside a
 //      plain scroll wrapper. The head scrolls together with the
 //      tab content.
-import { RBtn, RChip, RTabNav } from "@v2/lib";
-import type { RTabNavItem } from "@v2/lib";
+import { ZABtn, ZAChip, ZATabNav } from "@v2/lib";
+import type { ZATabNavItem } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import CollectionMosaic from "@/v2/components/Collections/CollectionMosaic.vue";
 import InfoPanel from "@/v2/components/Gallery/InfoPanel.vue";
@@ -40,7 +40,7 @@ defineProps<{
   description: string;
   covers: string[];
   tab: string;
-  tabs: RTabNavItem[];
+  tabs: ZATabNavItem[];
   canDownload: boolean;
   randomLoading?: boolean;
 }>();
@@ -70,9 +70,9 @@ defineEmits<{
     </template>
 
     <template v-if="description" #tags>
-      <RChip size="small" variant="translucent" :rounded="20">
+      <ZAChip size="small" variant="translucent" :rounded="20">
         {{ description }}
-      </RChip>
+      </ZAChip>
     </template>
 
     <template #stats>
@@ -80,7 +80,7 @@ defineEmits<{
     </template>
 
     <template #actions>
-      <RBtn
+      <ZABtn
         variant="outlined"
         surface
         icon="mdi-shuffle-variant"
@@ -91,7 +91,7 @@ defineEmits<{
         :tooltip="t('platform.random-rom')"
         @click="$emit('random')"
       />
-      <RBtn
+      <ZABtn
         v-if="canDownload"
         variant="outlined"
         surface
@@ -105,7 +105,7 @@ defineEmits<{
     </template>
   </InfoPanel>
 
-  <RTabNav
+  <ZATabNav
     :model-value="tab"
     :items="tabs"
     class="r-v2-coll__tabs"

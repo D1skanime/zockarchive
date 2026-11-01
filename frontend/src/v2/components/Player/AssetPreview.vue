@@ -13,7 +13,7 @@
 //
 // The metadata strip carries the filename + chips + exact timestamp
 // when something is selected, or the start-fresh hint when empty.
-import { RIcon, RTag, RTooltip } from "@v2/lib";
+import { ZAIcon, ZATag, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { SaveSchema, StateSchema } from "@/__generated__";
@@ -76,7 +76,7 @@ const emptyText = computed(() =>
           :style="{ backgroundImage: toCssUrl(screenshotUrl) }"
         />
         <div v-else class="r-asset-preview__stage-fill">
-          <RIcon icon="mdi-image-off-outline" size="64" />
+          <ZAIcon icon="mdi-image-off-outline" size="64" />
           <p>{{ t("play.no-screenshot-available") }}</p>
         </div>
       </template>
@@ -87,14 +87,14 @@ const emptyText = computed(() =>
         class="r-asset-preview__stage-fill"
       >
         <div class="r-asset-preview__save-medallion">
-          <RIcon icon="mdi-content-save" size="56" />
+          <ZAIcon icon="mdi-content-save" size="56" />
         </div>
       </div>
 
       <!-- Empty: friendly art for the active type. -->
       <div v-else class="r-asset-preview__stage-fill">
         <div class="r-asset-preview__empty-art">
-          <RIcon
+          <ZAIcon
             :icon="
               type === 'save' ? 'mdi-content-save-outline' : 'mdi-image-area'
             "
@@ -112,7 +112,7 @@ const emptyText = computed(() =>
         :aria-label="t('common.clear')"
         @click="$emit('clear')"
       >
-        <RIcon icon="mdi-close" size="14" />
+        <ZAIcon icon="mdi-close" size="14" />
       </button>
     </div>
 
@@ -120,7 +120,7 @@ const emptyText = computed(() =>
     <div v-if="asset" class="r-asset-preview__meta">
       <p class="r-asset-preview__name">
         {{ asset.file_name }}
-        <RTooltip activator="parent" location="top" :open-delay="400">
+        <ZATooltip activator="parent" location="top" :open-delay="400">
           <div class="r-asset-preview__tip">
             <span class="r-asset-preview__tip-name">
               {{ asset.file_name }}
@@ -130,10 +130,10 @@ const emptyText = computed(() =>
               {{ formatTimestamp(asset.updated_at, locale) }}
             </span>
           </div>
-        </RTooltip>
+        </ZATooltip>
       </p>
       <div class="r-asset-preview__chips">
-        <RTag
+        <ZATag
           v-if="'slot' in asset && asset.slot"
           tone="brand"
           size="x-small"
@@ -142,14 +142,14 @@ const emptyText = computed(() =>
           :text="asset.slot"
         />
         <span class="r-asset-preview__chip">
-          <RIcon icon="mdi-clock-outline" size="12" />
+          <ZAIcon icon="mdi-clock-outline" size="12" />
           {{ formatRelativeDate(asset.updated_at) }}
         </span>
         <span class="r-asset-preview__chip">
-          <RIcon icon="mdi-weight" size="12" />
+          <ZAIcon icon="mdi-weight" size="12" />
           {{ formatBytes(asset.file_size_bytes) }}
         </span>
-        <RTag
+        <ZATag
           v-if="asset.emulator"
           tone="warning"
           size="x-small"
@@ -157,7 +157,7 @@ const emptyText = computed(() =>
         />
       </div>
       <p class="r-asset-preview__exact">
-        <RIcon icon="mdi-calendar-clock" size="11" />
+        <ZAIcon icon="mdi-calendar-clock" size="11" />
         {{ formatTimestamp(asset.updated_at, locale) }}
       </p>
     </div>

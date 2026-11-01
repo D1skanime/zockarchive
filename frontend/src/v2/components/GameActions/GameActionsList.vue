@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// GameActionsList — the full RMenuItem list for a ROM, slotted into
-// whatever RMenu mounts it. Single source of truth for the more-menu
+// GameActionsList — the full ZAMenuItem list for a ROM, slotted into
+// whatever ZAMenu mounts it. Single source of truth for the more-menu
 // actions. Consumed by every MoreMenu dropdown (on GameCard, in the
 // GameDetails header, …). Every action emits `close` after firing so the
 // parent menu can dismiss.
@@ -8,7 +8,7 @@
 // The metadata and destructive groups are permission-gated, so their
 // leading dividers are conditional too — otherwise a read-only user gets
 // a menu ending in stray separators.
-import { RDivider, RMenuItem } from "@v2/lib";
+import { ZADivider, ZAMenuItem } from "@v2/lib";
 import { computed, toRef } from "vue";
 import { useI18n } from "vue-i18n";
 import { useGameActions } from "@/v2/composables/useGameActions";
@@ -43,84 +43,84 @@ function run(fn: () => void | Promise<void>) {
 
 <template>
   <!-- Primary actions -->
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canPlay.value"
     :label="t('rom.play')"
     icon="mdi-play"
     @click="run(actions.play)"
   />
-  <RMenuItem
+  <ZAMenuItem
     :label="t('rom.download')"
     icon="mdi-download-outline"
     @click="run(actions.download)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canShowCopyDownloadLink.value"
     :label="t('rom.copy-link')"
     icon="mdi-share-variant-outline"
     @click="run(actions.copyDownloadLink)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canShareQR.value"
     :label="t('rom.share-qr')"
     icon="mdi-qrcode"
     @click="run(actions.shareQR)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canOpenInFlashpoint.value"
     :label="t('rom.open-in-flashpoint')"
     icon="mdi-rocket-launch-outline"
     @click="run(actions.openInFlashpoint)"
   />
 
-  <RDivider />
+  <ZADivider />
 
   <!-- User actions -->
-  <RMenuItem
+  <ZAMenuItem
     :label="favLabel"
     :icon="actions.isFavorited.value ? 'mdi-heart' : 'mdi-heart-outline'"
     :variant="actions.isFavorited.value ? 'active' : 'default'"
     @click="run(actions.favorite)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canManageCollections.value"
     :label="t('rom.manage-collections')"
     icon="mdi-bookmark-outline"
     @click="run(actions.manageCollections)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canRemoveFromContinuePlaying.value"
     :label="t('rom.remove-from-playing')"
     icon="mdi-play-protected-content"
     @click="run(actions.removeFromContinuePlaying)"
   />
 
-  <RDivider v-if="hasMetadataActions" />
+  <ZADivider v-if="hasMetadataActions" />
 
   <!-- Metadata actions -->
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canMatch.value"
     :label="t('rom.match-rom')"
     icon="mdi-magnify"
     @click="run(actions.match)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canRefresh.value"
     :label="t('rom.refresh-metadata')"
     icon="mdi-refresh"
     @click="run(actions.refreshMetadata)"
   />
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canEdit.value"
     :label="t('common.edit')"
     icon="mdi-pencil-outline"
     @click="run(actions.edit)"
   />
 
-  <RDivider v-if="actions.canDelete.value" />
+  <ZADivider v-if="actions.canDelete.value" />
 
   <!-- Destructive -->
-  <RMenuItem
+  <ZAMenuItem
     v-if="actions.canDelete.value"
     :label="t('common.delete')"
     icon="mdi-trash-can-outline"

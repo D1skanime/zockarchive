@@ -34,6 +34,10 @@ jobs:
         run: npm test
         working-directory: frontend
 
+      - name: Validate Storybook catalog copy and taxonomy
+        run: npm run storybook:catalog
+        working-directory: frontend
+
   build:
     runs-on: ubuntu-latest
     steps:

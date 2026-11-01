@@ -58,7 +58,7 @@ vi.mock("vue-i18n", () => ({
   }),
 }));
 
-const RDialogStub = defineComponent({
+const ZADialogStub = defineComponent({
   props: {
     modelValue: { type: Boolean, required: true },
     fullscreenOnMobile: { type: Boolean, default: true },
@@ -76,7 +76,7 @@ const RDialogStub = defineComponent({
   `,
 });
 
-const RCheckboxStub = defineComponent({
+const ZACheckboxStub = defineComponent({
   props: {
     modelValue: { type: Boolean, default: false },
     label: { type: String, default: "" },
@@ -97,14 +97,14 @@ const RCheckboxStub = defineComponent({
   `,
 });
 
-const RBtnStub = defineComponent({
+const ZABtnStub = defineComponent({
   props: { disabled: { type: Boolean, default: false } },
   emits: ["click"],
   template:
     '<button type="button" :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
 });
 
-const RCollapsibleStub = defineComponent({
+const ZACollapsibleStub = defineComponent({
   props: {
     title: { type: String, default: "" },
     modelValue: { type: Boolean, default: false },
@@ -124,10 +124,10 @@ const RCollapsibleStub = defineComponent({
 
 const selectionGlobal = {
   stubs: {
-    RDialog: RDialogStub,
-    RCheckbox: RCheckboxStub,
-    RBtn: RBtnStub,
-    RCollapsible: RCollapsibleStub,
+    ZADialog: ZADialogStub,
+    ZACheckbox: ZACheckboxStub,
+    ZABtn: ZABtnStub,
+    ZACollapsible: ZACollapsibleStub,
     DownloadModeSelector: {
       template:
         '<label data-testid="download-mode"><input type="radio" aria-label="Standard browser download" />Standard browser download</label>',

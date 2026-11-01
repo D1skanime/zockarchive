@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn } from "@v2/lib";
+import { ZABtn } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import InventoryStatusDetail from "@/v2/components/Scan/InventoryStatusDetail.vue";
@@ -58,13 +58,13 @@ const details = computed(() =>
         :item="item"
       />
     </ul>
-    <RBtn
+    <ZABtn
       v-if="hasMore"
       :loading="loadingMore"
       :disabled="loadingMore"
       variant="outlined"
       @click="$emit('loadMore')"
-      >{{ t("gallery.load-more") }}</RBtn
+      >{{ t("gallery.load-more") }}</ZABtn
     >
   </div>
 </template>

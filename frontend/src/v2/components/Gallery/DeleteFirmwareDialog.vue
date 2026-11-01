@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RDialog } from "@v2/lib";
+import { ZABtn, ZADialog } from "@v2/lib";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type { FirmwareSchema } from "@/__generated__";
@@ -44,7 +44,7 @@ async function confirm() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     :model-value="modelValue"
     icon="mdi-delete"
     :width="560"
@@ -72,10 +72,10 @@ async function confirm() {
     </template>
 
     <template #footer>
-      <RBtn variant="text" :disabled="deleting" @click="closeDialog">
+      <ZABtn variant="text" :disabled="deleting" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
-      <RBtn
+      </ZABtn>
+      <ZABtn
         variant="flat"
         color="danger"
         prepend-icon="mdi-delete"
@@ -83,9 +83,9 @@ async function confirm() {
         @click="confirm"
       >
         {{ t("common.confirm") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

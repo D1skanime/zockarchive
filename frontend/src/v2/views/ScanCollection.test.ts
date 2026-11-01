@@ -88,7 +88,7 @@ describe("Scan collection selection request", () => {
       const wrapper = shallowMount(Scan);
       await flushPromises();
       const typeSelect = wrapper
-        .findAllComponents({ name: "RSelect" })
+        .findAllComponents({ name: "ZASelect" })
         .find((select) =>
           select
             .props("items")

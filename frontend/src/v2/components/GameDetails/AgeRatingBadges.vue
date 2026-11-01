@@ -8,7 +8,7 @@
 // URL by convention. Anything we still can't resolve falls back to a
 // chip with a shield icon so the rating stays semantically marked
 // even without artwork.
-import { RIcon, RTooltip } from "@v2/lib";
+import { ZAIcon, ZATooltip } from "@v2/lib";
 import { computed, reactive } from "vue";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
 
@@ -108,7 +108,7 @@ const badges = computed<Badge[]>(() => {
 
 <template>
   <div v-if="badges.length" class="age-ratings">
-    <RTooltip
+    <ZATooltip
       v-for="b in badges"
       :key="`${b.category}:${b.rating}`"
       :text="b.category ? `${b.category}: ${b.rating}` : b.rating"
@@ -126,11 +126,11 @@ const badges = computed<Badge[]>(() => {
           @error="failedImages.add(b.rating_cover_url!)"
         />
         <span v-else v-bind="activatorProps" class="age-ratings__chip">
-          <RIcon icon="mdi-shield-outline" size="13" />
+          <ZAIcon icon="mdi-shield-outline" size="13" />
           {{ b.category ? `${b.category}: ${b.rating}` : b.rating }}
         </span>
       </template>
-    </RTooltip>
+    </ZATooltip>
   </div>
 </template>
 

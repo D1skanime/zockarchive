@@ -5,7 +5,7 @@
 // chips). Right column: detail panel for the currently picked match —
 // summary, source-cover picker and a sticky confirm.
 // In xs the columns stack with the detail panel below the list.
-import { RBtn, REmptyState, RIcon, RProgressCircular } from "@v2/lib";
+import { ZABtn, ZAEmptyState, ZAIcon, ZAProgressCircular } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import {
@@ -85,10 +85,10 @@ watch(
 
 <template>
   <div v-if="searching" class="match-list__state">
-    <RProgressCircular indeterminate :size="40" />
+    <ZAProgressCircular indeterminate :size="40" />
   </div>
 
-  <REmptyState
+  <ZAEmptyState
     v-else-if="searched && !results.length"
     icon="mdi-disc-alert"
     :title="t('common.no-results')"
@@ -96,7 +96,7 @@ watch(
   />
 
   <div v-else-if="!searched" class="match-list__state">
-    <REmptyState
+    <ZAEmptyState
       icon="mdi-magnify-scan"
       :title="t('rom.match-search-title')"
       :hint="t('rom.match-search-hint')"
@@ -207,7 +207,7 @@ watch(
                 class="match-list__source-check"
                 aria-hidden
               >
-                <RIcon icon="mdi-check" size="14" />
+                <ZAIcon icon="mdi-check" size="14" />
               </span>
             </button>
           </div>
@@ -215,7 +215,7 @@ watch(
 
         <div class="match-list__detail-foot">
           <div class="match-list__cta">
-            <RBtn
+            <ZABtn
               variant="flat"
               color="primary"
               prepend-icon="mdi-check"
@@ -223,13 +223,13 @@ watch(
               @click="confirm"
             >
               {{ t("rom.match-this-game") }}
-            </RBtn>
+            </ZABtn>
           </div>
         </div>
       </section>
 
       <div v-else class="match-list__detail-empty">
-        <RIcon icon="mdi-cursor-default-click-outline" size="44" />
+        <ZAIcon icon="mdi-cursor-default-click-outline" size="44" />
         <p>{{ t("rom.match-select-prompt") }}</p>
       </div>
     </Transition>

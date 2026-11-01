@@ -12,7 +12,7 @@
 // Delete: emitted upward (`@delete`) so the view orchestrator can
 // drive the confirm + router navigation. Same vocabulary as the
 // pre-tabs admin kebab.
-import { RBtn, RForm, RIcon, RTextField } from "@v2/lib";
+import { ZABtn, ZAForm, ZAIcon, ZATextField } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { ROUTES } from "@/plugins/router";
@@ -48,7 +48,7 @@ const hasDeleteGrant = useCan("platform.delete");
 const canDelete = computed(() => hasDeleteGrant.value && canEdit.value);
 
 // ── Details edit form ──────────────────────────────────────────
-const formRef = ref<InstanceType<typeof RForm> | null>(null);
+const formRef = ref<InstanceType<typeof ZAForm> | null>(null);
 const customName = ref<string>(props.platform.display_name);
 const description = ref<string>(props.platform.description ?? "");
 const saving = ref(false);
@@ -167,7 +167,7 @@ const details = computed<DetailRow[]>(() => {
     <div class="r-v2-plat-settings__col">
       <section class="r-v2-plat-settings__section">
         <header class="r-v2-plat-settings__section-head">
-          <RIcon icon="mdi-information-outline" size="14" />
+          <ZAIcon icon="mdi-information-outline" size="14" />
           <span>{{ t("common.details", "Details") }}</span>
         </header>
 
@@ -175,8 +175,8 @@ const details = computed<DetailRow[]>(() => {
              only user-authored ones. The rest of the metadata (slug,
              fs_slug, etc.) is derived from the upstream sources and is
              surfaced read-only below. -->
-        <RForm ref="formRef" class="r-v2-plat-settings__form" @submit="save">
-          <RTextField
+        <ZAForm ref="formRef" class="r-v2-plat-settings__form" @submit="save">
+          <ZATextField
             v-model="customName"
             :label="t('common.name', 'Name')"
             :placeholder="platform.name"
@@ -187,7 +187,7 @@ const details = computed<DetailRow[]>(() => {
             density="comfortable"
             hide-details="auto"
           />
-          <RTextField
+          <ZATextField
             v-model="description"
             :label="t('platform.description', 'Description')"
             :disabled="!canEdit"
@@ -198,10 +198,10 @@ const details = computed<DetailRow[]>(() => {
             hide-details="auto"
           />
           <div v-if="dirty" class="r-v2-plat-settings__form-actions">
-            <RBtn variant="text" :disabled="saving" @click="discard">
+            <ZABtn variant="text" :disabled="saving" @click="discard">
               {{ t("common.discard", "Discard") }}
-            </RBtn>
-            <RBtn
+            </ZABtn>
+            <ZABtn
               variant="flat"
               color="primary"
               prepend-icon="mdi-check"
@@ -209,9 +209,9 @@ const details = computed<DetailRow[]>(() => {
               @click="save"
             >
               {{ t("common.save", "Save") }}
-            </RBtn>
+            </ZABtn>
           </div>
-        </RForm>
+        </ZAForm>
 
         <!-- Read-only details. Kept as a hairline-divided table for
              scan-ability without competing with the editable field
@@ -234,7 +234,7 @@ const details = computed<DetailRow[]>(() => {
 
       <section v-if="canAdmin" class="r-v2-plat-settings__section">
         <header class="r-v2-plat-settings__section-head">
-          <RIcon icon="mdi-folder-cog-outline" size="14" />
+          <ZAIcon icon="mdi-folder-cog-outline" size="14" />
           <span>{{
             t("storage.administration", "Storage administration")
           }}</span>
@@ -247,14 +247,14 @@ const details = computed<DetailRow[]>(() => {
             )
           }}
         </p>
-        <RBtn
+        <ZABtn
           :to="{
             name: ROUTES.PLATFORM_STORAGE_MAPPING,
             params: { platformId: platform.id },
           }"
           variant="outlined"
           prepend-icon="mdi-folder-arrow-right-outline"
-          >{{ t("storage.open", "Open storage mapping") }}</RBtn
+          >{{ t("storage.open", "Open storage mapping") }}</ZABtn
         >
       </section>
 
@@ -269,7 +269,7 @@ const details = computed<DetailRow[]>(() => {
         <header
           class="r-v2-plat-settings__section-head r-v2-plat-settings__danger-head"
         >
-          <RIcon icon="mdi-alert-outline" size="14" />
+          <ZAIcon icon="mdi-alert-outline" size="14" />
           <span>{{ t("platform.danger-zone", "Danger zone") }}</span>
         </header>
         <div class="r-v2-plat-settings__danger-row">
@@ -286,7 +286,7 @@ const details = computed<DetailRow[]>(() => {
               }}
             </p>
           </div>
-          <RBtn
+          <ZABtn
             variant="outlined"
             color="danger"
             prepend-icon="mdi-delete-outline"
@@ -295,7 +295,7 @@ const details = computed<DetailRow[]>(() => {
             @click="emit('delete')"
           >
             {{ t("common.delete", "Delete") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </section>
     </div>

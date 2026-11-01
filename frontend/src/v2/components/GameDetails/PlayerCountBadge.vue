@@ -12,7 +12,7 @@
 // the largest integer out as the signal and fall back to a generic
 // group icon when no digit is parseable, so non-numeric descriptors
 // still render with an appropriate "more than one person" affordance.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -47,7 +47,7 @@ const label = computed(() => {
 
 <template>
   <div class="player-count">
-    <RIcon :icon="icon" size="16" class="player-count__icon" />
+    <ZAIcon :icon="icon" size="16" class="player-count__icon" />
     <span class="player-count__label">{{ label }}</span>
   </div>
 </template>

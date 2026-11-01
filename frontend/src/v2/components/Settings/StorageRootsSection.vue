@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { RAlert, RBtn, RCard, RList, RListItem, RSkeletonBlock } from "@v2/lib";
+import {
+  ZAAlert,
+  ZABtn,
+  ZACard,
+  ZAList,
+  ZAListItem,
+  ZASkeletonBlock,
+} from "@v2/lib";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -85,38 +92,38 @@ onMounted(() => void load());
       </div>
     </div>
 
-    <RAlert v-if="!canAdmin" type="info">
+    <ZAAlert v-if="!canAdmin" type="info">
       {{
         t(
           "storage.admin-only",
           "Storage administration is available to administrators.",
         )
       }}
-    </RAlert>
-    <template v-if="loading"><RSkeletonBlock height="160" /></template>
-    <RAlert v-else-if="failed" type="error">
+    </ZAAlert>
+    <template v-if="loading"><ZASkeletonBlock height="160" /></template>
+    <ZAAlert v-else-if="failed" type="error">
       <template #title>{{
         t("storage.roots-unavailable", "Storage roots are unavailable")
       }}</template>
       {{ t("storage.roots-retry", "Check the storage service and try again.") }}
       <template #append
-        ><RBtn variant="outlined" @click="load">{{
+        ><ZABtn variant="outlined" @click="load">{{
           t("storage.check-again", "Check again")
-        }}</RBtn></template
+        }}</ZABtn></template
       >
-    </RAlert>
+    </ZAAlert>
     <template v-else>
-      <RAlert v-if="roots.length === 0" type="warning">
+      <ZAAlert v-if="roots.length === 0" type="warning">
         <template #title>{{
           t("storage.no-roots", "No storage root is registered")
         }}</template>
         {{
           t("storage.roots-retry", "Check the storage service and try again.")
         }}
-      </RAlert>
-      <RCard class="r-storage-roots__card">
-        <RList>
-          <RListItem
+      </ZAAlert>
+      <ZACard class="r-storage-roots__card">
+        <ZAList>
+          <ZAListItem
             v-for="root in roots"
             :key="root.id"
             :title="root.name"
@@ -133,8 +140,8 @@ onMounted(() => void load());
                 : 'mdi-folder-alert-outline'
             "
           />
-        </RList>
-      </RCard>
+        </ZAList>
+      </ZACard>
       <div class="r-storage-roots__action">
         <PlatformSelect
           v-model="selectedPlatformId"
@@ -142,12 +149,12 @@ onMounted(() => void load());
           :label="t('storage.platform', 'Platform')"
           :disabled="platformsStore.allPlatforms.length === 0"
         />
-        <RBtn
+        <ZABtn
           variant="flat"
           color="primary"
           :disabled="!selectedPlatform"
           @click="openMapping"
-          >{{ t("storage.open", "Open storage mapping") }}</RBtn
+          >{{ t("storage.open", "Open storage mapping") }}</ZABtn
         >
       </div>
     </template>

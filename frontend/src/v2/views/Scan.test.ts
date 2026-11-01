@@ -43,18 +43,18 @@ function snapshot(
   };
 }
 const stubs = {
-  RAlert: { template: '<div role="alert"><slot /></div>' },
-  RBtn: {
+  ZAAlert: { template: '<div role="alert"><slot /></div>' },
+  ZABtn: {
     props: ["disabled"],
     template: '<button :disabled="disabled"><slot /></button>',
   },
-  RCheckbox: {
+  ZACheckbox: {
     props: ["modelValue", "label"],
     emits: ["update:modelValue"],
     template:
       '<label>{{ label }}<input type="checkbox" :checked="modelValue" @change="$emit(\'update:modelValue\', $event.target.checked)" /></label>',
   },
-  RProgressLinear: {
+  ZAProgressLinear: {
     props: ["indeterminate"],
     template: '<progress :data-indeterminate="indeterminate" />',
   },

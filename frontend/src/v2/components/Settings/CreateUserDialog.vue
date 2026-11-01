@@ -2,7 +2,7 @@
 // CreateUserDialog — create a user with profile fields plus access: an Admin
 // toggle and, for non-admins, an initial permission group. Replaces the old
 // role select (roles are superseded by admin-vs-user + groups).
-import { RBtn, RIcon, RSelect, RSwitch, RTextField } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASelect, ZASwitch, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -12,7 +12,7 @@ import permissionsApi from "@/v2/data/adapters/legacy/services/api/permissions";
 import userApi from "@/v2/data/adapters/legacy/services/api/user";
 import storePermissionGroups from "@/v2/data/adapters/legacy/stores/permissionGroups";
 import storeUsers from "@/v2/data/adapters/legacy/stores/users";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -131,14 +131,14 @@ function close() {
 </script>
 
 <template>
-  <RDialog v-model="show" icon="mdi-account-plus" :width="540" @close="close">
+  <ZADialog v-model="show" icon="mdi-account-plus" :width="540" @close="close">
     <template #header>
       <span class="r-v2-user-dialog__title">{{
         t("settings.create-user")
       }}</span>
     </template>
     <template #content>
-      <RTextField
+      <ZATextField
         v-model="user.username"
         prefix-label="stacked"
         :rules="usersStore.usernameRules"
@@ -146,11 +146,11 @@ function close() {
         clearable
       >
         <template #prefix-label>
-          <RIcon icon="mdi-account-outline" size="14" />
+          <ZAIcon icon="mdi-account-outline" size="14" />
           {{ t("settings.username") }}
         </template>
-      </RTextField>
-      <RTextField
+      </ZATextField>
+      <ZATextField
         v-model="user.password"
         prefix-label="stacked"
         :rules="usersStore.passwordRules"
@@ -160,11 +160,11 @@ function close() {
         clearable
       >
         <template #prefix-label>
-          <RIcon icon="mdi-key-outline" size="14" />
+          <ZAIcon icon="mdi-key-outline" size="14" />
           {{ t("settings.password") }}
         </template>
-      </RTextField>
-      <RTextField
+      </ZATextField>
+      <ZATextField
         v-model="confirmPassword"
         prefix-label="stacked"
         :rules="confirmPasswordRules"
@@ -174,11 +174,11 @@ function close() {
         clearable
       >
         <template #prefix-label>
-          <RIcon icon="mdi-key-variant" size="14" />
+          <ZAIcon icon="mdi-key-variant" size="14" />
           {{ t("settings.repeat-password") }}
         </template>
-      </RTextField>
-      <RTextField
+      </ZATextField>
+      <ZATextField
         v-model="user.email"
         prefix-label="stacked"
         :rules="usersStore.emailRules"
@@ -186,13 +186,13 @@ function close() {
         clearable
       >
         <template #prefix-label>
-          <RIcon icon="mdi-email-outline" size="14" />
+          <ZAIcon icon="mdi-email-outline" size="14" />
           {{ t("settings.email") }}
         </template>
-      </RTextField>
+      </ZATextField>
 
       <div class="r-v2-user-dialog__admin">
-        <RSwitch v-model="isAdmin" :label="t('settings.administrator')" />
+        <ZASwitch v-model="isAdmin" :label="t('settings.administrator')" />
         <span class="r-v2-user-dialog__hint">
           {{ t("settings.administrator-hint") }}
         </span>
@@ -201,7 +201,7 @@ function close() {
         <span class="r-v2-user-dialog__field-label">
           {{ t("settings.permission-group") }}
         </span>
-        <RSelect
+        <ZASelect
           v-model="groupId"
           variant="outlined"
           :items="groupItems"
@@ -212,11 +212,11 @@ function close() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="close">
+      <ZABtn variant="text" @click="close">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         :loading="submitting"
@@ -224,9 +224,9 @@ function close() {
         @click="createUser"
       >
         {{ t("common.create") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

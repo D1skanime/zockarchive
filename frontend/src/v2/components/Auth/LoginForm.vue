@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // LoginForm — username + password form. Emits `submit` on valid submission;
 // the parent owns the API call + snackbars so this stays purely presentational.
-import { RBtn, RTextField } from "@v2/lib";
+import { ZABtn, ZATextField } from "@v2/lib";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -71,7 +71,7 @@ defineExpose({ loggingIn });
 
 <template>
   <form class="r-v2-login-form" @submit.prevent="submit">
-    <RTextField
+    <ZATextField
       v-model="username"
       :label="t('login.username')"
       type="text"
@@ -87,7 +87,7 @@ defineExpose({ loggingIn });
       name="password"
       :disabled="loggingIn"
     />
-    <RBtn
+    <ZABtn
       type="submit"
       variant="flat"
       color="primary"
@@ -97,7 +97,7 @@ defineExpose({ loggingIn });
       :disabled="loggingIn || blocking || !username || !password"
     >
       {{ t("login.login") }}
-    </RBtn>
+    </ZABtn>
 
     <div class="r-v2-login-form__forgot">
       <a href="#" @click.prevent="emit('forgot')">

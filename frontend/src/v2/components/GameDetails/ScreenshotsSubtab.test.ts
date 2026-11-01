@@ -32,24 +32,24 @@ vi.mock("@/v2/stores/focusRestoration", () => ({
   default: () => ({ save: vi.fn(), restore: () => null }),
 }));
 vi.mock("@v2/lib", () => ({
-  RBtn: {
-    name: "RBtn",
+  ZABtn: {
+    name: "ZABtn",
     props: ["disabled"],
     template: '<button :disabled="disabled"><slot /></button>',
   },
-  RIcon: { template: "<span />" },
-  RTooltip: { template: "<span />" },
-  RAvatar: { template: "<span />" },
-  REmptyState: { props: ["title"], template: "<p>{{ title }}</p>" },
-  RSkeletonBlock: { name: "RSkeletonBlock", template: "<span />" },
-  RCarousel: {
-    name: "RCarousel",
+  ZAIcon: { template: "<span />" },
+  ZATooltip: { template: "<span />" },
+  ZAAvatar: { template: "<span />" },
+  ZAEmptyState: { props: ["title"], template: "<p>{{ title }}</p>" },
+  ZASkeletonBlock: { name: "ZASkeletonBlock", template: "<span />" },
+  ZACarousel: {
+    name: "ZACarousel",
     props: ["items", "modelValue"],
     emits: ["close", "update:modelValue"],
     template: "<div data-carousel />",
   },
-  RDropzone: defineComponent({
-    name: "RDropzone",
+  ZADropzone: defineComponent({
+    name: "ZADropzone",
     props: { disabled: Boolean },
     emits: ["files"],
     setup(props, { slots, emit, expose }) {
@@ -143,16 +143,16 @@ describe("ScreenshotsSubtab single gallery owner", () => {
       "rom.screenshots-upload-hint",
     );
     const input = wrapper.get('input[type="file"]').element;
-    const zone = wrapper.getComponent({ name: "RDropzone" }).element;
+    const zone = wrapper.getComponent({ name: "ZADropzone" }).element;
     await wrapper.get('[aria-label="rom.upload-screenshots"]').trigger("click");
     expect(actions.open).toHaveBeenCalledTimes(1);
     state.myScreenshots.value = [{ id: 10, url: "/mine/10", isOwn: true }];
     await nextTick();
     expect(wrapper.get('input[type="file"]').element).toBe(input);
-    expect(wrapper.getComponent({ name: "RDropzone" }).element).toBe(zone);
+    expect(wrapper.getComponent({ name: "ZADropzone" }).element).toBe(zone);
     expect(wrapper.findAll('input[type="file"]')).toHaveLength(1);
     const files = [new File(["a"], "a.png"), new File(["b"], "b.png")];
-    wrapper.getComponent({ name: "RDropzone" }).vm.$emit("files", files);
+    wrapper.getComponent({ name: "ZADropzone" }).vm.$emit("files", files);
     await flushPromises();
     expect(actions.handleMyFiles).toHaveBeenCalledTimes(1);
     expect(actions.handleMyFiles).toHaveBeenCalledWith(files);
@@ -163,7 +163,7 @@ describe("ScreenshotsSubtab single gallery owner", () => {
         .get('[aria-label="rom.upload-screenshots"]')
         .attributes("disabled"),
     ).toBeDefined();
-    expect(wrapper.getComponent({ name: "RDropzone" }).props("disabled")).toBe(
+    expect(wrapper.getComponent({ name: "ZADropzone" }).props("disabled")).toBe(
       true,
     );
     wrapper.unmount();
@@ -224,7 +224,7 @@ describe("ScreenshotsSubtab single gallery owner", () => {
     state.refreshing.value = true;
     const wrapper = render();
     expect(
-      wrapper.findAllComponents({ name: "RSkeletonBlock" }).length,
+      wrapper.findAllComponents({ name: "ZASkeletonBlock" }).length,
     ).toBeGreaterThan(0);
     state.refreshing.value = false;
     await nextTick();
@@ -246,7 +246,7 @@ describe("ScreenshotsSubtab single gallery owner", () => {
       );
       (preview.element as HTMLElement).focus();
       await preview.trigger("click");
-      const carousel = wrapper.getComponent({ name: "RCarousel" });
+      const carousel = wrapper.getComponent({ name: "ZACarousel" });
       expect(carousel.props("items")).toEqual(urls);
       expect(carousel.props("modelValue")).toBe(index);
       carousel.vm.$emit("update:modelValue", 0);
@@ -319,7 +319,7 @@ describe("ScreenshotsSubtab single gallery owner", () => {
         top = 240;
       });
       wrapper
-        .getComponent({ name: "RDropzone" })
+        .getComponent({ name: "ZADropzone" })
         .vm.$emit("files", [new File(["x"], "x.png")]);
       await flushPromises();
       expect(owner.scrollTop).toBe(340);
@@ -350,7 +350,7 @@ describe("ScreenshotsSubtab single gallery owner", () => {
       .trigger("click");
     state.myScreenshots.value.unshift({ id: 12, url: "/mine/12", isOwn: true });
     await nextTick();
-    const carousel = wrapper.getComponent({ name: "RCarousel" });
+    const carousel = wrapper.getComponent({ name: "ZACarousel" });
     expect(carousel.props("items")).toEqual([
       "/mine/12",
       "/mine/10",
@@ -382,7 +382,7 @@ describe("ScreenshotsSubtab single gallery owner", () => {
           }),
       );
       wrapper
-        .getComponent({ name: "RDropzone" })
+        .getComponent({ name: "ZADropzone" })
         .vm.$emit("files", [new File(["x"], "x.png")]);
       await nextTick();
       top = 240;

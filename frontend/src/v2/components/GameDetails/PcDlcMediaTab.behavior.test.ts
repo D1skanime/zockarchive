@@ -38,20 +38,20 @@ vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
   romApi: mocks,
 }));
 vi.mock("@v2/lib", () => ({
-  RBtn: {
+  ZABtn: {
     props: { disabled: Boolean },
     template:
       '<button :disabled="disabled"><slot name="prepend" /><slot /></button>',
   },
-  RIcon: { props: ["icon"], template: '<span :data-icon="icon" />' },
-  RSelect: { template: "<div />" },
-  REmptyState: { template: "<div />" },
-  RCarousel: {
+  ZAIcon: { props: ["icon"], template: '<span :data-icon="icon" />' },
+  ZASelect: { template: "<div />" },
+  ZAEmptyState: { template: "<div />" },
+  ZACarousel: {
     props: ["items", "modelValue"],
     template: "<div data-carousel />",
   },
-  RDropzone: defineComponent({
-    name: "RDropzone",
+  ZADropzone: defineComponent({
+    name: "ZADropzone",
     props: { disabled: Boolean },
     emits: ["files"],
     setup(_, { slots, expose }) {
@@ -119,7 +119,7 @@ describe("DLC media presentation preserves component capabilities", () => {
     await wrapper.get('[aria-label="common.upload"]').trigger("click");
     expect(mocks.open).toHaveBeenCalledTimes(1);
     const file = new File(["one"], "one.png", { type: "image/png" });
-    wrapper.findComponent({ name: "RDropzone" }).vm.$emit("files", [file]);
+    wrapper.findComponent({ name: "ZADropzone" }).vm.$emit("files", [file]);
     await flushPromises();
     expect(mocks.post).toHaveBeenCalledTimes(1);
     const [path, body] = mocks.post.mock.calls[0];
@@ -135,11 +135,11 @@ describe("DLC media presentation preserves component capabilities", () => {
     await flushPromises();
     expect(wrapper.find('[aria-label="common.upload"]').exists()).toBe(false);
     expect(wrapper.find(".za-shot__actions").exists()).toBe(false);
-    expect(wrapper.findComponent({ name: "RDropzone" }).props("disabled")).toBe(
-      true,
-    );
+    expect(
+      wrapper.findComponent({ name: "ZADropzone" }).props("disabled"),
+    ).toBe(true);
     wrapper
-      .findComponent({ name: "RDropzone" })
+      .findComponent({ name: "ZADropzone" })
       .vm.$emit("files", [new File(["no"], "no.png")]);
     await flushPromises();
     expect(mocks.post).not.toHaveBeenCalled();
@@ -205,9 +205,9 @@ describe("DLC media presentation preserves component capabilities", () => {
         .get('[aria-label="rom.remove-from-overview"]')
         .attributes("disabled"),
     ).toBeDefined();
-    expect(wrapper.findComponent({ name: "RDropzone" }).props("disabled")).toBe(
-      true,
-    );
+    expect(
+      wrapper.findComponent({ name: "ZADropzone" }).props("disabled"),
+    ).toBe(true);
     release(true);
     await flushPromises();
     expect(

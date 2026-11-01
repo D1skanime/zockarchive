@@ -11,12 +11,12 @@
 // generated. The dialog responds to the same emitter events the v1
 // dialog used so call-sites don't change.
 import {
-  RBtn,
-  RCheckbox,
-  RIcon,
-  RProgressCircular,
-  RSelect,
-  RTextField,
+  ZABtn,
+  ZACheckbox,
+  ZAIcon,
+  ZAProgressCircular,
+  ZASelect,
+  ZATextField,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import qrcode from "qrcode";
@@ -30,7 +30,7 @@ import clientTokenApi, {
   type ClientTokenSchema,
 } from "@/v2/data/adapters/legacy/services/api/client-token";
 import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -369,7 +369,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     :icon="isRegenerate ? 'mdi-refresh' : 'mdi-key-plus'"
     :width="720"
@@ -383,18 +383,18 @@ onBeforeUnmount(() => {
     <template #content>
       <!-- Step 1: Config -->
       <div v-if="step === 'config'" class="r-v2-tok-dialog__body">
-        <RTextField
+        <ZATextField
           v-model="tokenName"
           prefix-label="stacked"
           density="comfortable"
           hide-details
         >
           <template #prefix-label>
-            <RIcon icon="mdi-tag-outline" size="14" />
+            <ZAIcon icon="mdi-tag-outline" size="14" />
             {{ t("settings.client-token-name") }}
           </template>
-        </RTextField>
-        <RSelect
+        </ZATextField>
+        <ZASelect
           v-model="selectedExpiry"
           :items="expiryOptions"
           :label="t('settings.client-token-select-expiry')"
@@ -416,7 +416,7 @@ onBeforeUnmount(() => {
                 <div class="r-v2-tok-dialog__scopes-group">
                   {{ group.label }}
                 </div>
-                <RCheckbox
+                <ZACheckbox
                   v-for="scope in group.scopes"
                   :key="scope"
                   :model-value="isScopeSelected(scope)"
@@ -435,7 +435,7 @@ onBeforeUnmount(() => {
                 <div class="r-v2-tok-dialog__scopes-group">
                   {{ group.label }}
                 </div>
-                <RCheckbox
+                <ZACheckbox
                   v-for="scope in group.scopes"
                   :key="scope"
                   :model-value="isScopeSelected(scope)"
@@ -466,22 +466,22 @@ onBeforeUnmount(() => {
           {{ t("settings.client-token-delivery-hint") }}
         </p>
         <div class="r-v2-tok-dialog__delivery-row">
-          <RBtn
+          <ZABtn
             variant="flat"
             size="large"
             prepend-icon="mdi-content-copy"
             @click="step = 'copy'"
           >
             {{ t("settings.copy-token") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             variant="flat"
             size="large"
             prepend-icon="mdi-qrcode"
             @click="startPairing"
           >
             {{ t("settings.pair-device") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </div>
 
@@ -490,7 +490,7 @@ onBeforeUnmount(() => {
         <p class="r-v2-tok-dialog__warn">
           {{ t("settings.client-token-delivery-hint") }}
         </p>
-        <RTextField
+        <ZATextField
           :model-value="rawToken"
           variant="outlined"
           density="comfortable"
@@ -505,10 +505,10 @@ onBeforeUnmount(() => {
               :aria-label="t('common.save')"
               @click="copyToken"
             >
-              <RIcon icon="mdi-content-copy" size="16" />
+              <ZAIcon icon="mdi-content-copy" size="16" />
             </button>
           </template>
-        </RTextField>
+        </ZATextField>
       </div>
 
       <!-- Step 4: Pair -->
@@ -517,7 +517,7 @@ onBeforeUnmount(() => {
         class="r-v2-tok-dialog__body r-v2-tok-dialog__body--center"
       >
         <div v-if="pairLoading" class="r-v2-tok-dialog__pair-loading">
-          <RProgressCircular indeterminate :size="36" />
+          <ZAProgressCircular indeterminate :size="36" />
         </div>
         <template v-else-if="pairStatus === 'pending'">
           <ProjectBrand variant="about" />
@@ -526,7 +526,7 @@ onBeforeUnmount(() => {
           <div class="r-v2-tok-dialog__pair-counter">{{ pairCountdown }}s</div>
         </template>
         <template v-else-if="pairStatus === 'claimed'">
-          <RIcon
+          <ZAIcon
             icon="mdi-check-circle"
             size="64"
             class="r-v2-tok-dialog__pair-ok"
@@ -536,7 +536,7 @@ onBeforeUnmount(() => {
           </p>
         </template>
         <template v-else>
-          <RIcon
+          <ZAIcon
             icon="mdi-timer-off"
             size="64"
             class="r-v2-tok-dialog__pair-warn"
@@ -544,24 +544,24 @@ onBeforeUnmount(() => {
           <p class="r-v2-tok-dialog__pair-result">
             {{ t("settings.client-token-pair-expired") }}
           </p>
-          <RBtn
+          <ZABtn
             variant="flat"
             prepend-icon="mdi-refresh"
             @click="regeneratePairCode"
           >
             {{ t("settings.regenerate-code") }}
-          </RBtn>
+          </ZABtn>
         </template>
       </div>
     </template>
 
     <template #footer>
       <template v-if="step === 'config'">
-        <RBtn variant="text" @click="closeDialog">
+        <ZABtn variant="text" @click="closeDialog">
           {{ t("common.cancel") }}
-        </RBtn>
+        </ZABtn>
         <div style="flex: 1" />
-        <RBtn
+        <ZABtn
           variant="flat"
           color="primary"
           :loading="loading"
@@ -569,35 +569,35 @@ onBeforeUnmount(() => {
           @click="createToken"
         >
           {{ t("common.create") }}
-        </RBtn>
+        </ZABtn>
       </template>
       <template v-else-if="step === 'delivery'">
         <div style="flex: 1" />
-        <RBtn variant="text" @click="closeDialog">
+        <ZABtn variant="text" @click="closeDialog">
           {{ t("common.cancel") }}
-        </RBtn>
+        </ZABtn>
       </template>
       <template v-else>
-        <RBtn variant="text" @click="step = 'delivery'">
+        <ZABtn variant="text" @click="step = 'delivery'">
           {{ t("common.back") }}
-        </RBtn>
+        </ZABtn>
         <div style="flex: 1" />
-        <RBtn variant="flat" color="primary" @click="closeDialog">
+        <ZABtn variant="flat" color="primary" @click="closeDialog">
           {{ t("common.close") }}
-        </RBtn>
+        </ZABtn>
       </template>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>
 .r-v2-tok-dialog__title {
   font-weight: var(--r-font-weight-semibold);
 }
-/* Per-step body — wraps a single v-if branch inside RDialog's body.
+/* Per-step body — wraps a single v-if branch inside ZADialog's body.
    Keeps the column layout so children inherit the step's gap (slightly
    wider than the dialog's default) and an opt-in centred alignment for
-   delivery / pair steps. Padding stays in RDialog. */
+   delivery / pair steps. Padding stays in ZADialog. */
 .r-v2-tok-dialog__body {
   display: flex;
   flex-direction: column;

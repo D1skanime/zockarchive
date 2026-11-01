@@ -6,7 +6,7 @@
 //   • Firmware — `FirmwareTab` (upload / download / delete firmware).
 //   • Settings — `SettingsTab` (details + cover-style picker).
 //
-// Layout choice: `PlatformHead` (InfoPanel + RTabNav) lives INSIDE the
+// Layout choice: `PlatformHead` (InfoPanel + ZATabNav) lives INSIDE the
 // scrolling container of whichever branch is active. On Library, it
 // rides in `GalleryShell`'s `#header` slot so it scrolls away with
 // the cards and the toolbar pins below it — the same vocabulary the
@@ -16,7 +16,7 @@
 //
 // Action ribbon (Upload / Scan) lives inside the head component;
 // Edit (custom_name) and Delete moved inline into the Settings tab.
-import { RDivider, type RTabNavItem } from "@v2/lib";
+import { ZADivider, type ZATabNavItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -92,7 +92,7 @@ watch(
   },
 );
 
-const tabs = computed<RTabNavItem[]>(() => [
+const tabs = computed<ZATabNavItem[]>(() => [
   { id: "library", label: t("common.library") },
   { id: "firmware", label: t("platform.firmware-bios") },
   { id: "settings", label: t("platform.settings") },
@@ -471,7 +471,7 @@ async function onDelete() {
         @random="onRandomGame"
         @download="onDownload"
       />
-      <RDivider class="r-v2-plat-tabs__divider" />
+      <ZADivider class="r-v2-plat-tabs__divider" />
       <div v-if="currentPlatform" class="r-v2-plat-tabs__panel">
         <FirmwareTab v-if="tab === 'firmware'" :platform="currentPlatform" />
         <SettingsTab

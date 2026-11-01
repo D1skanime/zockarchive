@@ -4,7 +4,7 @@
 // loading state, and an absolutely-positioned action slot for top-right
 // affordances like the random-pick reroll button. Individual widgets
 // (RandomPick, LibrarySnapshot, …) compose this with their own body.
-import { RSpinner } from "@v2/lib";
+import { ZASpinner } from "@v2/lib";
 import { useSlots } from "vue";
 
 defineOptions({ inheritAttrs: false });
@@ -33,7 +33,7 @@ const slots = useSlots();
       <slot name="action" />
     </div>
     <div v-if="loading" class="r-v2-widget__loading">
-      <RSpinner :size="22" />
+      <ZASpinner :size="22" />
     </div>
     <slot v-else />
   </div>

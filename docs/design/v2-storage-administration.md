@@ -81,7 +81,7 @@ Preview enqueue failure does not roll back or invalidate the saved mapping. Retu
 
 ## 6. Folder Browser
 
-Use the same `RList` and `RListItem` drill-down model on every viewport. Activating a folder row navigates into it. It does not select it. A separate `Select this folder` button selects the currently open folder. Do not depend on double-click, long-press, a checkbox hidden in the row, or ambiguous highlight state.
+Use the same `ZAList` and `ZAListItem` drill-down model on every viewport. Activating a folder row navigates into it. It does not select it. A separate `Select this folder` button selects the currently open folder. Do not depend on double-click, long-press, a checkbox hidden in the row, or ambiguous highlight state.
 
 Relative breadcrumbs begin with the friendly root identity. Each server-authorized segment navigates to that relative parent. The browser accepts folders at arbitrary depth. It preserves names, Unicode, punctuation, and case exactly as returned. It never displays, accepts, or derives an absolute path.
 
@@ -131,7 +131,7 @@ The page shell, platform heading, route navigation, relative breadcrumbs, and cu
 
 | State                   | Region                             | Icon and localized text intent                                         | Tone    | Recovery and focus restoration                                 | Forbidden disclosure                   |
 | ----------------------- | ---------------------------------- | ---------------------------------------------------------------------- | ------- | -------------------------------------------------------------- | -------------------------------------- |
-| Loading                 | Affected summary, list, or preview | Loading label with `RSkeletonBlock` matching final shape               | neutral | Keep focus in stable shell; announce local completion          | Guessed content or location            |
+| Loading                 | Affected summary, list, or preview | Loading label with `ZASkeletonBlock` matching final shape              | neutral | Keep focus in stable shell; announce local completion          | Guessed content or location            |
 | Unmapped                | Mapping summary                    | Link-off icon, no storage folder mapped                                | info    | `Map storage`; focus first root                                | Lookup details                         |
 | Empty folder            | Folder list                        | Folder-open icon, no children but open folder is selectable            | neutral | `Select this folder`; retain breadcrumb and focus anchor       | Implied scan result                    |
 | Inactive                | Safety summary                     | Pause icon and explicit inactive label                                 | warning | `Choose another root`; return focus to prior selection         | Administrative internals               |
@@ -157,11 +157,11 @@ The page shell, platform heading, route navigation, relative breadcrumbs, and cu
 
 ## 10. Typography, Spacing, Navigation, Cards, and States
 
-Typography uses repository type and weight tokens for titles, headings, body, metadata, and labels. Breadcrumbs retain the full accessible name when visually truncated. Spacing uses repository space tokens and `--r-row-pad`. Navigation uses the one canonical route and one drill-down model; `RSteps` shows root, folder, fast test, and save, while preview is post-save status. Use one `RCard` or Settings section shell with repository radius, elevation, border, foreground, surface, and semantic status tokens. Nested-card stacks, raw colors, raw Vuetify substitutes, and decorative motion that ignores reduced-motion tokens are prohibited.
+Typography uses repository type and weight tokens for titles, headings, body, metadata, and labels. Breadcrumbs retain the full accessible name when visually truncated. Spacing uses repository space tokens and `--r-row-pad`. Navigation uses the one canonical route and one drill-down model; `ZASteps` shows root, folder, fast test, and save, while preview is post-save status. Use one `ZACard` or Settings section shell with repository radius, elevation, border, foreground, surface, and semantic status tokens. Nested-card stacks, raw colors, raw Vuetify substitutes, and decorative motion that ignores reduced-motion tokens are prohibited.
 
 ## 11. Universal Input and Focus Geometry
 
-Mouse, touch, keyboard, and gamepad provide equivalent outcomes through the live v2 mechanisms. `useGamepad` translates controller direction into keyboard events and handles activation, cancellation, and global actions. `useGridNav` provides arrow navigation for explicit DOM rows, while `useWrapGridNav` reconstructs visual rows for wrapping grids. `useInputModality` owns `data-input`. Native DOM order covers linear lists, forms, and breadcrumbs, and `RDialog` and `RMenu` provide overlay scope and cancellation. Phase 7 must compose these mechanisms without ad hoc key handlers or a parallel focus system. Any future unified input or focus layer requires an explicit later runtime contract and is not assumed by this specification.
+Mouse, touch, keyboard, and gamepad provide equivalent outcomes through the live v2 mechanisms. `useGamepad` translates controller direction into keyboard events and handles activation, cancellation, and global actions. `useGridNav` provides arrow navigation for explicit DOM rows, while `useWrapGridNav` reconstructs visual rows for wrapping grids. `useInputModality` owns `data-input`. Native DOM order covers linear lists, forms, and breadcrumbs, and `ZADialog` and `ZAMenu` provide overlay scope and cancellation. Phase 7 must compose these mechanisms without ad hoc key handlers or a parallel focus system. Any future unified input or focus layer requires an explicit later runtime contract and is not assumed by this specification.
 
 | Context           | Mouse and touch                                            | Keyboard                                                                 | Gamepad                                                     | Focus continuity                                           |
 | ----------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------- |
@@ -178,26 +178,26 @@ Focus rings use repository focus tokens only for `data-input="key"` and `data-in
 
 Use `useBreakpoint` for conditional mounting and `html[data-bp]` selectors for layout. Raw layout media queries are prohibited. The same drill-down browser and selection boundary apply at xs, sm, md, lg, and xl.
 
-| Breakpoint | Composition                                                 | Browser and overlays                                                                | Focus rule                                |
-| ---------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------- |
-| xs         | One column, stacked actions, `--r-row-pad`                  | Browser, `RDialog`, and `RDrawer` are full-bleed; breadcrumbs may collapse visually | Mount-gate desktop chrome; 44px targets   |
-| sm         | One column with wider spacing                               | Same list; established sheet behavior for large menus                               | Unmount hidden wide actions               |
-| md         | Summary above guided workspace                              | Same list, no tree or split pane                                                    | Zones order shell, summary, workspace     |
-| lg         | Wider measure may use sibling summary and workspace regions | Same list and pagination                                                            | Spatial movement follows visible geometry |
-| xl         | More breathing room, not more information density           | Same bounded list; no recursive prefetch                                            | No desktop-only focus model or action     |
+| Breakpoint | Composition                                                 | Browser and overlays                                                                  | Focus rule                                |
+| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------- | ----------------------------------------- |
+| xs         | One column, stacked actions, `--r-row-pad`                  | Browser, `ZADialog`, and `ZADrawer` are full-bleed; breadcrumbs may collapse visually | Mount-gate desktop chrome; 44px targets   |
+| sm         | One column with wider spacing                               | Same list; established sheet behavior for large menus                                 | Unmount hidden wide actions               |
+| md         | Summary above guided workspace                              | Same list, no tree or split pane                                                      | Zones order shell, summary, workspace     |
+| lg         | Wider measure may use sibling summary and workspace regions | Same list and pagination                                                              | Spatial movement follows visible geometry |
+| xl         | More breathing room, not more information density           | Same bounded list; no recursive prefetch                                              | No desktop-only focus model or action     |
 
 ## 13. Token and Primitive Matrix
 
-| Need                              | Tokens or mechanism                             | Primitive or composition                                             |
-| --------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------- |
-| Hierarchy                         | Type scale, weights, foreground, `--r-row-pad`  | Semantic headings in `RCard` or Settings section shell               |
-| Surface                           | Space, radius, elevation, border, surface       | `RCard`, no nested cards                                             |
-| Sequence                          | Brand and foreground                            | `RSteps`, `RBtn`                                                     |
-| Folder navigation                 | Row padding, hover, selected, focus             | `RList`, `RListItem`, breadcrumb actions                             |
-| State and recovery                | Success, warning, danger, info, neutral         | `RAlert`, `REmptyState`, `RBtn`                                      |
-| Loading and progress              | Skeleton, motion, reduced motion                | `RSkeletonBlock`; `RProgressLinear` only for real determinate values |
-| Forms and actions                 | Focus, disabled, touch target                   | Existing form primitives and `RBtn`                                  |
-| Confirmation and mobile workspace | Panel, border, radius, elevation, focus, motion | `RDialog`, `RDrawer` with managed scope                              |
+| Need                              | Tokens or mechanism                             | Primitive or composition                                               |
+| --------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- |
+| Hierarchy                         | Type scale, weights, foreground, `--r-row-pad`  | Semantic headings in `ZACard` or Settings section shell                |
+| Surface                           | Space, radius, elevation, border, surface       | `ZACard`, no nested cards                                              |
+| Sequence                          | Brand and foreground                            | `ZASteps`, `ZABtn`                                                     |
+| Folder navigation                 | Row padding, hover, selected, focus             | `ZAList`, `ZAListItem`, breadcrumb actions                             |
+| State and recovery                | Success, warning, danger, info, neutral         | `ZAAlert`, `ZAEmptyState`, `ZABtn`                                     |
+| Loading and progress              | Skeleton, motion, reduced motion                | `ZASkeletonBlock`; `ZAProgressLinear` only for real determinate values |
+| Forms and actions                 | Focus, disabled, touch target                   | Existing form primitives and `ZABtn`                                   |
+| Confirmation and mobile workspace | Panel, border, radius, elevation, focus, motion | `ZADialog`, `ZADrawer` with managed scope                              |
 
 Phase 7 uses `useCan("app.admin")` as an administration visibility hint while backend authorization remains authoritative. Visible copy is localized. Parallel overlay, breakpoint, and focus systems do not satisfy this contract.
 
@@ -214,14 +214,14 @@ Phase 7 uses `useCan("app.admin")` as an administration visibility hint while ba
 
 Team4s was inspected read-only only to identify abstract presentation principles. The resulting contract is an original RomM interpretation expressed through the existing RomM v2 system.
 
-| Abstract principle observed                                             | Original RomM interpretation                                                                              | RomM tokens and primitives                                                 | No-copy confirmation                                             |
-| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Hierarchy makes the primary administrative question immediately legible | Lead with platform identity and archive safety, then friendly root, relative folder, preview, and actions | Type and foreground tokens, `RCard`, semantic headings                     | no-copy: no external markup, component structure, or wording     |
-| Consistent spacing separates related groups without excess containers   | Use `--r-row-pad` and repository space tokens inside one section shell                                    | Space, radius, border, elevation tokens, `RCard`                           | no-copy: no external measurements or style declarations          |
-| Restrained typography distinguishes title, status, metadata, and action | Apply the RomM type scale and weights with localized labels                                               | Type and foreground tokens, `RAlert`, `RBtn`                               | no-copy: no external font, type stylesheet, or identity          |
-| Navigation preserves context while advancing one task                   | Converge two entries on one platform-led route and use one drill-down list                                | `RSteps`, `RList`, `RListItem`, breadcrumb actions                         | no-copy: no React navigation component or route source           |
-| Cards group information without fragmenting the page                    | Use one compact RomM surface with stable internal regions, not nested stacks                              | Surface, border, radius, elevation tokens, `RCard`                         | no-copy: no external card component, CSS, or asset               |
-| State presentation couples strong status cues with recovery             | Use icon, localized text, semantic tone, local recovery, and focus continuity                             | Status and focus tokens, `RAlert`, `REmptyState`, `RSkeletonBlock`, `RBtn` | no-copy: no external state copy, illustration, or implementation |
+| Abstract principle observed                                             | Original RomM interpretation                                                                              | RomM tokens and primitives                                                     | No-copy confirmation                                             |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
+| Hierarchy makes the primary administrative question immediately legible | Lead with platform identity and archive safety, then friendly root, relative folder, preview, and actions | Type and foreground tokens, `ZACard`, semantic headings                        | no-copy: no external markup, component structure, or wording     |
+| Consistent spacing separates related groups without excess containers   | Use `--r-row-pad` and repository space tokens inside one section shell                                    | Space, radius, border, elevation tokens, `ZACard`                              | no-copy: no external measurements or style declarations          |
+| Restrained typography distinguishes title, status, metadata, and action | Apply the RomM type scale and weights with localized labels                                               | Type and foreground tokens, `ZAAlert`, `ZABtn`                                 | no-copy: no external font, type stylesheet, or identity          |
+| Navigation preserves context while advancing one task                   | Converge two entries on one platform-led route and use one drill-down list                                | `ZASteps`, `ZAList`, `ZAListItem`, breadcrumb actions                          | no-copy: no React navigation component or route source           |
+| Cards group information without fragmenting the page                    | Use one compact RomM surface with stable internal regions, not nested stacks                              | Surface, border, radius, elevation tokens, `ZACard`                            | no-copy: no external card component, CSS, or asset               |
+| State presentation couples strong status cues with recovery             | Use icon, localized text, semantic tone, local recovery, and focus continuity                             | Status and focus tokens, `ZAAlert`, `ZAEmptyState`, `ZASkeletonBlock`, `ZABtn` | no-copy: no external state copy, illustration, or implementation |
 
 D-19 is satisfied by the abstract-principle, original-interpretation, token/primitive, and no-copy columns. D-20 is satisfied because no Team4s React component, source file, screenshot, asset, branding, identity, runtime dependency, or other code was copied, modified, embedded, or introduced. D-21 is satisfied because this text-only specification contains no Team4s screenshot and does not reproduce its visual identity. RomM examples and existing RomM v2 primitives are the only implementation references.
 
@@ -249,7 +249,7 @@ D-19 is satisfied by the abstract-principle, original-interpretation, token/prim
 - [x] Deep Unicode folders use arbitrary-depth breadcrumbs and one selected recursive subtree; descendants are included and siblings excluded.
 - [x] Navigation remains paginated and bounded for hundreds of folders and terabyte-scale libraries, with no size, recursive walk, full scan, or hash work before save.
 - [x] Loading, empty, health, authorization, browse, conflict, preview, problem, stale, and bounded error states have icon, localized text intent, semantic tone, recovery, redaction, and focus behavior.
-- [x] Hierarchy, Typography, Spacing, Navigation, Cards, and state presentation map to existing RomM tokens and `R*` primitives in both themes.
+- [x] Hierarchy, Typography, Spacing, Navigation, Cards, and state presentation map to existing RomM tokens and `ZA*` primitives in both themes.
 - [x] Mouse, touch, keyboard, and gamepad use the existing input and focus systems with modal scope and focus restoration.
 - [x] xs, sm, md, lg, and xl use one browser model, `useBreakpoint`, `data-bp`, mount-gated chrome, 44px targets, and full-bleed mobile overlays.
 - [x] The Principles Provenance Matrix provides original RomM interpretations and explicit no-copy confirmation for abstract Team4s principles.

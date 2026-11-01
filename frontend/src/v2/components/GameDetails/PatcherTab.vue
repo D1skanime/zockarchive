@@ -1,15 +1,15 @@
 <script setup lang="ts">
 // PatcherTab applies a temporary server-side patch and downloads the result.
 import {
-  RAlert,
-  RBtn,
-  RDropzone,
-  RIcon,
-  RPlatformIcon,
-  RSelect,
-  RSliderBtnGroup,
-  RTextField,
-  RTooltip,
+  ZAAlert,
+  ZABtn,
+  ZADropzone,
+  ZAIcon,
+  ZAPlatformIcon,
+  ZASelect,
+  ZASliderBtnGroup,
+  ZATextField,
+  ZATooltip,
 } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -239,15 +239,15 @@ const applyLabel = computed(() => t("patcher.apply-download"));
     </p>
 
     <div v-if="loadError || statusMessage" class="r-v2-patch__status">
-      <RAlert v-if="loadError" type="error" density="compact">
+      <ZAAlert v-if="loadError" type="error" density="compact">
         {{ loadError }}
-      </RAlert>
-      <RAlert v-if="statusMessage" type="info" density="compact">
+      </ZAAlert>
+      <ZAAlert v-if="statusMessage" type="info" density="compact">
         <template #prepend>
           <div class="r-v2-patch__status-spinner" />
         </template>
         {{ statusMessage }}
-      </RAlert>
+      </ZAAlert>
     </div>
 
     <!-- File pickers — base ROM + patch, combined into the output. The
@@ -256,12 +256,12 @@ const applyLabel = computed(() => t("patcher.apply-download"));
       <!-- ROM panel -->
       <div class="r-v2-patch__panel">
         <div class="r-v2-patch__panel-label">
-          <RIcon icon="mdi-disc" size="13" />
+          <ZAIcon icon="mdi-disc" size="13" />
           {{ t("patcher.rom-file") }}
         </div>
 
         <div class="r-v2-patch__rom-info">
-          <RPlatformIcon
+          <ZAPlatformIcon
             :slug="rom.platform_slug"
             :fs-slug="rom.platform_fs_slug"
             :name="rom.platform_display_name"
@@ -283,7 +283,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
         </div>
 
         <!-- More than one base file: pick which one to patch. -->
-        <RSelect
+        <ZASelect
           v-if="baseFiles.length > 1"
           v-model="selectedRomFile"
           :items="baseFiles"
@@ -303,7 +303,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
               </span>
             </li>
           </template>
-        </RSelect>
+        </ZASelect>
 
         <!-- Exactly one base file: show it, no picker needed. -->
         <div v-else-if="selectedRomFile" class="r-v2-patch__file-single">
@@ -314,7 +314,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
             {{ selectedRomFile.file_name }}
           </span>
           <span class="r-v2-patch__chip">
-            <RIcon icon="mdi-weight" size="11" />
+            <ZAIcon icon="mdi-weight" size="11" />
             {{ formatBytes(selectedRomFile.file_size_bytes) }}
           </span>
         </div>
@@ -325,20 +325,20 @@ const applyLabel = computed(() => t("patcher.apply-download"));
       </div>
 
       <div class="r-v2-patch__connector" aria-hidden="true">
-        <RIcon icon="mdi-plus" size="16" />
+        <ZAIcon icon="mdi-plus" size="16" />
       </div>
 
       <!-- Patch panel -->
       <div class="r-v2-patch__panel">
         <div class="r-v2-patch__panel-head">
           <div class="r-v2-patch__panel-label">
-            <RIcon icon="mdi-puzzle-outline" size="13" />
+            <ZAIcon icon="mdi-puzzle-outline" size="13" />
             {{ t("patcher.patch-file") }}
           </div>
           <!-- Supported formats live in a compact pill. `open-on-tap` so the
                tip reveals on hover (mouse) AND on tap (touch), not only on
                hover. -->
-          <RTooltip location="bottom end" :offset="8" open-on-tap>
+          <ZATooltip location="bottom end" :offset="8" open-on-tap>
             <template #activator="{ props: tooltipProps }">
               <button
                 v-bind="tooltipProps"
@@ -346,7 +346,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
                 class="r-v2-patch__formats-pill"
               >
                 {{ t("patcher.supported-formats") }}
-                <RIcon icon="mdi-information-outline" size="13" />
+                <ZAIcon icon="mdi-information-outline" size="13" />
               </button>
             </template>
             <div class="r-v2-patch__formats-list">
@@ -358,12 +358,12 @@ const applyLabel = computed(() => t("patcher.apply-download"));
                 {{ format }}
               </span>
             </div>
-          </RTooltip>
+          </ZATooltip>
         </div>
 
         <!-- Source toggle — only when the ROM bundles patch files; a plain
              game has nothing to pick, so it goes straight to upload. -->
-        <RSliderBtnGroup
+        <ZASliderBtnGroup
           v-if="hasLibraryPatches"
           v-model="patchSource"
           variant="tab"
@@ -373,7 +373,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
 
         <!-- Library source: pick one of the ROM's bundled patch files. -->
         <template v-if="patchSource === 'library'">
-          <RSelect
+          <ZASelect
             v-if="patchFiles.length > 1"
             v-model="selectedPatchFile"
             :items="patchFiles"
@@ -395,7 +395,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
                 </span>
               </li>
             </template>
-          </RSelect>
+          </ZASelect>
 
           <!-- Exactly one patch file: show it, no picker needed. -->
           <div v-else-if="selectedPatchFile" class="r-v2-patch__file-single">
@@ -406,7 +406,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
               {{ selectedPatchFile.file_name }}
             </span>
             <span class="r-v2-patch__chip">
-              <RIcon icon="mdi-weight" size="11" />
+              <ZAIcon icon="mdi-weight" size="11" />
               {{ formatBytes(selectedPatchFile.file_size_bytes) }}
             </span>
           </div>
@@ -414,7 +414,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
 
         <!-- Upload source: apply a patch from disk without storing it. -->
         <template v-else>
-          <RDropzone
+          <ZADropzone
             v-if="!uploadedPatch"
             :accept="acceptAttr"
             :title="t('patcher.choose-patch')"
@@ -424,15 +424,15 @@ const applyLabel = computed(() => t("patcher.apply-download"));
             @files="onPatchFiles"
           />
           <div v-else class="r-v2-patch__file-single">
-            <RIcon icon="mdi-puzzle-outline" size="16" />
+            <ZAIcon icon="mdi-puzzle-outline" size="16" />
             <span class="r-v2-patch__file-name" :title="uploadedPatch.name">
               {{ uploadedPatch.name }}
             </span>
             <span class="r-v2-patch__chip">
-              <RIcon icon="mdi-weight" size="11" />
+              <ZAIcon icon="mdi-weight" size="11" />
               {{ formatBytes(uploadedPatch.size) }}
             </span>
-            <RBtn
+            <ZABtn
               icon="mdi-close"
               size="x-small"
               variant="text"
@@ -446,7 +446,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
 
     <!-- Controls panel -->
     <div class="r-v2-patch__controls">
-      <RTextField
+      <ZATextField
         v-model="customFileName"
         prefix-label="stacked"
         :placeholder="filenamePlaceholder"
@@ -456,13 +456,13 @@ const applyLabel = computed(() => t("patcher.apply-download"));
         clearable
       >
         <template #prefix-label>
-          <RIcon icon="mdi-file-edit-outline" size="14" />
+          <ZAIcon icon="mdi-file-edit-outline" size="14" />
           {{ t("patcher.output-filename") }}
         </template>
-      </RTextField>
+      </ZATextField>
 
       <div class="r-v2-patch__apply-row">
-        <RBtn
+        <ZABtn
           size="large"
           variant="flat"
           color="primary"
@@ -472,7 +472,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
           @click="patchRom"
         >
           {{ applyLabel }}
-        </RBtn>
+        </ZABtn>
       </div>
     </div>
 
@@ -616,7 +616,7 @@ const applyLabel = computed(() => t("patcher.apply-download"));
   max-width: 220px;
 }
 
-/* Menu row layout for the multi-file RSelect: name on the left, size
+/* Menu row layout for the multi-file ZASelect: name on the left, size
    pushed to the right. */
 .r-v2-patch__file-row {
   display: flex;

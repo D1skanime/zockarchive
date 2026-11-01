@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RAlert, RBtn, RIcon, RSpinner, RSteps } from "@v2/lib";
+import { ZAAlert, ZABtn, ZAIcon, ZASpinner, ZASteps } from "@v2/lib";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { ROUTES } from "@/plugins/router";
@@ -159,18 +159,18 @@ onMounted(async () => {
     >
       <h2>{{ t("setup.recovery-complete") }}</h2>
       <p>{{ t("setup.recovery-read-only") }}</p>
-      <RBtn color="primary" :to="{ name: ROUTES.SCAN }">{{
+      <ZABtn color="primary" :to="{ name: ROUTES.SCAN }">{{
         t("setup.recovery-start-scan")
-      }}</RBtn>
+      }}</ZABtn>
     </section>
     <template v-else>
-      <RAlert v-if="loginRequired" type="info" role="status">
+      <ZAAlert v-if="loginRequired" type="info" role="status">
         {{ t("setup.recovery-login") }}
-        <RBtn :to="{ name: ROUTES.LOGIN, query: { next: '/setup' } }">{{
+        <ZABtn :to="{ name: ROUTES.LOGIN, query: { next: '/setup' } }">{{
           t("setup.recovery-login-action")
-        }}</RBtn>
-      </RAlert>
-      <RAlert v-if="cause" type="warning" role="alert">
+        }}</ZABtn>
+      </ZAAlert>
+      <ZAAlert v-if="cause" type="warning" role="alert">
         {{
           t(
             cause.startsWith("root_")
@@ -178,12 +178,12 @@ onMounted(async () => {
               : "setup.recovery-failed",
           )
         }}
-        <RBtn :loading="recovery.busy.value" @click="retryRecovery">{{
+        <ZABtn :loading="recovery.busy.value" @click="retryRecovery">{{
           t("setup.recovery-retry")
-        }}</RBtn>
-      </RAlert>
+        }}</ZABtn>
+      </ZAAlert>
       <header class="r-v2-setup__header">
-        <RSteps
+        <ZASteps
           :current="step"
           :total="TOTAL_STEPS"
           :direction="stepDirection"
@@ -197,22 +197,22 @@ onMounted(async () => {
       </header>
       <div class="r-v2-setup__body">
         <div v-if="loadingDiscovery && step === 1" class="r-v2-setup__loading">
-          <RSpinner /><span>{{ t("setup.loading-folders") }}</span>
+          <ZASpinner /><span>{{ t("setup.loading-folders") }}</span>
         </div>
         <div
           v-else-if="discoveryError && step === 1"
           class="r-v2-setup__error"
           role="alert"
         >
-          <RIcon icon="mdi-alert-circle-outline" :size="32" /><span>{{
+          <ZAIcon icon="mdi-alert-circle-outline" :size="32" /><span>{{
             discoveryError
           }}</span
-          ><RBtn
+          ><ZABtn
             variant="flat"
             color="primary"
             prepend-icon="mdi-refresh"
             @click="loadDiscovery"
-            >{{ t("common.try-again") }}</RBtn
+            >{{ t("common.try-again") }}</ZABtn
           >
         </div>
         <Transition
@@ -244,17 +244,17 @@ onMounted(async () => {
         </Transition>
       </div>
       <footer class="r-v2-setup__footer">
-        <RBtn
+        <ZABtn
           size="large"
           v-if="!isFirstStep"
           variant="text"
           :disabled="submitting"
           prepend-icon="mdi-chevron-left"
           @click="prev"
-          >{{ t("setup.previous") }}</RBtn
+          >{{ t("setup.previous") }}</ZABtn
         >
         <span />
-        <RBtn
+        <ZABtn
           size="large"
           variant="flat"
           color="primary"
@@ -262,7 +262,7 @@ onMounted(async () => {
           :loading="submitting"
           :disabled="!canProceed || submitting || loginRequired"
           @click="next"
-          >{{ isLastStep ? t("setup.finish") : t("setup.next") }}</RBtn
+          >{{ isLastStep ? t("setup.finish") : t("setup.next") }}</ZABtn
         >
       </footer>
     </template>

@@ -2,7 +2,7 @@
 // InviteLinkDialog — v2-native rebuild of v1
 // `Settings/Administration/Users/Dialog/InviteLink.vue`. Picks a role +
 // expiry, generates an invite URL, and shows it in a copyable field.
-import { RBtn, RIcon, RSelect } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASelect } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -11,7 +11,7 @@ import { getRoleIcon } from "@/utils";
 import { useClipboard } from "@/v2/composables/useClipboard";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 import userApi from "@/v2/data/adapters/legacy/services/api/user";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 
 defineOptions({ inheritAttrs: false });
 
@@ -85,7 +85,7 @@ function close() {
 </script>
 
 <template>
-  <RDialog v-model="show" icon="mdi-share-variant" :width="540" @close="close">
+  <ZADialog v-model="show" icon="mdi-share-variant" :width="540" @close="close">
     <template #header>
       <span class="r-v2-invite__title">{{ t("settings.invite-link") }}</span>
     </template>
@@ -104,14 +104,14 @@ function close() {
             :aria-pressed="selectedRole === role"
             @click="selectedRole = role"
           >
-            <RIcon :icon="getRoleIcon(role)" size="14" />
+            <ZAIcon :icon="getRoleIcon(role)" size="14" />
             {{ t(`settings.role-${role}`) }}
           </button>
         </div>
       </div>
 
       <div class="r-v2-invite__field">
-        <RSelect
+        <ZASelect
           v-model="selectedExpiration"
           :items="expirationOptions"
           :label="t('settings.expires-in')"
@@ -129,16 +129,16 @@ function close() {
           :aria-label="t('settings.copy-link')"
           @click="copyLink"
         >
-          <RIcon icon="mdi-content-copy" size="14" />
+          <ZAIcon icon="mdi-content-copy" size="14" />
         </button>
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="close">
+      <ZABtn variant="text" @click="close">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         :loading="generating"
@@ -147,9 +147,9 @@ function close() {
         @click="createInviteLink"
       >
         {{ t("common.generate") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

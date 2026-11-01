@@ -2,14 +2,14 @@
 // RawMetadataPanel (v2) — textarea + action row for one provider's raw
 // metadata payload. The visible "what provider is this" affordance is
 // owned by whoever hosts the panel (today: the active tab in
-// EditRomDialog's RTabNav, which shows the provider logo + label).
+// EditRomDialog's ZATabNav, which shows the provider logo + label).
 // That lets this component drop a redundant title and keep the surface
 // quiet — the JSON is the content.
 //
 // Feature composite — knows the UpdateRom shape and the emitter event
 // bus. Renders nothing if the rom has no stored data for the configured
 // provider.
-import { RBtn, RTextField } from "@v2/lib";
+import { ZABtn, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -90,14 +90,14 @@ function saveMetadata() {
   }
 }
 
-// aria-only — RTextField turns `label` into the input's aria-label when
+// aria-only — ZATextField turns `label` into the input's aria-label when
 // no `prefix-label` is set. No visible chrome rendered for it.
 const ariaLabel = computed(() => `${props.label} ${t("rom.metadata")} JSON`);
 </script>
 
 <template>
   <div v-if="hasMetadata" class="r-v2-raw-meta">
-    <RTextField
+    <ZATextField
       v-model="metadataJson"
       :label="ariaLabel"
       variant="outlined"
@@ -109,7 +109,7 @@ const ariaLabel = computed(() => `${props.label} ${t("rom.metadata")} JSON`);
       spellcheck="false"
     />
     <div class="r-v2-raw-meta__actions">
-      <RBtn
+      <ZABtn
         v-if="!isEditing"
         variant="text"
         color="primary"
@@ -117,19 +117,19 @@ const ariaLabel = computed(() => `${props.label} ${t("rom.metadata")} JSON`);
         @click="startEdit"
       >
         {{ t("common.edit") }}
-      </RBtn>
+      </ZABtn>
       <template v-else>
-        <RBtn variant="text" color="danger" @click="cancelEdit">
+        <ZABtn variant="text" color="danger" @click="cancelEdit">
           {{ t("common.cancel") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           variant="translucent"
           color="success"
           prepend-icon="mdi-check"
           @click="saveMetadata"
         >
           {{ t("common.save") }}
-        </RBtn>
+        </ZABtn>
       </template>
     </div>
   </div>

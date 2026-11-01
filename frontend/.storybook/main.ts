@@ -13,6 +13,9 @@ const config: StorybookConfig = {
     name: "@storybook/vue3-vite",
     options: {},
   },
+  docs: {
+    autodocs: true,
+  },
   async viteFinal(cfg) {
     // Ensure path aliases match the main app's Vite config so stories can
     // import from @/ and @v2/ without surprises.

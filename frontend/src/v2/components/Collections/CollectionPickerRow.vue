@@ -3,7 +3,7 @@
 // thumb + name + rom-count + brand-primary circular tick when checked.
 // Click toggles; parent owns the pending/checked state and handles the
 // API round-trip.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import CollectionMosaic from "@/v2/components/Collections/CollectionMosaic.vue";
 
@@ -62,7 +62,7 @@ const isFull = computed(() => props.state === "all");
     <span class="pick-row__name">{{ name }}</span>
     <span class="pick-row__count">{{ count }}</span>
     <span class="pick-row__tick" aria-hidden="true">
-      <RIcon
+      <ZAIcon
         v-if="isOn"
         :icon="isPartial ? 'mdi-minus' : 'mdi-check'"
         size="14"

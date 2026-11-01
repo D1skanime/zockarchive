@@ -17,7 +17,7 @@
 // Responsive: this sidebar is mount-gated to `md-and-up` by SettingsLayout.
 // On phones / small tablets it isn't rendered at all — the navbar UserMenu
 // mirrors the same section IA, so an in-page strip would only duplicate it.
-import { RChip, RIcon } from "@v2/lib";
+import { ZAChip, ZAIcon } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -182,20 +182,20 @@ const groups = computed<Group[]>(() => {
             class="r-v2-settings-sidebar__item"
             active-class="r-v2-settings-sidebar__item--active"
           >
-            <RIcon
+            <ZAIcon
               :icon="entry.icon"
               size="16"
               class="r-v2-settings-sidebar__icon"
             />
             <span class="r-v2-settings-sidebar__label">{{ entry.label }}</span>
-            <RChip
+            <ZAChip
               v-if="entry.badge"
               size="x-small"
               color="primary"
               class="r-v2-settings-sidebar__badge"
             >
               {{ entry.badge }}
-            </RChip>
+            </ZAChip>
           </router-link>
         </li>
       </ul>

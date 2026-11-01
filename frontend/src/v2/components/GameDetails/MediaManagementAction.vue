@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 
 const props = withDefaults(
@@ -23,7 +23,7 @@ const accent = computed(() =>
 );
 </script>
 <template>
-  <RBtn
+  <ZABtn
     size="small"
     class="za-shot__action"
     :class="{
@@ -43,8 +43,8 @@ const accent = computed(() =>
   >
     <span class="za-shot__action-content">
       <span class="za-shot__identity">
-        <RIcon :icon="icon" size="18" />
-        <RIcon
+        <ZAIcon :icon="icon" size="18" />
+        <ZAIcon
           v-if="selected"
           class="za-shot__check"
           icon="mdi-check"
@@ -54,6 +54,6 @@ const accent = computed(() =>
       </span>
       <span>{{ caption }}</span>
     </span>
-  </RBtn>
+  </ZABtn>
 </template>
 <style scoped src="./mediaManagementCard.css" />

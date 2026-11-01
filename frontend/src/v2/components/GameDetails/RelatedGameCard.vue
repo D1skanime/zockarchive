@@ -14,7 +14,7 @@
 // ROM. If it does, the click jumps to the internal detail page via
 // the router; otherwise the click opens the IGDB game page in a new
 // tab so the user can still reach metadata for games they don't own.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -212,7 +212,7 @@ function onClick(e: MouseEvent) {
          Remake / …) so the visual rhythm matches across the app. -->
     <template v-if="inLibrary || availableLocally" #overlay>
       <span class="related-card__owned">
-        <RIcon icon="mdi-check" size="11" />
+        <ZAIcon icon="mdi-check" size="11" />
         {{ t("common.owned") }}
       </span>
     </template>

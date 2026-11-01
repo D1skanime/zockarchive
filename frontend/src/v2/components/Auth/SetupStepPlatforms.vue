@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RSelect } from "@v2/lib";
+import { ZASelect } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -75,7 +75,7 @@ const updateFolder = (folder: SetupFolder, value: unknown) => {
               }}</small>
             </th>
             <td>
-              <RSelect
+              <ZASelect
                 :model-value="props.draft[folder.name]"
                 :items="options"
                 item-title="display_name"

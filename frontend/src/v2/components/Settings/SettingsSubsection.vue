@@ -3,7 +3,7 @@
 // body when the section logically contains related groups (e.g. Home →
 // Widgets). Reads as a divider + small uppercase label so the visual
 // hierarchy stays clear without nesting another full section card.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 
 defineOptions({ inheritAttrs: false });
 
@@ -16,7 +16,7 @@ defineProps<{
 <template>
   <div class="r-v2-settings-sub">
     <div class="r-v2-settings-sub__head">
-      <RIcon v-if="icon" :icon="icon" size="12" />
+      <ZAIcon v-if="icon" :icon="icon" size="12" />
       <span class="r-v2-settings-sub__title">{{ title }}</span>
       <slot name="header-actions" />
     </div>

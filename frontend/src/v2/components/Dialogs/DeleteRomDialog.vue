@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Catalog-only removal keeps original files unchanged. Optional exclusions
 // prevent successfully removed entries from returning in later scans.
-import { RBtn, RCheckbox, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZACheckbox, ZADialog, ZAIcon } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -130,7 +130,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-delete-outline"
     scroll-content
@@ -163,7 +163,7 @@ function closeDialog() {
               :alt="rom.name ?? ''"
             />
             <div v-else class="r-v2-del-rom__cover-placeholder">
-              <RIcon icon="mdi-disc" size="18" />
+              <ZAIcon icon="mdi-disc" size="18" />
             </div>
           </div>
           <div class="r-v2-del-rom__meta">
@@ -179,7 +179,7 @@ function closeDialog() {
     </template>
     <template #append>
       <div class="r-v2-del-rom__append">
-        <RCheckbox
+        <ZACheckbox
           v-model="excludeOnDelete"
           hide-details
           :label="t('rom.remove-from-catalog-future-scan-exclusion')"
@@ -187,11 +187,11 @@ function closeDialog() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" :disabled="deleting" @click="closeDialog">
+      <ZABtn variant="text" :disabled="deleting" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="translucent"
         color="error"
         prepend-icon="mdi-delete"
@@ -200,9 +200,9 @@ function closeDialog() {
         @click="deleteRoms"
       >
         {{ t("rom.remove-from-catalog-confirm") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

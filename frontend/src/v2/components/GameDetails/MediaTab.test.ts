@@ -19,8 +19,8 @@ vi.mock("vue-router", () => ({
   useRouter: () => ({ replace }),
 }));
 vi.mock("@v2/lib", () => ({
-  RIcon: { template: "<span />" },
-  REmptyState: { template: "<div />" },
+  ZAIcon: { template: "<span />" },
+  ZAEmptyState: { template: "<div />" },
 }));
 vi.mock("@/v2/components/GameDetails/ScreenshotsSubtab.vue", () => ({
   __esModule: true,

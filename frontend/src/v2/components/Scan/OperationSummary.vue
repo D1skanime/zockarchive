@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RAlert } from "@v2/lib";
+import { ZAAlert } from "@v2/lib";
 import { computed } from "vue";
 import type { OperationRequest, OperationResult } from "@/v2/data/contracts";
 
@@ -38,5 +38,5 @@ const summaryText = computed(() =>
 </script>
 
 <template>
-  <RAlert type="info" variant="outlined" :text="summaryText" />
+  <ZAAlert type="info" variant="outlined" :text="summaryText" />
 </template>

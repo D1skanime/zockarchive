@@ -9,14 +9,14 @@
 // controls right-aligned. `position="floating"` docks it top-right of the
 // gallery's scroll container as a glass pill.
 import {
-  RBadge,
-  RBtn,
-  RDivider,
-  RIcon,
-  RMenu,
-  RMenuItem,
-  RSliderBtnGroup,
-  RTextField,
+  ZABadge,
+  ZABtn,
+  ZADivider,
+  ZAIcon,
+  ZAMenu,
+  ZAMenuItem,
+  ZASliderBtnGroup,
+  ZATextField,
 } from "@v2/lib";
 import type { Ref } from "vue";
 import { computed } from "vue";
@@ -232,7 +232,7 @@ const { smAndUp } = useBreakpoint();
   <div class="gallery-toolbar" :class="[`gallery-toolbar--${position}`]">
     <!-- Filter controls. Always sits left of the controls cluster. -->
     <!-- eslint-disable vuejs-accessibility/no-autofocus -- the Search view is opened to type a query -->
-    <RTextField
+    <ZATextField
       v-if="showSearch"
       :model-value="search"
       :placeholder="effectiveSearchPlaceholder"
@@ -245,22 +245,22 @@ const { smAndUp } = useBreakpoint();
       @update:model-value="(v: string) => setSearch(v ?? '')"
     >
       <template #prefix-label>
-        <RIcon icon="mdi-magnify" size="16" />
+        <ZAIcon icon="mdi-magnify" size="16" />
       </template>
-    </RTextField>
+    </ZATextField>
     <!-- eslint-enable vuejs-accessibility/no-autofocus -->
 
     <!-- Filter button — sits flush against the search field. Same disc
-         shape as the kebab (outlined icon-only RBtn); the active-count
-         chip is `RBadge` anchored top-end. -->
-    <RBadge
+         shape as the kebab (outlined icon-only ZABtn); the active-count
+         chip is `ZABadge` anchored top-end. -->
+    <ZABadge
       v-if="showFilter"
       :model-value="filterActiveCount > 0"
       :content="filterActiveCount"
       color="primary"
       floating
     >
-      <RBtn
+      <ZABtn
         variant="outlined"
         surface
         icon="mdi-filter-variant"
@@ -268,10 +268,10 @@ const { smAndUp } = useBreakpoint();
         :aria-label="t('gallery.filters')"
         @click="emit('click:filter')"
       />
-    </RBadge>
+    </ZABadge>
 
     <template v-if="smAndUp">
-      <RSliderBtnGroup
+      <ZASliderBtnGroup
         v-for="sf in segmentFilters"
         :key="sf.key"
         :model-value="sf.value"
@@ -288,7 +288,7 @@ const { smAndUp } = useBreakpoint();
          they collapse into the kebab menu so the toolbar fits on phones
          without overflowing. -->
     <div class="gallery-toolbar__controls">
-      <RSliderBtnGroup
+      <ZASliderBtnGroup
         v-if="smAndUp && showGroupBy"
         :model-value="groupByValue"
         :items="effectiveGroupByItems"
@@ -298,7 +298,7 @@ const { smAndUp } = useBreakpoint();
         @update:model-value="setGroupBy"
       />
 
-      <RSliderBtnGroup
+      <ZASliderBtnGroup
         v-if="smAndUp"
         :model-value="sortDirValue"
         :items="sortDirItems"
@@ -308,7 +308,7 @@ const { smAndUp } = useBreakpoint();
         @update:model-value="setSortDir"
       />
 
-      <RSliderBtnGroup
+      <ZASliderBtnGroup
         v-if="smAndUp"
         :model-value="layoutValue"
         :items="layoutItems"
@@ -320,7 +320,7 @@ const { smAndUp } = useBreakpoint();
       <!-- Kebab mirror — only visible below smAndUp. Mirrors the slider
            state: `groupBy` items disable in list mode, same way the
            inline GroupBy slider does. -->
-      <RMenu
+      <ZAMenu
         v-if="!smAndUp"
         location="bottom end"
         :offset="8"
@@ -328,7 +328,7 @@ const { smAndUp } = useBreakpoint();
         sheet-on-mobile
       >
         <template #activator="{ props: activatorProps }">
-          <RBtn
+          <ZABtn
             v-bind="activatorProps"
             variant="outlined"
             surface
@@ -338,7 +338,7 @@ const { smAndUp } = useBreakpoint();
           />
         </template>
         <template v-for="sf in segmentFilters" :key="sf.key">
-          <RMenuItem
+          <ZAMenuItem
             v-for="item in sf.items"
             :key="item.id"
             :label="item.label ?? item.title ?? item.ariaLabel ?? item.id"
@@ -347,10 +347,10 @@ const { smAndUp } = useBreakpoint();
             :disabled="sf.disabled"
             @click="setSegmentFilter(sf.key, item.id)"
           />
-          <RDivider />
+          <ZADivider />
         </template>
         <template v-if="showGroupBy && effectiveGroupByItems.length > 0">
-          <RMenuItem
+          <ZAMenuItem
             v-for="item in effectiveGroupByItems"
             :key="item.id"
             :label="item.label ?? item.title ?? item.ariaLabel ?? item.id"
@@ -359,36 +359,36 @@ const { smAndUp } = useBreakpoint();
             :disabled="layoutValue === 'list'"
             @click="setGroupBy(item.id)"
           />
-          <RDivider />
+          <ZADivider />
         </template>
-        <RMenuItem
+        <ZAMenuItem
           :label="t('gallery.sort-ascending')"
           icon="mdi-sort-ascending"
           :variant="sortDirValue === 'asc' ? 'active' : 'default'"
           :disabled="layoutValue === 'list'"
           @click="setSortDir('asc')"
         />
-        <RMenuItem
+        <ZAMenuItem
           :label="t('gallery.sort-descending')"
           icon="mdi-sort-descending"
           :variant="sortDirValue === 'desc' ? 'active' : 'default'"
           :disabled="layoutValue === 'list'"
           @click="setSortDir('desc')"
         />
-        <RDivider />
-        <RMenuItem
+        <ZADivider />
+        <ZAMenuItem
           :label="t('gallery.view-grid')"
           icon="mdi-view-grid-outline"
           :variant="layoutValue === 'grid' ? 'active' : 'default'"
           @click="setLayout('grid')"
         />
-        <RMenuItem
+        <ZAMenuItem
           :label="t('gallery.view-list')"
           icon="mdi-view-list"
           :variant="layoutValue === 'list' ? 'active' : 'default'"
           @click="setLayout('list')"
         />
-      </RMenu>
+      </ZAMenu>
     </div>
   </div>
 </template>

@@ -3,8 +3,8 @@ import { createPinia, setActivePinia } from "pinia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defineComponent, h, ref } from "vue";
 import storePermissions from "@/stores/permissions";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
-import { closeTopEscapable } from "@/v2/lib/overlays/RDialog/escapeStack";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
+import { closeTopEscapable } from "@/v2/lib/overlays/ZADialog/escapeStack";
 import LocalizedDescriptionEditor from "./LocalizedDescriptionEditor.vue";
 
 const mocks = vi.hoisted(() => ({
@@ -31,21 +31,21 @@ vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
 vi.mock("@/v2/composables/useSnackbar", () => ({ useSnackbar: () => mocks }));
 
 const stubs = {
-  RBtn: {
-    name: "RBtn",
+  ZABtn: {
+    name: "ZABtn",
     emits: ["click"],
     props: ["disabled", "loading"],
     template:
       "<button :disabled='disabled' :aria-busy='loading' @click='$emit(\"click\")'><slot /></button>",
   },
-  RSelect: {
-    name: "RSelect",
+  ZASelect: {
+    name: "ZASelect",
     props: ["modelValue", "disabled", "items", "label"],
     template:
       "<select :value='modelValue' :disabled='disabled' :aria-label='label' @change='$emit(\"update:modelValue\", $event.target.value)'><option v-for='item in items' :key='item'>{{ item }}</option></select>",
   },
-  RTextField: {
-    name: "RTextField",
+  ZATextField: {
+    name: "ZATextField",
     props: ["modelValue", "disabled", "hint", "label"],
     template:
       "<label>{{ label }}<textarea :value='modelValue' :disabled='disabled' @input='$emit(\"update:modelValue\", $event.target.value)' /><span>{{ hint }}</span></label>",
@@ -182,7 +182,7 @@ describe("localized description editor", () => {
     await wrapper.get("textarea").setValue("Draft");
     expect(wrapper.get("select").attributes("disabled")).toBeDefined();
     wrapper
-      .getComponent({ name: "RSelect" })
+      .getComponent({ name: "ZASelect" })
       .vm.$emit("update:modelValue", "fr-FR");
     language.value = "en_US";
     await wrapper.setProps({
@@ -279,10 +279,10 @@ describe("localized description editor", () => {
     expect(wrapper.get("textarea").attributes("disabled")).toBeDefined();
     expect(wrapper.text()).toContain("rom.description-read-only");
     wrapper
-      .getComponent({ name: "RTextField" })
+      .getComponent({ name: "ZATextField" })
       .vm.$emit("update:modelValue", "Bypass");
     await flushPromises();
-    wrapper.findAllComponents({ name: "RBtn" })[2].vm.$emit("click");
+    wrapper.findAllComponents({ name: "ZABtn" })[2].vm.$emit("click");
     await flushPromises();
     expect(mocks.rom).not.toHaveBeenCalled();
   });
@@ -308,7 +308,7 @@ it("restores attached trigger focus after an exact-only clear becomes empty", as
             "Edit",
           ),
           h(
-            RDialog,
+            ZADialog,
             {
               modelValue: open.value,
               "onUpdate:modelValue": (value: boolean) => {

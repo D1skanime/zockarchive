@@ -36,7 +36,7 @@ import storePlaying from "@/v2/data/adapters/legacy/stores/playing";
 import {
   closeTopEscapable,
   hasOpenEscapable,
-} from "@/v2/lib/overlays/RDialog/escapeStack.js";
+} from "@/v2/lib/overlays/ZADialog/escapeStack.js";
 
 // AppNav tab order — must match the `tabs` list in
 // `src/v2/components/AppShell/AppNav.vue`. LB/RB cycle through these.
@@ -187,13 +187,13 @@ export function useGamepad() {
     trigger?.click();
   }
 
-  // Navigate backwards. If any v2 overlay (RDialog, RMenu, RDrawer, …)
+  // Navigate backwards. If any v2 overlay (ZADialog, ZAMenu, ZADrawer, …)
   // is currently open we close the topmost one first — one B press
   // shouldn't both dismiss an overlay AND pop a history entry. With
   // nothing open it falls through to `router.back()`.
   //
   // Source of truth is the shared escape stack in
-  // `lib/overlays/RDialog/escapeStack.ts` — every escapable surface
+  // `lib/overlays/ZADialog/escapeStack.ts` — every escapable surface
   // pushes itself there while open, so this check is Vuetify-free and
   // doesn't depend on any DOM marker class.
   function goBack() {

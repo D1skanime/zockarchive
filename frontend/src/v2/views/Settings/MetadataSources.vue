@@ -1,18 +1,17 @@
 <script setup lang="ts">
-// MetadataSources — v2-native rewrite. Provider tiles grouped into
-// three categories (general catalogs, specialised sources, match
+// MetadataSources — v2-native rewrite. Provider tiles group three categories (general catalogs, specialised sources, match
 // proxies) matching the split used in the Setup wizard. Each tile
 // shows:
 //   • A circular logo
-//   • Provider name + tone-coloured `RTag` status chip. Wording adapts
+//   • Provider name + tone-coloured `ZATag` status chip. Wording adapts
 //     to how the provider is configured: key-based providers (IGDB,
 //     ScreenScraper, MobyGames, RetroAchievements, SteamGridDB) talk
 //     about the API key (missing / invalid / valid); flag-only
 //     providers (LaunchBox, Flashpoint, HowLongToBeat, Hasheous,
 //     PlayMatch) talk about the connection / enabled state.
-//   • A "visit website" `RBtn`, plus a "get API key" `RBtn` shown only
+//   • A "visit website" `ZABtn`, plus a "get API key" `ZABtn` shown only
 //     for key-based providers (flag-only providers have no key to get).
-import { RBtn, RTag } from "@v2/lib";
+import { ZABtn, ZATag } from "@v2/lib";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import SettingsSection from "@/v2/components/Settings/SettingsSection.vue";
@@ -188,9 +187,10 @@ function statusOf(source: Source): SourceStatus {
   return "pending";
 }
 
-type RTagTone = "neutral" | "brand" | "success" | "danger" | "warning" | "info";
+// prettier-ignore
+type ZATagTone = "neutral" | "brand" | "success" | "danger" | "warning" | "info";
 interface StatusInfo {
-  tone: RTagTone;
+  tone: ZATagTone;
   icon: string;
   label: string;
 }
@@ -279,7 +279,7 @@ onMounted(() => {
               <span v-if="source.subtitle" class="r-v2-meta__subtitle">
                 {{ source.subtitle }}
               </span>
-              <RTag
+              <ZATag
                 :tone="statusInfo(source).tone"
                 :prepend-icon="statusInfo(source).icon"
                 :text="statusInfo(source).label"
@@ -289,7 +289,7 @@ onMounted(() => {
           </header>
 
           <div class="r-v2-meta__actions">
-            <RBtn
+            <ZABtn
               v-if="source.requiresKey"
               variant="translucent"
               size="small"
@@ -299,8 +299,8 @@ onMounted(() => {
               rel="noopener noreferrer"
             >
               {{ t("settings.metadata-get-key") }}
-            </RBtn>
-            <RBtn
+            </ZABtn>
+            <ZABtn
               variant="text"
               size="small"
               prepend-icon="mdi-open-in-new"
@@ -309,7 +309,7 @@ onMounted(() => {
               rel="noopener noreferrer"
             >
               {{ t("settings.metadata-website") }}
-            </RBtn>
+            </ZABtn>
           </div>
         </article>
       </div>
@@ -337,7 +337,7 @@ onMounted(() => {
               <span v-if="source.subtitle" class="r-v2-meta__subtitle">
                 {{ source.subtitle }}
               </span>
-              <RTag
+              <ZATag
                 :tone="statusInfo(source).tone"
                 :prepend-icon="statusInfo(source).icon"
                 :text="statusInfo(source).label"
@@ -347,7 +347,7 @@ onMounted(() => {
           </header>
 
           <div class="r-v2-meta__actions">
-            <RBtn
+            <ZABtn
               v-if="source.requiresKey"
               variant="translucent"
               size="small"
@@ -357,8 +357,8 @@ onMounted(() => {
               rel="noopener noreferrer"
             >
               {{ t("settings.metadata-get-key") }}
-            </RBtn>
-            <RBtn
+            </ZABtn>
+            <ZABtn
               variant="text"
               size="small"
               prepend-icon="mdi-open-in-new"
@@ -367,7 +367,7 @@ onMounted(() => {
               rel="noopener noreferrer"
             >
               {{ t("settings.metadata-website") }}
-            </RBtn>
+            </ZABtn>
           </div>
         </article>
       </div>
@@ -395,7 +395,7 @@ onMounted(() => {
               <span v-if="source.subtitle" class="r-v2-meta__subtitle">
                 {{ source.subtitle }}
               </span>
-              <RTag
+              <ZATag
                 :tone="statusInfo(source).tone"
                 :prepend-icon="statusInfo(source).icon"
                 :text="statusInfo(source).label"
@@ -405,7 +405,7 @@ onMounted(() => {
           </header>
 
           <div class="r-v2-meta__actions">
-            <RBtn
+            <ZABtn
               v-if="source.requiresKey"
               variant="translucent"
               size="small"
@@ -415,8 +415,8 @@ onMounted(() => {
               rel="noopener noreferrer"
             >
               {{ t("settings.metadata-get-key") }}
-            </RBtn>
-            <RBtn
+            </ZABtn>
+            <ZABtn
               variant="text"
               size="small"
               prepend-icon="mdi-open-in-new"
@@ -425,7 +425,7 @@ onMounted(() => {
               rel="noopener noreferrer"
             >
               {{ t("settings.metadata-website") }}
-            </RBtn>
+            </ZABtn>
           </div>
         </article>
       </div>

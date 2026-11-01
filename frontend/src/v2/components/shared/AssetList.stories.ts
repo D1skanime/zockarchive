@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ref } from "vue";
 import type { SaveSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetList from "./AssetList.vue";
 
 // ── Mock builders ────────────────────────────────────────────────
@@ -44,8 +45,9 @@ function makeSave(i: number, overrides: Partial<SaveSchema> = {}): SaveSchema {
 }
 
 const meta: Meta<typeof AssetList> = {
-  title: "Shared/AssetList",
+  title: "Geteilt/Zusammengesetzt/AssetList",
   component: AssetList,
+  parameters: compositionParameters("components/shared/AssetList.stories.ts"),
   decorators: [
     () => ({
       template: `
@@ -70,7 +72,7 @@ type Story = StoryObj<typeof AssetList>;
 
 // A handful of saves — classic JRPG-style slot picker.
 export const FewSaves: Story = {
-  name: "Saves · 4 slots",
+  name: "Spielstände · 4 Plätze",
   render: () => ({
     components: { AssetList },
     setup() {
@@ -90,7 +92,7 @@ export const FewSaves: Story = {
 
 // Many saves — vertical scroll inside max-height.
 export const ManySaves: Story = {
-  name: "Saves · 10 (vertical scroll)",
+  name: "Spielstände · 10 (vertikal scrollbar)",
   render: () => ({
     components: { AssetList },
     setup() {
@@ -111,7 +113,7 @@ export const ManySaves: Story = {
 // Long filenames — exercise the ellipsis. The exact timestamp on the
 // right keeps the layout tidy.
 export const LongFilenames: Story = {
-  name: "Long filenames",
+  name: "Lange Dateinamen",
   render: () => ({
     components: { AssetList },
     setup() {
@@ -143,7 +145,7 @@ export const LongFilenames: Story = {
 
 // One save — most common case for new players.
 export const SingleSave: Story = {
-  name: "Single save",
+  name: "Ein Spielstand",
   render: () => ({
     components: { AssetList },
     setup() {
@@ -163,7 +165,7 @@ export const SingleSave: Story = {
 
 // None selected — the list is browsable even when nothing's picked.
 export const NoneSelected: Story = {
-  name: "None selected",
+  name: "Keiner ausgewählt",
   render: () => ({
     components: { AssetList },
     setup() {
@@ -183,7 +185,7 @@ export const NoneSelected: Story = {
 
 // Empty — distinct from "no save selected".
 export const Empty: Story = {
-  name: "Empty (no saves)",
+  name: "Leer (keine Spielstände)",
   render: () => ({
     components: { AssetList },
     template: `

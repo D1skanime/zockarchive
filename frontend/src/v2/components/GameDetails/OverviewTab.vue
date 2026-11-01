@@ -12,13 +12,13 @@
 //   6. Screenshots (also reachable via the Media tab's Screenshots subtab,
 //      which is where uploads will live)
 //   7. HLTB strip
-//   8. Related games — a single RCollapsible collapsing all of:
+//   8. Related games — a single ZACollapsible collapsing all of:
 //      Expansions, DLC, Remakes, Remasters, Similar games.
 //
 // Status enum + flags (now_playing / backlogged / hidden) and personal
 // metrics (rating / difficulty / completion) live in the action ribbon
 // — see GameActionBtn (status) and MetricMenuBtn.
-import { RBtn, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZADialog, ZAIcon } from "@v2/lib";
 import { getActivePinia } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -300,7 +300,7 @@ const youtubeEmbedUrl = computed(() =>
           {{ t(provenance.key, provenance.params) }}
         </p>
       </div>
-      <RBtn
+      <ZABtn
         v-if="canEdit"
         data-testid="overview-description-edit"
         size="large"
@@ -310,7 +310,7 @@ const youtubeEmbedUrl = computed(() =>
         @click="descriptionEditorOpen = true"
       />
     </div>
-    <RDialog v-model="descriptionEditorOpen" scroll-content>
+    <ZADialog v-model="descriptionEditorOpen" scroll-content>
       <template #header>{{ t("rom.description-editor") }}</template>
       <template #content>
         <LocalizedDescriptionEditor
@@ -328,7 +328,7 @@ const youtubeEmbedUrl = computed(() =>
           "
         />
       </template>
-    </RDialog>
+    </ZADialog>
 
     <!-- 2. Per-ROM fact rows (left-labelled). Revision, Last played +
          the per-game characteristics — Players, Age rating, RomM
@@ -400,7 +400,7 @@ const youtubeEmbedUrl = computed(() =>
     <!-- 4. Screenshots — scraped metadata images, read-only here. -->
     <div v-if="ownedScreenshots.length" class="overview-tab__section">
       <h4 class="overview-tab__section-heading">
-        <RIcon icon="mdi-image-multiple-outline" size="14" />
+        <ZAIcon icon="mdi-image-multiple-outline" size="14" />
         {{ t("rom.screenshots") }}
       </h4>
       <ScreenshotsTab
@@ -413,7 +413,7 @@ const youtubeEmbedUrl = computed(() =>
          live in the Media tab's Artwork subtab. -->
     <div v-if="videos.length" class="overview-tab__section">
       <h4 class="overview-tab__section-heading">
-        <RIcon icon="mdi-play-circle-outline" size="14" />
+        <ZAIcon icon="mdi-play-circle-outline" size="14" />
         {{ t("rom.media-video") }}
       </h4>
       <div class="overview-tab__videos">
@@ -432,7 +432,7 @@ const youtubeEmbedUrl = computed(() =>
 
     <div v-if="youtubeVideoId" class="overview-tab__section">
       <h4 class="overview-tab__section-heading">
-        <RIcon icon="mdi-youtube" size="14" />
+        <ZAIcon icon="mdi-youtube" size="14" />
         {{ t("rom.youtube-preview") }}
       </h4>
       <div v-if="youtubeEmbedUrl" class="overview-tab__youtube">
@@ -468,7 +468,7 @@ const youtubeEmbedUrl = computed(() =>
     <!-- 5. HLTB -->
     <div v-if="hasHltb" class="overview-tab__section">
       <h4 class="overview-tab__section-heading">
-        <RIcon icon="mdi-clock-outline" size="14" />
+        <ZAIcon icon="mdi-clock-outline" size="14" />
         {{ t("rom.how-long-to-beat") }}
       </h4>
       <HLTBStrip :metadata="hltb" />
@@ -486,7 +486,7 @@ const youtubeEmbedUrl = computed(() =>
         class="overview-tab__section"
       >
         <h4 class="overview-tab__section-heading">
-          <RIcon icon="mdi-puzzle-outline" size="14" />
+          <ZAIcon icon="mdi-puzzle-outline" size="14" />
           Expansions
         </h4>
         <RelatedGamesGrid
@@ -502,7 +502,7 @@ const youtubeEmbedUrl = computed(() =>
         class="overview-tab__section"
       >
         <h4 class="overview-tab__section-heading">
-          <RIcon icon="mdi-package-variant-closed" size="14" />
+          <ZAIcon icon="mdi-package-variant-closed" size="14" />
           DLC
         </h4>
         <RelatedGamesGrid
@@ -515,21 +515,21 @@ const youtubeEmbedUrl = computed(() =>
       </div>
       <div v-if="remakes.length" class="overview-tab__section">
         <h4 class="overview-tab__section-heading">
-          <RIcon icon="mdi-refresh" size="14" />
+          <ZAIcon icon="mdi-refresh" size="14" />
           Remakes
         </h4>
         <RelatedGamesGrid title="" :items="remakes" />
       </div>
       <div v-if="remasters.length" class="overview-tab__section">
         <h4 class="overview-tab__section-heading">
-          <RIcon icon="mdi-image-auto-adjust" size="14" />
+          <ZAIcon icon="mdi-image-auto-adjust" size="14" />
           Remasters
         </h4>
         <RelatedGamesGrid title="" :items="remasters" />
       </div>
       <div v-if="similarGames.length" class="overview-tab__section">
         <h4 class="overview-tab__section-heading">
-          <RIcon icon="mdi-shape-outline" size="14" />
+          <ZAIcon icon="mdi-shape-outline" size="14" />
           Similar games
         </h4>
         <RelatedGamesGrid title="" :items="similarGames" />

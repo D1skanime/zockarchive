@@ -4,7 +4,7 @@
 // the old role picker: an Admin toggle, and for non-admins the permission
 // group and the platforms hidden from them. Emitter-driven
 // (`showEditUserDialog`).
-import { RBtn, RIcon, RSelect, RSwitch, RTextField } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASelect, ZASwitch, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -19,7 +19,7 @@ import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
 import storePermissionGroups from "@/v2/data/adapters/legacy/stores/permissionGroups";
 import type { Platform } from "@/v2/data/adapters/legacy/stores/platforms";
 import storeUsers from "@/v2/data/adapters/legacy/stores/users";
-import RDialog from "@/v2/lib/overlays/RDialog/RDialog.vue";
+import ZADialog from "@/v2/lib/overlays/ZADialog/ZADialog.vue";
 import { userAvatarUrl } from "@/v2/utils/userAvatar";
 import HiddenGamesPicker from "./HiddenGamesPicker.vue";
 import HiddenPlatformsPicker from "./HiddenPlatformsPicker.vue";
@@ -270,7 +270,7 @@ function close() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-if="user"
     v-model="show"
     icon="mdi-account-edit"
@@ -284,7 +284,7 @@ function close() {
     <template #content>
       <div class="r-v2-user-dialog__edit-grid">
         <div class="r-v2-user-dialog__form">
-          <RTextField
+          <ZATextField
             v-model="user.username"
             prefix-label="stacked"
             :rules="usersStore.usernameRules"
@@ -292,11 +292,11 @@ function close() {
             clearable
           >
             <template #prefix-label>
-              <RIcon icon="mdi-account-outline" size="14" />
+              <ZAIcon icon="mdi-account-outline" size="14" />
               {{ t("settings.username") }}
             </template>
-          </RTextField>
-          <RTextField
+          </ZATextField>
+          <ZATextField
             v-model="user.password"
             prefix-label="stacked"
             :placeholder="t('settings.password-placeholder')"
@@ -305,11 +305,11 @@ function close() {
             clearable
           >
             <template #prefix-label>
-              <RIcon icon="mdi-key-outline" size="14" />
+              <ZAIcon icon="mdi-key-outline" size="14" />
               {{ t("settings.password") }}
             </template>
-          </RTextField>
-          <RTextField
+          </ZATextField>
+          <ZATextField
             v-if="user.password"
             v-model="confirmPassword"
             prefix-label="stacked"
@@ -320,11 +320,11 @@ function close() {
             clearable
           >
             <template #prefix-label>
-              <RIcon icon="mdi-key-variant" size="14" />
+              <ZAIcon icon="mdi-key-variant" size="14" />
               {{ t("settings.repeat-password") }}
             </template>
-          </RTextField>
-          <RTextField
+          </ZATextField>
+          <ZATextField
             v-model="user.email"
             prefix-label="stacked"
             :rules="usersStore.emailRules"
@@ -333,10 +333,10 @@ function close() {
             clearable
           >
             <template #prefix-label>
-              <RIcon icon="mdi-email-outline" size="14" />
+              <ZAIcon icon="mdi-email-outline" size="14" />
               {{ t("settings.email") }}
             </template>
-          </RTextField>
+          </ZATextField>
         </div>
         <!-- Avatar is an image-upload control, not a text/icon button: it keeps
              a native <button> (matches v2's raw-<img> avatar convention). -->
@@ -348,7 +348,7 @@ function close() {
         >
           <img :src="avatarSrc" :alt="user.username" />
           <span class="r-v2-user-dialog__avatar-edit">
-            <RIcon icon="mdi-pencil" size="20" />
+            <ZAIcon icon="mdi-pencil" size="20" />
           </span>
         </button>
         <input
@@ -363,12 +363,12 @@ function close() {
 
       <div class="r-v2-user-dialog__access">
         <span class="r-v2-user-dialog__access-label">
-          <RIcon icon="mdi-shield-account-outline" size="14" />
+          <ZAIcon icon="mdi-shield-account-outline" size="14" />
           {{ t("settings.access") }}
         </span>
 
         <div class="r-v2-user-dialog__admin">
-          <RSwitch
+          <ZASwitch
             v-model="isAdmin"
             :disabled="editingSelf"
             :label="t('settings.administrator')"
@@ -387,7 +387,7 @@ function close() {
             <span class="r-v2-user-dialog__field-label">
               {{ t("settings.permission-group") }}
             </span>
-            <RSelect
+            <ZASelect
               v-model="groupId"
               variant="outlined"
               :items="groupItems"
@@ -406,7 +406,7 @@ function close() {
             />
           </div>
 
-          <RBtn
+          <ZABtn
             block
             variant="text"
             size="small"
@@ -418,7 +418,7 @@ function close() {
             @click="showAdvanced = !showAdvanced"
           >
             {{ t("settings.advanced-permissions") }}
-          </RBtn>
+          </ZABtn>
 
           <template v-if="showAdvanced">
             <div class="r-v2-user-dialog__field">
@@ -445,11 +445,11 @@ function close() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="close">
+      <ZABtn variant="text" @click="close">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         :loading="submitting"
@@ -457,9 +457,9 @@ function close() {
         @click="save"
       >
         {{ t("common.apply") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

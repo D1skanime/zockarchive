@@ -7,13 +7,13 @@
 // segmented control in the toolbar, mirroring the gallery's
 // grid/list toggle.
 import {
-  RBtn,
-  RDialog,
-  RIcon,
-  RSelect,
-  RSliderBtnGroup,
-  RSpinner,
-  RTextField,
+  ZABtn,
+  ZADialog,
+  ZAIcon,
+  ZASelect,
+  ZASliderBtnGroup,
+  ZASpinner,
+  ZATextField,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref } from "vue";
@@ -498,7 +498,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-search-web"
     scroll-content
@@ -545,7 +545,7 @@ function closeDialog() {
                stay flush left and the row never reflows on search (the
                results count now lives in the footer). -->
           <div class="r-v2-match__filters-end">
-            <RSliderBtnGroup
+            <ZASliderBtnGroup
               :model-value="variant"
               :items="variantItems"
               variant="segmented"
@@ -556,7 +556,7 @@ function closeDialog() {
         </div>
 
         <div class="r-v2-match__search-row">
-          <RTextField
+          <ZATextField
             id="r-v2-match-search"
             v-model="searchText"
             prefix-label="inline"
@@ -568,10 +568,10 @@ function closeDialog() {
             @keyup.enter="searchRom"
           >
             <template #prefix-label>
-              <RIcon icon="mdi-magnify" size="14" />
+              <ZAIcon icon="mdi-magnify" size="14" />
             </template>
-          </RTextField>
-          <RSelect
+          </ZATextField>
+          <ZASelect
             v-model="searchBy"
             :disabled="searching"
             :label="t('rom.match-by-label')"
@@ -584,7 +584,7 @@ function closeDialog() {
             ]"
             class="r-v2-match__by"
           />
-          <RBtn
+          <ZABtn
             variant="flat"
             color="primary"
             prepend-icon="mdi-search-web"
@@ -594,7 +594,7 @@ function closeDialog() {
             @click="searchRom"
           >
             {{ t("common.search") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </div>
     </template>
@@ -619,7 +619,7 @@ function closeDialog() {
           role="status"
           aria-live="polite"
         >
-          <RSpinner :size="36" />
+          <ZASpinner :size="36" />
           <span class="r-v2-match__saving-label">
             {{ t("rom.updating") }}
           </span>
@@ -628,9 +628,9 @@ function closeDialog() {
     </template>
 
     <template #footer>
-      <RBtn variant="text" :disabled="matching" @click="closeDialog">
+      <ZABtn variant="text" :disabled="matching" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div class="r-v2-match__footer-spacer" />
       <!-- Results count lives here (not the filter row) so appearing after a
            search never reflows the toolbar above. -->
@@ -641,7 +641,7 @@ function closeDialog() {
         </span>
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

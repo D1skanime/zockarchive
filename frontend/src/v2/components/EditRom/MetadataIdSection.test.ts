@@ -16,7 +16,7 @@ describe("MetadataIdSection", () => {
     });
 
     const steamField = wrapper
-      .findAllComponents({ name: "RTextField" })
+      .findAllComponents({ name: "ZATextField" })
       .find((field) => field.props("label") === "rom.provider-steam-id");
 
     expect(steamField).toBeDefined();
@@ -33,7 +33,7 @@ describe("MetadataIdSection", () => {
     });
 
     const field = wrapper
-      .findAllComponents({ name: "RTextField" })
+      .findAllComponents({ name: "ZATextField" })
       .find((candidate) => candidate.props("label") === "rom.youtube-video-id");
     const rules = field?.props("rules") as Array<
       (value: unknown) => true | string
@@ -56,7 +56,7 @@ describe("MetadataIdSection", () => {
     });
 
     const youtubeField = wrapper
-      .findAllComponents({ name: "RTextField" })
+      .findAllComponents({ name: "ZATextField" })
       .find((field) => field.props("label") === "rom.youtube-video-id");
 
     youtubeField?.vm.$emit("update:modelValue", "newValue123");
@@ -74,7 +74,7 @@ describe("MetadataIdSection", () => {
     });
 
     const youtubeField = wrapper
-      .findAllComponents({ name: "RTextField" })
+      .findAllComponents({ name: "ZATextField" })
       .find((field) => field.props("label") === "rom.youtube-video-id");
 
     expect(youtubeField?.props("modelValue")).toBe("jNY7AEQ59-8");
@@ -90,7 +90,7 @@ describe("MetadataIdSection", () => {
     });
 
     const youtubeField = wrapper
-      .findAllComponents({ name: "RTextField" })
+      .findAllComponents({ name: "ZATextField" })
       .find((field) => field.props("label") === "rom.youtube-video-id");
 
     expect(youtubeField).toBeDefined();

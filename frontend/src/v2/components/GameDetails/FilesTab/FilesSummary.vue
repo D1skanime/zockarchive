@@ -2,7 +2,7 @@
 // FilesSummary — top-of-FilesTab card showing the ROM's name + total
 // size + revision + ROM-level hashes (click-to-copy via HashChip).
 // Carries the missing-from-fs flag when applicable.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { DetailedRomSchema } from "@/__generated__";
@@ -44,7 +44,7 @@ const hashes = computed<RomHash[]>(() => {
   <section class="r-v2-files-summary">
     <header class="r-v2-files-summary__head">
       <div class="r-v2-files-summary__title">
-        <RIcon icon="mdi-folder-outline" size="18" />
+        <ZAIcon icon="mdi-folder-outline" size="18" />
         <span class="r-v2-files-summary__name">{{ rom.fs_name }}</span>
         <MissingFSBadge
           v-if="rom.missing_from_fs"

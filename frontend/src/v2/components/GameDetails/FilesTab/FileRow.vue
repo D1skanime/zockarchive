@@ -12,7 +12,7 @@
 // row's leading edge and the category chip in the meta line — both
 // are redundant inside folder subtabs where every row shares the same
 // category, so we toggle them off there.
-import { RBtn, RCheckbox, RChip, RIcon } from "@v2/lib";
+import { ZABtn, ZACheckbox, ZAChip, ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { RomFileCategory, RomFileSchema } from "@/__generated__";
@@ -114,7 +114,7 @@ const hasAnyHash = computed(
          lands the checkbox box on the filename's vertical centre,
          regardless of how many secondary lines stack below. -->
     <span class="r-v2-file-row__check">
-      <RCheckbox
+      <ZACheckbox
         :model-value="selected"
         size="sm"
         hide-details
@@ -126,7 +126,7 @@ const hasAnyHash = computed(
 
     <div class="r-v2-file-row__main">
       <div class="r-v2-file-row__name">
-        <RIcon
+        <ZAIcon
           v-if="showRowIcon"
           :icon="categoryMeta?.icon ?? 'mdi-file-outline'"
           size="14"
@@ -138,7 +138,7 @@ const hasAnyHash = computed(
       </div>
 
       <div class="r-v2-file-row__meta">
-        <RChip
+        <ZAChip
           v-if="showCategoryBadge && file.category"
           :label="true"
           size="x-small"
@@ -146,7 +146,7 @@ const hasAnyHash = computed(
           variant="translucent"
         >
           {{ categoryMeta?.label ?? file.category }}
-        </RChip>
+        </ZAChip>
         <span class="r-v2-file-row__size">
           {{ formatBytes(file.file_size_bytes) }}
         </span>
@@ -200,7 +200,7 @@ const hasAnyHash = computed(
     </div>
 
     <div class="r-v2-file-row__actions">
-      <RBtn
+      <ZABtn
         icon="mdi-download-outline"
         variant="text"
         size="small"
@@ -208,7 +208,7 @@ const hasAnyHash = computed(
         :aria-label="t('rom.download-named', { name: relativePath })"
         @click="emit('download')"
       />
-      <RBtn
+      <ZABtn
         icon="mdi-link-variant"
         variant="text"
         size="small"

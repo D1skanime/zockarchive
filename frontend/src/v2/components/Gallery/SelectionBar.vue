@@ -33,13 +33,13 @@
 // without `rom.refresh` / `rom.delete` don't see actions they can't
 // run.
 import {
-  RBtn,
-  RIcon,
-  RMenu,
-  RMenuItem,
-  RToolbar,
-  RTooltip,
-  RDivider,
+  ZABtn,
+  ZAIcon,
+  ZAMenu,
+  ZAMenuItem,
+  ZAToolbar,
+  ZATooltip,
+  ZADivider,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject } from "vue";
@@ -264,18 +264,18 @@ function clear() {
     :class="{ 'selection-bar--visible': selection.enabled }"
     :aria-hidden="!selection.enabled"
   >
-    <RToolbar
+    <ZAToolbar
       density="compact"
       rounded="full"
       flat
       class="selection-bar__panel"
     >
       <!-- Prepend region: count chip — leftmost item, separated from
-           the action buttons by RToolbar's built-in inter-region
+           the action buttons by ZAToolbar's built-in inter-region
            spacing. -->
       <template #prepend>
         <div class="selection-bar__count">
-          <RIcon
+          <ZAIcon
             icon="mdi-check-circle"
             size="18"
             class="selection-bar__count-icon"
@@ -289,16 +289,16 @@ function clear() {
         </div>
       </template>
 
-      <RDivider vertical class="selection-bar__divider" />
+      <ZADivider vertical class="selection-bar__divider" />
 
       <!-- Default slot: action buttons. Order mirrors the v1 FAB:
            download → favourite → collections → refresh → delete.
-           Every button is wrapped in RTooltip so the user gets a
+           Every button is wrapped in ZATooltip so the user gets a
            consistent hover hint and gamepad users see the label —
            the v2 visual vocabulary for icon-only buttons. -->
-      <RTooltip v-if="canDownload" :text="t('gallery.selection-download')">
+      <ZATooltip v-if="canDownload" :text="t('gallery.selection-download')">
         <template #activator="{ props: tipProps }">
-          <RBtn
+          <ZABtn
             v-bind="tipProps"
             icon="mdi-download"
             variant="text"
@@ -306,11 +306,11 @@ function clear() {
             @click="bulkDownload"
           />
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip :text="favoriteLabel">
+      <ZATooltip :text="favoriteLabel">
         <template #activator="{ props: tipProps }">
-          <RBtn
+          <ZABtn
             v-bind="tipProps"
             :icon="favoriteIcon"
             variant="text"
@@ -319,7 +319,7 @@ function clear() {
             @click="bulkFavorite"
           />
         </template>
-      </RTooltip>
+      </ZATooltip>
 
       <!-- Set status — opens a picker that toggles one play-status across
            the whole selection. Mirrors the per-ROM status menu
@@ -329,14 +329,14 @@ function clear() {
            all have it). Stays open on click so the active marks update
            live. Opens upward (location="top") to clear the bottom-
            anchored bar. -->
-      <RMenu
+      <ZAMenu
         location="top"
         :offset="8"
         width="240px"
         :close-on-content-click="false"
       >
         <template #activator="{ props: activatorProps }">
-          <RBtn
+          <ZABtn
             v-bind="activatorProps"
             icon="mdi-list-status"
             variant="text"
@@ -346,7 +346,7 @@ function clear() {
         </template>
         <!-- Enum statuses — single play-status per ROM. Active row tints
              brand when all selected share it. -->
-        <RMenuItem
+        <ZAMenuItem
           v-for="key in ENUM_KEYS"
           :key="key"
           :icon="STATUS_ICONS[key]"
@@ -354,14 +354,14 @@ function clear() {
           @click="toggleEnumStatus(key)"
         >
           {{ t(romStatusMap[key].i18nKey) }}
-        </RMenuItem>
+        </ZAMenuItem>
 
-        <RDivider />
+        <ZADivider />
 
         <!-- Play-status flags — independent toggles. Active rows tint
              brand and show a trailing check when every selected ROM has
              the flag set. -->
-        <RMenuItem
+        <ZAMenuItem
           v-for="key in PLAY_FLAG_KEYS"
           :key="key"
           :icon="STATUS_ICONS[key]"
@@ -371,15 +371,15 @@ function clear() {
         >
           {{ t(romStatusMap[key].i18nKey) }}
           <template v-if="flagAllActive[key]" #append>
-            <RIcon icon="mdi-check" size="x-small" color="primary" />
+            <ZAIcon icon="mdi-check" size="x-small" color="primary" />
           </template>
-        </RMenuItem>
+        </ZAMenuItem>
 
-        <RDivider />
+        <ZADivider />
 
         <!-- Visibility flag — distinct category (library visibility,
              not play state) so it lives in its own section. -->
-        <RMenuItem
+        <ZAMenuItem
           v-for="key in VISIBILITY_FLAG_KEYS"
           :key="key"
           :icon="STATUS_ICONS[key]"
@@ -389,25 +389,25 @@ function clear() {
         >
           {{ t(romStatusMap[key].i18nKey) }}
           <template v-if="flagAllActive[key]" #append>
-            <RIcon icon="mdi-check" size="x-small" color="primary" />
+            <ZAIcon icon="mdi-check" size="x-small" color="primary" />
           </template>
-        </RMenuItem>
+        </ZAMenuItem>
 
         <template v-if="hasAnyStatus">
-          <RDivider />
-          <RMenuItem
+          <ZADivider />
+          <ZAMenuItem
             icon="mdi-close-circle-outline"
             variant="danger"
             @click="clearStatus"
           >
             {{ t("rom.clear-all") }}
-          </RMenuItem>
+          </ZAMenuItem>
         </template>
-      </RMenu>
+      </ZAMenu>
 
-      <RTooltip :text="t('gallery.selection-collections')">
+      <ZATooltip :text="t('gallery.selection-collections')">
         <template #activator="{ props: tipProps }">
-          <RBtn
+          <ZABtn
             v-bind="tipProps"
             icon="mdi-bookmark-outline"
             variant="text"
@@ -415,14 +415,14 @@ function clear() {
             @click="manageCollections"
           />
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip
+      <ZATooltip
         v-if="canRefresh"
         :text="t('gallery.selection-refresh-metadata')"
       >
         <template #activator="{ props: tipProps }">
-          <RBtn
+          <ZABtn
             v-bind="tipProps"
             icon="mdi-refresh"
             variant="text"
@@ -430,11 +430,11 @@ function clear() {
             @click="bulkRefresh"
           />
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip v-if="canDelete" :text="t('gallery.selection-delete')">
+      <ZATooltip v-if="canDelete" :text="t('gallery.selection-delete')">
         <template #activator="{ props: tipProps }">
-          <RBtn
+          <ZABtn
             v-bind="tipProps"
             icon="mdi-delete-outline"
             variant="text"
@@ -443,14 +443,14 @@ function clear() {
             @click="bulkDelete"
           />
         </template>
-      </RTooltip>
+      </ZATooltip>
 
       <!-- Append region: clear button — floats to the right edge via
-           RToolbar's built-in spacer. -->
+           ZAToolbar's built-in spacer. -->
       <template #append>
-        <RTooltip :text="t('gallery.selection-clear')">
+        <ZATooltip :text="t('gallery.selection-clear')">
           <template #activator="{ props: tipProps }">
-            <RBtn
+            <ZABtn
               v-bind="tipProps"
               icon="mdi-close"
               variant="text"
@@ -458,9 +458,9 @@ function clear() {
               @click="clear"
             />
           </template>
-        </RTooltip>
+        </ZATooltip>
       </template>
-    </RToolbar>
+    </ZAToolbar>
   </div>
 </template>
 
@@ -502,7 +502,7 @@ html[data-bp~="sm-and-down"] .selection-bar--visible {
   transform: translate(-50%, 0);
 }
 
-/* RToolbar's default surface (`--r-color-bg-elevated`) is overridden
+/* ZAToolbar's default surface (`--r-color-bg-elevated`) is overridden
    to the panel glass tone so the bar reads as a sibling of menus /
    dialogs (premise III.1: one visual vocabulary for every surface).
    Border + shadow + backdrop-blur are stacked on top of the

@@ -7,7 +7,7 @@
 // detail-page transitions land on the same animation anchor. Morph
 // name includes the kind so regular/virtual/smart with overlapping
 // numeric ids never collide.
-import { RIcon, RTooltip } from "@v2/lib";
+import { ZAIcon, ZATooltip } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -108,14 +108,14 @@ function onRowClick(e: MouseEvent) {
     </div>
 
     <div class="coll-list-row__cell">
-      <RTooltip :text="kindBadge.label" location="top">
+      <ZATooltip :text="kindBadge.label" location="top">
         <template #activator="{ props: tip }">
           <span
             v-bind="tip"
             class="coll-list-row__kind"
             :class="[`coll-list-row__kind--${kind}`]"
           >
-            <RIcon
+            <ZAIcon
               :icon="kindBadge.icon"
               size="16"
               class="coll-list-row__kind-icon"
@@ -123,7 +123,7 @@ function onRowClick(e: MouseEvent) {
             <span class="coll-list-row__kind-text">{{ kindBadge.label }}</span>
           </span>
         </template>
-      </RTooltip>
+      </ZATooltip>
     </div>
 
     <div class="coll-list-row__cell">
@@ -132,7 +132,7 @@ function onRowClick(e: MouseEvent) {
         class="coll-list-row__vis"
         :class="{ 'coll-list-row__vis--public': isPublic }"
       >
-        <RIcon :icon="visibility.icon" size="16" />
+        <ZAIcon :icon="visibility.icon" size="16" />
         <span class="coll-list-row__vis-text">{{ visibility.label }}</span>
       </span>
       <span v-else class="coll-list-row__vis">—</span>

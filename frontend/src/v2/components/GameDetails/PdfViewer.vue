@@ -4,10 +4,10 @@
 //   * Single bg-elevated panel hosts toolbar + canvas. The toolbar
 //     shares the same surface as the PDF area (no internal divider /
 //     bottom border) so the pane reads as one continuous panel.
-//   * Plain <button> + RIcon + RTooltip per toolbar action — vue3-pdf-app
+//   * Plain <button> + ZAIcon + ZATooltip per toolbar action — vue3-pdf-app
 //     wires controls by `id`, so raw buttons keep that contract while
 //     the v2 visual is owned by our scoped CSS.
-import { RIcon, RTooltip } from "@v2/lib";
+import { ZAIcon, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import VuePdfApp from "vue3-pdf-app";
 import { useI18n } from "vue-i18n";
@@ -56,7 +56,7 @@ const ids = {
 <template>
   <div class="r-v2-pdfv">
     <div class="r-v2-pdfv__toolbar">
-      <RTooltip :text="t('rom.pdf-toggle-sidebar')">
+      <ZATooltip :text="t('rom.pdf-toggle-sidebar')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.sidebarToggle"
@@ -64,14 +64,14 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn"
           >
-            <RIcon icon="mdi-menu" size="18" />
+            <ZAIcon icon="mdi-menu" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
       <span class="r-v2-pdfv__sep" aria-hidden="true" />
 
-      <RTooltip :text="t('common.first-page')">
+      <ZATooltip :text="t('common.first-page')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.firstPage"
@@ -79,12 +79,12 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn"
           >
-            <RIcon icon="mdi-page-first" size="18" />
+            <ZAIcon icon="mdi-page-first" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip :text="t('common.previous-page')">
+      <ZATooltip :text="t('common.previous-page')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.previousPage"
@@ -92,10 +92,10 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn r-v2-pdfv__btn--step"
           >
-            <RIcon icon="mdi-chevron-left" size="18" />
+            <ZAIcon icon="mdi-chevron-left" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
       <input
         :id="ids.pageNumber"
@@ -105,7 +105,7 @@ const ids = {
       />
       <span :id="ids.numPages" class="r-v2-pdfv__page-total" />
 
-      <RTooltip :text="t('common.next-page')">
+      <ZATooltip :text="t('common.next-page')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.nextPage"
@@ -113,12 +113,12 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn r-v2-pdfv__btn--step"
           >
-            <RIcon icon="mdi-chevron-right" size="18" />
+            <ZAIcon icon="mdi-chevron-right" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip :text="t('common.last-page')">
+      <ZATooltip :text="t('common.last-page')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.lastPage"
@@ -126,14 +126,14 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn"
           >
-            <RIcon icon="mdi-page-last" size="18" />
+            <ZAIcon icon="mdi-page-last" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
       <span class="r-v2-pdfv__spacer" />
 
-      <RTooltip :text="t('common.zoom-out')">
+      <ZATooltip :text="t('common.zoom-out')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.zoomOut"
@@ -141,12 +141,12 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn"
           >
-            <RIcon icon="mdi-magnify-minus-outline" size="18" />
+            <ZAIcon icon="mdi-magnify-minus-outline" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip :text="t('common.zoom-in')">
+      <ZATooltip :text="t('common.zoom-in')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.zoomIn"
@@ -154,14 +154,14 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn"
           >
-            <RIcon icon="mdi-magnify-plus-outline" size="18" />
+            <ZAIcon icon="mdi-magnify-plus-outline" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
       <span class="r-v2-pdfv__spacer" />
 
-      <RTooltip :text="t('common.download')">
+      <ZATooltip :text="t('common.download')">
         <template #activator="{ props: activator }">
           <button
             :id="ids.download"
@@ -169,12 +169,12 @@ const ids = {
             type="button"
             class="r-v2-pdfv__btn"
           >
-            <RIcon icon="mdi-download" size="18" />
+            <ZAIcon icon="mdi-download" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip v-if="redownloadable" :text="t('rom.redownload')">
+      <ZATooltip v-if="redownloadable" :text="t('rom.redownload')">
         <template #activator="{ props: activator }">
           <button
             v-bind="activator"
@@ -185,12 +185,12 @@ const ids = {
             :disabled="redownloading || mutationDisabled"
             @click="emit('redownload')"
           >
-            <RIcon icon="mdi-cloud-download-outline" size="18" />
+            <ZAIcon icon="mdi-cloud-download-outline" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip v-if="deletable" :text="t('common.delete')">
+      <ZATooltip v-if="deletable" :text="t('common.delete')">
         <template #activator="{ props: activator }">
           <button
             v-bind="activator"
@@ -200,10 +200,10 @@ const ids = {
             :disabled="mutationDisabled"
             @click="emit('delete')"
           >
-            <RIcon icon="mdi-delete-outline" size="18" />
+            <ZAIcon icon="mdi-delete-outline" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
     </div>
 
     <div class="r-v2-pdfv__viewer">

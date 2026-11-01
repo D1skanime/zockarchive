@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, REmptyState, RTextField } from "@v2/lib";
+import { ZABtn, ZAEmptyState, ZATextField } from "@v2/lib";
 import axios from "axios";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -109,24 +109,27 @@ onMounted(load);
     <h2 id="pc-dlc-notes-heading" class="pc-dlc-notes__heading">
       {{ t("rom.tab-notes") }}
     </h2>
-    <RTextField v-model="title" :label="t('rom.note-title')" />
-    <RTextField v-model="content" :label="t('rom.note-content')" multiline />
-    <RTextField v-model="tags" :label="t('rom.tags')" />
-    <RBtn
+    <ZATextField v-model="title" :label="t('rom.note-title')" />
+    <ZATextField v-model="content" :label="t('rom.note-content')" multiline />
+    <ZATextField v-model="tags" :label="t('rom.tags')" />
+    <ZABtn
       :variant="isPublic ? 'flat' : 'outlined'"
       :aria-pressed="isPublic"
       @click="isPublic = !isPublic"
     >
       {{ t(isPublic ? "rom.public" : "rom.private") }}
-    </RBtn>
-    <RBtn
+    </ZABtn>
+    <ZABtn
       :disabled="!canCreate || !componentVersion"
       :loading="saving"
       @click="create"
-      >{{ t("common.save") }}</RBtn
+      >{{ t("common.save") }}</ZABtn
     >
     <p v-if="loading">{{ t("common.loading") }}</p>
-    <REmptyState v-else-if="notes.length === 0" :title="t('rom.notes-empty')" />
+    <ZAEmptyState
+      v-else-if="notes.length === 0"
+      :title="t('rom.notes-empty')"
+    />
     <article
       v-for="note in notes"
       v-else
@@ -135,7 +138,7 @@ onMounted(load);
     >
       <h3>{{ note.title }}</h3>
       <p>{{ note.content }}</p>
-      <RBtn
+      <ZABtn
         v-if="canEdit(note)"
         icon="mdi-delete-outline"
         :aria-label="t('common.delete')"

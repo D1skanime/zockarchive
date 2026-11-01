@@ -30,15 +30,15 @@ function mountPlatform(overrides: Partial<ScanningPlatform> = {}) {
     props: { platform, open: true },
     global: {
       stubs: {
-        RCollapsible: {
+        ZACollapsible: {
           template: "<div><slot /><slot name='header-append' /></div>",
         },
-        RPlatformIcon: true,
-        RTag: {
+        ZAPlatformIcon: true,
+        ZATag: {
           props: ["text"],
           template: "<span class='r-tag'>{{ text }}</span>",
         },
-        RVirtualScroller: true,
+        ZAVirtualScroller: true,
       },
     },
   });
@@ -106,9 +106,9 @@ function row(item: ScanOperationItemResult) {
     global: {
       stubs: {
         RouterLink: { template: "<a><slot /></a>" },
-        RImg: true,
-        RBtn: true,
-        RTag: { props: ["text"], template: "<span>{{ text }}</span>" },
+        ZAImg: true,
+        ZABtn: true,
+        ZATag: { props: ["text"], template: "<span>{{ text }}</span>" },
         PcSubfolderScanDialog: true,
       },
     },
@@ -165,7 +165,7 @@ describe("platform virtualization contract", () => {
         { id: 11, fs_name: "Game" },
       ] as SimpleRom[],
     });
-    const scroller = wrapper.findComponent({ name: "RVirtualScroller" });
+    const scroller = wrapper.findComponent({ name: "ZAVirtualScroller" });
     const height = scroller.props("getItemHeight") as () => number;
     const key = scroller.props("getItemKey") as (rom: unknown) => number;
     expect(height()).toBe(65);

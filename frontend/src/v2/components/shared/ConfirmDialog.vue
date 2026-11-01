@@ -11,7 +11,7 @@
 //             until the user types the matching string. Use for actions
 //             that touch filesystem (per the constitution).
 // Tone defaults to "warning"; pass "danger" for irreversible-and-serious.
-import { RBtn, RDialog, RTextField } from "@v2/lib";
+import { ZABtn, ZADialog, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import {
   computed,
@@ -34,7 +34,7 @@ const emitter = inject<Emitter<Events>>("emitter");
 const open = ref(false);
 const payload = ref<Payload | null>(null);
 const typed = ref("");
-const cancelButtonRef = ref<InstanceType<typeof RBtn> | null>(null);
+const cancelButtonRef = ref<InstanceType<typeof ZABtn> | null>(null);
 
 const tone = computed(() => payload.value?.tone ?? "warning");
 const confirmColor = computed(() =>
@@ -77,7 +77,7 @@ onBeforeUnmount(() => emitter?.off("showConfirm", onShow));
 </script>
 
 <template>
-  <RDialog v-model="open" width="440" persistent>
+  <ZADialog v-model="open" width="440" persistent>
     <template v-if="payload" #header>
       <span>{{ payload.title }}</span>
     </template>
@@ -95,7 +95,7 @@ onBeforeUnmount(() => emitter?.off("showConfirm", onShow));
               <strong>{{ payload.requireTyped }}</strong>
             </template>
           </i18n-t>
-          <RTextField
+          <ZATextField
             v-model="typed"
             density="comfortable"
             variant="outlined"
@@ -105,19 +105,19 @@ onBeforeUnmount(() => emitter?.off("showConfirm", onShow));
     </template>
     <template v-if="payload" #footer>
       <div class="r-confirm__actions">
-        <RBtn ref="cancelButtonRef" variant="text" @click="onCancel">
+        <ZABtn ref="cancelButtonRef" variant="text" @click="onCancel">
           {{ payload.cancelText ?? t("common.cancel") }}
-        </RBtn>
-        <RBtn
+        </ZABtn>
+        <ZABtn
           :color="confirmColor"
           :disabled="confirmDisabled"
           @click="onConfirm"
         >
           {{ payload.confirmText ?? t("common.confirm") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

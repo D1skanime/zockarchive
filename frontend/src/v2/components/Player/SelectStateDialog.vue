@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // v2 SelectStateDialog — same pattern as SelectSaveDialog, but listens for
 // `selectStateDialog` and emits `stateSelected`.
-import { RBtn, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZADialog, ZAIcon } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -40,7 +40,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     id="select-state-dialog"
     v-model="show"
     icon="mdi-file-outline"
@@ -63,17 +63,17 @@ function closeDialog() {
         />
       </div>
       <div v-else class="r-v2-state-picker__empty">
-        <RIcon icon="mdi-help-rhombus-outline" size="48" />
+        <ZAIcon icon="mdi-help-rhombus-outline" size="48" />
         <p>{{ t("rom.no-states-found") }}</p>
       </div>
     </template>
     <template #footer>
       <div style="flex: 1" />
-      <RBtn variant="text" @click="closeDialog">
+      <ZABtn variant="text" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

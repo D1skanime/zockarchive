@@ -5,8 +5,8 @@
 //
 // Lives in `components/Player/` because it knows about SaveSchema /
 // StateSchema — domain coupling means it can't be a /lib primitive.
-// Built from R primitives + shared utils; no Vuetify.
-import { RImg, RTag } from "@v2/lib";
+// Built from ZA primitives + shared utils; no Vuetify.
+import { ZAImg, ZATag } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { SaveSchema, StateSchema } from "@/__generated__";
@@ -56,7 +56,7 @@ const relativeText = computed(() => formatRelativeDate(props.asset.updated_at));
     @keydown.enter.prevent="(e) => $emit('click', e as unknown as MouseEvent)"
     @keydown.space.prevent="(e) => $emit('click', e as unknown as MouseEvent)"
   >
-    <RImg
+    <ZAImg
       v-if="screenshotSrc"
       :src="screenshotSrc"
       :alt="asset.file_name"
@@ -71,7 +71,7 @@ const relativeText = computed(() => formatRelativeDate(props.asset.updated_at));
       </div>
 
       <div class="r-v2-asset-card__chips">
-        <RTag
+        <ZATag
           v-if="'slot' in asset && asset.slot"
           tone="brand"
           size="x-small"
@@ -79,13 +79,13 @@ const relativeText = computed(() => formatRelativeDate(props.asset.updated_at));
           :label="t('play.slot')"
           :text="asset.slot"
         />
-        <RTag
+        <ZATag
           v-if="asset.emulator"
           tone="warning"
           size="x-small"
           :text="asset.emulator"
         />
-        <RTag size="x-small" :text="formatBytes(asset.file_size_bytes)" />
+        <ZATag size="x-small" :text="formatBytes(asset.file_size_bytes)" />
       </div>
 
       <div class="r-v2-asset-card__meta">

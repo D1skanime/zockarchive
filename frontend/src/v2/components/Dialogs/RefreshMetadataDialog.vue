@@ -6,14 +6,14 @@
 // friendly options. Emits the same `scan` socket event as the main Scan
 // view (lifecycle handlers live globally in AppLayout).
 import {
-  RAvatar,
-  RAlert,
-  RBtn,
-  RDialog,
-  RIcon,
-  RSelect,
-  RSwitch,
-  RTooltip,
+  ZAAvatar,
+  ZAAlert,
+  ZABtn,
+  ZADialog,
+  ZAIcon,
+  ZASelect,
+  ZASwitch,
+  ZATooltip,
 } from "@v2/lib";
 import { useLocalStorage } from "@vueuse/core";
 import type { Emitter } from "mitt";
@@ -32,7 +32,6 @@ import { type SimpleRom } from "@/v2/data/adapters/legacy/stores/roms";
 import { buildLibraryScanRequest } from "@/v2/data/operations";
 
 defineOptions({ inheritAttrs: false });
-
 const LOCAL_STORAGE_METADATA_SOURCES_KEY = "scan.metadataSources";
 const LOCAL_STORAGE_LAUNCHBOX_REMOTE_ENABLED_KEY =
   "scan.launchboxRemoteEnabled";
@@ -45,8 +44,7 @@ const LOCAL_STORAGE_PLAYMATCH_ENABLED_KEY = "scan.playmatchEnabled";
 // standalone sources.
 const HASH_MATCHER_KEYS = ["hasheous", "playmatch"] as const;
 
-// Provider categorisation — mirrors the Scan view's split so this
-// dialog reads as a sibling surface, not a parallel vocabulary.
+// Provider categorisation mirrors the Scan view's split so this dialog reads as a sibling surface.
 const GENERAL_PROVIDER_KEYS = new Set([
   "igdb",
   "steam",
@@ -401,7 +399,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-magnify-scan"
     width="560"
@@ -425,7 +423,7 @@ function closeDialog() {
               :alt="singleRomTitle"
             />
             <div v-else class="r-v2-refresh__cover-placeholder">
-              <RIcon icon="mdi-disc" size="20" />
+              <ZAIcon icon="mdi-disc" size="20" />
             </div>
           </div>
           <div class="r-v2-refresh__meta">
@@ -442,7 +440,7 @@ function closeDialog() {
           </div>
         </div>
         <div v-else-if="isBulk" class="r-v2-refresh__rom-bulk">
-          <RIcon icon="mdi-disc-player" size="18" />
+          <ZAIcon icon="mdi-disc-player" size="18" />
           <span>{{ t("rom.selection-count", { n: roms.length }) }}</span>
         </div>
 
@@ -456,7 +454,7 @@ function closeDialog() {
             <span class="r-v2-refresh__providers-group-label">
               {{ t("scan.section-providers-general") }}
             </span>
-            <RSelect
+            <ZASelect
               v-model="metadataSources"
               :items="generalProviders"
               :label="t('scan.section-providers-general')"
@@ -474,14 +472,14 @@ function closeDialog() {
               @update:all-selected="generalAllSelected = $event"
             >
               <template #chip="{ item }">
-                <RTooltip :text="item.raw.name" location="bottom">
+                <ZATooltip :text="item.raw.name" location="bottom">
                   <template #activator="{ props: tipProps }">
                     <span
                       v-bind="tipProps"
                       class="r-v2-refresh__provider-chip"
                       :aria-label="item.raw.name"
                     >
-                      <RAvatar
+                      <ZAAvatar
                         :image="item.raw.logo_path"
                         size="18"
                         rounded="sm"
@@ -489,11 +487,12 @@ function closeDialog() {
                       <span>{{ item.raw.name }}</span>
                     </span>
                   </template>
-                </RTooltip>
+                </ZATooltip>
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <RAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
+                  <!-- prettier-ignore -->
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -523,7 +522,7 @@ function closeDialog() {
                     >
                       {{ t("rom.launchbox-local") }}
                     </span>
-                    <RSwitch
+                    <ZASwitch
                       v-model="launchboxRemoteEnabled"
                       :disabled="!isLaunchboxSelected"
                     />
@@ -538,7 +537,7 @@ function closeDialog() {
                   </div>
                 </li>
               </template>
-            </RSelect>
+            </ZASelect>
           </div>
 
           <div
@@ -548,7 +547,7 @@ function closeDialog() {
             <span class="r-v2-refresh__providers-group-label">
               {{ t("scan.section-providers-specific") }}
             </span>
-            <RSelect
+            <ZASelect
               v-model="metadataSources"
               :items="specificProviders"
               :label="t('scan.section-providers-specific')"
@@ -566,14 +565,14 @@ function closeDialog() {
               @update:all-selected="specificAllSelected = $event"
             >
               <template #chip="{ item }">
-                <RTooltip :text="item.raw.name" location="bottom">
+                <ZATooltip :text="item.raw.name" location="bottom">
                   <template #activator="{ props: tipProps }">
                     <span
                       v-bind="tipProps"
                       class="r-v2-refresh__provider-chip"
                       :aria-label="item.raw.name"
                     >
-                      <RAvatar
+                      <ZAAvatar
                         :image="item.raw.logo_path"
                         size="18"
                         rounded="sm"
@@ -581,11 +580,12 @@ function closeDialog() {
                       <span>{{ item.raw.name }}</span>
                     </span>
                   </template>
-                </RTooltip>
+                </ZATooltip>
               </template>
               <template #item="{ props: itemProps, item }">
                 <li v-bind="itemProps">
-                  <RAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
+                  <!-- prettier-ignore -->
+                  <ZAAvatar :image="item.raw.logo_path" size="22" rounded="sm" />
                   <div class="r-select__item-stack">
                     <div class="r-select__item-title">
                       {{ item.raw.name }}
@@ -599,7 +599,7 @@ function closeDialog() {
                   </div>
                 </li>
               </template>
-            </RSelect>
+            </ZASelect>
           </div>
         </section>
 
@@ -614,7 +614,7 @@ function closeDialog() {
             role="group"
             :aria-label="t('scan.hash-matchers')"
           >
-            <RTooltip
+            <ZATooltip
               v-for="matcher in hashMatchers"
               :key="matcher.value"
               :text="
@@ -632,13 +632,13 @@ function closeDialog() {
                     'r-v2-refresh__matcher--off': !matcher.switchEnabled,
                   }"
                 >
-                  <RAvatar
+                  <ZAAvatar
                     :image="matcher.logo"
                     size="16"
                     rounded="sm"
                     class="r-v2-refresh__matcher-logo"
                   />
-                  <RSwitch
+                  <ZASwitch
                     :model-value="isHashMatcherOn(matcher)"
                     :disabled="!matcher.switchEnabled"
                     :aria-label="matcher.name"
@@ -648,7 +648,7 @@ function closeDialog() {
                   />
                 </div>
               </template>
-            </RTooltip>
+            </ZATooltip>
           </div>
         </section>
 
@@ -657,7 +657,7 @@ function closeDialog() {
           <h3 class="r-v2-refresh__section-title">
             {{ t("scan.section-scan-type") }}
           </h3>
-          <RSelect
+          <ZASelect
             v-model="scanType"
             :items="scanOptions"
             :label="t('scan.scan-options')"
@@ -679,10 +679,10 @@ function closeDialog() {
                 </div>
               </li>
             </template>
-          </RSelect>
+          </ZASelect>
         </section>
 
-        <RAlert
+        <ZAAlert
           v-if="!calculateHashes"
           type="warning"
           density="compact"
@@ -690,15 +690,15 @@ function closeDialog() {
           class="r-v2-refresh__hint"
         >
           {{ t("scan.hash-calculation-disabled") }}
-        </RAlert>
+        </ZAAlert>
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="closeDialog">
+      <ZABtn variant="text" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="translucent"
         color="primary"
         prepend-icon="mdi-magnify-scan"
@@ -708,9 +708,9 @@ function closeDialog() {
         @click="onScan"
       >
         {{ t("rom.refresh-metadata") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>
@@ -811,7 +811,7 @@ function closeDialog() {
 }
 
 /* Provider groups (General / Specific) — same layout as Scan.vue: a
-   small caption above each RSelect, two groups stacked with a tight
+   small caption above each ZASelect, two groups stacked with a tight
    inter-group margin. */
 .r-v2-refresh__providers-group {
   display: flex;

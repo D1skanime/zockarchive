@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import type { SaveSchema, StateSchema } from "@/__generated__";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import AssetCard from "./AssetCard.vue";
 
 // Helper builders — avoid spamming the same shape into every story.
@@ -62,8 +63,9 @@ function makeState(overrides: Partial<StateSchema> = {}): StateSchema {
 }
 
 const meta: Meta<typeof AssetCard> = {
-  title: "Media/AssetCard",
+  title: "Player/Zusammengesetzt/AssetCard",
   component: AssetCard,
+  parameters: compositionParameters("components/Player/AssetCard.stories.ts"),
   argTypes: {
     type: { control: "inline-radio", options: ["save", "state"] },
   },
@@ -76,6 +78,7 @@ type Story = StoryObj<typeof AssetCard>;
 // ── Save (no screenshot) ────────────────────────────────────────
 
 export const Save: Story = {
+  name: "Spielstand",
   render: () => ({
     components: { AssetCard },
     setup: () => ({ asset: makeSave() }),
@@ -90,7 +93,7 @@ export const Save: Story = {
 // ── Save without emulator chip ─────────────────────────────────
 
 export const SaveNoEmulator: Story = {
-  name: "Save (no emulator)",
+  name: "Spielstand ohne Emulator",
   render: () => ({
     components: { AssetCard },
     setup: () => ({ asset: makeSave({ emulator: null }) }),
@@ -105,6 +108,7 @@ export const SaveNoEmulator: Story = {
 // ── State (with screenshot) ─────────────────────────────────────
 
 export const State: Story = {
+  name: "Status",
   render: () => ({
     components: { AssetCard },
     setup: () => ({ asset: makeState() }),
@@ -119,7 +123,7 @@ export const State: Story = {
 // ── State without a screenshot (placeholder pattern) ────────────
 
 export const StateNoScreenshot: Story = {
-  name: "State (placeholder screenshot)",
+  name: "Status (Platzhalterbild)",
   render: () => ({
     components: { AssetCard },
     setup: () => ({
@@ -139,7 +143,7 @@ export const StateNoScreenshot: Story = {
 // ── Long filename — ellipsis path ──────────────────────────────
 
 export const LongFilename: Story = {
-  name: "Long filename",
+  name: "Langer Dateiname",
   render: () => ({
     components: { AssetCard },
     setup: () => ({
@@ -160,7 +164,7 @@ export const LongFilename: Story = {
 // ── Grid layout (real picker context) ──────────────────────────
 
 export const Grid: Story = {
-  name: "Grid (picker layout)",
+  name: "Raster (Auswahllayout)",
   render: () => ({
     components: { AssetCard },
     setup: () => {

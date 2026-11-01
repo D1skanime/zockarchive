@@ -76,7 +76,7 @@ vi.mock("@/v2/stores/gallerySelection", () => ({
   default: () => ({ removeIds: mocks.removeIds }),
 }));
 
-const RDialog = {
+const ZADialog = {
   props: ["modelValue"],
   template: `
     <section v-if="modelValue" role="dialog">
@@ -89,14 +89,14 @@ const RDialog = {
   `,
 };
 
-const RBtn = {
+const ZABtn = {
   props: ["disabled", "loading"],
   emits: ["click"],
   template:
     '<button type="button" :disabled="disabled" :data-loading="loading" @click="$emit(\'click\')"><slot /></button>',
 };
 
-const RCheckbox = {
+const ZACheckbox = {
   props: ["modelValue", "label"],
   emits: ["update:modelValue"],
   template: `
@@ -112,7 +112,7 @@ const RCheckbox = {
   `,
 };
 
-const RIcon = {
+const ZAIcon = {
   props: ["icon"],
   template: '<i :data-icon="icon" />',
 };
@@ -135,7 +135,7 @@ function mountDialog() {
     global: {
       plugins: [createPinia()],
       provide: { emitter },
-      stubs: { RBtn, RCheckbox, RDialog, RIcon },
+      stubs: { ZABtn, ZACheckbox, ZADialog, ZAIcon },
     },
   });
   return { emitter, wrapper };

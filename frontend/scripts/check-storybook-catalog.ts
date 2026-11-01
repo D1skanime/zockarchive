@@ -1,0 +1,122 @@
+import { existsSync, readFileSync } from "node:fs";
+import { globSync } from "node:fs";
+import { join, relative } from "node:path";
+import {
+  compositionInventory,
+  phase39BrandDocsId,
+  primitiveDocs,
+} from "../src/v2/storybook/compositionInventory";
+import { storyTextDecisions } from "./storybookLanguageDecisions";
+import {
+  findInvalidStoryTextDecisions,
+  findUnreviewedVisibleStoryText,
+  getVisibleStoryTextCandidates,
+} from "./storybookLanguageGuard";
+
+const root = join(import.meta.dirname, "..");
+const stories = globSync("src/v2/**/*.stories.ts", { cwd: root });
+const allowedGroups = new Set([
+  "Grundelemente",
+  "Formulare",
+  "Struktur",
+  "Daten",
+  "Menüs",
+  "Overlays",
+  "Medien",
+  "Player",
+  "Geteilt",
+  "Marke",
+  "Im Einsatz",
+]);
+const visibleTextCandidates = [];
+
+function fail(message: string): never {
+  throw new Error(`Storybook catalog: ${message}`);
+}
+
+for (const story of stories) {
+  const source = readFileSync(join(root, story), "utf8");
+  visibleTextCandidates.push(...getVisibleStoryTextCandidates(source, story));
+  const title = source.match(
+    /const meta[\s\S]*?title:\s*["']([^"']+)["']/,
+  )?.[1];
+  if (!title) fail(`${story} has no static title`);
+  const unreviewedText = findUnreviewedVisibleStoryText(
+    source,
+    story,
+    storyTextDecisions,
+  );
+  if (unreviewedText.length > 0) {
+    fail(
+      `${story} has unreviewed visible text: ${unreviewedText.map(({ category, location, text }) => `${location} (${category}): ${text}`).join(", ")}`,
+    );
+  }
+  if (story === "src/v2/components/shared/BrandMotionPreview.stories.ts")
+    continue;
+
+  const [group, segment] = title.split("/");
+  if (!allowedGroups.has(group) || !segment) {
+    fail(`${story} uses invalid German taxonomy title ${title}`);
+  }
+  if (
+    [
+      "Primitives",
+      "Forms",
+      "Structural",
+      "Data",
+      "Menus",
+      "Media",
+      "Shared",
+      "Brand",
+    ].includes(group)
+  ) {
+    fail(`${story} retains an English taxonomy group`);
+  }
+  const inventoryPath = relative(join(root, "src/v2"), join(root, story));
+  const record =
+    compositionInventory[inventoryPath as keyof typeof compositionInventory];
+  const hasDeclaration = source.includes("compositionParameters(");
+  if (record && title.includes("/Zusammengesetzt/") && !hasDeclaration)
+    fail(`${story} is missing its inventory declaration`);
+  if (!record && hasDeclaration)
+    fail(`${story} has an unexpected inventory declaration`);
+}
+
+const invalidDecisions = findInvalidStoryTextDecisions(
+  visibleTextCandidates,
+  storyTextDecisions,
+);
+if (invalidDecisions.length > 0) {
+  fail(
+    `language ledger contains ${invalidDecisions
+      .map(
+        ({ decision, kind }) =>
+          `${kind}: ${decision.file} ${decision.location} (${decision.category}): ${decision.text}`,
+      )
+      .join(", ")}`,
+  );
+}
+
+if (!stories.some((story) => story.endsWith("BrandMotionPreview.stories.ts"))) {
+  fail("protected Phase 39 story is missing");
+}
+
+const indexDir = process.argv.indexOf("--index-dir");
+if (indexDir >= 0) {
+  const index = JSON.parse(
+    readFileSync(join(root, process.argv[indexDir + 1], "index.json"), "utf8"),
+  ) as { entries: Record<string, unknown> };
+  const ids = new Set(Object.keys(index.entries));
+  for (const entry of Object.values(compositionInventory)) {
+    for (const primitive of entry.primitives) {
+      if (!ids.has(primitiveDocs(primitive)))
+        fail(`missing emitted docs target ${primitiveDocs(primitive)}`);
+    }
+  }
+  if (!ids.has(phase39BrandDocsId))
+    fail("protected Phase 39 docs target is absent or retitled");
+}
+
+if (!existsSync(join(root, "src/v2/storybook/compositionInventory.ts"))) {
+  fail("composition inventory is missing");
+}

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RCheckbox, RCollapsible, RDialog } from "@v2/lib";
+import { ZABtn, ZACheckbox, ZACollapsible, ZADialog } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import type { PcComponentSchema } from "@/__generated__";
@@ -141,7 +141,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
 }
 </script>
 <template>
-  <RDialog
+  <ZADialog
     :model-value="modelValue"
     icon="mdi-download"
     scroll-content
@@ -151,7 +151,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
     <template #content>
       <div class="download-selection">
         <DownloadModeSelector v-model="mode" />
-        <RCheckbox
+        <ZACheckbox
           v-for="set in archiveSets"
           :key="set.id"
           :model-value="selectedSet === set.id"
@@ -165,7 +165,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
             :key="component.id"
             class="download-selection__component"
           >
-            <RCheckbox
+            <ZACheckbox
               :model-value="
                 component.manifest_members.some((member) =>
                   selectedMemberIds.includes(member.id),
@@ -196,7 +196,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
                       ))
               "
             />
-            <RCollapsible
+            <ZACollapsible
               v-if="component.manifest_members.length"
               :model-value="componentFilesExpanded(component.id)"
               :title="t('details')"
@@ -207,7 +207,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
               "
             >
               <div class="download-selection__member-list">
-                <RCheckbox
+                <ZACheckbox
                   v-for="member in component.manifest_members"
                   :key="`file-${member.id}`"
                   :model-value="selectedMemberIds.includes(member.id)"
@@ -220,13 +220,13 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
                   "
                 />
               </div>
-            </RCollapsible>
+            </ZACollapsible>
           </div>
         </div>
         <p v-if="missing.length" role="alert">
           {{ t("rom.download-required-missing") }}
         </p>
-        <RCheckbox
+        <ZACheckbox
           v-for="member in currentSet?.members.filter(
             (entry) => !entry.required,
           )"
@@ -254,14 +254,14 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
         >{{ t("rom.download-selected") }}:
         {{ formatBytes(selectedBytes) }}</span
       >
-      <RBtn variant="text" @click="emit('update:modelValue', false)">{{
+      <ZABtn variant="text" @click="emit('update:modelValue', false)">{{
         t("common.cancel")
-      }}</RBtn>
-      <RBtn :disabled="selectionInvalid" @click="start">{{
+      }}</ZABtn>
+      <ZABtn :disabled="selectionInvalid" @click="start">{{
         t("rom.download-start")
-      }}</RBtn>
+      }}</ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 <style scoped>
 .download-selection {

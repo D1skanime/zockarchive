@@ -15,7 +15,7 @@
 //   * manage (selectable=false) — Save data subtab. Rows are static; the
 //     trailing area renders the `#actions` slot (download/delete/toggle),
 //     and `showOwner` adds an author chip for community items.
-import { RAvatar, RIcon, RTag, RTooltip } from "@v2/lib";
+import { ZAAvatar, ZAIcon, ZATag, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type {
@@ -95,7 +95,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
           @click="selectable && $emit('select', asset)"
         >
           <span class="r-asset-list__icon" aria-hidden="true">
-            <RIcon
+            <ZAIcon
               :icon="type === 'save' ? 'mdi-content-save' : 'mdi-file-outline'"
               size="22"
             />
@@ -104,7 +104,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
           <span class="r-asset-list__main">
             <span class="r-asset-list__name">{{ asset.file_name }}</span>
             <span class="r-asset-list__chips">
-              <RTag
+              <ZATag
                 tone="neutral"
                 size="x-small"
                 :text="
@@ -117,7 +117,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
                 v-if="showOwner && ownerOf(asset)"
                 class="r-asset-list__owner"
               >
-                <RAvatar
+                <ZAAvatar
                   :image="
                     userAvatarUrl({
                       userId: ownerOf(asset)!.user_id,
@@ -129,7 +129,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
                 />
                 <span>{{ ownerOf(asset)!.username }}</span>
               </span>
-              <RTag
+              <ZATag
                 v-if="'slot' in asset && asset.slot"
                 tone="brand"
                 size="x-small"
@@ -137,14 +137,14 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
                 :label="t('play.slot')"
                 :text="asset.slot"
               />
-              <RTag
+              <ZATag
                 v-if="asset.emulator"
                 tone="warning"
                 size="x-small"
                 :text="asset.emulator"
               />
               <span class="r-asset-list__chip">
-                <RIcon icon="mdi-weight" size="11" />
+                <ZAIcon icon="mdi-weight" size="11" />
                 {{ formatBytes(asset.file_size_bytes) }}
               </span>
             </span>
@@ -164,7 +164,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
             class="r-asset-list__check"
             aria-hidden="true"
           >
-            <RIcon
+            <ZAIcon
               v-if="asset.id === selectedId"
               icon="mdi-check-circle"
               size="18"
@@ -174,7 +174,7 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
             <slot name="actions" :asset="asset" />
           </span>
 
-          <RTooltip
+          <ZATooltip
             v-if="selectable"
             activator="parent"
             location="top"
@@ -187,13 +187,13 @@ function ownerOf(asset: Asset): UserSaveSchema | UserStateSchema | null {
                 {{ formatTimestamp(asset.updated_at, locale) }}
               </span>
             </div>
-          </RTooltip>
+          </ZATooltip>
         </component>
       </li>
     </ul>
 
     <div v-else class="r-asset-list__empty">
-      <RIcon
+      <ZAIcon
         :icon="
           type === 'save' ? 'mdi-content-save-outline' : 'mdi-file-outline'
         "

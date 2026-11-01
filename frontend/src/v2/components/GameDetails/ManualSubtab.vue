@@ -5,7 +5,7 @@
 // The panel owns its own scroll (flex column filling the Media
 // tab's content height) so the viewer keeps its internal scroll and switching
 // subtabs never forces an outer scrollbar.
-import { RBtn, RDropzone, REmptyState, RSelect } from "@v2/lib";
+import { ZABtn, ZADropzone, ZAEmptyState, ZASelect } from "@v2/lib";
 import axios from "axios";
 import type { Emitter } from "mitt";
 import { computed, defineAsyncComponent, inject, ref, watch } from "vue";
@@ -104,9 +104,9 @@ const manualItems = computed(() =>
 );
 
 // ---------- Upload / refresh plumbing ----------
-// The filled viewer is wrapped in an overlay RDropzone (drag files onto the
+// The filled viewer is wrapped in an overlay ZADropzone (drag files onto the
 // manual to replace it); the footer's Replace button opens its picker.
-const manualDz = ref<InstanceType<typeof RDropzone> | null>(null);
+const manualDz = ref<InstanceType<typeof ZADropzone> | null>(null);
 const redownloadingManual = ref(false);
 const uploadingManual = ref(false);
 const refreshingManual = ref(false);
@@ -237,7 +237,7 @@ function openManualReplacement() {
          header skips a redundant title and just hosts the entry selector
          (when multiple). -->
     <header v-if="manualEntries.length > 1" class="r-v2-manual__head">
-      <RSelect
+      <ZASelect
         v-model="selectedManualId"
         :items="manualItems"
         density="compact"
@@ -247,12 +247,12 @@ function openManualReplacement() {
       />
     </header>
 
-    <REmptyState
+    <ZAEmptyState
       v-if="manualEntries.length === 0 && !canEdit"
       :title="t('rom.manual-empty')"
     />
 
-    <RDropzone
+    <ZADropzone
       v-else-if="manualEntries.length === 0"
       :title="t('rom.manual-empty')"
       :hint="t('rom.manual-empty-upload-hint')"
@@ -263,7 +263,7 @@ function openManualReplacement() {
       @files="handleManualFiles"
     >
       <template v-if="rom.url_manual" #actions>
-        <RBtn
+        <ZABtn
           variant="outlined"
           prepend-icon="mdi-cloud-download-outline"
           :loading="redownloadingManual"
@@ -271,11 +271,11 @@ function openManualReplacement() {
           @click.stop="redownloadManual"
         >
           {{ t("rom.redownload") }}
-        </RBtn>
+        </ZABtn>
       </template>
-    </RDropzone>
+    </ZADropzone>
 
-    <RDropzone
+    <ZADropzone
       v-if="selectedManual"
       ref="manualDz"
       overlay
@@ -310,11 +310,11 @@ function openManualReplacement() {
           @redownload="redownloadManual"
         />
       </div>
-    </RDropzone>
+    </ZADropzone>
 
     <div v-if="manualEntries.length > 0 && canEdit">
       <p>{{ t("rom.manual-primary-helper") }}</p>
-      <RBtn
+      <ZABtn
         block
         variant="outlined"
         size="small"
@@ -325,7 +325,7 @@ function openManualReplacement() {
         @click="openManualReplacement"
       >
         {{ t("rom.replace-manual") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </div>
 </template>
@@ -359,7 +359,7 @@ function openManualReplacement() {
   flex-shrink: 1;
 }
 
-/* Overlay-mode RDropzone wrapping the viewer must fill the panel height so
+/* Overlay-mode ZADropzone wrapping the viewer must fill the panel height so
    the inner viewer can stretch to 100%. The min-height keeps the flex chain
    from collapsing the viewer to zero. */
 .r-v2-manual__fill {

@@ -4,14 +4,14 @@
 // permissionGroups store; create/edit go through GroupFormDialog (which
 // refetches the store), delete removes from the store via useConfirm.
 import {
-  RBtn,
-  RIcon,
-  RTable,
-  RTag,
-  RTextField,
-  RTooltip,
-  type RTableColumn,
-  type RTableSortPayload,
+  ZABtn,
+  ZAIcon,
+  ZATable,
+  ZATag,
+  ZATextField,
+  ZATooltip,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { computed, inject, onMounted, ref } from "vue";
@@ -61,7 +61,7 @@ const filtered = computed(() => {
   );
 });
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "name",
     label: t("common.name"),
@@ -92,7 +92,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   if (key !== "name" && key !== "member_count") return;
   sortKey.value = key;
   sortDir.value = dir;
@@ -140,7 +140,7 @@ onMounted(fetchGroups);
 
 <template>
   <div class="r-v2-groups">
-    <RTextField
+    <ZATextField
       v-model="search"
       prefix-label="inline"
       :placeholder="t('common.search')"
@@ -149,11 +149,11 @@ onMounted(fetchGroups);
       :aria-label="t('settings.search-groups')"
     >
       <template #prefix-label>
-        <RIcon icon="mdi-magnify" size="15" />
+        <ZAIcon icon="mdi-magnify" size="15" />
       </template>
-    </RTextField>
+    </ZATextField>
 
-    <RTable
+    <ZATable
       :columns="columns"
       :items="filtered"
       :item-key="(r) => (r as PermissionGroupSchema).id"
@@ -173,13 +173,13 @@ onMounted(fetchGroups);
             }"
           />
           <span>{{ (row as PermissionGroupSchema).name }}</span>
-          <RTag
+          <ZATag
             v-if="(row as PermissionGroupSchema).is_default"
             tone="brand"
             :text="t('settings.group-default-tag')"
             size="x-small"
           />
-          <RTag
+          <ZATag
             v-if="(row as PermissionGroupSchema).is_system"
             tone="info"
             :text="t('settings.group-system-tag')"
@@ -197,9 +197,9 @@ onMounted(fetchGroups);
       </template>
       <template #cell.actions="{ row }">
         <div class="r-v2-groups__actions">
-          <RTooltip>
+          <ZATooltip>
             <template #activator="{ props: tipProps }">
-              <RBtn
+              <ZABtn
                 v-bind="tipProps"
                 variant="text"
                 size="small"
@@ -214,10 +214,10 @@ onMounted(fetchGroups);
               />
             </template>
             <span>{{ t("settings.edit-group") }}</span>
-          </RTooltip>
-          <RTooltip>
+          </ZATooltip>
+          <ZATooltip>
             <template #activator="{ props: tipProps }">
-              <RBtn
+              <ZABtn
                 v-bind="tipProps"
                 variant="text"
                 size="small"
@@ -229,20 +229,20 @@ onMounted(fetchGroups);
               />
             </template>
             <span>{{ t("common.delete") }}</span>
-          </RTooltip>
+          </ZATooltip>
         </div>
       </template>
-    </RTable>
+    </ZATable>
 
     <div class="r-v2-groups__footer">
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         prepend-icon="mdi-plus"
         @click="emitter?.emit('showGroupFormDialog', null)"
       >
         {{ t("settings.new-group") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </div>
 </template>

@@ -4,7 +4,7 @@
 // none: "none" is no grant, "full" is library-wide (primary), "own" limits
 // the grant to the user's own items (accent, own_only). The model is the list
 // of granted (entity, action) pairs; cycling rewrites the touched cell only.
-import { RCheckbox, type RCheckboxState, RTooltip } from "@v2/lib";
+import { ZACheckbox, type ZACheckboxState, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { GrantSchemaIO, PermAction, PermEntity } from "@/__generated__";
@@ -44,7 +44,7 @@ function stateOf(entity: PermEntity, action: PermAction): CellState {
 }
 
 // Cycle: none (empty) -> full (primary check) -> own (accent person).
-const PERM_STATES: RCheckboxState[] = [
+const PERM_STATES: ZACheckboxState[] = [
   { value: "none" },
   { value: "full", color: "primary" },
   { value: "own", color: "accent", icon: "mdi-account" },
@@ -112,7 +112,7 @@ function toggleColumn(a: PermAction, value: boolean) {
         <span class="r-v2-perm-matrix__col-label" :title="actionLabel(a)">
           {{ actionLabel(a) }}
         </span>
-        <RCheckbox
+        <ZACheckbox
           bare
           size="sm"
           color="primary"
@@ -133,13 +133,13 @@ function toggleColumn(a: PermAction, value: boolean) {
     >
       <span class="r-v2-perm-matrix__entity">{{ entityLabel(e) }}</span>
       <div v-for="a in actions" :key="a" class="r-v2-perm-matrix__cell">
-        <RTooltip
+        <ZATooltip
           activator="parent"
           location="top"
           :text="stateLabel(stateOf(e, a))"
           :hint="stateHint(stateOf(e, a))"
         />
-        <RCheckbox
+        <ZACheckbox
           bare
           size="sm"
           :states="PERM_STATES"

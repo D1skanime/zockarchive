@@ -2,7 +2,7 @@
 // FolderMappingTypeCell — editable Type cell (alias / variant) for the
 // folder mappings table.
 //
-// Implementation: a plain `RSelect` with two options. Conceptually
+// Implementation: a plain `ZASelect` with two options. Conceptually
 // this is "pick one", same as PlatformCell — a select reads more
 // honestly than a button-activated menu and keeps the visual
 // vocabulary identical across the table.
@@ -18,8 +18,8 @@
 // The selected-value text picks up a colour token per type
 // (`brand-primary` / `accent` / `success`) so the cell still reads
 // at a glance as alias / variant / auto. Read-only fallback renders
-// an RTag with the same tone vocabulary.
-import { RIcon, RSelect, RTag } from "@v2/lib";
+// an ZATag with the same tone vocabulary.
+import { ZAIcon, ZASelect, ZATag } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -57,7 +57,7 @@ const items = computed<TypeItem[]>(() => [
 ]);
 
 // Pass `row.type` straight through — even when it's `auto` (a value
-// not in `items`). RSelect drops foreign values from `selectedItems`,
+// not in `items`). ZASelect drops foreign values from `selectedItems`,
 // so `hasSelection` becomes false and the `#placeholder` slot fires —
 // we paint the auto pill there, while alias/variant flow through
 // `#selection` as before.
@@ -70,8 +70,8 @@ const modelType = computed({
 
 const isEditable = computed(() => props.canEdit && !!props.row.slug);
 
-type RTagTone = "brand" | "accent" | "success";
-const tagTone = computed<RTagTone>(() => {
+type ZATagTone = "brand" | "accent" | "success";
+const tagTone = computed<ZATagTone>(() => {
   if (props.row.type === "alias") return "brand";
   if (props.row.type === "variant") return "accent";
   return "success";
@@ -85,7 +85,7 @@ const label = computed(() => {
 </script>
 
 <template>
-  <RSelect
+  <ZASelect
     v-if="isEditable"
     v-model="modelType"
     :items="items"
@@ -98,27 +98,27 @@ const label = computed(() => {
     :class="`r-v2-fmtc--${row.type ?? 'unset'}`"
   >
     <template #selection>
-      <RTag :tone="tagTone" :text="label" size="small" />
+      <ZATag :tone="tagTone" :text="label" size="small" />
     </template>
-    <!-- Auto rows aren't in the items list, so RSelect treats them as
+    <!-- Auto rows aren't in the items list, so ZASelect treats them as
          "no selection" and renders the placeholder slot — paint the
          auto-detected pill there. -->
     <template #placeholder>
-      <RTag :tone="tagTone" :text="label" size="small" />
+      <ZATag :tone="tagTone" :text="label" size="small" />
     </template>
     <template #item="{ props: itemProps, item }">
       <li
         v-bind="itemProps"
         :class="`r-v2-fmtc-item--${(item.raw as TypeItem).value}`"
       >
-        <RIcon :icon="(item.raw as TypeItem).icon" size="16" />
+        <ZAIcon :icon="(item.raw as TypeItem).icon" size="16" />
         <span class="r-select__item-title">
           {{ (item.raw as TypeItem).title }}
         </span>
       </li>
     </template>
-  </RSelect>
-  <RTag v-else-if="row.type" :tone="tagTone" :text="label" size="x-small" />
+  </ZASelect>
+  <ZATag v-else-if="row.type" :tone="tagTone" :text="label" size="x-small" />
 </template>
 
 <style scoped>

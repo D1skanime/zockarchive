@@ -9,7 +9,7 @@
 //
 // Polling is independent of `useGamepad` — this view is its own read
 // path; the real input loop keeps running in the background.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
@@ -149,7 +149,7 @@ function formatTime(t: number) {
         :style="{ width: `${exitHoldProgress * 100}%` }"
         aria-hidden="true"
       />
-      <RIcon icon="mdi-information-outline" size="15" />
+      <ZAIcon icon="mdi-information-outline" size="15" />
       <span>{{ t("settings.controller-debug-test-hint") }}</span>
     </div>
 
@@ -161,7 +161,7 @@ function formatTime(t: number) {
             {{ t("settings.controller-debug-modality") }}
           </span>
           <span class="r-v2-ctrl__pill" :class="`r-v2-ctrl__pill--${modality}`">
-            <RIcon :icon="modalityIcon" size="13" />
+            <ZAIcon :icon="modalityIcon" size="13" />
             {{ modality }}
           </span>
         </div>
@@ -177,7 +177,7 @@ function formatTime(t: number) {
                 : 'r-v2-ctrl__pill--muted'
             "
           >
-            <RIcon
+            <ZAIcon
               :icon="pads.length > 0 ? 'mdi-controller' : 'mdi-controller-off'"
               size="13"
             />
@@ -194,7 +194,7 @@ function formatTime(t: number) {
       icon="mdi-controller-off"
     >
       <div class="r-v2-ctrl__empty">
-        <RIcon
+        <ZAIcon
           icon="mdi-gamepad-variant-outline"
           size="40"
           color="var(--r-color-fg-faint)"
@@ -268,7 +268,7 @@ function formatTime(t: number) {
           class="r-v2-ctrl__legend-row"
         >
           <span class="r-v2-ctrl__legend-from">{{ bind.button }}</span>
-          <RIcon
+          <ZAIcon
             icon="mdi-arrow-right-thin"
             size="12"
             color="var(--r-color-fg-faint)"
@@ -284,7 +284,7 @@ function formatTime(t: number) {
       icon="mdi-console-line"
     >
       <template #header-actions>
-        <RBtn
+        <ZABtn
           size="small"
           variant="text"
           prepend-icon="mdi-delete-outline"
@@ -292,7 +292,7 @@ function formatTime(t: number) {
           @click="clearLog"
         >
           Clear
-        </RBtn>
+        </ZABtn>
       </template>
       <p class="r-v2-ctrl__log-hint">
         <strong>synthetic</strong> = dispatched by <code>useGamepad</code>.

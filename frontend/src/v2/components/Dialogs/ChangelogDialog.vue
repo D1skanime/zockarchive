@@ -4,7 +4,7 @@
 // subsequent opens within the same session. Each release renders as a
 // glass-panel block (tag + date) with the release body rendered through
 // MdPreview, the same markdown surface NotesTab uses.
-import { RBtn, RDialog, REmptyState, RIcon, RSpinner } from "@v2/lib";
+import { ZABtn, ZADialog, ZAEmptyState, ZAIcon, ZASpinner } from "@v2/lib";
 import { MdPreview } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import type { Emitter } from "mitt";
@@ -96,7 +96,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-clock-outline"
     width="min(720px, max(50vw, 480px))"
@@ -116,26 +116,26 @@ function closeDialog() {
         }"
       >
         <div v-if="loading" class="r-v2-changelog__state">
-          <RSpinner :size="28" />
+          <ZASpinner :size="28" />
           <span class="r-v2-changelog__state-label">
             {{ t("common.changelog-loading") }}
           </span>
         </div>
 
-        <REmptyState
+        <ZAEmptyState
           v-else-if="error"
           icon="mdi-alert-circle-outline"
           :title="t('common.changelog-error-title')"
           :hint="t('common.changelog-error-hint')"
         >
           <template #actions>
-            <RBtn variant="flat" color="primary" @click="fetchReleases">
+            <ZABtn variant="flat" color="primary" @click="fetchReleases">
               {{ t("common.try-again") }}
-            </RBtn>
+            </ZABtn>
           </template>
-        </REmptyState>
+        </ZAEmptyState>
 
-        <REmptyState
+        <ZAEmptyState
           v-else-if="releases.length === 0"
           icon="mdi-tray-remove"
           :title="t('common.changelog-empty-title')"
@@ -183,12 +183,12 @@ function closeDialog() {
         rel="noopener noreferrer"
         class="r-v2-changelog__view-all"
       >
-        <RIcon icon="mdi-github" size="16" />
+        <ZAIcon icon="mdi-github" size="16" />
         <span>{{ t("common.changelog-view-all") }}</span>
-        <RIcon icon="mdi-open-in-new" size="12" />
+        <ZAIcon icon="mdi-open-in-new" size="12" />
       </a>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

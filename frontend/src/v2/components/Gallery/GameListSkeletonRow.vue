@@ -11,7 +11,7 @@
 // `GameListRow` paints its own per-cell skeletons (when a row mounts
 // before its position resolves) using the same per-column shapes, so
 // both flavours stay visually identical.
-import { RSkeletonBlock } from "@v2/lib";
+import { ZASkeletonBlock } from "@v2/lib";
 import { computed } from "vue";
 import {
   getListColumns,
@@ -53,7 +53,7 @@ const gridStyle = computed(() => ({
         v-else-if="col.key === 'cover'"
         class="r-glr-skel__cell r-glr-skel__cover"
       >
-        <RSkeletonBlock
+        <ZASkeletonBlock
           :width="LIST_COVER_WIDTH_PX"
           :height="LIST_COVER_HEIGHT_PX"
         />
@@ -63,15 +63,15 @@ const gridStyle = computed(() => ({
         class="r-glr-skel__cell r-glr-skel__title"
       >
         <div class="r-glr-skel__meta">
-          <RSkeletonBlock width="60%" :height="12" />
-          <RSkeletonBlock width="40%" :height="10" />
+          <ZASkeletonBlock width="60%" :height="12" />
+          <ZASkeletonBlock width="40%" :height="10" />
         </div>
       </div>
 
       <div v-else-if="col.key === 'platform_id'" class="r-glr-skel__cell">
         <div class="r-glr-skel__platform">
-          <RSkeletonBlock :width="24" :height="24" circle />
-          <RSkeletonBlock :width="100" :height="10" />
+          <ZASkeletonBlock :width="24" :height="24" circle />
+          <ZASkeletonBlock :width="100" :height="10" />
         </div>
       </div>
 
@@ -80,8 +80,8 @@ const gridStyle = computed(() => ({
         class="r-glr-skel__cell"
       >
         <div class="r-glr-skel__pills">
-          <RSkeletonBlock :width="28" :height="16" rounded="pill" />
-          <RSkeletonBlock :width="28" :height="16" rounded="pill" />
+          <ZASkeletonBlock :width="28" :height="16" rounded="pill" />
+          <ZASkeletonBlock :width="28" :height="16" rounded="pill" />
         </div>
       </div>
 
@@ -89,11 +89,11 @@ const gridStyle = computed(() => ({
         v-else-if="col.key === 'actions'"
         class="r-glr-skel__cell r-glr-skel__cell--end"
       >
-        <RSkeletonBlock :width="18" :height="18" circle />
+        <ZASkeletonBlock :width="18" :height="18" circle />
       </div>
 
       <div v-else class="r-glr-skel__cell">
-        <RSkeletonBlock :width="col.skeletonWidth ?? 60" :height="10" />
+        <ZASkeletonBlock :width="col.skeletonWidth ?? 60" :height="10" />
       </div>
     </template>
   </div>

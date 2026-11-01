@@ -2,7 +2,7 @@
 // UsersSection — v2-native users table.
 //
 // Layout mirrors LibraryManagement's tabs: a search bar at the top,
-// the table itself (RTable), and the action buttons (Add + Invite)
+// the table itself (ZATable), and the action buttons (Add + Invite)
 // pinned at the bottom of the section. No SettingsSection wrapper —
 // the tab in Administration owns the page chrome now.
 //
@@ -10,15 +10,15 @@
 // are mounted alongside in Administration.vue. Delete uses useConfirm
 // directly (no dedicated dialog).
 import {
-  RBtn,
-  RIcon,
-  RSwitch,
-  RTable,
-  RTag,
-  RTextField,
-  RTooltip,
-  type RTableColumn,
-  type RTableSortPayload,
+  ZABtn,
+  ZAIcon,
+  ZASwitch,
+  ZATable,
+  ZATag,
+  ZATextField,
+  ZATooltip,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
@@ -71,8 +71,8 @@ function groupPillColor(user: User): string {
   return groupColor(resolveGroup(user)?.color);
 }
 
-// The pill mirrors the admin RTag chrome (same shape/size) but tinted with
-// the group's colour — override RTag's tone vars with the group hue.
+// The pill mirrors the admin ZATag chrome (same shape/size) but tinted with
+// the group's colour — override ZATag's tone vars with the group hue.
 function groupPillStyle(user: User) {
   const c = groupPillColor(user);
   return {
@@ -130,7 +130,7 @@ const filteredUsers = computed(() => {
   );
 });
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "username",
     label: t("common.name"),
@@ -175,7 +175,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   if (
     key !== "username" &&
     key !== "email" &&
@@ -268,7 +268,7 @@ onMounted(async () => {
 
 <template>
   <div class="r-v2-users">
-    <RTextField
+    <ZATextField
       v-model="search"
       prefix-label="inline"
       :placeholder="t('common.search')"
@@ -278,11 +278,11 @@ onMounted(async () => {
       class="r-v2-users__search"
     >
       <template #prefix-label>
-        <RIcon icon="mdi-magnify" size="15" />
+        <ZAIcon icon="mdi-magnify" size="15" />
       </template>
-    </RTextField>
+    </ZATextField>
 
-    <RTable
+    <ZATable
       :columns="columns"
       :items="filteredUsers"
       :item-key="(r) => (r as User).id"
@@ -307,14 +307,14 @@ onMounted(async () => {
         <span class="r-v2-users__meta">{{ (row as User).email || "—" }}</span>
       </template>
       <template #cell.access="{ row }">
-        <RTag
+        <ZATag
           v-if="(row as User).role === 'admin'"
           tone="brand"
           prepend-icon="mdi-shield-crown-outline"
           :text="t('settings.administrator')"
           class="r-v2-users__access-pill"
         />
-        <RTag
+        <ZATag
           v-else
           :style="groupPillStyle(row as User)"
           :text="groupLabel(row as User)"
@@ -331,7 +331,7 @@ onMounted(async () => {
         </span>
       </template>
       <template #cell.enabled="{ row }">
-        <RSwitch
+        <ZASwitch
           :model-value="(row as User).enabled"
           :disabled="(row as User).id === auth.user?.id"
           :aria-label="
@@ -344,9 +344,9 @@ onMounted(async () => {
       </template>
       <template #cell.actions="{ row }">
         <div class="r-v2-users__actions">
-          <RTooltip>
+          <ZATooltip>
             <template #activator="{ props: tipProps }">
-              <RBtn
+              <ZABtn
                 v-bind="tipProps"
                 variant="text"
                 size="small"
@@ -356,10 +356,10 @@ onMounted(async () => {
               />
             </template>
             <span>{{ t("settings.edit-user") }}</span>
-          </RTooltip>
-          <RTooltip>
+          </ZATooltip>
+          <ZATooltip>
             <template #activator="{ props: tipProps }">
-              <RBtn
+              <ZABtn
                 v-bind="tipProps"
                 variant="text"
                 size="small"
@@ -371,27 +371,27 @@ onMounted(async () => {
               />
             </template>
             <span>{{ t("common.delete") }}</span>
-          </RTooltip>
+          </ZATooltip>
         </div>
       </template>
-    </RTable>
+    </ZATable>
 
     <div class="r-v2-users__footer">
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         prepend-icon="mdi-plus"
         @click="emitter?.emit('showCreateUserDialog', null)"
       >
         {{ t("common.add") }}
-      </RBtn>
-      <RBtn
+      </ZABtn>
+      <ZABtn
         variant="text"
         prepend-icon="mdi-share-variant"
         @click="emitter?.emit('showCreateInviteLinkDialog')"
       >
         {{ t("settings.invite-link") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </div>
 </template>

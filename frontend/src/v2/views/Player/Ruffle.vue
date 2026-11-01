@@ -3,7 +3,7 @@
 // createPlayer, fullscreen) is ported verbatim from
 // the established player flow so playback stays identical; only the
 // chrome is v2. No shared state with EJS — Flash has its own config.
-import { RBtn, RCard, RIcon, RSwitch } from "@v2/lib";
+import { ZABtn, ZACard, ZAIcon, ZASwitch } from "@v2/lib";
 import {
   computed,
   nextTick,
@@ -243,10 +243,10 @@ onBeforeUnmount(() => {
       </aside>
 
       <!-- Settings panel -->
-      <RCard class="r-v2-ruffle__panel" variant="flat">
+      <ZACard class="r-v2-ruffle__panel" variant="flat">
         <div class="r-v2-ruffle__settings">
           <div class="r-v2-ruffle__section-label">
-            <RIcon icon="mdi-palette" size="16" />
+            <ZAIcon icon="mdi-palette" size="16" />
             <span>{{ t("play.select-background-color") }}</span>
           </div>
           <div class="r-v2-ruffle__color-row">
@@ -263,9 +263,9 @@ onBeforeUnmount(() => {
             </code>
           </div>
 
-          <RSwitch v-model="fullscreenOnPlay" :label="t('play.full-screen')" />
+          <ZASwitch v-model="fullscreenOnPlay" :label="t('play.full-screen')" />
 
-          <RBtn
+          <ZABtn
             size="large"
             variant="flat"
             color="primary"
@@ -277,9 +277,9 @@ onBeforeUnmount(() => {
             @click="onPlay"
           >
             {{ t("play.play") }}
-          </RBtn>
+          </ZABtn>
 
-          <RBtn
+          <ZABtn
             block
             variant="text"
             size="small"
@@ -287,8 +287,8 @@ onBeforeUnmount(() => {
             @click="backToRom"
           >
             {{ t("play.back-to-game-details") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             block
             variant="text"
             size="small"
@@ -296,9 +296,9 @@ onBeforeUnmount(() => {
             @click="backToPlatform"
           >
             {{ t("play.back-to-gallery") }}
-          </RBtn>
+          </ZABtn>
         </div>
-      </RCard>
+      </ZACard>
 
       <div class="r-v2-ruffle__brand">
         <span>{{ t("play.powered-by") }}</span>
@@ -309,14 +309,14 @@ onBeforeUnmount(() => {
     <!-- Running state — full bleed minus nav -->
     <div v-else class="r-v2-ruffle__stage-wrap">
       <div id="r-v2-ruffle-stage" class="r-v2-ruffle__stage" />
-      <RBtn
+      <ZABtn
         class="r-v2-ruffle__quit"
         variant="translucent"
         prepend-icon="mdi-exit-to-app"
         @click="onlyQuit"
       >
         {{ t("play.quit") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </section>
 

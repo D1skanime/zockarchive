@@ -3,7 +3,7 @@
 // chrome as PdfViewer. Manuals can be PDF or Markdown; MediaTab picks the
 // viewer by extension. The file is fetched as text and handed to MdPreview
 // (md-editor-v3), the same renderer used by NotesTab.
-import { RBtn, REmptyState, RIcon, RSpinner, RTooltip } from "@v2/lib";
+import { ZABtn, ZAEmptyState, ZAIcon, ZASpinner, ZATooltip } from "@v2/lib";
 import { MdPreview } from "md-editor-v3";
 import "md-editor-v3/lib/style.css";
 import { computed, ref, watch } from "vue";
@@ -74,7 +74,7 @@ watch(() => props.url, load, { immediate: true });
 
       <span class="r-v2-mdv__spacer" />
 
-      <RTooltip :text="t('common.download')">
+      <ZATooltip :text="t('common.download')">
         <template #activator="{ props: activator }">
           <a
             v-bind="activator"
@@ -83,12 +83,12 @@ watch(() => props.url, load, { immediate: true });
             :aria-label="t('common.download')"
             class="r-v2-mdv__btn"
           >
-            <RIcon icon="mdi-download" size="18" />
+            <ZAIcon icon="mdi-download" size="18" />
           </a>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip v-if="redownloadable" :text="t('rom.redownload')">
+      <ZATooltip v-if="redownloadable" :text="t('rom.redownload')">
         <template #activator="{ props: activator }">
           <button
             v-bind="activator"
@@ -99,12 +99,12 @@ watch(() => props.url, load, { immediate: true });
             :disabled="redownloading || mutationDisabled"
             @click="emit('redownload')"
           >
-            <RIcon icon="mdi-cloud-download-outline" size="18" />
+            <ZAIcon icon="mdi-cloud-download-outline" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
 
-      <RTooltip v-if="deletable" :text="t('common.delete')">
+      <ZATooltip v-if="deletable" :text="t('common.delete')">
         <template #activator="{ props: activator }">
           <button
             v-bind="activator"
@@ -114,27 +114,27 @@ watch(() => props.url, load, { immediate: true });
             :disabled="mutationDisabled"
             @click="emit('delete')"
           >
-            <RIcon icon="mdi-delete-outline" size="18" />
+            <ZAIcon icon="mdi-delete-outline" size="18" />
           </button>
         </template>
-      </RTooltip>
+      </ZATooltip>
     </div>
 
     <div class="r-v2-mdv__viewer">
       <div v-if="loading" class="r-v2-mdv__center">
-        <RSpinner :size="28" />
+        <ZASpinner :size="28" />
       </div>
-      <REmptyState
+      <ZAEmptyState
         v-else-if="failed"
         icon="mdi-file-alert-outline"
         :title="t('rom.manual-load-failed')"
       >
         <template #actions>
-          <RBtn variant="outlined" size="small" @click="load">
+          <ZABtn variant="outlined" size="small" @click="load">
             {{ t("common.try-again") }}
-          </RBtn>
+          </ZABtn>
         </template>
-      </REmptyState>
+      </ZAEmptyState>
       <MdPreview
         v-else
         no-highlight

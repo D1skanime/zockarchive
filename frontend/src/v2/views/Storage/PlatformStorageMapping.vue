@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-  RAlert,
-  RBtn,
-  RCard,
-  RDivider,
-  REmptyState,
-  RList,
-  RListItem,
-  RSkeletonBlock,
-  RSteps,
+  ZAAlert,
+  ZABtn,
+  ZACard,
+  ZADivider,
+  ZAEmptyState,
+  ZAList,
+  ZAListItem,
+  ZASkeletonBlock,
+  ZASteps,
 } from "@v2/lib";
 import axios from "axios";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -427,12 +427,12 @@ onMounted(() => void reload());
           }}
         </p>
       </div>
-      <RBtn variant="text" prepend-icon="mdi-arrow-left" @click="goBack">
+      <ZABtn variant="text" prepend-icon="mdi-arrow-left" @click="goBack">
         {{ t("common.back", "Back") }}
-      </RBtn>
+      </ZABtn>
     </header>
 
-    <RAlert v-if="!canAdmin || errorState === 'forbidden'" type="error">
+    <ZAAlert v-if="!canAdmin || errorState === 'forbidden'" type="error">
       <template #title>{{
         t("storage.forbidden-title", "Administrator access required")
       }}</template>
@@ -442,14 +442,14 @@ onMounted(() => void reload());
           "Storage administration requires administrator access.",
         )
       }}
-    </RAlert>
+    </ZAAlert>
 
     <template v-else-if="loading">
-      <RSkeletonBlock height="132" />
-      <RSkeletonBlock height="260" class="r-storage__skeleton" />
+      <ZASkeletonBlock height="132" />
+      <ZASkeletonBlock height="260" class="r-storage__skeleton" />
     </template>
 
-    <RAlert v-else-if="errorState === 'unreachable'" type="error">
+    <ZAAlert v-else-if="errorState === 'unreachable'" type="error">
       <template #title>{{
         t("storage.unreachable-title", "Storage root is unavailable")
       }}</template>
@@ -460,13 +460,13 @@ onMounted(() => void reload());
         )
       }}
       <template #append
-        ><RBtn variant="outlined" @click="reload">{{
+        ><ZABtn variant="outlined" @click="reload">{{
           t("storage.check-again", "Check again")
-        }}</RBtn></template
+        }}</ZABtn></template
       >
-    </RAlert>
+    </ZAAlert>
 
-    <RAlert v-else-if="errorState === 'generic'" type="error">
+    <ZAAlert v-else-if="errorState === 'generic'" type="error">
       <template #title>{{
         t("common.error", "Something went wrong")
       }}</template>
@@ -477,14 +477,14 @@ onMounted(() => void reload());
         )
       }}
       <template #append
-        ><RBtn variant="outlined" @click="reload">{{
+        ><ZABtn variant="outlined" @click="reload">{{
           t("common.reload", "Reload")
-        }}</RBtn></template
+        }}</ZABtn></template
       >
-    </RAlert>
+    </ZAAlert>
 
     <template v-else>
-      <RCard class="r-storage__summary">
+      <ZACard class="r-storage__summary">
         <div class="r-storage__summary-title">
           <div>
             <p class="r-storage__label">
@@ -505,7 +505,7 @@ onMounted(() => void reload());
               }}
             </p>
           </div>
-          <RBtn
+          <ZABtn
             variant="flat"
             color="primary"
             :disabled="roots.length === 0"
@@ -516,9 +516,9 @@ onMounted(() => void reload());
                 ? t("storage.change", "Change mapping")
                 : t("storage.map", "Map storage")
             }}
-          </RBtn>
+          </ZABtn>
         </div>
-        <RDivider class="r-storage__divider" />
+        <ZADivider class="r-storage__divider" />
         <div class="r-storage__preview">
           <p class="r-storage__label">{{ t("storage.preview", "Preview") }}</p>
           <p aria-live="polite">{{ previewLabel }}</p>
@@ -533,30 +533,30 @@ onMounted(() => void reload());
               )
             }}
           </p>
-          <RBtn
+          <ZABtn
             v-if="mapping"
             variant="text"
             :loading="refreshingPreview"
             @click="refreshPreview"
-            >{{ t("storage.refresh-preview", "Refresh preview") }}</RBtn
+            >{{ t("storage.refresh-preview", "Refresh preview") }}</ZABtn
           >
         </div>
         <div v-if="mapping" class="r-storage__danger">
-          <RBtn
+          <ZABtn
             variant="text"
             color="danger"
             :loading="removing"
             @click="removeCurrentMapping"
-            >{{ t("storage.remove", "Remove mapping") }}</RBtn
+            >{{ t("storage.remove", "Remove mapping") }}</ZABtn
           >
           <span>{{
             t("storage.files-unchanged", "Original files remain unchanged.")
           }}</span>
         </div>
-      </RCard>
+      </ZACard>
 
-      <RCard v-if="editing" class="r-storage__workspace">
-        <RSteps
+      <ZACard v-if="editing" class="r-storage__workspace">
+        <ZASteps
           :current="step"
           :steps="[
             { label: t('storage.root', 'Root') },
@@ -567,8 +567,8 @@ onMounted(() => void reload());
         />
         <section v-if="step === 1" class="r-storage__section">
           <h2>{{ t("storage.choose-root", "Choose a storage root") }}</h2>
-          <RList>
-            <RListItem
+          <ZAList>
+            <ZAListItem
               v-for="root in roots"
               :key="root.id"
               :title="root.name"
@@ -586,7 +586,7 @@ onMounted(() => void reload());
               append-icon="mdi-chevron-right"
               @click="chooseRoot(root.id)"
             />
-          </RList>
+          </ZAList>
         </section>
 
         <section v-else-if="step === 2" class="r-storage__section">
@@ -600,18 +600,18 @@ onMounted(() => void reload());
                 >
               </p>
             </div>
-            <RBtn variant="outlined" @click="selectCurrentFolder">{{
+            <ZABtn variant="outlined" @click="selectCurrentFolder">{{
               t("storage.select-folder", "Select this folder")
-            }}</RBtn>
+            }}</ZABtn>
           </div>
-          <RAlert type="info">{{
+          <ZAAlert type="info">{{
             t(
               "storage.recursive-scope",
               "The selected folder and all of its descendants are included. Sibling folders are excluded.",
             )
-          }}</RAlert>
-          <RSkeletonBlock v-if="browsing" height="180" />
-          <REmptyState
+          }}</ZAAlert>
+          <ZASkeletonBlock v-if="browsing" height="180" />
+          <ZAEmptyState
             v-else-if="entries.length === 0"
             icon="mdi-folder-open-outline"
             :title="t('storage.empty-folder', 'No child folders here')"
@@ -622,8 +622,8 @@ onMounted(() => void reload());
               )
             "
           />
-          <RList v-else>
-            <RListItem
+          <ZAList v-else>
+            <ZAListItem
               v-for="entry in entries"
               :key="entry.relative_path"
               :title="entry.name"
@@ -636,16 +636,16 @@ onMounted(() => void reload());
               :disabled="!entry.navigable"
               @click="browse(entry.relative_path)"
             />
-          </RList>
+          </ZAList>
           <div class="r-storage__actions">
-            <RBtn
+            <ZABtn
               variant="text"
               :disabled="!currentPath"
               @click="browse(currentPath.split('/').slice(0, -1).join('/'))"
-              >{{ t("storage.up", "Up one folder") }}</RBtn
-            ><RBtn variant="text" @click="step = 1">{{
+              >{{ t("storage.up", "Up one folder") }}</ZABtn
+            ><ZABtn variant="text" @click="step = 1">{{
               t("storage.change-root", "Choose another root")
-            }}</RBtn>
+            }}</ZABtn>
           </div>
         </section>
 
@@ -655,32 +655,32 @@ onMounted(() => void reload());
             {{ selectedRoot?.name }} /
             {{ draft.relativePath || t("storage.root-folder", "Root folder") }}
           </p>
-          <RAlert type="info">{{
+          <ZAAlert type="info">{{
             t(
               "storage.review-hint",
               "Run the safety test before saving. Changing the root or folder requires a new test.",
             )
-          }}</RAlert>
+          }}</ZAAlert>
           <div class="r-storage__actions">
-            <RBtn variant="outlined" :loading="testing" @click="testDraft">{{
+            <ZABtn variant="outlined" :loading="testing" @click="testDraft">{{
               t("storage.test", "Run safety test")
-            }}</RBtn
-            ><RBtn
+            }}</ZABtn
+            ><ZABtn
               variant="flat"
               color="primary"
               :disabled="!tested"
               :loading="saving"
               @click="saveDraft"
-              >{{ t("common.save", "Save mapping") }}</RBtn
+              >{{ t("common.save", "Save mapping") }}</ZABtn
             >
           </div>
         </section>
         <div class="r-storage__footer">
-          <RBtn variant="text" @click="cancelEdit">{{
+          <ZABtn variant="text" @click="cancelEdit">{{
             t("common.cancel", "Cancel")
-          }}</RBtn>
+          }}</ZABtn>
         </div>
-      </RCard>
+      </ZACard>
     </template>
   </main>
 </template>

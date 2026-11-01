@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
-  RBtn,
-  RCarousel,
-  RDropzone,
-  REmptyState,
-  RSkeletonBlock,
+  ZABtn,
+  ZACarousel,
+  ZADropzone,
+  ZAEmptyState,
+  ZASkeletonBlock,
 } from "@v2/lib";
 import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -46,7 +46,7 @@ const {
 const root = ref<HTMLElement | null>(null);
 const gallery = ref<HTMLElement | null>(null);
 const toolbar = ref<HTMLElement | null>(null);
-const myDz = ref<InstanceType<typeof RDropzone> | null>(null);
+const myDz = ref<InstanceType<typeof ZADropzone> | null>(null);
 const { columns } = useResponsiveColumns(gallery, {
   cardWidth: 200,
   gap: () =>
@@ -294,7 +294,7 @@ async function uploadFiles(files: File[]) {
 
 <template>
   <div ref="root" class="za-shots" data-shot-scroll>
-    <RDropzone
+    <ZADropzone
       ref="myDz"
       class="za-shots__dropzone"
       overlay
@@ -336,7 +336,7 @@ async function uploadFiles(files: File[]) {
               <h3 :id="`shots-${group.source}`" class="za-shots__title ma-0">
                 {{ group.label }}
               </h3>
-              <RBtn
+              <ZABtn
                 v-if="group.source === 'provider' && canRefresh"
                 icon="mdi-refresh"
                 :loading="refreshing"
@@ -345,7 +345,7 @@ async function uploadFiles(files: File[]) {
                 :tooltip="t('common.refresh')"
                 @click="retainActionFocus(refreshProviderScreenshots)"
               >
-              </RBtn>
+              </ZABtn>
             </header>
             <p v-if="group.source === 'provider'" class="ma-0 za-shots__hint">
               {{ t("rom.provider-screenshot-delete-note") }}
@@ -356,9 +356,9 @@ async function uploadFiles(files: File[]) {
               "
               class="za-shots__grid ga-3 ma-0 pa-0"
             >
-              <RSkeletonBlock v-for="index in 3" :key="index" height="180" />
+              <ZASkeletonBlock v-for="index in 3" :key="index" height="180" />
             </div>
-            <REmptyState
+            <ZAEmptyState
               v-else-if="!group.items.length"
               :title="t('rom.screenshots-empty')"
             />
@@ -396,9 +396,9 @@ async function uploadFiles(files: File[]) {
           </section>
         </template>
       </div>
-    </RDropzone>
+    </ZADropzone>
   </div>
-  <RCarousel
+  <ZACarousel
     v-if="lightbox"
     v-model="lightboxIndex"
     :items="lightboxUrls"
@@ -414,7 +414,7 @@ async function uploadFiles(files: File[]) {
     <template #thumbnail="{ item, index }">
       <img :src="item" :alt="t('rom.screenshot-num-thumb', { n: index + 1 })" />
     </template>
-  </RCarousel>
+  </ZACarousel>
 </template>
 
 <style scoped>

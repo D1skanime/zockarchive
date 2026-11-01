@@ -7,7 +7,7 @@
 // as cells. When the input modality flips to `"pad"` (gamepad detected
 // or pressed) we autofocus the first cell so the synthetic keys
 // dispatched by `useGamepad` have somewhere to go.
-import { RBtn, RChip, RIcon, RSkeletonBlock } from "@v2/lib";
+import { ZABtn, ZAChip, ZAIcon, ZASkeletonBlock } from "@v2/lib";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useUISettings } from "@/composables/useUISettings";
@@ -207,7 +207,7 @@ function collectionCovers(c: {
          decision (upload vs scan), not on a row of skeletons. -->
     <section v-if="isEmpty" class="r-v2-home-empty">
       <div class="r-v2-home-empty__hero">
-        <RIcon
+        <ZAIcon
           icon="mdi-controller-classic-outline"
           size="72"
           class="r-v2-home-empty__hero-icon"
@@ -225,7 +225,7 @@ function collectionCovers(c: {
           v-if="libraryInfo && detectedPlatformCount + detectedGameCount > 0"
           class="r-v2-home-empty__detected"
         >
-          <RChip
+          <ZAChip
             size="small"
             variant="translucent"
             color="primary"
@@ -238,8 +238,8 @@ function collectionCovers(c: {
                 detectedPlatformCount,
               )
             }}
-          </RChip>
-          <RChip size="small" variant="translucent" prepend-icon="mdi-disc">
+          </ZAChip>
+          <ZAChip size="small" variant="translucent" prepend-icon="mdi-disc">
             {{
               t(
                 "home.empty-detected-games",
@@ -247,7 +247,7 @@ function collectionCovers(c: {
                 detectedGameCount,
               )
             }}
-          </RChip>
+          </ZAChip>
         </div>
       </div>
 
@@ -257,7 +257,7 @@ function collectionCovers(c: {
           class="r-v2-home-empty__choice"
         >
           <div class="r-v2-home-empty__choice-icon">
-            <RIcon icon="mdi-folder-search-outline" size="40" />
+            <ZAIcon icon="mdi-folder-search-outline" size="40" />
           </div>
           <h3 class="r-v2-home-empty__choice-title">
             {{ t("home.empty-scan-title") }}
@@ -267,13 +267,13 @@ function collectionCovers(c: {
           </p>
           <span class="r-v2-home-empty__choice-cta">
             {{ t("home.empty-scan-cta") }}
-            <RIcon icon="mdi-arrow-right" size="16" />
+            <ZAIcon icon="mdi-arrow-right" size="16" />
           </span>
         </router-link>
       </div>
 
       <section v-else class="r-v2-home-empty__mapping">
-        <RIcon icon="mdi-folder-key-outline" size="48" />
+        <ZAIcon icon="mdi-folder-key-outline" size="48" />
         <h3 class="r-v2-home-empty__choice-title">
           {{ t("storage.administration") }}
         </h3>
@@ -283,16 +283,16 @@ function collectionCovers(c: {
         <div class="r-v2-home-empty__mapping-actions">
           <router-link :to="mappingRoute" class="r-v2-home-empty__choice-cta">
             {{ t("settings.add-folder-mapping") }}
-            <RIcon icon="mdi-arrow-right" size="16" />
+            <ZAIcon icon="mdi-arrow-right" size="16" />
           </router-link>
-          <RBtn
+          <ZABtn
             v-if="mappingReadiness === 'error'"
             variant="outlined"
             size="small"
             @click="loadMappingReadiness"
           >
             {{ t("common.retry", "Retry") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </section>
     </section>
@@ -313,7 +313,7 @@ function collectionCovers(c: {
         :count="continuePlayingRoms.length"
       >
         <template #icon>
-          <RIcon icon="mdi-play" size="20" />
+          <ZAIcon icon="mdi-play" size="20" />
         </template>
         <template v-if="fetchingContinue && !continuePlayingRoms.length">
           <GameCardSkeleton v-for="n in 4" :key="`cs-${n}`" />
@@ -339,7 +339,7 @@ function collectionCovers(c: {
         :count="recentRoms.length"
       >
         <template #icon>
-          <RIcon icon="mdi-shimmer" size="20" />
+          <ZAIcon icon="mdi-shimmer" size="20" />
         </template>
         <template v-if="fetchingRecent && !recentRoms.length">
           <GameCardSkeleton v-for="n in 6" :key="`rs-${n}`" />
@@ -366,7 +366,7 @@ function collectionCovers(c: {
       :count="favoriteRoms.length"
     >
       <template #icon>
-        <RIcon icon="mdi-heart" size="20" />
+        <ZAIcon icon="mdi-heart" size="20" />
       </template>
       <GameCard
         v-for="rom in favoriteRoms"
@@ -384,10 +384,10 @@ function collectionCovers(c: {
         gap="16px"
       >
         <template #icon>
-          <RIcon icon="mdi-controller" size="20" />
+          <ZAIcon icon="mdi-controller" size="20" />
         </template>
         <template v-if="fetchingPlatforms && !filledPlatforms.length">
-          <RSkeletonBlock
+          <ZASkeletonBlock
             v-for="n in 8"
             :key="`ps-${n}`"
             width="150px"
@@ -418,7 +418,7 @@ function collectionCovers(c: {
         gap="16px"
       >
         <template #icon>
-          <RIcon icon="mdi-bookmark-outline" size="20" />
+          <ZAIcon icon="mdi-bookmark-outline" size="20" />
         </template>
         <CollectionTile
           v-for="(c, i) in allCollections"
@@ -445,7 +445,7 @@ function collectionCovers(c: {
         gap="16px"
       >
         <template #icon>
-          <RIcon icon="mdi-flash" size="20" />
+          <ZAIcon icon="mdi-flash" size="20" />
         </template>
         <CollectionTile
           v-for="(c, i) in smartCollections"
@@ -474,7 +474,7 @@ function collectionCovers(c: {
         gap="16px"
       >
         <template #icon>
-          <RIcon icon="mdi-bookmark-box" size="20" />
+          <ZAIcon icon="mdi-bookmark-box" size="20" />
         </template>
         <CollectionTile
           v-for="(c, i) in virtualCollections"
@@ -612,7 +612,7 @@ html[data-bp~="sm-and-down"] .r-v2-home-empty__divider {
 /* Each choice is a router-link rendered as a card. The "feel" is
    close to a primary CTA — brand-tinted halo on hover, the trailing
    chevron in the CTA line nudges right so the click target reads
-   actionable without needing a separate <RBtn>. */
+   actionable without needing a separate <ZABtn>. */
 .r-v2-home-empty__choice {
   display: flex;
   flex-direction: column;

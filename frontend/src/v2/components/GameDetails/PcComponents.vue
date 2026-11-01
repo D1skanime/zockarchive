@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RCollapsible, REmptyState, RTag } from "@v2/lib";
+import { ZABtn, ZACollapsible, ZAEmptyState, ZATag } from "@v2/lib";
 import { isAxiosError } from "axios";
 import type { Emitter } from "mitt";
 import { computed, inject, ref } from "vue";
@@ -225,14 +225,14 @@ const groupedComponents = computed(() =>
 <template>
   <section class="pc-components">
     <h3 class="pc-components__heading">{{ t("rom.game-downloads") }}</h3>
-    <RBtn
+    <ZABtn
       class="align-self-start"
       data-testid="download-components"
       prepend-icon="mdi-download"
       :loading="archiveSetsState === 'loading'"
       :disabled="archiveSetsState === 'error'"
       @click="showDownload = true"
-      >{{ t("rom.download-game") }}</RBtn
+      >{{ t("rom.download-game") }}</ZABtn
     >
     <p v-if="archiveSetsState === 'error'" class="pc-components__error">
       {{ t("rom.download-failed-description") }}
@@ -257,7 +257,7 @@ const groupedComponents = computed(() =>
       @clear-terminal="queue.clearTerminal"
     />
 
-    <REmptyState
+    <ZAEmptyState
       v-if="groupedComponents.length === 0"
       icon="mdi-package-variant-closed"
       :title="t('rom.pc-no-components')"
@@ -270,7 +270,7 @@ const groupedComponents = computed(() =>
       data-testid="pc-component-group"
     >
       <h4 class="pc-components__group-heading">{{ group.label }}</h4>
-      <RCollapsible
+      <ZACollapsible
         v-for="component in group.components"
         :key="component.relative_path"
         :data-testid="`pc-component-${component.relative_path}`"
@@ -280,7 +280,7 @@ const groupedComponents = computed(() =>
         icon="mdi-folder-outline"
       >
         <div class="pc-components__manifest">
-          <RBtn
+          <ZABtn
             v-if="component.kind === 'dlc'"
             data-testid="open-pc-dlc-details"
             size="small"
@@ -288,8 +288,8 @@ const groupedComponents = computed(() =>
             @click="openDlcDetails(component.id)"
           >
             {{ t("common.details") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             v-if="component.kind !== 'unresolved'"
             :data-testid="`find-pc-component-metadata-${component.id}`"
             size="small"
@@ -298,7 +298,7 @@ const groupedComponents = computed(() =>
             @click="openComponentMatcher(component)"
           >
             {{ t("rom.pc-find-metadata") }}
-          </RBtn>
+          </ZABtn>
           <div
             v-for="member in component.manifest_members"
             :key="member.relative_path"
@@ -308,10 +308,10 @@ const groupedComponents = computed(() =>
             <span class="pc-components__size">{{
               formatBytes(member.size_bytes)
             }}</span>
-            <RTag label="SHA-256" :text="member.sha256" mono />
+            <ZATag label="SHA-256" :text="member.sha256" mono />
           </div>
         </div>
-      </RCollapsible>
+      </ZACollapsible>
     </section>
   </section>
 </template>

@@ -15,7 +15,7 @@
 // Hidden on /scan itself. Honours `prefers-reduced-motion` by
 // dropping the shimmer + pulse animations; the spinner + progress
 // bar keep moving since they communicate live data, not affect.
-import { RIcon, RProgressLinear, RSpinner, RTooltip } from "@v2/lib";
+import { ZAIcon, ZAProgressLinear, ZASpinner, ZATooltip } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -55,7 +55,7 @@ const counterLabel = computed(() => {
 
 <template>
   <Transition name="r-scan-indicator">
-    <RTooltip
+    <ZATooltip
       v-if="visible"
       :text="t('scan.scanning-library')"
       location="bottom"
@@ -68,11 +68,11 @@ const counterLabel = computed(() => {
           :aria-label="t('scan.scanning-library')"
         >
           <span class="r-scan-indicator__row">
-            <RSpinner size="14" color="primary" />
+            <ZASpinner size="14" color="primary" />
             <span class="r-scan-indicator__label">
               {{ t("scan.scanning") }}
             </span>
-            <RIcon
+            <ZAIcon
               icon="mdi-radar"
               size="15"
               class="r-scan-indicator__icon"
@@ -86,7 +86,7 @@ const counterLabel = computed(() => {
           <!-- Live progress bar pinned to the pill's bottom edge.
                Determinate when totals are known, indeterminate
                otherwise — both modes keep the bar visually busy. -->
-          <RProgressLinear
+          <ZAProgressLinear
             class="r-scan-indicator__progress"
             :indeterminate="!hasTotal"
             :model-value="progress"
@@ -96,7 +96,7 @@ const counterLabel = computed(() => {
           />
         </router-link>
       </template>
-    </RTooltip>
+    </ZATooltip>
   </Transition>
 </template>
 

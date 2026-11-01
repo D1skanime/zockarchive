@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RAlert, RProgressLinear, RSpinner, RTag } from "@v2/lib";
+import { ZAAlert, ZAProgressLinear, ZASpinner, ZATag } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { DownloadTransferResponse } from "@/__generated__";
@@ -97,7 +97,6 @@ function progressColor(status: BrowserQueueItem["status"]) {
 function safeFilename(destination: string) {
   return destination.split("/").at(-1) || t("rom.download-file");
 }
-
 function timestamp(value: string | null) {
   return value ? new Date(value).toLocaleString() : "";
 }
@@ -194,14 +193,15 @@ function hasLiveMember(memberId: string | null) {
       {{ t("rom.download-remove-all") }}
     </button>
 
-    <RSpinner
+    <ZASpinner
       v-if="loading"
       data-testid="download-history-loading"
       :aria-label="t('rom.download-state-downloading')"
     />
-    <RAlert v-else-if="error" type="error" data-testid="download-history-error">
+    <!-- prettier-ignore -->
+    <ZAAlert v-else-if="error" type="error" data-testid="download-history-error">
       {{ t("rom.download-failed-description") }}
-    </RAlert>
+    </ZAAlert>
     <ul
       v-else-if="showHistory && displayRows.length"
       class="download-transfer-history__rows"
@@ -212,9 +212,9 @@ function hasLiveMember(memberId: string | null) {
           <span v-if="row.destination">{{
             safeFilename(row.destination)
           }}</span>
-          <RTag :text="statusText(row.status, row.mode)" />
+          <ZATag :text="statusText(row.status, row.mode)" />
         </div>
-        <RProgressLinear
+        <ZAProgressLinear
           v-if="row.destination"
           class="download-transfer-history__progress"
           :model-value="

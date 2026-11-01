@@ -11,7 +11,7 @@
 // Reordering supports every input modality: pointer drag (HTML5 DnD) and
 // explicit move-up / move-down buttons (keyboard, gamepad, touch). Modelled
 // on Home/Widgets/WidgetReorderList but adds enable/disable.
-import { RBtn, RIcon, RTextField } from "@v2/lib";
+import { ZABtn, ZAIcon, ZATextField } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -160,7 +160,7 @@ function onDragEnd() {
         @drop="onDrop($event, i)"
         @dragend="onDragEnd"
       >
-        <RIcon
+        <ZAIcon
           icon="mdi-drag-vertical"
           size="14"
           class="r-v2-spl__handle"
@@ -169,7 +169,7 @@ function onDragEnd() {
         <span class="r-v2-spl__pos">{{ i + 1 }}</span>
         <span class="r-v2-spl__label">{{ labelFor(value) }}</span>
         <div class="r-v2-spl__actions">
-          <RBtn
+          <ZABtn
             variant="text"
             size="x-small"
             icon="mdi-chevron-up"
@@ -179,7 +179,7 @@ function onDragEnd() {
             "
             @click="move(i, -1)"
           />
-          <RBtn
+          <ZABtn
             variant="text"
             size="x-small"
             icon="mdi-chevron-down"
@@ -189,7 +189,7 @@ function onDragEnd() {
             "
             @click="move(i, 1)"
           />
-          <RBtn
+          <ZABtn
             variant="text"
             size="x-small"
             icon="mdi-close"
@@ -214,7 +214,7 @@ function onDragEnd() {
     </p>
 
     <div v-if="allowCustom" class="r-v2-spl__entry">
-      <RTextField
+      <ZATextField
         v-model="draft"
         density="compact"
         :placeholder="inputPlaceholder"
@@ -222,7 +222,7 @@ function onDragEnd() {
         hide-details
         @keydown.enter.prevent="commitDraft"
       />
-      <RBtn
+      <ZABtn
         variant="outlined"
         size="small"
         prepend-icon="mdi-plus"
@@ -230,7 +230,7 @@ function onDragEnd() {
         @click="commitDraft"
       >
         {{ t("common.add") }}
-      </RBtn>
+      </ZABtn>
     </div>
 
     <div v-if="available.length" class="r-v2-spl__tray">
@@ -250,7 +250,7 @@ function onDragEnd() {
           :disabled="disabled"
           @click="add(source.value)"
         >
-          <RIcon icon="mdi-plus" size="12" />
+          <ZAIcon icon="mdi-plus" size="12" />
           <span>{{ source.label }}</span>
         </button>
       </div>

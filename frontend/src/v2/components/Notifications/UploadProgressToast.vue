@@ -4,7 +4,7 @@
 // + speed + bytes for in-flight files, a check for completed files, and
 // the failure reason for failed files. Collapses to a pill when nothing
 // is active.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -50,7 +50,7 @@ function clearFinished() {
     >
       <header class="r-v2-upload__head">
         <div class="r-v2-upload__summary">
-          <RIcon
+          <ZAIcon
             :icon="
               activeCount > 0
                 ? 'mdi-cloud-upload-outline'
@@ -90,7 +90,7 @@ function clearFinished() {
           :aria-expanded="!collapsed"
           @click="collapsed = !collapsed"
         >
-          <RIcon
+          <ZAIcon
             :icon="collapsed ? 'mdi-chevron-up' : 'mdi-chevron-down'"
             size="16"
           />
@@ -111,7 +111,7 @@ function clearFinished() {
             <span class="r-v2-upload__filename" :title="file.filename">
               {{ file.filename }}
             </span>
-            <RIcon
+            <ZAIcon
               :icon="
                 file.failed
                   ? 'mdi-close-circle'
@@ -156,14 +156,14 @@ function clearFinished() {
       </ul>
 
       <footer v-if="!collapsed && hasClearable" class="r-v2-upload__foot">
-        <RBtn
+        <ZABtn
           size="small"
           variant="text"
           color="primary"
           @click="clearFinished"
         >
           {{ t("common.clear-finished") }}
-        </RBtn>
+        </ZABtn>
       </footer>
     </div>
   </transition>

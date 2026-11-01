@@ -34,12 +34,12 @@ function render(stats = {}, items = [item]) {
     props: { stats, items, hasMore: true, loadingMore: false },
     global: {
       stubs: {
-        RBtn: {
+        ZABtn: {
           props: ["loading"],
           emits: ["click"],
           template: "<button @click=\"$emit('click')\"><slot /></button>",
         },
-        RTag: { props: ["text"], template: "<span>{{ text }}</span>" },
+        ZATag: { props: ["text"], template: "<span>{{ text }}</span>" },
       },
     },
   });

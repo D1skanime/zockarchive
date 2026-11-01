@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 
 defineOptions({ inheritAttrs: false });
 defineProps<{
@@ -12,7 +12,7 @@ defineProps<{
 const emit = defineEmits<{ upload: [] }>();
 </script>
 <template>
-  <RBtn
+  <ZABtn
     v-if="available"
     v-bind="$attrs"
     class="za-media-upload__button pa-1"
@@ -23,10 +23,10 @@ const emit = defineEmits<{ upload: [] }>();
     @click="emit('upload')"
   >
     <template #prepend
-      ><RIcon icon="mdi-cloud-upload-outline" size="30" color="primary"
+      ><ZAIcon icon="mdi-cloud-upload-outline" size="30" color="primary"
     /></template>
     {{ label }}
-  </RBtn>
+  </ZABtn>
   <p class="ma-0 za-media-upload__hint flex-1-1">{{ hint }}</p>
 </template>
 <style scoped src="./mediaManagementUpload.css" />

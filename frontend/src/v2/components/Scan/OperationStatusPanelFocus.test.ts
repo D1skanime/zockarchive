@@ -4,10 +4,10 @@ import OperationStatusPanel from "./OperationStatusPanel.vue";
 
 vi.mock("vue-i18n", () => ({ useI18n: () => ({ t: (key: string) => key }) }));
 vi.mock("@v2/lib", () => ({
-  RAlert: { template: "<div><slot /></div>" },
-  RProgressLinear: { template: "<div />" },
-  RCheckbox: { template: "<input type=checkbox />" },
-  RBtn: { template: "<button><slot /></button>" },
+  ZAAlert: { template: "<div><slot /></div>" },
+  ZAProgressLinear: { template: "<div />" },
+  ZACheckbox: { template: "<input type=checkbox />" },
+  ZABtn: { template: "<button><slot /></button>" },
 }));
 
 const mounted: ReturnType<typeof mount>[] = [];
@@ -29,7 +29,7 @@ function render() {
       status: "idle",
       canManage: false,
     },
-    global: { stubs: { RBtn: false } },
+    global: { stubs: { ZABtn: false } },
   });
   mounted.push(wrapper);
   return wrapper;

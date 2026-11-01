@@ -3,7 +3,7 @@
 // gallery scope, kicks the initial fetch, and fills the shell's
 // `#header` slot with a PageHeader. Everything else lives in
 // `GalleryShell`.
-import { RTag } from "@v2/lib";
+import { ZATag } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, nextTick, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -65,7 +65,7 @@ onMounted(async () => {
     <template #header>
       <PageHeader :title="t('common.search')">
         <template #count>
-          <RTag v-if="initialSearch && !initialFetching" :text="total" />
+          <ZATag v-if="initialSearch && !initialFetching" :text="total" />
         </template>
       </PageHeader>
     </template>

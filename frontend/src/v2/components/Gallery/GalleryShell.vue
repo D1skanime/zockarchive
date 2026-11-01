@@ -37,7 +37,7 @@
 // search-input debounce, URL filter sync. Each view supplies its
 // header and its own resource-load flow. List rows own their per-row
 // fetch lifecycle internally (mount = entered overscan window).
-import { RDivider, RLetterHeading, RVirtualScroller } from "@v2/lib";
+import { ZADivider, ZALetterHeading, ZAVirtualScroller } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import {
   computed,
@@ -392,7 +392,7 @@ const { virtualItems, letterToIndex, availableLetters, getItemHeight } =
     fallbackRatio: coverAspectRatio,
   });
 
-const scrollerRef = ref<InstanceType<typeof RVirtualScroller> | null>(null);
+const scrollerRef = ref<InstanceType<typeof ZAVirtualScroller> | null>(null);
 
 // ── Toolbar two-layer state ─────────────────────────────────────────
 // `inflowToolbarEl` is the toolbar inside the scroller's prepend.
@@ -787,7 +787,7 @@ function onShellKey(e: KeyboardEvent) {
   }
 }
 
-// Gallery owns its own internal scroll (the RVirtualScroller). The
+// Gallery owns its own internal scroll (the ZAVirtualScroller). The
 // section is sized to `100vh - --r-nav-h` exactly, but pixel-rounding
 // or transient layout shifts can still produce a stray 1-2px document
 // overflow → a phantom doc scrollbar competing with the virtualizer.
@@ -849,7 +849,7 @@ const itemKind = (i: GalleryItem) => i.kind;
 
 // Stable identity for the virtualiser. Each GalleryItem carries a content-
 // derived `key` (`row-${start}`, `lh-${letter}`, `lr-${p}`, …); feeding it to
-// RVirtualScroller as `get-item-key` lets Vue MATCH rows across a re-pack and
+// ZAVirtualScroller as `get-item-key` lets Vue MATCH rows across a re-pack and
 // MOVE the unchanged ones instead of patching by array index. Index-keying
 // (the default) reassigns every slot's content when a re-pack inserts/removes
 // a row above the viewport, remounting every visible card (image re-decode +
@@ -884,7 +884,7 @@ defineExpose({
       '--r-list-min-w': `${listMinWidth}px`,
     }"
   >
-    <RVirtualScroller
+    <ZAVirtualScroller
       ref="scrollerRef"
       :items="virtualItems"
       :get-item-height="getItemHeight"
@@ -907,7 +907,7 @@ defineExpose({
           <div class="r-v2-shell__header">
             <slot name="header" />
           </div>
-          <RDivider class="r-v2-shell__header-divider" />
+          <ZADivider class="r-v2-shell__header-divider" />
         </template>
 
         <!-- Non-sticky stuck-threshold marker — sits at the toolbar's natural
@@ -958,13 +958,13 @@ defineExpose({
       </template>
 
       <!-- GRID / TABLE (Section 3) — letter-headers + rows of cards in
-           grid/grouped mode, or a single RTable in list mode. Skeleton
+           grid/grouped mode, or a single ZATable in list mode. Skeleton
            rows render while the first window is in flight. The empty
            / not-found state replaces everything below the toolbar
            with a single message. -->
       <template #default="{ item }">
         <div class="r-v2-shell__item">
-          <RLetterHeading
+          <ZALetterHeading
             v-if="itemKind(item as GalleryItem) === 'letter-header'"
             :label="asLetterHeader(item as GalleryItem).letter"
           />
@@ -1027,7 +1027,7 @@ defineExpose({
           </div>
         </div>
       </template>
-    </RVirtualScroller>
+    </ZAVirtualScroller>
 
     <!-- TOOLBAR OVERLAY (Section 2 — second layer). Absolute against
          the section, OUTSIDE the scroller. Transparent — through it,
@@ -1036,7 +1036,7 @@ defineExpose({
          band when `--stuck`.
          Mounted alongside the rest of the shell (`v-if` gates only on
          dock position) and toggled visible via `v-show` so the
-         GalleryToolbar's children — RSliderBtnGroup, RTextField — run
+         GalleryToolbar's children — ZASliderBtnGroup, ZATextField — run
          their initialisation animation ONCE on first render, not on
          every stuck transition. -->
     <div

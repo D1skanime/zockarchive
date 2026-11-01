@@ -5,19 +5,19 @@
 // RomM platform (alias) or to a parent platform's metadata (variant).
 // Auto-detected mappings are read-only.
 //
-// Renders through the shared `RTable` primitive — sortable headers,
+// Renders through the shared `ZATable` primitive — sortable headers,
 // hairline rows, hover tint, skeleton loading state — same chrome as
 // every other table surface in the app (gallery list, missing games,
-// excluded). Editable Platform / Type cells open `RMenu` pickers via
-// `RBtn` activators.
+// excluded). Editable Platform / Type cells open `ZAMenu` pickers via
+// `ZABtn` activators.
 import {
-  RBtn,
-  RDialog,
-  RIcon,
-  RTable,
-  RTextField,
-  type RTableColumn,
-  type RTableSortPayload,
+  ZABtn,
+  ZADialog,
+  ZAIcon,
+  ZATable,
+  ZATextField,
+  type ZATableColumn,
+  type ZATableSortPayload,
 } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref } from "vue";
@@ -114,7 +114,7 @@ const canEdit = computed(
     config.value.CONFIG_FILE_WRITABLE,
 );
 
-const columns = computed<RTableColumn[]>(() => [
+const columns = computed<ZATableColumn[]>(() => [
   {
     key: "fsSlug",
     label: t("settings.folder-name-header"),
@@ -145,7 +145,7 @@ const columns = computed<RTableColumn[]>(() => [
   },
 ]);
 
-function onSort({ key, dir }: RTableSortPayload) {
+function onSort({ key, dir }: ZATableSortPayload) {
   // The "platform" column header drives sorting on `displayName`.
   if (key === "platform") {
     sortKey.value = "displayName";
@@ -157,7 +157,7 @@ function onSort({ key, dir }: RTableSortPayload) {
   sortDir.value = dir;
 }
 
-// RTable expects a single string sortKey — translate our internal
+// ZATable expects a single string sortKey — translate our internal
 // `displayName` back to the column key it shows the chevron next to.
 const tableSortKey = computed(() =>
   sortKey.value === "displayName" ? "platform" : sortKey.value,
@@ -281,7 +281,7 @@ onMounted(async () => {
 <template>
   <div class="r-v2-mappings">
     <div class="r-v2-mappings__toolbar">
-      <RTextField
+      <ZATextField
         v-model="search"
         prefix-label="inline"
         :placeholder="t('common.search')"
@@ -290,12 +290,12 @@ onMounted(async () => {
         class="r-v2-mappings__search"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-magnify" size="14" />
+          <ZAIcon icon="mdi-magnify" size="14" />
         </template>
-      </RTextField>
+      </ZATextField>
     </div>
 
-    <RTable
+    <ZATable
       :columns="columns"
       :items="filteredMappings"
       item-key="fsSlug"
@@ -312,7 +312,7 @@ onMounted(async () => {
            where the user is most likely to wonder what alias / variant
            mean (instead of competing with the search in the toolbar). -->
       <template #header.type>
-        <RBtn
+        <ZABtn
           variant="text"
           size="x-small"
           icon="mdi-help-circle-outline"
@@ -345,7 +345,7 @@ onMounted(async () => {
       </template>
 
       <template #cell.actions="{ row }">
-        <RBtn
+        <ZABtn
           v-if="canEdit && (row as Row).type !== 'auto' && (row as Row).slug"
           variant="text"
           size="small"
@@ -356,13 +356,13 @@ onMounted(async () => {
           @click="setPlatform(row as Row, undefined)"
         />
       </template>
-    </RTable>
+    </ZATable>
 
     <!-- Help dialog — replaces the previous toolbar tooltip. Same
          alias/variant copy, plus a footer note about mutual exclusion.
          Auto isn't covered here on purpose: it's system-detected and
          users can't pick it manually. -->
-    <RDialog
+    <ZADialog
       v-model="helpOpen"
       icon="mdi-folder-multiple-outline"
       :width="520"
@@ -387,21 +387,21 @@ onMounted(async () => {
           <p>{{ t("settings.folder-mappings-tooltip-variants") }}</p>
         </section>
         <p class="r-v2-mappings__help-foot">
-          <RIcon icon="mdi-information-outline" size="14" color="primary" />
+          <ZAIcon icon="mdi-information-outline" size="14" color="primary" />
           <span>{{ t("settings.folder-mappings-mutually-exclusive") }}</span>
         </p>
       </template>
       <template #footer>
         <div style="flex: 1" />
-        <RBtn
+        <ZABtn
           variant="flat"
           color="primary"
           prepend-icon="mdi-check"
           @click="helpOpen = false"
         >
           {{ t("common.got-it") }}
-        </RBtn>
+        </ZABtn>
       </template>
-    </RDialog>
+    </ZADialog>
   </div>
 </template>

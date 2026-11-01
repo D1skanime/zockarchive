@@ -7,7 +7,7 @@
 //
 // Feature composite — knows UpdateRom; lives under
 // `components/EditRom/` next to its siblings.
-import { RTextField } from "@v2/lib";
+import { ZATextField } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { UpdateRom } from "@/v2/data/adapters/legacy/services/api/rom";
@@ -45,7 +45,7 @@ function parseIdValue(raw: string | number | null): number | null {
 }
 
 // Field config — keeps the markup tight and lets us tweak the layout
-// without re-hand-writing nine identical RTextField blocks.
+// without re-hand-writing nine identical ZATextField blocks.
 interface IdField {
   key: keyof UpdateRom;
   label: string;
@@ -105,7 +105,7 @@ function updateYoutubeVideoId(raw: string | number | null) {
 
 <template>
   <div class="r-v2-meta-ids">
-    <RTextField
+    <ZATextField
       :model-value="effectiveYoutubeVideoId"
       :label="t('rom.youtube-video-id')"
       :rules="[youtubeVideoId]"
@@ -115,7 +115,7 @@ function updateYoutubeVideoId(raw: string | number | null) {
       clearable
       @update:model-value="updateYoutubeVideoId"
     />
-    <RTextField
+    <ZATextField
       v-for="field in FIELDS"
       :key="field.key"
       :model-value="modelFor(field)"

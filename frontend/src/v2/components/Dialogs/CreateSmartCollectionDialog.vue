@@ -18,14 +18,14 @@
 // so the read-only display inside CollectionSettingsDrawer renders from
 // the same rules.
 import {
-  RBtn,
-  RChip,
-  RDialog,
-  RForm,
-  RIcon,
-  RSwitch,
-  RTextField,
-  RTag,
+  ZABtn,
+  ZAChip,
+  ZADialog,
+  ZAForm,
+  ZAIcon,
+  ZASwitch,
+  ZATextField,
+  ZATag,
 } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
@@ -221,7 +221,7 @@ async function submit() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-playlist-plus"
     :width="mdAndUp ? 640 : '95vw'"
@@ -232,12 +232,12 @@ async function submit() {
     </template>
 
     <template #content>
-      <RForm v-model="formValid" class="r-v2-csc__form" @submit="submit">
+      <ZAForm v-model="formValid" class="r-v2-csc__form" @submit="submit">
         <div class="r-v2-csc__grid">
           <!-- Left column: editable fields -->
           <div class="r-v2-csc__fields">
             <!-- eslint-disable vuejs-accessibility/no-autofocus -- autofocusing the first field on dialog open is intentional modal UX -->
-            <RTextField
+            <ZATextField
               v-model="name"
               :placeholder="t('collection.name')"
               prefix-label="stacked"
@@ -248,10 +248,10 @@ async function submit() {
               <template #prefix-label>
                 {{ t("collection.name") }}
               </template>
-            </RTextField>
+            </ZATextField>
             <!-- eslint-enable vuejs-accessibility/no-autofocus -->
 
-            <RTextField
+            <ZATextField
               v-model="description"
               :placeholder="t('collection.description')"
               prefix-label="stacked"
@@ -262,9 +262,9 @@ async function submit() {
               <template #prefix-label>
                 {{ t("collection.description") }}
               </template>
-            </RTextField>
+            </ZATextField>
 
-            <RSwitch
+            <ZASwitch
               v-model="isPublic"
               :label="
                 isPublic ? t('collection.public') : t('collection.private')
@@ -275,7 +275,7 @@ async function submit() {
           <!-- Right column: criteria preview -->
           <aside class="r-v2-csc__preview">
             <header class="r-v2-csc__preview-head">
-              <RIcon icon="mdi-filter-variant" size="14" />
+              <ZAIcon icon="mdi-filter-variant" size="14" />
               <span>{{ t("collection.current-filters") }}</span>
             </header>
             <ul class="r-v2-csc__preview-list">
@@ -285,39 +285,39 @@ async function submit() {
                 class="r-v2-csc__preview-row"
               >
                 <span class="r-v2-csc__preview-label">
-                  <RIcon :icon="row.icon" size="14" />
+                  <ZAIcon :icon="row.icon" size="14" />
                   <span>{{ row.label }}</span>
-                  <RTag
+                  <ZATag
                     v-if="row.logic"
                     tone="brand"
                     size="x-small"
                     class="r-v2-csc__preview-logic"
                   >
                     {{ row.logic }}
-                  </RTag>
+                  </ZATag>
                 </span>
                 <div v-if="row.values?.length" class="r-v2-csc__preview-values">
-                  <RChip
+                  <ZAChip
                     v-for="(v, i) in row.values"
                     :key="`${row.key}-${i}`"
                     size="x-small"
                     variant="translucent"
                   >
                     {{ v }}
-                  </RChip>
+                  </ZAChip>
                 </div>
               </li>
             </ul>
           </aside>
         </div>
-      </RForm>
+      </ZAForm>
     </template>
 
     <template #footer>
-      <RBtn variant="text" :disabled="submitting" @click="close">
+      <ZABtn variant="text" :disabled="submitting" @click="close">
         {{ t("common.cancel") }}
-      </RBtn>
-      <RBtn
+      </ZABtn>
+      <ZABtn
         variant="flat"
         color="primary"
         prepend-icon="mdi-playlist-plus"
@@ -326,9 +326,9 @@ async function submit() {
         @click="submit"
       >
         {{ t("common.create") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

@@ -6,7 +6,7 @@
 // navigating. Two API calls per pick: one to learn the library total,
 // one to fetch the selected offset; same approach the v1 RandomBtn
 // uses. The pick is intentionally not cached so each mount re-shuffles.
-import { RBtn, RChip } from "@v2/lib";
+import { ZABtn, ZAChip } from "@v2/lib";
 import { computed, nextTick, onMounted, ref } from "vue";
 import type { ComponentPublicInstance } from "vue";
 import { useI18n } from "vue-i18n";
@@ -131,7 +131,7 @@ onMounted(() => reroll({ notify: false }));
 <template>
   <WidgetCard :title="t('home.widget-random-pick')" :loading="loading">
     <template #action>
-      <RBtn
+      <ZABtn
         ref="rerollBtn"
         variant="text"
         size="small"
@@ -170,9 +170,9 @@ onMounted(() => reroll({ notify: false }));
              several variations of the same title. -->
         <div v-if="releaseYear || region" class="r-v2-widget-pick__meta">
           <span v-if="releaseYear">{{ releaseYear }}</span>
-          <RChip v-if="region" size="x-small" variant="translucent">
+          <ZAChip v-if="region" size="x-small" variant="translucent">
             {{ region }}
-          </RChip>
+          </ZAChip>
         </div>
       </div>
     </router-link>

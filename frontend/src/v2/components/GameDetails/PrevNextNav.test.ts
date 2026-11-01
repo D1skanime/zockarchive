@@ -41,7 +41,7 @@ describe("PrevNextNav", () => {
 
     const wrapper = mount(PrevNextNav, {
       props: { romId: 32, platformId: 9 },
-      global: { stubs: { RBtn: false } },
+      global: { stubs: { ZABtn: false } },
     });
     await flushPromises();
 

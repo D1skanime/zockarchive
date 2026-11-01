@@ -5,7 +5,7 @@
 // linked profile (full sync after a username change, incremental
 // otherwise). Listens to `auth.user?.ra_username` so the connection
 // state chip stays accurate.
-import { RBtn, RTag, RTextField } from "@v2/lib";
+import { ZABtn, ZATag, ZATextField } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import SettingsSection from "@/v2/components/Settings/SettingsSection.vue";
@@ -82,7 +82,7 @@ async function saveAndSync() {
 <template>
   <SettingsSection :title="t('settings.retroachievements')" icon="mdi-trophy">
     <template #header-actions>
-      <RTag
+      <ZATag
         :icon="isLinked ? 'mdi-link-variant' : 'mdi-link-variant-off'"
         :tone="isLinked ? 'success' : 'neutral'"
         size="small"
@@ -92,20 +92,20 @@ async function saveAndSync() {
             ? t("settings.ra-connected", { username: `@${linkedUsername}` })
             : t("settings.ra-not-linked")
         }}
-      </RTag>
+      </ZATag>
     </template>
     <div class="r-v2-ra__field">
-      <RTextField
+      <ZATextField
         v-model="username"
         prefix-label="stacked"
         hide-details
         @keyup.enter="saveAndSync"
       >
         <template #prefix-label>{{ t("settings.username") }}</template>
-      </RTextField>
+      </ZATextField>
     </div>
     <div class="r-v2-ra__actions">
-      <RBtn
+      <ZABtn
         variant="flat"
         color="primary"
         :loading="submitting"
@@ -114,7 +114,7 @@ async function saveAndSync() {
         @click="saveAndSync"
       >
         {{ isDirty ? t("common.save") : t("common.sync") }}
-      </RBtn>
+      </ZABtn>
     </div>
   </SettingsSection>
 </template>

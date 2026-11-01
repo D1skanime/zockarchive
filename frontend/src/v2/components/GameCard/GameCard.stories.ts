@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import type { SimpleRom } from "@/stores/roms";
+import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import GameCard from "./GameCard.vue";
 
 const sampleRom = {
@@ -17,8 +18,9 @@ const sampleRom = {
 } as unknown as SimpleRom;
 
 const meta: Meta<typeof GameCard> = {
-  title: "Media/GameCard",
+  title: "Medien/Zusammengesetzt/GameCard",
   component: GameCard,
+  parameters: compositionParameters("components/GameCard/GameCard.stories.ts"),
   argTypes: {
     hero: { control: "boolean" },
     focused: { control: "boolean" },
@@ -31,6 +33,7 @@ export default meta;
 type Story = StoryObj<typeof GameCard>;
 
 export const Default: Story = {
+  name: "Standard",
   render: (args) => ({
     components: { GameCard },
     setup: () => ({ args, rom: sampleRom }),
@@ -39,16 +42,19 @@ export const Default: Story = {
 };
 
 export const Focused: Story = {
+  name: "Fokussiert",
   ...Default,
   args: { focused: true },
 };
 
 export const Hero: Story = {
+  name: "Hervorgehoben",
   ...Default,
   args: { hero: true },
 };
 
 export const Grid: Story = {
+  name: "Raster",
   render: () => ({
     components: { GameCard },
     setup: () => {

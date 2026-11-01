@@ -2,7 +2,7 @@
 // ShowQRCodeDialog — emitter-driven QR for downloading a single ROM from a
 // handheld/phone. The qrcode library renders into the canvas directly
 // after the dialog opens (nextTick so the canvas is in the DOM).
-import { RDialog } from "@v2/lib";
+import { ZADialog } from "@v2/lib";
 import type { Emitter } from "mitt";
 import qrcode from "qrcode";
 import { inject, nextTick, onBeforeUnmount, ref } from "vue";
@@ -57,7 +57,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog v-model="show" icon="mdi-qrcode" width="380" @close="closeDialog">
+  <ZADialog v-model="show" icon="mdi-qrcode" width="380" @close="closeDialog">
     <template #header>
       <span>{{ t("rom.qr-scan-to-download") }}</span>
     </template>
@@ -74,7 +74,7 @@ function closeDialog() {
         </div>
       </div>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

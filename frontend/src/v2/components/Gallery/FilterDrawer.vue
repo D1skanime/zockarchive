@@ -1,6 +1,5 @@
 <script setup lang="ts">
-// FilterDrawer (v2) — gallery filter side panel. v2-native replacement
-// for the gallery filter controls.
+// FilterDrawer (v2) is the v2-native gallery-filter side panel.
 //
 // Surface area (matches v1 1:1 so URLs stay compatible):
 //   • Tri-state boolean filters: matched / favourites / duplicates /
@@ -21,7 +20,8 @@
 // primitives. Mounted by GalleryShell so it's available everywhere a
 // gallery is rendered. The shell controls `modelValue` and forwards
 // `showPlatformsFilter`.
-import { RBtn, RDrawer, RIcon, RSelect, RSliderBtnGroup, RTag } from "@v2/lib";
+// prettier-ignore
+import { ZABtn, ZADrawer, ZAIcon, ZASelect, ZASliderBtnGroup, ZATag } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject } from "vue";
@@ -117,7 +117,7 @@ const providerTitle = (slug: string): string =>
   providerLabels.get(slug) ?? slug;
 
 // ── Tri-state mapping helpers ──────────────────────────────────
-// The RSliderBtnGroup speaks string ids; the store speaks `boolean | null`.
+// The ZASliderBtnGroup speaks string ids; the store speaks `boolean | null`.
 // One helper makes the binding bidirectional in a few lines.
 type TriValue = "all" | "yes" | "no";
 function triFor(v: boolean | null): TriValue {
@@ -437,7 +437,7 @@ function saveAsSmartCollection() {
 </script>
 
 <template>
-  <RDrawer
+  <ZADrawer
     :model-value="modelValue"
     side="right"
     :width="440"
@@ -447,11 +447,11 @@ function saveAsSmartCollection() {
   >
     <template #header>
       <span>{{ t("platform.filters") }}</span>
-      <RTag v-if="activeCount > 0" tone="brand" size="x-small">
+      <ZATag v-if="activeCount > 0" tone="brand" size="x-small">
         {{ activeCount }}
-      </RTag>
+      </ZATag>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         size="small"
         variant="text"
         color="primary"
@@ -460,7 +460,7 @@ function saveAsSmartCollection() {
         @click="saveAsSmartCollection"
       >
         {{ t("collection.save-as-smart") }}
-      </RBtn>
+      </ZABtn>
     </template>
 
     <!-- ── Boolean tri-state filters ────────────────────────── -->
@@ -476,10 +476,10 @@ function saveAsSmartCollection() {
           :class="{ 'r-v2-fd__bool-row--on': cfg.value.value !== null }"
         >
           <span class="r-v2-fd__bool-label">
-            <RIcon :icon="cfg.icon" size="16" />
+            <ZAIcon :icon="cfg.icon" size="16" />
             <span>{{ cfg.label }}</span>
           </span>
-          <RSliderBtnGroup
+          <ZASliderBtnGroup
             :model-value="triFor(cfg.value.value)"
             :items="triItems(cfg)"
             size="small"
@@ -502,7 +502,7 @@ function saveAsSmartCollection() {
         :placeholder="t('common.all-platforms')"
       >
         <template #prefix-label>
-          <RIcon icon="mdi-monitor" size="14" />
+          <ZAIcon icon="mdi-monitor" size="14" />
           {{ t("common.platforms") }}
         </template>
       </PlatformSelect>
@@ -517,7 +517,7 @@ function saveAsSmartCollection() {
           :key="s.label"
           class="r-v2-fd__multi-row"
         >
-          <RSelect
+          <ZASelect
             :model-value="s.selected.value"
             :items="
               s.items.value.map((raw) => ({
@@ -534,11 +534,11 @@ function saveAsSmartCollection() {
             @update:model-value="(v) => (s.selected.value = v as string[])"
           >
             <template #prefix-label>
-              <RIcon :icon="s.icon" size="14" />
+              <ZAIcon :icon="s.icon" size="14" />
               {{ s.label }}
             </template>
-          </RSelect>
-          <RSliderBtnGroup
+          </ZASelect>
+          <ZASliderBtnGroup
             :model-value="s.logic.value"
             :items="LOGIC_ITEMS"
             size="small"
@@ -550,7 +550,7 @@ function saveAsSmartCollection() {
     </section>
 
     <template #footer>
-      <RBtn
+      <ZABtn
         variant="text"
         color="danger"
         prepend-icon="mdi-restore"
@@ -558,13 +558,13 @@ function saveAsSmartCollection() {
         @click="resetAll"
       >
         {{ t("platform.reset-filters") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn variant="flat" color="primary" @click="close">
+      <ZABtn variant="flat" color="primary" @click="close">
         {{ t("common.close") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDrawer>
+  </ZADrawer>
 </template>
 
 <style scoped>

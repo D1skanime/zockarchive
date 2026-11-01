@@ -12,7 +12,7 @@
 // The visible mini-card only paints when there's a track loaded AND
 // the user isn't already on the full soundtrack panel — otherwise the
 // two surfaces would race for the same playback affordance.
-import { RBtn, RSlider, RSpinner } from "@v2/lib";
+import { ZABtn, ZASlider, ZASpinner } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -203,7 +203,7 @@ function openRom() {
         >
           <img :src="coverUrl" class="r-v2-mp__disc-img" alt="" />
           <div v-if="isBuffering" class="r-v2-mp__disc-buffering">
-            <RSpinner :size="20" :width="2" color="white" />
+            <ZASpinner :size="20" :width="2" color="white" />
           </div>
         </div>
 
@@ -217,7 +217,7 @@ function openRom() {
         </div>
 
         <div class="r-v2-mp__top-actions">
-          <RBtn
+          <ZABtn
             icon="mdi-open-in-new"
             variant="text"
             size="small"
@@ -225,7 +225,7 @@ function openRom() {
             :aria-label="t('rom.soundtrack-open-rom-tooltip')"
             @click="openRom"
           />
-          <RBtn
+          <ZABtn
             icon="mdi-close"
             variant="text"
             size="small"
@@ -238,7 +238,7 @@ function openRom() {
 
       <!-- Transport row: prev / play / next / volume -->
       <div class="r-v2-mp__transport">
-        <RBtn
+        <ZABtn
           icon="mdi-skip-previous"
           variant="text"
           size="small"
@@ -247,7 +247,7 @@ function openRom() {
           :aria-label="t('rom.soundtrack-previous')"
           @click="store.previous()"
         />
-        <RBtn
+        <ZABtn
           :icon="isPlaying ? 'mdi-pause-circle' : 'mdi-play-circle'"
           variant="text"
           size="large"
@@ -259,7 +259,7 @@ function openRom() {
           "
           @click="store.togglePlayPause()"
         />
-        <RBtn
+        <ZABtn
           icon="mdi-skip-next"
           variant="text"
           size="small"
@@ -275,7 +275,7 @@ function openRom() {
       <!-- Seek row -->
       <div class="r-v2-mp__seek">
         <span class="r-v2-mp__time">{{ fmt(currentTime) }}</span>
-        <RSlider
+        <ZASlider
           :model-value="currentTime"
           :max="duration || 0"
           :step="0.1"

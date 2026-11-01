@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // Login — thin orchestrator. Two mutually exclusive panels gated by
-// `forgotMode`, each animated in/out with RExpandTransition. Login +
+// `forgotMode`, each animated in/out with ZAExpandTransition. Login +
 // OIDC sit together; the reset form replaces them when the user clicks
 // "forgot password".
-import { RDivider, RExpandTransition } from "@v2/lib";
+import { ZADivider, ZAExpandTransition } from "@v2/lib";
 import { onMounted, ref } from "vue";
 import LoginForm from "@/v2/components/Auth/LoginForm.vue";
 import OIDCButton from "@/v2/components/Auth/OIDCButton.vue";
@@ -36,7 +36,7 @@ onMounted(() => {
 <template>
   <AuthCard>
     <!-- Login + OIDC panel -->
-    <RExpandTransition>
+    <ZAExpandTransition>
       <div v-show="!forgotMode" class="r-v2-login__panel">
         <LoginForm
           v-if="!loginDisabled"
@@ -46,9 +46,9 @@ onMounted(() => {
         />
 
         <template v-if="oidcEnabled">
-          <RDivider v-if="!loginDisabled" class="r-v2-login__or">
+          <ZADivider v-if="!loginDisabled" class="r-v2-login__or">
             <span>{{ $t("login.or") }}</span>
-          </RDivider>
+          </ZADivider>
           <OIDCButton
             ref="oidcButtonRef"
             :provider="oidcProvider"
@@ -56,14 +56,14 @@ onMounted(() => {
           />
         </template>
       </div>
-    </RExpandTransition>
+    </ZAExpandTransition>
 
     <!-- Forgot-password panel -->
-    <RExpandTransition>
+    <ZAExpandTransition>
       <div v-show="forgotMode && !loginDisabled" class="r-v2-login__panel">
         <ResetForm @done="forgotMode = false" @cancel="forgotMode = false" />
       </div>
-    </RExpandTransition>
+    </ZAExpandTransition>
   </AuthCard>
 </template>
 

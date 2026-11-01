@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // OIDCButton — OIDC / SSO login button with the provider's dashboard-icon
 // (falls back to a generic key if the icon can't be found).
-import { RBtn, RIcon, RImg } from "@v2/lib";
+import { ZABtn, ZAIcon, ZAImg } from "@v2/lib";
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 
@@ -25,7 +25,7 @@ defineExpose({ login, loading });
 </script>
 
 <template>
-  <RBtn
+  <ZABtn
     variant="outlined"
     block
     :disabled="loading || blocking"
@@ -33,18 +33,18 @@ defineExpose({ login, loading });
     @click="login"
   >
     <template v-if="provider" #prepend>
-      <RIcon size="20">
-        <RImg
+      <ZAIcon size="20">
+        <ZAImg
           :src="`/assets/dashboard-icons/${provider
             .toLowerCase()
             .replace(/ /g, '-')}.png`"
         >
           <template #error>
-            <RIcon icon="mdi-key" size="20" />
+            <ZAIcon icon="mdi-key" size="20" />
           </template>
-        </RImg>
-      </RIcon>
+        </ZAImg>
+      </ZAIcon>
     </template>
     {{ t("login.login-oidc", { oidc: provider || "OIDC" }) }}
-  </RBtn>
+  </ZABtn>
 </template>

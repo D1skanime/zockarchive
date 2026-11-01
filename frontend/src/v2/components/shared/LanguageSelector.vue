@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// LanguageSelector wraps the language store in an RSelect so it
+// LanguageSelector wraps the language store in an ZASelect so it
 // shares aesthetics with every other v2 select (status picker on the
 // Overview tab, etc). Persists the choice via useUISettings + sets the
 // vue-i18n locale.
@@ -7,7 +7,7 @@
 // Two looks:
 //   • Default — compact pill, used on Auth/Pair shells.
 //   • `prefixLabel` — full-width prefix-label field, used in Settings.
-import { RIcon, RSelect } from "@v2/lib";
+import { ZAIcon, ZASelect } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
@@ -30,7 +30,7 @@ const items = computed(() =>
 </script>
 
 <template>
-  <RSelect
+  <ZASelect
     v-if="prefixLabel"
     v-model="currentValue"
     :items="items"
@@ -39,11 +39,11 @@ const items = computed(() =>
     hide-details
   >
     <template #prefix-label>
-      <RIcon icon="mdi-translate" size="14" />
+      <ZAIcon icon="mdi-translate" size="14" />
       {{ t("settings.language") }}
     </template>
-  </RSelect>
-  <RSelect
+  </ZASelect>
+  <ZASelect
     v-else
     v-model="currentValue"
     :items="items"

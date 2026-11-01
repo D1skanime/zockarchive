@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RAlert, RBtn } from "@v2/lib";
+import { ZAAlert, ZABtn } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -83,14 +83,14 @@ async function resetPassword() {
         :disabled="submitting"
       />
 
-      <RAlert
+      <ZAAlert
         v-if="passwordsMismatch"
         type="error"
         density="compact"
         :text="t('login.passwords-do-not-match')"
       />
 
-      <RBtn
+      <ZABtn
         type="submit"
         variant="flat"
         color="primary"
@@ -102,7 +102,7 @@ async function resetPassword() {
         "
       >
         {{ t("login.reset-password") }}
-      </RBtn>
+      </ZABtn>
     </form>
 
     <AuthBackLink />

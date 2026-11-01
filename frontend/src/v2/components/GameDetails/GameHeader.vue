@@ -2,13 +2,13 @@
 // GameHeader — right-column header for the details view.
 // Four rows, top to bottom:
 //   1. Title (+ previous / next game arrows on the right)
-//   2. Meta (year · platform-icon + platform · verified RTag)
-//   3. Tags (regions + languages + custom tags) — RTag primitive
+//   2. Meta (year · platform-icon + platform · verified ZATag)
+//   3. Tags (regions + languages + custom tags) — ZATag primitive
 //   4. GameActions (Play · Download · Favorite · Share · More)
 //
 // Metadata-provider links live in the Metadata tab, not the header.
 // Genre/franchise belong in the Overview tab info grid.
-import { RIcon, RPlatformIcon, RTag, RTooltip } from "@v2/lib";
+import { ZAIcon, ZAPlatformIcon, ZATag, ZATooltip } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import GameActions from "@/v2/components/GameActions/GameActions.vue";
 import MainSiblingToggle from "@/v2/components/GameDetails/MainSiblingToggle.vue";
@@ -50,7 +50,7 @@ const actions = useGameActions(() => props.rom);
         class="r-v2-det-header__platform"
         :aria-label="t('platform.browse-platform', { platform: platformLabel })"
       >
-        <RPlatformIcon
+        <ZAPlatformIcon
           :slug="rom.platform_slug"
           :fs-slug="rom.platform_fs_slug"
           :alt="platformLabel"
@@ -70,8 +70,8 @@ const actions = useGameActions(() => props.rom);
         :aria-label="t('rom.verified-rom')"
         tabindex="0"
       >
-        <RIcon icon="mdi-check-decagram" :size="18" color="success" />
-        <RTooltip
+        <ZAIcon icon="mdi-check-decagram" :size="18" color="success" />
+        <ZATooltip
           :text="t('rom.verified-rom-hint')"
           location="top"
           activator="parent"
@@ -89,21 +89,21 @@ const actions = useGameActions(() => props.rom);
         v-if="regions.length || languages.length || tags.length"
         class="r-v2-det-header__tags"
       >
-        <RTag
+        <ZATag
           v-for="r in regions"
           :key="`r-${r}`"
           :text="r"
           tone="info"
           size="small"
         />
-        <RTag
+        <ZATag
           v-for="l in languages"
           :key="`l-${l}`"
           :text="l"
           tone="brand"
           size="small"
         />
-        <RTag v-for="t in tags" :key="`t-${t}`" :text="t" size="small" />
+        <ZATag v-for="t in tags" :key="`t-${t}`" :text="t" size="small" />
       </span>
     </div>
 

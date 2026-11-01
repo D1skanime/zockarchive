@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RCheckbox } from "@v2/lib";
+import { ZACheckbox } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import { isEnhancedDownloadSupported } from "@/v2/composables/useBrowserDownloadQueue";
 
@@ -11,14 +11,14 @@ const { t } = useI18n();
 const enhancedSupported = isEnhancedDownloadSupported();
 </script>
 <template>
-  <RCheckbox
+  <ZACheckbox
     :model-value="modelValue === 'standard'"
     :label="t('rom.download-browser-mode')"
     @update:model-value="emit('update:modelValue', 'standard')"
   />
   <p>{{ t("rom.download-standard-description") }}</p>
   <template v-if="enhancedSupported">
-    <RCheckbox
+    <ZACheckbox
       :model-value="modelValue === 'enhanced'"
       :label="t('rom.download-enhanced-mode')"
       @update:model-value="emit('update:modelValue', 'enhanced')"

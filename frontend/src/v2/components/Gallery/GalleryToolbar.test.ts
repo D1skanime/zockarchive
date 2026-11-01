@@ -22,11 +22,11 @@ function mountToolbar(props: Record<string, unknown> = {}) {
     props: { groupBy: "none", layout: "grid", showSearch: true, ...props },
     global: {
       stubs: {
-        RBadge: true,
-        RBtn: true,
-        RIcon: true,
-        RMenu: true,
-        RSliderBtnGroup: true,
+        ZABadge: true,
+        ZABtn: true,
+        ZAIcon: true,
+        ZAMenu: true,
+        ZASliderBtnGroup: true,
       },
     },
   });

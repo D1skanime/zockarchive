@@ -10,13 +10,13 @@ vi.mock("vue-i18n", () => ({
   }),
 }));
 vi.mock("@v2/lib", () => ({
-  RBtn: {
+  ZABtn: {
     props: ["icon", "disabled"],
     template: '<button :disabled="disabled"><slot /></button>',
   },
-  RTooltip: { template: "<span />" },
-  RAvatar: { template: "<span />" },
-  RIcon: {
+  ZATooltip: { template: "<span />" },
+  ZAAvatar: { template: "<span />" },
+  ZAIcon: {
     props: ["icon"],
     template: '<span aria-hidden="true" :data-icon="icon" />',
   },

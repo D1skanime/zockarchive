@@ -1,13 +1,13 @@
 <script setup lang="ts">
 // MetadataTab — four sections, top to bottom:
 //   1. File info — name + size only.
-//   2. Hashes — SHA-1, MD5, CRC, RA, all mono. RTag with eyebrow label.
+//   2. Hashes — SHA-1, MD5, CRC, RA, all mono. ZATag with eyebrow label.
 //      Same order as the files list so the two tabs read alike.
-//   3. Verification — RTag per database; tone="success" for match,
+//   3. Verification — ZATag per database; tone="success" for match,
 //      neutral for miss. Same source of truth (Hasheous match flags) as
 //      the "Verified" badge in the header, via `VERIFICATION_DATABASES`.
 //   4. Metadata sources — ProviderGrid (linked + unlinked).
-import { RTag } from "@v2/lib";
+import { ZATag } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { formatBytes } from "@/utils";
@@ -91,7 +91,7 @@ const verifications = computed<Verification[]>(() =>
       <div class="metadata-tab__inline">
         <template v-for="row in hashRows" :key="row.label">
           <HashChip v-if="row.value" :label="row.label" :value="row.value" />
-          <RTag v-else :label="row.label" text="—" mono />
+          <ZATag v-else :label="row.label" text="—" mono />
         </template>
       </div>
     </section>
@@ -100,7 +100,7 @@ const verifications = computed<Verification[]>(() =>
     <section class="metadata-tab__section">
       <h3 class="metadata-tab__heading">{{ t("rom.verification") }}</h3>
       <div class="metadata-tab__inline">
-        <RTag
+        <ZATag
           v-for="v in verifications"
           :key="v.label"
           :icon="v.match ? 'mdi-check-circle' : 'mdi-close-circle-outline'"

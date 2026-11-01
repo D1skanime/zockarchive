@@ -10,7 +10,7 @@
 //
 // Optimistic write follows the useGameActions pattern: flip locally,
 // PUT to the server, revert + snackbar on failure.
-import { RBtn, RIcon } from "@v2/lib";
+import { ZABtn, ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { RomUserData } from "@/__generated__";
@@ -63,7 +63,7 @@ async function toggle() {
 </script>
 
 <template>
-  <RBtn
+  <ZABtn
     v-if="visible"
     variant="outlined"
     size="small"
@@ -77,11 +77,11 @@ async function toggle() {
     :class="{ 'main-sibling-toggle--on': isMain }"
     @click="toggle"
   >
-    <RIcon
+    <ZAIcon
       :icon="isMain ? 'mdi-bookmark-box' : 'mdi-bookmark-box-outline'"
       size="18"
     />
-  </RBtn>
+  </ZABtn>
 </template>
 
 <style scoped>

@@ -9,7 +9,7 @@
 // Buttons 0..16 follow the W3C "Standard Gamepad" mapping. Pads exposing
 // more than 17 buttons (touchpad click, paddles…) get an "extras" row
 // rendered beneath the silhouette so the data isn't lost.
-import { RIcon } from "@v2/lib";
+import { ZAIcon } from "@v2/lib";
 import { computed } from "vue";
 import type { GamepadSnapshot } from "./types";
 
@@ -107,14 +107,14 @@ function magnitude(x: number, y: number) {
           :class="{ 'r-v2-pad__dpad-arm--pressed': btn(12).pressed }"
           title="#12 — D-pad Up"
         >
-          <RIcon icon="mdi-menu-up" size="20" />
+          <ZAIcon icon="mdi-menu-up" size="20" />
         </div>
         <div
           class="r-v2-pad__dpad-arm r-v2-pad__dpad-arm--left"
           :class="{ 'r-v2-pad__dpad-arm--pressed': btn(14).pressed }"
           title="#14 — D-pad Left"
         >
-          <RIcon icon="mdi-menu-left" size="20" />
+          <ZAIcon icon="mdi-menu-left" size="20" />
         </div>
         <div class="r-v2-pad__dpad-center" />
         <div
@@ -122,14 +122,14 @@ function magnitude(x: number, y: number) {
           :class="{ 'r-v2-pad__dpad-arm--pressed': btn(15).pressed }"
           title="#15 — D-pad Right"
         >
-          <RIcon icon="mdi-menu-right" size="20" />
+          <ZAIcon icon="mdi-menu-right" size="20" />
         </div>
         <div
           class="r-v2-pad__dpad-arm r-v2-pad__dpad-arm--down"
           :class="{ 'r-v2-pad__dpad-arm--pressed': btn(13).pressed }"
           title="#13 — D-pad Down"
         >
-          <RIcon icon="mdi-menu-down" size="20" />
+          <ZAIcon icon="mdi-menu-down" size="20" />
         </div>
       </div>
 
@@ -140,7 +140,7 @@ function magnitude(x: number, y: number) {
           :class="{ 'r-v2-pad__sys-btn--pressed': btn(8).pressed }"
           title="#8 — Back / Select / Share"
         >
-          <RIcon icon="mdi-view-dashboard-outline" size="13" />
+          <ZAIcon icon="mdi-view-dashboard-outline" size="13" />
           <span>Back</span>
         </div>
         <div
@@ -148,14 +148,14 @@ function magnitude(x: number, y: number) {
           :class="{ 'r-v2-pad__sys-btn--pressed': btn(16).pressed }"
           title="#16 — Home / Guide / PS"
         >
-          <RIcon icon="mdi-circle-double" size="18" />
+          <ZAIcon icon="mdi-circle-double" size="18" />
         </div>
         <div
           class="r-v2-pad__sys-btn"
           :class="{ 'r-v2-pad__sys-btn--pressed': btn(9).pressed }"
           title="#9 — Start / Options / Menu"
         >
-          <RIcon icon="mdi-menu" size="13" />
+          <ZAIcon icon="mdi-menu" size="13" />
           <span>Start</span>
         </div>
       </div>

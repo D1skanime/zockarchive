@@ -1,8 +1,8 @@
 <script setup lang="ts">
-// LibraryManagement — v2-native rewrite. Uses the shared `RTabNav`
+// LibraryManagement — v2-native rewrite. Uses the shared `ZATabNav`
 // primitive for the underline tabs (same component Game Details uses)
 // and keeps the `?tab=` query param so deep links still work.
-import { RAlert, RTabNav, type RTabNavItem } from "@v2/lib";
+import { ZAAlert, ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -49,7 +49,7 @@ watch(
   { immediate: true },
 );
 
-const tabs = computed<RTabNavItem[]>(() => [
+const tabs = computed<ZATabNavItem[]>(() => [
   {
     id: "mapping",
     label: t("settings.folder-mappings"),
@@ -72,7 +72,7 @@ const tabs = computed<RTabNavItem[]>(() => [
   },
 ]);
 
-// Bridge between RTabNav's string modelValue and our Tab union.
+// Bridge between ZATabNav's string modelValue and our Tab union.
 const tabModel = computed<string>({
   get: () => tab.value,
   set: (v) => {
@@ -83,13 +83,13 @@ const tabModel = computed<string>({
 
 <template>
   <div class="r-v2-section-stack">
-    <RAlert v-if="!config.CONFIG_FILE_MOUNTED" type="error">
+    <ZAAlert v-if="!config.CONFIG_FILE_MOUNTED" type="error">
       <template #title>
         {{ t("settings.config-file-not-mounted-title") }}
       </template>
       {{ t("settings.config-file-not-mounted-desc") }}
-    </RAlert>
-    <RAlert
+    </ZAAlert>
+    <ZAAlert
       v-if="config.CONFIG_FILE_MOUNTED && config.CONFIG_FILE_PARSE_ERROR"
       type="error"
     >
@@ -101,8 +101,8 @@ const tabModel = computed<string>({
           error: config.CONFIG_FILE_PARSE_ERROR,
         })
       }}
-    </RAlert>
-    <RAlert
+    </ZAAlert>
+    <ZAAlert
       v-if="config.CONFIG_FILE_MOUNTED && !config.CONFIG_FILE_WRITABLE"
       type="warning"
     >
@@ -110,9 +110,9 @@ const tabModel = computed<string>({
         {{ t("settings.config-file-not-writable-title") }}
       </template>
       {{ t("settings.config-file-not-writable-desc") }}
-    </RAlert>
+    </ZAAlert>
 
-    <RTabNav v-model="tabModel" :items="tabs" class="r-v2-lib__tabs" />
+    <ZATabNav v-model="tabModel" :items="tabs" class="r-v2-lib__tabs" />
 
     <FolderMappingsSection v-if="tab === 'mapping'" />
     <StorageRootsSection v-else-if="tab === 'storage'" />

@@ -55,10 +55,10 @@ import {
 } from "@/v2/composables/useGameActions";
 import { useViewTransition } from "@/v2/composables/useViewTransition";
 import type { SimpleRom } from "@/v2/data/adapters/legacy/stores/roms";
-import RCheckbox from "@/v2/lib/forms/RCheckbox/RCheckbox.vue";
-import RPlatformIcon from "@/v2/lib/media/RPlatformIcon/RPlatformIcon.vue";
-import RBtn from "@/v2/lib/primitives/RBtn/RBtn.vue";
-import RTooltip from "@/v2/lib/structural/RTooltip/RTooltip.vue";
+import ZACheckbox from "@/v2/lib/forms/ZACheckbox/ZACheckbox.vue";
+import ZAPlatformIcon from "@/v2/lib/media/ZAPlatformIcon/ZAPlatformIcon.vue";
+import ZABtn from "@/v2/lib/primitives/ZABtn/ZABtn.vue";
+import ZATooltip from "@/v2/lib/structural/ZATooltip/ZATooltip.vue";
 import storeGallerySelection from "@/v2/stores/gallerySelection";
 
 defineOptions({ inheritAttrs: false });
@@ -293,7 +293,7 @@ const checkboxAlwaysOn = computed(
 
 function onCheckboxClick(e: MouseEvent) {
   // The checkbox itself is a deliberate selection gesture. We bind
-  // RCheckbox in "controlled" mode (only `:model-value` — no v-model),
+  // ZACheckbox in "controlled" mode (only `:model-value` — no v-model),
   // so the native input change is purely visual; `preventDefault`
   // here cancels the label → input click default so the input never
   // toggles itself, and our store mutation drives the next render.
@@ -444,12 +444,12 @@ function onStaticKeydown(e: KeyboardEvent) {
       <!-- Selection checkbox — top-left, drawn over the cover. Hidden
            at rest; appears on hover for discoverability, and stays
            pinned whenever the gallery is in selection mode so the
-           user always knows which cards are picked. Uses RCheckbox
+           user always knows which cards are picked. Uses ZACheckbox
            in bare/circle mode so the check + glow + press squash
            animations come straight from the primitive. The wrapper
            click intercepts the label's native input toggle so the
            store (not the input element) drives state. -->
-      <RCheckbox
+      <ZACheckbox
         v-if="showCheckbox"
         class="r-gc__check"
         :model-value="isSelected"
@@ -478,7 +478,7 @@ function onStaticKeydown(e: KeyboardEvent) {
       <template v-if="!static && !decorative">
         <div v-if="ratingLabel" class="r-gc__rating">★ {{ ratingLabel }}</div>
 
-        <RBtn
+        <ZABtn
           v-if="showPlatformIcon"
           icon
           size="x-small"
@@ -489,13 +489,13 @@ function onStaticKeydown(e: KeyboardEvent) {
           "
           @click="onPlatformClick"
         >
-          <RPlatformIcon
+          <ZAPlatformIcon
             :slug="rom.platform_slug"
             :fs-slug="rom.platform_fs_slug"
             :alt="platformShort"
             :size="22"
           />
-        </RBtn>
+        </ZABtn>
 
         <GameActionBtn
           :rom="rom"
@@ -539,7 +539,7 @@ function onStaticKeydown(e: KeyboardEvent) {
          attaches to the root card element so the tooltip fires no
          matter which part of the card the user hovers; the open delay
          keeps it from flashing during fast scans across the gallery. -->
-    <RTooltip
+    <ZATooltip
       v-if="showTitle"
       activator="parent"
       :text="title"
@@ -660,10 +660,10 @@ function onStaticKeydown(e: KeyboardEvent) {
   top: 7px;
   right: 7px;
   z-index: 2;
-  /* Shrink-wrap around the platform icon. RBtn's size classes try to
+  /* Shrink-wrap around the platform icon. ZABtn's size classes try to
      impose a fixed `height` / `width: var(--r-btn-rest-h)` — we have
      to defeat those so the badge always fits whatever `:size` the
-     RPlatformIcon was given (icon + 3px padding all around). */
+     ZAPlatformIcon was given (icon + 3px padding all around). */
   width: auto !important;
   height: auto !important;
   min-width: 0 !important;
@@ -673,7 +673,7 @@ function onStaticKeydown(e: KeyboardEvent) {
   background: var(--r-color-overlay-scrim-strong) !important;
   border: 1px solid var(--r-color-overlay-border) !important;
   color: var(--r-color-overlay-fg) !important;
-  /* Override RBtn's at-rest opacity (0.7) so the 78% scrim reads at
+  /* Override ZABtn's at-rest opacity (0.7) so the 78% scrim reads at
      full strength — without this the bg modulates down to ~55% and
      reads faint over busy cover art. */
   opacity: 1 !important;
@@ -815,7 +815,7 @@ html[data-input="touch"] .r-gc:hover .r-gc__rating,
 }
 
 /* Status badge — corner of the cover that mirrors the platform
-   icon. The actual <button> lives inside GameActionBtn's RMenu
+   icon. The actual <button> lives inside GameActionBtn's ZAMenu
    activator slot, so we reach it via `:deep` matching the action
    class. Default position (no platform icon shown): top-left.
    When the platform icon IS shown (the normal gallery layout) the
@@ -942,7 +942,7 @@ html[data-input="touch"] .r-gc:hover .r-gc__label,
 
 /* ── Selection checkbox ────────────────────────────────────
    Top-left affordance. The visible chrome (box, fill, draw-in
-   tick, press squash) all comes from RCheckbox — this rule
+   tick, press squash) all comes from ZACheckbox — this rule
    only owns the positioning and the visibility fade.
    At rest the checkbox is invisible; it fades in on hover or
    focus, and stays pinned whenever the gallery is in selection
@@ -967,7 +967,7 @@ html[data-input="touch"] .r-gc:hover .r-gc__check,
 }
 
 /* Glassy scrim under the unchecked box so the outline reads over
-   busy cover art — RCheckbox's default border colour assumes a
+   busy cover art — ZACheckbox's default border colour assumes a
    plain page background, here it sits on photos. Once checked the
    primitive's brand fill takes over and we step out of the way. */
 .r-gc__check :deep(.r-checkbox__box) {
@@ -976,7 +976,7 @@ html[data-input="touch"] .r-gc:hover .r-gc__check,
 }
 .r-gc__check.r-checkbox--checked :deep(.r-checkbox__box),
 .r-gc__check.r-checkbox--indeterminate :deep(.r-checkbox__box) {
-  /* Let RCheckbox's checked styles win — clear our scrim overrides
+  /* Let ZACheckbox's checked styles win — clear our scrim overrides
      so the brand fill + glow apply unmodified. */
   background: var(--r-color-brand-primary);
   border-color: var(--r-color-brand-primary);

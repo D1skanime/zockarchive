@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // v2 EmulatorJSCacheDialog — confirmation for clearing the EJS IndexedDB
 // caches (saves / roms / core / states). Emitter-driven.
-import { RBtn, RDialog, RIcon } from "@v2/lib";
+import { ZABtn, ZADialog, ZAIcon } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { inject, onBeforeUnmount, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -33,7 +33,7 @@ function closeDialog() {
 </script>
 
 <template>
-  <RDialog
+  <ZADialog
     v-model="show"
     icon="mdi-database-remove"
     width="480"
@@ -45,7 +45,7 @@ function closeDialog() {
     <template #content>
       <div class="r-v2-clear-cache">
         <div class="r-v2-clear-cache__icon">
-          <RIcon icon="mdi-alert-octagon-outline" size="36" />
+          <ZAIcon icon="mdi-alert-octagon-outline" size="36" />
         </div>
         <h2 class="r-v2-clear-cache__title">
           {{ t("play.clear-cache-title") }}
@@ -59,20 +59,20 @@ function closeDialog() {
       </div>
     </template>
     <template #footer>
-      <RBtn variant="text" @click="closeDialog">
+      <ZABtn variant="text" @click="closeDialog">
         {{ t("common.cancel") }}
-      </RBtn>
+      </ZABtn>
       <div style="flex: 1" />
-      <RBtn
+      <ZABtn
         variant="translucent"
         color="error"
         prepend-icon="mdi-database-remove"
         @click="clearIndexDB"
       >
         {{ t("common.confirm") }}
-      </RBtn>
+      </ZABtn>
     </template>
-  </RDialog>
+  </ZADialog>
 </template>
 
 <style scoped>

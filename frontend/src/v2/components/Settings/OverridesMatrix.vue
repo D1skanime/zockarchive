@@ -4,7 +4,7 @@
 // inherit (defer to group) -> grant (force-allow, primary) -> grant-own
 // (force-allow own items, accent) -> revoke (force-deny, danger). The
 // model is the list of explicit overrides (absence of a cell = inherit).
-import { RCheckbox, type RCheckboxState, RTooltip } from "@v2/lib";
+import { ZACheckbox, type ZACheckboxState, ZATooltip } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { OverrideSchemaIO, PermAction, PermEntity } from "@/__generated__";
@@ -38,7 +38,7 @@ function stateOf(entity: PermEntity, action: PermAction): CellState {
 
 // Cycle: inherit (empty) -> grant (primary check) -> grant-own (accent
 // person) -> revoke (danger cross).
-const OVR_STATES: RCheckboxState[] = [
+const OVR_STATES: ZACheckboxState[] = [
   { value: "inherit" },
   { value: "grant", color: "primary" },
   { value: "grant_own", color: "accent", icon: "mdi-account" },
@@ -113,7 +113,7 @@ function toggleColumn(a: PermAction, value: boolean) {
       </span>
       <div v-for="a in actions" :key="a" class="r-v2-ovr-matrix__col">
         <span class="r-v2-ovr-matrix__col-label">{{ actionLabel(a) }}</span>
-        <RCheckbox
+        <ZACheckbox
           bare
           size="sm"
           color="primary"
@@ -133,13 +133,13 @@ function toggleColumn(a: PermAction, value: boolean) {
     >
       <span class="r-v2-ovr-matrix__entity">{{ entityLabel(e) }}</span>
       <div v-for="a in actions" :key="a" class="r-v2-ovr-matrix__cell">
-        <RTooltip
+        <ZATooltip
           activator="parent"
           location="top"
           :text="stateLabel(stateOf(e, a))"
           :hint="stateHint(stateOf(e, a))"
         />
-        <RCheckbox
+        <ZACheckbox
           bare
           size="sm"
           :states="OVR_STATES"

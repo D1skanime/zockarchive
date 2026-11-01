@@ -1,0 +1,287 @@
+import type { Meta, StoryObj } from "@storybook/vue3-vite";
+import "./ZAIcon.stories.css";
+import ZAIcon from "./ZAIcon.vue";
+
+const meta: Meta<typeof ZAIcon> = {
+  title: "Grundelemente/Grundbaustein/ZAIcon",
+  component: ZAIcon,
+  argTypes: {
+    icon: { control: "text" },
+    size: { control: "text" },
+    color: { control: "text" },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof ZAIcon>;
+
+export const Default: Story = {
+  args: { icon: "mdi-controller" },
+};
+
+// ── Sizes ────────────────────────────────────────────────────────────
+
+export const SizeLadder: Story = {
+  name: "Größenabstufung",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;align-items:flex-end;gap:24px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-star" size="x-small" />
+          <span>x-small · 12px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-star" size="small" />
+          <span>small · 16px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-star" size="default" />
+          <span>Standard · 24px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-star" size="large" />
+          <span>large · 36px</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-star" size="x-large" />
+          <span>x-large · 40px</span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+export const NumericSizes: Story = {
+  name: "Numerische Größen",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;align-items:flex-end;gap:24px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-controller" :size="14" />
+          <span>14</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-controller" :size="20" />
+          <span>20</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-controller" :size="28" />
+          <span>28</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-controller" :size="48" />
+          <span>48</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-controller" size="64px" />
+          <span>"64px"</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+          <ZAIcon icon="mdi-controller" size="2em" />
+          <span>"2em"</span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// ── Colours ──────────────────────────────────────────────────────────
+
+export const Tones: Story = {
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px 24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-circle" color="primary" size="32" />
+          <span>primary</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-circle" color="secondary" size="32" />
+          <span>secondary</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-circle" color="accent" size="32" />
+          <span>accent</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-check-circle" color="success" size="32" />
+          <span>success</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-alert" color="warning" size="32" />
+          <span>warning</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-close-circle" color="danger" size="32" />
+          <span>danger</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-information" color="info" size="32" />
+          <span>info</span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+export const LegacyColors: Story = {
+  name: "Veraltete romm-*-Farben",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;gap:24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-heart" color="romm-red" size="32" />
+          <span>romm-red</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-leaf" color="romm-green" size="32" />
+          <span>romm-green</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-water" color="romm-blue" size="32" />
+          <span>romm-blue</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-star" color="romm-gold" size="32" />
+          <span>romm-gold</span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+export const PassThrough: Story = {
+  name: "CSS-Farbe durchreichen",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;gap:24px;font:11px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-square" color="#ff00ff" size="32" />
+          <code>#ff00ff</code>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-square" color="rgb(80, 200, 220)" size="32" />
+          <code>rgb(...)</code>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-square" color="tomato" size="32" />
+          <code>tomato</code>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-square" color="hsl(280, 70%, 60%)" size="32" />
+          <code>hsl(...)</code>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+// ── Composition & inheritance ────────────────────────────────────────
+
+export const InheritColor: Story = {
+  name: "Übernimmt die Elternfarbe",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;flex-direction:column;gap:14px;font:13px/1.4 sans-serif">
+        <div style="color:var(--r-color-brand-primary);display:flex;align-items:center;gap:8px">
+          <ZAIcon icon="mdi-information" />
+          <span>In Text mit Marken-Primärfarbe eingebettet · das Symbol folgt.</span>
+        </div>
+        <div style="color:var(--r-color-danger);display:flex;align-items:center;gap:8px">
+          <ZAIcon icon="mdi-alert-octagon" />
+          <span>In Gefahren-Text eingebettet · das Symbol folgt.</span>
+        </div>
+        <div style="color:var(--r-color-fg-muted);display:flex;align-items:center;gap:8px">
+          <ZAIcon icon="mdi-help-circle" />
+          <span>Gedämpftes Elternelement · gedämpftes Symbol.</span>
+        </div>
+      </div>
+    `,
+  }),
+};
+
+export const WithText: Story = {
+  name: "Direkt mit Text",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;flex-direction:column;gap:10px;font:14px/1.4 sans-serif;color:var(--r-color-fg)">
+        <div style="display:inline-flex;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-clock-outline" size="16" />
+          Vor 2 Stunden gespielt
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-content-save-outline" size="16" color="success" />
+          Erfolgreich gespeichert
+        </div>
+        <div style="display:inline-flex;align-items:center;gap:6px">
+          <ZAIcon icon="mdi-trash-can-outline" size="16" color="danger" />
+          Diese Sammlung löschen
+        </div>
+        <h2 style="display:inline-flex;align-items:center;gap:10px;margin:0">
+          <ZAIcon icon="mdi-gamepad-variant" size="28" color="primary" />
+          Bibliothek
+        </h2>
+      </div>
+    `,
+  }),
+};
+
+// ── Motion demos ─────────────────────────────────────────────────────
+
+export const Spinning: Story = {
+  name: "Drehend (mdi-spin)",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;align-items:center;gap:24px;font:12px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+        <ZAIcon icon="mdi-loading" size="32" color="primary" class="mdi-spin" />
+        <ZAIcon icon="mdi-refresh" size="32" color="info" class="mdi-spin" />
+        <ZAIcon icon="mdi-progress-helper" size="32" color="accent" class="mdi-spin" />
+        <span>Das eingebaute <code>mdi-spin</code> aus <code>@mdi/font</code> ergänzt die Basis, keine Spin-Eigenschaft nötig.</span>
+      </div>
+    `,
+  }),
+};
+
+export const ColorSwap: Story = {
+  name: "Farbwechsel beim Darüberfahren (Bewegungsvorschau)",
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;gap:24px;align-items:center;font:12px/1.2 sans-serif;color:var(--r-color-fg-muted)">
+        <ZAIcon icon="mdi-heart" size="32" class="r-icon-story-swap" />
+        <ZAIcon icon="mdi-star" size="32" class="r-icon-story-swap--fav" />
+        <ZAIcon icon="mdi-trash-can-outline" size="32" class="r-icon-story-swap--del" />
+        <span>Darüberfahren · Symbol wechselt Farbe und Transformation weich.</span>
+      </div>
+    `,
+  }),
+};
+
+// ── Catch-all ────────────────────────────────────────────────────────
+
+export const Gallery: Story = {
+  render: () => ({
+    components: { ZAIcon },
+    template: `
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+        <ZAIcon icon="mdi-home" />
+        <ZAIcon icon="mdi-controller" color="primary" />
+        <ZAIcon icon="mdi-star" color="romm-gold" size="28" />
+        <ZAIcon icon="mdi-trash-can-outline" color="romm-red" />
+        <ZAIcon icon="mdi-check-circle" color="romm-green" />
+        <ZAIcon icon="mdi-account-circle" color="info" size="32" />
+        <ZAIcon icon="mdi-cog" color="secondary" />
+        <ZAIcon icon="mdi-pulse" color="accent" size="20" />
+      </div>
+    `,
+  }),
+};

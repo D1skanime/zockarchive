@@ -4,7 +4,7 @@
 // soundtrack panel; each other subtab is self-contained.
 //
 // The soundtrack player is reused from v1 for now.
-import { REmptyState, RIcon } from "@v2/lib";
+import { ZAEmptyState, ZAIcon } from "@v2/lib";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -78,7 +78,7 @@ watch(
 );
 
 // ---------- Subtab nav ----------
-// We render the subtab list manually (not via RTabNav) because each
+// We render the subtab list manually (not via ZATabNav) because each
 // subtab's content panel owns its own section header with title +
 // contextual actions — the sidebar stays navigation-only, mirroring
 // ScreenshotsSubtab.
@@ -132,7 +132,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
             :aria-controls="`media-panel-${tab.id}`"
             @click="subTab = tab.id"
           >
-            <RIcon :icon="tab.icon" size="16" />
+            <ZAIcon :icon="tab.icon" size="16" />
             <span class="r-v2-media__subtab-label">{{ tab.label }}</span>
           </button>
         </li>

@@ -6,7 +6,7 @@ import { defineComponent, h } from "vue";
 
 const tokenSwatches = [
   {
-    title: "Brand",
+    title: "Marke/Grundbaustein",
     vars: [
       "--r-color-brand-primary",
       "--r-color-brand-primary-hover",
@@ -15,7 +15,7 @@ const tokenSwatches = [
     ],
   },
   {
-    title: "Semantic surface",
+    title: "Semantische Flächen",
     vars: [
       "--r-color-bg",
       "--r-color-bg-elevated",
@@ -35,7 +35,7 @@ const tokenSwatches = [
     ],
   },
   {
-    title: "Romm brand",
+    title: "RomM-Marke",
     vars: [
       "--r-color-romm-red",
       "--r-color-romm-green",
@@ -61,11 +61,11 @@ const VisualLanguage = defineComponent({
           },
         },
         [
-          h("h1", { style: { margin: 0 } }, "RomM v2 Design System"),
+          h("h1", { style: { margin: 0 } }, "RomM-v2-Designsystem"),
           h(
             "p",
             { style: { margin: 0, color: "var(--r-color-fg-muted)" } },
-            "Toggle dark/light in the Storybook toolbar. Components land here as each wave ships.",
+            "Wechsle in der Storybook-Werkzeugleiste zwischen Dunkel und Hell. Komponenten erscheinen hier mit jeder Ausbaustufe.",
           ),
           ...tokenSwatches.map((group) =>
             h("section", { key: group.title }, [
@@ -120,7 +120,7 @@ const VisualLanguage = defineComponent({
 });
 
 const meta: Meta<typeof VisualLanguage> = {
-  title: "Visual Language",
+  title: "Marke/Grundbaustein/Visuelle Sprache",
   component: VisualLanguage,
   parameters: {
     layout: "fullscreen",
@@ -131,4 +131,4 @@ export default meta;
 
 type Story = StoryObj;
 
-export const DesignTokens: Story = {};
+export const DesignTokens: Story = { name: "Design-Tokens" };

@@ -35,7 +35,7 @@ describe("AgeRatingBadges", () => {
   it("shows one preferred badge when several providers report the same rating", () => {
     const wrapper = mount(AgeRatingBadges, {
       props: { rom: rom() },
-      global: { stubs: { RIcon: true, RTooltip: TooltipStub } },
+      global: { stubs: { ZAIcon: true, ZATooltip: TooltipStub } },
     });
 
     const badges = wrapper.findAll("img");

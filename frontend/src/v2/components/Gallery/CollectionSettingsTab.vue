@@ -27,7 +27,7 @@
 //     placeholder mosaic.
 //   • Save → PUT /collections/:id with `artwork` and/or `url_cover` and
 //     `remove_cover` flag; on success patches the local store.
-import { RBtn, RChip, RIcon, RSwitch, RTag, RTextField } from "@v2/lib";
+import { ZABtn, ZAChip, ZAIcon, ZASwitch, ZATag, ZATextField } from "@v2/lib";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject, onBeforeUnmount, onMounted, ref, watch } from "vue";
@@ -317,7 +317,7 @@ function discard() {
          upload UI here would be misleading. -->
     <section v-if="kind === 'regular'" class="r-v2-coll-set__section">
       <header class="r-v2-coll-set__section-head">
-        <RIcon icon="mdi-image-outline" size="14" />
+        <ZAIcon icon="mdi-image-outline" size="14" />
         <span>{{ t("collection.cover", "Cover artwork") }}</span>
       </header>
       <div class="r-v2-coll-set__cover">
@@ -335,21 +335,21 @@ function discard() {
           />
         </div>
         <div v-if="canEdit" class="r-v2-coll-set__cover-actions">
-          <RBtn
+          <ZABtn
             icon="mdi-image-search-outline"
             variant="outlined"
             density="compact"
             :tooltip="t('rom.search-cover', 'Search cover')"
             @click="openSearchCover"
           />
-          <RBtn
+          <ZABtn
             icon="mdi-pencil"
             variant="outlined"
             density="compact"
             :tooltip="t('rom.upload-cover', 'Upload cover')"
             @click="triggerFileInput"
           />
-          <RBtn
+          <ZABtn
             icon="mdi-delete"
             variant="outlined"
             density="compact"
@@ -372,11 +372,11 @@ function discard() {
     <!-- Details (edit form) — both kinds. -->
     <section class="r-v2-coll-set__section">
       <header class="r-v2-coll-set__section-head">
-        <RIcon icon="mdi-pencil-outline" size="14" />
+        <ZAIcon icon="mdi-pencil-outline" size="14" />
         <span>{{ t("common.details", "Details") }}</span>
       </header>
       <div class="r-v2-coll-set__form">
-        <RTextField
+        <ZATextField
           v-model="form.name"
           :placeholder="t('collection.name', 'Name')"
           prefix-label="stacked"
@@ -385,8 +385,8 @@ function discard() {
           hide-details
         >
           <template #prefix-label>{{ t("collection.name", "Name") }}</template>
-        </RTextField>
-        <RTextField
+        </ZATextField>
+        <ZATextField
           v-model="form.description"
           :placeholder="t('collection.description', 'Description')"
           prefix-label="stacked"
@@ -398,9 +398,9 @@ function discard() {
           <template #prefix-label>
             {{ t("collection.description", "Description") }}
           </template>
-        </RTextField>
+        </ZATextField>
         <div class="r-v2-coll-set__row">
-          <RSwitch
+          <ZASwitch
             v-model="form.isPublic"
             :disabled="!canEdit"
             :label="
@@ -411,10 +411,10 @@ function discard() {
           />
         </div>
         <div v-if="canEdit && dirty" class="r-v2-coll-set__form-actions">
-          <RBtn variant="text" :disabled="saving" @click="discard">
+          <ZABtn variant="text" :disabled="saving" @click="discard">
             {{ t("common.discard", "Discard") }}
-          </RBtn>
-          <RBtn
+          </ZABtn>
+          <ZABtn
             variant="flat"
             color="primary"
             prepend-icon="mdi-check"
@@ -423,7 +423,7 @@ function discard() {
             @click="save"
           >
             {{ t("common.apply", "Apply") }}
-          </RBtn>
+          </ZABtn>
         </div>
       </div>
     </section>
@@ -434,7 +434,7 @@ function discard() {
       class="r-v2-coll-set__section"
     >
       <header class="r-v2-coll-set__section-head">
-        <RIcon icon="mdi-filter-variant" size="14" />
+        <ZAIcon icon="mdi-filter-variant" size="14" />
         <span>{{ t("collection.filters", "Filters") }}</span>
       </header>
       <ul class="r-v2-coll-set__filters">
@@ -444,26 +444,26 @@ function discard() {
           class="r-v2-coll-set__filter-row"
         >
           <span class="r-v2-coll-set__filter-label">
-            <RIcon :icon="row.icon" size="14" />
+            <ZAIcon :icon="row.icon" size="14" />
             <span>{{ row.label }}</span>
-            <RTag
+            <ZATag
               v-if="row.logic"
               tone="brand"
               size="x-small"
               class="r-v2-coll-set__filter-logic"
             >
               {{ row.logic }}
-            </RTag>
+            </ZATag>
           </span>
           <div v-if="row.values?.length" class="r-v2-coll-set__filter-values">
-            <RChip
+            <ZAChip
               v-for="(v, i) in row.values"
               :key="`${row.key}-${i}`"
               size="x-small"
               variant="translucent"
             >
               {{ v }}
-            </RChip>
+            </ZAChip>
           </div>
         </li>
       </ul>
@@ -477,7 +477,7 @@ function discard() {
       class="r-v2-coll-set__section r-v2-coll-set__danger"
     >
       <header class="r-v2-coll-set__section-head r-v2-coll-set__danger-head">
-        <RIcon icon="mdi-alert-outline" size="14" />
+        <ZAIcon icon="mdi-alert-outline" size="14" />
         <span>{{ t("collection.danger-zone", "Danger zone") }}</span>
       </header>
       <div class="r-v2-coll-set__danger-row">
@@ -489,7 +489,7 @@ function discard() {
             {{ t("collection.delete-collection-hint") }}
           </p>
         </div>
-        <RBtn
+        <ZABtn
           variant="outlined"
           color="danger"
           prepend-icon="mdi-delete-outline"
@@ -498,7 +498,7 @@ function discard() {
           @click="emit('delete')"
         >
           {{ t("common.delete", "Delete") }}
-        </RBtn>
+        </ZABtn>
       </div>
     </section>
   </div>

@@ -146,7 +146,7 @@ describe("PcComponents", () => {
       },
       global: {
         stubs: {
-          RCollapsible: {
+          ZACollapsible: {
             props: ["title"],
             template: "<section :data-title='title'><slot /></section>",
           },
@@ -174,7 +174,7 @@ describe("PcComponents", () => {
       global: {
         provide: { emitter },
         stubs: {
-          RCollapsible: false,
+          ZACollapsible: false,
         },
       },
     });
@@ -238,8 +238,8 @@ describe("PcComponents", () => {
       props: { components: componentGroups, romId: 42 },
       global: {
         stubs: {
-          RCollapsible: { template: "<section><slot /></section>" },
-          RBtn: {
+          ZACollapsible: { template: "<section><slot /></section>" },
+          ZABtn: {
             template: "<button @click='$emit(\"click\")'><slot /></button>",
           },
         },
@@ -267,7 +267,7 @@ describe("PcComponents", () => {
             template:
               "<output data-testid='download-manager-rom'>{{ romId }}</output>",
           },
-          RCollapsible: { template: "<section><slot /></section>" },
+          ZACollapsible: { template: "<section><slot /></section>" },
         },
       },
     });

@@ -3,7 +3,7 @@
 // on phones (xs) so the four destinations sit within thumb reach. AppNav
 // drops its centre pill on xs in turn (see AppNav.vue).
 //
-// This is the SAME RSliderBtnGroup tab pill the top nav uses — same glass
+// This is the SAME ZASliderBtnGroup tab pill the top nav uses — same glass
 // surface, same border, same sliding active indicator — just pinned to
 // the bottom and stretched full-width. No bespoke nav surface and no
 // alternate layout, so the brand look and feel stay identical top vs
@@ -14,7 +14,7 @@
 // top nav drops its centre pill. Mount-gated on the breakpoint ref (not
 // `display: none`) so the four router-links never sit hidden-but-focusable
 // in the tab order on larger viewports.
-import { RSliderBtnGroup } from "@v2/lib";
+import { ZASliderBtnGroup } from "@v2/lib";
 import { useI18n } from "vue-i18n";
 import { useBreakpoint } from "@/v2/composables/useBreakpoint";
 import { useNavDestinations } from "@/v2/composables/useNavDestinations";
@@ -26,7 +26,7 @@ const { destinations, activeId } = useNavDestinations();
 
 <template>
   <div v-if="smAndDown" class="r-v2-bottom-nav">
-    <RSliderBtnGroup
+    <ZASliderBtnGroup
       :model-value="activeId"
       :items="destinations"
       variant="tab"
@@ -80,7 +80,7 @@ const { destinations, activeId } = useNavDestinations();
 
 /* Icon-only on phones — four full-width inline labels won't fit, and the
    icon-only treatment matches the top-nav-on-xs precedent. The
-   router-link `aria-label` (set by RSliderBtnGroup from each item's
+   router-link `aria-label` (set by ZASliderBtnGroup from each item's
    `ariaLabel`) stays the source of accessible naming. */
 .r-v2-bottom-nav__group :deep(.r-slider-btn-group__label) {
   display: none;

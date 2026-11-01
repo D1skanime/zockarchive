@@ -129,19 +129,19 @@ function mountDetail(component: PcComponentSchema = selectedDlc) {
     },
     global: {
       stubs: {
-        RMenu: {
+        ZAMenu: {
           template: "<div><slot name='activator' :props='{}' /><slot /></div>",
         },
-        RMenuItem: {
+        ZAMenuItem: {
           props: ["label"],
           template:
             '<button :data-label="label" @click="$emit(\'click\')">{{ label }}</button>',
         },
-        RBtn: {
+        ZABtn: {
           inheritAttrs: false,
           template: `<a v-bind="$attrs" @click="$emit('click')"><slot /></a>`,
         },
-        RDialog: {
+        ZADialog: {
           props: ["modelValue"],
           template:
             "<div v-if='modelValue' data-testid='description-dialog'><slot name='header' /><slot name='content' /></div>",
@@ -158,16 +158,16 @@ function mountDetail(component: PcComponentSchema = selectedDlc) {
           ],
           template: "<div data-testid='localized-editor' />",
         },
-        RImg: {
+        ZAImg: {
           props: ["src", "alt"],
           template: "<img :src='src' :alt='alt' />",
         },
-        RCarousel: {
+        ZACarousel: {
           props: ["ariaLabel", "items"],
           template:
             "<div data-testid='pc-dlc-carousel' :aria-label='ariaLabel' :data-items='items.join(\"|\")'><slot /></div>",
         },
-        RTag: { template: "<span><slot /></span>" },
+        ZATag: { template: "<span><slot /></span>" },
         PcDlcFiles: {
           props: ["component"],
           template: "<section data-testid='files' />",
@@ -452,20 +452,20 @@ describe("PcDlcDetail", () => {
       },
       global: {
         stubs: {
-          RMenu: {
+          ZAMenu: {
             template:
               "<div><slot name='activator' :props='{}' /><slot /></div>",
           },
-          RMenuItem: {
+          ZAMenuItem: {
             props: ["label"],
             template:
               '<button :data-label="label" @click="$emit(\'click\')">{{ label }}</button>',
           },
-          RBtn: {
+          ZABtn: {
             inheritAttrs: false,
             template: `<a v-bind="$attrs" @click="$emit('click')"><slot /></a>`,
           },
-          RDialog: {
+          ZADialog: {
             props: ["modelValue"],
             template:
               "<div v-if='modelValue' data-testid='description-dialog'><slot name='header' /><slot name='content' /></div>",
@@ -482,11 +482,11 @@ describe("PcDlcDetail", () => {
             ],
             template: "<div data-testid='localized-editor' />",
           },
-          RImg: {
+          ZAImg: {
             props: ["src", "alt"],
             template: "<img :src='src' :alt='alt' />",
           },
-          RTag: { template: "<span><slot /></span>" },
+          ZATag: { template: "<span><slot /></span>" },
           PcDlcFiles: {
             props: ["component"],
             template: "<section data-testid='files' />",

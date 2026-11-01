@@ -21,18 +21,18 @@ const CODES = [
   { value: "jp", label: "jp" },
 ];
 
-// Stub RBtn as a plain <button> and RTextField as a plain <input> so
+// Stub ZABtn as a plain <button> and ZATextField as a plain <input> so
 // clicks, typing and the disabled state work without pulling in the full
-// primitives; RIcon renders nothing.
+// primitives; ZAIcon renders nothing.
 const STUBS = {
-  RIcon: true,
-  RBtn: {
+  ZAIcon: true,
+  ZABtn: {
     props: ["disabled"],
     emits: ["click"],
     template:
       '<button :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
   },
-  RTextField: {
+  ZATextField: {
     props: ["modelValue", "disabled"],
     emits: ["update:modelValue"],
     template:

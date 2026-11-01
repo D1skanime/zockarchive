@@ -110,13 +110,13 @@ function mountQueue() {
     global: {
       provide: { emitter: mitt() },
       stubs: {
-        RBtn: {
+        ZABtn: {
           props: ["disabled", "loading"],
           template:
             "<button v-bind='$attrs' :disabled='disabled' :data-loading='loading' @click='$emit(\"click\")'><slot /></button>",
         },
-        RProgressLinear: true,
-        RSkeletonBlock: true,
+        ZAProgressLinear: true,
+        ZASkeletonBlock: true,
       },
     },
   });
@@ -196,13 +196,13 @@ describe("PcAutomationQueue", () => {
       global: {
         provide: { emitter },
         stubs: {
-          RBtn: {
+          ZABtn: {
             props: ["disabled", "loading"],
             template:
               "<button v-bind='$attrs' :disabled='disabled' @click='$emit(\"click\")'><slot /></button>",
           },
-          RProgressLinear: true,
-          RSkeletonBlock: true,
+          ZAProgressLinear: true,
+          ZASkeletonBlock: true,
         },
       },
     });
@@ -245,13 +245,13 @@ describe("PcAutomationQueue", () => {
       global: {
         provide: { emitter },
         stubs: {
-          RBtn: {
+          ZABtn: {
             props: ["disabled", "loading"],
             template:
               "<button v-bind='$attrs' :disabled='disabled' @click='$emit(\"click\")'><slot /></button>",
           },
-          RProgressLinear: true,
-          RSkeletonBlock: true,
+          ZAProgressLinear: true,
+          ZASkeletonBlock: true,
         },
       },
     });
@@ -313,7 +313,7 @@ describe("PcAutomationQueue", () => {
     const wrapper = mount(Administration!.default, {
       global: {
         stubs: {
-          RTabNav: {
+          ZATabNav: {
             props: ["modelValue", "items"],
             template:
               '<button data-testid=\'automation-tab\' @click=\'$emit("update:modelValue", "pc-automation")\'>{{ items.map((item) => item.label).join(" ") }}</button>',

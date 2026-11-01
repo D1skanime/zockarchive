@@ -152,8 +152,8 @@ export function useScanProviders(calculateHashes: ComputedRef<boolean>) {
   // wizard's metadata step. General catalogs ship a full game record
   // (title, artwork, descriptions); specific sources add a single
   // domain dimension (achievements, completion times, custom art).
-  // Each group renders its own RSelect; both share `metadataSources`
-  // as the model. RSelect's `show-all-option` is subset-safe — toggling
+  // Each group renders its own ZASelect; both share `metadataSources`
+  // as the model. ZASelect's `show-all-option` is subset-safe — toggling
   // All in one group doesn't touch the other.
   const GENERAL_PROVIDER_KEYS = new Set([
     "igdb",
@@ -174,7 +174,7 @@ export function useScanProviders(calculateHashes: ComputedRef<boolean>) {
     metadataOptions.value.filter((o) => SPECIFIC_PROVIDER_KEYS.has(o.value)),
   );
 
-  // Each group's RSelect uses empty-model-as-"All", but the scan backend
+  // Each group's ZASelect uses empty-model-as-"All", but the scan backend
   // reads an empty `apis` list as "no sources", not "all". So when a group
   // is in All-mode we materialise its full enabled provider list — both to
   // drive the UI gates (IGDB present? any source picked?) and to build the
@@ -190,7 +190,7 @@ export function useScanProviders(calculateHashes: ComputedRef<boolean>) {
     return metadataSources.value.some((s) => keys.has(s.value));
   }
 
-  // All-mode mirrors of each RSelect. Initialised the same way the
+  // All-mode mirrors of each ZASelect. Initialised the same way the
   // primitive does (no own selection ⇒ All) and kept in sync afterwards
   // via each select's `@update:all-selected`.
   const generalAllSelected = ref(!hasGroupSelection(GENERAL_PROVIDER_KEYS));

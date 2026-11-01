@@ -31,7 +31,7 @@ describe("DownloadModeSelector", () => {
     supported.mockReturnValue(true);
     const wrapper = mount(DownloadModeSelector, {
       props: { modelValue: "standard" },
-      global: { stubs: { RCheckbox: checkbox } },
+      global: { stubs: { ZACheckbox: checkbox } },
     });
 
     expect(wrapper.text()).toContain("Standard browser download");
@@ -43,7 +43,7 @@ describe("DownloadModeSelector", () => {
     supported.mockReturnValue(true);
     const wrapper = mount(DownloadModeSelector, {
       props: { modelValue: "standard" },
-      global: { stubs: { RCheckbox: checkbox } },
+      global: { stubs: { ZACheckbox: checkbox } },
     });
 
     await wrapper.findAll("input")[1].trigger("change");
@@ -54,7 +54,7 @@ describe("DownloadModeSelector", () => {
     supported.mockReturnValue(false);
     const wrapper = mount(DownloadModeSelector, {
       props: { modelValue: "standard" },
-      global: { stubs: { RCheckbox: checkbox } },
+      global: { stubs: { ZACheckbox: checkbox } },
     });
 
     expect(wrapper.findAll("input")).toHaveLength(1);

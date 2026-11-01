@@ -8,7 +8,7 @@
 // Polls `tasksStore.fetchTaskStatus` every 5s while mounted so the
 // history feed updates in real time. Manual + scheduled tasks expose a
 // run button that posts to /tasks/{name}/run.
-import { RBtn, RIcon, RSpinner } from "@v2/lib";
+import { ZABtn, ZAIcon, ZASpinner } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, onUnmounted } from "vue";
 import { useI18n } from "vue-i18n";
@@ -117,7 +117,7 @@ function statusInfo(task: TaskStatusResponse) {
           :key="task.name"
           class="r-v2-tasks__cell"
         >
-          <RIcon
+          <ZAIcon
             :icon="task.icon"
             size="18"
             class="r-v2-tasks__icon"
@@ -145,7 +145,7 @@ function statusInfo(task: TaskStatusResponse) {
           :key="task.name"
           class="r-v2-tasks__cell"
         >
-          <RIcon
+          <ZAIcon
             :icon="task.icon"
             size="18"
             class="r-v2-tasks__icon"
@@ -174,7 +174,7 @@ function statusInfo(task: TaskStatusResponse) {
             :title="t('settings.run-task', { title: task.title })"
             @click="runTask(task.name, task.title)"
           >
-            <RIcon icon="mdi-play" size="14" />
+            <ZAIcon icon="mdi-play" size="14" />
           </button>
         </div>
       </div>
@@ -189,7 +189,7 @@ function statusInfo(task: TaskStatusResponse) {
           :key="task.name"
           class="r-v2-tasks__cell"
         >
-          <RIcon :icon="task.icon" size="18" class="r-v2-tasks__icon" />
+          <ZAIcon :icon="task.icon" size="18" class="r-v2-tasks__icon" />
           <div class="r-v2-tasks__info">
             <span class="r-v2-tasks__name">{{ task.title }}</span>
             <span class="r-v2-tasks__desc">{{ task.description }}</span>
@@ -202,7 +202,7 @@ function statusInfo(task: TaskStatusResponse) {
             :title="t('settings.run-task', { title: task.title })"
             @click="runTask(task.name, task.title)"
           >
-            <RIcon icon="mdi-play" size="14" />
+            <ZAIcon icon="mdi-play" size="14" />
           </button>
         </div>
       </div>
@@ -214,7 +214,7 @@ function statusInfo(task: TaskStatusResponse) {
       v-if="completedStatuses.length === 0"
       class="r-v2-tasks__history-empty"
     >
-      <RIcon icon="mdi-information-outline" size="14" />
+      <ZAIcon icon="mdi-information-outline" size="14" />
       {{ t("settings.no-tasks-in-history") }}
     </div>
     <div v-else class="r-v2-tasks__history">
@@ -236,15 +236,15 @@ function statusInfo(task: TaskStatusResponse) {
       </div>
     </div>
 
-    <RBtn
+    <ZABtn
       v-if="taskStatuses.length === 0 && !manualTasksUI.length"
       variant="text"
       class="r-v2-tasks__loading"
       disabled
     >
-      <RSpinner :size="14" />
+      <ZASpinner :size="14" />
       {{ t("common.loading-ellipsis") }}
-    </RBtn>
+    </ZABtn>
   </SettingsSection>
 </template>
 
