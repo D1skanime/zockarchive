@@ -10,6 +10,13 @@ const assetListSource = readFileSync(
   resolve(process.cwd(), "src/v2/components/shared/AssetList.vue"),
   "utf8",
 );
+const pcBackupsSource = readFileSync(
+  resolve(
+    process.cwd(),
+    "src/v2/components/GameDetails/PcSaveBackupsSection.vue",
+  ),
+  "utf8",
+);
 
 describe("SaveDataTab source contract", () => {
   it("keeps save/state mutations on canonical APIs and refreshes ROM state", () => {
@@ -18,10 +25,8 @@ describe("SaveDataTab source contract", () => {
     expect(source).toContain("saveApi.deleteSaves");
     expect(source).toContain("stateApi.deleteStates");
     expect(source).toContain("await refreshRom()");
-    expect(source).toContain("rom.save-data-file-hint");
-    expect(source).toContain(
-      '<SaveBackupsPanel :rom-id="props.rom.id" :is-pc="isPcRom" />',
-    );
+    expect(source).toContain('<PcSaveBackupsSection :rom="props.rom" />');
+    expect(pcBackupsSource).toContain("rom.save-data-file-hint");
   });
 
   it("does not route save data through gallery media endpoints", () => {

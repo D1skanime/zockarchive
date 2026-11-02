@@ -26,7 +26,7 @@ import type {
   UserSaveSchema,
   UserStateSchema,
 } from "@/__generated__";
-import SaveBackupsPanel from "@/v2/components/GameDetails/SaveBackupsPanel.vue";
+import PcSaveBackupsSection from "@/v2/components/GameDetails/PcSaveBackupsSection.vue";
 import AssetList from "@/v2/components/shared/AssetList.vue";
 import AssetStrip from "@/v2/components/shared/AssetStrip.vue";
 import { useConfirm } from "@/v2/composables/useConfirm";
@@ -36,6 +36,7 @@ import saveApi from "@/v2/data/adapters/legacy/services/api/save";
 import stateApi from "@/v2/data/adapters/legacy/services/api/state";
 import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
 import storeRoms from "@/v2/data/adapters/legacy/stores/roms";
+import { isPcPlatform } from "@/v2/utils/isPcPlatform";
 
 // Slot payload from AssetList/AssetStrip is the full save|state union; these
 // narrow it back to the concrete schema the section's handlers expect.
@@ -47,13 +48,7 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{ rom: DetailedRomSchema }>();
 const { t } = useI18n();
-const PC_PLATFORM_SLUGS = new Set(["dos", "win", "win3x", "win9x"]);
-const isPcRom = computed(
-  () =>
-    props.rom.platform_fs_slug === "pc" ||
-    PC_PLATFORM_SLUGS.has(props.rom.platform_slug),
-);
-
+const isPcRom = computed(() => isPcPlatform(props.rom));
 // ---------- Subtab state (URL-persisted via `?subtab=`) ----------
 const validSubtabs = ["saves", "states"] as const;
 type Subtab = (typeof validSubtabs)[number];
@@ -358,10 +353,7 @@ async function toggleStateVisibility(state: StateSchema) {
     </aside>
 
     <div class="r-v2-saves__content">
-      <p v-if="!isPcRom" class="r-v2-saves__hint">
-        {{ t("rom.save-data-file-hint") }}
-      </p>
-      <SaveBackupsPanel :rom-id="props.rom.id" :is-pc="isPcRom" />
+      <PcSaveBackupsSection :rom="props.rom" />
       <!-- Saves subtab — vertical info list -->
       <section v-show="subTab === 'saves'" class="r-v2-saves__panel">
         <!-- Mine -->
