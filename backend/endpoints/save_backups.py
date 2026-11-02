@@ -18,6 +18,7 @@ from handler.database import db_rom_handler, db_save_backup_handler
 from handler.filesystem import fs_asset_handler, storage_composition
 from handler.filesystem.storage_policy import OwnedStorageKind, StorageOperation
 from handler.save_backups import archive_sha256, check_upload_size, inspect_archive
+from logger.logger import log
 from models.save_backup import SaveBackup
 from utils.router import APIRouter
 
@@ -112,14 +113,30 @@ async def create_backup(
         db_save_backup_handler.attach_note(backup.id, request.user.id, note_id)
         return _schema(backup)
     except Exception:
+        log.error(
+            "Save backup upload failed (backup_created=%s, note_created=%s)",
+            backup is not None,
+            note_id is not None,
+            exc_info=True,
+        )
         if note_id:
-            db_rom_handler.delete_rom_note(note_id, request.user.id, rom.id)
+            try:
+                db_rom_handler.delete_rom_note(note_id, request.user.id, rom.id)
+            except Exception:
+                log.warning("Failed to clean up save backup note", exc_info=True)
         if backup:
-            db_save_backup_handler.delete_backup(backup.id, request.user.id)
+            try:
+                db_save_backup_handler.delete_backup(backup.id, request.user.id)
+            except Exception:
+                log.warning("Failed to clean up save backup record", exc_info=True)
         try:
             await fs_asset_handler.remove_file(storage_path)
         except FileNotFoundError:
             pass
+        except Exception:
+            log.warning(
+                "Failed to clean up incomplete save backup archive", exc_info=True
+            )
         raise
 
 

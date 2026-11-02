@@ -3,6 +3,7 @@ from io import BytesIO
 from pathlib import Path
 from unittest import mock
 
+import pytest
 from fastapi import status
 from tests._zipfile_shim import reload_zipfile
 
@@ -110,3 +111,35 @@ def test_backup_upload_download_round_trip_is_owner_scoped(
         assert deleted.status_code == status.HTTP_200_OK
         assert db_save_backup_handler.get_backup(payload["id"], admin_user.id) is None
         assert db_rom_handler.get_rom_notes(rom.id, admin_user.id) == []
+
+
+@mock.patch("endpoints.save_backups.authorize_api_storage_operation")
+def test_failed_backup_upload_logs_and_cleans_up_partial_archive(
+    authorize, client, access_token: str, rom: Rom
+):
+    restore_path = r"%USERPROFILE%\\Documents\\Private Saves"
+    cleanup = mock.AsyncMock()
+    with (
+        mock.patch(
+            "endpoints.save_backups.fs_asset_handler.write_file",
+            side_effect=RuntimeError("storage write failed"),
+        ),
+        mock.patch("endpoints.save_backups.fs_asset_handler.remove_file", cleanup),
+        mock.patch("endpoints.save_backups.log") as log,
+    ):
+        with pytest.raises(RuntimeError, match="storage write failed"):
+            client.post(
+                "/api/save-backups",
+                headers=_auth(access_token),
+                data={
+                    "rom_id": str(rom.id),
+                    "backup_name": "Private backup",
+                    "source_folder": "gamesaves",
+                    "restore_path": restore_path,
+                },
+                files={"archive": ("backup.zip", _archive(), "application/zip")},
+            )
+
+    cleanup.assert_awaited_once()
+    log.error.assert_called_once()
+    assert restore_path not in str(log.error.call_args)
