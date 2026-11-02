@@ -115,7 +115,7 @@ def test_backup_upload_download_round_trip_is_owner_scoped(
 
 @mock.patch("endpoints.save_backups.authorize_api_storage_operation")
 def test_failed_backup_upload_logs_and_cleans_up_partial_archive(
-    authorize, client, access_token: str, rom: Rom
+    authorize, client, access_token: str, admin_user, rom: Rom
 ):
     restore_path = r"%USERPROFILE%\\Documents\\Private Saves"
     cleanup = mock.AsyncMock()
@@ -141,5 +141,14 @@ def test_failed_backup_upload_logs_and_cleans_up_partial_archive(
             )
 
     cleanup.assert_awaited_once()
-    log.error.assert_called_once()
+    log.error.assert_called_once_with(
+        "Save backup upload failed "
+        "(user_id=%s, rom_id=%s, storage_path=%s, backup_created=%s, note_created=%s)",
+        admin_user.id,
+        rom.id,
+        mock.ANY,
+        False,
+        False,
+        exc_info=True,
+    )
     assert restore_path not in str(log.error.call_args)

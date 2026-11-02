@@ -114,7 +114,12 @@ async def create_backup(
         return _schema(backup)
     except Exception:
         log.error(
-            "Save backup upload failed (backup_created=%s, note_created=%s)",
+            "Save backup upload failed "
+            "(user_id=%s, rom_id=%s, storage_path=%s, "
+            "backup_created=%s, note_created=%s)",
+            request.user.id,
+            rom.id,
+            storage_path,
             backup is not None,
             note_id is not None,
             exc_info=True,
