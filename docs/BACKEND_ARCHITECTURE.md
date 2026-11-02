@@ -115,7 +115,7 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 ### Saves, States and Downloads
 
-- Save and State are user-owned ROM assets with retained catalog identity, device linkage and visibility. Handlers are backend/handler/database/saves_handler.py and states_handler.py.
+- Save and State are user-owned ROM assets with retained catalog identity, device linkage and visibility. Handlers are backend/handler/database/saves_handler.py and states_handler.py. SaveBackup is a separate owner-scoped ZIP aggregate; it validates archive topology without extraction and treats Windows restore paths as metadata only.
 - Device save synchronization uses backend/models/device_save_sync.py and backend/models/sync_session.py.
 - PC download selection snapshots component evidence in backend/models/download_manifest.py.
 - Resumable transfer attempts, item states and event lineage live in backend/models/download_transfer.py; endpoints are backend/endpoints/download_manifests.py and backend/endpoints/download_transfers.py.
@@ -186,7 +186,7 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 ---
 
-_Architecture analysis: 2026-10-15_
+Architecture analysis: 2026-10-15.
 
 ## Backend-specific current contracts
 

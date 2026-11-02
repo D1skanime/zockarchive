@@ -28,6 +28,7 @@ import type {
   UserSaveSchema,
   UserStateSchema,
 } from "@/__generated__";
+import SaveBackupsPanel from "@/v2/components/GameDetails/SaveBackupsPanel.vue";
 import AssetList from "@/v2/components/shared/AssetList.vue";
 import AssetStrip from "@/v2/components/shared/AssetStrip.vue";
 import { useConfirm } from "@/v2/composables/useConfirm";
@@ -354,6 +355,7 @@ async function toggleStateVisibility(state: StateSchema) {
 
     <div class="r-v2-saves__content">
       <p class="r-v2-saves__hint">{{ t("rom.save-data-file-hint") }}</p>
+      <SaveBackupsPanel :rom-id="props.rom.id" />
       <!-- Saves subtab — vertical info list -->
       <section v-show="subTab === 'saves'" class="r-v2-saves__panel">
         <!-- Mine -->

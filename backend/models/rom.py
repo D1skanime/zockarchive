@@ -81,6 +81,7 @@ if TYPE_CHECKING:
     from models.collection import Collection
     from models.download_archive_set import DownloadArchiveSet
     from models.platform import Platform
+    from models.save_backup import SaveBackup
     from models.user import User
 
 
@@ -1071,6 +1072,9 @@ class Rom(BaseModel):
         order_by="DownloadArchiveSet.id",
     )
     saves: Mapped[list[Save]] = relationship(lazy="raise", back_populates="rom")
+    save_backups: Mapped[list[SaveBackup]] = relationship(
+        lazy="raise", back_populates="rom", cascade="all, delete-orphan"
+    )
     states: Mapped[list[State]] = relationship(lazy="raise", back_populates="rom")
     screenshots: Mapped[list[Screenshot]] = relationship(
         lazy="raise", back_populates="rom"

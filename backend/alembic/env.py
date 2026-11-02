@@ -14,6 +14,7 @@ from models.mapping_preview import MappingPreview  # noqa
 from models.music import MusicFavoriteTrack, MusicPlaylist, MusicPlaylistTrack  # noqa
 from models.platform import Platform  # noqa
 from models.rom import Rom, RomFacets, RomMetadata, SiblingRom  # noqa
+from models.save_backup import SaveBackup  # noqa
 from models.storage import PlatformStorageMapping, StorageRoot  # noqa
 from models.user import User  # noqa
 from utils.alembic_mysql import PortableMySQLImpl  # noqa: F401
