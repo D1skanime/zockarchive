@@ -158,6 +158,7 @@ app.add_middleware(
     max_size=MAX_ASSET_UPLOAD_SIZE_BYTES,
     paths=[
         re.compile(r"^/api/saves"),
+        re.compile(r"^/api/save-backups"),
         re.compile(r"^/api/states"),
         re.compile(r"^/api/screenshots"),
     ],
