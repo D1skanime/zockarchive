@@ -2,18 +2,26 @@
 import { ZABtn, ZADialog, ZAProgressLinear, ZATextField } from "@v2/lib";
 import axios from "axios";
 import { zipSync } from "fflate";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import saveBackupApi from "@/services/api/saveBackup";
 import { formatBytes } from "@/utils";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 
-const props = defineProps<{ romId: number }>();
+const props = withDefaults(
+  defineProps<{
+    romId: number;
+    initialFiles?: File[];
+    defaultRestorePath?: string;
+  }>(),
+  { initialFiles: () => [], defaultRestorePath: "" },
+);
 const emit = defineEmits<{ saved: [] }>();
 const open = defineModel<boolean>({ required: true });
 const { t } = useI18n();
 const snackbar = useSnackbar();
-const input = ref<HTMLInputElement | null>(null);
+const folderInput = ref<HTMLInputElement | null>(null);
+const filesInput = ref<HTMLInputElement | null>(null);
 const files = ref<File[]>([]);
 const restorePath = ref("");
 const backupName = ref("");
@@ -24,7 +32,35 @@ const totalSize = computed(() =>
   files.value.reduce((sum, file) => sum + file.size, 0),
 );
 const sourceFolder = computed(
-  () => files.value[0]?.webkitRelativePath.split("/")[0] ?? "",
+  () => relativePath(files.value[0] ?? null).split("/")[0] || "files",
+);
+
+function relativePath(file: File | null): string {
+  return file?.webkitRelativePath || file?.name || "";
+}
+
+function setFiles(selected: File[]) {
+  files.value = selected;
+  if (selected.length && !backupName.value.trim()) {
+    backupName.value = sourceFolder.value;
+  }
+}
+
+watch(
+  open,
+  (isOpen) => {
+    if (!isOpen) return;
+    setFiles(props.initialFiles);
+    if (!restorePath.value.trim()) restorePath.value = props.defaultRestorePath;
+  },
+  { immediate: true },
+);
+
+watch(
+  () => props.initialFiles,
+  (selected) => {
+    if (open.value) setFiles(selected);
+  },
 );
 
 function close(force = false) {
@@ -33,23 +69,30 @@ function close(force = false) {
   files.value = [];
   error.value = "";
   progress.value = 0;
-  if (input.value) input.value.value = "";
+  if (folderInput.value) folderInput.value.value = "";
+  if (filesInput.value) filesInput.value.value = "";
 }
 
 function chooseFolder() {
-  input.value?.click();
+  folderInput.value?.click();
 }
 
 function selectFolder(event: Event) {
   const selected = Array.from((event.target as HTMLInputElement).files ?? []);
   if (selected.some((file) => !file.webkitRelativePath)) {
     error.value = t("rom.save-backup-browser-error");
-    files.value = [];
+    setFiles([]);
     return;
   }
-  files.value = selected;
-  if (selected.length && !backupName.value)
-    backupName.value = sourceFolder.value;
+  setFiles(selected);
+}
+
+function chooseFiles() {
+  filesInput.value?.click();
+}
+
+function selectFiles(event: Event) {
+  setFiles(Array.from((event.target as HTMLInputElement).files ?? []));
 }
 
 async function submit() {
@@ -61,9 +104,7 @@ async function submit() {
   try {
     const entries: Record<string, Uint8Array> = {};
     for (const file of files.value)
-      entries[file.webkitRelativePath] = new Uint8Array(
-        await file.arrayBuffer(),
-      );
+      entries[relativePath(file)] = new Uint8Array(await file.arrayBuffer());
     const archive = new Blob([zipSync(entries)], { type: "application/zip" });
     await saveBackupApi.createBackup({
       romId: props.romId,
@@ -105,16 +146,26 @@ async function submit() {
     >
     <template #content>
       <input
-        ref="input"
+        ref="folderInput"
         type="file"
         hidden
         webkitdirectory
         multiple
         @change="selectFolder"
       />
+      <input
+        ref="filesInput"
+        type="file"
+        hidden
+        multiple
+        @change="selectFiles"
+      />
       <p>{{ t("rom.save-backup-folder-help") }}</p>
       <ZABtn prepend-icon="mdi-folder-open-outline" @click="chooseFolder">{{
         t("rom.save-backup-choose-folder")
+      }}</ZABtn>
+      <ZABtn prepend-icon="mdi-file-upload-outline" @click="chooseFiles">{{
+        t("rom.upload-saves")
       }}</ZABtn>
       <dl v-if="files.length" class="r-v2-backup-dialog__summary">
         <dt>{{ t("rom.save-backup-folder") }}</dt>

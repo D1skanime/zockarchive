@@ -19,7 +19,9 @@ describe("SaveDataTab source contract", () => {
     expect(source).toContain("stateApi.deleteStates");
     expect(source).toContain("await refreshRom()");
     expect(source).toContain("rom.save-data-file-hint");
-    expect(source).toContain('<SaveBackupsPanel :rom-id="props.rom.id" />');
+    expect(source).toContain(
+      '<SaveBackupsPanel :rom-id="props.rom.id" :is-pc="isPcRom" />',
+    );
   });
 
   it("does not route save data through gallery media endpoints", () => {

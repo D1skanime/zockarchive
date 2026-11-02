@@ -6,18 +6,17 @@ import { useI18n } from "vue-i18n";
 import type { SaveBackup } from "@/services/api/saveBackup";
 import saveBackupApi from "@/services/api/saveBackup";
 import { formatBytes } from "@/utils";
-import SaveBackupDialog from "@/v2/components/GameDetails/SaveBackupDialog.vue";
+import PcSaveBackupLauncher from "@/v2/components/GameDetails/PcSaveBackupLauncher.vue";
 import SaveRestoreDialog from "@/v2/components/GameDetails/SaveRestoreDialog.vue";
 import { useConfirm } from "@/v2/composables/useConfirm";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 
-const props = defineProps<{ romId: number }>();
+const props = defineProps<{ romId: number; isPc: boolean }>();
 const { t } = useI18n();
 const snackbar = useSnackbar();
 const confirm = useConfirm();
 const backups = ref<SaveBackup[]>([]);
 const loading = ref(false);
-const createOpen = ref(false);
 const restoreOpen = ref(false);
 const selected = ref<SaveBackup | null>(null);
 
@@ -71,17 +70,21 @@ async function remove(backup: SaveBackup) {
   }
 }
 
-onMounted(load);
+onMounted(() => {
+  if (props.isPc) void load();
+});
 </script>
 
 <template>
-  <section class="r-v2-save-backups">
+  <section v-if="props.isPc" class="r-v2-save-backups">
     <header class="r-v2-save-backups__head">
       <h3>{{ t("rom.save-backup-list-title") }}</h3>
-      <ZABtn prepend-icon="mdi-folder-zip-outline" @click="createOpen = true">{{
-        t("rom.save-backup")
-      }}</ZABtn>
     </header>
+    <PcSaveBackupLauncher
+      :rom-id="props.romId"
+      :default-restore-path="backups[0]?.restore_path ?? ''"
+      @saved="load"
+    />
     <ZASpinner v-if="loading" />
     <p v-else-if="backups.length === 0" class="r-v2-save-backups__empty">
       {{ t("rom.save-backup-empty") }}
@@ -121,7 +124,6 @@ onMounted(load);
         />
       </div>
     </article>
-    <SaveBackupDialog v-model="createOpen" :rom-id="romId" @saved="load" />
     <SaveRestoreDialog
       v-model="restoreOpen"
       :backup="selected"

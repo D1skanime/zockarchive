@@ -28,6 +28,10 @@ interface Props {
   /** MIME types passed to the drop filter; omit to accept anything. */
   dataTypes?: string[];
   disabled?: boolean;
+  /** Whether activating the CTA opens the native picker. */
+  openOnClick?: boolean;
+  /** Preserve relative paths when browsers expose dropped directories. */
+  preserveDroppedPaths?: boolean;
   /** Overlay mode: render the default slot + a drag-over overlay. */
   overlay?: boolean;
   // CTA copy / icons (ignored in overlay mode except `activeIcon`).
@@ -45,11 +49,12 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   multiple: false,
+  openOnClick: true,
   icon: "mdi-cloud-upload-outline",
   activeIcon: "mdi-cloud-upload",
 });
 
-const emit = defineEmits<{ files: [files: File[]] }>();
+const emit = defineEmits<{ files: [files: File[]]; activate: [] }>();
 
 defineSlots<{
   /** Overlay-mode content (the filled list / grid / card). */
@@ -61,10 +66,74 @@ defineSlots<{
 const rootRef = ref<HTMLElement | null>(null);
 const inputRef = ref<HTMLInputElement | null>(null);
 
+type DroppedEntry = {
+  isFile: boolean;
+  isDirectory: boolean;
+  name: string;
+  file: (
+    success: (file: File) => void,
+    failure: (error: DOMException) => void,
+  ) => void;
+  createReader: () => {
+    readEntries: (
+      success: (entries: DroppedEntry[]) => void,
+      failure: (error: DOMException) => void,
+    ) => void;
+  };
+};
+
+function relativeFile(file: File, path: string): File {
+  Object.defineProperty(file, "webkitRelativePath", {
+    configurable: true,
+    value: path,
+  });
+  return file;
+}
+
+async function readEntries(entry: DroppedEntry, parent = ""): Promise<File[]> {
+  const path = parent ? `${parent}/${entry.name}` : entry.name;
+  if (entry.isFile) {
+    return new Promise((resolve, reject) => {
+      entry.file((file) => resolve([relativeFile(file, path)]), reject);
+    });
+  }
+  if (!entry.isDirectory) return [];
+
+  const reader = entry.createReader();
+  const children: DroppedEntry[] = [];
+  while (true) {
+    const batch = await new Promise<DroppedEntry[]>((resolve, reject) => {
+      reader.readEntries(resolve, reject);
+    });
+    if (batch.length === 0) break;
+    children.push(...batch);
+  }
+  return (
+    await Promise.all(children.map((child) => readEntries(child, path)))
+  ).flat();
+}
+
+async function dropFiles(files: File[], event: DragEvent) {
+  if (props.disabled || files.length === 0) return;
+  const entries = props.preserveDroppedPaths
+    ? Array.from(event.dataTransfer?.items ?? [])
+        .map((item) => item.webkitGetAsEntry?.())
+        .filter(Boolean)
+    : [];
+  const selected = entries.length
+    ? (
+        await Promise.all(
+          entries.map((entry) => readEntries(entry as unknown as DroppedEntry)),
+        )
+      ).flat()
+    : files;
+  emit("files", props.multiple ? selected : selected.slice(0, 1));
+}
+
 const { isOverDropZone } = useDropZone(rootRef, {
-  onDrop(files) {
-    if (props.disabled || !files || files.length === 0) return;
-    emit("files", props.multiple ? files : files.slice(0, 1));
+  onDrop(files, event) {
+    if (!files) return;
+    void dropFiles(files, event);
   },
   dataTypes: props.dataTypes,
   multiple: props.multiple,
@@ -74,6 +143,12 @@ const { isOverDropZone } = useDropZone(rootRef, {
 function open() {
   if (props.disabled) return;
   inputRef.value?.click();
+}
+
+function activate() {
+  if (props.disabled) return;
+  emit("activate");
+  if (props.openOnClick) open();
 }
 
 function onPick(event: Event) {
@@ -133,9 +208,9 @@ defineExpose({ open, isOver: isOverDropZone });
       role="button"
       :tabindex="disabled ? -1 : 0"
       :aria-disabled="disabled"
-      @click="open"
-      @keydown.enter.prevent="open"
-      @keydown.space.prevent="open"
+      @click="activate"
+      @keydown.enter.prevent="activate"
+      @keydown.space.prevent="activate"
     >
       <ZAIcon
         :icon="isOverDropZone ? activeIcon : icon"

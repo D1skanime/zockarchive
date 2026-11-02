@@ -251,10 +251,12 @@ MediaTab has manual, screenshots, artwork, and soundtrack subtabs. ManualSubtab 
 
 ### PC save folder backups
 
-SaveDataTab's SaveBackupsPanel manages owner-scoped PC save-folder ZIP archives
-through saveBackup.ts. SaveBackupDialog preserves browser-provided relative paths
-and captures the manually entered Windows restore path. SaveRestoreDialog explains
-manual restoration, copies or edits that path, and downloads the archive.
+SaveDataTab's PC-only SaveBackupsPanel manages owner-scoped ZIP archives through
+saveBackup.ts. Its one large launcher opens SaveBackupDialog for click, individual
+file drops, and folder drops. SaveBackupDialog preserves browser-provided relative
+paths, accepts individual files or folder selection, and captures a manually entered
+Windows restore path, prefilled only from the most recent saved backup. SaveRestoreDialog
+explains manual restoration, copies or edits that path, and downloads the archive.
 
 ## 10. Console Mode
 

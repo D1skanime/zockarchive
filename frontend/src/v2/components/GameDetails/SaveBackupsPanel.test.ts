@@ -30,8 +30,9 @@ describe("PC save backup UI contracts", () => {
     expect(restore).toContain("save-backup-step-copy");
   });
 
-  it("keeps the folder-backup entry point visible before any legacy saves exist", () => {
+  it("uses the dedicated PC launcher instead of a second backup button", () => {
     expect(panel).toContain('v-else-if="backups.length === 0"');
-    expect(panel).toContain('t("rom.save-backup")');
+    expect(panel).toContain("PcSaveBackupLauncher");
+    expect(panel).not.toContain("SaveBackupDialog");
   });
 });

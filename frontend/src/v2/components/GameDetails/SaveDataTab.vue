@@ -47,6 +47,12 @@ defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{ rom: DetailedRomSchema }>();
 const { t } = useI18n();
+const PC_PLATFORM_SLUGS = new Set(["dos", "win", "win3x", "win9x"]);
+const isPcRom = computed(
+  () =>
+    props.rom.platform_fs_slug === "pc" ||
+    PC_PLATFORM_SLUGS.has(props.rom.platform_slug),
+);
 
 // ---------- Subtab state (URL-persisted via `?subtab=`) ----------
 const validSubtabs = ["saves", "states"] as const;
@@ -158,7 +164,7 @@ async function refreshRom() {
 }
 
 async function onSaveUpload(files: File[]) {
-  if (files.length === 0 || uploadingSaves.value) return;
+  if (isPcRom.value || files.length === 0 || uploadingSaves.value) return;
 
   uploadingSaves.value = true;
   try {
@@ -352,8 +358,10 @@ async function toggleStateVisibility(state: StateSchema) {
     </aside>
 
     <div class="r-v2-saves__content">
-      <p class="r-v2-saves__hint">{{ t("rom.save-data-file-hint") }}</p>
-      <SaveBackupsPanel :rom-id="props.rom.id" />
+      <p v-if="!isPcRom" class="r-v2-saves__hint">
+        {{ t("rom.save-data-file-hint") }}
+      </p>
+      <SaveBackupsPanel :rom-id="props.rom.id" :is-pc="isPcRom" />
       <!-- Saves subtab — vertical info list -->
       <section v-show="subTab === 'saves'" class="r-v2-saves__panel">
         <!-- Mine -->
@@ -365,7 +373,7 @@ async function toggleStateVisibility(state: StateSchema) {
               </h3>
             </div>
             <ZABtn
-              v-if="mySaves.length > 0"
+              v-if="mySaves.length > 0 && !isPcRom"
               variant="outlined"
               size="small"
               prepend-icon="mdi-cloud-upload-outline"
@@ -378,7 +386,7 @@ async function toggleStateVisibility(state: StateSchema) {
           </header>
 
           <ZADropzone
-            v-if="mySaves.length === 0"
+            v-if="mySaves.length === 0 && !isPcRom"
             :title="t('rom.saves-empty')"
             :hint="t('common.dropzone-hint')"
             :active-title="t('common.dropzone-drag-over')"
@@ -389,12 +397,12 @@ async function toggleStateVisibility(state: StateSchema) {
           />
 
           <ZADropzone
-            v-else
+            v-else-if="mySaves.length > 0"
             ref="saveDz"
             overlay
             :release-label="t('common.dropzone-drag-over')"
             :input-label="t('rom.upload-saves')"
-            :disabled="uploadingSaves"
+            :disabled="uploadingSaves || isPcRom"
             multiple
             @files="onSaveUpload"
           >
