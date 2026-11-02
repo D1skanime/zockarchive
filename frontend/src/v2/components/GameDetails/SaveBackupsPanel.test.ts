@@ -29,4 +29,9 @@ describe("PC save backup UI contracts", () => {
     expect(restore).toContain("save-backup-step-close");
     expect(restore).toContain("save-backup-step-copy");
   });
+
+  it("keeps the folder-backup entry point visible before any legacy saves exist", () => {
+    expect(panel).toContain('v-else-if="backups.length === 0"');
+    expect(panel).toContain('t("rom.save-backup")');
+  });
 });

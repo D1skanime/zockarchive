@@ -256,7 +256,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "bd30dc756e2cda90fb971adbf53f54981282ba975d86fd518d9e400d27274fd0",
+      "digest": "a7d72cb24807942c807aba27bf21fcc976e162912820049f56c15c4bb55b4153",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -468,7 +468,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "dceed6353d6b97b89bc3a851da30de5fcf9013f43910710d3b35e2f529ea4792",
+      "digest": "371abad55738f50f893a387dbcfa11eab1ec2339cb0b6370a79db2a0f69cc53a",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
