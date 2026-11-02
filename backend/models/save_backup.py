@@ -6,7 +6,7 @@ import uuid
 from typing import TYPE_CHECKING
 
 from sqlalchemy import BigInteger, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, backref, mapped_column, relationship
 
 from models.base import BaseModel
 from utils.database import CustomJSON
@@ -47,8 +47,14 @@ class SaveBackup(BaseModel):
     status: Mapped[str] = mapped_column(String(32), default="complete")
     manifest: Mapped[list[dict]] = mapped_column(CustomJSON(), default=list)
 
-    rom: Mapped[Rom] = relationship(lazy="joined", back_populates="save_backups")
-    user: Mapped[User] = relationship(lazy="joined", back_populates="save_backups")
+    rom: Mapped[Rom] = relationship(
+        lazy="joined",
+        backref=backref("save_backups", lazy="raise", cascade="all, delete-orphan"),
+    )
+    user: Mapped[User] = relationship(
+        lazy="joined",
+        backref=backref("save_backups", lazy="raise", cascade="all, delete-orphan"),
+    )
 
     @property
     def download_path(self) -> str:

@@ -22,7 +22,6 @@ if TYPE_CHECKING:
     from models.music import MusicPlaylist
     from models.play_session import PlaySession
     from models.rom import RomNote, RomUser
-    from models.save_backup import SaveBackup
 
 
 class Role(enum.StrEnum):
@@ -97,9 +96,6 @@ class User(BaseModel, SimpleUser):
     )
 
     saves: Mapped[list[Save]] = relationship(lazy="raise", back_populates="user")
-    save_backups: Mapped[list[SaveBackup]] = relationship(
-        lazy="raise", back_populates="user", cascade="all, delete-orphan"
-    )
     states: Mapped[list[State]] = relationship(lazy="raise", back_populates="user")
     screenshots: Mapped[list[Screenshot]] = relationship(
         lazy="raise", back_populates="user"

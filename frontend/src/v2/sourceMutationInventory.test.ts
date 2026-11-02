@@ -235,6 +235,27 @@ const routeAuthorities = [
     storageClass: "assets",
     forbidden: false,
   },
+  {
+    method: "POST",
+    route: /^\/save-backups$/,
+    operation: "UPLOAD",
+    storageClass: "assets",
+    forbidden: false,
+  },
+  {
+    method: "PUT",
+    route: /^\/save-backups\/\{[^}]+\}\/restore-path$/,
+    operation: "WRITE",
+    storageClass: "database",
+    forbidden: false,
+  },
+  {
+    method: "DELETE",
+    route: /^\/save-backups\/\{[^}]+\}$/,
+    operation: "DELETE",
+    storageClass: "assets",
+    forbidden: false,
+  },
 ] as const;
 
 const coveredFamily =

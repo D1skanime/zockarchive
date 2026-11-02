@@ -1,11 +1,9 @@
 <script setup lang="ts">
-// SaveDataTab — Saves + States, each its own subtab with badge counts
-// and per-tab Upload affordance. Layout mirrors ScreenshotsSubtab: a
+// SaveDataTab — Saves + States, each its own subtab with badge counts and per-tab Upload affordance. Layout mirrors ScreenshotsSubtab: a
 // vertical subtab list on the left (navigation only — no inline action
 // panel), and per-section headers in the content column with the
 // Upload button on the right when the section already has items. Empty
-// sections promote the dropzone CTA (the dropzone owns the upload
-// affordance there).
+// sections promote the dropzone CTA (the dropzone owns the upload affordance there).
 //
 // Each list is split into a "Mine" section (own saves/states, with a
 // per-item public/private toggle + delete) and a read-only "Community"
