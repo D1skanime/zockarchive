@@ -65,11 +65,25 @@ def inspect_archive(path: str) -> tuple[list[dict[str, int | str]], int]:
             if len(seen) > MAX_FILES or total_size > MAX_UNCOMPRESSED_BYTES:
                 raise _invalid("Backup archive exceeds configured limits")
             digest = hashlib.sha256()
-            with archive.open(item) as source:
-                while chunk := source.read(64 * 1024):
-                    digest.update(chunk)
+            actual_size = 0
+            try:
+                with archive.open(item) as source:
+                    while chunk := source.read(64 * 1024):
+                        actual_size += len(chunk)
+                        if (
+                            actual_size > MAX_UNCOMPRESSED_BYTES
+                            or total_size - item.file_size + actual_size
+                            > MAX_UNCOMPRESSED_BYTES
+                            or not item.compress_size
+                            or actual_size / item.compress_size > MAX_COMPRESSION_RATIO
+                        ):
+                            raise _invalid("Backup archive exceeds configured limits")
+                        digest.update(chunk)
+            except zipfile.BadZipFile as exc:
+                raise _invalid("Backup archive contains invalid member data") from exc
+            total_size += actual_size - item.file_size
             manifest.append(
-                {"path": member, "size": item.file_size, "sha256": digest.hexdigest()}
+                {"path": member, "size": actual_size, "sha256": digest.hexdigest()}
             )
     if not manifest:
         raise _invalid("Backup archive does not contain files")
