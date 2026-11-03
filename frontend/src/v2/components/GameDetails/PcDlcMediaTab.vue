@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ZABtn, ZACarousel, ZADropzone, ZAEmptyState } from "@v2/lib";
-import { computed, nextTick, onMounted, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import type {
@@ -12,6 +12,7 @@ import type {
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
+import PcDlcManualPanel from "@/v2/components/GameDetails/PcDlcManualPanel.vue";
 import { useCan } from "@/v2/composables/useCan";
 import { useConfirm } from "@/v2/composables/useConfirm";
 import { useResponsiveColumns } from "@/v2/composables/useResponsiveColumns";
@@ -124,35 +125,9 @@ const lightboxIndex = ref(0);
 const lightboxOpen = ref(false);
 
 const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media`;
-const componentEndpoint = `/roms/${props.romId}/pc-components/${props.component.id}`;
-type ComponentManual = {
-  manual_path: string | null;
-  expected_version: string | null;
-};
-const manual = ref<ComponentManual | null>(null);
-
-async function loadManual() {
-  try {
-    const { data } = await api.get<ComponentManual>(
-      `${componentEndpoint}/manual`,
-    );
-    manual.value = data;
-  } catch (error) {
-    console.error(error);
-    snackbar.error(t("common.error"));
-  }
-}
-onMounted(() => void loadManual());
-watch(
-  () => props.component.id,
-  () => void loadManual(),
-);
 
 function mediaContentUrl(mediaId: number) {
   return `/api${endpoint}/${mediaId}/content`;
-}
-function manualContentUrl() {
-  return `/api${componentEndpoint}/manual/content`;
 }
 
 function mediaRoleLabel(item: PcComponentOwnedMediaSchema) {
@@ -197,49 +172,6 @@ async function retryReconciliation() {
     await reconcile();
   } finally {
     recovering.value = false;
-  }
-}
-
-async function uploadManual(files: File[]) {
-  const file = files[0];
-  if (!file || !componentVersion.value || !canEdit.value || busy.value) return;
-  uploading.value = true;
-  try {
-    const body = new FormData();
-    body.append("media", file);
-    body.append("expected_version", componentVersion.value);
-    const { data } = await api.post<ComponentManual>(
-      `${componentEndpoint}/manual`,
-      body,
-    );
-    manual.value = data;
-    if (await reconcile()) snackbar.success(t("rom.upload-manual"));
-  } catch (error) {
-    console.error(error);
-    snackbar.error(t("common.error"));
-  } finally {
-    uploading.value = false;
-  }
-}
-
-async function removeManual() {
-  if (!componentVersion.value || !canEdit.value || busy.value) return;
-  if (!(await confirm({ title: t("common.delete"), tone: "danger" }))) return;
-  deleting.value = true;
-  try {
-    const { data } = await api.delete<ComponentManual>(
-      `${componentEndpoint}/manual`,
-      {
-        params: { expected_version: componentVersion.value },
-      },
-    );
-    manual.value = data;
-    if (await reconcile()) snackbar.success(t("common.delete"));
-  } catch (error) {
-    console.error(error);
-    snackbar.error(t("common.error"));
-  } finally {
-    deleting.value = false;
   }
 }
 
@@ -382,39 +314,14 @@ async function remove(mediaId: number) {
         </ZABtn>
       </aside>
       <div class="pc-dlc-media__content">
-        <section
+        <PcDlcManualPanel
           id="pc-dlc-media-panel-manual"
           v-if="subtab === 'manual'"
           role="tabpanel"
-          class="d-flex flex-column ga-3"
-        >
-          <ZADropzone
-            :disabled="busy || !componentVersion || !canEdit"
-            accept="application/pdf,text/markdown,.pdf,.md"
-            :title="t('rom.manual-empty')"
-            :hint="t('rom.manual-empty-upload-hint')"
-            :input-label="t('rom.upload-manual')"
-            @files="uploadManual"
-          >
-            <template #actions>
-              <ZABtn
-                v-if="manual?.manual_path"
-                :href="manualContentUrl()"
-                :aria-label="t('common.download')"
-                >{{ t("common.download") }}</ZABtn
-              >
-            </template>
-          </ZADropzone>
-          <ZABtn
-            v-if="manual?.manual_path && canEdit"
-            variant="outlined"
-            color="danger"
-            :disabled="busy"
-            :aria-label="t('common.delete')"
-            @click="removeManual"
-            >{{ t("common.delete") }}</ZABtn
-          >
-        </section>
+          :rom-id="romId"
+          :component="component"
+          :refresh="refresh"
+        />
         <ZADropzone
           v-else
           ref="dropzone"
@@ -559,50 +466,6 @@ async function remove(mediaId: number) {
   </section>
 </template>
 
-<style scoped>
-.pc-dlc-media {
-  min-width: 0;
-}
-.pc-dlc-media__heading {
-  margin: 0;
-  color: var(--r-color-fg);
-  font-size: var(--r-font-size-2xl);
-}
-.pc-dlc-media__list {
-  display: grid;
-  grid-template-columns: repeat(var(--za-shot-columns, 1), minmax(0, 1fr));
-  list-style: none;
-}
-.pc-dlc-media__list > li {
-  min-width: 0;
-}
-.pc-dlc-media__layout {
-  display: flex;
-  gap: var(--r-space-4);
-  min-width: 0;
-}
-.pc-dlc-media__sidebar {
-  display: flex;
-  flex: 0 0 200px;
-  flex-direction: column;
-  gap: var(--r-space-1);
-}
-.pc-dlc-media__tab {
-  justify-content: flex-start;
-}
-.pc-dlc-media__tab--active {
-  color: var(--r-color-brand-primary);
-}
-.pc-dlc-media__content {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-html[data-bp~="sm-and-down"] .pc-dlc-media__layout {
-  flex-direction: column;
-}
-html[data-bp~="sm-and-down"] .pc-dlc-media__sidebar {
-  flex-basis: auto;
-}
-</style>
+<style scoped src="./pcDlcMediaTab.css" />
 <style scoped src="./mediaManagementCard.css" />
 <style scoped src="./mediaManagementUpload.css" />
