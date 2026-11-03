@@ -22,7 +22,11 @@ vi.mock("@/v2/composables/useSnackbar", () => ({
   useSnackbar: () => ({ success: vi.fn(), error: vi.fn() }),
 }));
 vi.mock("@/v2/components/GameDetails/PcSaveBackupLauncher.vue", () => ({
-  default: { template: "<div data-backup-launcher />" },
+  default: {
+    props: ["romId", "defaultRestorePath"],
+    template:
+      '<div data-backup-launcher :data-rom-id="romId" :data-restore-path="defaultRestorePath" />',
+  },
 }));
 vi.mock("@/v2/components/GameDetails/SaveRestoreDialog.vue", () => ({
   default: { template: "<div />" },
@@ -90,5 +94,55 @@ describe("PC save backup UI contracts", () => {
       heading.element.compareDocumentPosition(item.element) &
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).not.toBe(0);
+  });
+
+  it("reloads backups and the restore path when navigation changes PC games", async () => {
+    saveBackupApi.listBackups.mockReset();
+    saveBackupApi.listBackups
+      .mockResolvedValueOnce({
+        data: [
+          {
+            id: 1,
+            backup_name: "Game A Backup",
+            archive_name: "game-a.zip",
+            created_at: "2026-01-01T00:00:00Z",
+            file_count: 1,
+            total_size_bytes: 4,
+            restore_path: "C:\\Saves\\GameA",
+            download_path: "/download/a",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        data: [
+          {
+            id: 2,
+            backup_name: "Game B Backup",
+            archive_name: "game-b.zip",
+            created_at: "2026-01-01T00:00:00Z",
+            file_count: 2,
+            total_size_bytes: 8,
+            restore_path: "C:\\Saves\\GameB",
+            download_path: "/download/b",
+          },
+        ],
+      });
+    const wrapper = mount(SaveBackupsPanel, {
+      props: { romId: 1, isPc: true },
+    });
+    await flushPromises();
+    await wrapper.setProps({ romId: 2 });
+    await flushPromises();
+
+    expect(saveBackupApi.listBackups).toHaveBeenNthCalledWith(1, 1);
+    expect(saveBackupApi.listBackups).toHaveBeenNthCalledWith(2, 2);
+    expect(wrapper.text()).toContain("Game B Backup");
+    expect(wrapper.text()).not.toContain("Game A Backup");
+    expect(
+      wrapper.get("[data-backup-launcher]").attributes("data-rom-id"),
+    ).toBe("2");
+    expect(
+      wrapper.get("[data-backup-launcher]").attributes("data-restore-path"),
+    ).toBe("C:\\Saves\\GameB");
   });
 });

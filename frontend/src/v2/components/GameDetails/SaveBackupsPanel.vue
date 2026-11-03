@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ZABtn, ZASpinner } from "@v2/lib";
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import type { SaveBackup } from "@/services/api/saveBackup";
 import saveBackupApi from "@/services/api/saveBackup";
@@ -30,13 +30,18 @@ function message(error: unknown) {
 }
 
 async function load() {
+  const romId = props.romId;
   loading.value = true;
+  backups.value = [];
   try {
-    backups.value = (await saveBackupApi.listBackups(props.romId)).data;
+    const response = await saveBackupApi.listBackups(romId);
+    if (props.isPc && props.romId === romId) backups.value = response.data;
   } catch (error) {
-    snackbar.error(message(error), { icon: "mdi-alert-circle-outline" });
+    if (props.romId === romId) {
+      snackbar.error(message(error), { icon: "mdi-alert-circle-outline" });
+    }
   } finally {
-    loading.value = false;
+    if (props.romId === romId) loading.value = false;
   }
 }
 
@@ -70,9 +75,16 @@ async function remove(backup: SaveBackup) {
   }
 }
 
-onMounted(() => {
-  if (props.isPc) void load();
-});
+watch(
+  () => [props.romId, props.isPc],
+  ([, isPc]) => {
+    selected.value = null;
+    restoreOpen.value = false;
+    if (isPc) void load();
+    else backups.value = [];
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
