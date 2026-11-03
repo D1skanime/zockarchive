@@ -444,7 +444,7 @@
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
-    "location": "Zeile 155",
+    "location": "Zeile 157",
     "text": "Langer Text",
     "status": "german"
   },
@@ -1313,7 +1313,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
-    "location": "Zeile 178",
+    "location": "Zeile 180",
     "text": "Einstellungen",
     "status": "german"
   },
@@ -1642,7 +1642,7 @@
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/ZAListItem/ZAListItem.stories.ts",
-    "location": "Zeile 194",
+    "location": "Zeile 196",
     "text": "Einfacher Eintrag",
     "status": "german"
   },
@@ -1970,7 +1970,7 @@
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
-    "location": "Zeile 158",
+    "location": "Zeile 160",
     "text": "Admin · zuletzt vor 3 Min. gesehen",
     "status": "german"
   },
@@ -5403,7 +5403,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
-    "location": "Zeile 181",
+    "location": "Zeile 183",
     "text": "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
     "status": "german"
   },
@@ -7700,7 +7700,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 197",
+    "location": "Zeile 199",
     "text": "Erneut anzeigen",
     "status": "german"
   },
@@ -9019,14 +9019,14 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 168",
+    "location": "Zeile 170",
     "text": "sie@beispiel.de",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 169",
+    "location": "Zeile 171",
     "text": "Wir kontaktieren Sie nur zu Kontovorgängen.",
     "status": "german"
   },
@@ -10673,7 +10673,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/forms/ZAForm/ZAForm.stories.ts",
-    "location": "Zeile 170",
+    "location": "Zeile 172",
     "text": "Alle prüfen",
     "status": "german"
   },
@@ -13120,6 +13120,328 @@
     "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
     "location": "Zeile 243",
     "text": "Sicherungsfehler bleibt im Dialog sichtbar",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 106",
+    "text": "Im Einsatz/Zusammengesetzt/Medienverwaltung",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 117",
+    "text": "Medienkarte mit Aktionen",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 155",
+    "text": "Upload-Zustände",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 178",
+    "text": "Hauptspiel-Medienseite",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 194",
+    "text": "DLC-Medienseite",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 120",
+    "text": "Die zusammengesetzte Karte dokumentiert die verwendeten Symbole: Dashboard für Übersicht, Bild für Hintergrund und Papierkorb für Löschen. Die Daten und Ereignisse sind synthetisch.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 158",
+    "text": "Die gemeinsame Uploadleiste zeigt normale, laufende, fehlerhafte und deaktivierte Zustände. Dateityp, Mehrfachauswahl und der Dropbereich bleiben beim jeweiligen Medienbesitzer konfigurierbar.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 181",
+    "text": "Vollständiger Seitenkontext für ein Hauptspiel mit synthetischen Medien und lokalen Ereignissen. Die Story ruft weder Upload- noch Löschendpunkte auf.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 197",
+    "text": "Vollständiger DLC-Seitenkontext mit denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt.",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 144",
+    "text": "Aktionssymbole besitzen verständliche Beschriftungen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 45",
+    "text": "Medienbereiche",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 53",
+    "text": "Medien hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 63",
+    "text": "Synthetisches Medienbild",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 76",
+    "text": "Zur Übersicht hinzufügen oder daraus entfernen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 84",
+    "text": "Als Hintergrund festlegen oder entfernen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 92",
+    "text": "Synthetisches Medienbild löschen",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 46",
+    "text": "Handbuch",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 46",
+    "text": "Screenshots",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 46",
+    "text": "Artwork",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 46",
+    "text": "Soundtrack",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 59",
+    "text": "Synthetischer Upload gestartet",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 66",
+    "text": "Sehr langer synthetischer Dateiname für die responsive Medienkartenansicht.webp",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 67",
+    "text": "Manuell hochgeladen",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 69",
+    "text": "Übersicht 1",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 70",
+    "text": "Hintergrund 1",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 97",
+    "text": "Synthetisches Medienbild gelöscht",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 98",
+    "text": "Vorschau geöffnet",
+    "status": "german"
+  },
+  {
+    "category": "template-interpolation",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 41",
+    "text": "{{ owner }}",
+    "status": "german"
+  },
+  {
+    "category": "template-interpolation",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 42",
+    "text": "{{ title }}",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 131",
+    "text": "Beschädigte Vorschau demonstrieren",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 134",
+    "text": "Zur Übersicht hinzufügen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 135",
+    "text": "Als Hintergrund festlegen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 136",
+    "text": "Bild löschen",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 132",
+    "text": "extrem-langer-dateiname-der-die-medienkarte-auf-schmalen-breiten-prueft.webp",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 168",
+    "text": "Artwork hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 169",
+    "text": "Screenshot hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 170",
+    "text": "Soundtrack hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 173",
+    "text": "Handbuch hochladen",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 8",
+    "text": "Marke/ZA-Hintergrund/Spielbilder",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 33",
+    "text": "Helles Spielbild im dunklen Design",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 38",
+    "text": "Dunkles Spielbild im dunklen Design",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 43",
+    "text": "Crossfade zum ZA-Fallback",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 47",
+    "text": "Eine Bild-Ebene bleibt aktiv, während die zweite Ebene bereits den unveränderten ZA-Glas-Fallback trägt. Das zeigt die getrennte Behandlung ohne Helligkeitssprung.",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 19",
+    "text": "Dunkles Design",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 20",
+    "text": "Lesbarkeit über Spielbildern",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 21",
+    "text": "Karten und Bedienelemente behalten im Vordergrund ausreichend Kontrast.",
     "status": "german"
   }
 ]
