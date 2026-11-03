@@ -353,8 +353,11 @@ declares only the approved `android-chrome-192x192.png` and
 `#f3f7fd` background colors. VitePWA generates the service worker but has its
 manifest generation disabled, so it cannot inject a competing manifest link.
 `AppShell/BackgroundArt.vue` owns selected-cover cross-fades and applies the
-shared `r-v2-za-glass-background` fallback when no cover is selected. The
-same token-driven CSS background is used by login and device-pair shells.
+shared `r-v2-za-glass-background` fallback when no cover is selected. In the
+dark theme it marks image-bearing layers and their overlay separately, so game
+art keeps more detail while ZA glass, login, device-pair and empty-route
+fallback layers retain their established treatment throughout a cross-fade.
+The same token-driven CSS background is used by login and device-pair shells.
 It replaces the inherited RomM SVG backgrounds with Glasreflexion B: cyan and
 sparingly light-cyan bands from the approved ZA logo palette move with
 composited opacity and transforms over nine and eleven seconds. The

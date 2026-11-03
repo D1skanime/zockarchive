@@ -27,6 +27,27 @@ describe("BackgroundArt", () => {
 
     const layer = wrapper.find(".r-v2-bg__layer--a");
     expect(layer.classes()).not.toContain("r-v2-za-glass-background");
+    expect(layer.classes()).toContain("r-v2-bg__layer--art");
     expect(layer.attributes("style")).toContain("cover.png");
+  });
+
+  it("marks only image layers for the dark art treatment during a cross-fade", () => {
+    const wrapper = mount(BackgroundArt, {
+      props: {
+        layerA: "https://example.test/old-cover.png",
+        layerB: null,
+        activeLayer: "a",
+      },
+    });
+
+    expect(wrapper.find(".r-v2-bg__layer--a").classes()).toContain(
+      "r-v2-bg__layer--art",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--b").classes()).not.toContain(
+      "r-v2-bg__layer--art",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay").classes()).toContain(
+      "r-v2-bg__overlay--art",
+    );
   });
 });
