@@ -252,7 +252,16 @@ export async function mountGallery(
             created_at: item.created_at,
             updated_at: item.updated_at,
             placements:
-              index === 0 ? [{ id: 1, media_id: item.id, position: 0 }] : [],
+              index === 0
+                ? [
+                    {
+                      id: 1,
+                      media_id: item.id,
+                      surface: "overview",
+                      position: 0,
+                    },
+                  ]
+                : [],
           }),
         ),
       },
@@ -406,6 +415,7 @@ export async function mountGallery(
                 {
                   id,
                   media_id: id,
+                  surface: "overview",
                   position: items.filter((entry) => entry.placements?.length)
                     .length,
                 },

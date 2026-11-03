@@ -334,7 +334,9 @@ describe("PcDlcDetail", () => {
           provider_media_id: "provider-shot",
           created_at: "2026-09-03T00:00:00+00:00",
           updated_at: "2026-09-03T00:00:00+00:00",
-          placements: [{ id: 1, media_id: 43, position: 0 }],
+          placements: [
+            { id: 1, media_id: 43, surface: "overview", position: 0 },
+          ],
         },
         {
           id: 44,
@@ -346,7 +348,9 @@ describe("PcDlcDetail", () => {
           provider_media_id: "provider-art",
           created_at: "2026-09-03T00:00:00+00:00",
           updated_at: "2026-09-03T00:00:00+00:00",
-          placements: [{ id: 2, media_id: 44, position: 1 }],
+          placements: [
+            { id: 2, media_id: 44, surface: "overview", position: 1 },
+          ],
         },
       ],
     });
@@ -570,7 +574,9 @@ describe("PcDlcDetail", () => {
           provider_media_id: "provider-shot",
           created_at: "2026-09-03T00:00:00+00:00",
           updated_at: "2026-09-03T00:00:00+00:00",
-          placements: [{ id: 3, media_id: 43, position: 0 }],
+          placements: [
+            { id: 3, media_id: 43, surface: "overview", position: 0 },
+          ],
         },
       ],
     });

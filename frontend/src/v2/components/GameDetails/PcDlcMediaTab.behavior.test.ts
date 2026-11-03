@@ -78,7 +78,9 @@ const media = {
   owned_path: "fixture/shot.png",
   created_at: "2026-10-24T10:00:00Z",
   updated_at: "2026-10-24T10:00:00Z",
-  placements: [{ id: 1, media_id: 7, surface: "overview", position: 0 }],
+  placements: [
+    { id: 1, media_id: 7, surface: "overview" as const, position: 0 },
+  ],
 };
 const component: PcComponentSchema = {
   id: 20,
