@@ -1,7 +1,7 @@
 import { flushPromises, mount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { reactive } from "vue";
-import type { DetailedRomSchema } from "@/__generated__";
+import type { DetailedRomSchema, UserSaveSchema } from "@/__generated__";
 import SaveDataTab from "./SaveDataTab.vue";
 
 const state = vi.hoisted(() => ({
@@ -80,17 +80,48 @@ vi.mock("@/v2/components/shared/AssetStrip.vue", () => ({
   },
 }));
 
-function rom(platformFsSlug: string, platformSlug: string): DetailedRomSchema {
+type SaveDataRom = Pick<
+  DetailedRomSchema,
+  | "id"
+  | "platform_fs_slug"
+  | "platform_slug"
+  | "all_user_saves"
+  | "all_user_states"
+>;
+
+function save(fileName: string): UserSaveSchema {
+  return {
+    id: 4,
+    user_id: 1,
+    file_name: fileName,
+    file_name_no_tags: fileName,
+    file_name_no_ext: "slot",
+    file_extension: ".sav",
+    file_path: fileName,
+    file_size_bytes: 4,
+    full_path: `/saves/${fileName}`,
+    download_path: `/download/${fileName}`,
+    missing_from_fs: false,
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+    rom_id: 1,
+    emulator: null,
+    screenshot: null,
+    username: "test-user",
+  };
+}
+
+function rom(platformFsSlug: string, platformSlug: string): SaveDataRom {
   return {
     id: 1,
     platform_fs_slug: platformFsSlug,
     platform_slug: platformSlug,
     all_user_saves: [],
     all_user_states: [],
-  } as DetailedRomSchema;
+  };
 }
 
-function render(selectedRom: DetailedRomSchema) {
+function render(selectedRom: SaveDataRom) {
   return mount(SaveDataTab, { props: { rom: selectedRom } });
 }
 
@@ -120,9 +151,7 @@ describe("SaveDataTab platform-specific navigation", () => {
 
   it("keeps states and classic save files available for non-PC games", async () => {
     const consoleRom = rom("console", "snes");
-    consoleRom.all_user_saves = [
-      { id: 4, user_id: 1, file_name: "slot.sav" },
-    ] as DetailedRomSchema["all_user_saves"];
+    consoleRom.all_user_saves = [save("slot.sav")];
     const wrapper = render(consoleRom);
 
     expect(wrapper.findAll('[role="tab"]')).toHaveLength(2);
@@ -136,9 +165,7 @@ describe("SaveDataTab platform-specific navigation", () => {
 
   it("keeps existing PC save files visible without restoring state uploads", () => {
     const pcRom = rom("pc", "win");
-    pcRom.all_user_saves = [
-      { id: 4, user_id: 1, file_name: "slot.sav" },
-    ] as DetailedRomSchema["all_user_saves"];
+    pcRom.all_user_saves = [save("slot.sav")];
     const wrapper = render(pcRom);
 
     expect(wrapper.findAll('[role="tab"]')).toHaveLength(1);

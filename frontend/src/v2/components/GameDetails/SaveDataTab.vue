@@ -25,12 +25,20 @@ import storeRoms from "@/v2/data/adapters/legacy/stores/roms";
 import { isPcPlatform } from "@/v2/utils/isPcPlatform";
 
 type AssetSlot = SaveSchema | StateSchema | UserSaveSchema | UserStateSchema;
+type SaveDataRom = Pick<
+  DetailedRomSchema,
+  | "id"
+  | "platform_fs_slug"
+  | "platform_slug"
+  | "all_user_saves"
+  | "all_user_states"
+>;
 const asSave = (a: AssetSlot) => a as SaveSchema;
 const asState = (a: AssetSlot) => a as StateSchema;
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps<{ rom: DetailedRomSchema }>();
+const props = defineProps<{ rom: SaveDataRom }>();
 const { t } = useI18n();
 const isPcRom = computed(() => isPcPlatform(props.rom));
 type Subtab = "saves" | "states";
@@ -340,13 +348,11 @@ async function toggleStateVisibility(state: StateSchema) {
 
     <div class="r-v2-saves__content">
       <PcSaveBackupsSection :rom="props.rom" />
-      <!-- Saves subtab — vertical info list -->
       <section
         v-if="!isPcRom || mySaves.length > 0 || communitySaves.length > 0"
         v-show="subTab === 'saves'"
         class="r-v2-saves__panel"
       >
-        <!-- Mine -->
         <div class="r-v2-saves__section">
           <header class="r-v2-saves__section-head">
             <div class="r-v2-saves__section-head-text">
@@ -439,7 +445,6 @@ async function toggleStateVisibility(state: StateSchema) {
           </ZADropzone>
         </div>
 
-        <!-- Community -->
         <div v-if="communitySaves.length > 0" class="r-v2-saves__section">
           <header class="r-v2-saves__section-head">
             <div class="r-v2-saves__section-head-text">
@@ -469,13 +474,11 @@ async function toggleStateVisibility(state: StateSchema) {
         </div>
       </section>
 
-      <!-- States subtab — tile grid (screenshot is the point) -->
       <section
         v-if="!isPcRom"
         v-show="subTab === 'states'"
         class="r-v2-saves__panel"
       >
-        <!-- Mine -->
         <div class="r-v2-saves__section">
           <header class="r-v2-saves__section-head">
             <div class="r-v2-saves__section-head-text">
