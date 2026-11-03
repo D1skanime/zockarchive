@@ -99,7 +99,9 @@ describe("DLC media presentation preserves component capabilities", () => {
     await flushPromises();
     const button = wrapper.get('[aria-label="rom.remove-from-overview"]');
     expect(button.attributes("aria-pressed")).toBe("true");
-    expect(button.find('[data-icon="mdi-crown-outline"]').exists()).toBe(true);
+    expect(
+      button.find('[data-icon="mdi-view-dashboard-outline"]').exists(),
+    ).toBe(true);
     expect(button.find(".za-shot__check").exists()).toBe(true);
     expect(wrapper.find(".za-shot__badge").text()).toBe(
       "rom.screenshots-overview-position:1",

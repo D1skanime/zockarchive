@@ -74,9 +74,9 @@ describe("ScreenshotManagementCard source capabilities", () => {
     ]);
     const overview = wrapper.get('[aria-label="rom.remove-from-overview"]');
     expect(overview.attributes("variant")).toBe("translucent");
-    expect(overview.find('[data-icon="mdi-crown-outline"]').exists()).toBe(
-      true,
-    );
+    expect(
+      overview.find('[data-icon="mdi-view-dashboard-outline"]').exists(),
+    ).toBe(true);
     expect(
       overview
         .find('.za-shot__check[data-icon="mdi-check"]')
@@ -98,9 +98,9 @@ describe("ScreenshotManagementCard source capabilities", () => {
     });
     const unselected = wrapper.get('[aria-label="rom.add-to-overview"]');
     expect(unselected.attributes("variant")).toBe("translucent");
-    expect(unselected.find('[data-icon="mdi-crown-outline"]').exists()).toBe(
-      true,
-    );
+    expect(
+      unselected.find('[data-icon="mdi-view-dashboard-outline"]').exists(),
+    ).toBe(true);
     expect(
       wrapper
         .get('[aria-label="rom.add-as-background"]')

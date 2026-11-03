@@ -266,7 +266,7 @@ async function remove(mediaId: number) {
             </div>
             <div v-if="canEdit" class="za-shot__actions d-flex flex-wrap ga-1">
               <MediaManagementAction
-                icon="mdi-crown-outline"
+                icon="mdi-view-dashboard-outline"
                 :selected="hasPlacement(item)"
                 :caption="t('rom.screenshots-action-overview')"
                 :label="
