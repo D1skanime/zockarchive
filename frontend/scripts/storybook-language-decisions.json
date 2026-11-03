@@ -1,5 +1,33 @@
 [
   {
+    "category": "template-attribute",
+    "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
+    "location": "Zeile 158",
+    "text": "Admin · zuletzt vor 3 Min. gesehen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/lib/structural/ZAListItem/ZAListItem.stories.ts",
+    "location": "Zeile 194",
+    "text": "Einfacher Eintrag",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
+    "location": "Zeile 178",
+    "text": "Einstellungen",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
+    "location": "Zeile 155",
+    "text": "Langer Text",
+    "status": "german"
+  },
+  {
     "category": "story-data",
     "file": "src/v2/lib/InUse.stories.ts",
     "location": "Zeile 15",
