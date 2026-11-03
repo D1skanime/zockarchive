@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { DetailedRomSchema } from "@/__generated__";
 import SaveBackupsPanel from "@/v2/components/GameDetails/SaveBackupsPanel.vue";
@@ -8,7 +9,7 @@ const props = defineProps<{
   rom: Pick<DetailedRomSchema, "id" | "platform_fs_slug" | "platform_slug">;
 }>();
 const { t } = useI18n();
-const isPcRom = isPcPlatform(props.rom);
+const isPcRom = computed(() => isPcPlatform(props.rom));
 </script>
 
 <template>
