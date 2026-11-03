@@ -14,6 +14,7 @@ vi.mock("@v2/lib", () => ({
     props: ["icon", "disabled"],
     template: '<button :disabled="disabled"><slot /></button>',
   },
+  ZACard: { template: '<div class="r-card"><slot /></div>' },
   ZATooltip: { template: "<span />" },
   ZAAvatar: { template: "<span />" },
   ZAIcon: {
@@ -97,7 +98,7 @@ describe("ScreenshotManagementCard source capabilities", () => {
       item: { ...item, media: { ...media, placements: [] } },
     });
     const unselected = wrapper.get('[aria-label="rom.add-to-overview"]');
-    expect(unselected.attributes("variant")).toBe("translucent");
+    expect(unselected.attributes("variant")).toBe("outlined");
     expect(
       unselected.find('[data-icon="mdi-view-dashboard-outline"]').exists(),
     ).toBe(true);

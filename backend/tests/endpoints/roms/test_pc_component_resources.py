@@ -4,7 +4,12 @@ from fastapi import status
 
 from endpoints.roms import pc_component_resources
 from handler.database import db_rom_handler
-from models.rom import RomComponent, RomComponentKind, RomComponentManifestMember
+from models.rom import (
+    RomComponent,
+    RomComponentKind,
+    RomComponentManifestMember,
+    RomOwnedMediaSurface,
+)
 
 
 def _headers(access_token: str) -> dict[str, str]:
@@ -128,7 +133,10 @@ def test_component_media_placement_routes_are_scoped_and_version_checked(
     response = client.post(
         f"/api/roms/{rom.id}/pc-components/{component.id}/media/{media.media.id}/placement",
         headers=_headers(access_token),
-        json={"expected_version": refreshed.updated_at.isoformat()},
+        json={
+            "expected_version": refreshed.updated_at.isoformat(),
+            "surface": RomOwnedMediaSurface.OVERVIEW.value,
+        },
     )
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["placements"][0]["position"] == 0
@@ -136,7 +144,10 @@ def test_component_media_placement_routes_are_scoped_and_version_checked(
     removed = client.delete(
         f"/api/roms/{rom.id}/pc-components/{component.id}/media/{media.media.id}/placement",
         headers=_headers(access_token),
-        params={"expected_version": refreshed.updated_at.isoformat()},
+        params={
+            "expected_version": refreshed.updated_at.isoformat(),
+            "surface": RomOwnedMediaSurface.OVERVIEW.value,
+        },
     )
     assert removed.status_code == status.HTTP_200_OK
     assert removed.json()["placements"] == []
@@ -185,3 +196,66 @@ def test_deleting_component_media_with_missing_owned_file_updates_state(
         db_rom_handler.get_pc_component_owned_media(rom.id, component.id, admin_user.id)
         == []
     )
+
+
+def test_component_soundtrack_upload_uses_component_owned_audio_storage(
+    client, access_token, rom, monkeypatch
+):
+    component = _dlc(rom)
+    stored: list[tuple[int, bytes, str]] = []
+
+    async def store_audio(target_rom, component_id, content, extension):
+        assert target_rom.id == rom.id
+        stored.append((component_id, content, extension))
+        return "roms/1/pc-owned-media/track.flac", "audio/flac"
+
+    monkeypatch.setattr(
+        pc_component_resources.fs_resource_handler,
+        "store_pc_component_audio",
+        store_audio,
+        raising=False,
+    )
+    response = client.post(
+        f"/api/roms/{rom.id}/pc-components/{component.id}/media",
+        headers=_headers(access_token),
+        data={
+            "role": "soundtrack",
+            "expected_version": component.updated_at.isoformat(),
+        },
+        files={"media": ("theme.flac", b"fLaC\x00audio", "audio/flac")},
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["role"] == "soundtrack"
+    assert response.json()["mime_type"] == "audio/flac"
+    assert stored == [(component.id, b"fLaC\x00audio", ".flac")]
+
+
+def test_component_manual_upload_is_scoped_to_its_dlc(
+    client, access_token, rom, monkeypatch
+):
+    component = _dlc(rom)
+
+    async def store_manual(target_rom, component_id, content, extension):
+        assert target_rom.id == rom.id
+        assert component_id == component.id
+        assert content.startswith(b"%PDF-")
+        assert extension == ".pdf"
+        return "roms/1/pc-manual/dlc-guide.pdf"
+
+    monkeypatch.setattr(
+        pc_component_resources.fs_resource_handler,
+        "store_pc_component_manual",
+        store_manual,
+        raising=False,
+    )
+    response = client.post(
+        f"/api/roms/{rom.id}/pc-components/{component.id}/manual",
+        headers=_headers(access_token),
+        data={"expected_version": component.updated_at.isoformat()},
+        files={"media": ("guide.pdf", b"%PDF-1.7 guide", "application/pdf")},
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["manual_path"] == "roms/1/pc-manual/dlc-guide.pdf"
+    assert db_rom_handler.get_rom(rom.id).path_manual != response.json()["manual_path"]

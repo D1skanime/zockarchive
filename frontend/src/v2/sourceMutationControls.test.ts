@@ -218,6 +218,7 @@ const stubs = {
     template:
       '<button :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
   },
+  ZACard: { template: '<div class="r-card"><slot /></div>' },
   ScreenshotManagementCard: false,
   MediaManagementCard: false,
   MediaManagementAction: false,

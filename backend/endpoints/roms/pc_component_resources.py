@@ -14,6 +14,7 @@ from endpoints.responses.rom import (
     PcComponentNoteCreateRequest,
     PcComponentNoteSchema,
     PcComponentNoteUpdateRequest,
+    PcComponentManualSchema,
     PcComponentOwnedMediaPlacementMutationRequest,
     PcComponentOwnedMediaSchema,
 )
@@ -33,12 +34,14 @@ from models.rom import (
     RomComponentKind,
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaRole,
+    RomOwnedMediaSurface,
 )
 from utils.router import APIRouter
 
 router = APIRouter()
 
-_UPLOAD_LIMIT = 10 * 1024 * 1024
+_IMAGE_UPLOAD_LIMIT = 10 * 1024 * 1024
+_AUDIO_UPLOAD_LIMIT = 512 * 1024 * 1024
 _UPLOAD_MIME_TYPES = {
     "JPEG": ("image/jpeg", "jpg"),
     "PNG": ("image/png", "png"),
@@ -61,6 +64,13 @@ def _note_or_404(value):
     if value is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return PcComponentNoteSchema.model_validate(value)
+
+
+def _component_manual_response(component) -> PcComponentManualSchema:
+    return PcComponentManualSchema(
+        manual_path=component.manual_path,
+        expected_version=component.updated_at,
+    )
 
 
 @protected_route(
@@ -155,9 +165,109 @@ async def get_component_media(
     ]
 
 
+@protected_route(
+    router.get, "/{id}/pc-components/{component_id}/manual", [Scope.ROMS_READ]
+)
+async def get_component_manual(
+    request: Request, id: int, component_id: int
+) -> PcComponentManualSchema:
+    _, component = _dlc_component(request, id, component_id)
+    return _component_manual_response(component)
+
+
+@protected_route(
+    router.post, "/{id}/pc-components/{component_id}/manual", [Scope.ROMS_WRITE]
+)
+async def upload_component_manual(
+    request: Request,
+    id: int,
+    component_id: int,
+    expected_version: Annotated[datetime, Form()],
+    media: Annotated[UploadFile, File()],
+) -> PcComponentManualSchema:
+    rom, _ = _dlc_component(request, id, component_id)
+    content = await media.read(100 * 1024 * 1024 + 1)
+    extension = PurePosixPath(media.filename or "").suffix
+    owned_path: str | None = None
+    try:
+        owned_path = await fs_resource_handler.store_pc_component_manual(
+            rom, component_id, content, extension
+        )
+        applied = db_rom_handler.replace_pc_component_manual(
+            id, component_id, request.user.id, expected_version, owned_path
+        )
+        if applied is None:
+            raise ValueError("The PC component changed before the manual was stored")
+    except ValueError as exc:
+        if owned_path is not None:
+            await fs_resource_handler.remove_file(owned_path)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail=str(exc)
+        ) from exc
+    if applied.replaced_owned_path and applied.replaced_owned_path != owned_path:
+        await fs_resource_handler.remove_file(applied.replaced_owned_path)
+    return _component_manual_response(applied.component)
+
+
+@protected_route(
+    router.delete, "/{id}/pc-components/{component_id}/manual", [Scope.ROMS_WRITE]
+)
+async def delete_component_manual(
+    request: Request,
+    id: int,
+    component_id: int,
+    expected_version: datetime,
+) -> PcComponentManualSchema:
+    _, component = _dlc_component(request, id, component_id)
+    owned_path = db_rom_handler.delete_pc_component_manual(
+        id, component_id, request.user.id, expected_version
+    )
+    if owned_path is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    try:
+        await fs_resource_handler.remove_file(owned_path)
+    except FileNotFoundError:
+        pass
+    refreshed = db_rom_handler.get_pc_component_by_id(id, component.id)
+    if refreshed is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return _component_manual_response(refreshed)
+
+
+@protected_route(
+    router.get,
+    "/{id}/pc-components/{component_id}/manual/content",
+    [Scope.ROMS_READ],
+)
+async def download_component_manual(request: Request, id: int, component_id: int):
+    _, component = _dlc_component(request, id, component_id)
+    if not component.manual_path:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    with cast(
+        OwnedRead,
+        open_owned_access(
+            storage_composition.owned[OwnedStorageKind.RESOURCES],
+            StorageOperation.READ,
+            component.manual_path,
+        ),
+    ) as access:
+        content = access.read()
+    return StreamingResponse(
+        iter([content]),
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": _content_disposition(
+                "inline", PurePosixPath(component.manual_path).name
+            ),
+            "Content-Length": str(len(content)),
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
+
+
 async def _validated_upload(upload: UploadFile) -> tuple[bytes, str, str]:
-    content = await upload.read(_UPLOAD_LIMIT + 1)
-    if not content or len(content) > _UPLOAD_LIMIT:
+    content = await upload.read(_IMAGE_UPLOAD_LIMIT + 1)
+    if not content or len(content) > _IMAGE_UPLOAD_LIMIT:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Component media must be at most 10 MiB",
@@ -176,6 +286,34 @@ async def _validated_upload(upload: UploadFile) -> tuple[bytes, str, str]:
     return content, *media
 
 
+async def _component_upload_content(
+    role: RomComponentOwnedMediaRole, upload: UploadFile
+) -> tuple[bytes, str | None, str | None]:
+    """Read image and soundtrack payloads with their distinct size limits."""
+    if role == RomComponentOwnedMediaRole.SOUNDTRACK:
+        content = await upload.read(_AUDIO_UPLOAD_LIMIT + 1)
+        if not content or len(content) > _AUDIO_UPLOAD_LIMIT:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Component audio must be at most 512 MiB",
+            )
+        extension = PurePosixPath(upload.filename or "").suffix
+        return content, None, extension
+    if role not in {
+        RomComponentOwnedMediaRole.COVER,
+        RomComponentOwnedMediaRole.BACKGROUND,
+        RomComponentOwnedMediaRole.GALLERY,
+        RomComponentOwnedMediaRole.SCREENSHOT,
+        RomComponentOwnedMediaRole.ARTWORK,
+    }:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Component uploads support image media and soundtracks only",
+        )
+    content, mime_type, extension = await _validated_upload(upload)
+    return content, mime_type, extension
+
+
 @protected_route(
     router.post, "/{id}/pc-components/{component_id}/media", [Scope.ROMS_WRITE]
 )
@@ -188,12 +326,19 @@ async def upload_component_media(
     media: Annotated[UploadFile, File()],
 ) -> PcComponentOwnedMediaSchema:
     rom, _ = _dlc_component(request, id, component_id)
-    content, mime_type, extension = await _validated_upload(media)
+    content, image_mime_type, extension = await _component_upload_content(role, media)
     owned_path: str | None = None
     try:
-        owned_path = await fs_resource_handler.store_pc_component_upload(
-            rom, component_id, role, content, extension
-        )
+        if role == RomComponentOwnedMediaRole.SOUNDTRACK:
+            owned_path, mime_type = await fs_resource_handler.store_pc_component_audio(
+                rom, component_id, content, extension
+            )
+        else:
+            owned_path = await fs_resource_handler.store_pc_component_upload(
+                rom, component_id, role, content, extension
+            )
+            assert image_mime_type is not None
+            mime_type = image_mime_type
         applied = db_rom_handler.create_pc_component_owned_media(
             id,
             component_id,
@@ -256,7 +401,13 @@ async def add_component_media_placement(
 ) -> PcComponentOwnedMediaSchema:
     _dlc_component(request, id, component_id)
     media = db_rom_handler.set_pc_component_owned_media_placement(
-        id, component_id, request.user.id, media_id, payload.expected_version, True
+        id,
+        component_id,
+        request.user.id,
+        media_id,
+        payload.expected_version,
+        payload.surface,
+        True,
     )
     if media is None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
@@ -274,10 +425,11 @@ async def remove_component_media_placement(
     component_id: int,
     media_id: int,
     expected_version: datetime,
+    surface: RomOwnedMediaSurface,
 ) -> PcComponentOwnedMediaSchema:
     _dlc_component(request, id, component_id)
     media = db_rom_handler.set_pc_component_owned_media_placement(
-        id, component_id, request.user.id, media_id, expected_version, False
+        id, component_id, request.user.id, media_id, expected_version, surface, False
     )
     if media is None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)

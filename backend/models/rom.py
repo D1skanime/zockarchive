@@ -324,6 +324,7 @@ class RomComponent(BaseModel):
             name="romcomponentkind",
         )
     )
+    manual_path: Mapped[str | None] = mapped_column(Text, default=None)
 
     rom: Mapped[Rom] = relationship(back_populates="components")
     manifest_members: Mapped[list[RomComponentManifestMember]] = relationship(
@@ -520,18 +521,20 @@ class RomComponentOwnedMediaPlacement(BaseModel):
             "position >= 0", name="ck_rom_component_owned_media_placements_position"
         ),
         UniqueConstraint(
-            "component_id",
             "media_id",
-            name="uq_rom_component_owned_media_placements_media",
+            "surface",
+            name="uq_rom_component_owned_media_placements_media_surface",
         ),
         UniqueConstraint(
             "component_id",
+            "surface",
             "position",
-            name="uq_rom_component_owned_media_placements_position",
+            name="uq_rom_component_owned_media_placements_component_surface_position",
         ),
         Index(
-            "idx_rom_component_owned_media_placements_component_position",
+            "idx_rom_component_owned_media_placements_component_surface_position",
             "component_id",
+            "surface",
             "position",
         ),
     )
@@ -542,6 +545,15 @@ class RomComponentOwnedMediaPlacement(BaseModel):
     )
     media_id: Mapped[int] = mapped_column(
         ForeignKey("rom_component_owned_media.id", ondelete="CASCADE")
+    )
+    surface: Mapped[RomOwnedMediaSurface] = mapped_column(
+        Enum(
+            RomOwnedMediaSurface,
+            values_callable=lambda surfaces: [surface.value for surface in surfaces],
+            name="romcomponentownedmediasurface",
+            native_enum=False,
+            create_constraint=True,
+        )
     )
     position: Mapped[int] = mapped_column(Integer)
 

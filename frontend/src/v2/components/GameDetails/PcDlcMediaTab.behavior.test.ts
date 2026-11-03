@@ -43,6 +43,7 @@ vi.mock("@v2/lib", () => ({
     template:
       '<button :disabled="disabled"><slot name="prepend" /><slot /></button>',
   },
+  ZACard: { template: '<div class="r-card"><slot /></div>' },
   ZAIcon: { props: ["icon"], template: '<span :data-icon="icon" />' },
   ZASelect: { template: "<div />" },
   ZAEmptyState: { template: "<div />" },

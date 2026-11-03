@@ -497,6 +497,7 @@ class PcComponentOwnedMediaPlacementSchema(BaseModel):
 
     id: int
     media_id: int
+    surface: RomOwnedMediaSurface
     position: int = Field(ge=0)
 
 
@@ -504,6 +505,7 @@ class PcComponentOwnedMediaPlacementMutationRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     expected_version: UTCDatetime
+    surface: RomOwnedMediaSurface
 
 
 class PcComponentOwnedMediaCreateRequest(BaseModel):
@@ -673,12 +675,18 @@ class PcComponentSchema(BaseModel):
     updated_at: UTCDatetime | None = None
     relative_path: str
     kind: RomComponentKind
+    manual_path: str | None = None
     manifest_members: list[PcComponentManifestMemberSchema] = Field(
         validation_alias="available_manifest_members"
     )
     component_metadata: PcComponentMetadataSchema | None = None
     local_media: list[PcComponentLocalMediaSchema] = Field(default_factory=list)
     owned_media: list[PcComponentOwnedMediaSchema] = Field(default_factory=list)
+
+
+class PcComponentManualSchema(BaseModel):
+    manual_path: str | None
+    expected_version: UTCDatetime
 
 
 class SoundtrackTrackMetaSchema(BaseModel):
