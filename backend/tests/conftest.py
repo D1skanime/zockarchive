@@ -50,6 +50,7 @@ from models.download_transfer import (
 from models.platform import Platform
 from models.play_session import PlaySession
 from models.rom import Rom, RomFile
+from models.save_backup import SaveBackup
 from models.scan_collection import ScanCollectionFolder
 from models.scan_operation import ScanExecutionSlot, ScanOperation, ScanOperationItem
 from models.storage import (
@@ -138,6 +139,7 @@ def clear_database():
         s.query(SyncSession).delete(synchronize_session="evaluate")
         s.query(DeviceSaveSync).delete(synchronize_session="evaluate")
         s.query(Device).delete(synchronize_session="evaluate")
+        s.query(SaveBackup).delete(synchronize_session="evaluate")
         s.query(Save).delete(synchronize_session="evaluate")
         s.query(State).delete(synchronize_session="evaluate")
         s.query(Screenshot).delete(synchronize_session="evaluate")

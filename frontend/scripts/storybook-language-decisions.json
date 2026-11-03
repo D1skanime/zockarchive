@@ -10729,35 +10729,35 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
-    "location": "Zeile 7",
+    "location": "Zeile 43",
     "text": "Formulare/Grundbaustein/ZADropzone",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
-    "location": "Zeile 22",
+    "location": "Zeile 58",
     "text": "Dateien hier ablegen",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
-    "location": "Zeile 23",
+    "location": "Zeile 59",
     "text": "Per Drag-and-Drop ablegen oder zum Auswählen klicken",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
-    "location": "Zeile 40",
+    "location": "Zeile 76",
     "text": "Ausgewählt: {{ picked.join(\", \") }}",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
-    "location": "Zeile 41",
+    "location": "Zeile 77",
     "text": "{{ picked.join(\", \") }}",
     "status": "german"
   },
@@ -12967,5 +12967,159 @@
     "text": "Dynamischer label-Attributwert: item.name",
     "status": "german",
     "reason": "item.name stammt aus der lokalen, einzeln erfassten Berechtigungsliste der Story."
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 141",
+    "text": "PC-Spielstand: gemeinsamer Einstieg",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 143",
+    "text": "Spielstand sichern",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 144",
+    "text": "Klicken oder Dateien und Ordner hier ablegen",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 151",
+    "text": "Klick, Datei-Drop und Ordner-Drop lösen denselben Sicherungsdialog aus. Beim Ordner-Drop bleiben relative Pfade erhalten.",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 182",
+    "text": "Klick öffnet den Sicherungsdialog",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 188",
+    "text": "Ordner-Drop erhält verschachtelte Pfade",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 174",
+    "text": "{{ result }}",
+    "status": "german"
+  },
+  {
+    "category": "template-interpolation",
+    "file": "src/v2/lib/forms/ZADropzone/ZADropzone.stories.ts",
+    "location": "Zeile 175",
+    "text": "{{ result }}",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 72",
+    "text": "Im Einsatz/Zusammengesetzt/PC-Spielstand-Sicherung",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 89",
+    "text": "Leerer Sicherungsbereich",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 109",
+    "text": "Sicherungsübersicht mit Wiederherstellung",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 148",
+    "text": "Sicherungsdialog mit Ordnerdaten",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 192",
+    "text": "Wiederherstellungsdialog",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 212",
+    "text": "Fehler beim Sichern",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 92",
+    "text": "Großer Einstieg für eine PC-Sicherung. Der Klick, einzelne Dateien und Ordner führen in denselben Dialog.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 112",
+    "text": "Synthetische Sicherungen zeigen Name, Dateianzahl, Größe, Wiederherstellungspfad und den Wiederherstellungsdialog. Die API-Aktionen bleiben innerhalb dieser Story simuliert.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 151",
+    "text": "Der Sicherungsdialog zeigt die aus einem Ordner übernommenen Dateien, Größe, Sicherungsname und Windows-Wiederherstellungspfad vor dem Start.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 195",
+    "text": "Die Wiederherstellung verwendet den gespeicherten Windows-Pfad und erklärt Download sowie Kopieren. Der Download ist in dieser Story nur eine synthetische URL.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 215",
+    "text": "Ein simuliertes Netzwerkproblem bleibt als Feldmeldung im geöffneten Dialog sichtbar. Es wird keine Sicherung hochgeladen.",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 138",
+    "text": "Sicherungsübersicht zeigt Metadaten",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 181",
+    "text": "Ordnerdaten bleiben vor dem Sichern sichtbar",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/GameDetails/PcSaveBackupsSection.stories.ts",
+    "location": "Zeile 243",
+    "text": "Sicherungsfehler bleibt im Dialog sichtbar",
+    "status": "german"
   }
 ]

@@ -249,6 +249,18 @@ MediaTab has manual, screenshots, artwork, and soundtrack subtabs. ManualSubtab 
 
 ---
 
+### PC save folder backups
+
+SaveDataTab's PC-only SaveBackupsPanel manages owner-scoped ZIP archives through
+saveBackup.ts. Its one large launcher opens SaveBackupDialog for click, individual
+file drops, and folder drops. SaveBackupDialog preserves browser-provided relative
+paths, accepts individual files or folder selection, and captures a manually entered
+Windows restore path, prefilled only from the most recent saved backup. SaveRestoreDialog
+explains manual restoration, copies or edits that path, and downloads the archive.
+The shared isPcPlatform resolver limits this workflow to Saves. PC games therefore do
+not expose emulator-state navigation or upload controls, while console and emulator
+games retain their existing Saves and States subtabs.
+
 ## 10. Console Mode
 
 The old console application is not mounted as a separate runtime. /console URLs redirect to v2 home, platform, collection, ROM, or emulator destinations and routeInventory.ts records those redirects. Controller interaction remains part of v2 through useGamepad, useInputModality, useGlobalHotkeys, focus restoration, grid navigation, right-stick scrolling, and /controller-debug.

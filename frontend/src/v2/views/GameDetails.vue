@@ -45,6 +45,7 @@ import api from "@/v2/data/adapters/legacy/services/api";
 import romApi from "@/v2/data/adapters/legacy/services/api/rom";
 import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
 import storeRoms from "@/v2/data/adapters/legacy/stores/roms";
+import { isPcPlatform } from "@/v2/utils/isPcPlatform";
 import { isRomVerified } from "@/v2/utils/romVerification";
 
 const route = useRoute();
@@ -392,10 +393,8 @@ const statesCount = computed(() => currentRom.value?.user_states?.length ?? 0);
 const saveDataCount = computed(() => savesCount.value + statesCount.value);
 
 const filesCount = computed(() => currentRom.value?.files?.length ?? 0);
-const PC_PLATFORM_SLUGS = new Set(["dos", "win", "win3x", "win9x"]);
 const isPcRom = computed(
-  () =>
-    currentRom.value && PC_PLATFORM_SLUGS.has(currentRom.value.platform_slug),
+  () => currentRom.value != null && isPcPlatform(currentRom.value),
 );
 const archiveSets = ref<DownloadArchiveSet[]>([]);
 const archiveSetsState = ref<"idle" | "loading" | "ready" | "error">("idle");

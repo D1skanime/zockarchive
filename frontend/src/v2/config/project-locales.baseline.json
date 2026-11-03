@@ -53,7 +53,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "ab0ae89e09d643ee05d9088e456f8424c9f3c391a44f9c0c43b3c3296390bdcf",
+      "digest": "081999213bfeee41ac8322830ad75c3d7b2900328154befb32ea594613968d11",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -154,7 +154,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "0fb7137dfe0e1db6d3090f291ccfd6e63a5c10a44883deef4a5bb4d0c8ef105b",
+      "digest": "df10b600fc7f9dcd6877dce8068dd639709128a872ee0d2011d2b1d4491ef932",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -256,7 +256,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "89fc3f91d056941d1be072de46c503076790801a8a3d7d905dd9d043802dc4be",
+      "digest": "a7d72cb24807942c807aba27bf21fcc976e162912820049f56c15c4bb55b4153",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -362,7 +362,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "c583796d7a31802f8a2ee86daa979c9c63d48ee02c7ce0872bf4971a33bb2a4e",
+      "digest": "1c9c7bc47ad424a009384ccd148dbbb32817760197df4a25f65b92b17e136623",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -468,7 +468,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "e153d11ae309abd1d9b78cdd7aae58ffce4e5c5034421948113bc2a047e4aabf",
+      "digest": "371abad55738f50f893a387dbcfa11eab1ec2339cb0b6370a79db2a0f69cc53a",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -570,7 +570,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "5ec5353b3215fddf01b76bb843406d4bc1b3d39e4991c61b4b01dbe4449de211",
+      "digest": "2b021064dad545ca51531565792628d7e6fb696d9c4affbc9a24b94b1f33a424",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -676,7 +676,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "8577ab190c18aa829cd6633b7afbd4d6a26235517cc905f7223550f581330525",
+      "digest": "10b606796960d91d4dd3b4953f60c9b17a59b5ee281dca7c83e5bf57865a8944",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -782,7 +782,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "61822713145ea0b4a9a60533752f840a789718ec7c5d032f13c975b1272b9c16",
+      "digest": "971567884f2322a88c48a195c865a9236955bfff7623d0c29503fde70d417d16",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -884,7 +884,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "092c56ce0a5f435220fbb9150222d6102cfda0a07215227ee163cea29ee4f281",
+      "digest": "21845b4b2021490c71cd15c4bb8d8b74c564f1c1f13e852842254fb106b485fa",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -986,7 +986,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "06b404b71e324d68cd6345c3aea64319f173d999674b538e874d15e19469a8a8",
+      "digest": "4b6029723b2da069b06c34cc94a7f4cc41e1b050fce461b7744d6598d823e19a",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1090,7 +1090,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "73a12307acd260d934e1693b58b0a6b7d11894cc77648e5b5405c41ebdd75866",
+      "digest": "71e2b8c09a736606ee21c04df5b0346d3893e56eb44e45ad082d7df6506bc7c7",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1194,7 +1194,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "0cd7756b92a46a341afd299c8e28e9bba0d7311812cbeb2cad21b1a076cdbeb0",
+      "digest": "f33d5d2002437918d426cd5cf0cb3e0f8b9f7bcde88b2339838ec3dd80d96f6c",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1298,7 +1298,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "dde3ca587b39dfa9857609f78313c44b0d700112e23fe8996b88260ccdc7f8e1",
+      "digest": "c00a7b49262abb7bd33e391331e2cf874d10e65b38e3d80db48d57905ade2e44",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1402,7 +1402,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "84d184c991650f802627f2dc865ef74f63aa21ed5688614ac951e0ae55a3ed7f",
+      "digest": "5014e0a82ad2c4340f4ab61f9e3ba299054a12a1316ec2c84497e53493652bb3",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1506,7 +1506,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "3d21b3c8b56146d5668f320f46f21e381f7f6bfaf748a545969526cfcdf2417e",
+      "digest": "e02fba6b7e54f1765bbe7ae45fa7f3dbb8eea53bc8ce5d544374642cc635371d",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1614,7 +1614,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "45f0bc085da9fdc0175dd90730fd705d913e1006f2a4480c627c7328fa65ee9c",
+      "digest": "9b6fe984d078f075f6b128081840eb542ac285e09b4962ab2df273cad91a1c1d",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1717,7 +1717,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "a3a52d8db08f6a58fd685b7e6c363f566017aec4fc57435ba6f9f31e6b967136",
+      "digest": "7de0b1ea209b48e55b6509b23e8201493d5c3ab06b1a276d59f94ae433209f4b",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",
@@ -1817,7 +1817,7 @@
       "brandedKeys": []
     },
     "rom": {
-      "digest": "4c8fc304e07119b6bc99d65db4aec5bba15aba7ff07bd9f199d16222807bceb9",
+      "digest": "e01a5b5c8eae00f439914b73fccc0a3899bfe6001f80961de8bf42d063ef98e4",
       "brandedKeys": [
         "delete-artwork-title",
         "delete-select-instruction",

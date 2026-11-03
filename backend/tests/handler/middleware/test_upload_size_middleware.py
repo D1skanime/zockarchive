@@ -1,5 +1,6 @@
 import re
 
+from main import app
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -31,6 +32,17 @@ def create_test_app(max_size: int) -> Starlette:
 
 
 class TestUploadSizeLimitMiddleware:
+    def test_save_backup_uploads_use_the_application_size_guard(self):
+        middleware = next(
+            item
+            for item in app.user_middleware
+            if item.cls is UploadSizeLimitMiddleware
+        )
+
+        assert any(
+            pattern.match("/api/save-backups") for pattern in middleware.kwargs["paths"]
+        )
+
     def test_rejects_oversized_body(self):
         client = TestClient(create_test_app(max_size=10))
         response = client.post("/api/saves", content=b"x" * 11)

@@ -53,6 +53,7 @@ from endpoints.permissions import router as permissions_router
 from endpoints.platform import router as platform_router
 from endpoints.play_sessions import router as play_sessions_router
 from endpoints.roms import router as rom_router
+from endpoints.save_backups import router as save_backups_router
 from endpoints.saves import router as saves_router
 from endpoints.scan_operations import router as scan_operations_router
 from endpoints.screenshots import router as screenshots_router
@@ -157,6 +158,7 @@ app.add_middleware(
     max_size=MAX_ASSET_UPLOAD_SIZE_BYTES,
     paths=[
         re.compile(r"^/api/saves"),
+        re.compile(r"^/api/save-backups"),
         re.compile(r"^/api/states"),
         re.compile(r"^/api/screenshots"),
     ],
@@ -214,6 +216,7 @@ app.include_router(music_router, prefix="/api")
 app.include_router(music_playlists_router, prefix="/api")
 app.include_router(search_router, prefix="/api")
 app.include_router(saves_router, prefix="/api")
+app.include_router(save_backups_router, prefix="/api")
 app.include_router(states_router, prefix="/api")
 app.include_router(sync_router, prefix="/api")
 app.include_router(tasks_router, prefix="/api")
