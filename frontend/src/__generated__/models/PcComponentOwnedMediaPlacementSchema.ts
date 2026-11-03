@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { RomOwnedMediaSurface } from './RomOwnedMediaSurface';
 export type PcComponentOwnedMediaPlacementSchema = {
     id: number;
     media_id: number;
+    surface: RomOwnedMediaSurface;
     position: number;
 };
-

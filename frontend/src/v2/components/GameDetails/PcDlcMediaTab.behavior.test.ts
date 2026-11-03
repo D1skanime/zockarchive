@@ -14,6 +14,7 @@ const mocks = vi.hoisted(() => ({
   success: vi.fn(),
   error: vi.fn(),
   editable: true,
+  replace: vi.fn(),
 }));
 vi.mock("vue-i18n", () => ({
   useI18n: () => ({
@@ -34,14 +35,19 @@ vi.mock("@/v2/composables/useResponsiveColumns", () => ({
   useResponsiveColumns: () => ({ columns: ref(3) }),
 }));
 vi.mock("@/v2/composables/useWrapGridNav", () => ({ useWrapGridNav: vi.fn() }));
+vi.mock("vue-router", () => ({
+  useRoute: () => ({ path: "/rom/24/dlc/20", query: { tab: "media" } }),
+  useRouter: () => ({ replace: mocks.replace }),
+}));
 vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
   romApi: mocks,
 }));
 vi.mock("@v2/lib", () => ({
   ZABtn: {
     props: { disabled: Boolean },
+    emits: ["click"],
     template:
-      '<button :disabled="disabled"><slot name="prepend" /><slot /></button>',
+      '<button :disabled="disabled" @click="$emit(\'click\')"><slot name="prepend" /><slot /></button>',
   },
   ZACard: { template: '<div class="r-card"><slot /></div>' },
   ZAIcon: { props: ["icon"], template: '<span :data-icon="icon" />' },
@@ -72,7 +78,7 @@ const media = {
   owned_path: "fixture/shot.png",
   created_at: "2026-10-24T10:00:00Z",
   updated_at: "2026-10-24T10:00:00Z",
-  placements: [{ id: 1, media_id: 7, position: 0 }],
+  placements: [{ id: 1, media_id: 7, surface: "overview", position: 0 }],
 };
 const component: PcComponentSchema = {
   id: 20,
@@ -107,12 +113,14 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(wrapper.find(".za-shot__badge").text()).toBe(
       "rom.screenshots-overview-position:1",
     );
-    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(2);
+    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(3);
     await button.trigger("click");
     await flushPromises();
     expect(mocks.delete).toHaveBeenCalledExactlyOnceWith(
       `${endpoint}/7/placement`,
-      { params: { expected_version: component.updated_at } },
+      {
+        params: { expected_version: component.updated_at, surface: "overview" },
+      },
     );
     expect(mocks.refresh).toHaveBeenCalledTimes(1);
   });
@@ -254,5 +262,27 @@ describe("DLC media presentation preserves component capabilities", () => {
       tone: "danger",
     });
     expect(mocks.delete).not.toHaveBeenCalled();
+  });
+
+  it("navigates between manual, screenshots, artwork and soundtrack without using the cover role", async () => {
+    const wrapper = render();
+    await flushPromises();
+
+    expect(wrapper.findAll('[role="tab"]')).toHaveLength(4);
+    expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
+      "rom.screenshots",
+    );
+    expect(wrapper.text()).not.toContain("rom.pc-media-role-cover");
+
+    await wrapper
+      .get('[role="tab"][aria-label="rom.soundtrack"]')
+      .trigger("click");
+    expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
+      "rom.soundtrack",
+    );
+    expect(mocks.replace).toHaveBeenLastCalledWith({
+      path: "/rom/24/dlc/20",
+      query: { tab: "media", subtab: "soundtrack" },
+    });
   });
 });
