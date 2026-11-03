@@ -22,6 +22,16 @@ export const compositionInventory = {
   "components/Player/ResumePanel.stories.ts": {
     primitives: ["ZABtn", "ZACard"],
   },
+  "components/GameDetails/PcSaveBackupsSection.stories.ts": {
+    primitives: [
+      "ZABtn",
+      "ZADialog",
+      "ZADropzone",
+      "ZAProgressLinear",
+      "ZASpinner",
+      "ZATextField",
+    ],
+  },
   "components/shared/AssetList.stories.ts": {
     primitives: ["ZAList", "ZAListItem"],
   },
