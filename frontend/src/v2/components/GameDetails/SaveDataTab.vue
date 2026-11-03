@@ -25,20 +25,12 @@ import storeRoms from "@/v2/data/adapters/legacy/stores/roms";
 import { isPcPlatform } from "@/v2/utils/isPcPlatform";
 
 type AssetSlot = SaveSchema | StateSchema | UserSaveSchema | UserStateSchema;
-type SaveDataRom = Pick<
-  DetailedRomSchema,
-  | "id"
-  | "platform_fs_slug"
-  | "platform_slug"
-  | "all_user_saves"
-  | "all_user_states"
->;
 const asSave = (a: AssetSlot) => a as SaveSchema;
 const asState = (a: AssetSlot) => a as StateSchema;
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps<{ rom: SaveDataRom }>();
+const props = defineProps<{ rom: DetailedRomSchema }>();
 const { t } = useI18n();
 const isPcRom = computed(() => isPcPlatform(props.rom));
 type Subtab = "saves" | "states";

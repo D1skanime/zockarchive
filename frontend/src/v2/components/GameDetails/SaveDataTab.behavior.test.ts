@@ -80,15 +80,6 @@ vi.mock("@/v2/components/shared/AssetStrip.vue", () => ({
   },
 }));
 
-type SaveDataRom = Pick<
-  DetailedRomSchema,
-  | "id"
-  | "platform_fs_slug"
-  | "platform_slug"
-  | "all_user_saves"
-  | "all_user_states"
->;
-
 function save(fileName: string): UserSaveSchema {
   return {
     id: 4,
@@ -111,17 +102,121 @@ function save(fileName: string): UserSaveSchema {
   };
 }
 
-function rom(platformFsSlug: string, platformSlug: string): SaveDataRom {
+function rom(platformFsSlug: string, platformSlug: string): DetailedRomSchema {
   return {
     id: 1,
+    igdb_id: null,
+    sgdb_id: null,
+    moby_id: null,
+    ss_id: null,
+    ra_id: null,
+    launchbox_id: null,
+    hasheous_id: null,
+    tgdb_id: null,
+    flashpoint_id: null,
+    hltb_id: null,
+    gamelist_id: null,
+    libretro_id: null,
+    steam_id: null,
+    platform_id: 1,
     platform_fs_slug: platformFsSlug,
     platform_slug: platformSlug,
+    platform_custom_name: null,
+    platform_display_name: platformSlug,
+    fs_name: "game",
+    fs_name_no_tags: "game",
+    fs_name_no_ext: "game",
+    fs_extension: ".zip",
+    fs_path: "/games/game.zip",
+    fs_size_bytes: 1,
+    name: "Game",
+    name_sort_key: "Game",
+    slug: "game",
+    summary: null,
+    alternative_names: [],
+    youtube_video_id: null,
+    metadatum: {
+      rom_id: 1,
+      genres: [],
+      franchises: [],
+      collections: [],
+      companies: [],
+      main_developer: null,
+      game_modes: [],
+      age_ratings: [],
+      player_count: "1",
+      first_release_date: null,
+      pc_release_date: null,
+      average_rating: null,
+    },
+    igdb_metadata: null,
+    moby_metadata: null,
+    ss_metadata: null,
+    launchbox_metadata: null,
+    hasheous_metadata: null,
+    flashpoint_metadata: null,
+    hltb_metadata: null,
+    gamelist_metadata: null,
+    manual_metadata: null,
+    path_cover_small: null,
+    path_cover_large: null,
+    url_cover: null,
+    has_manual: false,
+    has_soundtrack: false,
+    path_manual: null,
+    url_manual: null,
+    path_video: null,
+    is_unidentified: false,
+    is_identified: true,
+    revision: null,
+    regions: [],
+    languages: [],
+    tags: [],
+    crc_hash: null,
+    md5_hash: null,
+    sha1_hash: null,
+    ra_hash: null,
+    has_simple_single_file: true,
+    has_nested_single_file: false,
+    has_multiple_files: false,
+    full_path: "/games/game.zip",
+    created_at: "2026-01-01T00:00:00Z",
+    updated_at: "2026-01-01T00:00:00Z",
+    missing_from_fs: false,
+    has_notes: false,
+    rom_user: {
+      id: 1,
+      user_id: 1,
+      rom_id: 1,
+      created_at: "2026-01-01T00:00:00Z",
+      updated_at: "2026-01-01T00:00:00Z",
+      last_played: null,
+      is_main_sibling: true,
+      backlogged: false,
+      now_playing: false,
+      hidden: false,
+      rating: 0,
+      difficulty: 0,
+      completion: 0,
+      status: null,
+    },
+    merged_screenshots: [],
+    merged_ra_metadata: null,
+    files: [],
+    sibling_roms: [],
+    steam_metadata: null,
+    user_saves: [],
+    user_states: [],
     all_user_saves: [],
     all_user_states: [],
+    user_screenshots: [],
+    all_user_screenshots: [],
+    user_collections: [],
+    all_user_notes: [],
   };
 }
 
-function render(selectedRom: SaveDataRom) {
+function render(selectedRom: DetailedRomSchema) {
   return mount(SaveDataTab, { props: { rom: selectedRom } });
 }
 
