@@ -257,6 +257,9 @@ file drops, and folder drops. SaveBackupDialog preserves browser-provided relati
 paths, accepts individual files or folder selection, and captures a manually entered
 Windows restore path, prefilled only from the most recent saved backup. SaveRestoreDialog
 explains manual restoration, copies or edits that path, and downloads the archive.
+The shared isPcPlatform resolver limits this workflow to Saves. PC games therefore do
+not expose emulator-state navigation or upload controls, while console and emulator
+games retain their existing Saves and States subtabs.
 
 ## 10. Console Mode
 

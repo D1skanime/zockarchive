@@ -1,18 +1,4 @@
 <script setup lang="ts">
-// SaveDataTab — Saves + States, each its own subtab with badge counts and per-tab Upload affordance. Layout mirrors ScreenshotsSubtab: a
-// vertical subtab list on the left (navigation only — no inline action
-// panel), and per-section headers in the content column with the
-// Upload button on the right when the section already has items. Empty
-// sections promote the dropzone CTA (the dropzone owns the upload affordance there).
-//
-// Each list is split into a "Mine" section (own saves/states, with a
-// per-item public/private toggle + delete) and a read-only "Community"
-// section (other users' public saves/states, with an author chip and
-// download only). Mirrors ScreenshotsSubtab's My / Community model.
-//
-// URL-persistent subtab selection via `?subtab=` so deep-linking
-// into a specific list works and stale state doesn't leak when the
-// user navigates to a sibling tab.
 import { ZABtn, ZADropzone, ZAIcon } from "@v2/lib";
 import axios from "axios";
 import { storeToRefs } from "pinia";
@@ -38,8 +24,6 @@ import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
 import storeRoms from "@/v2/data/adapters/legacy/stores/roms";
 import { isPcPlatform } from "@/v2/utils/isPcPlatform";
 
-// Slot payload from AssetList/AssetStrip is the full save|state union; these
-// narrow it back to the concrete schema the section's handlers expect.
 type AssetSlot = SaveSchema | StateSchema | UserSaveSchema | UserStateSchema;
 const asSave = (a: AssetSlot) => a as SaveSchema;
 const asState = (a: AssetSlot) => a as StateSchema;
@@ -49,18 +33,16 @@ defineOptions({ inheritAttrs: false });
 const props = defineProps<{ rom: DetailedRomSchema }>();
 const { t } = useI18n();
 const isPcRom = computed(() => isPcPlatform(props.rom));
-// ---------- Subtab state (URL-persisted via `?subtab=`) ----------
-const validSubtabs = ["saves", "states"] as const;
-type Subtab = (typeof validSubtabs)[number];
+type Subtab = "saves" | "states";
 
 const route = useRoute();
 const router = useRouter();
 
-const subTab = ref<Subtab>(
-  validSubtabs.includes(route.query.subtab as Subtab)
-    ? (route.query.subtab as Subtab)
-    : "saves",
-);
+function supportedSubtab(value: unknown): Subtab {
+  return value === "states" && !isPcRom.value ? "states" : "saves";
+}
+
+const subTab = ref<Subtab>(supportedSubtab(route.query.subtab));
 
 watch(subTab, (value) => {
   if (route.query.subtab !== value) {
@@ -71,15 +53,19 @@ watch(subTab, (value) => {
   }
 });
 watch(
-  () => route.query.subtab,
-  (value) => {
-    if (typeof value === "string" && validSubtabs.includes(value as Subtab)) {
-      subTab.value = value as Subtab;
+  [isPcRom, () => route.query.subtab],
+  ([isPc, value]) => {
+    const nextSubtab = supportedSubtab(value);
+    if (subTab.value !== nextSubtab) subTab.value = nextSubtab;
+    if (isPc && value === "states") {
+      router.replace({
+        path: route.path,
+        query: { ...route.query, subtab: "saves" },
+      });
     }
   },
+  { immediate: true },
 );
-// When the user navigates away from this tab, drop the subtab param
-// so it doesn't leak onto sibling tabs.
 watch(
   () => route.query.tab,
   (value) => {
@@ -99,8 +85,6 @@ function isOwn(asset: { user_id: number }): boolean {
   return myId.value != null && asset.user_id === myId.value;
 }
 
-// `all_user_{saves,states}` holds own (public + private) plus other users'
-// public items. Split into Mine / Community the same way ScreenshotsSubtab does.
 const allSaves = computed<UserSaveSchema[]>(
   () => props.rom.all_user_saves ?? [],
 );
@@ -115,21 +99,23 @@ const communityStates = computed(() =>
   allStates.value.filter((s) => !isOwn(s)),
 );
 
-// Badge = total visible items in the subtab (own + community).
 const savesCount = computed(() => allSaves.value.length);
 const statesCount = computed(() => allStates.value.length);
 
-// ---------- Subtab nav definitions ----------
 type SubtabDef = { id: Subtab; label: string; icon: string };
-const subtabDefs = computed<SubtabDef[]>(() => [
-  { id: "saves", label: t("rom.saves-tab"), icon: "mdi-content-save-outline" },
-  { id: "states", label: t("rom.states-tab"), icon: "mdi-camera-outline" },
-]);
+const subtabDefs = computed<SubtabDef[]>(() => {
+  const saves = {
+    id: "saves" as const,
+    label: t("rom.saves-tab"),
+    icon: "mdi-content-save-outline",
+  };
+  if (isPcRom.value) return [saves];
+  return [
+    saves,
+    { id: "states", label: t("rom.states-tab"), icon: "mdi-camera-outline" },
+  ];
+});
 
-// ---------- Upload / refresh plumbing ----------
-// Overlay-mode dropzone refs so the section-header "Upload" buttons can
-// open the native picker via `.open()`; the empty-state CTA dropzones
-// are self-contained (click-to-browse + drag-and-drop).
 const saveDz = ref<InstanceType<typeof ZADropzone> | null>(null);
 const stateDz = ref<InstanceType<typeof ZADropzone> | null>(null);
 const uploadingSaves = ref(false);
@@ -355,7 +341,11 @@ async function toggleStateVisibility(state: StateSchema) {
     <div class="r-v2-saves__content">
       <PcSaveBackupsSection :rom="props.rom" />
       <!-- Saves subtab — vertical info list -->
-      <section v-show="subTab === 'saves'" class="r-v2-saves__panel">
+      <section
+        v-if="!isPcRom || mySaves.length > 0 || communitySaves.length > 0"
+        v-show="subTab === 'saves'"
+        class="r-v2-saves__panel"
+      >
         <!-- Mine -->
         <div class="r-v2-saves__section">
           <header class="r-v2-saves__section-head">
@@ -480,7 +470,11 @@ async function toggleStateVisibility(state: StateSchema) {
       </section>
 
       <!-- States subtab — tile grid (screenshot is the point) -->
-      <section v-show="subTab === 'states'" class="r-v2-saves__panel">
+      <section
+        v-if="!isPcRom"
+        v-show="subTab === 'states'"
+        class="r-v2-saves__panel"
+      >
         <!-- Mine -->
         <div class="r-v2-saves__section">
           <header class="r-v2-saves__section-head">
@@ -695,6 +689,9 @@ async function toggleStateVisibility(state: StateSchema) {
   gap: var(--r-space-5);
   flex: 1;
   min-height: 0;
+}
+.r-v2-save-backups + .r-v2-saves__panel {
+  margin-top: var(--r-space-5);
 }
 
 /* Mine / Community subsections within a subtab panel. Header layout

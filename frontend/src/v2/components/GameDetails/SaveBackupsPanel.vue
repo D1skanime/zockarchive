@@ -135,6 +135,9 @@ onMounted(() => {
 <style scoped>
 .r-v2-save-backups {
   margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .r-v2-save-backups__head,
 .r-v2-save-backups__item,
@@ -145,6 +148,7 @@ onMounted(() => {
 }
 .r-v2-save-backups__head {
   justify-content: space-between;
+  margin: 0;
 }
 .r-v2-save-backups__item {
   justify-content: space-between;
