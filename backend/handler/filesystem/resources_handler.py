@@ -17,6 +17,7 @@ from config import (
 )
 from config.config_manager import MetadataMediaType
 from handler.database.scan_write_fence import current_scan_write_context
+from handler.filesystem.pc_component_resources import PcComponentResourceStorageMixin
 from handler.filesystem.scan_media_publication import (
     require_scan_media_batch,
     store_resource,
@@ -128,7 +129,7 @@ def _is_chroma_key_placeholder(image_path: Path | BinaryIO) -> bool:
     return green / total >= _CHROMA_KEY_COVERAGE
 
 
-class FSResourcesHandler(FSHandler):
+class FSResourcesHandler(PcComponentResourceStorageMixin, FSHandler):
     def __init__(self, storage: OwnedStorageDescriptor) -> None:
         super().__init__(base_path=RESOURCES_BASE_PATH, storage=storage)
         self.image_converter = ImageConverter()
@@ -274,72 +275,6 @@ class FSResourcesHandler(FSHandler):
             return path, mime_type, content_sha256
         await self.write_file(response_content, media_path, filename)
         return f"{media_path}/{filename}", mime_type, content_sha256
-
-    async def store_pc_component_upload(
-        self,
-        rom: Rom,
-        component_id: int,
-        role: RomComponentOwnedMediaRole,
-        content: bytes,
-        extension: str,
-    ) -> str:
-        """Store validated uploaded component media in RomM-owned storage."""
-        media_path = f"{rom.fs_resources_path}/pc-owned-media"
-        filename = f"{component_id}-upload-{role.value}.{extension}"
-        await self.write_file(content, media_path, filename)
-        return f"{media_path}/{filename}"
-
-    async def store_pc_component_audio(
-        self, rom: Rom, component_id: int, content: bytes, extension: str
-    ) -> tuple[str, str]:
-        """Store one allowlisted DLC soundtrack below the component-owned root."""
-        audio_types = {
-            "mp3": "audio/mpeg",
-            "aac": "audio/aac",
-            "flac": "audio/flac",
-            "ogg": "audio/ogg",
-            "opus": "audio/ogg",
-            "m4a": "audio/mp4",
-            "wav": "audio/wav",
-        }
-        normalized = extension.lower().lstrip(".")
-        if (
-            not content
-            or len(content) > 512 * 1024 * 1024
-            or normalized not in audio_types
-        ):
-            raise ValueError(
-                "Component audio has an unsupported type or exceeds the 512 MiB limit"
-            )
-        directory = f"{rom.fs_resources_path}/pc-owned-media"
-        filename = f"{component_id}-soundtrack-{secrets.token_hex(16)}.{normalized}"
-        if current_scan_write_context() is not None:
-            return (
-                self._stage_content(content, f"{directory}/{filename}"),
-                audio_types[normalized],
-            )
-        await self.write_file(content, directory, filename)
-        return f"{directory}/{filename}", audio_types[normalized]
-
-    async def store_pc_component_manual(
-        self, rom: Rom, component_id: int, content: bytes, extension: str
-    ) -> str:
-        """Store an allowlisted manual owned by exactly one DLC component."""
-        normalized = extension.lower()
-        if (
-            not content
-            or len(content) > 100 * 1024 * 1024
-            or normalized not in ALLOWED_MANUAL_EXTENSIONS
-        ):
-            raise ValueError(
-                "Component manual has an unsupported type or exceeds the 100 MiB limit"
-            )
-        directory = f"{rom.fs_resources_path}/pc-manual"
-        filename = f"{component_id}-{secrets.token_hex(16)}{normalized}"
-        if current_scan_write_context() is not None:
-            return self._stage_content(content, f"{directory}/{filename}")
-        await self.write_file(content, directory, filename)
-        return f"{directory}/{filename}"
 
     # Cover art
     def cover_exists(self, entity: Rom | Collection, size: CoverSize) -> bool:

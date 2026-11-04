@@ -1123,7 +1123,7 @@ Plans:
 **Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
 **Depends on:** Phase 39
 **Status:** Implementation complete, targeted technical verification passed (2026-11-04). Human UAT remains pending before any full regression.
-**Plans:** 5 plans
+**Plans:** 6 plans
 
 Plans:
 - [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.
@@ -1131,3 +1131,4 @@ Plans:
 - [x] 40-03-PLAN.md - Resolve the three remaining isolated MariaDB test failures and record exact evidence.
 - [x] 40-04-PLAN.md - Restore read-only committed PC fixtures to the disposable runner and repeat the exact MariaDB selection.
 - [x] 40-05-PLAN.md - Restore Config authority after failed YAML serialization or atomic replacement and repeat CI shard 5.
+- [x] 40-06-PLAN.md - Extract DLC-owned filesystem storage from the legacy resource handler.
