@@ -231,6 +231,41 @@ def test_component_soundtrack_upload_uses_component_owned_audio_storage(
     assert stored == [(component.id, b"fLaC\x00audio", ".flac")]
 
 
+def test_component_image_upload_rejects_non_image_payload_before_storage(
+    client, access_token, rom, monkeypatch
+):
+    component = _dlc(rom)
+    stored = False
+
+    async def store_image(*_args):
+        nonlocal stored
+        stored = True
+        return "roms/1/pc-owned-media/invalid.jpg"
+
+    monkeypatch.setattr(
+        pc_component_resources.fs_resource_handler,
+        "store_pc_component_upload",
+        store_image,
+    )
+
+    response = client.post(
+        f"/api/roms/{rom.id}/pc-components/{component.id}/media",
+        headers=_headers(access_token),
+        data={
+            "role": "screenshot",
+            "expected_version": component.updated_at.isoformat(),
+        },
+        files={"media": ("not-an-image.jpg", b"not an image", "image/jpeg")},
+    )
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert (
+        response.json()["detail"]
+        == "Component media must be a PNG, JPEG, or WebP image"
+    )
+    assert not stored
+
+
 def test_component_manual_upload_is_scoped_to_its_dlc(
     client, access_token, rom, monkeypatch
 ):

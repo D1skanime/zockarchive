@@ -3,7 +3,7 @@ import hashlib
 import json
 import re
 from collections.abc import Iterable, Sequence
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any, NamedTuple
 
 from redis.exceptions import WatchError
@@ -3025,7 +3025,9 @@ class DBRomsHandler(DBBaseHandler):
             return None
         replaced_owned_path = component.manual_path
         component.manual_path = manual_path
-        component.updated_at = datetime.now(timezone.utc)
+        component.updated_at = max(
+            datetime.now(timezone.utc), component.updated_at + timedelta(seconds=1)
+        )
         session.flush()
         return AppliedPcComponentManual(component, replaced_owned_path)
 
@@ -3459,7 +3461,9 @@ class DBRomsHandler(DBBaseHandler):
         )
         if media is None:
             return None
-        if not self._is_pc_component_owned_media_surface_compatible(media.role, surface):
+        if not self._is_pc_component_owned_media_surface_compatible(
+            media.role, surface
+        ):
             return None
         placement = next(
             (

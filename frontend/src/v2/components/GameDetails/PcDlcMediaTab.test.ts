@@ -5,6 +5,10 @@ const source = readFileSync(
   "src/v2/components/GameDetails/PcDlcMediaTab.vue",
   "utf8",
 );
+const presentationSource = readFileSync(
+  "src/v2/components/GameDetails/pcDlcMediaPresentation.ts",
+  "utf8",
+);
 
 describe("PcDlcMediaTab", () => {
   it("uses only nested component-owned media endpoints", () => {
@@ -37,8 +41,8 @@ describe("PcDlcMediaTab", () => {
   it("keeps placement controls permission-gated and component-scoped", () => {
     expect(source).toContain('useCan("rom.edit"');
     expect(source).toContain("/placement");
-    expect(source).toContain('"rom.add-to-overview"');
-    expect(source).toContain('"rom.remove-from-overview"');
+    expect(presentationSource).toContain('"rom.add-to-overview"');
+    expect(presentationSource).toContain('"rom.remove-from-overview"');
   });
 
   it("renders localized media role and useful source labels", () => {
@@ -54,11 +58,11 @@ describe("PcDlcMediaTab", () => {
   });
 
   it("uses the shared media navigation while preserving typed upload roles", () => {
-    expect(source).toContain("const validSubtabs");
-    expect(source).toContain('"manual"');
-    expect(source).toContain('"screenshots"');
-    expect(source).toContain('"artwork"');
-    expect(source).toContain('"soundtrack"');
+    expect(source).toContain("validDlcMediaSubtabs");
+    expect(presentationSource).toContain('"manual"');
+    expect(presentationSource).toContain('"screenshots"');
+    expect(presentationSource).toContain('"artwork"');
+    expect(presentationSource).toContain('"soundtrack"');
     expect(source).toContain("const subtabDefs");
     expect(source).toContain('body.append("role", uploadRole.value)');
     expect(source).toContain('role="tab"');

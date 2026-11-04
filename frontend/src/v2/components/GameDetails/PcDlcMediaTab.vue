@@ -13,6 +13,12 @@ import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAc
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
 import PcDlcManualPanel from "@/v2/components/GameDetails/PcDlcManualPanel.vue";
+import {
+  surfaceCaptionKey,
+  surfaceLabelKey,
+  validDlcMediaSubtabs,
+  type DlcMediaSubtab,
+} from "@/v2/components/GameDetails/pcDlcMediaPresentation";
 import { useCan } from "@/v2/composables/useCan";
 import { useConfirm } from "@/v2/composables/useConfirm";
 import { useResponsiveColumns } from "@/v2/composables/useResponsiveColumns";
@@ -34,15 +40,8 @@ const canEdit = useCan("rom.edit", { kind: "rom", id: props.romId });
 const media = computed(() => props.component.owned_media ?? []);
 const route = useRoute();
 const router = useRouter();
-const validSubtabs = [
-  "manual",
-  "screenshots",
-  "artwork",
-  "soundtrack",
-] as const;
-type DlcMediaSubtab = (typeof validSubtabs)[number];
 const subtab = ref<DlcMediaSubtab>(
-  validSubtabs.includes(route.query.subtab as DlcMediaSubtab)
+  validDlcMediaSubtabs.includes(route.query.subtab as DlcMediaSubtab)
     ? (route.query.subtab as DlcMediaSubtab)
     : "screenshots",
 );
@@ -80,7 +79,7 @@ watch(
   (value) => {
     if (
       typeof value === "string" &&
-      validSubtabs.includes(value as DlcMediaSubtab)
+      validDlcMediaSubtabs.includes(value as DlcMediaSubtab)
     )
       subtab.value = value as DlcMediaSubtab;
   },
@@ -210,35 +209,6 @@ function hasPlacement(
 ) {
   return (item.placements ?? []).some(
     (placement) => placement.surface === surface,
-  );
-}
-
-function surfaceCaption(surface: RomOwnedMediaSurface) {
-  return surface === "overview"
-    ? t("rom.screenshots-action-overview")
-    : surface === "background"
-      ? t("rom.screenshots-action-background")
-      : t("rom.soundtrack");
-}
-
-function surfaceLabel(
-  item: PcComponentOwnedMediaSchema,
-  surface: RomOwnedMediaSurface,
-) {
-  if (surface === "soundtrack")
-    return t(
-      hasPlacement(item, surface)
-        ? "rom.remove-from-soundtrack"
-        : "rom.add-to-soundtrack",
-    );
-  return t(
-    surface === "overview"
-      ? hasPlacement(item, surface)
-        ? "rom.remove-from-overview"
-        : "rom.add-to-overview"
-      : hasPlacement(item, surface)
-        ? "rom.remove-as-background"
-        : "rom.add-as-background",
   );
 }
 
@@ -426,8 +396,10 @@ async function remove(mediaId: number) {
                     "
                     :tone="surface === 'background' ? 'info' : 'brand'"
                     :selected="hasPlacement(item, surface)"
-                    :caption="surfaceCaption(surface)"
-                    :label="surfaceLabel(item, surface)"
+                    :caption="t(surfaceCaptionKey(surface))"
+                    :label="
+                      t(surfaceLabelKey(surface, hasPlacement(item, surface)))
+                    "
                     :disabled="!componentVersion || busy"
                     :loading="placing"
                     @click="togglePlacement(item, surface)"

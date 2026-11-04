@@ -1159,3 +1159,21 @@ def test_legacy_fixed_manual_is_bounded_compatibility(tmp_path: Path, extension:
     fixed_reference = _manual_rom(legacy_path)
     assert handler.manual_exists(fixed_reference)
     assert handler._get_manual_path(fixed_reference) == legacy_path
+
+
+@pytest.mark.asyncio
+async def test_component_owned_uploads_use_distinct_owned_paths(tmp_path: Path):
+    handler = FSResourcesHandler(storage_composition.owned[OwnedStorageKind.RESOURCES])
+    handler.base_path = tmp_path
+    rom = _manual_rom("")
+
+    manual_path = await handler.store_pc_component_manual(rom, 42, b"guide", ".pdf")
+    audio_path, mime_type = await handler.store_pc_component_audio(
+        rom, 42, b"audio", ".flac"
+    )
+
+    assert manual_path.startswith("roms/17/73/pc-manual/42-")
+    assert audio_path.startswith("roms/17/73/pc-owned-media/42-soundtrack-")
+    assert mime_type == "audio/flac"
+    assert (tmp_path / manual_path).read_bytes() == b"guide"
+    assert (tmp_path / audio_path).read_bytes() == b"audio"

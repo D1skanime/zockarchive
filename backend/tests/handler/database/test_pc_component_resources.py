@@ -135,10 +135,10 @@ def test_component_media_placements_are_ordered_scoped_and_version_guarded(
             rom.id,
             component.id,
             admin_user.id,
-        second.media.id,
-        component.updated_at,
-        RomOwnedMediaSurface.OVERVIEW,
-        True,
+            second.media.id,
+            component.updated_at,
+            RomOwnedMediaSurface.OVERVIEW,
+            True,
         )
         is not None
     )
@@ -149,10 +149,10 @@ def test_component_media_placements_are_ordered_scoped_and_version_guarded(
             rom.id,
             component.id,
             admin_user.id,
-        first.media.id,
-        component.updated_at,
-        RomOwnedMediaSurface.OVERVIEW,
-        True,
+            first.media.id,
+            component.updated_at,
+            RomOwnedMediaSurface.OVERVIEW,
+            True,
         )
         is not None
     )
@@ -236,9 +236,7 @@ def test_component_media_placements_are_surface_scoped_and_role_compatible(
         rom.id, component.id, admin_user.id
     )
     assert {
-        (item.id, placement.surface)
-        for item in media
-        for placement in item.placements
+        (item.id, placement.surface) for item in media for placement in item.placements
     } == {
         (artwork.media.id, RomOwnedMediaSurface.BACKGROUND),
         (soundtrack.media.id, RomOwnedMediaSurface.SOUNDTRACK),

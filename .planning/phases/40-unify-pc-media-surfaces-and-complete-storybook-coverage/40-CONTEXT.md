@@ -23,9 +23,12 @@ This phase closes the reproducible Storybook catalog gap on the existing job bra
 ### Current gap and verification policy
 - **D-05:** The only executable code gap found after inventory is a stale source-location pair in the Storybook language ledger for `ZATextField` visible story data. Correct the ledger, never weaken the catalog guard.
 - **D-06:** Verification is targeted before live UAT: Storybook catalog/build/play coverage, affected media and background tests, frontend typecheck, and the prescribed `ki-targeted-tests frontend`. No full regression runs before human UAT.
+- **D-07:** Correction round 1 found the job migration based on historical revision 0138 while the merged scan chain continues to 0143, creating multiple Alembic heads. Reconnect this unmerged migration after the current head, retain its DDL, correct nullable upload-path handling, and verify only isolated affected backend targets.
 
 ### the agent's Discretion
 Use the existing Storybook-language guard's exact candidate identity as the sole correction mechanism. Record failures and results honestly in the summary and verification.
+
+The new owned-media endpoint and DLC media view may be decomposed only at safe job-added seams. Do not use the correction as a reason to rewrite unrelated legacy monoliths, weaken tests, or change persisted media behavior.
 
 </decisions>
 

@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: phase_human_verification
-stopped_at: Phase40 technical implementation complete; awaiting human browser UAT
+status: phase_execution
+stopped_at: Phase40 Plan02 deterministic-gate correction in progress
 last_updated: 2026-11-04T09:17:00Z
 last_activity: 2026-11-04
 progress:
@@ -21,7 +21,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase40 PC media surface/Storybook completion is technically verified and awaiting human browser UAT. Phase39 approved logo integration remains pending its own browser UAT.
+**Current focus:** Phase40 PC media surface/Storybook completion is correcting deterministic-gate findings before renewed technical verification. Phase39 approved logo integration remains pending its own browser UAT.
 
 ## Current Position
 

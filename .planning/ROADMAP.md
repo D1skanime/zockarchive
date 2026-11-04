@@ -1122,8 +1122,9 @@ Plans:
 **Goal:** Complete the already implemented PC game and DLC media unification by repairing the Storybook language ledger and recording focused, reproducible technical verification without altering persisted media, APIs, or unrelated surfaces.
 **Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
 **Depends on:** Phase 39
-**Status:** Technical implementation complete (2026-11-04). Existing branch commits implement the requested media, dark-background, Storybook, and documentation work. The language-ledger and mutation-inventory gaps are closed with focused evidence; human browser UAT remains next.
-**Plans:** 1 plan
+**Status:** Gate correction in progress (2026-11-04). Existing branch commits implement the requested media, dark-background, Storybook, and documentation work. Plan 02 repairs the migration topology, typed upload contract, formatting, and bounded DLC presentation decomposition before renewed technical verification.
+**Plans:** 2 plans
 
 Plans:
 - [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.
+- [ ] 40-02-PLAN.md - Repair deterministic-gate migration/API findings and verify the affected media implementation in dependency waves.
