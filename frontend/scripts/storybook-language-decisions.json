@@ -1,5 +1,19 @@
 [
   {
+    "category": "template-text",
+    "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
+    "location": "Zeile 197",
+    "text": "Erneut anzeigen",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
+    "location": "Zeile 181",
+    "text": "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
+    "status": "german"
+  },
+  {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
     "location": "Zeile 158",
