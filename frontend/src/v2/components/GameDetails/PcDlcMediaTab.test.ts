@@ -12,7 +12,8 @@ describe("PcDlcMediaTab", () => {
     expect(source).toContain("expected_version");
     expect(source).toContain("useConfirm");
     expect(source).not.toContain("source_relative_path");
-    expect(source).toContain('ref<RomComponentOwnedMediaRole>("screenshot")');
+    expect(source).toContain("const activeRoles");
+    expect(source).toContain("const uploadRole");
     expect(source).toContain("filteredMedia");
     expect(source).toContain("placement");
   });
@@ -36,8 +37,8 @@ describe("PcDlcMediaTab", () => {
   it("keeps placement controls permission-gated and component-scoped", () => {
     expect(source).toContain('useCan("rom.edit"');
     expect(source).toContain("/placement");
-    expect(source).toMatch(/t\(['"]rom\.add-to-overview['"]\)/);
-    expect(source).toMatch(/t\(['"]rom\.remove-from-overview['"]\)/);
+    expect(source).toContain('"rom.add-to-overview"');
+    expect(source).toContain('"rom.remove-from-overview"');
   });
 
   it("renders localized media role and useful source labels", () => {
@@ -52,15 +53,15 @@ describe("PcDlcMediaTab", () => {
     expect(source).not.toContain("<span>{{ item.mime_type }}</span>");
   });
 
-  it("localizes role selector labels while preserving enum values", () => {
-    expect(source).toContain("const roleItems = computed(() =>");
-    expect(source).toContain("title: t(`rom.pc-media-role-${value}`)");
-    expect(source).toContain("value,");
-    expect(source).toContain(':items="roleItems"');
-    expect(source).toContain('item-title="title"');
-    expect(source).toContain('item-value="value"');
-    expect(source).toContain('body.append("role", role.value)');
-    expect(source).toContain("item.role === role.value");
+  it("uses the shared media navigation while preserving typed upload roles", () => {
+    expect(source).toContain("const validSubtabs");
+    expect(source).toContain('"manual"');
+    expect(source).toContain('"screenshots"');
+    expect(source).toContain('"artwork"');
+    expect(source).toContain('"soundtrack"');
+    expect(source).toContain("const subtabDefs");
+    expect(source).toContain('body.append("role", uploadRole.value)');
+    expect(source).toContain('role="tab"');
   });
 
   it("awaits canonical reconciliation before reporting deletion success", () => {

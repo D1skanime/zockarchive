@@ -1116,3 +1116,14 @@ Plans:
 
 Plans:
 - [x] 39-01-PLAN.md: Approved identity assets, blue-glass tokens, static login backdrop, UAT animation variants and frontend documentation.
+
+### Phase 40: Unify PC media surfaces and complete Storybook coverage
+
+**Goal:** Complete the already implemented PC game and DLC media unification by repairing the Storybook language ledger and recording focused, reproducible technical verification without altering persisted media, APIs, or unrelated surfaces.
+**Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
+**Depends on:** Phase 39
+**Status:** Technical implementation complete (2026-11-04). Existing branch commits implement the requested media, dark-background, Storybook, and documentation work. The language-ledger and mutation-inventory gaps are closed with focused evidence; human browser UAT remains next.
+**Plans:** 1 plan
+
+Plans:
+- [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.

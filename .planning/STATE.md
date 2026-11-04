@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: phase_human_verification
-stopped_at: Phase39 implementation complete; awaiting human browser UAT
-last_updated: 2026-10-27T08:24:00Z
-last_activity: 2026-10-27
+stopped_at: Phase40 technical implementation complete; awaiting human browser UAT
+last_updated: 2026-11-04T09:17:00Z
+last_activity: 2026-11-04
 progress:
   total_phases: 39
   completed_phases: 24
@@ -21,7 +21,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase39 approved logo integration is implemented and awaiting human browser UAT. Phase38 remains accepted with its documented limitations.
+**Current focus:** Phase40 PC media surface/Storybook completion is technically verified and awaiting human browser UAT. Phase39 approved logo integration remains pending its own browser UAT.
 
 ## Current Position
 
@@ -29,6 +29,8 @@ Phase:39 (zockarchive-approved-logo-integration)
 Plan:1/1
 Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
 Last activity: 2026-10-28 - Completed quick task 261028-bt1: transparent logo overlays
+
+Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
 The user accepted the browser branding, German/English, both themes and narrow-layout UAT on2026-10-26. Physical controller testing was unavailable, and the user explicitly accepted the documented native-client limitation. Technical coverage remains20/21; no native upgrade test is claimed. PR7 was previously merged at467e03dca and Dev deployed under explicit authorization. Read38-UAT.md,38-HUMAN-UAT.md and38-DEV-DEPLOYMENT.md. Historical milestone/production/NAS/artwork gates remain separate. KI setup stays deferred until the separate Claude phase is finished. Phase39 now integrates the approved assets, blue-glass token direction and UAT-only animation proposals without deployment, push, storage/auth/API change or external-media mutation. See39-VERIFICATION.md and39-UAT.md for remaining browser checks.
 
@@ -243,6 +245,7 @@ _Updated after each plan completion_
 ## Accumulated Context
 
 ### Roadmap Evolution
+- Phase 40 added: Unify PC media surfaces and complete Storybook coverage. It owns job 261103-4b37's existing implementation inventory and the remaining Storybook language-ledger correction.
 
 - Phase39 added: ZockArchive approved logo integration, using the user-supplied approved logo package. Awaiting discussion and planning; Phase38 acceptance remains intact.
 - Phase38 added: ZockArchive product and repository rebranding, based on the user-supplied complete specification.

@@ -1409,6 +1409,18 @@ function finalAuthority(call: RawCall, source: string): Authority {
     };
   }
   if (
+    /^\/roms\/\{[^}]+\}\/pc-components\/\{[^}]+\}\/manual(?:\/|$)/.test(
+      call.route,
+    )
+  ) {
+    return {
+      ...call,
+      operation: call.method === "DELETE" ? "DELETE" : "WRITE",
+      storageClass: "resources",
+      forbidden: false,
+    };
+  }
+  if (
     /^\/(?:saves|states|screenshots)(?:\/|$)/.test(call.route) ||
     /^\/roms\/\{[^}]+\}\/manuals(?:\/|$)/.test(call.route)
   ) {

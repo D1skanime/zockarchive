@@ -1,47 +1,5 @@
 [
   {
-    "category": "template-text",
-    "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 197",
-    "text": "Erneut anzeigen",
-    "status": "german"
-  },
-  {
-    "category": "template-text",
-    "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
-    "location": "Zeile 181",
-    "text": "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
-    "location": "Zeile 158",
-    "text": "Admin · zuletzt vor 3 Min. gesehen",
-    "status": "german"
-  },
-  {
-    "category": "template-attribute",
-    "file": "src/v2/lib/structural/ZAListItem/ZAListItem.stories.ts",
-    "location": "Zeile 194",
-    "text": "Einfacher Eintrag",
-    "status": "german"
-  },
-  {
-    "category": "template-text",
-    "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
-    "location": "Zeile 178",
-    "text": "Einstellungen",
-    "status": "german"
-  },
-  {
-    "category": "story-name",
-    "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
-    "location": "Zeile 155",
-    "text": "Langer Text",
-    "status": "german"
-  },
-  {
     "category": "story-data",
     "file": "src/v2/lib/InUse.stories.ts",
     "location": "Zeile 15",
@@ -486,7 +444,7 @@
   {
     "category": "story-name",
     "file": "src/v2/lib/structural/ZATooltip/ZATooltip.stories.ts",
-    "location": "Zeile 157",
+    "location": "Zeile 155",
     "text": "Langer Text",
     "status": "german"
   },
@@ -1355,7 +1313,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/structural/ZAToolbar/ZAToolbar.stories.ts",
-    "location": "Zeile 180",
+    "location": "Zeile 178",
     "text": "Einstellungen",
     "status": "german"
   },
@@ -1684,7 +1642,7 @@
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/ZAListItem/ZAListItem.stories.ts",
-    "location": "Zeile 196",
+    "location": "Zeile 194",
     "text": "Einfacher Eintrag",
     "status": "german"
   },
@@ -2012,7 +1970,7 @@
   {
     "category": "template-attribute",
     "file": "src/v2/lib/structural/ZAList/ZAList.stories.ts",
-    "location": "Zeile 160",
+    "location": "Zeile 158",
     "text": "Admin · zuletzt vor 3 Min. gesehen",
     "status": "german"
   },
@@ -5445,7 +5403,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZACard/ZACard.stories.ts",
-    "location": "Zeile 183",
+    "location": "Zeile 181",
     "text": "Der Karteninhalt bleibt sichtbar, während der Balken oben gleitet.",
     "status": "german"
   },
@@ -7742,7 +7700,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/primitives/ZAAlert/ZAAlert.stories.ts",
-    "location": "Zeile 199",
+    "location": "Zeile 197",
     "text": "Erneut anzeigen",
     "status": "german"
   },
@@ -9061,14 +9019,14 @@
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 170",
+    "location": "Zeile 168",
     "text": "sie@beispiel.de",
     "status": "german"
   },
   {
     "category": "story-data",
     "file": "src/v2/lib/forms/ZATextField/ZATextField.stories.ts",
-    "location": "Zeile 171",
+    "location": "Zeile 169",
     "text": "Wir kontaktieren Sie nur zu Kontovorgängen.",
     "status": "german"
   },
@@ -10715,7 +10673,7 @@
   {
     "category": "template-text",
     "file": "src/v2/lib/forms/ZAForm/ZAForm.stories.ts",
-    "location": "Zeile 172",
+    "location": "Zeile 170",
     "text": "Alle prüfen",
     "status": "german"
   },
@@ -13181,21 +13139,21 @@
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 155",
+    "location": "Zeile 157",
     "text": "Upload-Zustände",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 178",
+    "location": "Zeile 180",
     "text": "Hauptspiel-Medienseite",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 194",
+    "location": "Zeile 196",
     "text": "DLC-Medienseite",
     "status": "german"
   },
@@ -13209,21 +13167,21 @@
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 158",
+    "location": "Zeile 160",
     "text": "Die gemeinsame Uploadleiste zeigt normale, laufende, fehlerhafte und deaktivierte Zustände. Dateityp, Mehrfachauswahl und der Dropbereich bleiben beim jeweiligen Medienbesitzer konfigurierbar.",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 181",
+    "location": "Zeile 183",
     "text": "Vollständiger Seitenkontext für ein Hauptspiel mit synthetischen Medien und lokalen Ereignissen. Die Story ruft weder Upload- noch Löschendpunkte auf.",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 197",
+    "location": "Zeile 199",
     "text": "Vollständiger DLC-Seitenkontext mit denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt.",
     "status": "german"
   },
@@ -13405,21 +13363,21 @@
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 168",
+    "location": "Zeile 170",
     "text": "Artwork hochladen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 169",
+    "location": "Zeile 171",
     "text": "Screenshot hochladen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 170",
+    "location": "Zeile 172",
     "text": "Soundtrack hochladen",
     "status": "german"
   },
