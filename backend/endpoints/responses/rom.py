@@ -16,6 +16,11 @@ from endpoints.responses.assets import (
     UserScreenshotSchema,
     UserStateSchema,
 )
+from endpoints.responses.pc_component_media import PcComponentManualSchema  # noqa: F401
+from endpoints.responses.pc_component_media import (  # noqa: F401
+    PcComponentOwnedMediaPlacementMutationRequest,
+    PcComponentOwnedMediaPlacementSchema,
+)
 from handler.metadata.flashpoint_handler import FlashpointMetadata
 from handler.metadata.gamelist_handler import GamelistMetadata
 from handler.metadata.hasheous_handler import HasheousMetadata
@@ -492,22 +497,6 @@ class PcComponentOwnedMediaSchema(BaseModel):
     )
 
 
-class PcComponentOwnedMediaPlacementSchema(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int
-    media_id: int
-    surface: RomOwnedMediaSurface
-    position: int = Field(ge=0)
-
-
-class PcComponentOwnedMediaPlacementMutationRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    expected_version: UTCDatetime
-    surface: RomOwnedMediaSurface
-
-
 class PcComponentOwnedMediaCreateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -682,11 +671,6 @@ class PcComponentSchema(BaseModel):
     component_metadata: PcComponentMetadataSchema | None = None
     local_media: list[PcComponentLocalMediaSchema] = Field(default_factory=list)
     owned_media: list[PcComponentOwnedMediaSchema] = Field(default_factory=list)
-
-
-class PcComponentManualSchema(BaseModel):
-    manual_path: str | None
-    expected_version: UTCDatetime
 
 
 class SoundtrackTrackMetaSchema(BaseModel):
