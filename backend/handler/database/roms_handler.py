@@ -3026,7 +3026,8 @@ class DBRomsHandler(DBBaseHandler):
         replaced_owned_path = component.manual_path
         component.manual_path = manual_path
         component.updated_at = max(
-            datetime.now(timezone.utc), component.updated_at + timedelta(seconds=1)
+            datetime.now(component.updated_at.tzinfo),
+            component.updated_at + timedelta(seconds=1),
         )
         session.flush()
         return AppliedPcComponentManual(component, replaced_owned_path)

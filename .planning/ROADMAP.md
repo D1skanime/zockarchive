@@ -1123,8 +1123,9 @@ Plans:
 **Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
 **Depends on:** Phase 39
 **Status:** Gate correction in progress (2026-11-04). Existing branch commits implement the requested media, dark-background, Storybook, and documentation work. Plan 02 repairs the migration topology, typed upload contract, formatting, and bounded DLC presentation decomposition before renewed technical verification.
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
 - [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.
 - [ ] 40-02-PLAN.md - Repair deterministic-gate migration/API findings and verify the affected media implementation in dependency waves.
+- [ ] 40-03-PLAN.md - Resolve the three remaining isolated MariaDB test failures and record exact evidence.
