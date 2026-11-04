@@ -40,7 +40,7 @@ from utils.archives import extract_chd_hash
 from utils.rate_limiter import ConcurrencyLimiter
 
 PC_INTEGRATION_FIXTURE_ROOT = (
-    Path(__file__).resolve().parents[2] / "fixtures" / "pc-integration-model"
+    Path(__file__).resolve().parents[4] / "tests" / "fixtures" / "pc-integration-model"
 )
 
 

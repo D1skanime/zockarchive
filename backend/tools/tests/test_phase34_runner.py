@@ -330,6 +330,11 @@ class RunnerTests(unittest.TestCase):
             repo.mkdir()
             for folder in ("backend", "frontend"):
                 (repo / folder).mkdir()
+            fixture = (
+                repo / "tests/fixtures/pc-integration-model/source-library/game.bin"
+            )
+            fixture.parent.mkdir(parents=True)
+            fixture.write_bytes(b"committed PC fixture")
             for name in ("pyproject.toml", "uv.lock"):
                 (repo / name).write_text("synthetic")
             (repo / "frontend/external").symlink_to("/missing/external")
@@ -372,6 +377,13 @@ class RunnerTests(unittest.TestCase):
                 {p["path"]: p["sha256"] for p in source_manifest(second)},
             )
             self.assertTrue((snapshot / "frontend/external").is_symlink())
+            self.assertEqual(
+                (
+                    snapshot
+                    / "tests/fixtures/pc-integration-model/source-library/game.bin"
+                ).read_bytes(),
+                fixture.read_bytes(),
+            )
             before = source_manifest(games)
             next(games.rglob("*.bin")).write_bytes(b"changed")
             self.assertNotEqual(before, source_manifest(games))

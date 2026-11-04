@@ -180,8 +180,8 @@ def prepare(root, repo):
     prepare_media(games)
     snapshot = root / "checkout"
     snapshot.mkdir()
-    for folder in ("backend", "frontend", "docker"):
-        if folder == "docker" and not (repo / folder).is_dir():
+    for folder in ("backend", "frontend", "docker", "tests/fixtures"):
+        if not (repo / folder).is_dir():
             continue
         shutil.copytree(
             repo / folder,
