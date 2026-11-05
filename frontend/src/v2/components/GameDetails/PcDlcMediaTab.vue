@@ -13,7 +13,10 @@ import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAc
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
 import PcDlcManualPanel from "@/v2/components/GameDetails/PcDlcManualPanel.vue";
+import PcDlcSoundtrackPanel from "@/v2/components/GameDetails/PcDlcSoundtrackPanel.vue";
 import {
+  componentMediaRoleLabel,
+  componentMediaSourceLabel,
   createDlcMediaSubtabDefs,
   surfaceCaptionKey,
   surfaceLabelKey,
@@ -96,12 +99,12 @@ const filteredMedia = computed(() =>
 const emptyMediaTitle = computed(() =>
   subtab.value === "artwork"
     ? t("rom.pc-media-empty-gallery")
-    : subtab.value === "soundtrack"
-      ? t("rom.soundtrack-empty")
-      : t("rom.screenshots-empty"),
+    : t("rom.screenshots-empty"),
 );
 const mediaUrls = computed(() =>
-  filteredMedia.value.map((item) => mediaContentUrl(item.id)),
+  subtab.value === "soundtrack"
+    ? []
+    : filteredMedia.value.map((item) => mediaContentUrl(item.id)),
 );
 const gallery = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);
@@ -115,17 +118,6 @@ const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media
 
 function mediaContentUrl(mediaId: number) {
   return `/api${endpoint}/${mediaId}/content`;
-}
-
-function mediaRoleLabel(item: PcComponentOwnedMediaSchema) {
-  return t(`rom.pc-media-role-${item.role}`);
-}
-
-function mediaSourceLabel(item: PcComponentOwnedMediaSchema) {
-  if (item.origin === "provider" && item.provider) return item.provider;
-  return item.origin === "provider"
-    ? t("rom.pc-media-source-provider")
-    : t("rom.pc-media-source-uploaded");
 }
 
 function openMedia(index: number) {
@@ -336,8 +328,20 @@ async function remove(mediaId: number) {
                 >{{ t("common.try-again") }}</ZABtn
               >
             </div>
+            <PcDlcSoundtrackPanel
+              v-if="subtab === 'soundtrack'"
+              :tracks="filteredMedia"
+              :content-url="mediaContentUrl"
+              :is-placed="(item) => hasPlacement(item, 'soundtrack')"
+              :can-edit="canEdit"
+              :disabled="!componentVersion || busy"
+              :placing="placing"
+              :deleting="deleting"
+              @toggle-placement="togglePlacement($event, 'soundtrack')"
+              @remove="remove"
+            />
             <ZAEmptyState
-              v-if="filteredMedia.length === 0"
+              v-else-if="filteredMedia.length === 0"
               :title="emptyMediaTitle"
             />
             <ul
@@ -349,16 +353,16 @@ async function remove(mediaId: number) {
               <li v-for="(item, index) in filteredMedia" :key="item.id">
                 <MediaManagementCard
                   :url="mediaContentUrl(item.id)"
-                  :label="`${mediaRoleLabel(item)} ${index + 1}`"
+                  :label="`${componentMediaRoleLabel(t, item)} ${index + 1}`"
                   @preview="openMedia(index)"
                 >
                   <span class="za-shot__source">{{
-                    mediaRoleLabel(item)
+                    componentMediaRoleLabel(t, item)
                   }}</span>
                   <span
                     class="za-shot__source"
-                    :title="mediaSourceLabel(item)"
-                    >{{ mediaSourceLabel(item) }}</span
+                    :title="componentMediaSourceLabel(t, item)"
+                    >{{ componentMediaSourceLabel(t, item) }}</span
                   >
                   <div class="za-shot__badges d-flex flex-wrap ga-1">
                     <span

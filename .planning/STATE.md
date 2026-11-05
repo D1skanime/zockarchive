@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: phase_human_verification
-stopped_at: Phase40 Wave14 targeted technical verification complete, human UAT pending
-last_updated: 2026-11-05T09:20:00Z
+stopped_at: Phase40 Wave15 targeted technical verification complete, human UAT pending
+last_updated: 2026-11-05T09:45:00Z
 last_activity: 2026-11-05
 progress:
   total_phases: 39
@@ -21,7 +21,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase40 PC media surface/Storybook completion passed renewed targeted technical verification, including backend contract documentation and main-game/DLC navigation parity, and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
+**Current focus:** Phase40 PC media surface/Storybook completion passed renewed targeted technical verification, including playable and downloadable DLC-owned audio, and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
 
 ## Current Position
 

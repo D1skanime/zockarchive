@@ -47,13 +47,23 @@ describe("PcDlcMediaTab", () => {
   });
 
   it("renders localized media role and useful source labels", () => {
-    expect(source).toContain("function mediaRoleLabel");
-    expect(source).toContain("function mediaSourceLabel");
-    expect(source).toContain("t(`rom.pc-media-role-${item.role}`)");
-    expect(source).toContain('t("rom.pc-media-source-provider")');
-    expect(source).toContain('t("rom.pc-media-source-uploaded")');
-    expect(source).toMatch(/\{\{\s*mediaRoleLabel\(item\)\s*\}\}/);
-    expect(source).toMatch(/\{\{\s*mediaSourceLabel\(item\)\s*\}\}/);
+    expect(source).toContain("componentMediaRoleLabel");
+    expect(source).toContain("componentMediaSourceLabel");
+    expect(presentationSource).toContain("function componentMediaRoleLabel");
+    expect(presentationSource).toContain("function componentMediaSourceLabel");
+    expect(presentationSource).toContain(
+      "translate(`rom.pc-media-role-${item.role}`)",
+    );
+    expect(presentationSource).toContain(
+      'translate("rom.pc-media-source-provider")',
+    );
+    expect(presentationSource).toContain(
+      'translate("rom.pc-media-source-uploaded")',
+    );
+    expect(source).toMatch(/\{\{\s*componentMediaRoleLabel\(t, item\)\s*\}\}/);
+    expect(source).toMatch(
+      /\{\{\s*componentMediaSourceLabel\(t, item\)\s*\}\}/,
+    );
     expect(source).not.toContain("<strong>{{ item.role }}</strong>");
     expect(source).not.toContain("<span>{{ item.mime_type }}</span>");
   });

@@ -1122,8 +1122,8 @@ Plans:
 **Goal:** Complete the already implemented PC game and DLC media unification by repairing the Storybook language ledger and recording focused, reproducible technical verification without altering persisted media, APIs, or unrelated surfaces.
 **Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
 **Depends on:** Phase 39
-**Status:** Implementation complete; Wave 14 targeted technical verification passed (2026-11-05). Human UAT remains pending before any full regression.
-**Plans:** 13 plans
+**Status:** Implementation complete; Wave 15 targeted technical verification passed (2026-11-05). Human UAT remains pending before any full regression.
+**Plans:** 14 plans
 
 Plans:
 - [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.
@@ -1139,3 +1139,4 @@ Plans:
 - [x] 40-11-PLAN.md - Complete tab/panel semantics, universal input, and legacy subtab canonicalization.
 - [x] 40-12-PLAN.md - Split the reusable tab keyboard-target resolver to restore the primitive source-size limit.
 - [x] 40-13-PLAN.md - Document DLC-owned media boundaries and align main-game media navigation with the shared tab primitive.
+- [x] 40-14-PLAN.md - Provide playable and downloadable component-owned DLC soundtrack tracks.

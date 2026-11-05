@@ -48,10 +48,10 @@ vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
 }));
 vi.mock("@v2/lib", () => ({
   ZABtn: {
-    props: { disabled: Boolean },
+    props: { disabled: Boolean, href: String, download: String },
     emits: ["click"],
     template:
-      '<button :disabled="disabled" @click="$emit(\'click\')"><slot name="prepend" /><slot /></button>',
+      '<component :is="href ? \'a\' : \'button\'" :href="href" :download="download" :disabled="disabled" @click="$emit(\'click\')"><slot name="prepend" /><slot /></component>',
   },
   ZACard: { template: '<div class="r-card"><slot /></div>' },
   ZAIcon: { props: ["icon"], template: '<span :data-icon="icon" />' },
@@ -113,8 +113,20 @@ const component: PcComponentSchema = {
   updated_at: "2026-10-24T10:00:00Z",
   owned_media: [media],
 };
-function render(refresh = mocks.refresh) {
-  return mount(PcDlcMediaTab, { props: { romId: 24, component, refresh } });
+const soundtrackMedia = {
+  ...media,
+  id: 8,
+  role: "soundtrack" as const,
+  mime_type: "audio/mpeg",
+  owned_path: "fixture/dlc-track.mp3",
+  placements: [
+    { id: 2, media_id: 8, surface: "soundtrack" as const, position: 0 },
+  ],
+};
+function render(refresh = mocks.refresh, currentComponent = component) {
+  return mount(PcDlcMediaTab, {
+    props: { romId: 24, component: currentComponent, refresh },
+  });
 }
 beforeEach(() => {
   vi.clearAllMocks();
@@ -326,6 +338,31 @@ describe("DLC media presentation preserves component capabilities", () => {
       path: "/rom/24/dlc/20",
       query: { tab: "media", subtab: "soundtrack" },
     });
+  });
+
+  it("renders DLC soundtrack tracks as playable audio with downloads, not image cards", async () => {
+    const soundtrackComponent = {
+      ...component,
+      owned_media: [soundtrackMedia],
+    };
+    const wrapper = render(mocks.refresh, soundtrackComponent);
+    await flushPromises();
+    await wrapper
+      .get('[role="tab"][aria-label="rom.soundtrack"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(wrapper.find("audio").attributes("src")).toBe(
+      "/api/roms/24/pc-components/20/media/8/content",
+    );
+    expect(wrapper.find("audio").attributes()).toHaveProperty("controls");
+    expect(
+      wrapper
+        .get('[aria-label="common.download: rom.soundtrack 1"]')
+        .attributes("href"),
+    ).toBe("/api/roms/24/pc-components/20/media/8/content");
+    expect(wrapper.find(".za-shot").exists()).toBe(false);
+    expect(wrapper.find("[data-carousel]").exists()).toBe(false);
   });
 
   it("replaces obsolete media subtabs with the screenshots route", async () => {
