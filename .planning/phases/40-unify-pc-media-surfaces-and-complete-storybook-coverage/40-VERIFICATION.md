@@ -18,6 +18,7 @@ verified: 2026-11-04
 | Review correction: main-game artwork and soundtrack use shared media composites; non-audio library files cannot become local soundtrack candidates. | Focused artwork, soundtrack, DLC media, composite and extension tests: 22 passed. The audio helper explicitly rejects `SOURCES.txt` and non-audio extensions. | Passed |
 | Review correction: visible media labels and DLC gallery empty state are localized. | `check_i18n_locales.py` and `check_i18n_sorted.py` passed; all 18 locales contain `common.actions`, `common.refresh`, and role-specific `rom.pc-media-empty-gallery`. | Passed |
 | Review correction: affected frontend integration stays green. | `npm run typecheck` passed. Scoped Trunk check: 45 files, no new issues. Prescribed `ki-targeted-tests frontend`: 122 passed in 12 files. | Passed |
+| Second review correction: background Storybook states are concrete and the main/DLC carousel close controls are localized. | `BackgroundArt.stories.test.ts` executes the interactive active-layer transition to the real ZA-glass fallback; focused AppShell/GameDetails selection: 29 passed. The Storybook catalog ledger accepts the newly visible German copy. `npm run typecheck`, scoped Trunk (9 files), temporary-cache Storybook build, and prescribed `ki-targeted-tests frontend`: 127 passed in 13 files. | Passed |
 
 ## Deliberate limits
 

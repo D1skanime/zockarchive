@@ -357,6 +357,9 @@ shared `r-v2-za-glass-background` fallback when no cover is selected. In the
 dark theme it marks image-bearing layers and their overlay separately, so game
 art keeps more detail while ZA glass, login, device-pair and empty-route
 fallback layers retain their established treatment throughout a cross-fade.
+The `Marke/ZA-Hintergrund/Spielbilder` Storybook group compares distinct bright
+and dark sample art, the fallback-only state, and an interactive game-art to
+ZA-glass transition.
 The same token-driven CSS background is used by login and device-pair shells.
 It replaces the inherited RomM SVG backgrounds with Glasreflexion B: cyan and
 sparingly light-cyan bands from the approved ZA logo palette move with

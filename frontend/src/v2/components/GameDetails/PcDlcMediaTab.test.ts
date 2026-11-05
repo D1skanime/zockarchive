@@ -36,6 +36,7 @@ describe("PcDlcMediaTab", () => {
     expect(source).toContain("lightboxOpen");
     expect(source).toContain("fullscreen");
     expect(source).toContain("show-thumbnails");
+    expect(source).toContain(":close-label=\"t('common.close')\"");
   });
 
   it("keeps placement controls permission-gated and component-scoped", () => {

@@ -61,4 +61,8 @@ describe("ArtworkSubtab owned artwork management", () => {
     expect(locale("en_US")["upload-artwork"]).toBe("Upload artwork");
     expect(locale("de_DE")["upload-artwork"]).toBe("Artwork hochladen");
   });
+
+  it("passes the localized close label to the artwork lightbox", () => {
+    expect(source).toContain(":close-label=\"t('common.close')\"");
+  });
 });

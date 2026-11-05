@@ -433,6 +433,7 @@ async function remove(mediaId: number) {
       fullscreen
       show-thumbnails
       :aria-label="t('rom.media')"
+      :close-label="t('common.close')"
       @close="closeLightbox"
     >
       <template #default="{ item, index }">

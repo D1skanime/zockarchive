@@ -13391,57 +13391,113 @@
   {
     "category": "story-data",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 8",
+    "location": "Zeile 11",
     "text": "Marke/ZA-Hintergrund/Spielbilder",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 33",
+    "location": "Zeile 36",
     "text": "Helles Spielbild im dunklen Design",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 38",
+    "location": "Zeile 41",
     "text": "Dunkles Spielbild im dunklen Design",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 43",
+    "location": "Zeile 46",
+    "text": "ZA-Fallback ohne Spielbild",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 63",
     "text": "Crossfade zum ZA-Fallback",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 47",
-    "text": "Eine Bild-Ebene bleibt aktiv, während die zweite Ebene bereits den unveränderten ZA-Glas-Fallback trägt. Das zeigt die getrennte Behandlung ohne Helligkeitssprung.",
+    "location": "Zeile 54",
+    "text": "Der unveränderte ZA-Glas-Fallback ohne Spielbild. Login, Pairing und leere Routen verwenden weiterhin dieselbe Behandlung.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 92",
+    "text": "Der Schalter aktiviert die zweite Ebene, die den unveränderten ZA-Glas-Fallback trägt. Damit ist der reale Übergang vom Spielbild zum Fallback samt getrenntem Overlay sichtbar.",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 106",
+    "text": "Spielbild ist die aktive Ausgangsebene",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 111",
+    "text": "Zum unveränderten ZA-Fallback überblenden",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 103",
+    "text": "Zum ZA-Fallback wechseln",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 19",
+    "location": "Zeile 22",
     "text": "Dunkles Design",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 20",
+    "location": "Zeile 23",
     "text": "Lesbarkeit über Spielbildern",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 21",
+    "location": "Zeile 24",
     "text": "Karten und Bedienelemente behalten im Vordergrund ausreichend Kontrast.",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 81",
+    "text": "Zum ZA-Fallback wechseln",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 85",
+    "text": "{{ activeLayer === 'a' ? 'ZA-Fallback zeigen' : 'Spielbild zeigen' }}",
+    "status": "german"
+  },
+  {
+    "category": "template-interpolation",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 86",
+    "text": "{{ activeLayer === 'a' ? 'ZA-Fallback zeigen' : 'Spielbild zeigen' }}",
     "status": "german"
   }
 ]

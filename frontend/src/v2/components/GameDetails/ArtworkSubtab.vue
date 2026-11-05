@@ -419,6 +419,7 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
     fullscreen
     show-thumbnails
     :aria-label="t('rom.artwork')"
+    :close-label="t('common.close')"
     @close="lightboxOpen = false"
     ><template #default="{ item, index }"
       ><img :src="item" :alt="ownedArtwork[index]?.display_label" /></template

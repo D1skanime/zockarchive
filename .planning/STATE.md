@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: phase_human_verification
-stopped_at: Phase40 targeted technical verification complete, human UAT pending
-last_updated: 2026-11-04T15:05:00Z
-last_activity: 2026-11-04
+stopped_at: Phase40 Wave10 targeted technical verification complete, human UAT pending
+last_updated: 2026-11-05T03:49:00Z
+last_activity: 2026-11-05
 progress:
   total_phases: 39
   completed_phases: 24
@@ -21,7 +21,7 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase40 PC media surface/Storybook completion passed targeted technical verification and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
+**Current focus:** Phase40 PC media surface/Storybook completion passed targeted technical verification, including the second independent-review correction, and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
 
 ## Current Position
 
@@ -30,7 +30,7 @@ Plan:1/1
 Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
 Last activity: 2026-10-28 - Completed quick task 261028-bt1: transparent logo overlays
 
-Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Typecheck, locale guards, 22 focused tests, scoped Trunk, and the 122-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
+Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
 The user accepted the browser branding, German/English, both themes and narrow-layout UAT on2026-10-26. Physical controller testing was unavailable, and the user explicitly accepted the documented native-client limitation. Technical coverage remains20/21; no native upgrade test is claimed. PR7 was previously merged at467e03dca and Dev deployed under explicit authorization. Read38-UAT.md,38-HUMAN-UAT.md and38-DEV-DEPLOYMENT.md. Historical milestone/production/NAS/artwork gates remain separate. KI setup stays deferred until the separate Claude phase is finished. Phase39 now integrates the approved assets, blue-glass token direction and UAT-only animation proposals without deployment, push, storage/auth/API change or external-media mutation. See39-VERIFICATION.md and39-UAT.md for remaining browser checks.
 

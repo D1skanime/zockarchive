@@ -50,4 +50,27 @@ describe("BackgroundArt", () => {
       "r-v2-bg__overlay--art",
     );
   });
+
+  it("can cross-fade from game art to the unchanged ZA glass fallback", () => {
+    const wrapper = mount(BackgroundArt, {
+      props: {
+        layerA: "https://example.test/cover.png",
+        layerB: null,
+        activeLayer: "b",
+      },
+    });
+
+    expect(wrapper.find(".r-v2-bg__layer--a").classes()).toContain(
+      "r-v2-bg__layer--art",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--a").classes()).not.toContain(
+      "r-v2-bg__layer--active",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--b").classes()).toContain(
+      "r-v2-za-glass-background",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--b").classes()).toContain(
+      "r-v2-bg__layer--active",
+    );
+  });
 });
