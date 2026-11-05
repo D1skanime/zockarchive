@@ -68,6 +68,11 @@ describe("PcDlcMediaTab", () => {
     expect(source).toContain('role="tab"');
   });
 
+  it("uses a DLC-specific gallery empty state instead of main-game artwork copy", () => {
+    expect(source).toContain('t("rom.pc-media-empty-gallery")');
+    expect(source).not.toContain(":title=\"t('rom.artwork-empty')\"");
+  });
+
   it("awaits canonical reconciliation before reporting deletion success", () => {
     expect(source).toMatch(
       /await api\.delete[\s\S]+await reconcile\(\)[\s\S]+pc-media-deleted/,

@@ -9,7 +9,7 @@ const source = readFileSync(
 describe("SoundtrackPanel owned-media queue", () => {
   it("uses only owned soundtrack candidates and their ordered placements", () => {
     expect(source).toContain('item.role === "soundtrack"');
-    expect(source).toContain('placement.surface === "soundtrack"');
+    expect(source).toContain("soundtrackPlacement(item)");
     expect(source).toContain("loadPlaylistForRom");
     expect(source).toContain("mediaId: item.id");
     expect(source).not.toContain("getSoundtrackMetadata");
@@ -27,6 +27,9 @@ describe("SoundtrackPanel owned-media queue", () => {
 
   it("offers local and owned soundtrack files as background-music candidates", () => {
     expect(source).toContain('file.category === "soundtrack"');
+    expect(source).toContain("isSupportedSoundtrackFile(file.file_name)");
+    expect(source).toContain("MediaUploadControl");
+    expect(source).toContain("soundtrackAccept");
     expect(source).toContain("local_background_audio_file_ids");
     expect(source).toContain("replaceLocalBackgroundAudio");
     expect(source).toContain("toggleLocalBackgroundAudio");

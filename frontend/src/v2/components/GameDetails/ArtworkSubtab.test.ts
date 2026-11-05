@@ -19,10 +19,10 @@ describe("ArtworkSubtab owned artwork management", () => {
     expect(source).toContain("togglePlacement");
     expect(source).toContain("replaceOwnedMediaPlacements");
     expect(source).toContain('t("rom.backgrounds")');
-    expect(source).toContain('t("rom.add-as-background")');
-    expect(source).toContain('t("rom.remove-as-background")');
-    expect(source).toContain('t("rom.add-to-overview")');
-    expect(source).toContain('t("rom.remove-from-overview")');
+    expect(source).toContain("t('rom.add-as-background')");
+    expect(source).toContain("t('rom.remove-as-background')");
+    expect(source).toContain("t('rom.add-to-overview')");
+    expect(source).toContain("t('rom.remove-from-overview')");
     expect(source).toContain("togglePlacement(item, 'overview')");
   });
 
@@ -32,8 +32,8 @@ describe("ArtworkSubtab owned artwork management", () => {
     expect(source).not.toContain('useCan("rom.delete", scope)');
     expect(source).toContain("uploadOwnedMedia");
     expect(source).toContain('role: "artwork"');
-    expect(source).toContain("item.origin === 'upload' && canManage");
-    expect(source).toContain('tone: "danger"');
+    expect(source).toContain("item.origin === 'upload'");
+    expect(source).toContain('tone="danger"');
     expect(source).toContain("deleteOwnedMedia");
     expect(source).toContain("romsStore.refreshRom");
   });
@@ -45,16 +45,15 @@ describe("ArtworkSubtab owned artwork management", () => {
     expect(source).toContain("common.move-down");
   });
 
-  it("keeps the uploaded artwork delete button as the visible tooltip activator", () => {
-    expect(source).toMatch(
-      /<ZABtn\s+v-if="item\.origin === 'upload' && canManage"\s+icon="mdi-delete-outline"\s+:loading="mutatingId === item\.id"\s+:aria-label="t\('common\.delete'\)"\s+@click="deleteArtwork\(item\)"\s+><ZATooltip activator="parent" :text="t\('common\.delete'\)" \/>/,
-    );
-    expect(source).not.toContain(
-      `<ZATooltip
-              v-if="item.origin === 'upload' && canManage"
-              :text="t('common.delete')"
-              ><ZABtn`,
-    );
+  it("renders artwork controls with the documented shared media composites", () => {
+    expect(source).toContain("MediaManagementCard");
+    expect(source).toContain("MediaManagementAction");
+    expect(source).toContain("MediaUploadControl");
+    expect(source).toContain('icon="mdi-view-dashboard-outline"');
+    expect(source).toContain('icon="mdi-image-outline"');
+    expect(source).toContain('icon="mdi-delete-outline"');
+    expect(source).toContain('@click="deleteArtwork(item)"');
+    expect(source).not.toContain("r-v2-art__preview");
   });
 
   it("uses localized artwork upload labels instead of exposing the i18n key", () => {

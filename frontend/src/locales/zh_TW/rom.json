@@ -389,6 +389,7 @@
   "pc-hotfixes": "Hotfix 修正",
   "pc-language-packs": "語言套件",
   "pc-media-deleted": "DLC media deleted successfully",
+  "pc-media-empty-gallery": "此 DLC 沒有可用的圖庫圖片。",
   "pc-media-role-artwork": "Artwork",
   "pc-media-role-cover": "Cover",
   "pc-media-role-gallery": "Gallery image",

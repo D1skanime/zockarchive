@@ -5,6 +5,13 @@ import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import type { RomOwnedMediaSchema } from "@/__generated__";
+import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
+import {
+  isSupportedSoundtrackFile,
+  soundtrackAccept,
+  soundtrackPlacement,
+  supportedSoundtrackMimeTypes,
+} from "@/v2/components/GameDetails/soundtrackFiles";
 import VolumeControl from "@/v2/components/Soundtrack/VolumeControl.vue";
 import { useCan } from "@/v2/composables/useCan";
 import { useConfirm } from "@/v2/composables/useConfirm";
@@ -41,27 +48,11 @@ const movingId = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
 const uploadFailures = ref<string[]>([]);
 const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
-const acceptedAudioTypes = [
-  "audio/mpeg",
-  "audio/aac",
-  "audio/flac",
-  "audio/ogg",
-  "audio/opus",
-  "audio/mp4",
-  "audio/wav",
-];
-const acceptedAudioExtensions = ".mp3,.aac,.flac,.ogg,.opus,.m4a,.wav";
-
 const ownedTracks = computed(() =>
   (props.rom.owned_media ?? []).filter(
     (item) => item.role === "soundtrack" && item.state === "active",
   ),
 );
-function soundtrackPlacement(item: RomOwnedMediaSchema) {
-  return item.placements?.find(
-    (placement) => placement.surface === "soundtrack",
-  );
-}
 const includedTracks = computed(() =>
   ownedTracks.value
     .filter((item) => soundtrackPlacement(item))
@@ -76,7 +67,11 @@ const availableTracks = computed(() =>
   ownedTracks.value.filter((item) => !soundtrackPlacement(item)),
 );
 const localTracks = computed(() =>
-  props.rom.files.filter((file) => file.category === "soundtrack"),
+  props.rom.files.filter(
+    (file) =>
+      file.category === "soundtrack" &&
+      isSupportedSoundtrackFile(file.file_name),
+  ),
 );
 const selectedLocalTrackIds = computed(
   () => new Set(props.rom.local_background_audio_file_ids ?? []),
@@ -310,22 +305,24 @@ function fmt(seconds: number) {
         <h3 id="soundtrack-heading">{{ t("rom.soundtrack") }}</h3>
         <p>{{ t("rom.soundtrack-owned-hint") }}</p>
       </div>
-      <ZABtn
-        v-if="canManage"
+      <MediaUploadControl
+        :available="canManage"
         :loading="uploading"
-        prepend-icon="mdi-upload"
-        :aria-label="t('rom.upload-soundtrack')"
-        @click="dropzone?.open()"
-      >
-        {{ t("rom.upload-soundtrack") }}
-      </ZABtn>
+        :disabled="uploading"
+        :label="t('rom.upload-soundtrack')"
+        :hint="t('rom.soundtrack-upload-hint')"
+        :error="
+          uploadFailures.length ? t('rom.soundtrack-upload-error') : undefined
+        "
+        @upload="dropzone?.open()"
+      />
     </header>
     <ZADropzone
       v-if="canManage"
       ref="dropzone"
       :disabled="uploading"
-      :accept="acceptedAudioExtensions"
-      :data-types="acceptedAudioTypes"
+      :accept="soundtrackAccept"
+      :data-types="supportedSoundtrackMimeTypes"
       multiple
       :title="t('rom.upload-soundtrack')"
       :hint="t('rom.soundtrack-upload-hint')"

@@ -112,6 +112,13 @@ const componentVersion = computed(() => props.component.updated_at ?? null);
 const filteredMedia = computed(() =>
   media.value.filter((item) => activeRoles.value.includes(item.role)),
 );
+const emptyMediaTitle = computed(() =>
+  subtab.value === "artwork"
+    ? t("rom.pc-media-empty-gallery")
+    : subtab.value === "soundtrack"
+      ? t("rom.soundtrack-empty")
+      : t("rom.screenshots-empty"),
+);
 const mediaUrls = computed(() =>
   filteredMedia.value.map((item) => mediaContentUrl(item.id)),
 );
@@ -347,7 +354,7 @@ async function remove(mediaId: number) {
           </div>
           <ZAEmptyState
             v-if="filteredMedia.length === 0"
-            :title="t('rom.artwork-empty')"
+            :title="emptyMediaTitle"
           />
           <ul
             v-else

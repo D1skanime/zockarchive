@@ -15,6 +15,9 @@ verified: 2026-11-04
 | Backend correction: failed Config persistence preserves active authority. | Exact reproducing MariaDB CI shard 5: 728 tests, 0 failures, 0 errors, 0 skips. Includes the four serialization/replacement cases for full scan settings and scoped language updates. Receipt: job temporary `pgdp34-432e88b565a245e7953c331e24d9491f-9mrp1es6/evidence/backend.xml`. | Passed |
 | Backend decomposition: DLC-owned storage remains isolated from generic resources. | Scoped Trunk passed; isolated MariaDB resource-handler and component-resource endpoint selection passed with cleanup and source immutability. | Passed |
 | Backend decomposition: component-only response, ORM, and database mutation seams remain behaviorally compatible. | Scoped `trunk fmt`/`trunk check` passed with no new issues. Final isolated MariaDB model/database/endpoint selection: 20 tests, 0 failures, 0 errors, 0 skips; receipt: job temporary `pgdp34-c066e820d0624a9e8cf829b824ccfe2b-y00kqb5x/evidence/backend.xml`. Prescribed `ki-targeted-tests backend`: 373 passed, 1 expected skip, 7 warnings, with cleanup/source-immutability confirmation. | Passed |
+| Review correction: main-game artwork and soundtrack use shared media composites; non-audio library files cannot become local soundtrack candidates. | Focused artwork, soundtrack, DLC media, composite and extension tests: 22 passed. The audio helper explicitly rejects `SOURCES.txt` and non-audio extensions. | Passed |
+| Review correction: visible media labels and DLC gallery empty state are localized. | `check_i18n_locales.py` and `check_i18n_sorted.py` passed; all 18 locales contain `common.actions`, `common.refresh`, and role-specific `rom.pc-media-empty-gallery`. | Passed |
+| Review correction: affected frontend integration stays green. | `npm run typecheck` passed. Scoped Trunk check: 45 files, no new issues. Prescribed `ki-targeted-tests frontend`: 122 passed in 12 files. | Passed |
 
 ## Deliberate limits
 

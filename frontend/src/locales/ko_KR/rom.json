@@ -389,6 +389,7 @@
   "pc-hotfixes": "핫픽스",
   "pc-language-packs": "언어 팩",
   "pc-media-deleted": "DLC media deleted successfully",
+  "pc-media-empty-gallery": "이 DLC에 사용할 수 있는 갤러리 이미지가 없습니다.",
   "pc-media-role-artwork": "Artwork",
   "pc-media-role-cover": "Cover",
   "pc-media-role-gallery": "Gallery image",
