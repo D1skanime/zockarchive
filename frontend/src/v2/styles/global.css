@@ -19,6 +19,19 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Detail panels host sticky media controls. Keep that local stacking context
+   below primary navigation so the controls cannot intercept route-tab input. */
+.r-v2 .r-v2-det__tabs,
+.r-v2 .pc-dlc-detail__tab-bar {
+  position: relative;
+  z-index: 3;
+}
+.r-v2 .r-v2-det__panel {
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
+}
+
 /* Responsive page padding — `--r-row-pad` is consumed everywhere as the
    horizontal gutter for page rows / toolbars / nav / widgets. Shrinking
    it here tightens every consumer at once on narrower viewports, so

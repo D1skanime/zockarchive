@@ -616,11 +616,6 @@ const tabs = computed<ZATabNavItem[]>(() => [
 }
 
 .r-v2-det__tabs {
-  /* Sticky media upload controls are allowed inside the scroll panel, never
-     above the primary route controls. Keep the tab strip in its own higher
-     stacking level so a panel descendant cannot take its hit targets. */
-  position: relative;
-  z-index: 3;
   margin: 14px 0 16px;
 }
 
@@ -631,8 +626,6 @@ const tabs = computed<ZATabNavItem[]>(() => [
      an absolutely-positioned root to this panel's visible viewport
      when they want internal scroll instead of the panel's scroll. */
   position: relative;
-  isolation: isolate;
-  z-index: 0;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
