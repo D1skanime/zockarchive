@@ -7,9 +7,10 @@ parent_phase: 40
 
 # Restore detail navigation after entering media Summary
 
-The main-game and DLC detail shells now isolate their scrolling media panel
-from the primary navigation stacking level. Sticky upload headers remain
-usable in the panel but cannot cover primary tab hit targets.
+The shared detail-shell stylesheet now isolates the scrolling media panel
+from the primary navigation stacking level for both main games and DLCs.
+Sticky upload headers remain usable in the panel but cannot cover primary tab
+hit targets.
 
 The main media Playwright helper now selects the productive shared vertical
 `ZATabNav`, and a browser regression covers Media to Overview. Rendered DLC
