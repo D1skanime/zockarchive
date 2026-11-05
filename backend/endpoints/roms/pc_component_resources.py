@@ -30,7 +30,9 @@ from endpoints.roms.pc_component_resource_support import (
 )
 from handler.auth.constants import Scope
 from handler.database import db_rom_handler
-from handler.filesystem import fs_resource_handler, fs_rom_handler
+from handler.filesystem import fs_resource_handler, fs_rom_handler, storage_composition
+from handler.filesystem.storage_access import OwnedRead, open_owned_access
+from handler.filesystem.storage_policy import OwnedStorageKind, StorageOperation
 from models.rom import (
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaRole,
