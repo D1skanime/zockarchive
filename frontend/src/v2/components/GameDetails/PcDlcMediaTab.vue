@@ -12,7 +12,6 @@ import type {
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
-import PcDlcManualPanel from "@/v2/components/GameDetails/PcDlcManualPanel.vue";
 import PcDlcSoundtrackPanel from "@/v2/components/GameDetails/PcDlcSoundtrackPanel.vue";
 import {
   componentMediaRoleLabel,
@@ -269,14 +268,8 @@ async function remove(mediaId: number) {
           role="tabpanel"
           :aria-labelledby="tab.tabId"
         >
-          <PcDlcManualPanel
-            v-if="tab.id === 'manual' && subtab === tab.id"
-            :rom-id="romId"
-            :component="component"
-            :refresh="refresh"
-          />
           <ZADropzone
-            v-else-if="subtab === tab.id"
+            v-if="subtab === tab.id"
             ref="dropzone"
             overlay
             :disabled="busy || !componentVersion || !canEdit"

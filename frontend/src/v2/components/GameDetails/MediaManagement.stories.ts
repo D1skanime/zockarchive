@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
 import { ZADropzone } from "@v2/lib";
 import { expect, within } from "storybook/test";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, type PropType } from "vue";
 import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import MediaManagementAction from "./MediaManagementAction.vue";
 import MediaManagementCard from "./MediaManagementCard.vue";
@@ -19,6 +19,7 @@ const SyntheticMediaPage = defineComponent({
   props: {
     owner: { type: String, required: true },
     title: { type: String, required: true },
+    tabs: { type: Array as PropType<string[]>, required: true },
   },
   setup() {
     const previewed = ref(false);
@@ -43,7 +44,7 @@ const SyntheticMediaPage = defineComponent({
       </header>
       <div style="display:grid; grid-template-columns:minmax(150px, 190px) minmax(0, 1fr); gap:16px">
         <nav aria-label="Medienbereiche" style="display:grid; align-content:start; gap:6px; color:var(--r-color-fg-muted)">
-          <span>Handbuch</span><span>Screenshots</span><span>Artwork</span><span>Soundtrack</span>
+          <span v-for="tab in tabs" :key="tab">{{ tab }}</span>
         </nav>
         <section style="display:grid; gap:12px">
           <ZADropzone overlay accept="image/jpeg,image/png,image/webp" input-label="Medien hochladen">
@@ -188,7 +189,8 @@ export const HauptspielMedienseite: Story = {
   },
   render: () => ({
     components: { SyntheticMediaPage },
-    template: '<SyntheticMediaPage owner="Cyberpunk 2077" title="Medien" />',
+    template:
+      "<SyntheticMediaPage owner=\"Cyberpunk 2077\" title=\"Medien\" :tabs=\"['Handbuch', 'Screenshots', 'Artwork', 'Soundtrack']\" />",
   }),
 };
 
@@ -198,13 +200,13 @@ export const DLCMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Vollständiger DLC-Seitenkontext mit denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt.",
+          "Vollständiger DLC-Seitenkontext mit Screenshots, Artwork und Soundtrack sowie denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt; DLC-Handbücher haben keinen UI-Einstieg.",
       },
     },
   },
   render: () => ({
     components: { SyntheticMediaPage },
     template:
-      '<SyntheticMediaPage owner="Phantom Liberty" title="DLC-Medien" />',
+      "<SyntheticMediaPage owner=\"Phantom Liberty\" title=\"DLC-Medien\" :tabs=\"['Screenshots', 'Artwork', 'Soundtrack']\" />",
   }),
 };

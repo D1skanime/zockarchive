@@ -72,5 +72,22 @@ describe("BackgroundArt", () => {
     expect(wrapper.find(".r-v2-bg__layer--b").classes()).toContain(
       "r-v2-bg__layer--active",
     );
+    expect(wrapper.find(".r-v2-bg__overlay").classes()).not.toContain(
+      "r-v2-bg__overlay--art",
+    );
+  });
+
+  it("does not tint the active fallback when inactive art remains for the cross-fade", () => {
+    const wrapper = mount(BackgroundArt, {
+      props: {
+        layerA: "https://example.test/stale-cover.png",
+        layerB: null,
+        activeLayer: "b",
+      },
+    });
+
+    expect(wrapper.find(".r-v2-bg__overlay").classes()).not.toContain(
+      "r-v2-bg__overlay--art",
+    );
   });
 });

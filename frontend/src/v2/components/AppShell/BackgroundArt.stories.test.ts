@@ -42,6 +42,11 @@ describe("BackgroundArt Storybook examples", () => {
       expect(
         fallbackLayer?.classList.contains("r-v2-za-glass-background"),
       ).toBe(true);
+      expect(
+        canvasElement
+          .querySelector(".r-v2-bg__overlay")
+          ?.classList.contains("r-v2-bg__overlay--art"),
+      ).toBe(false);
     } finally {
       canvasElement.remove();
     }

@@ -23,7 +23,7 @@ from handler.filesystem.resources_handler import (
 )
 from handler.filesystem.storage_policy import OwnedStorageKind
 from models.collection import Collection
-from models.rom import Rom
+from models.rom import Rom, RomComponentOwnedMediaRole
 from utils.rate_limiter import ConcurrencyLimiter, RateLimiter
 
 
@@ -1177,3 +1177,27 @@ async def test_component_owned_uploads_use_distinct_owned_paths(tmp_path: Path):
     assert mime_type == "audio/flac"
     assert (tmp_path / manual_path).read_bytes() == b"guide"
     assert (tmp_path / audio_path).read_bytes() == b"audio"
+
+
+@pytest.mark.asyncio
+async def test_component_image_uploads_never_replace_another_gallery_or_screenshot(
+    tmp_path: Path,
+):
+    handler = FSResourcesHandler(storage_composition.owned[OwnedStorageKind.RESOURCES])
+    handler.base_path = tmp_path
+    rom = _manual_rom("")
+
+    for role in (
+        RomComponentOwnedMediaRole.SCREENSHOT,
+        RomComponentOwnedMediaRole.GALLERY,
+    ):
+        first = await handler.store_pc_component_upload(rom, 42, role, b"first", ".png")
+        second = await handler.store_pc_component_upload(
+            rom, 42, role, b"second", ".png"
+        )
+
+        assert first != second
+        assert first.startswith(f"roms/17/73/pc-owned-media/42-upload-{role.value}-")
+        assert second.startswith(f"roms/17/73/pc-owned-media/42-upload-{role.value}-")
+        assert (tmp_path / first).read_bytes() == b"first"
+        assert (tmp_path / second).read_bytes() == b"second"

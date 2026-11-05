@@ -70,7 +70,7 @@ describe("PcDlcMediaTab", () => {
 
   it("uses the shared media navigation while preserving typed upload roles", () => {
     expect(source).toContain("validDlcMediaSubtabs");
-    expect(presentationSource).toContain('"manual"');
+    expect(presentationSource).not.toContain('"manual"');
     expect(presentationSource).toContain('"screenshots"');
     expect(presentationSource).toContain('"artwork"');
     expect(presentationSource).toContain('"soundtrack"');

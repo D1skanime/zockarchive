@@ -303,18 +303,18 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(mocks.delete).not.toHaveBeenCalled();
   });
 
-  it("navigates between manual, screenshots, artwork and soundtrack without using the cover role", async () => {
+  it("navigates between screenshots, artwork and soundtrack without a DLC manual entry", async () => {
     const wrapper = render();
     await flushPromises();
 
-    expect(wrapper.findAll('[role="tab"]')).toHaveLength(4);
+    expect(wrapper.findAll('[role="tab"]')).toHaveLength(3);
     expect(
       wrapper
         .get('[role="tab"][aria-label="rom.screenshots"]')
         .attributes("aria-controls"),
     ).toBe("pc-dlc-media-panel-screenshots");
     const panels = wrapper.findAll('[role="tabpanel"]');
-    expect(panels).toHaveLength(4);
+    expect(panels).toHaveLength(3);
     expect(
       wrapper.get("#pc-dlc-media-panel-screenshots").attributes("role"),
     ).toBe("tabpanel");
@@ -327,6 +327,7 @@ describe("DLC media presentation preserves component capabilities", () => {
       "rom.screenshots",
     );
     expect(wrapper.text()).not.toContain("rom.pc-media-role-cover");
+    expect(wrapper.text()).not.toContain("rom.manual");
 
     await wrapper
       .get('[role="tab"][aria-label="rom.soundtrack"]')

@@ -99,6 +99,7 @@ export const CrossfadeZumZAFallback: Story = {
     const canvas = within(canvasElement);
     const layerA = canvasElement.querySelector(".r-v2-bg__layer--a");
     const layerB = canvasElement.querySelector(".r-v2-bg__layer--b");
+    const overlay = canvasElement.querySelector(".r-v2-bg__overlay");
     const toggle = canvas.getByRole("button", {
       name: "Zum ZA-Fallback wechseln",
     });
@@ -112,6 +113,7 @@ export const CrossfadeZumZAFallback: Story = {
       await userEvent.click(toggle);
       await expect(layerB).toHaveClass("r-v2-bg__layer--active");
       await expect(layerA).not.toHaveClass("r-v2-bg__layer--active");
+      await expect(overlay).not.toHaveClass("r-v2-bg__overlay--art");
       await expect(toggle).toHaveAttribute("aria-pressed", "true");
     });
   },

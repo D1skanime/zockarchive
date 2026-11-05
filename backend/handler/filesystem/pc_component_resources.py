@@ -19,7 +19,7 @@ class PcComponentResourceStorageMixin:
         extension: str,
     ) -> str:
         media_path = f"{rom.fs_resources_path}/pc-owned-media"
-        filename = f"{component_id}-upload-{role.value}.{extension}"
+        filename = f"{component_id}-upload-{role.value}-{secrets.token_hex(16)}.{extension.lstrip('.')}"
         await self.write_file(content, media_path, filename)
         return f"{media_path}/{filename}"
 

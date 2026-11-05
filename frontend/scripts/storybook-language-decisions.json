@@ -13125,266 +13125,245 @@
   {
     "category": "story-data",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 106",
+    "location": "Zeile 107",
     "text": "Im Einsatz/Zusammengesetzt/Medienverwaltung",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 117",
+    "location": "Zeile 118",
     "text": "Medienkarte mit Aktionen",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 157",
+    "location": "Zeile 158",
     "text": "Upload-Zustände",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 180",
+    "location": "Zeile 181",
     "text": "Hauptspiel-Medienseite",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 196",
+    "location": "Zeile 198",
     "text": "DLC-Medienseite",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 120",
+    "location": "Zeile 121",
     "text": "Die zusammengesetzte Karte dokumentiert die verwendeten Symbole: Dashboard für Übersicht, Bild für Hintergrund und Papierkorb für Löschen. Die Daten und Ereignisse sind synthetisch.",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 160",
+    "location": "Zeile 161",
     "text": "Die gemeinsame Uploadleiste zeigt normale, laufende, fehlerhafte und deaktivierte Zustände. Dateityp, Mehrfachauswahl und der Dropbereich bleiben beim jeweiligen Medienbesitzer konfigurierbar.",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 183",
+    "location": "Zeile 184",
     "text": "Vollständiger Seitenkontext für ein Hauptspiel mit synthetischen Medien und lokalen Ereignissen. Die Story ruft weder Upload- noch Löschendpunkte auf.",
     "status": "german"
   },
   {
     "category": "docs-description",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 199",
-    "text": "Vollständiger DLC-Seitenkontext mit denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt.",
+    "location": "Zeile 201",
+    "text": "Vollständiger DLC-Seitenkontext mit Screenshots, Artwork und Soundtrack sowie denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt; DLC-Handbücher haben keinen UI-Einstieg.",
     "status": "german"
   },
   {
     "category": "play-step",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 144",
+    "location": "Zeile 145",
     "text": "Aktionssymbole besitzen verständliche Beschriftungen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 45",
+    "location": "Zeile 46",
     "text": "Medienbereiche",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 53",
+    "location": "Zeile 54",
     "text": "Medien hochladen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 63",
+    "location": "Zeile 64",
     "text": "Synthetisches Medienbild",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 76",
+    "location": "Zeile 77",
     "text": "Zur Übersicht hinzufügen oder daraus entfernen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 84",
+    "location": "Zeile 85",
     "text": "Als Hintergrund festlegen oder entfernen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 92",
+    "location": "Zeile 93",
     "text": "Synthetisches Medienbild löschen",
     "status": "german"
   },
   {
-    "category": "template-text",
+    "category": "template-interpolation",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 46",
-    "text": "Handbuch",
+    "location": "Zeile 47",
+    "text": "{{ tab }}",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 46",
-    "text": "Screenshots",
-    "status": "german"
-  },
-  {
-    "category": "template-text",
-    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 46",
-    "text": "Artwork",
-    "status": "german"
-  },
-  {
-    "category": "template-text",
-    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 46",
-    "text": "Soundtrack",
-    "status": "german"
-  },
-  {
-    "category": "template-text",
-    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 59",
+    "location": "Zeile 60",
     "text": "Synthetischer Upload gestartet",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 66",
+    "location": "Zeile 67",
     "text": "Sehr langer synthetischer Dateiname für die responsive Medienkartenansicht.webp",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 67",
+    "location": "Zeile 68",
     "text": "Manuell hochgeladen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 69",
+    "location": "Zeile 70",
     "text": "Übersicht 1",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 70",
+    "location": "Zeile 71",
     "text": "Hintergrund 1",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 97",
+    "location": "Zeile 98",
     "text": "Synthetisches Medienbild gelöscht",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 98",
+    "location": "Zeile 99",
     "text": "Vorschau geöffnet",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 41",
+    "location": "Zeile 42",
     "text": "{{ owner }}",
     "status": "german"
   },
   {
     "category": "template-interpolation",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 42",
+    "location": "Zeile 43",
     "text": "{{ title }}",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 131",
+    "location": "Zeile 132",
     "text": "Beschädigte Vorschau demonstrieren",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 134",
+    "location": "Zeile 135",
     "text": "Zur Übersicht hinzufügen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 135",
+    "location": "Zeile 136",
     "text": "Als Hintergrund festlegen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 136",
+    "location": "Zeile 137",
     "text": "Bild löschen",
     "status": "german"
   },
   {
     "category": "template-text",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 132",
+    "location": "Zeile 133",
     "text": "extrem-langer-dateiname-der-die-medienkarte-auf-schmalen-breiten-prueft.webp",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 170",
+    "location": "Zeile 171",
     "text": "Artwork hochladen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 171",
+    "location": "Zeile 172",
     "text": "Screenshot hochladen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 172",
+    "location": "Zeile 173",
     "text": "Soundtrack hochladen",
     "status": "german"
   },
   {
     "category": "template-attribute",
     "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
-    "location": "Zeile 173",
+    "location": "Zeile 174",
     "text": "Handbuch hochladen",
     "status": "german"
   },
@@ -13440,21 +13419,21 @@
   {
     "category": "play-step",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 106",
+    "location": "Zeile 107",
     "text": "Spielbild ist die aktive Ausgangsebene",
     "status": "german"
   },
   {
     "category": "play-step",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 111",
+    "location": "Zeile 112",
     "text": "Zum unveränderten ZA-Fallback überblenden",
     "status": "german"
   },
   {
     "category": "story-name",
     "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
-    "location": "Zeile 103",
+    "location": "Zeile 104",
     "text": "Zum ZA-Fallback wechseln",
     "status": "german"
   },

@@ -219,12 +219,19 @@ component's owned manual. The POST and DELETE operations require the component
 `expected_version`, so a stale client cannot replace or remove the parent ROM's
 manual or another DLC's manual.
 
+The v2 DLC media navigation intentionally does not expose a manual tab. This is
+a UI scope decision, not a storage migration: existing component manual paths,
+files, and these compatibility routes remain intact, while the main-game manual
+experience remains unchanged.
+
 The same router lists, uploads, streams, deletes, and places
 `RomComponentOwnedMedia` beneath `/media`. `overview` and `background` accept
 image roles, while `soundtrack` accepts only soundtrack audio. The `surface`
 field records independent ordered placements per component and surface, so a
 DLC's selected overview, background, or soundtrack never aliases parent-ROM
-media. Migration `0139_pc_component_owned_media_surfaces` adds the nullable
+media. Each component image upload receives a collision-resistant owned path,
+so retaining multiple gallery or screenshot rows cannot overwrite an earlier
+file. Migration `0139_pc_component_owned_media_surfaces` adds the nullable
 component `manual_path`, the placement surface, and the surface-specific
 constraints/indexes needed for this separation.
 

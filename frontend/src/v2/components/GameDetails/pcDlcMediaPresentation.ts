@@ -5,7 +5,6 @@ import type {
 } from "@/__generated__";
 
 export const validDlcMediaSubtabs = [
-  "manual",
   "screenshots",
   "artwork",
   "soundtrack",
@@ -14,7 +13,6 @@ export const validDlcMediaSubtabs = [
 export type DlcMediaSubtab = (typeof validDlcMediaSubtabs)[number];
 
 export const dlcMediaNavigationItems = [
-  ["manual", "rom.manual", "mdi-book-open-page-variant-outline"],
   ["screenshots", "rom.screenshots", "mdi-image-multiple-outline"],
   ["artwork", "rom.artwork", "mdi-palette-outline"],
   ["soundtrack", "rom.soundtrack", "mdi-music-note-outline"],
