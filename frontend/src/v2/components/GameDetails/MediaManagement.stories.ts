@@ -9,7 +9,6 @@ import MediaTab from "./MediaTab.vue";
 import MediaUploadControl from "./MediaUploadControl.vue";
 import PcDlcMediaTab from "./PcDlcMediaTab.vue";
 
-const previewUrl = "/assets/default/album_cover.jpg";
 const brokenPreviewUrl = "/assets/missing-media-preview.webp";
 
 const syntheticRom = {
