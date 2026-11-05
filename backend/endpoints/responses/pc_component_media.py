@@ -26,6 +26,15 @@ class PcComponentOwnedMediaPlacementMutationRequest(BaseModel):
     surface: RomOwnedMediaSurface
 
 
+class OwnedCoverSelectionRequest(BaseModel):
+    """Versioned selection of an existing owner-scoped cover candidate."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    media_id: int = Field(gt=0)
+    expected_version: UTCDatetime
+
+
 class PcComponentManualSchema(BaseModel):
     manual_path: str | None
     expected_version: UTCDatetime

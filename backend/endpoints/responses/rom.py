@@ -16,8 +16,9 @@ from endpoints.responses.assets import (
     UserScreenshotSchema,
     UserStateSchema,
 )
-from endpoints.responses.pc_component_media import PcComponentManualSchema  # noqa: F401
 from endpoints.responses.pc_component_media import (  # noqa: F401
+    OwnedCoverSelectionRequest,
+    PcComponentManualSchema,
     PcComponentOwnedMediaPlacementMutationRequest,
     PcComponentOwnedMediaPlacementSchema,
 )
@@ -544,15 +545,6 @@ class RomOwnedMediaPlacementMutationRequest(BaseModel):
 
     media_id: int = Field(gt=0)
     surface: RomOwnedMediaSurface
-    expected_version: UTCDatetime
-
-
-class OwnedCoverSelectionRequest(BaseModel):
-    """Versioned selection of an existing, owner-scoped cover candidate."""
-
-    model_config = ConfigDict(extra="forbid")
-
-    media_id: int = Field(gt=0)
     expected_version: UTCDatetime
 
 

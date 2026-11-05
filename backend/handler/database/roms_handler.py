@@ -3132,44 +3132,6 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         return AppliedPcComponentOwnedMedia(media, replaced_owned_paths)
 
     @begin_session
-    def select_pc_component_owned_cover_media(
-        self,
-        rom_id: int,
-        component_id: int,
-        user_id: int,
-        media_id: int,
-        expected_updated_at: datetime,
-        session: Session = None,  # type: ignore
-    ) -> RomComponent | None:
-        """Select a Cover candidate only when it belongs to this managed component."""
-        if session.get(User, user_id) is None:
-            return None
-        component = self._get_pc_dlc_component(
-            session,
-            rom_id,
-            component_id,
-            expected_updated_at,
-            with_owned_media=True,
-        )
-        if component is None:
-            return None
-        candidate = next(
-            (
-                media
-                for media in component.owned_media
-                if media.id == media_id
-                and media.role == RomComponentOwnedMediaRole.COVER
-            ),
-            None,
-        )
-        if candidate is None:
-            return None
-        component.active_owned_cover_media_id = candidate.id
-        component.updated_at = datetime.now(timezone.utc)
-        session.flush()
-        return component
-
-    @begin_session
     def import_pc_component_provider_media(
         self,
         rom_id: int,
