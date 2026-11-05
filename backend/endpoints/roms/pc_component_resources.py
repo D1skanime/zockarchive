@@ -21,6 +21,7 @@ from endpoints.roms.files import (
     _mapped_chunks,
     preflight_mapped_download,
 )
+from endpoints.roms.pc_component_media_order import router as order_router
 from endpoints.roms.pc_component_resource_support import (
     component_manual_response,
     component_note_or_404,
@@ -40,6 +41,7 @@ from models.rom import (
 from utils.router import APIRouter
 
 router = APIRouter()
+router.include_router(order_router)
 
 
 @protected_route(
