@@ -22,6 +22,14 @@ export function usePcDlcPrimaryTabSync<T extends string>(
           query: { ...route.query, tab: next },
         });
         if (pendingTab === next && route.query.tab === next) pendingTab = null;
+        if (pendingTab === next && route.query.tab !== next) {
+          pendingTab = null;
+          if (
+            typeof route.query.tab === "string" &&
+            validTabs.includes(route.query.tab as T)
+          )
+            tab.value = route.query.tab as T;
+        }
       }
     } finally {
       syncingTab = false;

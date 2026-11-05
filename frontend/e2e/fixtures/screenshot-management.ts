@@ -304,8 +304,10 @@ export async function mountGallery(
         body: JSON.stringify(body),
       });
     if (url.origin !== "http://127.0.0.1:4177") {
-      (req.url() ===
-      "https://api.github.com/repos/D1skanime/pc-game-download-portal/releases/latest"
+      ([
+        "https://api.github.com/repos/D1skanime/pc-game-download-portal/releases/latest",
+        "https://api.github.com/repos/D1skanime/zockarchive/releases/latest",
+      ].includes(req.url())
         ? state.blocked
         : state.unexpected
       ).push(req.url());

@@ -164,7 +164,7 @@ function openMatcher() {
   });
 }
 function showMedia() {
-  tab.value = "media";
+  selectTab("media");
 }
 </script>
 
@@ -240,7 +240,7 @@ function showMedia() {
             <ZAMenuItem
               :label="t('rom.download')"
               icon="mdi-download"
-              @click="tab = 'pc-components'"
+              @click="selectTab('pc-components')"
             />
           </ZAMenu>
         </div>

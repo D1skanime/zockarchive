@@ -989,10 +989,6 @@ test("DLC media primary navigation remains reachable after the media transition"
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await open(page, { dlc: true, count: 3, locale: "en_US" });
-    await page.route(
-      "https://api.github.com/repos/D1skanime/zockarchive/releases/latest",
-      (route) => route.fulfill({ status: 200, body: "{}" }),
-    );
 
     const primaryTabs = page.locator(".pc-dlc-detail__tab-bar");
     const media = primaryTabs.getByRole("tab", {
@@ -1027,14 +1023,35 @@ test("DLC media primary navigation remains reachable after the media transition"
       ["Files", "files"],
       ["Notes", "notes"],
     ] as const) {
-      await primaryTabs.getByRole("tab", { name, exact: true }).click();
+      const primaryTab = primaryTabs.getByRole("tab", { name, exact: true });
+      await primaryTab.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          primaryTab.evaluate((element) => {
+            const rect = element.getBoundingClientRect();
+            const hit = document.elementFromPoint(
+              rect.left + rect.width / 2,
+              rect.top + rect.height / 2,
+            );
+            return Boolean(hit && element.contains(hit));
+          }),
+        )
+        .toBe(true);
+      await expect
+        .poll(() =>
+          primaryTab.evaluate(
+            (element) => getComputedStyle(element).pointerEvents,
+          ),
+        )
+        .toBe("auto");
+      await primaryTab.click();
       await expect(page).toHaveURL(new RegExp(`tab=${tab}`));
-      await expect(
-        primaryTabs.getByRole("tab", { name, exact: true }),
-      ).toHaveAttribute("aria-selected", "true");
+      await expect(primaryTab).toHaveAttribute("aria-selected", "true");
+      await expect(primaryTab).toBeFocused();
     }
 
-    await media.click();
+    await page.getByRole("button", { name: "Actions", exact: true }).click();
+    await page.getByRole("button", { name: "Artwork", exact: true }).click();
     await expect(page).toHaveURL(/tab=media/);
     await expect(page.locator(".pc-dlc-media")).toBeVisible();
     for (const name of ["Screenshots", "Artwork"]) {
