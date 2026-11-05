@@ -36,3 +36,5 @@ verified: 2026-11-04
 The default production output folder was not used because it is an existing ignored, non-writable generated directory owned by `nobody:nogroup`. An equivalent Vite PWA build completed in `/tmp/za-261103-4b37-vite-build` with 611 precache entries. Existing Vite/Storybook warnings about legacy `:deep`, third-party `eval`, chunk size, deprecated docgen, and no MDX story files are not introduced by this phase.
 
 Human live UAT and any later full regression remain outside this technical verification.
+
+| Quick 261105-mnt: Cover-media TypeScript contracts and source-size baselines | The targeted typecheck accepts complete generated component fixtures, cover-only owner projections, and boolean media refresh results. Diff check passed. Current physical lines are `rom.py` 1179 (baseline 1184), `roms_handler.py` 4834 (baseline 4853), `GameDetails.vue` 577 (baseline 686), and `pc_component_resources.py` 384 (limit 450). No test suite was run before renewed UAT. | Passed targeted static verification |

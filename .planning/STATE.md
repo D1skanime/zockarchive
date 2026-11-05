@@ -621,6 +621,10 @@ Last session: 2026-10-26T09:19:58.998384+00:00
 Stopped at: Phase38 live UAT closed with accepted limitations; no next phase started
 Resume file: None
 
+## Quick Task 261105-mnt
+
+| 261105-mnt | Repair Cover-media TypeScript contracts and restore affected size baselines | 2026-11-05 | e545c5a14 | [261105-mnt-fix-cover-media-typescript-contract-erro](./quick/261105-mnt-fix-cover-media-typescript-contract-erro/) |
+
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.
