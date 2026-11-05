@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
-
 // BackgroundArt owns the selected-cover cross-fade and the ZA glass fallback.
 // Views paint a cover
 // URL via the injected `r-v2-set-background-art` provider; we swap between
@@ -13,10 +11,6 @@ const props = defineProps<{
   layerB: string | null;
   activeLayer: "a" | "b";
 }>();
-
-const activeArt = computed(() =>
-  props.activeLayer === "a" ? props.layerA : props.layerB,
-);
 </script>
 
 <template>
@@ -40,10 +34,22 @@ const activeArt = computed(() =>
       :style="layerB ? { backgroundImage: `url('${layerB}')` } : {}"
     />
   </div>
-  <div
-    class="r-v2-bg__overlay"
-    :class="{ 'r-v2-bg__overlay--art': Boolean(activeArt) }"
-  />
+  <div class="r-v2-bg__overlays">
+    <div
+      class="r-v2-bg__overlay r-v2-bg__overlay--a"
+      :class="{
+        'r-v2-bg__overlay--active': activeLayer === 'a',
+        'r-v2-bg__overlay--art': Boolean(layerA),
+      }"
+    />
+    <div
+      class="r-v2-bg__overlay r-v2-bg__overlay--b"
+      :class="{
+        'r-v2-bg__overlay--active': activeLayer === 'b',
+        'r-v2-bg__overlay--art': Boolean(layerB),
+      }"
+    />
+  </div>
 </template>
 
 <style scoped>

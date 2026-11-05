@@ -171,6 +171,51 @@ class PcComponentMediaMutationMixin:
         session.flush()
         return media
 
+    @begin_session
+    def replace_pc_component_owned_media_placements(
+        self,
+        rom_id: int,
+        component_id: int,
+        user_id: int,
+        expected_updated_at: datetime,
+        surface: RomOwnedMediaSurface,
+        media_ids: list[int],
+        session: Session = None,  # type: ignore
+    ) -> list[RomComponentOwnedMedia] | None:
+        """Atomically reorder exactly one component-owned media surface."""
+        if session.get(User, user_id) is None:
+            return None
+        component = _resolve_dlc_component(
+            self,
+            session,
+            rom_id,
+            component_id,
+            expected_updated_at,
+            with_owned_media=True,
+        )
+        if component is None:
+            return None
+        placements = sorted(
+            (
+                placement
+                for media in component.owned_media
+                for placement in media.placements
+                if placement.surface == surface
+            ),
+            key=lambda placement: placement.position,
+        )
+        if {placement.media_id for placement in placements} != set(media_ids):
+            return None
+        by_media_id = {placement.media_id: placement for placement in placements}
+        for position, media_id in enumerate(media_ids, start=len(placements)):
+            by_media_id[media_id].position = position
+        session.flush()
+        for position, media_id in enumerate(media_ids):
+            by_media_id[media_id].position = position
+        component.updated_at = datetime.now(timezone.utc)
+        session.flush()
+        return component.owned_media
+
     @staticmethod
     def _is_pc_component_owned_media_surface_compatible(
         role: RomComponentOwnedMediaRole, surface: RomOwnedMediaSurface

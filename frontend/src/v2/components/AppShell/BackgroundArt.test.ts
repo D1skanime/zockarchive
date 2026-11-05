@@ -46,7 +46,7 @@ describe("BackgroundArt", () => {
     expect(wrapper.find(".r-v2-bg__layer--b").classes()).not.toContain(
       "r-v2-bg__layer--art",
     );
-    expect(wrapper.find(".r-v2-bg__overlay").classes()).toContain(
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).toContain(
       "r-v2-bg__overlay--art",
     );
   });
@@ -72,7 +72,13 @@ describe("BackgroundArt", () => {
     expect(wrapper.find(".r-v2-bg__layer--b").classes()).toContain(
       "r-v2-bg__layer--active",
     );
-    expect(wrapper.find(".r-v2-bg__overlay").classes()).not.toContain(
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).toContain(
+      "r-v2-bg__overlay--art",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--b").classes()).toContain(
+      "r-v2-bg__overlay--active",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--b").classes()).not.toContain(
       "r-v2-bg__overlay--art",
     );
   });
@@ -86,8 +92,14 @@ describe("BackgroundArt", () => {
       },
     });
 
-    expect(wrapper.find(".r-v2-bg__overlay").classes()).not.toContain(
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).toContain(
       "r-v2-bg__overlay--art",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).not.toContain(
+      "r-v2-bg__overlay--active",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--b").classes()).toContain(
+      "r-v2-bg__overlay--active",
     );
   });
 });

@@ -5,6 +5,7 @@ import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import type { RomOwnedMediaSchema } from "@/__generated__";
+import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
 import {
   isSupportedSoundtrackFile,
@@ -344,19 +345,18 @@ function fmt(seconds: number) {
             <span v-if="selectedLocalTrackIds.has(file.id)">
               {{ t("rom.background-music") }}
             </span>
-            <ZABtn
+            <MediaManagementAction
               v-if="canManage"
+              icon="mdi-image-outline"
+              tone="info"
+              :selected="selectedLocalTrackIds.has(file.id)"
               :loading="localBackgroundAudioUpdating"
               :disabled="localBackgroundAudioUpdating"
+              :caption="t('rom.background-music')"
               :aria-label="`${selectedLocalTrackIds.has(file.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${file.file_name}`"
+              :label="`${selectedLocalTrackIds.has(file.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${file.file_name}`"
               @click="toggleLocalBackgroundAudio(file.id)"
-            >
-              {{
-                selectedLocalTrackIds.has(file.id)
-                  ? t("rom.remove-as-background")
-                  : t("rom.add-as-background")
-              }}
-            </ZABtn>
+            />
           </div>
         </li>
       </ul>
@@ -417,19 +417,18 @@ function fmt(seconds: number) {
             <span v-if="selectedOwnedTrackIds.has(item.id)">
               {{ t("rom.background-music") }}
             </span>
-            <ZABtn
+            <MediaManagementAction
               v-if="canManage"
+              icon="mdi-image-outline"
+              tone="info"
+              :selected="selectedOwnedTrackIds.has(item.id)"
               :loading="ownedBackgroundAudioUpdating"
               :disabled="ownedBackgroundAudioUpdating"
+              :caption="t('rom.background-music')"
               :aria-label="`${selectedOwnedTrackIds.has(item.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${item.display_label}`"
+              :label="`${selectedOwnedTrackIds.has(item.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${item.display_label}`"
               @click="toggleOwnedBackgroundAudio(item.id)"
-            >
-              {{
-                selectedOwnedTrackIds.has(item.id)
-                  ? t("rom.remove-as-background")
-                  : t("rom.add-as-background")
-              }}
-            </ZABtn>
+            />
             <ZABtn
               icon="mdi-play"
               variant="text"

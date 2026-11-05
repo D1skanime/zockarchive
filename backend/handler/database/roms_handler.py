@@ -3067,6 +3067,7 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         if role not in {
             RomComponentOwnedMediaRole.GALLERY,
             RomComponentOwnedMediaRole.SCREENSHOT,
+            RomComponentOwnedMediaRole.SOUNDTRACK,
         }:
             for existing in component.owned_media:
                 if existing.role != role:

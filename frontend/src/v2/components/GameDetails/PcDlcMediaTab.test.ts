@@ -31,8 +31,7 @@ describe("PcDlcMediaTab", () => {
         "utf8",
       ),
     ).toContain("ZABtn");
-    expect(source).toContain("function mediaContentUrl(mediaId: number)");
-    expect(source).toContain("return `/api${endpoint}/${mediaId}/content`");
+    expect(source).toContain("componentMediaContentUrl(endpoint, item.id)");
     expect(source).toContain("lightboxOpen");
     expect(source).toContain("fullscreen");
     expect(source).toContain("show-thumbnails");

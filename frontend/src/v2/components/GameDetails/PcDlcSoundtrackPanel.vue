@@ -12,9 +12,11 @@ const props = defineProps<{
   disabled: boolean;
   placing: boolean;
   deleting: boolean;
+  moving: boolean;
 }>();
 const emit = defineEmits<{
   "toggle-placement": [track: PcComponentOwnedMediaSchema];
+  move: [index: number, direction: -1 | 1];
   remove: [mediaId: number];
 }>();
 const { t } = useI18n();
@@ -62,6 +64,22 @@ function downloadName(track: PcComponentOwnedMediaSchema) {
             :disabled="disabled"
             :loading="placing"
             @click="emit('toggle-placement', track)"
+          />
+          <MediaManagementAction
+            icon="mdi-arrow-up"
+            :caption="t('rom.move-up')"
+            :label="t('rom.move-up')"
+            :disabled="disabled || moving || index === 0"
+            :loading="moving"
+            @click="emit('move', index, -1)"
+          />
+          <MediaManagementAction
+            icon="mdi-arrow-down"
+            :caption="t('rom.move-down')"
+            :label="t('rom.move-down')"
+            :disabled="disabled || moving || index === tracks.length - 1"
+            :loading="moving"
+            @click="emit('move', index, 1)"
           />
           <MediaManagementAction
             icon="mdi-delete-outline"

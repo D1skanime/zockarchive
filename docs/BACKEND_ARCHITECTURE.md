@@ -224,12 +224,15 @@ a UI scope decision, not a storage migration: existing component manual paths,
 files, and these compatibility routes remain intact, while the main-game manual
 experience remains unchanged.
 
-The same router lists, uploads, streams, deletes, and places
+The same router lists, uploads, streams, deletes, places, and reorders
 `RomComponentOwnedMedia` beneath `/media`. `overview` and `background` accept
 image roles, while `soundtrack` accepts only soundtrack audio. The `surface`
 field records independent ordered placements per component and surface, so a
 DLC's selected overview, background, or soundtrack never aliases parent-ROM
-media. Each component image upload receives a collision-resistant owned path,
+media. `PUT /media/placements` replaces the complete ordered ID set for one
+component-owned surface under the same `expected_version`; it rejects foreign,
+missing, or stale placement members instead of changing a sibling DLC. Each
+component image upload receives a collision-resistant owned path,
 so retaining multiple gallery or screenshot rows cannot overwrite an earlier
 file. Migration `0139_pc_component_owned_media_surfaces` adds the nullable
 component `manual_path`, the placement surface, and the surface-specific
@@ -239,7 +242,7 @@ constraints/indexes needed for this separation.
 validation. `handler/filesystem/pc_component_resources.py` writes accepted
 manuals, images, and audio only into the ZockArchive-owned resource root.
 `handler/database/pc_component_media_mutations.py` resolves the exact DLC,
-applies version-checked manual and placement mutations, and enforces
+applies version-checked manual, placement, and ordering mutations, and enforces
 role-to-surface compatibility. The endpoint deletes a newly written owned file
 when the guarded database mutation fails and removes replaced files only after
 a successful commit. Response schemas stay in

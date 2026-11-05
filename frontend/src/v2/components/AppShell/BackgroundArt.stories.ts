@@ -99,13 +99,15 @@ export const CrossfadeZumZAFallback: Story = {
     const canvas = within(canvasElement);
     const layerA = canvasElement.querySelector(".r-v2-bg__layer--a");
     const layerB = canvasElement.querySelector(".r-v2-bg__layer--b");
-    const overlay = canvasElement.querySelector(".r-v2-bg__overlay");
+    const overlayA = canvasElement.querySelector(".r-v2-bg__overlay--a");
+    const overlayB = canvasElement.querySelector(".r-v2-bg__overlay--b");
     const toggle = canvas.getByRole("button", {
       name: "Zum ZA-Fallback wechseln",
     });
 
     await step("Spielbild ist die aktive Ausgangsebene", async () => {
       await expect(layerA).toHaveClass("r-v2-bg__layer--active");
+      await expect(overlayA).toHaveClass("r-v2-bg__overlay--active");
       await expect(layerB).toHaveClass("r-v2-za-glass-background");
       await expect(layerB).not.toHaveClass("r-v2-bg__layer--active");
     });
@@ -113,7 +115,9 @@ export const CrossfadeZumZAFallback: Story = {
       await userEvent.click(toggle);
       await expect(layerB).toHaveClass("r-v2-bg__layer--active");
       await expect(layerA).not.toHaveClass("r-v2-bg__layer--active");
-      await expect(overlay).not.toHaveClass("r-v2-bg__overlay--art");
+      await expect(overlayA).not.toHaveClass("r-v2-bg__overlay--active");
+      await expect(overlayB).toHaveClass("r-v2-bg__overlay--active");
+      await expect(overlayB).not.toHaveClass("r-v2-bg__overlay--art");
       await expect(toggle).toHaveAttribute("aria-pressed", "true");
     });
   },

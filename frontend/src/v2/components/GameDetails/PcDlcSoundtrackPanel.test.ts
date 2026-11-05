@@ -48,6 +48,7 @@ describe("PcDlcSoundtrackPanel", () => {
         disabled: false,
         placing: false,
         deleting: false,
+        moving: false,
       },
     });
 
@@ -76,6 +77,7 @@ describe("PcDlcSoundtrackPanel", () => {
         disabled: false,
         placing: false,
         deleting: false,
+        moving: false,
       },
     });
 
@@ -85,5 +87,24 @@ describe("PcDlcSoundtrackPanel", () => {
     await wrapper.get('[aria-label="common.delete"]').trigger("click");
     expect(wrapper.emitted("toggle-placement")).toEqual([[track]]);
     expect(wrapper.emitted("remove")).toEqual([[7]]);
+  });
+
+  it("exposes shared move actions for the ordered component soundtrack", async () => {
+    const second = { ...track, id: 8 };
+    const wrapper = mount(PcDlcSoundtrackPanel, {
+      props: {
+        tracks: [track, second],
+        contentUrl: () => "/audio",
+        isPlaced: () => true,
+        canEdit: true,
+        disabled: false,
+        placing: false,
+        deleting: false,
+        moving: false,
+      },
+    });
+
+    await wrapper.get('[aria-label="rom.move-down"]').trigger("click");
+    expect(wrapper.emitted("move")).toEqual([[0, 1]]);
   });
 });

@@ -44,7 +44,12 @@ describe("BackgroundArt Storybook examples", () => {
       ).toBe(true);
       expect(
         canvasElement
-          .querySelector(".r-v2-bg__overlay")
+          .querySelector(".r-v2-bg__overlay--b")
+          ?.classList.contains("r-v2-bg__overlay--active"),
+      ).toBe(true);
+      expect(
+        canvasElement
+          .querySelector(".r-v2-bg__overlay--b")
           ?.classList.contains("r-v2-bg__overlay--art"),
       ).toBe(false);
     } finally {

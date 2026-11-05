@@ -14,6 +14,12 @@ import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
 import PcDlcSoundtrackPanel from "@/v2/components/GameDetails/PcDlcSoundtrackPanel.vue";
 import {
+  componentHasPlacement,
+  componentMediaContentUrl,
+  componentPlacementPosition,
+  movedComponentMediaIds,
+} from "@/v2/components/GameDetails/pcComponentMediaPlacements";
+import {
   componentMediaRoleLabel,
   componentMediaSourceLabel,
   createDlcMediaSubtabDefs,
@@ -88,12 +94,19 @@ const uploadRole = computed<RomComponentOwnedMediaRole>(() =>
       ? "screenshot"
       : "artwork",
 );
-const activeSurfaces = computed<RomOwnedMediaSurface[]>(() =>
-  subtab.value === "soundtrack" ? ["soundtrack"] : ["overview", "background"],
-);
+const activeImageSurfaces: RomOwnedMediaSurface[] = ["overview", "background"];
 const componentVersion = computed(() => props.component.updated_at ?? null);
 const filteredMedia = computed(() =>
   media.value.filter((item) => activeRoles.value.includes(item.role)),
+);
+const soundtrackTracks = computed(() =>
+  filteredMedia.value
+    .slice()
+    .sort(
+      (left, right) =>
+        (componentPlacementPosition(left, "soundtrack") ?? 0) -
+        (componentPlacementPosition(right, "soundtrack") ?? 0),
+    ),
 );
 const emptyMediaTitle = computed(() =>
   subtab.value === "artwork"
@@ -103,36 +116,19 @@ const emptyMediaTitle = computed(() =>
 const mediaUrls = computed(() =>
   subtab.value === "soundtrack"
     ? []
-    : filteredMedia.value.map((item) => mediaContentUrl(item.id)),
+    : filteredMedia.value.map((item) =>
+        componentMediaContentUrl(endpoint, item.id),
+      ),
 );
 const gallery = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);
 const dropzone = ref<InstanceType<typeof ZADropzone>[]>([]);
 const { columns } = useResponsiveColumns(gallery, { cardWidth: 200, gap: 12 });
 useWrapGridNav(root, { cellSelector: "button:not([disabled])" });
-const lightboxIndex = ref(0);
-const lightboxOpen = ref(false);
+const [lightboxIndex, lightboxOpen] = [ref(0), ref(false)];
 
 const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media`;
 
-function mediaContentUrl(mediaId: number) {
-  return `/api${endpoint}/${mediaId}/content`;
-}
-
-function openMedia(index: number) {
-  lightboxIndex.value = index;
-  lightboxOpen.value = true;
-}
-
-function closeLightbox() {
-  lightboxOpen.value = false;
-}
-
-function openUploadPicker() {
-  dropzone.value[0]?.open();
-}
-
-// Mutations stay serialized until the parent's version and owned media are canonical.
 async function reconcile() {
   try {
     const refreshed = await props.refresh();
@@ -176,25 +172,6 @@ async function upload(files: File[]) {
   }
 }
 
-function placementPosition(
-  item: PcComponentOwnedMediaSchema,
-  surface: RomOwnedMediaSurface,
-) {
-  const placement = (item.placements ?? []).find(
-    (entry) => entry.surface === surface,
-  );
-  return placement ? placement.position + 1 : undefined;
-}
-
-function hasPlacement(
-  item: PcComponentOwnedMediaSchema,
-  surface: RomOwnedMediaSurface,
-) {
-  return (item.placements ?? []).some(
-    (placement) => placement.surface === surface,
-  );
-}
-
 async function togglePlacement(
   item: PcComponentOwnedMediaSchema,
   surface: RomOwnedMediaSurface,
@@ -202,7 +179,7 @@ async function togglePlacement(
   if (!componentVersion.value || !canEdit.value || busy.value) return;
   placing.value = true;
   try {
-    if (hasPlacement(item, surface)) {
+    if (componentHasPlacement(item, surface)) {
       await api.delete(`${endpoint}/${item.id}/placement`, {
         params: { expected_version: componentVersion.value, surface },
       });
@@ -212,6 +189,30 @@ async function togglePlacement(
         surface,
       });
     }
+    await reconcile();
+  } catch (error) {
+    console.error(error);
+    snackbar.error(t("common.error"));
+  } finally {
+    placing.value = false;
+  }
+}
+
+async function moveSoundtrack(index: number, direction: -1 | 1) {
+  const mediaIds = movedComponentMediaIds(
+    soundtrackTracks.value,
+    index,
+    direction,
+  );
+  if (!componentVersion.value || !canEdit.value || busy.value || !mediaIds)
+    return;
+  placing.value = true;
+  try {
+    await api.put(`${endpoint}/placements`, {
+      expected_version: componentVersion.value,
+      surface: "soundtrack",
+      media_ids: mediaIds,
+    });
     await reconcile();
   } catch (error) {
     console.error(error);
@@ -304,7 +305,7 @@ async function remove(mediaId: number) {
                 :disabled="busy || !componentVersion"
                 :label="t('common.upload')"
                 :hint="t('common.dropzone-hint')"
-                @upload="openUploadPicker"
+                @upload="dropzone[0]?.open()"
               />
             </header>
             <div
@@ -323,14 +324,18 @@ async function remove(mediaId: number) {
             </div>
             <PcDlcSoundtrackPanel
               v-if="subtab === 'soundtrack'"
-              :tracks="filteredMedia"
-              :content-url="mediaContentUrl"
-              :is-placed="(item) => hasPlacement(item, 'soundtrack')"
+              :tracks="soundtrackTracks"
+              :content-url="
+                (mediaId) => componentMediaContentUrl(endpoint, mediaId)
+              "
+              :is-placed="(item) => componentHasPlacement(item, 'soundtrack')"
               :can-edit="canEdit"
               :disabled="!componentVersion || busy"
               :placing="placing"
               :deleting="deleting"
+              :moving="placing"
               @toggle-placement="togglePlacement($event, 'soundtrack')"
+              @move="moveSoundtrack"
               @remove="remove"
             />
             <ZAEmptyState
@@ -345,9 +350,12 @@ async function remove(mediaId: number) {
             >
               <li v-for="(item, index) in filteredMedia" :key="item.id">
                 <MediaManagementCard
-                  :url="mediaContentUrl(item.id)"
+                  :url="componentMediaContentUrl(endpoint, item.id)"
                   :label="`${componentMediaRoleLabel(t, item)} ${index + 1}`"
-                  @preview="openMedia(index)"
+                  @preview="
+                    lightboxIndex = index;
+                    lightboxOpen = true;
+                  "
                 >
                   <span class="za-shot__source">{{
                     componentMediaRoleLabel(t, item)
@@ -359,15 +367,15 @@ async function remove(mediaId: number) {
                   >
                   <div class="za-shot__badges d-flex flex-wrap ga-1">
                     <span
-                      v-for="surface in activeSurfaces"
-                      v-show="hasPlacement(item, surface)"
+                      v-for="surface in activeImageSurfaces"
+                      v-show="componentHasPlacement(item, surface)"
                       :key="surface"
                       class="za-shot__badge"
                       :class="`za-shot__badge--${surface}`"
                     >
                       {{
                         t(`rom.screenshots-${surface}-position`, {
-                          position: placementPosition(item, surface),
+                          position: componentPlacementPosition(item, surface),
                         })
                       }}
                     </span>
@@ -377,7 +385,7 @@ async function remove(mediaId: number) {
                     class="za-shot__actions d-flex flex-wrap ga-1"
                   >
                     <MediaManagementAction
-                      v-for="surface in activeSurfaces"
+                      v-for="surface in activeImageSurfaces"
                       :key="surface"
                       :icon="
                         surface === 'overview'
@@ -387,10 +395,15 @@ async function remove(mediaId: number) {
                             : 'mdi-music-note-outline'
                       "
                       :tone="surface === 'background' ? 'info' : 'brand'"
-                      :selected="hasPlacement(item, surface)"
+                      :selected="componentHasPlacement(item, surface)"
                       :caption="t(surfaceCaptionKey(surface))"
                       :label="
-                        t(surfaceLabelKey(surface, hasPlacement(item, surface)))
+                        t(
+                          surfaceLabelKey(
+                            surface,
+                            componentHasPlacement(item, surface),
+                          ),
+                        )
                       "
                       :disabled="!componentVersion || busy"
                       :loading="placing"
@@ -420,7 +433,7 @@ async function remove(mediaId: number) {
       show-thumbnails
       :aria-label="t('rom.media')"
       :close-label="t('common.close')"
-      @close="closeLightbox"
+      @close="lightboxOpen = false"
     >
       <template #default="{ item, index }">
         <img :src="item" :alt="`${t('rom.media')} ${index + 1}`" />

@@ -15,6 +15,7 @@ from endpoints.responses.rom import (
     PcComponentNoteUpdateRequest,
     PcComponentOwnedMediaPlacementMutationRequest,
     PcComponentOwnedMediaSchema,
+    RomOwnedMediaReorderRequest,
 )
 from endpoints.roms.files import (
     _content_disposition,
@@ -367,6 +368,31 @@ async def remove_component_media_placement(
     if media is None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     return PcComponentOwnedMediaSchema.model_validate(media)
+
+
+@protected_route(
+    router.put,
+    "/{id}/pc-components/{component_id}/media/placements",
+    [Scope.ROMS_WRITE],
+)
+async def reorder_component_media_placements(
+    request: Request,
+    id: int,
+    component_id: int,
+    payload: RomOwnedMediaReorderRequest,
+) -> list[PcComponentOwnedMediaSchema]:
+    get_dlc_component(request, id, component_id)
+    media = db_rom_handler.replace_pc_component_owned_media_placements(
+        id,
+        component_id,
+        request.user.id,
+        payload.expected_version,
+        payload.surface,
+        payload.media_ids,
+    )
+    if media is None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+    return [PcComponentOwnedMediaSchema.model_validate(item) for item in media]
 
 
 @protected_route(

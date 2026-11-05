@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   refresh: vi.fn(),
   post: vi.fn(),
   delete: vi.fn(),
+  put: vi.fn(),
   open: vi.fn(),
   confirm: vi.fn(),
   success: vi.fn(),
@@ -135,6 +136,7 @@ beforeEach(() => {
   mocks.get.mockResolvedValue({ data: [media] });
   mocks.post.mockResolvedValue({ data: {} });
   mocks.delete.mockResolvedValue({ data: {} });
+  mocks.put.mockResolvedValue({ data: {} });
   mocks.confirm.mockResolvedValue(true);
   mocks.route.path = "/rom/24/dlc/20";
   mocks.route.query = { tab: "media" };
@@ -364,6 +366,25 @@ describe("DLC media presentation preserves component capabilities", () => {
     ).toBe("/api/roms/24/pc-components/20/media/8/content");
     expect(wrapper.find(".za-shot").exists()).toBe(false);
     expect(wrapper.find("[data-carousel]").exists()).toBe(false);
+  });
+
+  it("reorders DLC soundtrack placements through the component-scoped route", async () => {
+    const soundtrackComponent = {
+      ...component,
+      owned_media: [soundtrackMedia, { ...soundtrackMedia, id: 9 }],
+    };
+    const wrapper = render(mocks.refresh, soundtrackComponent);
+    await flushPromises();
+    await wrapper
+      .get('[role="tab"][aria-label="rom.soundtrack"]')
+      .trigger("click");
+    await flushPromises();
+    await wrapper.get('[aria-label="rom.move-down"]').trigger("click");
+    expect(mocks.put).toHaveBeenCalledWith(`${endpoint}/placements`, {
+      expected_version: component.updated_at,
+      surface: "soundtrack",
+      media_ids: [9, 8],
+    });
   });
 
   it("replaces obsolete media subtabs with the screenshots route", async () => {

@@ -1,107 +1,32 @@
 import type { Meta, StoryObj } from "@storybook/vue3-vite";
-import { ZADropzone } from "@v2/lib";
 import { expect, within } from "storybook/test";
-import { defineComponent, ref, type PropType } from "vue";
+import type { PcComponentSchema } from "@/__generated__";
+import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
 import { compositionParameters } from "@/v2/storybook/compositionInventory";
 import MediaManagementAction from "./MediaManagementAction.vue";
 import MediaManagementCard from "./MediaManagementCard.vue";
+import MediaTab from "./MediaTab.vue";
 import MediaUploadControl from "./MediaUploadControl.vue";
+import PcDlcMediaTab from "./PcDlcMediaTab.vue";
 
 const previewUrl = "/assets/default/album_cover.jpg";
+const brokenPreviewUrl = "/assets/missing-media-preview.webp";
 
-const SyntheticMediaPage = defineComponent({
-  components: {
-    ZADropzone,
-    MediaManagementAction,
-    MediaManagementCard,
-    MediaUploadControl,
-  },
-  props: {
-    owner: { type: String, required: true },
-    title: { type: String, required: true },
-    tabs: { type: Array as PropType<string[]>, required: true },
-  },
-  setup() {
-    const previewed = ref(false);
-    const selectedOverview = ref(true);
-    const selectedBackground = ref(false);
-    const removed = ref(false);
-    const uploadStarted = ref(false);
-    return {
-      previewUrl,
-      previewed,
-      removed,
-      selectedBackground,
-      selectedOverview,
-      uploadStarted,
-    };
-  },
-  template: `
-    <main style="width:min(920px, calc(100vw - 32px)); display:grid; gap:16px; color:var(--r-color-fg)">
-      <header>
-        <p style="margin:0; color:var(--r-color-fg-muted)">{{ owner }}</p>
-        <h2 style="margin:4px 0 0">{{ title }}</h2>
-      </header>
-      <div style="display:grid; grid-template-columns:minmax(150px, 190px) minmax(0, 1fr); gap:16px">
-        <nav aria-label="Medienbereiche" style="display:grid; align-content:start; gap:6px; color:var(--r-color-fg-muted)">
-          <span v-for="tab in tabs" :key="tab">{{ tab }}</span>
-        </nav>
-        <section style="display:grid; gap:12px">
-          <ZADropzone overlay accept="image/jpeg,image/png,image/webp" input-label="Medien hochladen">
-            <header class="za-media-upload d-flex flex-wrap align-center ga-3 pa-4">
-              <MediaUploadControl
-                available
-                label="Medien hochladen"
-                hint="Bilder auswählen oder hier ablegen"
-                @upload="uploadStarted = true"
-              />
-            </header>
-          </ZADropzone>
-          <p v-if="uploadStarted" role="status" style="margin:0">Synthetischer Upload gestartet</p>
-          <MediaManagementCard
-            v-if="!removed"
-            :url="previewUrl"
-            label="Synthetisches Medienbild"
-            @preview="previewed = true"
-          >
-            <span class="za-shot__source">Sehr langer synthetischer Dateiname für die responsive Medienkartenansicht.webp</span>
-            <span class="za-shot__source">Manuell hochgeladen</span>
-            <div class="za-shot__badges d-flex flex-wrap ga-1">
-              <span v-if="selectedOverview" class="za-shot__badge za-shot__badge--overview">Übersicht 1</span>
-              <span v-if="selectedBackground" class="za-shot__badge za-shot__badge--background">Hintergrund 1</span>
-            </div>
-            <div class="za-shot__actions d-flex flex-wrap ga-1">
-              <MediaManagementAction
-                icon="mdi-view-dashboard-outline"
-                caption="Übersicht"
-                label="Zur Übersicht hinzufügen oder daraus entfernen"
-                :selected="selectedOverview"
-                @click="selectedOverview = !selectedOverview"
-              />
-              <MediaManagementAction
-                icon="mdi-image-outline"
-                tone="info"
-                caption="Hintergrund"
-                label="Als Hintergrund festlegen oder entfernen"
-                :selected="selectedBackground"
-                @click="selectedBackground = !selectedBackground"
-              />
-              <MediaManagementAction
-                icon="mdi-delete-outline"
-                tone="danger"
-                caption="Löschen"
-                label="Synthetisches Medienbild löschen"
-                @click="removed = true"
-              />
-            </div>
-          </MediaManagementCard>
-          <p v-else role="status" style="margin:0">Synthetisches Medienbild gelöscht</p>
-          <p v-if="previewed" role="status" style="margin:0">Vorschau geöffnet</p>
-        </section>
-      </div>
-    </main>
-  `,
-});
+const syntheticRom = {
+  id: 24,
+  name: "Cyberpunk 2077",
+  files: [],
+  owned_media: [],
+} as unknown as DetailedRom;
+const syntheticComponent = {
+  id: 20,
+  kind: "dlc",
+  relative_path: "Phantom Liberty",
+  manifest_members: [],
+  owned_media: [],
+  updated_at: "2026-11-05T00:00:00Z",
+} satisfies PcComponentSchema;
+const refreshSyntheticComponent = async () => true;
 
 const meta: Meta<typeof MediaManagementCard> = {
   title: "Im Einsatz/Zusammengesetzt/Medienverwaltung",
@@ -126,10 +51,10 @@ export const MedienkarteMitAktionen: Story = {
   },
   render: () => ({
     components: { MediaManagementAction, MediaManagementCard },
-    setup: () => ({ previewUrl }),
+    setup: () => ({ brokenPreviewUrl }),
     template: `
       <div style="width:min(420px, calc(100vw - 32px))">
-        <MediaManagementCard :url="previewUrl" label="Beschädigte Vorschau demonstrieren">
+        <MediaManagementCard :url="brokenPreviewUrl" label="Beschädigte Vorschau demonstrieren">
           <span class="za-shot__source">extrem-langer-dateiname-der-die-medienkarte-auf-schmalen-breiten-prueft.webp</span>
           <div class="za-shot__actions d-flex flex-wrap ga-1">
             <MediaManagementAction icon="mdi-view-dashboard-outline" caption="Übersicht" label="Zur Übersicht hinzufügen" selected />
@@ -183,14 +108,14 @@ export const HauptspielMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Vollständiger Seitenkontext für ein Hauptspiel mit synthetischen Medien und lokalen Ereignissen. Die Story ruft weder Upload- noch Löschendpunkte auf.",
+          "Die produktive Hauptspiel-Medienseite mit synthetischen Daten. Die produktive Navigation und ihre Panels werden direkt gerendert; die Story löst keine Medienmutation aus.",
       },
     },
   },
   render: () => ({
-    components: { SyntheticMediaPage },
-    template:
-      "<SyntheticMediaPage owner=\"Cyberpunk 2077\" title=\"Medien\" :tabs=\"['Handbuch', 'Screenshots', 'Artwork', 'Soundtrack']\" />",
+    components: { MediaTab },
+    setup: () => ({ syntheticRom }),
+    template: '<MediaTab :rom="syntheticRom" />',
   }),
 };
 
@@ -200,13 +125,14 @@ export const DLCMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Vollständiger DLC-Seitenkontext mit Screenshots, Artwork und Soundtrack sowie denselben produktiven Karten-, Aktions- und Uploadbausteinen. Die synthetische Anzeige hält Besitzer und Medienaktionen getrennt; DLC-Handbücher haben keinen UI-Einstieg.",
+          "Die produktive DLC-Medienseite mit synthetischer Komponente und einer harmlosen Aktualisierungsfunktion. Sie zeigt die echte Seitenleisten-Navigation für Screenshots, Artwork und Soundtrack, ohne Uploads oder Löschungen auszulösen.",
       },
     },
   },
   render: () => ({
-    components: { SyntheticMediaPage },
+    components: { PcDlcMediaTab },
+    setup: () => ({ refreshSyntheticComponent, syntheticComponent }),
     template:
-      "<SyntheticMediaPage owner=\"Phantom Liberty\" title=\"DLC-Medien\" :tabs=\"['Screenshots', 'Artwork', 'Soundtrack']\" />",
+      '<PcDlcMediaTab :rom-id="24" :component="syntheticComponent" :refresh="refreshSyntheticComponent" />',
   }),
 };

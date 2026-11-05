@@ -173,6 +173,13 @@ const routeAuthorities = [
     forbidden: false,
   },
   {
+    method: "PUT",
+    route: /^\/roms\/\{[^}]+\}\/pc-components\/\{[^}]+\}\/media\/placements$/,
+    operation: "WRITE",
+    storageClass: "database",
+    forbidden: false,
+  },
+  {
     method: "POST",
     route: /^\/roms\/\{[^}]+\}\/pc-metadata-selection$/,
     operation: "COVER_WRITE",
@@ -1397,7 +1404,7 @@ function finalAuthority(call: RawCall, source: string): Authority {
     };
   }
   if (
-    /^\/roms\/\{[^}]+\}\/pc-components\/\{[^}]+\}\/media\/\{[^}]+\}\/placement$/.test(
+    /^\/roms\/\{[^}]+\}\/pc-components\/\{[^}]+\}\/media(?:\/\{[^}]+\}\/placement|\/placements)$/.test(
       call.route,
     )
   ) {
@@ -1535,6 +1542,19 @@ describe("final active v2 semantic mutation closure", () => {
       { operation: "UPLOAD", storageClass: "resources", forbidden: false },
       { operation: "DELETE", storageClass: "resources", forbidden: false },
     ]);
+  });
+
+  it("classifies component-owned soundtrack ordering as a database write", () => {
+    const [authority] = finalInventorySource(
+      "api.put(`/roms/${romId}/pc-components/${componentId}/media/placements`, {});",
+      "v2/components/GameDetails/PcDlcMediaTab.vue",
+    );
+
+    expect(authority).toMatchObject({
+      operation: "WRITE",
+      storageClass: "database",
+      forbidden: false,
+    });
   });
 
   it("live_play_session_keepalive_is_inventoried", () => {

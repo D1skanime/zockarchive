@@ -20,6 +20,7 @@ describe("MediaManagementCard", () => {
 
     await wrapper.get("img").trigger("error");
     expect(wrapper.find("img").exists()).toBe(false);
+    expect(wrapper.text()).toContain("rom.screenshots-preview-unavailable");
 
     await wrapper.setProps({ url: "/media/replaced.webp" });
     expect(wrapper.find("img").attributes("src")).toBe("/media/replaced.webp");
