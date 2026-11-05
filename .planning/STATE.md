@@ -554,6 +554,7 @@ Recent decisions affecting current work:
 | 261105-f1c | Render productive media stories, synchronize art overlays, and align soundtrack ordering | 2026-11-05 | d620b4268 | [261105-f1c-productive-media-stories-and-crossfade-continuity](./quick/261105-f1c-productive-media-stories-and-crossfade-continuity/) |
 | 261105-fuc | Remove gate lint debt and split the DLC media ordering route | 2026-11-05 | 4ef080ecb | [261105-fuc-gate-lint-and-component-route-sizing](./quick/261105-fuc-gate-lint-and-component-route-sizing/) |
 | 261105-g00 | Compose the DLC ordering router below bounded resources instead of the ROM aggregator | 2026-11-05 | 688073d8b | [261105-g00-route-aggregator-size](./quick/261105-g00-route-aggregator-size/) |
+| 261105-gnr | Preserve PC game and DLC primary navigation above sticky media controls | 2026-11-05 | dbbd3e179 | [261105-gnr-media-tab-input](./quick/261105-gnr-media-tab-input/) |
 | 261028-bt1 | Transparent logo overlays and readable navigation identity | 2026-10-28 | 649c44c6e | [261028-bt1-polish-zockarchive-branding-with-transpa](./quick/261028-bt1-polish-zockarchive-branding-with-transpa/) |
 | 261026-phase34 | Remove disposable Compose volumes after Phase 34 CI runs | 2026-10-26 | 14f51fe8d | [261026-phase34-disposable-volume-cleanup](./quick/261026-phase34-disposable-volume-cleanup/) |
 | 261023-urj | Polish screenshot identity icons, selected glass actions and sticky cloud upload | 2026-10-24 | a6d1f044d | [261023-urj-polish-screenshot-icons-buttons-and-uplo](./quick/261023-urj-polish-screenshot-icons-buttons-and-uplo/) |
