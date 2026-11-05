@@ -373,6 +373,13 @@ export async function mountGallery(
     if (path === "/api/streaming/config")
       return json({ enabled: false, containers: [] });
     if (path === "/api/scan-operations/active") return json(null);
+    if (path === "/api/download-transfer-sessions") return json([]);
+    if (
+      options.dlc &&
+      path === "/api/roms/1/pc-components/20/notes" &&
+      req.method() === "GET"
+    )
+      return json([]);
     if (path === "/api/heartbeat")
       return json({ SYSTEM: { VERSION: "fixture", SHOW_SETUP_WIZARD: false } });
     if (path === "/api/config")

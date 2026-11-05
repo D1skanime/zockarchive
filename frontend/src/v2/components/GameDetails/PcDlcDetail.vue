@@ -16,6 +16,7 @@ import PcDlcFiles from "@/v2/components/GameDetails/PcDlcFiles.vue";
 import PcDlcMediaTab from "@/v2/components/GameDetails/PcDlcMediaTab.vue";
 import PcDlcNotesTab from "@/v2/components/GameDetails/PcDlcNotesTab.vue";
 import ScreenshotsTab from "@/v2/components/GameDetails/ScreenshotsTab.vue";
+import { usePcDlcPrimaryTabSync } from "@/v2/components/GameDetails/pcDlcPrimaryTabSync";
 import { useCan } from "@/v2/composables/useCan";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
 import { descriptionPresentation } from "@/v2/composables/useManualDescription/provenance";
@@ -64,22 +65,7 @@ const tabs = computed(() => [
   { id: "notes", label: t("rom.tab-notes") },
 ]);
 
-watch(tab, (value) => {
-  if (route.query.tab !== value) {
-    void router.replace({
-      path: route.path,
-      query: { ...route.query, tab: value },
-    });
-  }
-});
-watch(
-  () => route.query.tab,
-  (value) => {
-    if (typeof value === "string" && validTabs.includes(value as DlcTab)) {
-      tab.value = value as DlcTab;
-    }
-  },
-);
+const { selectTab } = usePcDlcPrimaryTabSync(tab, validTabs, route, router);
 
 const title = computed(
   () =>
@@ -220,7 +206,12 @@ function showMedia() {
         </section>
 
         <div class="pc-dlc-detail__tab-bar">
-          <ZATabNav v-model="tab" :items="tabs" class="r-v2-det__tabs" />
+          <ZATabNav
+            :model-value="tab"
+            :items="tabs"
+            class="r-v2-det__tabs"
+            @update:model-value="selectTab"
+          />
           <ZAMenu location="bottom end">
             <template #activator="{ props: menuProps }">
               <ZABtn

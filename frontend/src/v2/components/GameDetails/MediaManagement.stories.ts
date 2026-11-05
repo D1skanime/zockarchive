@@ -124,7 +124,7 @@ export const DLCMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Die produktive DLC-Medienseite mit synthetischer Komponente und einer harmlosen Aktualisierungsfunktion. Sie zeigt die echte Seitenleisten-Navigation für Screenshots, Artwork und Soundtrack, ohne Uploads oder Löschungen auszulösen.",
+          "Die produktive DLC-Medienseite mit synthetischer Komponente und einer harmlosen Aktualisierungsfunktion. Sie zeigt die echte Seitenleisten-Navigation für Screenshots und Artwork; Soundtrack, Handbuch und Hintergrundzuordnung bleiben beim Hauptspiel. Uploads oder Löschungen werden nicht ausgelöst.",
       },
     },
   },

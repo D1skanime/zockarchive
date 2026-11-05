@@ -114,16 +114,6 @@ const component: PcComponentSchema = {
   updated_at: "2026-10-24T10:00:00Z",
   owned_media: [media],
 };
-const soundtrackMedia = {
-  ...media,
-  id: 8,
-  role: "soundtrack" as const,
-  mime_type: "audio/mpeg",
-  owned_path: "fixture/dlc-track.mp3",
-  placements: [
-    { id: 2, media_id: 8, surface: "soundtrack" as const, position: 0 },
-  ],
-};
 function render(refresh = mocks.refresh, currentComponent = component) {
   return mount(PcDlcMediaTab, {
     props: { romId: 24, component: currentComponent, refresh },
@@ -154,7 +144,7 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(wrapper.find(".za-shot__badge").text()).toBe(
       "rom.screenshots-overview-position:1",
     );
-    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(3);
+    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(2);
     await button.trigger("click");
     await flushPromises();
     expect(mocks.delete).toHaveBeenCalledExactlyOnceWith(
@@ -305,18 +295,18 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(mocks.delete).not.toHaveBeenCalled();
   });
 
-  it("navigates between screenshots, artwork and soundtrack without a DLC manual entry", async () => {
+  it("limits DLC media to screenshots and artwork without manual or soundtrack", async () => {
     const wrapper = render();
     await flushPromises();
 
-    expect(wrapper.findAll('[role="tab"]')).toHaveLength(3);
+    expect(wrapper.findAll('[role="tab"]')).toHaveLength(2);
     expect(
       wrapper
         .get('[role="tab"][aria-label="rom.screenshots"]')
         .attributes("aria-controls"),
     ).toBe("pc-dlc-media-panel-screenshots");
     const panels = wrapper.findAll('[role="tabpanel"]');
-    expect(panels).toHaveLength(3);
+    expect(panels).toHaveLength(2);
     expect(
       wrapper.get("#pc-dlc-media-panel-screenshots").attributes("role"),
     ).toBe("tabpanel");
@@ -330,61 +320,10 @@ describe("DLC media presentation preserves component capabilities", () => {
     );
     expect(wrapper.text()).not.toContain("rom.pc-media-role-cover");
     expect(wrapper.text()).not.toContain("rom.manual");
-
-    await wrapper
-      .get('[role="tab"][aria-label="rom.soundtrack"]')
-      .trigger("click");
-    expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
-      "rom.soundtrack",
+    expect(wrapper.text()).not.toContain("rom.soundtrack");
+    expect(wrapper.find('[aria-label="rom.add-as-background"]').exists()).toBe(
+      false,
     );
-    expect(mocks.replace).toHaveBeenLastCalledWith({
-      path: "/rom/24/dlc/20",
-      query: { tab: "media", subtab: "soundtrack" },
-    });
-  });
-
-  it("renders DLC soundtrack tracks as playable audio with downloads, not image cards", async () => {
-    const soundtrackComponent = {
-      ...component,
-      owned_media: [soundtrackMedia],
-    };
-    const wrapper = render(mocks.refresh, soundtrackComponent);
-    await flushPromises();
-    await wrapper
-      .get('[role="tab"][aria-label="rom.soundtrack"]')
-      .trigger("click");
-    await flushPromises();
-
-    expect(wrapper.find("audio").attributes("src")).toBe(
-      "/api/roms/24/pc-components/20/media/8/content",
-    );
-    expect(wrapper.find("audio").attributes()).toHaveProperty("controls");
-    expect(
-      wrapper
-        .get('[aria-label="common.download: rom.soundtrack 1"]')
-        .attributes("href"),
-    ).toBe("/api/roms/24/pc-components/20/media/8/content");
-    expect(wrapper.find(".za-shot").exists()).toBe(false);
-    expect(wrapper.find("[data-carousel]").exists()).toBe(false);
-  });
-
-  it("reorders DLC soundtrack placements through the component-scoped route", async () => {
-    const soundtrackComponent = {
-      ...component,
-      owned_media: [soundtrackMedia, { ...soundtrackMedia, id: 9 }],
-    };
-    const wrapper = render(mocks.refresh, soundtrackComponent);
-    await flushPromises();
-    await wrapper
-      .get('[role="tab"][aria-label="rom.soundtrack"]')
-      .trigger("click");
-    await flushPromises();
-    await wrapper.get('[aria-label="rom.move-down"]').trigger("click");
-    expect(mocks.put).toHaveBeenCalledWith(`${endpoint}/placements`, {
-      expected_version: component.updated_at,
-      surface: "soundtrack",
-      media_ids: [9, 8],
-    });
   });
 
   it("replaces obsolete media subtabs with the screenshots route", async () => {

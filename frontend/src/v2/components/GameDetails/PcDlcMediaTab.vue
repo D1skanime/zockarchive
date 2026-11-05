@@ -12,12 +12,10 @@ import type {
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
-import PcDlcSoundtrackPanel from "@/v2/components/GameDetails/PcDlcSoundtrackPanel.vue";
 import {
   componentHasPlacement,
   componentMediaContentUrl,
   componentPlacementPosition,
-  movedComponentMediaIds,
 } from "@/v2/components/GameDetails/pcComponentMediaPlacements";
 import {
   componentMediaRoleLabel,
@@ -84,29 +82,15 @@ const busy = computed(
 );
 const activeRoles = computed<RomComponentOwnedMediaRole[]>(() => {
   if (subtab.value === "screenshots") return ["screenshot"];
-  if (subtab.value === "soundtrack") return ["soundtrack"];
   return ["artwork", "background", "gallery"];
 });
 const uploadRole = computed<RomComponentOwnedMediaRole>(() =>
-  subtab.value === "soundtrack"
-    ? "soundtrack"
-    : subtab.value === "screenshots"
-      ? "screenshot"
-      : "artwork",
+  subtab.value === "screenshots" ? "screenshot" : "artwork",
 );
-const activeImageSurfaces: RomOwnedMediaSurface[] = ["overview", "background"];
+const activeImageSurfaces: RomOwnedMediaSurface[] = ["overview"];
 const componentVersion = computed(() => props.component.updated_at ?? null);
 const filteredMedia = computed(() =>
   media.value.filter((item) => activeRoles.value.includes(item.role)),
-);
-const soundtrackTracks = computed(() =>
-  filteredMedia.value
-    .slice()
-    .sort(
-      (left, right) =>
-        (componentPlacementPosition(left, "soundtrack") ?? 0) -
-        (componentPlacementPosition(right, "soundtrack") ?? 0),
-    ),
 );
 const emptyMediaTitle = computed(() =>
   subtab.value === "artwork"
@@ -114,11 +98,9 @@ const emptyMediaTitle = computed(() =>
     : t("rom.screenshots-empty"),
 );
 const mediaUrls = computed(() =>
-  subtab.value === "soundtrack"
-    ? []
-    : filteredMedia.value.map((item) =>
-        componentMediaContentUrl(endpoint, item.id),
-      ),
+  filteredMedia.value.map((item) =>
+    componentMediaContentUrl(endpoint, item.id),
+  ),
 );
 const gallery = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);
@@ -128,6 +110,10 @@ useWrapGridNav(root, { cellSelector: "button:not([disabled])" });
 const [lightboxIndex, lightboxOpen] = [ref(0), ref(false)];
 
 const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media`;
+
+function setGallery(element: unknown) {
+  gallery.value = element instanceof HTMLElement ? element : null;
+}
 
 async function reconcile() {
   try {
@@ -198,30 +184,6 @@ async function togglePlacement(
   }
 }
 
-async function moveSoundtrack(index: number, direction: -1 | 1) {
-  const mediaIds = movedComponentMediaIds(
-    soundtrackTracks.value,
-    index,
-    direction,
-  );
-  if (!componentVersion.value || !canEdit.value || busy.value || !mediaIds)
-    return;
-  placing.value = true;
-  try {
-    await api.put(`${endpoint}/placements`, {
-      expected_version: componentVersion.value,
-      surface: "soundtrack",
-      media_ids: mediaIds,
-    });
-    await reconcile();
-  } catch (error) {
-    console.error(error);
-    snackbar.error(t("common.error"));
-  } finally {
-    placing.value = false;
-  }
-}
-
 async function remove(mediaId: number) {
   if (!componentVersion.value || !canEdit.value || busy.value) return;
   deleting.value = true;
@@ -274,24 +236,7 @@ async function remove(mediaId: number) {
             ref="dropzone"
             overlay
             :disabled="busy || !componentVersion || !canEdit"
-            :accept="
-              subtab === 'soundtrack'
-                ? '.mp3,.aac,.flac,.ogg,.opus,.m4a,.wav'
-                : 'image/jpeg,image/png,image/webp'
-            "
-            :data-types="
-              subtab === 'soundtrack'
-                ? [
-                    'audio/mpeg',
-                    'audio/aac',
-                    'audio/flac',
-                    'audio/ogg',
-                    'audio/opus',
-                    'audio/mp4',
-                    'audio/wav',
-                  ]
-                : undefined
-            "
+            accept="image/jpeg,image/png,image/webp"
             :input-label="t('common.upload')"
             :release-label="t('common.dropzone-drag-over')"
             @files="upload"
@@ -322,29 +267,13 @@ async function remove(mediaId: number) {
                 >{{ t("common.try-again") }}</ZABtn
               >
             </div>
-            <PcDlcSoundtrackPanel
-              v-if="subtab === 'soundtrack'"
-              :tracks="soundtrackTracks"
-              :content-url="
-                (mediaId) => componentMediaContentUrl(endpoint, mediaId)
-              "
-              :is-placed="(item) => componentHasPlacement(item, 'soundtrack')"
-              :can-edit="canEdit"
-              :disabled="!componentVersion || busy"
-              :placing="placing"
-              :deleting="deleting"
-              :moving="placing"
-              @toggle-placement="togglePlacement($event, 'soundtrack')"
-              @move="moveSoundtrack"
-              @remove="remove"
-            />
             <ZAEmptyState
-              v-else-if="filteredMedia.length === 0"
+              v-if="filteredMedia.length === 0"
               :title="emptyMediaTitle"
             />
             <ul
               v-else
-              ref="gallery"
+              :ref="setGallery"
               class="pc-dlc-media__list ga-3 ma-0 pa-0 pt-4"
               :style="{ '--za-shot-columns': columns }"
             >
@@ -390,11 +319,9 @@ async function remove(mediaId: number) {
                       :icon="
                         surface === 'overview'
                           ? 'mdi-view-dashboard-outline'
-                          : surface === 'background'
-                            ? 'mdi-image-outline'
-                            : 'mdi-music-note-outline'
+                          : 'mdi-image-outline'
                       "
-                      :tone="surface === 'background' ? 'info' : 'brand'"
+                      tone="brand"
                       :selected="componentHasPlacement(item, surface)"
                       :caption="t(surfaceCaptionKey(surface))"
                       :label="
