@@ -1,14 +1,14 @@
 """Keep selectable owned cover candidates for ROMs and managed components.
 
 Revision ID: 0144_active_cover_candidates
-Revises: 0139_pc_component_owned_media_surfaces, 0143_save_backups
+Revises: 0139_pc_component_owned_media_surfaces
 """
 
 import sqlalchemy as sa
 from alembic import op
 
 revision = "0144_active_cover_candidates"
-down_revision = ("0139_pc_component_owned_media_surfaces", "0143_save_backups")
+down_revision = "0139_pc_component_owned_media_surfaces"
 branch_labels = None
 depends_on = None
 
