@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { nextTick } from "vue";
 import type { DetailedRomSchema, PcComponentSchema } from "@/__generated__";
 import PcDlcDetail from "./PcDlcDetail.vue";
 
@@ -171,6 +172,10 @@ function mountDetail(component: PcComponentSchema = selectedDlc) {
         PcDlcFiles: {
           props: ["component"],
           template: "<section data-testid='files' />",
+        },
+        PcDlcMediaTab: {
+          name: "PcDlcMediaTab",
+          template: "<section data-testid='pc-dlc-media' />",
         },
       },
       provide: {
@@ -383,6 +388,20 @@ describe("PcDlcDetail", () => {
     expect(tabs.element.compareDocumentPosition(panel.element)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
+  });
+
+  it("keeps the primary tabs usable after the media panel mounts", async () => {
+    const wrapper = mountDetail();
+    const tabs = wrapper.findAll(".r-v2-det__tabs [role='tab']");
+
+    await tabs[2].trigger("click");
+    await nextTick();
+    expect(wrapper.findAll("[data-testid='pc-dlc-media']")).toHaveLength(1);
+
+    await tabs[0].trigger("click");
+    await nextTick();
+    expect(wrapper.findAll("[data-testid='pc-dlc-media']")).toHaveLength(0);
+    expect(wrapper.get(".pc-dlc-detail__overview")).toBeDefined();
   });
 
   it("keeps the header above tabs to the title and DLC tag, with overview details below", () => {

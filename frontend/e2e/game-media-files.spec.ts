@@ -23,7 +23,10 @@ async function openTab(page: Page, tab: string) {
 // Media subtabs are a sidebar list of role=tab buttons, distinct from the
 // top-level ZATabNav tabs.
 async function openSubtab(page: Page, subtab: string) {
-  await page.locator(".r-v2-media__subtab-btn", { hasText: subtab }).click();
+  await page
+    .locator(".r-v2-media__sidebar")
+    .getByRole("tab", { name: subtab, exact: true })
+    .click();
 }
 
 /** The one Media panel currently on screen. */
@@ -124,6 +127,18 @@ test.describe("Media tab write affordances (admin)", () => {
         exact: true,
       }),
     ).toBeVisible();
+  });
+
+  test("can leave Media through the primary detail navigation", async ({
+    page,
+  }) => {
+    await seedUiState(page, "dark");
+    await gotoFirstRom(page);
+    await openTab(page, "Media");
+    await expect(visiblePanel(page)).toBeVisible();
+
+    await openTab(page, "Overview");
+    await expect(page.locator(".r-v2-media")).toHaveCount(0);
   });
 });
 

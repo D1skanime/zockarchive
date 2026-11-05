@@ -415,6 +415,9 @@ function showMedia() {
 }
 
 .pc-dlc-detail .r-v2-det__panel {
+  position: relative;
+  isolation: isolate;
+  z-index: 0;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -452,6 +455,8 @@ function showMedia() {
 }
 
 .pc-dlc-detail__tab-bar {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: space-between;
