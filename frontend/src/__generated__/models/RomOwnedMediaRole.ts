@@ -2,4 +2,4 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type RomOwnedMediaRole = 'screenshot' | 'artwork' | 'soundtrack';
+export type RomOwnedMediaRole = 'cover' | 'screenshot' | 'artwork' | 'soundtrack';

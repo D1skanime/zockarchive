@@ -2,7 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { RomOwnedMediaSurface } from './RomOwnedMediaSurface';
 export type PcComponentOwnedMediaPlacementMutationRequest = {
     expected_version: string;
+    surface: RomOwnedMediaSurface;
 };
 

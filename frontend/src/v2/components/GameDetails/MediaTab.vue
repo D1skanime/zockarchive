@@ -127,16 +127,11 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
   selectionEndpoint: `/roms/${props.rom.id}/media/cover`,
   expectedVersion: props.rom.updated_at ?? null,
   candidates: props.rom.owned_media ?? [],
-  activeCandidateId: selectedCoverCandidateId(props.rom),
+  activeCandidateId: props.rom.active_owned_cover_media_id ?? null,
   contentUrl: (candidateId) =>
     `/api/roms/${props.rom.id}/media/${candidateId}/content`,
   refresh: props.refresh,
 }));
-
-function selectedCoverCandidateId(owner: object) {
-  const value = Reflect.get(owner, "active_owned_cover_media_id");
-  return typeof value === "number" ? value : null;
-}
 </script>
 
 <template>

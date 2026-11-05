@@ -118,15 +118,10 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
   selectionEndpoint: `${endpoint}/cover`,
   expectedVersion: componentVersion.value,
   candidates: media.value,
-  activeCandidateId: selectedCoverCandidateId(props.component),
+  activeCandidateId: props.component.active_owned_cover_media_id ?? null,
   contentUrl: (candidateId) => componentMediaContentUrl(endpoint, candidateId),
   refresh: props.refresh,
 }));
-
-function selectedCoverCandidateId(owner: object) {
-  const value = Reflect.get(owner, "active_owned_cover_media_id");
-  return typeof value === "number" ? value : null;
-}
 
 function setGallery(element: unknown) {
   gallery.value = element instanceof HTMLElement ? element : null;

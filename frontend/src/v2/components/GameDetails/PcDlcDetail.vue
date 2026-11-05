@@ -107,16 +107,11 @@ watch(
 const cover = computed(
   () =>
     props.component.owned_media?.find(
-      (media) => media.id === selectedCoverCandidateId(props.component),
+      (media) => media.id === props.component.active_owned_cover_media_id,
     ) ??
     props.component.owned_media?.find((media) => media.role === "cover") ??
     props.component.local_media?.find((media) => media.role === "cover"),
 );
-
-function selectedCoverCandidateId(owner: object) {
-  const value = Reflect.get(owner, "active_owned_cover_media_id");
-  return typeof value === "number" ? value : null;
-}
 
 const overviewPlacements = computed(() =>
   (props.component.owned_media ?? [])

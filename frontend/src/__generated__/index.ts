@@ -38,6 +38,7 @@ export type { Body_update_screenshot_api_screenshots__id__put } from './models/B
 export type { Body_update_smart_collection_api_collections_smart__id__put } from './models/Body_update_smart_collection_api_collections_smart__id__put';
 export type { Body_update_state_api_states__id__put } from './models/Body_update_state_api_states__id__put';
 export type { Body_update_state_visibility_api_states__id__visibility_put } from './models/Body_update_state_visibility_api_states__id__visibility_put';
+export type { Body_upload_component_manual_api_roms__id__pc_components__component_id__manual_post } from './models/Body_upload_component_manual_api_roms__id__pc_components__component_id__manual_post';
 export type { Body_upload_component_media_api_roms__id__pc_components__component_id__media_post } from './models/Body_upload_component_media_api_roms__id__pc_components__component_id__media_post';
 export type { Body_upload_media_api_roms__id__media_upload_post } from './models/Body_upload_media_api_roms__id__media_upload_post';
 export type { BulkOperationResponse } from './models/BulkOperationResponse';
@@ -165,6 +166,7 @@ export type { OIDCDict } from './models/OIDCDict';
 export type { OIDCLogoutResponse } from './models/OIDCLogoutResponse';
 export type { OrphanedResourcesCleanupStats } from './models/OrphanedResourcesCleanupStats';
 export type { OverrideSchemaIO } from './models/OverrideSchemaIO';
+export type { OwnedCoverSelectionRequest } from './models/OwnedCoverSelectionRequest';
 export type { PcAutomationBatchItemRequest } from './models/PcAutomationBatchItemRequest';
 export type { PcAutomationBatchRequest } from './models/PcAutomationBatchRequest';
 export type { PcAutomationBatchResponse } from './models/PcAutomationBatchResponse';
@@ -176,6 +178,7 @@ export type { PcAutomationReviewActionResponse } from './models/PcAutomationRevi
 export type { PcAutomationTargetKind } from './models/PcAutomationTargetKind';
 export type { PcComponentLocalMediaSchema } from './models/PcComponentLocalMediaSchema';
 export type { PcComponentManifestMemberSchema } from './models/PcComponentManifestMemberSchema';
+export type { PcComponentManualSchema } from './models/PcComponentManualSchema';
 export type { PcComponentMetadataSchema } from './models/PcComponentMetadataSchema';
 export type { PcComponentMetadataSelectionResponse } from './models/PcComponentMetadataSelectionResponse';
 export type { PcComponentNoteCreateRequest } from './models/PcComponentNoteCreateRequest';

@@ -12,6 +12,8 @@ export type PcComponentSchema = {
     updated_at?: (string | null);
     relative_path: string;
     kind: RomComponentKind;
+    active_owned_cover_media_id?: (number | null);
+    manual_path?: (string | null);
     manifest_members: Array<PcComponentManifestMemberSchema>;
     component_metadata?: (PcComponentMetadataSchema | null);
     local_media?: Array<PcComponentLocalMediaSchema>;

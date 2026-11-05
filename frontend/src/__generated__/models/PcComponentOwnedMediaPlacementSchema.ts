@@ -9,3 +9,4 @@ export type PcComponentOwnedMediaPlacementSchema = {
     surface: RomOwnedMediaSurface;
     position: number;
 };
+

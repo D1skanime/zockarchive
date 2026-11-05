@@ -27,9 +27,11 @@ explicit active candidate for a main PC game, DLC, or expansion.
 
 - `git diff --check` passed before the implementation commit.
 - The commit hook formatted the changed files and reported no new lint issues.
-- The isolated schema client generation was attempted but the configured local
-  schema owner at `127.0.0.1:3344` was unavailable. Generated OpenAPI files
-  were therefore intentionally not hand edited.
+- The generated client was produced from a temporary local backend OpenAPI
+  export with an isolated writable `ROMM_BASE_PATH` and a generation-only
+  ephemeral auth value. It now exposes `cover` and both active-candidate IDs.
+  The committed generated output also refreshes pre-existing schema deltas
+  emitted by the backend-owned contract generator.
 - Authenticated browser evidence for the newly built source is unavailable:
   the deployed service does not include this commit. Its main-game Media page
   showed zero Cover tabs, and the direct DLC route returned to Login. No
