@@ -21,6 +21,7 @@ import {
 } from "vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZAImg from "../../primitives/ZAImg/ZAImg.vue";
+import { tabNavigationTarget } from "./tabNavigation";
 import type { ZATabNavItem } from "./types";
 
 defineOptions({ inheritAttrs: false });
@@ -64,26 +65,16 @@ function selectAndFocus(id: string) {
 }
 
 function onTabKeydown(event: KeyboardEvent, id: string) {
-  const items = visibleItems.value;
-  const index = items.findIndex((item) => item.id === id);
-  if (index < 0) return;
-  const firstKey = event.key === "Home";
-  const lastKey = event.key === "End";
-  const forwardKey =
-    (props.orientation === "vertical" && event.key === "ArrowDown") ||
-    (props.orientation === "horizontal" && event.key === "ArrowRight");
-  const backwardKey =
-    (props.orientation === "vertical" && event.key === "ArrowUp") ||
-    (props.orientation === "horizontal" && event.key === "ArrowLeft");
-  if (!firstKey && !lastKey && !forwardKey && !backwardKey) return;
+  const nextId = tabNavigationTarget(
+    event.key,
+    id,
+    visibleItems.value,
+    props.orientation,
+  );
+  if (!nextId) return;
 
   event.preventDefault();
-  const nextIndex = firstKey
-    ? 0
-    : lastKey
-      ? items.length - 1
-      : (index + (forwardKey ? 1 : -1) + items.length) % items.length;
-  selectAndFocus(items[nextIndex].id);
+  selectAndFocus(nextId);
 }
 
 function update() {
