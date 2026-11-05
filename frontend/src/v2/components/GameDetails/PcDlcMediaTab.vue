@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ZABtn, ZACarousel, ZADropzone, ZAEmptyState } from "@v2/lib";
+import { ZABtn, ZACarousel, ZADropzone, ZAEmptyState, ZATabNav } from "@v2/lib";
 import { computed, nextTick, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -14,6 +14,7 @@ import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
 import PcDlcManualPanel from "@/v2/components/GameDetails/PcDlcManualPanel.vue";
 import {
+  createDlcMediaSubtabDefs,
   surfaceCaptionKey,
   surfaceLabelKey,
   validDlcMediaSubtabs,
@@ -40,33 +41,8 @@ const canEdit = useCan("rom.edit", { kind: "rom", id: props.romId });
 const media = computed(() => props.component.owned_media ?? []);
 const route = useRoute();
 const router = useRouter();
-const subtab = ref<DlcMediaSubtab>(
-  validDlcMediaSubtabs.includes(route.query.subtab as DlcMediaSubtab)
-    ? (route.query.subtab as DlcMediaSubtab)
-    : "screenshots",
-);
-const subtabDefs = computed(() => [
-  {
-    id: "manual" as const,
-    label: t("rom.manual"),
-    icon: "mdi-book-open-page-variant-outline",
-  },
-  {
-    id: "screenshots" as const,
-    label: t("rom.screenshots"),
-    icon: "mdi-image-multiple-outline",
-  },
-  {
-    id: "artwork" as const,
-    label: t("rom.artwork"),
-    icon: "mdi-palette-outline",
-  },
-  {
-    id: "soundtrack" as const,
-    label: t("rom.soundtrack"),
-    icon: "mdi-music-note-outline",
-  },
-]);
+const subtab = ref<DlcMediaSubtab>("screenshots");
+const subtabDefs = computed(() => createDlcMediaSubtabDefs(t));
 watch(subtab, (value) => {
   if (route.query.subtab !== value)
     void router.replace({
@@ -77,12 +53,17 @@ watch(subtab, (value) => {
 watch(
   () => route.query.subtab,
   (value) => {
-    if (
-      typeof value === "string" &&
-      validDlcMediaSubtabs.includes(value as DlcMediaSubtab)
-    )
+    if (typeof value !== "string") return;
+    if (validDlcMediaSubtabs.includes(value as DlcMediaSubtab)) {
       subtab.value = value as DlcMediaSubtab;
+      return;
+    }
+    void router.replace({
+      path: route.path,
+      query: { ...route.query, subtab: "screenshots" },
+    });
   },
+  { immediate: true },
 );
 const uploading = ref(false);
 const placing = ref(false);
@@ -124,7 +105,7 @@ const mediaUrls = computed(() =>
 );
 const gallery = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);
-const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
+const dropzone = ref<InstanceType<typeof ZADropzone>[]>([]);
 const { columns } = useResponsiveColumns(gallery, { cardWidth: 200, gap: 12 });
 useWrapGridNav(root, { cellSelector: "button:not([disabled])" });
 const lightboxIndex = ref(0);
@@ -154,6 +135,10 @@ function openMedia(index: number) {
 
 function closeLightbox() {
   lightboxOpen.value = false;
+}
+
+function openUploadPicker() {
+  dropzone.value[0]?.open();
 }
 
 // Mutations stay serialized until the parent's version and owned media are canonical.
@@ -274,156 +259,160 @@ async function remove(mediaId: number) {
     </h2>
     <div class="pc-dlc-media__layout">
       <aside class="pc-dlc-media__sidebar">
-        <ZABtn
-          v-for="tab in subtabDefs"
-          :key="tab.id"
-          variant="text"
-          class="pc-dlc-media__tab"
-          :class="{ 'pc-dlc-media__tab--active': subtab === tab.id }"
-          role="tab"
-          :aria-label="tab.label"
-          :aria-selected="subtab === tab.id"
-          :aria-controls="`pc-dlc-media-panel-${tab.id}`"
-          :prepend-icon="tab.icon"
-          @click="subtab = tab.id"
-        >
-          {{ tab.label }}
-        </ZABtn>
+        <ZATabNav
+          v-model="subtab"
+          :items="subtabDefs"
+          variant="pill"
+          orientation="vertical"
+          class="pc-dlc-media__tabs"
+        />
       </aside>
       <div class="pc-dlc-media__content">
-        <PcDlcManualPanel
-          id="pc-dlc-media-panel-manual"
-          v-if="subtab === 'manual'"
+        <section
+          v-for="tab in subtabDefs"
+          :id="tab.controls"
+          :key="tab.id"
+          v-show="subtab === tab.id"
+          class="pc-dlc-media__panel"
           role="tabpanel"
-          :rom-id="romId"
-          :component="component"
-          :refresh="refresh"
-        />
-        <ZADropzone
-          v-else
-          ref="dropzone"
-          overlay
-          :disabled="busy || !componentVersion || !canEdit"
-          :accept="
-            subtab === 'soundtrack'
-              ? '.mp3,.aac,.flac,.ogg,.opus,.m4a,.wav'
-              : 'image/jpeg,image/png,image/webp'
-          "
-          :data-types="
-            subtab === 'soundtrack'
-              ? [
-                  'audio/mpeg',
-                  'audio/aac',
-                  'audio/flac',
-                  'audio/ogg',
-                  'audio/opus',
-                  'audio/mp4',
-                  'audio/wav',
-                ]
-              : undefined
-          "
-          :input-label="t('common.upload')"
-          :release-label="t('common.dropzone-drag-over')"
-          @files="upload"
+          :aria-labelledby="tab.tabId"
         >
-          <header
-            class="za-media-upload d-flex flex-wrap align-center ga-3 pa-4"
-          >
-            <MediaUploadControl
-              :available="canEdit"
-              :loading="uploading"
-              :disabled="busy || !componentVersion"
-              :label="t('common.upload')"
-              :hint="t('common.dropzone-hint')"
-              @upload="dropzone?.open()"
-            />
-          </header>
-          <div
-            v-if="needsRefresh"
-            role="alert"
-            class="d-flex align-center ga-3"
-          >
-            <span>{{ t("common.error") }}</span>
-            <ZABtn
-              :loading="recovering"
-              :disabled="recovering"
-              :aria-label="t('common.try-again')"
-              @click="retryReconciliation"
-              >{{ t("common.try-again") }}</ZABtn
-            >
-          </div>
-          <ZAEmptyState
-            v-if="filteredMedia.length === 0"
-            :title="emptyMediaTitle"
+          <PcDlcManualPanel
+            v-if="tab.id === 'manual' && subtab === tab.id"
+            :rom-id="romId"
+            :component="component"
+            :refresh="refresh"
           />
-          <ul
-            v-else
-            ref="gallery"
-            class="pc-dlc-media__list ga-3 ma-0 pa-0 pt-4"
-            :style="{ '--za-shot-columns': columns }"
+          <ZADropzone
+            v-else-if="subtab === tab.id"
+            ref="dropzone"
+            overlay
+            :disabled="busy || !componentVersion || !canEdit"
+            :accept="
+              subtab === 'soundtrack'
+                ? '.mp3,.aac,.flac,.ogg,.opus,.m4a,.wav'
+                : 'image/jpeg,image/png,image/webp'
+            "
+            :data-types="
+              subtab === 'soundtrack'
+                ? [
+                    'audio/mpeg',
+                    'audio/aac',
+                    'audio/flac',
+                    'audio/ogg',
+                    'audio/opus',
+                    'audio/mp4',
+                    'audio/wav',
+                  ]
+                : undefined
+            "
+            :input-label="t('common.upload')"
+            :release-label="t('common.dropzone-drag-over')"
+            @files="upload"
           >
-            <li v-for="(item, index) in filteredMedia" :key="item.id">
-              <MediaManagementCard
-                :url="mediaContentUrl(item.id)"
-                :label="`${mediaRoleLabel(item)} ${index + 1}`"
-                @preview="openMedia(index)"
+            <header
+              class="za-media-upload d-flex flex-wrap align-center ga-3 pa-4"
+            >
+              <MediaUploadControl
+                :available="canEdit"
+                :loading="uploading"
+                :disabled="busy || !componentVersion"
+                :label="t('common.upload')"
+                :hint="t('common.dropzone-hint')"
+                @upload="openUploadPicker"
+              />
+            </header>
+            <div
+              v-if="needsRefresh"
+              role="alert"
+              class="d-flex align-center ga-3"
+            >
+              <span>{{ t("common.error") }}</span>
+              <ZABtn
+                :loading="recovering"
+                :disabled="recovering"
+                :aria-label="t('common.try-again')"
+                @click="retryReconciliation"
+                >{{ t("common.try-again") }}</ZABtn
               >
-                <span class="za-shot__source">{{ mediaRoleLabel(item) }}</span>
-                <span class="za-shot__source" :title="mediaSourceLabel(item)">{{
-                  mediaSourceLabel(item)
-                }}</span>
-                <div class="za-shot__badges d-flex flex-wrap ga-1">
-                  <span
-                    v-for="surface in activeSurfaces"
-                    v-show="hasPlacement(item, surface)"
-                    :key="surface"
-                    class="za-shot__badge"
-                    :class="`za-shot__badge--${surface}`"
-                  >
-                    {{
-                      t(`rom.screenshots-${surface}-position`, {
-                        position: placementPosition(item, surface),
-                      })
-                    }}
-                  </span>
-                </div>
-                <div
-                  v-if="canEdit"
-                  class="za-shot__actions d-flex flex-wrap ga-1"
+            </div>
+            <ZAEmptyState
+              v-if="filteredMedia.length === 0"
+              :title="emptyMediaTitle"
+            />
+            <ul
+              v-else
+              ref="gallery"
+              class="pc-dlc-media__list ga-3 ma-0 pa-0 pt-4"
+              :style="{ '--za-shot-columns': columns }"
+            >
+              <li v-for="(item, index) in filteredMedia" :key="item.id">
+                <MediaManagementCard
+                  :url="mediaContentUrl(item.id)"
+                  :label="`${mediaRoleLabel(item)} ${index + 1}`"
+                  @preview="openMedia(index)"
                 >
-                  <MediaManagementAction
-                    v-for="surface in activeSurfaces"
-                    :key="surface"
-                    :icon="
-                      surface === 'overview'
-                        ? 'mdi-view-dashboard-outline'
-                        : surface === 'background'
-                          ? 'mdi-image-outline'
-                          : 'mdi-music-note-outline'
-                    "
-                    :tone="surface === 'background' ? 'info' : 'brand'"
-                    :selected="hasPlacement(item, surface)"
-                    :caption="t(surfaceCaptionKey(surface))"
-                    :label="
-                      t(surfaceLabelKey(surface, hasPlacement(item, surface)))
-                    "
-                    :disabled="!componentVersion || busy"
-                    :loading="placing"
-                    @click="togglePlacement(item, surface)"
-                  />
-                  <MediaManagementAction
-                    icon="mdi-delete-outline"
-                    tone="danger"
-                    :caption="t('common.delete')"
-                    :label="t('common.delete')"
-                    :disabled="!componentVersion || busy"
-                    @click="remove(item.id)"
-                  />
-                </div>
-              </MediaManagementCard>
-            </li>
-          </ul>
-        </ZADropzone>
+                  <span class="za-shot__source">{{
+                    mediaRoleLabel(item)
+                  }}</span>
+                  <span
+                    class="za-shot__source"
+                    :title="mediaSourceLabel(item)"
+                    >{{ mediaSourceLabel(item) }}</span
+                  >
+                  <div class="za-shot__badges d-flex flex-wrap ga-1">
+                    <span
+                      v-for="surface in activeSurfaces"
+                      v-show="hasPlacement(item, surface)"
+                      :key="surface"
+                      class="za-shot__badge"
+                      :class="`za-shot__badge--${surface}`"
+                    >
+                      {{
+                        t(`rom.screenshots-${surface}-position`, {
+                          position: placementPosition(item, surface),
+                        })
+                      }}
+                    </span>
+                  </div>
+                  <div
+                    v-if="canEdit"
+                    class="za-shot__actions d-flex flex-wrap ga-1"
+                  >
+                    <MediaManagementAction
+                      v-for="surface in activeSurfaces"
+                      :key="surface"
+                      :icon="
+                        surface === 'overview'
+                          ? 'mdi-view-dashboard-outline'
+                          : surface === 'background'
+                            ? 'mdi-image-outline'
+                            : 'mdi-music-note-outline'
+                      "
+                      :tone="surface === 'background' ? 'info' : 'brand'"
+                      :selected="hasPlacement(item, surface)"
+                      :caption="t(surfaceCaptionKey(surface))"
+                      :label="
+                        t(surfaceLabelKey(surface, hasPlacement(item, surface)))
+                      "
+                      :disabled="!componentVersion || busy"
+                      :loading="placing"
+                      @click="togglePlacement(item, surface)"
+                    />
+                    <MediaManagementAction
+                      icon="mdi-delete-outline"
+                      tone="danger"
+                      :caption="t('common.delete')"
+                      :label="t('common.delete')"
+                      :disabled="!componentVersion || busy"
+                      @click="remove(item.id)"
+                    />
+                  </div>
+                </MediaManagementCard>
+              </li>
+            </ul>
+          </ZADropzone>
+        </section>
       </div>
     </div>
     <ZACarousel

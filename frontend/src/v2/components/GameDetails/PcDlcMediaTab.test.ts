@@ -52,7 +52,7 @@ describe("PcDlcMediaTab", () => {
     expect(source).toContain("t(`rom.pc-media-role-${item.role}`)");
     expect(source).toContain('t("rom.pc-media-source-provider")');
     expect(source).toContain('t("rom.pc-media-source-uploaded")');
-    expect(source).toContain("{{ mediaRoleLabel(item) }}");
+    expect(source).toMatch(/\{\{\s*mediaRoleLabel\(item\)\s*\}\}/);
     expect(source).toMatch(/\{\{\s*mediaSourceLabel\(item\)\s*\}\}/);
     expect(source).not.toContain("<strong>{{ item.role }}</strong>");
     expect(source).not.toContain("<span>{{ item.mime_type }}</span>");
@@ -66,7 +66,12 @@ describe("PcDlcMediaTab", () => {
     expect(presentationSource).toContain('"soundtrack"');
     expect(source).toContain("const subtabDefs");
     expect(source).toContain('body.append("role", uploadRole.value)');
-    expect(source).toContain('role="tab"');
+    expect(source).toContain("ZATabNav");
+    expect(source).toContain('orientation="vertical"');
+    expect(presentationSource).toContain("createDlcMediaSubtabDefs");
+    expect(presentationSource).toContain(
+      "controls: `pc-dlc-media-panel-${id}`",
+    );
   });
 
   it("uses a DLC-specific gallery empty state instead of main-game artwork copy", () => {

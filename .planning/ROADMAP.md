@@ -1123,7 +1123,7 @@ Plans:
 **Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
 **Depends on:** Phase 39
 **Status:** Implementation complete; targeted technical verification passed (2026-11-05). Human UAT remains pending before any full regression.
-**Plans:** 9 plans
+**Plans:** 11 plans
 
 Plans:
 - [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.
@@ -1135,3 +1135,5 @@ Plans:
 - [x] 40-07-PLAN.md - Extract component-only response, ORM, and database mutation seams from legacy ROM modules.
 - [x] 40-08-PLAN.md - Close reviewed media-composite, audio filtering, and localization gaps.
 - [x] 40-09-PLAN.md - Render real background comparison states and localize media carousel closing.
+- [x] 40-10-PLAN.md - Reuse accessible tab navigation to keep DLC media below the source-size limit.
+- [x] 40-11-PLAN.md - Complete tab/panel semantics, universal input, and legacy subtab canonicalization.

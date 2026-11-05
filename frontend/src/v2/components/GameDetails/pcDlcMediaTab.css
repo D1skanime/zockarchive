@@ -25,14 +25,14 @@
   flex-direction: column;
   gap: var(--r-space-1);
 }
-.pc-dlc-media__tab {
-  justify-content: flex-start;
-}
-.pc-dlc-media__tab--active {
-  color: var(--r-color-brand-primary);
+.pc-dlc-media__tabs {
+  width: 100%;
 }
 .pc-dlc-media__content {
   flex: 1 1 auto;
+  min-width: 0;
+}
+.pc-dlc-media__panel {
   min-width: 0;
 }
 html[data-bp~="sm-and-down"] .pc-dlc-media__layout {

@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
   orientation: "horizontal",
 });
 
-defineEmits<{
+const emit = defineEmits<{
   (e: "update:modelValue", v: string): void;
 }>();
 
@@ -56,6 +56,34 @@ const animate = ref(false);
 
 function setBtnEl(id: string, el: Element | null) {
   btnEls.set(id, el as HTMLElement | null);
+}
+
+function selectAndFocus(id: string) {
+  emit("update:modelValue", id);
+  void nextTick(() => btnEls.get(id)?.focus());
+}
+
+function onTabKeydown(event: KeyboardEvent, id: string) {
+  const items = visibleItems.value;
+  const index = items.findIndex((item) => item.id === id);
+  if (index < 0) return;
+  const firstKey = event.key === "Home";
+  const lastKey = event.key === "End";
+  const forwardKey =
+    (props.orientation === "vertical" && event.key === "ArrowDown") ||
+    (props.orientation === "horizontal" && event.key === "ArrowRight");
+  const backwardKey =
+    (props.orientation === "vertical" && event.key === "ArrowUp") ||
+    (props.orientation === "horizontal" && event.key === "ArrowLeft");
+  if (!firstKey && !lastKey && !forwardKey && !backwardKey) return;
+
+  event.preventDefault();
+  const nextIndex = firstKey
+    ? 0
+    : lastKey
+      ? items.length - 1
+      : (index + (forwardKey ? 1 : -1) + items.length) % items.length;
+  selectAndFocus(items[nextIndex].id);
 }
 
 function update() {
@@ -153,10 +181,13 @@ onBeforeUnmount(() => {
       :ref="(el) => setBtnEl(t.id, el as Element | null)"
       type="button"
       role="tab"
+      :id="t.tabId"
       class="r-tab-nav__btn"
       :class="{ 'r-tab-nav__btn--active': modelValue === t.id }"
       :aria-selected="modelValue === t.id"
-      @click="$emit('update:modelValue', t.id)"
+      :aria-controls="t.controls"
+      @click="emit('update:modelValue', t.id)"
+      @keydown="onTabKeydown($event, t.id)"
     >
       <ZAImg
         v-if="t.image"

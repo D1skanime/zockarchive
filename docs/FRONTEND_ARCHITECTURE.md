@@ -221,7 +221,7 @@ native `button`, `input`, `select`, and `textarea` elements below
 `frontend/docs/v2-lib-native-control-exceptions.md`. The exception list is
 part of the primitive contract, not a general allowlist.
 
-PlatformsIndex.vue uses PlatformTile and list rows. Gallery/Platform.vue uses PlatformHead, GalleryShell, toolbar/filter, virtual rows, card/list modes, selection, and scan actions. GameDetails.vue composes CoverColumn, GameHeader, actions, and detail tabs. PcComponents.vue shows PC components and links DLC to /rom/:rom/dlc/:component. PcDlcDetails.vue resolves a parent ROM and kind dlc component, then renders PcDlcDetail, PcDlcFiles, PcDlcMediaTab, and PcDlcNotesTab. GlobalDialogs is emitter-driven; detail interactions use GameActions, MoreMenu, DownloadSelectionDialog, DownloadManager, MatchRomDialog, RefreshMetadataDialog, EditRomDialog, and DeleteRomDialog.
+PlatformsIndex.vue uses PlatformTile and list rows. Gallery/Platform.vue uses PlatformHead, GalleryShell, toolbar/filter, virtual rows, card/list modes, selection, and scan actions. GameDetails.vue composes CoverColumn, GameHeader, actions, and detail tabs. PcComponents.vue shows PC components and links DLC to /rom/:rom/dlc/:component. PcDlcDetails.vue resolves a parent ROM and kind dlc component, then renders PcDlcDetail, PcDlcFiles, PcDlcMediaTab, and PcDlcNotesTab. PcDlcMediaTab uses the shared vertical pill `ZATabNav`; items can declare reciprocal tab and panel IDs, and the primitive supports orientation-aware Arrow, Home, and End navigation for keyboard and gamepad input. GlobalDialogs is emitter-driven; detail interactions use GameActions, MoreMenu, DownloadSelectionDialog, DownloadManager, MatchRomDialog, RefreshMetadataDialog, EditRomDialog, and DeleteRomDialog.
 
 ---
 

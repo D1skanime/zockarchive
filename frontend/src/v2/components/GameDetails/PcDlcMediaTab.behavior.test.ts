@@ -15,6 +15,10 @@ const mocks = vi.hoisted(() => ({
   error: vi.fn(),
   editable: true,
   replace: vi.fn(),
+  route: {
+    path: "/rom/24/dlc/20",
+    query: { tab: "media" } as Record<string, string>,
+  },
 }));
 vi.mock("vue-i18n", () => ({
   useI18n: () => ({
@@ -36,7 +40,7 @@ vi.mock("@/v2/composables/useResponsiveColumns", () => ({
 }));
 vi.mock("@/v2/composables/useWrapGridNav", () => ({ useWrapGridNav: vi.fn() }));
 vi.mock("vue-router", () => ({
-  useRoute: () => ({ path: "/rom/24/dlc/20", query: { tab: "media" } }),
+  useRoute: () => mocks.route,
   useRouter: () => ({ replace: mocks.replace }),
 }));
 vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
@@ -57,13 +61,32 @@ vi.mock("@v2/lib", () => ({
     props: ["items", "modelValue"],
     template: "<div data-carousel />",
   },
+  ZATabNav: {
+    props: ["items", "modelValue"],
+    emits: ["update:modelValue"],
+    template: `
+      <nav role="tablist">
+        <button
+          v-for="item in items"
+          :key="item.id"
+          type="button"
+          role="tab"
+          :id="item.tabId"
+          :aria-controls="item.controls"
+          :aria-label="item.label"
+          :aria-selected="modelValue === item.id"
+          @click="$emit('update:modelValue', item.id)"
+        >{{ item.label }}</button>
+      </nav>
+    `,
+  },
   ZADropzone: defineComponent({
     name: "ZADropzone",
     props: { disabled: Boolean },
     emits: ["files"],
-    setup(_, { slots, expose }) {
+    setup(_, { attrs, slots, expose }) {
       expose({ open: mocks.open });
-      return () => h("div", slots.default?.());
+      return () => h("div", attrs, slots.default?.());
     },
   }),
 }));
@@ -101,6 +124,8 @@ beforeEach(() => {
   mocks.post.mockResolvedValue({ data: {} });
   mocks.delete.mockResolvedValue({ data: {} });
   mocks.confirm.mockResolvedValue(true);
+  mocks.route.path = "/rom/24/dlc/20";
+  mocks.route.query = { tab: "media" };
 });
 describe("DLC media presentation preserves component capabilities", () => {
   it("keeps the crown selected, displays position one and removes only the component placement", async () => {
@@ -271,6 +296,21 @@ describe("DLC media presentation preserves component capabilities", () => {
     await flushPromises();
 
     expect(wrapper.findAll('[role="tab"]')).toHaveLength(4);
+    expect(
+      wrapper
+        .get('[role="tab"][aria-label="rom.screenshots"]')
+        .attributes("aria-controls"),
+    ).toBe("pc-dlc-media-panel-screenshots");
+    const panels = wrapper.findAll('[role="tabpanel"]');
+    expect(panels).toHaveLength(4);
+    expect(
+      wrapper.get("#pc-dlc-media-panel-screenshots").attributes("role"),
+    ).toBe("tabpanel");
+    expect(
+      wrapper
+        .get("#pc-dlc-media-panel-screenshots")
+        .attributes("aria-labelledby"),
+    ).toBe("pc-dlc-media-tab-screenshots");
     expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
       "rom.screenshots",
     );
@@ -286,5 +326,19 @@ describe("DLC media presentation preserves component capabilities", () => {
       path: "/rom/24/dlc/20",
       query: { tab: "media", subtab: "soundtrack" },
     });
+  });
+
+  it("replaces obsolete media subtabs with the screenshots route", async () => {
+    mocks.route.query = { tab: "media", subtab: "cover" };
+    const wrapper = render();
+    await flushPromises();
+
+    expect(mocks.replace).toHaveBeenCalledWith({
+      path: "/rom/24/dlc/20",
+      query: { tab: "media", subtab: "screenshots" },
+    });
+    expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
+      "rom.screenshots",
+    );
   });
 });
