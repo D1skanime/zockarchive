@@ -38,3 +38,4 @@ The default production output folder was not used because it is an existing igno
 Human live UAT and any later full regression remain outside this technical verification.
 
 | Quick 261105-mnt: Cover-media TypeScript contracts and source-size baselines | The targeted typecheck accepts complete generated component fixtures, cover-only owner projections, and boolean media refresh results. Diff check passed. Current physical lines are `rom.py` 1179 (baseline 1184), `roms_handler.py` 4834 (baseline 4853), `GameDetails.vue` 577 (baseline 686), and `pc_component_resources.py` 384 (limit 450). No test suite was run before renewed UAT. | Passed targeted static verification |
+| Quick 261105-n05: component-media route extraction lint repair | Restored the existing owned-storage access imports used by the retained media content route. Scoped Trunk and diff checks passed; no test suite ran. | Passed targeted static verification |
