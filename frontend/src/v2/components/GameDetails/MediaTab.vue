@@ -4,7 +4,7 @@
 // soundtrack panel; each other subtab is self-contained.
 //
 // The soundtrack player is reused from v1 for now.
-import { ZAEmptyState, ZAIcon } from "@v2/lib";
+import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
@@ -77,32 +77,35 @@ watch(
   },
 );
 
-// ---------- Subtab nav ----------
-// We render the subtab list manually (not via ZATabNav) because each
-// subtab's content panel owns its own section header with title +
-// contextual actions — the sidebar stays navigation-only, mirroring
-// ScreenshotsSubtab.
-type SubtabDef = { id: Subtab; label: string; icon: string };
-const subtabDefs = computed<SubtabDef[]>(() => [
+// ---------- Shared subtab navigation ----------
+const subtabDefs = computed<ZATabNavItem[]>(() => [
   {
     id: "manual",
     label: t("rom.manual"),
     icon: "mdi-book-open-page-variant-outline",
+    controls: "media-panel-manual",
+    tabId: "media-tab-manual",
   },
   {
     id: "screenshots",
     label: t("rom.screenshots"),
     icon: "mdi-image-multiple-outline",
+    controls: "media-panel-screenshots",
+    tabId: "media-tab-screenshots",
   },
   {
     id: "artwork",
     label: t("rom.artwork"),
     icon: "mdi-palette-outline",
+    controls: "media-panel-artwork",
+    tabId: "media-tab-artwork",
   },
   {
     id: "soundtrack",
     label: t("rom.soundtrack"),
     icon: "mdi-music-note-outline",
+    controls: "media-panel-soundtrack",
+    tabId: "media-tab-soundtrack",
   },
 ]);
 </script>
@@ -110,33 +113,12 @@ const subtabDefs = computed<SubtabDef[]>(() => [
 <template>
   <div class="r-v2-media">
     <aside class="r-v2-media__sidebar">
-      <ul
-        class="r-v2-media__subtabs"
-        role="tablist"
-        aria-orientation="vertical"
-      >
-        <li
-          v-for="tab in subtabDefs"
-          :key="tab.id"
-          class="r-v2-media__subtab"
-          :class="{ 'r-v2-media__subtab--active': subTab === tab.id }"
-        >
-          <button
-            type="button"
-            role="tab"
-            class="r-v2-media__subtab-btn"
-            :class="{
-              'r-v2-media__subtab-btn--active': subTab === tab.id,
-            }"
-            :aria-selected="subTab === tab.id"
-            :aria-controls="`media-panel-${tab.id}`"
-            @click="subTab = tab.id"
-          >
-            <ZAIcon :icon="tab.icon" size="16" />
-            <span class="r-v2-media__subtab-label">{{ tab.label }}</span>
-          </button>
-        </li>
-      </ul>
+      <ZATabNav
+        v-model="subTab"
+        :items="subtabDefs"
+        variant="pill"
+        orientation="vertical"
+      />
     </aside>
 
     <div class="r-v2-media__content">
@@ -153,7 +135,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'manual'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Manual"
+        aria-labelledby="media-tab-manual"
       >
         <ManualSubtab :rom="rom" />
       </section>
@@ -165,7 +147,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'screenshots'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Screenshots"
+        aria-labelledby="media-tab-screenshots"
       >
         <ScreenshotsSubtab :rom="rom" />
       </section>
@@ -177,7 +159,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'artwork'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Artwork"
+        aria-labelledby="media-tab-artwork"
       >
         <ArtworkSubtab :rom="rom" />
       </section>
@@ -188,7 +170,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'soundtrack'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Soundtrack"
+        aria-labelledby="media-tab-soundtrack"
       >
         <SoundtrackPanel :rom="rom" class="r-v2-media__soundtrack" />
       </section>
@@ -211,53 +193,6 @@ const subtabDefs = computed<SubtabDef[]>(() => [
 .r-v2-media__sidebar {
   width: 220px;
   flex-shrink: 0;
-}
-
-/* Subtab list — navigation only. Per-section actions (Upload, etc.)
-   live in the content column's section headers, mirroring
-   ScreenshotsSubtab. */
-.r-v2-media__subtabs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.r-v2-media__subtab {
-  display: flex;
-  flex-direction: column;
-}
-.r-v2-media__subtab-btn {
-  width: 100%;
-  appearance: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: var(--r-radius-md);
-  color: var(--r-color-fg-muted);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: var(--r-font-weight-medium);
-  transition:
-    background var(--r-motion-fast) var(--r-motion-ease-out),
-    color var(--r-motion-fast) var(--r-motion-ease-out);
-}
-.r-v2-media__subtab-btn:hover {
-  background: var(--r-color-surface-hover);
-  color: var(--r-color-fg);
-}
-.r-v2-media__subtab-btn--active {
-  background: color-mix(in srgb, var(--r-color-brand-primary) 18%, transparent);
-  color: var(--r-color-brand-primary);
-}
-.r-v2-media__subtab-label {
-  flex: 1;
 }
 
 .r-v2-media__content {

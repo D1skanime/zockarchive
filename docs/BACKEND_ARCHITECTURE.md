@@ -208,6 +208,37 @@ StorageRoot and PlatformStorageMapping in backend/models/storage.py model extern
 
 RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
 
+#### DLC-owned manuals and media
+
+`backend/endpoints/roms/pc_component_resources.py` exposes component resources
+only below their resolved parent ROM: read routes require `roms.read` and
+uploads, deletions, and placement changes require `roms.write`. The
+`/{rom_id}/pc-components/{component_id}/manual` GET, POST, and DELETE routes
+manage a DLC-owned PDF or Markdown manual; `/manual/content` streams only that
+component's owned manual. The POST and DELETE operations require the component
+`expected_version`, so a stale client cannot replace or remove the parent ROM's
+manual or another DLC's manual.
+
+The same router lists, uploads, streams, deletes, and places
+`RomComponentOwnedMedia` beneath `/media`. `overview` and `background` accept
+image roles, while `soundtrack` accepts only soundtrack audio. The `surface`
+field records independent ordered placements per component and surface, so a
+DLC's selected overview, background, or soundtrack never aliases parent-ROM
+media. Migration `0139_pc_component_owned_media_surfaces` adds the nullable
+component `manual_path`, the placement surface, and the surface-specific
+constraints/indexes needed for this separation.
+
+`pc_component_resource_support.py` centralizes upload role, extension, and MIME
+validation. `handler/filesystem/pc_component_resources.py` writes accepted
+manuals, images, and audio only into the ZockArchive-owned resource root.
+`handler/database/pc_component_media_mutations.py` resolves the exact DLC,
+applies version-checked manual and placement mutations, and enforces
+role-to-surface compatibility. The endpoint deletes a newly written owned file
+when the guarded database mutation fails and removes replaced files only after
+a successful commit. Response schemas stay in
+`endpoints/responses/pc_component_media.py`; generic ROM handlers keep their
+existing parent-media and provider behavior.
+
 ### Background work, WebSockets and deployment
 
 RQ tasks are defined under backend/tasks/ and initialized by backend/startup.py, including scans, cleanup, provider updates, media cleanup, save-hash backfill and sync push/pull. /ws uses Socket.IO with Redis coordination for scan, activity, sync and admin log events; /netplay provides room, WebRTC and input relay events.

@@ -18,10 +18,10 @@ vi.mock("vue-router", () => ({
   useRoute: () => route,
   useRouter: () => ({ replace }),
 }));
-vi.mock("@v2/lib", () => ({
-  ZAIcon: { template: "<span />" },
-  ZAEmptyState: { template: "<div />" },
-}));
+vi.mock("@v2/lib", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@v2/lib")>();
+  return { ZATabNav: actual.ZATabNav };
+});
 vi.mock("@/v2/components/GameDetails/ScreenshotsSubtab.vue", () => ({
   __esModule: true,
   default: { template: "<div data-screenshots />" },
@@ -51,7 +51,7 @@ describe("MediaTab soundtrack access", () => {
   it("defaults the parent media tab to screenshots", () => {
     expect(source).toContain(': "screenshots",');
   });
-  it("keeps all media owners mounted and preserves query state across screenshot/manual navigation", async () => {
+  it("uses the shared tab navigation while keeping media owners mounted and query state", async () => {
     const wrapper = mount(MediaTab, {
       props: { rom: { id: 1 } as DetailedRom },
     });
@@ -60,6 +60,20 @@ describe("MediaTab soundtrack access", () => {
     const manual = wrapper.get("[data-manual]").element;
     const soundtrack = wrapper.get("[data-soundtrack]").element;
     const tabs = wrapper.findAll('[role="tab"]');
+    expect(tabs).toHaveLength(4);
+    expect(tabs[1].attributes("aria-controls")).toBe("media-panel-screenshots");
+    expect(tabs[1].attributes("id")).toBe("media-tab-screenshots");
+    expect(
+      wrapper.get("#media-panel-screenshots").attributes("aria-labelledby"),
+    ).toBe("media-tab-screenshots");
+
+    await tabs[1].trigger("keydown", { key: "ArrowDown" });
+    await flushPromises();
+    expect(replace).toHaveBeenLastCalledWith({
+      path: "/rom/1",
+      query: { tab: "media", subtab: "artwork", retained: "value" },
+    });
+
     await tabs[0].trigger("click");
     expect(replace).toHaveBeenLastCalledWith({
       path: "/rom/1",
