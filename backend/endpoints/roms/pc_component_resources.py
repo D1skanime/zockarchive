@@ -9,6 +9,7 @@ from fastapi.responses import StreamingResponse
 
 from decorators.auth import protected_route
 from endpoints.responses.rom import (
+    OwnedCoverSelectionRequest,
     PcComponentManualSchema,
     PcComponentNoteCreateRequest,
     PcComponentNoteSchema,
@@ -295,6 +296,41 @@ async def upload_component_media(
     if persisted is None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     return PcComponentOwnedMediaSchema.model_validate(persisted)
+
+
+@protected_route(
+    router.post,
+    "/{id}/pc-components/{component_id}/media/cover",
+    [Scope.ROMS_WRITE],
+)
+async def select_component_cover_media(
+    request: Request,
+    id: int,
+    component_id: int,
+    payload: OwnedCoverSelectionRequest,
+) -> PcComponentOwnedMediaSchema:
+    """Select a retained Cover candidate for this exact DLC or expansion."""
+    get_dlc_component(request, id, component_id)
+    component = db_rom_handler.select_pc_component_owned_cover_media(
+        id,
+        component_id,
+        request.user.id,
+        payload.media_id,
+        payload.expected_version,
+    )
+    if component is None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+    selected = next(
+        (
+            media
+            for media in component.owned_media
+            if media.id == component.active_owned_cover_media_id
+        ),
+        None,
+    )
+    if selected is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return PcComponentOwnedMediaSchema.model_validate(selected)
 
 
 @protected_route(

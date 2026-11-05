@@ -4,11 +4,16 @@ import type {
   RomOwnedMediaSurface,
 } from "@/__generated__";
 
-export const validDlcMediaSubtabs = ["screenshots", "artwork"] as const;
+export const validDlcMediaSubtabs = [
+  "cover",
+  "screenshots",
+  "artwork",
+] as const;
 
 export type DlcMediaSubtab = (typeof validDlcMediaSubtabs)[number];
 
 export const dlcMediaNavigationItems = [
+  ["cover", "rom.pc-media-role-cover", "mdi-image-check-outline"],
   ["screenshots", "rom.screenshots", "mdi-image-multiple-outline"],
   ["artwork", "rom.artwork", "mdi-palette-outline"],
 ] as const;

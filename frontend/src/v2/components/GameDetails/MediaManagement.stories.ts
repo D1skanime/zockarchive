@@ -15,14 +15,29 @@ const syntheticRom = {
   id: 24,
   name: "Cyberpunk 2077",
   files: [],
-  owned_media: [],
+  updated_at: "2026-11-05T00:00:00Z",
+  active_owned_cover_media_id: 101,
+  owned_media: [
+    {
+      id: 101,
+      role: "cover",
+      owned_path: "roms/24/owned-media/cover-story.webp",
+    },
+  ],
 } as unknown as DetailedRom;
 const syntheticComponent = {
   id: 20,
   kind: "dlc",
   relative_path: "Phantom Liberty",
   manifest_members: [],
-  owned_media: [],
+  active_owned_cover_media_id: 201,
+  owned_media: [
+    {
+      id: 201,
+      role: "cover",
+      owned_path: "roms/24/pc-owned-media/20-cover-story.webp",
+    },
+  ],
   updated_at: "2026-11-05T00:00:00Z",
 } satisfies PcComponentSchema;
 const refreshSyntheticComponent = async () => true;
@@ -107,14 +122,15 @@ export const HauptspielMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Die produktive Hauptspiel-Medienseite mit synthetischen Daten. Die produktive Navigation und ihre Panels werden direkt gerendert; die Story löst keine Medienmutation aus.",
+          "Die produktive Hauptspiel-Medienseite mit dem sichtbaren Cover-Register. Es zeigt eine ausgewählte Kandidatenkarte, Upload und Auswahl ohne Hintergrund-Aktion. Die Story löst keine Medienmutation aus.",
       },
     },
   },
   render: () => ({
     components: { MediaTab },
-    setup: () => ({ syntheticRom }),
-    template: '<MediaTab :rom="syntheticRom" />',
+    setup: () => ({ refreshSyntheticComponent, syntheticRom }),
+    template:
+      '<MediaTab :rom="syntheticRom" :refresh="refreshSyntheticComponent" />',
   }),
 };
 
@@ -124,7 +140,7 @@ export const DLCMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Die produktive DLC-Medienseite mit synthetischer Komponente und einer harmlosen Aktualisierungsfunktion. Sie zeigt die echte Seitenleisten-Navigation für Screenshots und Artwork; Soundtrack, Handbuch und Hintergrundzuordnung bleiben beim Hauptspiel. Uploads oder Löschungen werden nicht ausgelöst.",
+          "Die produktive DLC-Medienseite mit sichtbarem Cover-Register und einer harmlosen Aktualisierungsfunktion. Cover bleibt komponenteneigen, während Soundtrack, Handbuch und Hintergrundzuordnung beim Hauptspiel bleiben. Uploads oder Löschungen werden nicht ausgelöst.",
       },
     },
   },

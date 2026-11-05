@@ -547,6 +547,15 @@ class RomOwnedMediaPlacementMutationRequest(BaseModel):
     expected_version: UTCDatetime
 
 
+class OwnedCoverSelectionRequest(BaseModel):
+    """Versioned selection of an existing, owner-scoped cover candidate."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    media_id: int = Field(gt=0)
+    expected_version: UTCDatetime
+
+
 class RomOwnedMediaReorderRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -664,6 +673,7 @@ class PcComponentSchema(BaseModel):
     updated_at: UTCDatetime | None = None
     relative_path: str
     kind: RomComponentKind
+    active_owned_cover_media_id: int | None = None
     manual_path: str | None = None
     manifest_members: list[PcComponentManifestMemberSchema] = Field(
         validation_alias="available_manifest_members"
@@ -1003,6 +1013,7 @@ class DetailedRomSchema(RomSchema):
     user_collections: list[UserCollectionSchema]
     all_user_notes: list[UserNoteSchema]
     owned_media: list[RomOwnedMediaSchema] = Field(default_factory=list)
+    active_owned_cover_media_id: int | None = None
     owned_media_placements: list[RomOwnedMediaPlacementSchema] = Field(
         default_factory=list
     )

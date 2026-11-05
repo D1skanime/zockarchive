@@ -8,6 +8,8 @@ import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
+import PcCoverMediaTab from "@/v2/components/GameDetails/PcCoverMediaTab.vue";
+import type { PcCoverMediaTarget } from "@/v2/components/GameDetails/pcCoverMediaTarget";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
 
 const ManualSubtab = defineAsyncComponent(
@@ -23,13 +25,17 @@ const ArtworkSubtab = defineAsyncComponent(
   () => import("@/v2/components/GameDetails/ArtworkSubtab.vue"),
 );
 
-defineProps<{ rom: DetailedRom }>();
+const props = defineProps<{
+  rom: DetailedRom;
+  refresh: () => Promise<boolean>;
+}>();
 const { t } = useI18n();
 
 // ---------- Subtab state ----------
 // Mirrored to `?subtab=` so the SoundtrackMiniPlayer can detect when the full
 // player is visible here and hide itself to avoid duplication.
 const validSubtabs = [
+  "cover",
   "manual",
   "screenshots",
   "artwork",
@@ -80,6 +86,13 @@ watch(
 // ---------- Shared subtab navigation ----------
 const subtabDefs = computed<ZATabNavItem[]>(() => [
   {
+    id: "cover",
+    label: t("rom.pc-media-role-cover"),
+    icon: "mdi-image-check-outline",
+    controls: "media-panel-cover",
+    tabId: "media-tab-cover",
+  },
+  {
     id: "manual",
     label: t("rom.manual"),
     icon: "mdi-book-open-page-variant-outline",
@@ -108,6 +121,22 @@ const subtabDefs = computed<ZATabNavItem[]>(() => [
     tabId: "media-tab-soundtrack",
   },
 ]);
+const coverTarget = computed<PcCoverMediaTarget>(() => ({
+  endpoint: `/roms/${props.rom.id}/media`,
+  uploadEndpoint: `/roms/${props.rom.id}/media/upload`,
+  selectionEndpoint: `/roms/${props.rom.id}/media/cover`,
+  expectedVersion: props.rom.updated_at ?? null,
+  candidates: props.rom.owned_media ?? [],
+  activeCandidateId: selectedCoverCandidateId(props.rom),
+  contentUrl: (candidateId) =>
+    `/api/roms/${props.rom.id}/media/${candidateId}/content`,
+  refresh: props.refresh,
+}));
+
+function selectedCoverCandidateId(owner: object) {
+  const value = Reflect.get(owner, "active_owned_cover_media_id");
+  return typeof value === "number" ? value : null;
+}
 </script>
 
 <template>
@@ -122,6 +151,15 @@ const subtabDefs = computed<ZATabNavItem[]>(() => [
     </aside>
 
     <div class="r-v2-media__content">
+      <section
+        id="media-panel-cover"
+        v-show="subTab === 'cover'"
+        class="r-v2-media__panel"
+        role="tabpanel"
+        aria-labelledby="media-tab-cover"
+      >
+        <PcCoverMediaTab :rom-id="rom.id" :target="coverTarget" />
+      </section>
       <!-- All subtab sections stay mounted (v-show, not v-if). The manual,
            soundtrack and screenshots panels are heavy defineAsyncComponent
            loads — un/remounting them on every subtab switch causes a visible

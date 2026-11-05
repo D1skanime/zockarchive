@@ -1,6 +1,7 @@
 """Protected parent-ROM media routes backed exclusively by owned resources."""
 
 from datetime import datetime
+from io import BytesIO
 from pathlib import PurePosixPath
 from typing import Annotated, cast
 
@@ -10,6 +11,7 @@ from fastapi.responses import StreamingResponse
 from decorators.auth import protected_route
 from endpoints.responses.rom import (
     DetailedRomSchema,
+    OwnedCoverSelectionRequest,
     RomLocalBackgroundAudioRequest,
     RomOwnedBackgroundAudioRequest,
     RomOwnedMediaPlacementMutationRequest,
@@ -201,14 +203,14 @@ async def upload_media(
             path, mime_type = await fs_resource_handler.store_owned_media_audio(
                 rom, content, extension
             )
-        elif role is RomOwnedMediaRole.ARTWORK:
+        elif role in {RomOwnedMediaRole.ARTWORK, RomOwnedMediaRole.COVER}:
             if len(content) > _IMAGE_LIMIT:
                 raise ValueError("Owned media image exceeds the 10 MiB limit")
             path, mime_type = await fs_resource_handler.store_owned_media_image(
                 rom, role, content
             )
         else:
-            raise ValueError("Only artwork and soundtrack uploads are accepted")
+            raise ValueError("Only cover, artwork and soundtrack uploads are accepted")
         applied = db_rom_handler.create_owned_upload_media(
             id, expected_version, role, label, mime_type, path
         )
@@ -220,6 +222,53 @@ async def upload_media(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail=str(exc)
         ) from exc
+    return _detailed_rom_response(id, request)
+
+
+@protected_route(router.post, "/{id}/media/cover", [Scope.ROMS_WRITE])
+async def select_cover_media(
+    request: Request, id: int, payload: OwnedCoverSelectionRequest
+) -> DetailedRomSchema:
+    """Materialize one retained candidate as the ROM's active legacy cover."""
+    rom = _visible_rom(request, id)
+    candidate = next(
+        (
+            item
+            for item in db_rom_handler.get_owned_media_catalog(id)
+            if item.id == payload.media_id
+            and item.role is RomOwnedMediaRole.COVER
+            and item.owned_path
+        ),
+        None,
+    )
+    if candidate is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    with cast(
+        OwnedRead,
+        open_owned_access(
+            storage_composition.owned[OwnedStorageKind.RESOURCES],
+            StorageOperation.READ,
+            candidate.owned_path,
+        ),
+    ) as access:
+        content = access.read()
+    extension = PurePosixPath(candidate.owned_path).suffix.lstrip(".") or "png"
+    path_cover_l, path_cover_s = await fs_resource_handler.store_artwork(
+        rom, BytesIO(content), extension
+    )
+    if not path_cover_l or not path_cover_s:
+        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    applied = db_rom_handler.select_owned_cover_media(
+        id,
+        payload.media_id,
+        payload.expected_version,
+        path_cover_l,
+        path_cover_s,
+    )
+    if applied is None:
+        for path in (path_cover_l, path_cover_s):
+            await fs_resource_handler.remove_file(path)
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     return _detailed_rom_response(id, request)
 
 

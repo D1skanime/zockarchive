@@ -145,6 +145,7 @@ class RomOwnedMediaOrigin(enum.StrEnum):
 
 
 class RomOwnedMediaRole(enum.StrEnum):
+    COVER = "cover"
     SCREENSHOT = "screenshot"
     ARTWORK = "artwork"
     SOUNDTRACK = "soundtrack"
@@ -325,6 +326,9 @@ class RomComponent(BaseModel):
         )
     )
     manual_path: Mapped[str | None] = mapped_column(Text, default=None)
+    active_owned_cover_media_id: Mapped[int | None] = mapped_column(
+        ForeignKey("rom_component_owned_media.id", ondelete="SET NULL"), default=None
+    )
 
     rom: Mapped[Rom] = relationship(back_populates="components")
     manifest_members: Mapped[list[RomComponentManifestMember]] = relationship(
@@ -350,6 +354,10 @@ class RomComponent(BaseModel):
         back_populates="component",
         cascade="all, delete-orphan",
         order_by="RomComponentOwnedMedia.id",
+        foreign_keys="RomComponentOwnedMedia.component_id",
+    )
+    active_owned_cover_media: Mapped["RomComponentOwnedMedia | None"] = relationship(
+        foreign_keys=[active_owned_cover_media_id], post_update=True
     )
     notes: Mapped[list[RomComponentNote]] = relationship(
         lazy="raise",
@@ -959,6 +967,9 @@ class Rom(BaseModel):
 
     path_cover_s: Mapped[str | None] = mapped_column(Text, default="")
     path_cover_l: Mapped[str | None] = mapped_column(Text, default="")
+    active_owned_cover_media_id: Mapped[int | None] = mapped_column(
+        ForeignKey("rom_owned_media.id", ondelete="SET NULL"), default=None
+    )
     url_cover: Mapped[str | None] = mapped_column(
         Text, default="", doc="URL to cover image stored in IGDB"
     )
@@ -1009,6 +1020,10 @@ class Rom(BaseModel):
         back_populates="rom",
         cascade="all, delete-orphan",
         order_by="RomOwnedMedia.id",
+        foreign_keys="RomOwnedMedia.rom_id",
+    )
+    active_owned_cover_media: Mapped["RomOwnedMedia | None"] = relationship(
+        foreign_keys=[active_owned_cover_media_id], post_update=True
     )
     owned_media_placements: Mapped[list[RomOwnedMediaPlacement]] = relationship(
         lazy="raise",

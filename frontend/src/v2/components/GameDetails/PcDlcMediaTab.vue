@@ -12,11 +12,13 @@ import type {
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
+import PcCoverMediaTab from "@/v2/components/GameDetails/PcCoverMediaTab.vue";
 import {
   componentHasPlacement,
   componentMediaContentUrl,
   componentPlacementPosition,
 } from "@/v2/components/GameDetails/pcComponentMediaPlacements";
+import type { PcCoverMediaTarget } from "@/v2/components/GameDetails/pcCoverMediaTarget";
 import {
   componentMediaRoleLabel,
   componentMediaSourceLabel,
@@ -110,6 +112,21 @@ useWrapGridNav(root, { cellSelector: "button:not([disabled])" });
 const [lightboxIndex, lightboxOpen] = [ref(0), ref(false)];
 
 const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media`;
+const coverTarget = computed<PcCoverMediaTarget>(() => ({
+  endpoint,
+  uploadEndpoint: endpoint,
+  selectionEndpoint: `${endpoint}/cover`,
+  expectedVersion: componentVersion.value,
+  candidates: media.value,
+  activeCandidateId: selectedCoverCandidateId(props.component),
+  contentUrl: (candidateId) => componentMediaContentUrl(endpoint, candidateId),
+  refresh: props.refresh,
+}));
+
+function selectedCoverCandidateId(owner: object) {
+  const value = Reflect.get(owner, "active_owned_cover_media_id");
+  return typeof value === "number" ? value : null;
+}
 
 function setGallery(element: unknown) {
   gallery.value = element instanceof HTMLElement ? element : null;
@@ -231,8 +248,13 @@ async function remove(mediaId: number) {
           role="tabpanel"
           :aria-labelledby="tab.tabId"
         >
+          <PcCoverMediaTab
+            v-if="tab.id === 'cover' && subtab === tab.id"
+            :rom-id="romId"
+            :target="coverTarget"
+          />
           <ZADropzone
-            v-if="subtab === tab.id"
+            v-else-if="subtab === tab.id"
             ref="dropzone"
             overlay
             :disabled="busy || !componentVersion || !canEdit"

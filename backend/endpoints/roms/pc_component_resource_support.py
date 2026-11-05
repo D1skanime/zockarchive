@@ -24,16 +24,23 @@ _UPLOAD_MIME_TYPES = {
 }
 
 
-def get_dlc_component(request: Request, rom_id: int, component_id: int):
-    """Resolve a visible DLC component without permitting parent-ROM fallback."""
+def get_managed_component(request: Request, rom_id: int, component_id: int):
+    """Resolve a visible DLC or expansion without permitting parent-ROM fallback."""
     rom = db_rom_handler.get_rom(rom_id)
     if not rom:
         raise RomNotFoundInDatabaseException(rom_id)
     assert_rom_visible(request, rom)
     component = db_rom_handler.get_pc_component_by_id(rom_id, component_id)
-    if component is None or component.kind != RomComponentKind.DLC:
+    if component is None or component.kind not in {
+        RomComponentKind.DLC,
+        RomComponentKind.EXTRA,
+    }:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return rom, component
+
+
+# Kept as a transitional import name for the existing bounded route family.
+get_dlc_component = get_managed_component
 
 
 def component_note_or_404(value) -> PcComponentNoteSchema:

@@ -661,6 +661,7 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
             rom is None
             or role
             not in {
+                RomOwnedMediaRole.COVER,
                 RomOwnedMediaRole.ARTWORK,
                 RomOwnedMediaRole.SOUNDTRACK,
             }
@@ -685,6 +686,41 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         rom.updated_at = datetime.now(timezone.utc)
         session.flush()
         return AppliedOwnedMedia(rom, media, [])
+
+    @begin_session
+    def select_owned_cover_media(
+        self,
+        rom_id: int,
+        media_id: int,
+        expected_updated_at: datetime,
+        path_cover_l: str,
+        path_cover_s: str,
+        session: Session = None,  # type: ignore
+    ) -> Rom | None:
+        """Select an exact ROM-owned cover candidate under the ROM write lock."""
+        rom = self._get_locked_owned_media_rom(session, rom_id, expected_updated_at)
+        if rom is None:
+            return None
+        media = next(
+            (
+                item
+                for item in rom.owned_media
+                if item.id == media_id
+                and item.role == RomOwnedMediaRole.COVER
+                and item.state == RomOwnedMediaState.ACTIVE
+                and item.owned_path
+            ),
+            None,
+        )
+        if media is None:
+            return None
+        rom.active_owned_cover_media_id = media.id
+        rom.path_cover_l = path_cover_l
+        rom.path_cover_s = path_cover_s
+        rom.url_cover = ""
+        rom.updated_at = datetime.now(timezone.utc)
+        session.flush()
+        return rom
 
     @begin_session
     def reconcile_provider_owned_media(
@@ -1062,6 +1098,8 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
             None,
         )
         if media is None:
+            return None
+        if rom.active_owned_cover_media_id == media_id:
             return None
         owned_paths = [media.owned_path] if media.owned_path else []
         if media.origin == RomOwnedMediaOrigin.PROVIDER:
@@ -2948,7 +2986,7 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         predicates = [
             RomComponent.id == component_id,
             RomComponent.rom_id == rom_id,
-            RomComponent.kind == "dlc",
+            RomComponent.kind.in_((RomComponentKind.DLC, RomComponentKind.EXTRA)),
         ]
         if expected_updated_at is not None:
             predicates.append(RomComponent.updated_at == expected_updated_at)
@@ -3068,6 +3106,7 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
             RomComponentOwnedMediaRole.GALLERY,
             RomComponentOwnedMediaRole.SCREENSHOT,
             RomComponentOwnedMediaRole.SOUNDTRACK,
+            RomComponentOwnedMediaRole.COVER,
         }:
             for existing in component.owned_media:
                 if existing.role != role:
@@ -3091,6 +3130,44 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         component.updated_at = datetime.now(timezone.utc)
         session.flush()
         return AppliedPcComponentOwnedMedia(media, replaced_owned_paths)
+
+    @begin_session
+    def select_pc_component_owned_cover_media(
+        self,
+        rom_id: int,
+        component_id: int,
+        user_id: int,
+        media_id: int,
+        expected_updated_at: datetime,
+        session: Session = None,  # type: ignore
+    ) -> RomComponent | None:
+        """Select a Cover candidate only when it belongs to this managed component."""
+        if session.get(User, user_id) is None:
+            return None
+        component = self._get_pc_dlc_component(
+            session,
+            rom_id,
+            component_id,
+            expected_updated_at,
+            with_owned_media=True,
+        )
+        if component is None:
+            return None
+        candidate = next(
+            (
+                media
+                for media in component.owned_media
+                if media.id == media_id
+                and media.role == RomComponentOwnedMediaRole.COVER
+            ),
+            None,
+        )
+        if candidate is None:
+            return None
+        component.active_owned_cover_media_id = candidate.id
+        component.updated_at = datetime.now(timezone.utc)
+        session.flush()
+        return component
 
     @begin_session
     def import_pc_component_provider_media(
@@ -3376,6 +3453,8 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
             (item for item in component.owned_media if item.id == media_id), None
         )
         if media is None:
+            return None
+        if component.active_owned_cover_media_id == media_id:
             return None
         owned_path = media.owned_path
         session.delete(media)

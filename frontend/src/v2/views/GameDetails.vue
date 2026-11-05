@@ -545,7 +545,11 @@ const tabs = computed<ZATabNavItem[]>(() => [
             />
           </template>
           <PatcherTab v-if="tab === 'patcher' && !isPcRom" :rom="currentRom" />
-          <MediaTab v-if="tab === 'media'" :rom="currentRom" />
+          <MediaTab
+            v-if="tab === 'media'"
+            :rom="currentRom"
+            :refresh="refreshPcDetails"
+          />
           <NotesTab v-if="tab === 'notes'" :rom="currentRom" />
           <AchievementsTab
             v-if="tab === 'achievements'"
