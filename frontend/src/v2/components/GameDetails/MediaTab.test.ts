@@ -53,7 +53,10 @@ describe("MediaTab soundtrack access", () => {
   });
   it("uses the shared tab navigation while keeping media owners mounted and query state", async () => {
     const wrapper = mount(MediaTab, {
-      props: { rom: { id: 1 } as DetailedRom },
+      props: {
+        rom: { id: 1 } as DetailedRom,
+        refresh: async () => true,
+      },
     });
     await flushPromises();
     const screenshot = wrapper.get("[data-screenshots]").element;

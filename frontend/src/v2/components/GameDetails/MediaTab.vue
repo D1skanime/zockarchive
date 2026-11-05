@@ -126,7 +126,13 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
   uploadEndpoint: `/roms/${props.rom.id}/media/upload`,
   selectionEndpoint: `/roms/${props.rom.id}/media/cover`,
   expectedVersion: props.rom.updated_at ?? null,
-  candidates: props.rom.owned_media ?? [],
+  candidates: (props.rom.owned_media ?? [])
+    .filter((candidate) => candidate.role === "cover")
+    .map((candidate) => ({
+      id: candidate.id,
+      role: "cover" as const,
+      owned_path: candidate.owned_path,
+    })),
   activeCandidateId: props.rom.active_owned_cover_media_id ?? null,
   contentUrl: (candidateId) =>
     `/api/roms/${props.rom.id}/media/${candidateId}/content`,

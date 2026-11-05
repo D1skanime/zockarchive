@@ -1,8 +1,7 @@
-import type { RomOwnedMediaRole } from "@/__generated__";
-
 export type PcCoverCandidate = {
   id: number;
-  role: RomOwnedMediaRole | "cover";
+  /** The composite receives only records that can become an active poster. */
+  role: "cover";
   owned_path: string | null;
 };
 

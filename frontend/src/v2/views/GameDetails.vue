@@ -429,14 +429,20 @@ watch(
   { immediate: true },
 );
 
-async function refreshPcDetails() {
-  if (!currentRom.value) return;
+async function refreshPcDetails(): Promise<boolean> {
+  if (!currentRom.value) return false;
   try {
     const { data } = await romApi.getRom({ romId: currentRom.value.id });
     romsStore.setCurrentRom(data);
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
+}
+
+async function refreshPcDetailsForEvent(): Promise<void> {
+  await refreshPcDetails();
 }
 
 function openPcParentMatcher() {
@@ -447,7 +453,7 @@ function openPcParentMatcher() {
       romId: currentRom.value.id,
       label: currentRom.value.name ?? currentRom.value.fs_name_no_tags,
     },
-    refresh: refreshPcDetails,
+    refresh: refreshPcDetailsForEvent,
   });
 }
 
@@ -540,7 +546,7 @@ const tabs = computed<ZATabNavItem[]>(() => [
               :components="currentRom.components ?? []"
               :archive-sets="archiveSets"
               :archive-sets-state="archiveSetsState"
-              :refresh="refreshPcDetails"
+              :refresh="refreshPcDetailsForEvent"
               :parent-name="currentRom.name ?? currentRom.fs_name_no_tags"
             />
           </template>

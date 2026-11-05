@@ -117,7 +117,13 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
   uploadEndpoint: endpoint,
   selectionEndpoint: `${endpoint}/cover`,
   expectedVersion: componentVersion.value,
-  candidates: media.value,
+  candidates: media.value
+    .filter((candidate) => candidate.role === "cover")
+    .map((candidate) => ({
+      id: candidate.id,
+      role: "cover" as const,
+      owned_path: candidate.owned_path,
+    })),
   activeCandidateId: props.component.active_owned_cover_media_id ?? null,
   contentUrl: (candidateId) => componentMediaContentUrl(endpoint, candidateId),
   refresh: props.refresh,
