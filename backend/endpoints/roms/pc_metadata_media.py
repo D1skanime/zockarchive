@@ -52,6 +52,7 @@ async def persist_selected_pc_metadata_media(
     media_updates: dict[str, Any] = {}
     if selected_cover:
         owned_path: str | None = None
+        associated = False
         try:
             candidate, owned_path, mime_type = await _store_selected_cover(
                 rom, provider, selected_cover
@@ -68,6 +69,7 @@ async def persist_selected_pc_metadata_media(
             )
             if persisted is None:
                 raise ValueError("Media catalog changed")
+            associated = True
             selected = db_rom_handler.select_owned_cover_media(
                 rom_id,
                 persisted.media.id,
@@ -79,7 +81,7 @@ async def persist_selected_pc_metadata_media(
                 raise ValueError("Cover selection changed before it was applied")
             rom = selected
         except ValueError:
-            if owned_path is not None:
+            if owned_path is not None and not associated:
                 await fs_resource_handler.remove_file(owned_path)
             raise
     if selected_screenshots:
