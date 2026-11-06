@@ -15,3 +15,5 @@ parent_phase: 40
    interpreter boundary without relaxing any contract assertions.
 5. Keep the response contract below its pre-change line count by moving the
    original-cover source fields into their own response schema.
+6. Refresh only the frozen frontend dependency fingerprints after confirming
+   that the committed package and lockfile are identical to `main`.

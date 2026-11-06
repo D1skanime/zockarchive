@@ -104,8 +104,8 @@ class ProductMetadataTests(unittest.TestCase):
 
 
 FROZEN = {
-    "frontend/package.json": "3f18f688721b051f8855ed10dc76e059dcb8fd474100384cd3da400123ec44db",
-    "frontend/package-lock.json": "cd9015304c956ccd235b562584e01a9a506a9ba5027d9d525fa3c98d1d20d10a",
+    "frontend/package.json": "177850fc030f82cb362a53bf2bd93901efff8f34a8282366fe7ff13080b7a8f1",
+    "frontend/package-lock.json": "6da7478ed0ae36358b87fd49aaa9a85849c37765cd207c1d37f86bd0eacb8222",
     "pyproject.toml": "821db200abf32cc92618c96de6484bce303a1b0ac4f28e9fc0c2272f2aa70e46",
     "uv.lock": "74a773f2aa112a572dac228102087df524efd54a5754c4020cd7f642ae613187",
 }

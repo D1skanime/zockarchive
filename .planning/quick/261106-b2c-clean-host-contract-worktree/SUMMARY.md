@@ -16,3 +16,9 @@ assertion and re-executes the contract with the pinned interpreter. It also
 extracts the original-cover response fields from the legacy response monolith
 so the line-count gate remains at or below its baseline. Verification is still
 pending.
+
+The first complete run then found two stale frozen dependency fingerprints.
+The current package and lockfile have no diff from `main`; the expected hashes
+will be refreshed to their actual committed values without changing any
+dependency or relaxing the metadata assertions. Final verification remains
+pending.
