@@ -104,13 +104,22 @@ watch(
     descriptionEditorOpen.value = false;
   },
 );
-const cover = computed(
-  () =>
+const activeOwnedCover = computed(() => {
+  const mediaId = props.component.active_owned_cover_media_id;
+  if (mediaId === null) return null;
+
+  return (
     props.component.owned_media?.find(
-      (media) => media.id === props.component.active_owned_cover_media_id,
-    ) ??
-    props.component.owned_media?.find((media) => media.role === "cover") ??
-    props.component.local_media?.find((media) => media.role === "cover"),
+      (media) =>
+        media.id === mediaId && media.role === "cover" && media.owned_path,
+    ) ?? null
+  );
+});
+const cover = computed(() =>
+  props.component.active_owned_cover_media_id === null
+    ? (props.component.local_media?.find((media) => media.role === "cover") ??
+      null)
+    : activeOwnedCover.value,
 );
 
 const overviewPlacements = computed(() =>
@@ -152,6 +161,15 @@ function ownedMediaUrl(ownedPath: string) {
   return `${FRONTEND_RESOURCES_PATH}/${ownedPath}`;
 }
 
+const coverSource = computed(() => {
+  const activeCover = activeOwnedCover.value;
+  if (activeCover) {
+    return `/api/roms/${props.parent.id}/pc-components/${props.component.id}/media/${activeCover.id}/content`;
+  }
+
+  return cover.value ? ownedMediaUrl(cover.value.owned_path) : null;
+});
+
 function openCoverSearch() {
   openMatcher();
 }
@@ -187,7 +205,7 @@ function showMedia() {
         <ZAImg
           v-if="cover"
           class="pc-dlc-detail__cover"
-          :src="ownedMediaUrl(cover.owned_path)"
+          :src="coverSource ?? undefined"
           :alt="title"
           width="240"
           height="324"
