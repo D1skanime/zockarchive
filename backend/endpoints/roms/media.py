@@ -1,7 +1,6 @@
 """Protected parent-ROM media routes backed exclusively by owned resources."""
 
 from datetime import datetime
-from io import BytesIO
 from pathlib import PurePosixPath
 from typing import Annotated, cast
 
@@ -236,8 +235,8 @@ async def upload_media(
 async def select_cover_media(
     request: Request, id: int, payload: OwnedCoverSelectionRequest
 ) -> DetailedRomSchema:
-    """Materialize one retained candidate as the ROM's active legacy cover."""
-    rom = _visible_rom(request, id)
+    """Select a retained cover without modifying its validated source bytes."""
+    _visible_rom(request, id)
     if payload.media_id == 0:
         if (
             db_rom_handler.select_owned_cover_media(
@@ -259,38 +258,19 @@ async def select_cover_media(
     )
     if candidate is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    with cast(
-        OwnedRead,
-        open_owned_access(
-            storage_composition.owned[OwnedStorageKind.RESOURCES],
-            StorageOperation.READ,
-            candidate.owned_path,
-        ),
-    ) as access:
-        content = access.read()
-    extension = PurePosixPath(candidate.owned_path).suffix.lstrip(".") or "png"
-    generated_paths: tuple[str, str] | None = None
-    if candidate.mime_type in {"image/gif", "image/webp"}:
-        path_cover_l, path_cover_s = candidate.owned_path, candidate.owned_path
-    else:
-        path_cover_l, path_cover_s = await fs_resource_handler.store_artwork(
-            rom, BytesIO(content), extension
-        )
-    if not path_cover_l or not path_cover_s:
-        raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
-    if candidate.mime_type not in {"image/gif", "image/webp"}:
-        generated_paths = (path_cover_l, path_cover_s)
+    if not await fs_resource_handler.file_exists(candidate.owned_path):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    # Validated originals are immutable; selection changes references only.
     applied = db_rom_handler.select_owned_cover_media(
         id,
         payload.media_id,
         payload.expected_version,
-        path_cover_l,
-        path_cover_s,
+        candidate.owned_path,
+        candidate.owned_path,
     )
     if applied is None:
-        for path in generated_paths or ():
-            await fs_resource_handler.remove_file(path)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+
     return _detailed_rom_response(id, request)
 
 

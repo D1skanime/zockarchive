@@ -65,3 +65,45 @@ shipped Cover and active-placement tabs without removing behavioral checks.
   removed after owner identity/path verification. User fixtures were retained.
 - The stalled ki-run agent remains stopped. This document does not grant human
   UAT acceptance or authorize a main merge.
+
+## Follow-up: exact edit-dialog crawler reproduction
+
+The user prepared a SteamGridDB cover in Edit > Search cover and explicitly
+asked the coordinator to press Apply on ROM 29. That request was executed once
+with the prepared form. The old standard PUT path downloaded the selected PNG
+with 121 animation frames into legacy `cover/big.png`, but left active candidate
+645 unchanged and added no owned-cover row. The API and browser therefore kept
+showing the old candidate even though download/animation preservation succeeded.
+This is distinct from manual Upload and the PC metadata review path.
+
+The corrected standard PUT path stages a separate owned file, catalogs the
+source and atomically selects it with the form update. New isolated tests cover
+that exact API boundary, reload, repeated Apply, cover-card switch/reselection,
+original-file preservation, existing-provider identity reuse, failed downloads,
+and concurrent-edit cleanup. The source downloader and security rules are reused;
+no size limit or source-library permission was relaxed. The reference-only card
+selection also prevents APNG flattening during subsequent reselection.
+
+### Follow-up verification result
+
+- 107 targeted isolated MariaDB tests passed (standard edit route, media routes,
+  cover mutation tests and the new searched-cover regressions). Two pre-existing
+  Alembic/SQLAlchemy warnings remain. The older general form test now uses an
+  in-memory JPEG transport instead of depending on public IGDB DNS.
+- Source selection, form update and catalog publication were independently
+  reviewed. Two findings were corrected and regression-tested: APNG card
+  reselection must retain source bytes, and reusing a provider URL must retain
+  its provider identity rather than alias one file under two candidate rows.
+- The coordinator reapplied the exact source already selected by the user
+  through the normal edit dialog. ROM 29 now has active provider candidate 671,
+  alongside uploads 645 and 666. The large hero uses
+  `/api/roms/29/media/671/content` before and after reload.
+- Candidate 671 is a PNG/APNG with 121 frames. Its SHA-256 is
+  `f4d15b2f67285e33611c517d6de9f93f336ccef8df34b3188fcac9d6076ad8a8`.
+- The source is `126327057faf5853198cf5d3a78bb152.png` from the user's prepared
+  SteamGridDB choice. No different cover was substituted. No media was deleted.
+
+- Time-separated browser screenshots cropped to the actual large hero changed
+  after reload (14865 versus 14739 encoded PNG bytes); its loaded DOM source
+  remained candidate 671 and natural width 600. This confirms visible animation
+  on the selected real cover, not only decodable animation at another endpoint.

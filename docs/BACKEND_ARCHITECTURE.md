@@ -332,3 +332,25 @@ cutover validator requires this successful current-source host proof plus all16
 dual-SQL shards and three schema roundtrips. A missing host artifact, stale
 source, changed membership or skipped suite cannot be classified as acceptance.
 See docs/repository-cutover-verification.md for the receipt contract.
+
+### Searched covers in the standard ROM edit dialog
+
+The standard `PUT /api/roms/{id}` edit path catalogs submitted HTTPS cover
+sources, including the Edit > Search cover > Apply flow. The endpoint defers
+cover publication until the full form has been prepared. `edited_cover.py`
+prepares or reuses a candidate by normalized provider URL; the existing provider
+identity is retained when a matching catalog entry already exists.
+`handler/filesystem/searched_cover.py` uses the existing validated streaming
+cover downloader at a unique owned-media destination, preserving GIF, WebP and
+APNG animation without overwriting legacy original-cover files.
+`handler/database/edited_cover.py` performs the owner-version check, candidate
+reconciliation, cover selection and remaining form update in one transaction.
+A conflicting or failed edit removes only its newly staged file. Repeated Apply
+reuses the candidate. Ordinary candidate selection changes references only;
+it does not generate first-frame derivatives or write shared legacy cover paths.
+
+Decomposition: the legacy ROM route module remains large. This change replaces
+its cover-download branch with a narrow dispatch; source preparation, streaming
+storage and transactional publication live in three focused modules. Extracting
+the entire multi-provider edit route is a separate boundary and is not required
+for this correction.
