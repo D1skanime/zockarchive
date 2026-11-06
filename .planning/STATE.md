@@ -637,6 +637,7 @@ Resume file: None
 ## Quick Task 261106-b2c
 
 | 261106-b2c | Clean host-contract worktree and repair its Python toolchain boundary | 2026-11-06 | verified, commits ea5cb21ad and 39b7e497e | [261106-b2c-clean-host-contract-worktree](./quick/261106-b2c-clean-host-contract-worktree/) |
+| 261106-d9g | Fix host-contract lint findings | 2026-11-06 | in progress | [261106-d9g-fix-trunk-check-lint-issues-in-ci-host-c](./quick/261106-d9g-fix-trunk-check-lint-issues-in-ci-host-c/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
