@@ -1100,7 +1100,10 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         if media is None:
             return None
         if rom.active_owned_cover_media_id == media_id:
-            return None
+            rom.active_owned_cover_media_id = None
+            rom.path_cover_l = ""
+            rom.path_cover_s = ""
+            rom.url_cover = ""
         owned_paths = [media.owned_path] if media.owned_path else []
         if media.origin == RomOwnedMediaOrigin.PROVIDER:
             for placement in list(media.placements):
@@ -3417,7 +3420,7 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         if media is None:
             return None
         if component.active_owned_cover_media_id == media_id:
-            return None
+            component.active_owned_cover_media_id = None
         owned_path = media.owned_path
         session.delete(media)
         component.updated_at = datetime.now(timezone.utc)

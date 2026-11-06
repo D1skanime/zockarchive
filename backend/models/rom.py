@@ -512,7 +512,9 @@ class RomComponentOwnedMedia(BaseModel):
     )
     content_sha256: Mapped[str | None] = mapped_column(String(length=64), default=None)
 
-    component: Mapped[RomComponent] = relationship(back_populates="owned_media")
+    component: Mapped[RomComponent] = relationship(
+        back_populates="owned_media", foreign_keys=[component_id]
+    )
     placements: Mapped[list["RomComponentOwnedMediaPlacement"]] = relationship(
         lazy="raise",
         back_populates="media",
@@ -591,7 +593,7 @@ class RomOwnedMedia(BaseModel):
         String(length=OWNED_MEDIA_PROVIDER_ID_MAX_LENGTH), default=None
     )
 
-    rom: Mapped[Rom] = relationship(back_populates="owned_media")
+    rom: Mapped[Rom] = relationship(back_populates="owned_media", foreign_keys=[rom_id])
     placements: Mapped[list[RomOwnedMediaPlacement]] = relationship(
         lazy="raise",
         back_populates="media",

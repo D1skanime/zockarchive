@@ -27,6 +27,9 @@ const error = ref<string | null>(null);
 const candidates = computed(() =>
   props.target.candidates.filter((candidate) => candidate.role === "cover"),
 );
+const hasCovers = computed(
+  () => candidates.value.length > 0 || Boolean(props.target.legacyCoverUrl),
+);
 const busy = computed(
   () => uploading.value || selecting.value !== null || deleting.value !== null,
 );
@@ -80,13 +83,7 @@ async function select(candidateId: number) {
 }
 
 async function remove(candidateId: number) {
-  if (
-    !props.target.expectedVersion ||
-    busy.value ||
-    !canEdit.value ||
-    candidateId === props.target.activeCandidateId
-  )
-    return;
+  if (!props.target.expectedVersion || busy.value || !canEdit.value) return;
   if (!(await confirm({ title: t("common.delete"), tone: "danger" }))) return;
   deleting.value = candidateId;
   error.value = null;
@@ -127,11 +124,18 @@ async function remove(candidateId: number) {
         @upload="dropzone?.open()"
       />
     </header>
-    <ZAEmptyState
-      v-if="candidates.length === 0"
-      :title="t('rom.pc-media-role-cover')"
-    />
+    <ZAEmptyState v-if="!hasCovers" :title="t('rom.pc-media-role-cover')" />
     <ul v-else class="pc-cover-media__list ga-3 ma-0 pa-0 pt-4">
+      <li v-if="target.legacyCoverUrl">
+        <MediaManagementCard
+          :url="target.legacyCoverUrl"
+          :label="t('rom.pc-media-role-cover')"
+        >
+          <span class="za-shot__source">{{
+            t("rom.pc-media-role-cover")
+          }}</span>
+        </MediaManagementCard>
+      </li>
       <li v-for="(candidate, index) in candidates" :key="candidate.id">
         <MediaManagementCard
           :url="target.contentUrl(candidate.id)"
@@ -157,11 +161,7 @@ async function remove(candidateId: number) {
               tone="danger"
               :caption="t('common.delete')"
               :label="t('common.delete')"
-              :disabled="
-                candidate.id === target.activeCandidateId ||
-                !target.expectedVersion ||
-                busy
-              "
+              :disabled="!target.expectedVersion || busy"
               :loading="deleting === candidate.id"
               @click="remove(candidate.id)"
             />
@@ -175,7 +175,7 @@ async function remove(candidateId: number) {
 <style scoped>
 .pc-cover-media__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 300px));
   list-style: none;
 }
 </style>

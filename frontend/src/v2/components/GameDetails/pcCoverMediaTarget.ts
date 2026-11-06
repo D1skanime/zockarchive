@@ -13,6 +13,8 @@ export type PcCoverMediaTarget = {
   expectedVersion: string | null;
   candidates: PcCoverCandidate[];
   activeCandidateId: number | null;
+  /** Existing ROM cover managed outside the owned-media catalog. */
+  legacyCoverUrl?: string | null;
   contentUrl: (candidateId: number) => string;
   refresh: () => Promise<boolean>;
 };

@@ -134,6 +134,8 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
       owned_path: candidate.owned_path,
     })),
   activeCandidateId: props.rom.active_owned_cover_media_id ?? null,
+  legacyCoverUrl:
+    props.rom.path_cover_large ?? props.rom.path_cover_small ?? null,
   contentUrl: (candidateId) =>
     `/api/roms/${props.rom.id}/media/${candidateId}/content`,
   refresh: props.refresh,
