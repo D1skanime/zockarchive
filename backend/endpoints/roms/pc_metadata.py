@@ -769,7 +769,9 @@ async def select_pc_metadata_candidate(
     confirmed_media = [
         selected_media[media_id] for media_id in selection.selected_media_ids
     ]
-    await persist_selected_pc_metadata_media(id, updated, confirmed_media)
+    updated = await persist_selected_pc_metadata_media(
+        id, updated, candidate.provider, confirmed_media
+    )
 
     pc_automation_queue_handler.resolve_after_manual_selection(
         target_kind=PcAutomationTargetKind.PARENT,
