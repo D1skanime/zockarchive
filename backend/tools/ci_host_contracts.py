@@ -12,6 +12,20 @@ import tempfile
 import unittest
 from pathlib import Path
 
+
+def ensure_supported_python():
+    """Re-exec through the pinned toolchain when the host Python is too old."""
+    if os.sys.version_info >= (3, 11):
+        return
+    os.execvpe(
+        "uv",
+        ["uv", "run", "--no-sync", "--python", "3.13", "python", __file__],
+        os.environ,
+    )
+
+
+ensure_supported_python()
+
 import ci_target
 import phase38_cutover_source as source
 from ci_test_profiles import classify_test_files

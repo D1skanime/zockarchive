@@ -1,6 +1,6 @@
 ---
 quick_id: 261106-b2c
-status: complete
+status: in_progress
 parent_phase: 40
 ---
 
@@ -9,5 +9,10 @@ parent_phase: 40
 `ci-host-contracts` failed because `AGENTS.md` was the sole uncommitted path
 outside `.planning`. The change updates the repository instruction to require
 concise German commit messages, matching the current human-provided directive.
-No product code or tests changed. The affected host-contract command is run
-after this commit so its `HEAD` diff check evaluates a clean source tree.
+The clean rerun reached the host contracts and exposed a local host interpreter
+boundary: `/usr/bin/python3` is Python 3.10 while the contract's tracked tests
+require the repository's Python 3.13 toolchain. The follow-up preserves every
+assertion and re-executes the contract with the pinned interpreter. It also
+extracts the original-cover response fields from the legacy response monolith
+so the line-count gate remains at or below its baseline. Verification is still
+pending.

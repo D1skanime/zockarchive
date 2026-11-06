@@ -16,6 +16,7 @@ from endpoints.responses.assets import (
     UserScreenshotSchema,
     UserStateSchema,
 )
+from endpoints.responses.cover_media import OriginalCoverSourceSchema
 from endpoints.responses.pc_component_media import (  # noqa: F401
     OwnedCoverSelectionRequest,
     PcComponentManualSchema,
@@ -994,7 +995,7 @@ class UserCollectionSchema(BaseModel):
         ]
 
 
-class DetailedRomSchema(RomSchema):
+class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
     steam_metadata: SteamMetadataSchema | None
     user_saves: list[SaveSchema]
     user_states: list[StateSchema]
@@ -1006,13 +1007,6 @@ class DetailedRomSchema(RomSchema):
     all_user_notes: list[UserNoteSchema]
     owned_media: list[RomOwnedMediaSchema] = Field(default_factory=list)
     active_owned_cover_media_id: int | None = None
-    original_cover_path_small: str | None = Field(
-        default=None, validation_alias="original_cover_path_s"
-    )
-    original_cover_path_large: str | None = Field(
-        default=None, validation_alias="original_cover_path_l"
-    )
-    original_cover_url: str | None = None
     owned_media_placements: list[RomOwnedMediaPlacementSchema] = Field(
         default_factory=list
     )
