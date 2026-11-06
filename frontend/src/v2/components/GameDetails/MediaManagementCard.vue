@@ -7,6 +7,7 @@ const props = defineProps<{
   url: string;
   label: string;
   newlyUploaded?: boolean;
+  imageLoading?: "eager" | "lazy";
 }>();
 const emit = defineEmits<{ preview: [] }>();
 const { t } = useI18n();
@@ -39,7 +40,7 @@ watch(
           v-else
           :src="url"
           :alt="label"
-          loading="lazy"
+          :loading="imageLoading ?? 'lazy'"
           @error="failed = true"
         />
       </ZABtn>

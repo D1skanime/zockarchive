@@ -141,6 +141,7 @@ async function remove(candidateId: number) {
         <MediaManagementCard
           :url="target.legacyCoverUrl"
           :label="t('rom.pc-media-role-cover')"
+          image-loading="eager"
           @preview="
             lightboxIndex = 0;
             lightboxOpen = true;
@@ -170,6 +171,7 @@ async function remove(candidateId: number) {
         <MediaManagementCard
           :url="target.contentUrl(candidate.id)"
           :label="`${t('rom.pc-media-role-cover')} ${index + 1}`"
+          image-loading="eager"
           :newly-uploaded="candidate.id === target.activeCandidateId"
           @preview="
             lightboxIndex = index + (target.legacyCoverUrl ? 1 : 0);
