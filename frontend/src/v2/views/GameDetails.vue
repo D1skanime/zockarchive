@@ -175,9 +175,12 @@ const coverFallback = computed(() => currentRom.value?.url_cover ?? null);
 const resolvedCover = computed(() => coverPath.value ?? coverFallback.value);
 const activeOwnedCoverSrc = computed(() => {
   const rom = currentRom.value;
-  const mediaId = rom?.active_owned_cover_media_id;
-  const candidate = rom?.owned_media?.find(
-    (item) => item.id === mediaId && item.role === "cover" && item.owned_path,
+  if (!rom) return null;
+  const candidate = rom.owned_media?.find(
+    (item) =>
+      item.id === rom.active_owned_cover_media_id &&
+      item.role === "cover" &&
+      item.owned_path,
   );
   return candidate ? `/api/roms/${rom.id}/media/${candidate.id}/content` : null;
 });
