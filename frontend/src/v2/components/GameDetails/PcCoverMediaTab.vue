@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ZADropzone, ZAEmptyState } from "@v2/lib";
+import { ZACarousel, ZADropzone, ZAEmptyState } from "@v2/lib";
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
@@ -30,6 +30,12 @@ const candidates = computed(() =>
 const hasCovers = computed(
   () => candidates.value.length > 0 || Boolean(props.target.legacyCoverUrl),
 );
+const coverUrls = computed(() => [
+  ...(props.target.legacyCoverUrl ? [props.target.legacyCoverUrl] : []),
+  ...candidates.value.map((candidate) => props.target.contentUrl(candidate.id)),
+]);
+const lightboxOpen = ref(false);
+const lightboxIndex = ref(0);
 const busy = computed(
   () => uploading.value || selecting.value !== null || deleting.value !== null,
 );
@@ -130,6 +136,10 @@ async function remove(candidateId: number) {
         <MediaManagementCard
           :url="target.legacyCoverUrl"
           :label="t('rom.pc-media-role-cover')"
+          @preview="
+            lightboxIndex = 0;
+            lightboxOpen = true;
+          "
         >
           <span class="za-shot__source">{{
             t("rom.pc-media-role-cover")
@@ -141,6 +151,10 @@ async function remove(candidateId: number) {
           :url="target.contentUrl(candidate.id)"
           :label="`${t('rom.pc-media-role-cover')} ${index + 1}`"
           :newly-uploaded="candidate.id === target.activeCandidateId"
+          @preview="
+            lightboxIndex = index + (target.legacyCoverUrl ? 1 : 0);
+            lightboxOpen = true;
+          "
         >
           <span class="za-shot__source">{{
             t("rom.pc-media-role-cover")
@@ -170,6 +184,23 @@ async function remove(candidateId: number) {
       </li>
     </ul>
   </ZADropzone>
+  <ZACarousel
+    v-if="lightboxOpen"
+    v-model="lightboxIndex"
+    :items="coverUrls"
+    fullscreen
+    show-thumbnails
+    :aria-label="t('rom.pc-media-role-cover')"
+    :close-label="t('common.close')"
+    @close="lightboxOpen = false"
+  >
+    <template #default="{ item, index }">
+      <img :src="item" :alt="`${t('rom.pc-media-role-cover')} ${index + 1}`" />
+    </template>
+    <template #thumbnail="{ item, index }">
+      <img :src="item" :alt="`${t('rom.pc-media-role-cover')} ${index + 1}`" />
+    </template>
+  </ZACarousel>
 </template>
 
 <style scoped>
