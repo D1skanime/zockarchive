@@ -8,6 +8,8 @@ export const validDlcMediaSubtabs = [
   "cover",
   "screenshots",
   "artwork",
+  "backgrounds",
+  "overview-images",
 ] as const;
 
 export type DlcMediaSubtab = (typeof validDlcMediaSubtabs)[number];
@@ -16,6 +18,12 @@ export const dlcMediaNavigationItems = [
   ["cover", "rom.pc-media-role-cover", "mdi-image-check-outline"],
   ["screenshots", "rom.screenshots", "mdi-image-multiple-outline"],
   ["artwork", "rom.artwork", "mdi-palette-outline"],
+  ["backgrounds", "rom.active-backgrounds", "mdi-image-multiple-outline"],
+  [
+    "overview-images",
+    "rom.active-overview-images",
+    "mdi-view-dashboard-outline",
+  ],
 ] as const;
 
 export function createDlcMediaSubtabDefs(

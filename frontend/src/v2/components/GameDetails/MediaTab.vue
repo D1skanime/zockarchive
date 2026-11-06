@@ -8,6 +8,7 @@ import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
+import ActiveRomMediaPlacements from "@/v2/components/GameDetails/ActiveRomMediaPlacements.vue";
 import PcCoverMediaTab from "@/v2/components/GameDetails/PcCoverMediaTab.vue";
 import type { PcCoverMediaTarget } from "@/v2/components/GameDetails/pcCoverMediaTarget";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
@@ -39,6 +40,8 @@ const validSubtabs = [
   "manual",
   "screenshots",
   "artwork",
+  "backgrounds",
+  "overview-images",
   "soundtrack",
 ] as const;
 type Subtab = (typeof validSubtabs)[number];
@@ -114,6 +117,20 @@ const subtabDefs = computed<ZATabNavItem[]>(() => [
     tabId: "media-tab-artwork",
   },
   {
+    id: "backgrounds",
+    label: t("rom.active-backgrounds"),
+    icon: "mdi-image-multiple-outline",
+    controls: "media-panel-backgrounds",
+    tabId: "media-tab-backgrounds",
+  },
+  {
+    id: "overview-images",
+    label: t("rom.active-overview-images"),
+    icon: "mdi-view-dashboard-outline",
+    controls: "media-panel-overview-images",
+    tabId: "media-tab-overview-images",
+  },
+  {
     id: "soundtrack",
     label: t("rom.soundtrack"),
     icon: "mdi-music-note-outline",
@@ -135,7 +152,11 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
     })),
   activeCandidateId: props.rom.active_owned_cover_media_id ?? null,
   legacyCoverUrl:
-    props.rom.path_cover_large ?? props.rom.path_cover_small ?? null,
+    props.rom.original_cover_path_large ??
+    props.rom.original_cover_path_small ??
+    props.rom.original_cover_url ??
+    null,
+  supportsOriginalSelection: true,
   contentUrl: (candidateId) =>
     `/api/roms/${props.rom.id}/media/${candidateId}/content`,
   refresh: props.refresh,
@@ -203,6 +224,33 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
         aria-labelledby="media-tab-artwork"
       >
         <ArtworkSubtab :rom="rom" />
+      </section>
+
+      <section
+        id="media-panel-backgrounds"
+        v-show="subTab === 'backgrounds'"
+        class="r-v2-media__panel"
+        role="tabpanel"
+        aria-labelledby="media-tab-backgrounds"
+      >
+        <ActiveRomMediaPlacements
+          :rom="rom"
+          surface="background"
+          :refresh="refresh"
+        />
+      </section>
+      <section
+        id="media-panel-overview-images"
+        v-show="subTab === 'overview-images'"
+        class="r-v2-media__panel"
+        role="tabpanel"
+        aria-labelledby="media-tab-overview-images"
+      >
+        <ActiveRomMediaPlacements
+          :rom="rom"
+          surface="overview"
+          :refresh="refresh"
+        />
       </section>
 
       <!-- Soundtrack subtab -->

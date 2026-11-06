@@ -17,12 +17,24 @@ const syntheticRom = {
   files: [],
   updated_at: "2026-11-05T00:00:00Z",
   active_owned_cover_media_id: 101,
+  original_cover_path_large: "/assets/default/album_cover.jpg",
   owned_media: [
     {
       id: 101,
       role: "cover",
       owned_path: "roms/24/owned-media/cover-story.webp",
     },
+    {
+      id: 102,
+      role: "artwork",
+      state: "active",
+      display_label: "Übersichtsbild",
+      owned_path: "roms/24/owned-media/overview-story.webp",
+      placements: [{ id: 1, media_id: 102, surface: "overview", position: 0 }],
+    },
+  ],
+  owned_media_placements: [
+    { id: 1, media_id: 102, surface: "overview", position: 0 },
   ],
 } as unknown as DetailedRom;
 const syntheticComponent = {
@@ -129,7 +141,7 @@ export const HauptspielMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Die produktive Hauptspiel-Medienseite mit dem sichtbaren Cover-Register. Es zeigt eine ausgewählte Kandidatenkarte, Upload und Auswahl ohne Hintergrund-Aktion. Die Story löst keine Medienmutation aus.",
+          "Die produktive Hauptspiel-Medienseite zeigt das Cover-Register mit ursprünglicher Quelle und Upload-Kandidat sowie die aktiven Platzierungsregister. Die Story löst keine Medienmutation aus.",
       },
     },
   },
@@ -147,7 +159,7 @@ export const DLCMedienseite: Story = {
     docs: {
       description: {
         story:
-          "Die produktive DLC-Medienseite mit sichtbarem Cover-Register und einer harmlosen Aktualisierungsfunktion. Cover bleibt komponenteneigen, während Soundtrack, Handbuch und Hintergrundzuordnung beim Hauptspiel bleiben. Uploads oder Löschungen werden nicht ausgelöst.",
+          "Die produktive DLC-Medienseite mit sichtbarem Cover-Register, aktiven Bildflächen und einer harmlosen Aktualisierungsfunktion. Uploads oder Löschungen werden nicht ausgelöst.",
       },
     },
   },

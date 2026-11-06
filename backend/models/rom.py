@@ -969,6 +969,9 @@ class Rom(BaseModel):
 
     path_cover_s: Mapped[str | None] = mapped_column(Text, default="")
     path_cover_l: Mapped[str | None] = mapped_column(Text, default="")
+    original_cover_path_s: Mapped[str | None] = mapped_column(Text, default="")
+    original_cover_path_l: Mapped[str | None] = mapped_column(Text, default="")
+    original_cover_url: Mapped[str | None] = mapped_column(Text, default="")
     active_owned_cover_media_id: Mapped[int | None] = mapped_column(
         ForeignKey("rom_owned_media.id", ondelete="SET NULL"), default=None
     )

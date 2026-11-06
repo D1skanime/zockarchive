@@ -156,12 +156,15 @@ class FSResourcesHandler(PcComponentResourceStorageMixin, FSHandler):
             with Image.open(BytesIO(content)) as image:
                 image.verify()
                 media = {
+                    "GIF": ("image/gif", "gif"),
                     "JPEG": ("image/jpeg", "jpg"),
                     "PNG": ("image/png", "png"),
                     "WEBP": ("image/webp", "webp"),
                 }.get(image.format or "")
         except (UnidentifiedImageError, OSError, ValueError) as exc:
-            raise ValueError("Owned media must be a PNG, JPEG, or WebP image") from exc
+            raise ValueError(
+                "Owned media must be a GIF, PNG, JPEG, or WebP image"
+            ) from exc
         if media is None:
             raise ValueError("Owned media image type is not supported")
         mime_type, extension = media

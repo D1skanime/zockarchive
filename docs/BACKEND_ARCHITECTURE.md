@@ -238,6 +238,16 @@ file. Migration `0139_pc_component_owned_media_surfaces` adds the nullable
 component `manual_path`, the placement surface, and the surface-specific
 constraints/indexes needed for this separation.
 
+`0145_preserve_original_cover_source` keeps a parent ROM's original legacy
+cover paths and provider URL separate from an actively selected upload. A
+cover upload therefore adds a candidate rather than replacing the source. The
+selection mutation snapshots a reliable legacy source before changing the
+active candidate and restores it if that candidate is deleted or the original
+is selected. Rows that had already overwritten their source before the
+migration are intentionally left empty when no reliable source remains.
+Animated GIF and WebP candidates retain their validated owned bytes through
+selection so image animation is not flattened into generated derivatives.
+
 `pc_component_resource_support.py` centralizes upload role, extension, and MIME
 validation. `handler/filesystem/pc_component_resources.py` writes accepted
 manuals, images, and audio only into the ZockArchive-owned resource root.

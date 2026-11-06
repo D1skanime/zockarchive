@@ -39,6 +39,11 @@ const lightboxIndex = ref(0);
 const busy = computed(
   () => uploading.value || selecting.value !== null || deleting.value !== null,
 );
+const originalSelected = computed(
+  () =>
+    props.target.supportsOriginalSelection &&
+    props.target.activeCandidateId === null,
+);
 
 async function refreshAfterMutation() {
   const refreshed = await props.target.refresh();
@@ -113,7 +118,7 @@ async function remove(candidateId: number) {
     ref="dropzone"
     class="pc-cover-media"
     overlay
-    accept="image/jpeg,image/png,image/webp"
+    accept="image/gif,image/jpeg,image/png,image/webp"
     :disabled="busy || !target.expectedVersion || !canEdit"
     :input-label="t('common.upload')"
     :release-label="t('common.dropzone-drag-over')"
@@ -144,6 +149,21 @@ async function remove(candidateId: number) {
           <span class="za-shot__source">{{
             t("rom.pc-media-role-cover")
           }}</span>
+          <div
+            v-if="canEdit && target.supportsOriginalSelection"
+            class="za-shot__actions d-flex flex-wrap ga-1"
+          >
+            <MediaManagementAction
+              icon="mdi-image-check-outline"
+              tone="brand"
+              :selected="originalSelected"
+              :caption="t('rom.select-cover-image')"
+              :label="t('rom.select-cover-image')"
+              :disabled="!target.expectedVersion || busy"
+              :loading="selecting === 0"
+              @click="select(0)"
+            />
+          </div>
         </MediaManagementCard>
       </li>
       <li v-for="(candidate, index) in candidates" :key="candidate.id">

@@ -72,6 +72,9 @@ export type DetailedRomSchema = {
     manual_metadata: (ManualMetadata | null);
     path_cover_small: (string | null);
     path_cover_large: (string | null);
+    original_cover_path_small?: (string | null);
+    original_cover_path_large?: (string | null);
+    original_cover_url?: (string | null);
     url_cover: (string | null);
     has_manual: boolean;
     has_soundtrack: boolean;
@@ -118,4 +121,3 @@ export type DetailedRomSchema = {
     local_background_audio_file_ids?: Array<number>;
     owned_background_audio_media_ids?: Array<number>;
 };
-

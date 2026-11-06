@@ -179,17 +179,12 @@ const selectedOverviewArtwork = computed(() => {
   const mediaById = new Map(
     (rom.owned_media ?? []).map((item) => [item.id, item]),
   );
-  const artwork = (rom.owned_media_placements ?? [])
+  const media = (rom.owned_media_placements ?? [])
     .filter((placement) => placement.surface === "overview")
     .toSorted((a, b) => a.position - b.position)
     .map((placement) => mediaById.get(placement.media_id))
-    .find(
-      (media) =>
-        media?.role === "artwork" &&
-        media.state === "active" &&
-        Boolean(media.owned_path),
-    );
-  return artwork ? `/api/roms/${rom.id}/media/${artwork.id}/content` : null;
+    .find((item) => item?.state === "active" && Boolean(item.owned_path));
+  return media ? `/api/roms/${rom.id}/media/${media.id}/content` : null;
 });
 const selectedOverviewScreenshots = computed(() => {
   const rom = currentRom.value;

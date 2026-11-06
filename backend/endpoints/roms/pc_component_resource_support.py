@@ -18,6 +18,7 @@ from models.rom import RomComponentKind, RomComponentOwnedMediaRole
 _IMAGE_UPLOAD_LIMIT = 10 * 1024 * 1024
 _AUDIO_UPLOAD_LIMIT = 512 * 1024 * 1024
 _UPLOAD_MIME_TYPES = {
+    "GIF": ("image/gif", "gif"),
     "JPEG": ("image/jpeg", "jpg"),
     "PNG": ("image/png", "png"),
     "WEBP": ("image/webp", "webp"),
@@ -72,7 +73,7 @@ async def _validated_image_upload(upload: UploadFile) -> tuple[bytes, str, str]:
     if media is None:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Component media must be a PNG, JPEG, or WebP image",
+            detail="Component media must be a GIF, PNG, JPEG, or WebP image",
         )
     return content, *media
 

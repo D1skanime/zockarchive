@@ -9,6 +9,7 @@ import type {
   RomComponentOwnedMediaRole,
   RomOwnedMediaSurface,
 } from "@/__generated__";
+import ActiveComponentMediaPlacements from "@/v2/components/GameDetails/ActiveComponentMediaPlacements.vue";
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
@@ -84,12 +85,14 @@ const busy = computed(
 );
 const activeRoles = computed<RomComponentOwnedMediaRole[]>(() => {
   if (subtab.value === "screenshots") return ["screenshot"];
+  if (subtab.value === "backgrounds" || subtab.value === "overview-images")
+    return [];
   return ["artwork", "background", "gallery"];
 });
 const uploadRole = computed<RomComponentOwnedMediaRole>(() =>
   subtab.value === "screenshots" ? "screenshot" : "artwork",
 );
-const activeImageSurfaces: RomOwnedMediaSurface[] = ["overview"];
+const activeImageSurfaces: RomOwnedMediaSurface[] = ["overview", "background"];
 const componentVersion = computed(() => props.component.updated_at ?? null);
 const filteredMedia = computed(() =>
   media.value.filter((item) => activeRoles.value.includes(item.role)),
@@ -249,8 +252,22 @@ async function remove(mediaId: number) {
           role="tabpanel"
           :aria-labelledby="tab.tabId"
         >
+          <ActiveComponentMediaPlacements
+            v-if="tab.id === 'backgrounds' && subtab === tab.id"
+            :rom-id="romId"
+            :component="component"
+            surface="background"
+            :refresh="refresh"
+          />
+          <ActiveComponentMediaPlacements
+            v-else-if="tab.id === 'overview-images' && subtab === tab.id"
+            :rom-id="romId"
+            :component="component"
+            surface="overview"
+            :refresh="refresh"
+          />
           <PcCoverMediaTab
-            v-if="tab.id === 'cover' && subtab === tab.id"
+            v-else-if="tab.id === 'cover' && subtab === tab.id"
             :rom-id="romId"
             :target="coverTarget"
           />
@@ -259,7 +276,7 @@ async function remove(mediaId: number) {
             ref="dropzone"
             overlay
             :disabled="busy || !componentVersion || !canEdit"
-            accept="image/jpeg,image/png,image/webp"
+            accept="image/gif,image/jpeg,image/png,image/webp"
             :input-label="t('common.upload')"
             :release-label="t('common.dropzone-drag-over')"
             @files="upload"

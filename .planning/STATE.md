@@ -626,6 +626,14 @@ Resume file: None
 | 261105-mnt | Repair Cover-media TypeScript contracts and restore affected size baselines | 2026-11-05 | e545c5a14 | [261105-mnt-fix-cover-media-typescript-contract-erro](./quick/261105-mnt-fix-cover-media-typescript-contract-erro/) |
 | 261105-n05 | Restore missing ownership-storage imports | 2026-11-05 | 936300f0e | [261105-n05-restore-missing-ownership-storage-import](./quick/261105-n05-restore-missing-ownership-storage-import/) |
 
+## Quick Task 261106-adv
+
+| 261106-adv | Preserve original cover references and add active media managers | 2026-11-06 | pending commit | [261106-adv-preserve-original-cover-references-acros](./quick/261106-adv-preserve-original-cover-references-acros/) |
+
+- Implementation is complete pending renewed UAT. Targeted typecheck and scoped
+  Trunk passed. The supplied UAT routes returned product 404 after login, so
+  browser behavior has not been asserted for those live records.
+
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.

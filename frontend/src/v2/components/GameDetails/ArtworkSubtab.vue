@@ -46,19 +46,6 @@ const ownedArtwork = computed(() =>
     (item) => item.role === "artwork" && item.state === "active",
   ),
 );
-const backgroundPlacements = computed(() =>
-  (props.rom.owned_media_placements ?? [])
-    .filter((placement) => placement.surface === "background")
-    .toSorted((a, b) => a.position - b.position),
-);
-const backgrounds = computed(() =>
-  backgroundPlacements.value.flatMap((placement) => {
-    const candidate = props.rom.owned_media?.find(
-      (item) => item.id === placement.media_id && item.state === "active",
-    );
-    return candidate ? [{ candidate, placement }] : [];
-  }),
-);
 const artworkUrls = computed(() =>
   ownedArtwork.value.map((item) => mediaContentUrl(item.id)),
 );
@@ -73,11 +60,6 @@ function hasPlacement(
   return (
     item.placements?.some((placement) => placement.surface === surface) ?? false
   );
-}
-function backgroundPosition(item: RomOwnedMediaSchema) {
-  return item.placements?.find(
-    (placement) => placement.surface === "background",
-  )?.position;
 }
 function errorMessage(error: unknown) {
   if (axios.isAxiosError(error))
@@ -118,27 +100,6 @@ async function togglePlacement(
         surface,
         expectedVersion: props.rom.updated_at,
       });
-    await refreshCanonical();
-  } catch (error) {
-    if (!(await recoverFromConflict(error)))
-      snackbar.error(errorMessage(error));
-  } finally {
-    mutatingId.value = null;
-  }
-}
-async function moveBackground(index: number, direction: -1 | 1) {
-  const nextIndex = index + direction;
-  if (nextIndex < 0 || nextIndex >= backgrounds.value.length) return;
-  const ids = backgrounds.value.map(({ candidate }) => candidate.id);
-  [ids[index], ids[nextIndex]] = [ids[nextIndex], ids[index]];
-  mutatingId.value = backgrounds.value[index].candidate.id;
-  try {
-    await romApi.replaceOwnedMediaPlacements({
-      romId: props.rom.id,
-      surface: "background",
-      mediaIds: ids,
-      expectedVersion: props.rom.updated_at,
-    });
     await refreshCanonical();
   } catch (error) {
     if (!(await recoverFromConflict(error)))
@@ -274,60 +235,6 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
         {{ name }} {{ progress }}%
       </p>
     </section>
-    <section class="r-v2-art__section" aria-labelledby="backgrounds-heading">
-      <h3 id="backgrounds-heading" class="r-v2-art__title">
-        {{ t("rom.backgrounds") }}
-      </h3>
-      <div v-if="refreshing && backgrounds.length === 0" class="r-v2-art__rows">
-        <ZASkeletonBlock v-for="index in 2" :key="index" height="64" />
-      </div>
-      <ZAEmptyState
-        v-else-if="backgrounds.length === 0"
-        icon="mdi-image-off-outline"
-        :title="t('rom.backgrounds-empty')"
-      />
-      <ol v-else class="r-v2-art__rows">
-        <li
-          v-for="({ candidate }, index) in backgrounds"
-          :key="candidate.id"
-          class="r-v2-art__row"
-        >
-          <img
-            class="r-v2-art__row-preview"
-            :src="mediaContentUrl(candidate.id)"
-            :alt="candidate.display_label"
-          /><span class="r-v2-art__ordinal">{{ index + 1 }}</span
-          ><span class="r-v2-art__row-label">{{ candidate.display_label }}</span
-          ><span class="r-v2-art__origin">{{ candidate.origin }}</span>
-          <ZATooltip
-            :text="
-              index === 0
-                ? t('rom.background-move-unavailable')
-                : t('common.move-up')
-            "
-            ><ZABtn
-              icon="mdi-arrow-up"
-              :disabled="index === 0 || mutatingId !== null"
-              :aria-label="t('common.move-up')"
-              @click="moveBackground(index, -1)"
-          /></ZATooltip>
-          <ZATooltip
-            :text="
-              index === backgrounds.length - 1
-                ? t('rom.background-move-unavailable')
-                : t('common.move-down')
-            "
-            ><ZABtn
-              icon="mdi-arrow-down"
-              :disabled="
-                index === backgrounds.length - 1 || mutatingId !== null
-              "
-              :aria-label="t('common.move-down')"
-              @click="moveBackground(index, 1)"
-          /></ZATooltip>
-        </li>
-      </ol>
-    </section>
     <section
       class="r-v2-art__section"
       aria-labelledby="artwork-candidates-heading"
@@ -352,14 +259,6 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
           >
             <span class="za-shot__source">{{ item.display_label }}</span>
             <span class="za-shot__source">{{ item.origin }}</span>
-            <div class="za-shot__badges d-flex flex-wrap ga-1">
-              <span
-                v-if="backgroundPosition(item) != null"
-                class="za-shot__badge za-shot__badge--background"
-              >
-                {{ t("rom.backgrounds") }} #{{ backgroundPosition(item)! + 1 }}
-              </span>
-            </div>
             <div
               v-if="canManage"
               class="za-shot__actions d-flex flex-wrap ga-1"

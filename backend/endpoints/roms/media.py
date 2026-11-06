@@ -231,6 +231,15 @@ async def select_cover_media(
 ) -> DetailedRomSchema:
     """Materialize one retained candidate as the ROM's active legacy cover."""
     rom = _visible_rom(request, id)
+    if payload.media_id == 0:
+        if (
+            db_rom_handler.select_owned_cover_media(
+                id, 0, payload.expected_version, "", ""
+            )
+            is None
+        ):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return _detailed_rom_response(id, request)
     candidate = next(
         (
             item
@@ -253,11 +262,17 @@ async def select_cover_media(
     ) as access:
         content = access.read()
     extension = PurePosixPath(candidate.owned_path).suffix.lstrip(".") or "png"
-    path_cover_l, path_cover_s = await fs_resource_handler.store_artwork(
-        rom, BytesIO(content), extension
-    )
+    generated_paths: tuple[str, str] | None = None
+    if candidate.mime_type in {"image/gif", "image/webp"}:
+        path_cover_l, path_cover_s = candidate.owned_path, candidate.owned_path
+    else:
+        path_cover_l, path_cover_s = await fs_resource_handler.store_artwork(
+            rom, BytesIO(content), extension
+        )
     if not path_cover_l or not path_cover_s:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
+    if candidate.mime_type not in {"image/gif", "image/webp"}:
+        generated_paths = (path_cover_l, path_cover_s)
     applied = db_rom_handler.select_owned_cover_media(
         id,
         payload.media_id,
@@ -266,7 +281,7 @@ async def select_cover_media(
         path_cover_s,
     )
     if applied is None:
-        for path in (path_cover_l, path_cover_s):
+        for path in generated_paths or ():
             await fs_resource_handler.remove_file(path)
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     return _detailed_rom_response(id, request)

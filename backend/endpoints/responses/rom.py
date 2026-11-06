@@ -1006,6 +1006,13 @@ class DetailedRomSchema(RomSchema):
     all_user_notes: list[UserNoteSchema]
     owned_media: list[RomOwnedMediaSchema] = Field(default_factory=list)
     active_owned_cover_media_id: int | None = None
+    original_cover_path_small: str | None = Field(
+        default=None, validation_alias="original_cover_path_s"
+    )
+    original_cover_path_large: str | None = Field(
+        default=None, validation_alias="original_cover_path_l"
+    )
+    original_cover_url: str | None = None
     owned_media_placements: list[RomOwnedMediaPlacementSchema] = Field(
         default_factory=list
     )

@@ -45,6 +45,7 @@ from sqlalchemy.sql.selectable import Select
 from config import ROMM_DB_DRIVER
 from decorators.database import begin_session
 from decorators.owned_io import serialized_owned_write
+from handler.database.parent_cover_mutations import ParentCoverMutationMixin
 from handler.database.pc_component_media_mutations import (
     PcComponentMediaMutationMixin,
 )
@@ -509,7 +510,9 @@ def with_simple_details(func):
     return wrapper
 
 
-class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
+class DBRomsHandler(
+    ParentCoverMutationMixin, PcComponentMediaMutationMixin, DBBaseHandler
+):
     @begin_session
     @with_details
     def add_rom(
@@ -686,41 +689,6 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
         rom.updated_at = datetime.now(timezone.utc)
         session.flush()
         return AppliedOwnedMedia(rom, media, [])
-
-    @begin_session
-    def select_owned_cover_media(
-        self,
-        rom_id: int,
-        media_id: int,
-        expected_updated_at: datetime,
-        path_cover_l: str,
-        path_cover_s: str,
-        session: Session = None,  # type: ignore
-    ) -> Rom | None:
-        """Select an exact ROM-owned cover candidate under the ROM write lock."""
-        rom = self._get_locked_owned_media_rom(session, rom_id, expected_updated_at)
-        if rom is None:
-            return None
-        media = next(
-            (
-                item
-                for item in rom.owned_media
-                if item.id == media_id
-                and item.role == RomOwnedMediaRole.COVER
-                and item.state == RomOwnedMediaState.ACTIVE
-                and item.owned_path
-            ),
-            None,
-        )
-        if media is None:
-            return None
-        rom.active_owned_cover_media_id = media.id
-        rom.path_cover_l = path_cover_l
-        rom.path_cover_s = path_cover_s
-        rom.url_cover = ""
-        rom.updated_at = datetime.now(timezone.utc)
-        session.flush()
-        return rom
 
     @begin_session
     def reconcile_provider_owned_media(
@@ -1101,9 +1069,9 @@ class DBRomsHandler(PcComponentMediaMutationMixin, DBBaseHandler):
             return None
         if rom.active_owned_cover_media_id == media_id:
             rom.active_owned_cover_media_id = None
-            rom.path_cover_l = ""
-            rom.path_cover_s = ""
-            rom.url_cover = ""
+            rom.path_cover_l = rom.original_cover_path_l
+            rom.path_cover_s = rom.original_cover_path_s
+            rom.url_cover = rom.original_cover_url
         owned_paths = [media.owned_path] if media.owned_path else []
         if media.origin == RomOwnedMediaOrigin.PROVIDER:
             for placement in list(media.placements):

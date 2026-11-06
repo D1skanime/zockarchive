@@ -31,7 +31,7 @@ class OwnedCoverSelectionRequest(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    media_id: int = Field(gt=0)
+    media_id: int = Field(ge=0)
     expected_version: UTCDatetime
 
 
