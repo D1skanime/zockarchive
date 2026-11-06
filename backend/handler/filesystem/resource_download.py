@@ -115,6 +115,7 @@ async def store_resource(
             return path
         extension = {
             "image/gif": ".gif",
+            "image/png": ".png",
             "image/webp": ".webp",
         }.get(source_image_type)
         return str(PurePosixPath(path).with_suffix(extension)) if extension else path
@@ -124,6 +125,7 @@ async def store_resource(
             return
         expected_format = {
             "image/gif": "GIF",
+            "image/png": "PNG",
             "image/webp": "WEBP",
         }.get(source_image_type)
         if expected_format and original.format != expected_format:
@@ -151,10 +153,10 @@ async def store_resource(
                 output.file.seek(0)
                 with Image.open(output.file) as original:
                     original.load()
-                    if preserve_animated_cover and source_image_type in {
-                        "image/gif",
-                        "image/webp",
-                    }:
+                    if preserve_animated_cover and (
+                        source_image_type in {"image/gif", "image/webp"}
+                        or bool(getattr(original, "is_animated", False))
+                    ):
                         validate_preserved_cover(original)
                         transformed = None
                     else:
@@ -212,10 +214,10 @@ async def store_resource(
                 destination.seek(0)
                 with Image.open(destination) as original:
                     original.load()
-                    if preserve_animated_cover and source_image_type in {
-                        "image/gif",
-                        "image/webp",
-                    }:
+                    if preserve_animated_cover and (
+                        source_image_type in {"image/gif", "image/webp"}
+                        or bool(getattr(original, "is_animated", False))
+                    ):
                         validate_preserved_cover(original)
                         transformed = None
                     else:
