@@ -648,7 +648,7 @@ Resume file: None
 | 261106-jz1 | TypeScript-Nullsicherheit für aktive Coverquelle | 2026-11-06 | typecheck verified, committed | [261106-jz1-quality-gate-typescript-nullsicherheit-f](./quick/261106-jz1-quality-gate-typescript-nullsicherheit-f/) |
 | 261106-gp5 | Animierte Provider-Cover als persistente Kandidaten erhalten | 2026-11-06 | browser verified, committed | [261106-gp5-live-uat-animierte-gif-und-webp-cover-we](./quick/261106-gp5-live-uat-animierte-gif-und-webp-cover-we/) |
 | 261106-hgc | Sichtprüfung: fehlende Hauptspiel-Covervorschau reparieren | 2026-11-06 | browser verified, committed | [261106-hgc-sichtpr-fung-fehlende-bildvorschau-in-de](./quick/261106-hgc-sichtpr-fung-fehlende-bildvorschau-in-de/) |
-| 261106-m05 | Preserve animated provider and scraper cover originals through normal selection | 2026-11-06 | selection and legacy downloader compile/diff verified; authenticated browser UAT pending | [261106-m05-preserve-animated-provider-and-scraper-c](./quick/261106-m05-preserve-animated-provider-and-scraper-c/) |
+| 261106-m05 | Preserve animated provider and scraper cover originals through normal selection | 2026-11-06 | isolated backend target: 375 passed, 1 skipped; authenticated browser UAT pending | [261106-m05-preserve-animated-provider-and-scraper-c](./quick/261106-m05-preserve-animated-provider-and-scraper-c/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.

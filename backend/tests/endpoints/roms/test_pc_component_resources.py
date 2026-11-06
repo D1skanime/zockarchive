@@ -261,7 +261,7 @@ def test_component_image_upload_rejects_non_image_payload_before_storage(
     assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
     assert (
         response.json()["detail"]
-        == "Component media must be a PNG, JPEG, or WebP image"
+        == "Component media must be a GIF, PNG, JPEG, or WebP image"
     )
     assert not stored
 
