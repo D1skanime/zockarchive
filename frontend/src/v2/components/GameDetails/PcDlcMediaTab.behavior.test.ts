@@ -132,7 +132,7 @@ beforeEach(() => {
   mocks.route.query = { tab: "media" };
 });
 describe("DLC media presentation preserves component capabilities", () => {
-  it("keeps the crown selected, displays position one and removes only the component placement", async () => {
+  it("keeps the overview selected, displays position one and removes only the component placement", async () => {
     const wrapper = render();
     await flushPromises();
     const button = wrapper.get('[aria-label="rom.remove-from-overview"]');
@@ -144,7 +144,10 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(wrapper.find(".za-shot__badge").text()).toBe(
       "rom.screenshots-overview-position:1",
     );
-    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(2);
+    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(3);
+    expect(wrapper.find('[aria-label="rom.add-as-background"]').exists()).toBe(
+      true,
+    );
     await button.trigger("click");
     await flushPromises();
     expect(mocks.delete).toHaveBeenCalledExactlyOnceWith(
@@ -295,18 +298,18 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(mocks.delete).not.toHaveBeenCalled();
   });
 
-  it("limits DLC media to screenshots and artwork without manual or soundtrack", async () => {
+  it("exposes cover and active placement managers without manual or soundtrack", async () => {
     const wrapper = render();
     await flushPromises();
 
-    expect(wrapper.findAll('[role="tab"]')).toHaveLength(2);
+    expect(wrapper.findAll('[role="tab"]')).toHaveLength(5);
     expect(
       wrapper
         .get('[role="tab"][aria-label="rom.screenshots"]')
         .attributes("aria-controls"),
     ).toBe("pc-dlc-media-panel-screenshots");
     const panels = wrapper.findAll('[role="tabpanel"]');
-    expect(panels).toHaveLength(2);
+    expect(panels).toHaveLength(5);
     expect(
       wrapper.get("#pc-dlc-media-panel-screenshots").attributes("role"),
     ).toBe("tabpanel");
@@ -318,16 +321,18 @@ describe("DLC media presentation preserves component capabilities", () => {
     expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
       "rom.screenshots",
     );
-    expect(wrapper.text()).not.toContain("rom.pc-media-role-cover");
+    expect(wrapper.text()).toContain("rom.pc-media-role-cover");
+    expect(wrapper.text()).toContain("rom.active-backgrounds");
+    expect(wrapper.text()).toContain("rom.active-overview-images");
     expect(wrapper.text()).not.toContain("rom.manual");
     expect(wrapper.text()).not.toContain("rom.soundtrack");
     expect(wrapper.find('[aria-label="rom.add-as-background"]').exists()).toBe(
-      false,
+      true,
     );
   });
 
   it("replaces obsolete media subtabs with the screenshots route", async () => {
-    mocks.route.query = { tab: "media", subtab: "cover" };
+    mocks.route.query = { tab: "media", subtab: "obsolete-gallery" };
     const wrapper = render();
     await flushPromises();
 

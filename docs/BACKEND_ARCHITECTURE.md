@@ -249,6 +249,15 @@ Provider, scraper and upload cover candidates retain their own cover role,
 including GIF and WebP source bytes. Selection uses those validated owned
 bytes directly, so animation is not flattened into generated derivatives.
 
+Original parent-ROM covers that predate the owned-media catalog are retired by
+`DELETE /api/roms/{id}/media/cover/original`. The route requires ROM edit access
+and the current `expected_version`. `ParentCoverMutationMixin` clears only the
+retained original-source fields, preserving a separately selected upload, and
+records URL-identity tombstones using the existing provider suppression rules.
+Legacy cover downloads also honor those tombstones. Shared resource files are
+retained rather than unlinked by this source-only operation, because an owned
+candidate or another display surface may still reference them.
+
 `pc_component_resource_support.py` centralizes upload role, extension, and MIME
 validation. `handler/filesystem/pc_component_resources.py` writes accepted
 manuals, images, and audio only into the ZockArchive-owned resource root.

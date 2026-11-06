@@ -1201,3 +1201,50 @@ async def test_component_image_uploads_never_replace_another_gallery_or_screensh
         assert second.startswith(f"roms/17/73/pc-owned-media/42-upload-{role.value}-")
         assert (tmp_path / first).read_bytes() == b"first"
         assert (tmp_path / second).read_bytes() == b"second"
+
+
+@pytest.mark.asyncio
+async def test_deleted_original_cover_is_not_redownloaded_by_legacy_scan(rom):
+    from handler.database import db_rom_handler
+    from handler.filesystem import fs_resource_handler
+
+    url = "https://cdn2.steamgriddb.com/grid/deleted.png"
+    current = db_rom_handler.update_rom(
+        rom.id,
+        {
+            "original_cover_url": url,
+            "original_cover_path_l": "roms/1/cover/big.png",
+            "path_cover_l": "roms/1/cover/big.png",
+            "url_cover": url,
+        },
+    )
+    deleted = db_rom_handler.delete_original_cover(rom.id, current.updated_at)
+    with patch.object(
+        fs_resource_handler, "_store_cover", new_callable=AsyncMock
+    ) as download:
+        small, large = await fs_resource_handler.get_cover(deleted, True, url)
+    assert not small and not large
+    download.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_deleted_original_does_not_reappear_from_retained_shared_files(rom):
+    from handler.database import db_rom_handler
+    from handler.filesystem import fs_resource_handler
+
+    path = f"{rom.fs_resources_path}/cover/big.png"
+    await fs_resource_handler.write_file(
+        b"shared-image", f"{rom.fs_resources_path}/cover", "big.png"
+    )
+    current = db_rom_handler.update_rom(
+        rom.id,
+        {
+            "original_cover_url": "https://example.org/deleted.png",
+            "original_cover_path_l": path,
+            "path_cover_l": path,
+        },
+    )
+    deleted = db_rom_handler.delete_original_cover(rom.id, current.updated_at)
+    small, large = await fs_resource_handler.get_cover(deleted, False, None)
+    assert not small and not large
+    assert await fs_resource_handler.file_exists(path)

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-// Combined Manual + Screenshots + Artwork + Soundtrack tab for GameDetails.
-// This shell owns the subtab navigation (mirrored to `?subtab=`) and the
-// soundtrack panel; each other subtab is self-contained.
-//
-// The soundtrack player is reused from v1 for now.
+// Shared media navigation keeps source catalogs and active placements separate.
+// The parent supplies canonical owner data after each mutation.
 import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -144,7 +141,12 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
   selectionEndpoint: `/roms/${props.rom.id}/media/cover`,
   expectedVersion: props.rom.updated_at ?? null,
   candidates: (props.rom.owned_media ?? [])
-    .filter((candidate) => candidate.role === "cover")
+    .filter(
+      (candidate) =>
+        candidate.role === "cover" &&
+        candidate.state === "active" &&
+        candidate.owned_path,
+    )
     .map((candidate) => ({
       id: candidate.id,
       role: "cover" as const,

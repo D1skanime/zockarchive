@@ -99,9 +99,14 @@ async function remove(candidateId: number) {
   deleting.value = candidateId;
   error.value = null;
   try {
-    await api.delete(`${props.target.endpoint}/${candidateId}`, {
-      params: { expected_version: props.target.expectedVersion },
-    });
+    await api.delete(
+      candidateId === 0
+        ? `${props.target.selectionEndpoint}/original`
+        : `${props.target.endpoint}/${candidateId}`,
+      {
+        params: { expected_version: props.target.expectedVersion },
+      },
+    );
     await refreshAfterMutation();
   } catch (reason) {
     console.error(reason);
@@ -118,7 +123,7 @@ async function remove(candidateId: number) {
     ref="dropzone"
     class="pc-cover-media"
     overlay
-    accept="image/gif,image/jpeg,image/png,image/webp"
+    accept="image/gif,image/jpeg,image/png,image/apng,image/webp,.apng"
     :disabled="busy || !target.expectedVersion || !canEdit"
     :input-label="t('common.upload')"
     :release-label="t('common.dropzone-drag-over')"
@@ -163,6 +168,15 @@ async function remove(candidateId: number) {
               :disabled="!target.expectedVersion || busy"
               :loading="selecting === 0"
               @click="select(0)"
+            />
+            <MediaManagementAction
+              icon="mdi-delete-outline"
+              tone="danger"
+              :caption="t('common.delete')"
+              :label="t('common.delete')"
+              :disabled="!target.expectedVersion || busy"
+              :loading="deleting === 0"
+              @click="remove(0)"
             />
           </div>
         </MediaManagementCard>

@@ -29,6 +29,9 @@ import type { UserSaveSchema } from './UserSaveSchema';
 import type { UserScreenshotSchema } from './UserScreenshotSchema';
 import type { UserStateSchema } from './UserStateSchema';
 export type DetailedRomSchema = {
+    original_cover_path_small?: (string | null);
+    original_cover_path_large?: (string | null);
+    original_cover_url?: (string | null);
     id: number;
     igdb_id: (number | null);
     sgdb_id: (number | null);
@@ -72,9 +75,6 @@ export type DetailedRomSchema = {
     manual_metadata: (ManualMetadata | null);
     path_cover_small: (string | null);
     path_cover_large: (string | null);
-    original_cover_path_small?: (string | null);
-    original_cover_path_large?: (string | null);
-    original_cover_url?: (string | null);
     url_cover: (string | null);
     has_manual: boolean;
     has_soundtrack: boolean;

@@ -39,6 +39,17 @@ vi.mock("@/v2/components/GameDetails/SoundtrackPanel.vue", () => ({
   default: { template: "<div data-soundtrack />" },
 }));
 
+vi.mock("@/v2/components/GameDetails/PcCoverMediaTab.vue", () => ({
+  default: {
+    props: ["target"],
+    template:
+      '<div data-cover><span v-for="item in target.candidates" :key="item.id" :data-cover-candidate="item.id" /></div>',
+  },
+}));
+vi.mock("@/v2/components/GameDetails/ActiveRomMediaPlacements.vue", () => ({
+  default: { template: "<div data-active-placements />" },
+}));
+
 const source = readFileSync(
   "src/v2/components/GameDetails/MediaTab.vue",
   "utf8",
@@ -63,21 +74,21 @@ describe("MediaTab soundtrack access", () => {
     const manual = wrapper.get("[data-manual]").element;
     const soundtrack = wrapper.get("[data-soundtrack]").element;
     const tabs = wrapper.findAll('[role="tab"]');
-    expect(tabs).toHaveLength(4);
-    expect(tabs[1].attributes("aria-controls")).toBe("media-panel-screenshots");
-    expect(tabs[1].attributes("id")).toBe("media-tab-screenshots");
+    expect(tabs).toHaveLength(7);
+    expect(tabs[2].attributes("aria-controls")).toBe("media-panel-screenshots");
+    expect(tabs[2].attributes("id")).toBe("media-tab-screenshots");
     expect(
       wrapper.get("#media-panel-screenshots").attributes("aria-labelledby"),
     ).toBe("media-tab-screenshots");
 
-    await tabs[1].trigger("keydown", { key: "ArrowDown" });
+    await tabs[2].trigger("keydown", { key: "ArrowDown" });
     await flushPromises();
     expect(replace).toHaveBeenLastCalledWith({
       path: "/rom/1",
       query: { tab: "media", subtab: "artwork", retained: "value" },
     });
 
-    await tabs[0].trigger("click");
+    await tabs[1].trigger("click");
     expect(replace).toHaveBeenLastCalledWith({
       path: "/rom/1",
       query: { tab: "media", subtab: "manual", retained: "value" },
@@ -88,7 +99,7 @@ describe("MediaTab soundtrack access", () => {
     expect(
       wrapper.get("#media-panel-screenshots").attributes("style"),
     ).toContain("display: none");
-    await tabs[1].trigger("click");
+    await tabs[2].trigger("click");
     expect(
       wrapper.get("#media-panel-screenshots").attributes("style") ?? "",
     ).not.toContain("display: none");
@@ -105,4 +116,28 @@ describe("MediaTab soundtrack access", () => {
     });
     wrapper.unmount();
   });
+});
+
+it("does not offer tombstoned or pathless cover records as candidates", async () => {
+  const wrapper = mount(MediaTab, {
+    props: {
+      rom: {
+        id: 1,
+        owned_media: [
+          {
+            id: 1,
+            role: "cover",
+            state: "active",
+            owned_path: "roms/1/cover.webp",
+          },
+          { id: 2, role: "cover", state: "tombstoned", owned_path: null },
+        ],
+      } as DetailedRom,
+      refresh: async () => true,
+    },
+  });
+  await flushPromises();
+  expect(wrapper.find('[data-cover-candidate="1"]').exists()).toBe(true);
+  expect(wrapper.find('[data-cover-candidate="2"]').exists()).toBe(false);
+  wrapper.unmount();
 });

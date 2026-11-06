@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
- * Versioned selection of an existing, owner-scoped cover candidate.
+ * Versioned selection of an existing owner-scoped cover candidate.
  */
 export type OwnedCoverSelectionRequest = {
     media_id: number;

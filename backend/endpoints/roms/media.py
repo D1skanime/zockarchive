@@ -294,6 +294,16 @@ async def select_cover_media(
     return _detailed_rom_response(id, request)
 
 
+@protected_route(router.delete, "/{id}/media/cover/original", [Scope.ROMS_WRITE])
+async def delete_original_cover(
+    request: Request, id: int, expected_version: datetime
+) -> DetailedRomSchema:
+    """Remove the retained source, preserving independent selected candidates."""
+    _visible_rom(request, id)
+    _conflict(db_rom_handler.delete_original_cover(id, expected_version))
+    return _detailed_rom_response(id, request)
+
+
 @protected_route(router.delete, "/{id}/media/{media_id}", [Scope.ROMS_WRITE])
 async def delete_media(
     request: Request, id: int, media_id: int, expected_version: datetime

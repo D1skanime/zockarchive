@@ -453,3 +453,14 @@ vitest.config.ts uses happy-dom, globals, vitest.setup.ts, Vuetify inlining, and
 ### Owned product identity browser validation
 
 The rebranding browser gate composes the existing disposable setup, scan and login fixtures with the real API and worker. It checks branded auth/navigation/about surfaces in both themes across every responsive boundary, plus actual invitation registration and protected mapped-file bytes. The shared static-preview helper and existing project-brand suite separately cover synthetic gamepad activation, semantic brand text and source/release links on built output. Synthetic input does not prove physical controller acceptance. The populated production proof separately checks the actual local EmulatorJS loader and runtime against an owned generated cartridge.
+
+### Original cover removal and animated uploads
+
+The shared `PcCoverMediaTab` offers deletion for retained parent-ROM source
+covers as well as owned candidates. Original-source removal uses the versioned
+`media/cover/original` endpoint, requests confirmation, and reloads the owner
+catalog. Candidate deletion keeps its existing owner-scoped endpoint. The
+cover file picker explicitly accepts `.apng` alongside GIF, PNG, JPEG and WebP;
+server-side content validation remains authoritative. Animated uploads retain
+original bytes, and the detail hero resolves the selected candidate content URL
+rather than displaying a static preview derivative.
