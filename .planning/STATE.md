@@ -634,6 +634,10 @@ Resume file: None
   Trunk passed. The supplied UAT routes returned product 404 after login, so
   browser behavior has not been asserted for those live records.
 
+## Quick Task 261106-b2c
+
+| 261106-b2c | Commit confirmed repository instruction so ci-host-contracts sees a clean source tree | 2026-11-06 | pending commit | [261106-b2c-clean-host-contract-worktree](./quick/261106-b2c-clean-host-contract-worktree/) |
+
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.
