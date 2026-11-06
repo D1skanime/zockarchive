@@ -419,7 +419,7 @@ async def publish_rom_resources(handler, rom, previous, *, complete=False):
     from handler.metadata.ss_handler import add_ss_auth_to_url
 
     source = {
-        "url_artworks": [rom.url_cover] if rom.url_cover else [],
+        "url_covers": [rom.url_cover] if rom.url_cover else [],
         "url_screenshots": rom.url_screenshots or [],
     }
     # Legacy providers can include local paths; only HTTPS identities are comparable.
@@ -446,9 +446,7 @@ async def publish_rom_resources(handler, rom, previous, *, complete=False):
 
     from models.rom import RomOwnedMediaRole
 
-    cover_allowed = not rom.url_cover or allowed(
-        rom.url_cover, RomOwnedMediaRole.ARTWORK
-    )
+    cover_allowed = not rom.url_cover or allowed(rom.url_cover, RomOwnedMediaRole.COVER)
     screenshot_urls = [
         url
         for url in rom.url_screenshots or []

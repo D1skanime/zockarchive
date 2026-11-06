@@ -262,9 +262,12 @@ class FSResourcesHandler(PcComponentResourceStorageMixin, FSHandler):
                 image.verify()
         except (UnidentifiedImageError, OSError, ValueError) as exc:
             raise ValueError("Provider media is not a valid image") from exc
-        extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(
-            mime_type
-        )
+        extension = {
+            "image/gif": "gif",
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+        }.get(mime_type)
         if extension is None:
             raise ValueError("Provider media type is not supported")
         content_sha256 = hashlib.sha256(response_content).hexdigest()

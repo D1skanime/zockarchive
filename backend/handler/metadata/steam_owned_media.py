@@ -35,7 +35,7 @@ def _steam_media_source(patch: Mapping[str, Any]) -> dict[str, object] | None:
     screenshots = media.get("screenshots")
     if not isinstance(cover, list) or not isinstance(screenshots, list):
         return None
-    return {"url_artworks": cover, "url_screenshots": screenshots}
+    return {"url_covers": cover, "url_screenshots": screenshots}
 
 
 async def _download_candidate(

@@ -245,8 +245,9 @@ selection mutation snapshots a reliable legacy source before changing the
 active candidate and restores it if that candidate is deleted or the original
 is selected. Rows that had already overwritten their source before the
 migration are intentionally left empty when no reliable source remains.
-Animated GIF and WebP candidates retain their validated owned bytes through
-selection so image animation is not flattened into generated derivatives.
+Provider, scraper and upload cover candidates retain their own cover role,
+including GIF and WebP source bytes. Selection uses those validated owned
+bytes directly, so animation is not flattened into generated derivatives.
 
 `pc_component_resource_support.py` centralizes upload role, extension, and MIME
 validation. `handler/filesystem/pc_component_resources.py` writes accepted

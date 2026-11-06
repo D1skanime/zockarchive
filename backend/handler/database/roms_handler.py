@@ -709,7 +709,12 @@ class DBRomsHandler(
             rom is None
             or not provider
             or not provider_media_id
-            or role not in {RomOwnedMediaRole.SCREENSHOT, RomOwnedMediaRole.ARTWORK}
+            or role
+            not in {
+                RomOwnedMediaRole.COVER,
+                RomOwnedMediaRole.SCREENSHOT,
+                RomOwnedMediaRole.ARTWORK,
+            }
             or not owned_path
             or owned_path.startswith("/")
             or ".." in owned_path
@@ -798,7 +803,11 @@ class DBRomsHandler(
             if (
                 not item.provider_media_id
                 or item.role
-                not in {RomOwnedMediaRole.SCREENSHOT, RomOwnedMediaRole.ARTWORK}
+                not in {
+                    RomOwnedMediaRole.COVER,
+                    RomOwnedMediaRole.SCREENSHOT,
+                    RomOwnedMediaRole.ARTWORK,
+                }
                 or not item.owned_path
                 or item.owned_path.startswith("/")
                 or ".." in item.owned_path
@@ -3157,7 +3166,10 @@ class DBRomsHandler(
             return AppliedPcComponentOwnedMedia(existing, replaced_owned_paths)
 
         replaced_owned_paths: list[str] = []
-        if role != RomComponentOwnedMediaRole.SCREENSHOT:
+        if role not in {
+            RomComponentOwnedMediaRole.COVER,
+            RomComponentOwnedMediaRole.SCREENSHOT,
+        }:
             for existing in component.owned_media:
                 if (
                     existing.origin == RomComponentOwnedMediaOrigin.PROVIDER
