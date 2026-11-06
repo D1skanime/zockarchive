@@ -642,6 +642,7 @@ Resume file: None
 | 261106-e1c | Review-Nachbesserung für DLC-Übersichtsplatzierungen | 2026-11-06 | browser verified, committed | [261106-e1c-review-nachbesserung-dlc-bersichtsplatzi](./quick/261106-e1c-review-nachbesserung-dlc-bersichtsplatzi/) |
 | 261106-ecv | Lokalisierung der aktiven Medienverwaltungen | 2026-11-06 | locale and browser verified, committed | [261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b](./quick/261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b/) |
 | 261106-esh | Sichtprüfung der DLC-Übersichtsbilder | 2026-11-06 | browser verified, no source change | [261106-esh-sichtpr-fung-dlc-aktive-bersichtsbilder-](./quick/261106-esh-sichtpr-fung-dlc-aktive-bersichtsbilder-/) |
+| 261106-fgt | Persistierte Coverauswahl von Übersichtsbildern trennen | 2026-11-06 | browser verified, committed | [261106-fgt-live-uat-explizite-coverauswahl-bleibt-g](./quick/261106-fgt-live-uat-explizite-coverauswahl-bleibt-g/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.

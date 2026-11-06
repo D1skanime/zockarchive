@@ -789,6 +789,14 @@ async def select_pc_metadata_candidate(
                 "path_cover_l": path_cover_l,
             }
         )
+        if updated.active_owned_cover_media_id is None:
+            media_updates.update(
+                {
+                    "original_cover_url": selected_cover,
+                    "original_cover_path_s": path_cover_s,
+                    "original_cover_path_l": path_cover_l,
+                }
+            )
     if selected_screenshots:
         media_updates.update(
             {
