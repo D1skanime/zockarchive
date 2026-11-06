@@ -80,6 +80,8 @@
   "local": "Helyi",
   "logout": "Kijelentkezés",
   "logs": "Logs",
+  "move-down": "Mozgatás lefelé",
+  "move-up": "Mozgatás felfelé",
   "name": "Név",
   "new-version-available": "Új verzió érhető el",
   "next-page": "Következő oldal",

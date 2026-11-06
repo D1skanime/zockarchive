@@ -640,6 +640,7 @@ Resume file: None
 | 261106-d9g | Fix host-contract lint findings | 2026-11-06 | verified, commit 6a7c84c12 | [261106-d9g-fix-trunk-check-lint-issues-in-ci-host-c](./quick/261106-d9g-fix-trunk-check-lint-issues-in-ci-host-c/) |
 | 261106-dm2 | Repair the visible main-game cover | 2026-11-06 | browser verified, commit 1646c13c0 | [261106-dm2-repair-the-runtime-visible-main-game-cov](./quick/261106-dm2-repair-the-runtime-visible-main-game-cov/) |
 | 261106-e1c | Review-Nachbesserung für DLC-Übersichtsplatzierungen | 2026-11-06 | browser verified, committed | [261106-e1c-review-nachbesserung-dlc-bersichtsplatzi](./quick/261106-e1c-review-nachbesserung-dlc-bersichtsplatzi/) |
+| 261106-ecv | Lokalisierung der aktiven Medienverwaltungen | 2026-11-06 | locale and browser verified, committed | [261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b](./quick/261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.

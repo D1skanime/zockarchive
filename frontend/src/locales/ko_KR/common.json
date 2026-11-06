@@ -80,6 +80,8 @@
   "local": "로컬",
   "logout": "로그아웃",
   "logs": "Logs",
+  "move-down": "아래로 이동",
+  "move-up": "위로 이동",
   "name": "이름",
   "new-version-available": "새 버전 사용 가능",
   "next-page": "다음 페이지",

@@ -80,6 +80,8 @@
   "local": "Local",
   "logout": "Cerrar sesión",
   "logs": "Logs",
+  "move-down": "Mover abajo",
+  "move-up": "Mover arriba",
   "name": "Nombre",
   "new-version-available": "Nueva versión disponible",
   "next-page": "Siguiente",

@@ -80,6 +80,8 @@
   "local": "本地",
   "logout": "注销",
   "logs": "Logs",
+  "move-down": "下移",
+  "move-up": "上移",
   "name": "名称",
   "new-version-available": "有新版本可用",
   "next-page": "下一页",
