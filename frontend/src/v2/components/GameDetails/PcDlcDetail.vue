@@ -119,7 +119,9 @@ const overviewPlacements = computed(() =>
       (item.placements ?? [])
         .filter(
           (placement) =>
-            placement.media_id === item.id && placement.position >= 0,
+            placement.media_id === item.id &&
+            placement.surface === "overview" &&
+            placement.position >= 0,
         )
         .map((placement) => ({ item, placement })),
     )
