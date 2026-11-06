@@ -35,8 +35,17 @@ async def _response_chunks(response):
         raise ValueError("resource_gzip_incomplete")
 
 
-async def store_resource(handler, url, path, allowed, *, cover_size=None, image=False):
-    """Stream provider or local bytes before the short publication transaction."""
+async def store_resource(
+    handler,
+    url,
+    path,
+    allowed,
+    *,
+    cover_size=None,
+    image=False,
+    preserve_animated_cover=False,
+):
+    """Stream validated media before publication, retaining typed animated covers raw."""
     from contextlib import ExitStack
 
     import httpx
@@ -58,7 +67,10 @@ async def store_resource(handler, url, path, allowed, *, cover_size=None, image=
         require_scan_media_batch,
     )
 
+    source_image_type: str | None = None
+
     async def chunks():
+        nonlocal source_image_type
         if url.startswith("file://") and current_scan_write_context() is not None:
             from handler.filesystem import get_fs_rom_handler
 
@@ -83,16 +95,48 @@ async def store_resource(handler, url, path, allowed, *, cover_size=None, image=
                         response, allowed, "resource"
                     ):
                         raise ValueError("scan_media_response_invalid")
+                    source_image_type = (
+                        response.headers.get("content-type", "")
+                        .split(";", 1)[0]
+                        .strip()
+                        .lower()
+                    )
                     async for chunk in _response_chunks(response):
                         yield chunk
+
+    async def first_chunk(stream):
+        try:
+            return await anext(stream)
+        except StopAsyncIteration:
+            return b""
+
+    def preserved_cover_path() -> str:
+        extension = {
+            "image/gif": ".gif",
+            "image/webp": ".webp",
+        }.get(source_image_type)
+        return str(PurePosixPath(path).with_suffix(extension)) if extension else path
+
+    def validate_preserved_cover(original) -> None:
+        expected_format = {
+            "image/gif": "GIF",
+            "image/webp": "WEBP",
+        }.get(source_image_type)
+        if expected_format and original.format != expected_format:
+            raise ValueError("resource_image_type_mismatch")
 
     if current_scan_write_context() is not None:
         unit = require_scan_media_batch()
         if cover_size and ENABLE_SCHEDULED_CONVERT_IMAGES_TO_WEBP:
             path = str(PurePosixPath(path).with_suffix(".webp"))
-        output = unit.prepare(path)
+        stream = chunks()
         try:
-            async for chunk in chunks():
+            initial = await first_chunk(stream)
+            if preserve_animated_cover:
+                path = preserved_cover_path()
+            output = unit.prepare(path)
+            output.file.write(initial)
+            async for chunk in stream:
                 output.file.write(chunk)
                 output.file.flush()
             output.file.flush()
@@ -103,7 +147,17 @@ async def store_resource(handler, url, path, allowed, *, cover_size=None, image=
                 output.file.seek(0)
                 with Image.open(output.file) as original:
                     original.load()
-                    transformed = original.copy()
+                    if preserve_animated_cover and source_image_type in {
+                        "image/gif",
+                        "image/webp",
+                    }:
+                        validate_preserved_cover(original)
+                        transformed = None
+                    else:
+                        transformed = original.copy()
+                if transformed is None:
+                    unit.finish(output)
+                    return output.path
                 if cover_size == "small":
                     ratio = 0.2 if transformed.height >= 1000 else 0.4
                     transformed = transformed.resize(
@@ -124,19 +178,27 @@ async def store_resource(handler, url, path, allowed, *, cover_size=None, image=
             unit.finish(output)
             return output.path
         except BaseException:
-            output.capability.abort()
+            if "output" in locals():
+                output.capability.abort()
             raise
-    directory, _filename = path.rsplit("/", 1)
-    ensure_directory(handler.storage, directory)
+        finally:
+            await stream.aclose()
     publishing = False
+    stream = chunks()
     try:
+        initial = await first_chunk(stream)
+        if preserve_animated_cover:
+            path = preserved_cover_path()
+        directory, _filename = path.rsplit("/", 1)
+        ensure_directory(handler.storage, directory)
         with ExitStack() as stack:
             access = stack.enter_context(
                 open_owned_access(handler.storage, StorageOperation.OVERWRITE, path)
             )
             assert isinstance(access, OwnedReplace)
             destination = stack.enter_context(access.binary_file())
-            async for chunk in chunks():
+            destination.write(initial)
+            async for chunk in stream:
                 destination.write(chunk)
             destination.flush()
             if image or cover_size:
@@ -146,7 +208,17 @@ async def store_resource(handler, url, path, allowed, *, cover_size=None, image=
                 destination.seek(0)
                 with Image.open(destination) as original:
                     original.load()
-                    transformed = original.copy()
+                    if preserve_animated_cover and source_image_type in {
+                        "image/gif",
+                        "image/webp",
+                    }:
+                        validate_preserved_cover(original)
+                        transformed = None
+                    else:
+                        transformed = original.copy()
+                if transformed is None:
+                    publishing = True
+                    return path
                 if cover_size:
                     if cover_size == "small":
                         ratio = 0.2 if transformed.height >= 1000 else 0.4
@@ -181,3 +253,5 @@ async def store_resource(handler, url, path, allowed, *, cover_size=None, image=
         if publishing:
             raise
         return None
+    finally:
+        await stream.aclose()

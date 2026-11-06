@@ -358,12 +358,14 @@ class FSResourcesHandler(PcComponentResourceStorageMixin, FSHandler):
             log.error(f"Unable to remove partial file {relative_path}: {str(exc)}")
 
     async def _store_cover(self, entity, url_cover, size):
+        """Keep a large animated provider cover raw for the legacy hero path."""
         return await store_resource(
             self,
             url_cover,
             f"{entity.fs_resources_path}/cover/{size.value}.png",
             ("image/",),
             cover_size=size.value,
+            preserve_animated_cover=size == CoverSize.BIG,
         )
 
     def _get_cover_path(self, entity: Rom | Collection, size: CoverSize) -> str | None:
