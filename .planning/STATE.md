@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: phase_human_verification
 stopped_at: Phase40 Wave15 targeted technical verification complete, human UAT pending
-last_updated: 2026-11-05T09:45:00Z
-last_activity: 2026-11-05
+last_updated: 2026-11-06T00:00:00Z
+last_activity: 2026-11-06
 progress:
   total_phases: 39
   completed_phases: 24
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 Phase:39 (zockarchive-approved-logo-integration)
 Plan:1/1
 Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
-Last activity: 2026-11-05 - Completed quick task 261105-n05: restore component-resource storage imports after route extraction
+Last activity: 2026-11-06 - Completed quick task 261106-fsb: extract PC metadata media persistence to restore the source-size baseline
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -550,6 +550,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261106-fsb | Quality-Gate, PC-Metadaten-Medienpersistenz auslagern | 2026-11-06 | c44b7aa98 | [261106-fsb-quality-gate-pc-metadaten-medienpersiste](./quick/261106-fsb-quality-gate-pc-metadaten-medienpersiste/) |
 | 261105-dl5 | Harden DLC image upload filenames, active-art fallback treatment, and scoped media UI | 2026-11-05 | 34b8a8f41 | [261105-dl5-dlc-media-safety-and-background-overlay](./quick/261105-dl5-dlc-media-safety-and-background-overlay/) |
 | 261105-f1c | Render productive media stories, synchronize art overlays, and align soundtrack ordering | 2026-11-05 | d620b4268 | [261105-f1c-productive-media-stories-and-crossfade-continuity](./quick/261105-f1c-productive-media-stories-and-crossfade-continuity/) |
 | 261105-fuc | Remove gate lint debt and split the DLC media ordering route | 2026-11-05 | 4ef080ecb | [261105-fuc-gate-lint-and-component-route-sizing](./quick/261105-fuc-gate-lint-and-component-route-sizing/) |
