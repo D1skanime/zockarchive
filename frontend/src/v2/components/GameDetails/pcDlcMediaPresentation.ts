@@ -1,8 +1,44 @@
 import type { ZATabNavItem } from "@v2/lib";
 import type {
+  PcComponentSchema,
   PcComponentOwnedMediaSchema,
   RomOwnedMediaSurface,
 } from "@/__generated__";
+
+export type PcDlcCoverPresentation = {
+  source: string;
+};
+
+/** Resolve the component-owned selection before considering legacy local media. */
+export function resolvePcDlcCoverPresentation(
+  component: PcComponentSchema,
+  parentId: number,
+  resourcesPath: string,
+): PcDlcCoverPresentation | null {
+  const activeMediaId = component.active_owned_cover_media_id;
+  const activeOwnedCover =
+    activeMediaId === null || activeMediaId === undefined
+      ? null
+      : (component.owned_media?.find(
+          (media) =>
+            media.id === activeMediaId &&
+            media.role === "cover" &&
+            media.owned_path,
+        ) ?? null);
+
+  if (activeOwnedCover) {
+    return {
+      source: `/api/roms/${parentId}/pc-components/${component.id}/media/${activeOwnedCover.id}/content`,
+    };
+  }
+
+  const localCover = component.local_media?.find(
+    (media) => media.role === "cover",
+  );
+  return localCover
+    ? { source: `${resourcesPath}/${localCover.owned_path}` }
+    : null;
+}
 
 export const validDlcMediaSubtabs = [
   "cover",

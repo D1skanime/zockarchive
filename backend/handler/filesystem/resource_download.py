@@ -111,6 +111,8 @@ async def store_resource(
             return b""
 
     def preserved_cover_path() -> str:
+        if source_image_type is None:
+            return path
         extension = {
             "image/gif": ".gif",
             "image/webp": ".webp",
@@ -118,6 +120,8 @@ async def store_resource(
         return str(PurePosixPath(path).with_suffix(extension)) if extension else path
 
     def validate_preserved_cover(original) -> None:
+        if source_image_type is None:
+            return
         expected_format = {
             "image/gif": "GIF",
             "image/webp": "WEBP",

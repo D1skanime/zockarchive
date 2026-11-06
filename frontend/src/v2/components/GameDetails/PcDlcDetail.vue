@@ -16,6 +16,7 @@ import PcDlcFiles from "@/v2/components/GameDetails/PcDlcFiles.vue";
 import PcDlcMediaTab from "@/v2/components/GameDetails/PcDlcMediaTab.vue";
 import PcDlcNotesTab from "@/v2/components/GameDetails/PcDlcNotesTab.vue";
 import ScreenshotsTab from "@/v2/components/GameDetails/ScreenshotsTab.vue";
+import { resolvePcDlcCoverPresentation } from "@/v2/components/GameDetails/pcDlcMediaPresentation";
 import { usePcDlcPrimaryTabSync } from "@/v2/components/GameDetails/pcDlcPrimaryTabSync";
 import { useCan } from "@/v2/composables/useCan";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
@@ -104,22 +105,12 @@ watch(
     descriptionEditorOpen.value = false;
   },
 );
-const activeOwnedCover = computed(() => {
-  const mediaId = props.component.active_owned_cover_media_id;
-  if (mediaId === null) return null;
-
-  return (
-    props.component.owned_media?.find(
-      (media) =>
-        media.id === mediaId && media.role === "cover" && media.owned_path,
-    ) ?? null
-  );
-});
-const cover = computed(() =>
-  props.component.active_owned_cover_media_id === null
-    ? (props.component.local_media?.find((media) => media.role === "cover") ??
-      null)
-    : activeOwnedCover.value,
+const coverPresentation = computed(() =>
+  resolvePcDlcCoverPresentation(
+    props.component,
+    props.parent.id,
+    FRONTEND_RESOURCES_PATH,
+  ),
 );
 
 const overviewPlacements = computed(() =>
@@ -161,15 +152,6 @@ function ownedMediaUrl(ownedPath: string) {
   return `${FRONTEND_RESOURCES_PATH}/${ownedPath}`;
 }
 
-const coverSource = computed(() => {
-  const activeCover = activeOwnedCover.value;
-  if (activeCover) {
-    return `/api/roms/${props.parent.id}/pc-components/${props.component.id}/media/${activeCover.id}/content`;
-  }
-
-  return cover.value ? ownedMediaUrl(cover.value.owned_path) : null;
-});
-
 function openCoverSearch() {
   openMatcher();
 }
@@ -203,9 +185,9 @@ function showMedia() {
           {{ t("rom.pc-dlc-back-to-game", { game: parent.name ?? "" }) }}
         </ZABtn>
         <ZAImg
-          v-if="cover"
+          v-if="coverPresentation"
           class="pc-dlc-detail__cover"
-          :src="coverSource ?? undefined"
+          :src="coverPresentation.source"
           :alt="title"
           width="240"
           height="324"
