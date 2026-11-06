@@ -173,6 +173,14 @@ const coverPath = computed(() => {
 
 const coverFallback = computed(() => currentRom.value?.url_cover ?? null);
 const resolvedCover = computed(() => coverPath.value ?? coverFallback.value);
+const activeOwnedCoverSrc = computed(() => {
+  const rom = currentRom.value;
+  const mediaId = rom?.active_owned_cover_media_id;
+  const candidate = rom?.owned_media?.find(
+    (item) => item.id === mediaId && item.role === "cover" && item.owned_path,
+  );
+  return candidate ? `/api/roms/${rom.id}/media/${candidate.id}/content` : null;
+});
 const selectedOverviewScreenshots = computed(() => {
   const rom = currentRom.value;
   if (!rom) return [];
@@ -467,7 +475,11 @@ const tabs = computed<ZATabNavItem[]>(() => [
 <template>
   <section v-if="currentRom" class="r-v2-det">
     <div class="r-v2-det__body">
-      <CoverColumn :rom="currentRom" :alt="title" />
+      <CoverColumn
+        :rom="currentRom"
+        :alt="title"
+        :cover-src="activeOwnedCoverSrc"
+      />
 
       <div class="r-v2-det__info">
         <GameHeader

@@ -644,6 +644,7 @@ Resume file: None
 | 261106-ecv | Lokalisierung der aktiven Medienverwaltungen | 2026-11-06 | locale and browser verified, committed | [261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b](./quick/261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b/) |
 | 261106-esh | Sichtprüfung der DLC-Übersichtsbilder | 2026-11-06 | browser verified, no source change | [261106-esh-sichtpr-fung-dlc-aktive-bersichtsbilder-](./quick/261106-esh-sichtpr-fung-dlc-aktive-bersichtsbilder-/) |
 | 261106-fgt | Persistierte Coverauswahl von Übersichtsbildern trennen | 2026-11-06 | browser verified, committed | [261106-fgt-live-uat-explizite-coverauswahl-bleibt-g](./quick/261106-fgt-live-uat-explizite-coverauswahl-bleibt-g/) |
+| 261106-jht | ROM-29-Coverkatalog und animierter Hero | 2026-11-06 | browser verified, committed | [261106-jht-live-uat-rom-29-coverkatalog-und-animier](./quick/261106-jht-live-uat-rom-29-coverkatalog-und-animier/) |
 | 261106-gp5 | Animierte Provider-Cover als persistente Kandidaten erhalten | 2026-11-06 | browser verified, committed | [261106-gp5-live-uat-animierte-gif-und-webp-cover-we](./quick/261106-gp5-live-uat-animierte-gif-und-webp-cover-we/) |
 | 261106-hgc | Sichtprüfung: fehlende Hauptspiel-Covervorschau reparieren | 2026-11-06 | browser verified, committed | [261106-hgc-sichtpr-fung-fehlende-bildvorschau-in-de](./quick/261106-hgc-sichtpr-fung-fehlende-bildvorschau-in-de/) |
 
