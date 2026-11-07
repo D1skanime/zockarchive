@@ -16,14 +16,10 @@ import scanOperations from "@/v2/data/adapters/scanOperations";
 import type { ScanOperationSnapshot } from "@/v2/data/contracts";
 
 const snapshot = ref<ScanOperationSnapshot | null>(null);
-const nextOffset = ref(0);
-const loadingMore = ref(false);
-const hasMore = computed(
-  () =>
-    snapshot.value?.items_total !== undefined &&
-    nextOffset.value < snapshot.value.items_total,
-);
-let pageFlight: Promise<ScanOperationSnapshot | null | undefined> | undefined;
+// Transitional shape for existing lifecycle consumers. Result pages belong to
+// useScanOperationResults and are never requested or retained here.
+const hasMore = computed(() => false);
+const loadingMore = computed(() => false);
 const disconnected = ref(false);
 const reconciling = ref(false);
 const errorCode = ref<string | null>(null);
@@ -59,40 +55,7 @@ function accept(next: ScanOperationSnapshot) {
     )
       return current;
   }
-  const sameAttempt =
-    current?.id === next.id && current.attempt_id === next.attempt_id;
-  if (!sameAttempt) nextOffset.value = 0;
-  const incoming = (next.items ?? []).filter(
-    (item) => item.attempt_id === next.attempt_id,
-  );
-  const items = new Map<string, (typeof incoming)[number]>();
-  for (const item of [
-    ...(sameAttempt ? (current?.items ?? []) : []),
-    ...incoming,
-  ]) {
-    const key = JSON.stringify([
-      item.mapping_id,
-      item.expected_revision,
-      item.relative_path,
-      item.target_key,
-      item.inventory?.rom_id,
-      item.provider,
-    ]);
-    items.set(key, item);
-  }
-  if (next.items !== undefined) {
-    nextOffset.value = Math.max(
-      nextOffset.value,
-      (next.items_offset ?? 0) + next.items.length,
-    );
-  }
-  snapshot.value = {
-    ...next,
-    items:
-      next.items === undefined && !sameAttempt
-        ? undefined
-        : [...items.values()],
-  };
+  snapshot.value = { ...next, items: undefined };
   const store = storeScanning();
   store.setScanning(activeStates.has(next.state));
   projectStats(next.scan_stats);
@@ -110,59 +73,11 @@ function projectStats(stats?: ScanOperationSnapshot["scan_stats"]) {
 }
 
 function resetDetails() {
-  nextOffset.value = 0;
-  pageFlight = undefined;
-  loadingMore.value = false;
   projectStats();
 }
 
 async function loadMore() {
-  const current = snapshot.value;
-  if (!owners || !current || !hasMore.value) return snapshot.value;
-  if (pageFlight) return pageFlight;
-  const generation = epoch;
-  const offset = nextOffset.value;
-  loadingMore.value = true;
-  const task = (async () => {
-    try {
-      const next = await scanOperations.status(current.id, offset, 100);
-      const latest = snapshot.value;
-      if (
-        generation !== epoch ||
-        !owners ||
-        latest?.id !== current.id ||
-        latest.attempt_id !== current.attempt_id ||
-        latest.version !== current.version ||
-        latest.updated_at !== current.updated_at ||
-        next.id !== current.id ||
-        next.attempt_id !== current.attempt_id ||
-        next.version !== current.version ||
-        next.items_offset !== offset
-      )
-        return latest;
-      return accept(next);
-    } catch (error) {
-      if (generation === epoch) {
-        if (
-          axios.isAxiosError(error) &&
-          [401, 403].includes(error.response?.status ?? 0)
-        ) {
-          snapshot.value = null;
-          resetDetails();
-          storeScanning().setScanning(false);
-          errorCode.value = "permission-denied";
-        } else errorCode.value = "status-unavailable";
-      }
-      return snapshot.value;
-    } finally {
-      if (generation === epoch) {
-        pageFlight = undefined;
-        loadingMore.value = false;
-      }
-    }
-  })();
-  pageFlight = task;
-  return task;
+  return snapshot.value;
 }
 
 function schedule() {
@@ -191,7 +106,7 @@ async function refresh(): Promise<ScanOperationSnapshot | null> {
       let next: ScanOperationSnapshot | null;
       try {
         next = id
-          ? await scanOperations.status(id)
+          ? await scanOperations.status(id, { summaryOnly: true })
           : await scanOperations.restore();
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404)

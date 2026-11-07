@@ -15,6 +15,40 @@ import {
 
 const options = { timeout: 5000 };
 const storagePrefix = "pgdp.scan-operation.";
+export const scanOperationResultPageSize = 50;
+const maximumResultPage = 20001;
+const scanOperationOutcomes = [
+  "all",
+  "action-required",
+  "unidentified",
+  "failed",
+  "warning",
+  "completed",
+  "indexed",
+  "skipped",
+] as const;
+
+export type ScanOperationOutcome = (typeof scanOperationOutcomes)[number];
+
+export type ScanOperationStatusQuery =
+  | { summaryOnly: true; signal?: AbortSignal }
+  | {
+      page: number;
+      name?: string;
+      platformId?: number;
+      outcome?: ScanOperationOutcome;
+      signal?: AbortSignal;
+    };
+
+type NormalizedStatusQuery = {
+  includeItems: boolean;
+  offset: number;
+  limit: number;
+  name?: string;
+  platformId?: number;
+  outcome: ScanOperationOutcome;
+  signal?: AbortSignal;
+};
 type Session = { actor: number; generation: number };
 type Identity = { request_key: string; operation_id?: string };
 let currentActor: number | undefined;
@@ -191,21 +225,64 @@ async function byRequest(key: string) {
   return lookup(session(), key);
 }
 
-async function status(id: string, offset = 0, limit = 100) {
-  const context = session();
+function normalizeStatusQuery(
+  query: ScanOperationStatusQuery = { summaryOnly: true },
+): NormalizedStatusQuery {
+  if ("summaryOnly" in query) {
+    return {
+      includeItems: false,
+      offset: 0,
+      limit: scanOperationResultPageSize,
+      outcome: "all",
+      signal: query.signal,
+    };
+  }
   if (
-    !Number.isSafeInteger(offset) ||
-    offset < 0 ||
-    !Number.isSafeInteger(limit) ||
-    limit < 1 ||
-    limit > 100
-  )
+    !Number.isSafeInteger(query.page) ||
+    query.page < 1 ||
+    query.page > maximumResultPage
+  ) {
     throw new OperationTranslationError("invalid_scan_page");
+  }
+  const name = query.name?.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+  if (name && name.length > 120)
+    throw new OperationTranslationError("invalid_scan_search");
+  if (
+    query.platformId !== undefined &&
+    (!Number.isSafeInteger(query.platformId) || query.platformId < 1)
+  ) {
+    throw new OperationTranslationError("invalid_scan_platform");
+  }
+  const outcome = query.outcome ?? "all";
+  if (!scanOperationOutcomes.includes(outcome))
+    throw new OperationTranslationError("invalid_scan_outcome");
+  return {
+    includeItems: true,
+    offset: (query.page - 1) * scanOperationResultPageSize,
+    limit: scanOperationResultPageSize,
+    name: name || undefined,
+    platformId: query.platformId,
+    outcome,
+    signal: query.signal,
+  };
+}
+
+async function status(id: string, query?: ScanOperationStatusQuery) {
+  const context = session();
+  const normalized = normalizeStatusQuery(query);
   const { data } = await api.get<ScanOperationSnapshot>(
     `/scan-operations/${encodeURIComponent(id)}`,
     {
       ...options,
-      params: { offset, limit },
+      signal: normalized.signal,
+      params: {
+        include_items: normalized.includeItems,
+        offset: normalized.offset,
+        limit: normalized.limit,
+        search: normalized.name,
+        platform_id: normalized.platformId,
+        outcome: normalized.outcome,
+      },
     },
   );
   return confirmed(context, data, undefined, id);
