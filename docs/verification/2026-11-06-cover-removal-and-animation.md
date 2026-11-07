@@ -163,3 +163,20 @@ runs. Its logs are retained in the job's pre-correction-full-evidence directory.
 The final full retry uses the same eight standard ci_target.py shards with at
 most two isolated targets concurrently. All other gate settings, failure
 parsing, timeout and checks are inherited unchanged.
+
+### Bounded manual concurrency harness
+
+The next full retry exposed an intermittent hang in the pre-existing concurrent
+manual TestClient harness. A read-only py-spy stack captured the blocked client
+portal in test_primary_manual_concurrent_replacement_has_one_winner. No product
+code was changed. The three manual race cases now share an ASGI event loop and
+rendezvous after each handler captures the prior manual path, before either
+publishes. Real database compare-and-swap remains in use. Both deterministic
+upload/redownload winner orders, exact statuses, prior-file cleanup, winning
+bytes and absence of orphan files remain asserted.
+
+Each race runs three times with bounded async waits. The full manual test file
+passes: 19 tests, including nine race executions. Scoped Trunk passes. Independent
+review found no weakened assertions or material issues. The aborted full retry
+and stack evidence are retained under full-harness-deadlock-evidence and
+manual-test-deadlock-stack.log in the job directory. The full gate must run again.
