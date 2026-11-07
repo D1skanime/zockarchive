@@ -144,3 +144,10 @@ All 134 tests across the four affected database, suppression, replacement and
 storage-policy files pass in a disposable MariaDB target. The six Steam media
 tests also pass. Scoped Trunk checks pass. These are test-only changes; the full
 merge gate remains pending.
+
+The parent PC metadata selection endpoint test now mocks the current owned-cover
+download boundary instead of the retired legacy cover downloader. It asserts
+the exact provider URL, selected catalog record, cover role and content paths,
+while retaining screenshot overwrite and selection assertions. This removes an
+unintended dependency on public IGDB DNS. All 62 tests in test_pc_metadata.py
+pass in disposable MariaDB; scoped Trunk passes.

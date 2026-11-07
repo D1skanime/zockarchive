@@ -536,9 +536,15 @@ def test_pc_parent_metadata_selection_imports_confirmed_cover_and_screenshots(
         "collect_candidates",
         AsyncMock(return_value=_candidate_results()),
     )
-    cover = AsyncMock(return_value=("roms/1/cover/s.jpg", "roms/1/cover/l.jpg"))
+    from handler.metadata.rom_media import discover_provider_media
+
+    candidate = discover_provider_media(
+        "igdb", {"url_covers": [_candidate().media[0]["url"]]}
+    )[0]
+    owned_path = "roms/1/owned-media/cover.png"
+    cover = AsyncMock(return_value=(candidate, owned_path, "image/png"))
     screenshots = AsyncMock(return_value=["roms/1/screenshots/0.jpg"])
-    monkeypatch.setattr(fs_resource_handler, "get_cover", cover)
+    monkeypatch.setattr("endpoints.roms.pc_metadata_media._store_selected_cover", cover)
     monkeypatch.setattr(fs_resource_handler, "get_rom_screenshots", screenshots)
 
     review = client.get(
@@ -564,18 +570,25 @@ def test_pc_parent_metadata_selection_imports_confirmed_cover_and_screenshots(
     cover.assert_awaited_once()
     cover_call = cover.await_args
     assert cover_call is not None
-    assert cover_call.kwargs == {
-        "overwrite": True,
-        "url_cover": _candidate().media[0]["url"],
-    }
+    assert cover_call.args[0].id == rom.id
+    assert cover_call.args[1:] == ("igdb", _candidate().media[0]["url"])
     screenshots.assert_awaited_once()
     screenshot_call = screenshots.await_args
     assert screenshot_call is not None
     assert screenshot_call.kwargs["overwrite"] is True
     assert screenshot_call.kwargs["url_screenshots"] == [_candidate().media[1]["url"]]
     saved = db_rom_handler.get_rom(rom.id)
-    assert saved.path_cover_s == "roms/1/cover/s.jpg"
-    assert saved.path_cover_l == "roms/1/cover/l.jpg"
+    assert saved.path_cover_s == owned_path
+    assert saved.path_cover_l == owned_path
+    active = next(
+        item
+        for item in saved.owned_media
+        if item.id == saved.active_owned_cover_media_id
+    )
+    assert active.role.value == "cover"
+    assert active.provider == "igdb"
+    assert active.provider_media_id == candidate.provider_media_id
+    assert active.owned_path == owned_path
     assert saved.path_screenshots == ["roms/1/screenshots/0.jpg"]
 
 
