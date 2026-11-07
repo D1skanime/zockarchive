@@ -1059,6 +1059,10 @@ async def _identify_platform(
 
     platform = db_platform_handler.add_platform(scanned_platform)
 
+    from handler.scan_operation_worker import persist_active_platform
+
+    persist_active_platform(platform)
+
     # Preparse the platform's gamelist.xml file and cache it
     if MetadataSource.GAMELIST in metadata_sources:
         await meta_gamelist_handler.populate_cache(platform)

@@ -86,6 +86,30 @@ def persist_scan_stats(stats):
     return stats
 
 
+def persist_active_platform(platform):
+    """Persist the worker's current platform only while its attempt owns the lease."""
+    context = current_scan_write_context()
+    if context is None or not active_scan_worker():
+        return
+    from endpoints.responses.scan_operations import ScanOperationPlatform
+
+    descriptor = ScanOperationPlatform(
+        id=platform.id, name=platform.custom_name or platform.name
+    )
+    repository = DBScanOperationsHandler()
+    checkpoint = repository.execution(context.operation_id)["checkpoint"]
+    repository.worker_update(
+        context,
+        checkpoint=checkpoint
+        | {
+            "active_platform": {
+                "attempt_id": context.attempt_id,
+                **descriptor.model_dump(),
+            }
+        },
+    )
+
+
 class AttemptSocketManager:
     def __init__(self, manager):
         self.manager = manager

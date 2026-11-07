@@ -113,6 +113,11 @@ class ScanOperationLifecycle:
             row.version,
             row.attempt_id,
             state="interrupted",
+            checkpoint={
+                key: value
+                for key, value in row.checkpoint.items()
+                if key != "active_platform"
+            },
             lease_owner=None,
             lease_expires_at=None,
             cause_code="worker_lost",
@@ -156,6 +161,11 @@ class ScanOperationLifecycle:
             dispatch_claim_until=None,
             cause_code=None,
             next_action=None,
+            checkpoint={
+                key: value
+                for key, value in row.checkpoint.items()
+                if key != "active_platform"
+            },
         )
 
     @begin_session

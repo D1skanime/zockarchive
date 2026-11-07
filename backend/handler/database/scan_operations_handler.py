@@ -178,11 +178,11 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
         return operation_snapshot(session, row)
 
     @begin_session
-    def get_by_id(self, identity, actor, *, admin=False, offset=0, limit=100, session: Session = None):  # type: ignore
+    def get_by_id(self, identity, actor, *, admin=False, query=None, session: Session = None):  # type: ignore
         row = session.get(ScanOperation, identity)
         if row is None or (row.actor_id != actor and not admin):
             raise OperationNotFound("operation_not_found")
-        return operation_snapshot(session, row, offset=offset, limit=limit)
+        return operation_snapshot(session, row, query=query)
 
     @begin_session
     def find_active(self, actor, *, admin=False, session: Session = None):  # type: ignore
@@ -280,6 +280,7 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
                 for key, value in row.checkpoint.items()
                 if key
                 not in {
+                    "active_platform",
                     "previous_rq_job_id",
                     "previous_never_started",
                     "stopped_job_id",
@@ -326,6 +327,11 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
             changes["scan_stats"] = scan_stats
         if state in TERMINAL or state in {"blocked", "interrupted"}:
             changes.update(
+                checkpoint={
+                    key: value
+                    for key, value in row.checkpoint.items()
+                    if key != "active_platform"
+                },
                 lease_owner=None,
                 lease_expires_at=None,
                 dispatch_due=None,
@@ -422,6 +428,11 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
             state="stopping",
             intentional_cancel=True,
             dispatch_due=None,
+            checkpoint={
+                key: value
+                for key, value in row.checkpoint.items()
+                if key != "active_platform"
+            },
             mutation_keys=row.mutation_keys | {key: True},
         )
         return operation_snapshot(session, row)
@@ -437,6 +448,11 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
             version,
             attempt_id,
             state="cancelled",
+            checkpoint={
+                key: value
+                for key, value in row.checkpoint.items()
+                if key != "active_platform"
+            },
             lease_owner=None,
             lease_expires_at=None,
             dispatch_due=None,
@@ -507,7 +523,11 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
             cause_code="source_verification_required",
             next_action="verify_source",
             mutation_keys=row.mutation_keys | {key: signature},
-            checkpoint=row.checkpoint
+            checkpoint={
+                key: value
+                for key, value in row.checkpoint.items()
+                if key != "active_platform"
+            }
             | {
                 "retry_item_ids": ",".join(str(i.id) for i in items),
                 "previous_rq_job_id": row.rq_job_id,
