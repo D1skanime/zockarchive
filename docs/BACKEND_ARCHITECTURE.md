@@ -70,6 +70,8 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 4. pc_steam_enrichment.py resolves guarded Steam patches; pc_match_handler.py collects reviewable candidates.
 5. pc_automation.py applies only unique guarded matches. Ambiguity or protected/manual targets enter pc_automation_queue.
 
+Scan-operation reads remain protected by the existing task scope and operation ownership checks. The operation projection exposes a compact, data-minimized snapshot for lifecycle polling and accepts an explicit validated result query only when the client opens the explorer. Every list, matching count, platform option, and actionable sample is scoped to the operation's current attempt; the result query uses bounded pagination, normalized name search, numeric platform filtering, and an allow-listed outcome filter. The snapshot never exposes host paths, raw worker checkpoints, or provider exception text. This lets the frontend show authoritative progress and a compact actionable summary without preloading an operation's rows.
+
 ### Metadata, Localization and Media
 
 - Parent metadata is provider JSON plus roms_metadata and filter-oriented roms_facets in backend/models/rom.py.
