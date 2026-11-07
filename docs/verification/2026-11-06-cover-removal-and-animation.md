@@ -151,3 +151,15 @@ the exact provider URL, selected catalog record, cover role and content paths,
 while retaining screenshot overwrite and selection assertions. This removes an
 unintended dependency on public IGDB DNS. All 62 tests in test_pc_metadata.py
 pass in disposable MariaDB; scoped Trunk passes.
+
+The no-overwrite resource test now declares absent cover paths at the current
+_get_cover_path lookup boundary, rather than mocking the obsolete cover_exists
+call. Both size-specific download assertions remain. The entire resources
+handler test file and scoped Trunk pass.
+
+The first full run completed all eight backend shards and exposed eleven stale
+test-contract failures, each now corrected and covered by targeted disposable
+runs. Its logs are retained in the job's pre-correction-full-evidence directory.
+The final full retry uses the same eight standard ci_target.py shards with at
+most two isolated targets concurrently. All other gate settings, failure
+parsing, timeout and checks are inherited unchanged.

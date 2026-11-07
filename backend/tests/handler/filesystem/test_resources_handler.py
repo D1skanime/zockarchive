@@ -313,8 +313,8 @@ class TestFSResourcesHandler:
         url = "http://example.com/cover.png"
 
         with patch.object(handler, "_store_cover") as mock_store:
-            with patch.object(handler, "cover_exists") as mock_exists:
-                mock_exists.return_value = False
+            with patch.object(handler, "_get_cover_path") as mock_exists:
+                mock_exists.return_value = None
 
                 await handler.get_cover(rom, False, url)
 
