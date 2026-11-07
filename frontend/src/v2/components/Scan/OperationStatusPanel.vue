@@ -3,6 +3,7 @@ import { ZAAlert, ZABtn, ZACheckbox } from "@v2/lib";
 import { computed, onBeforeUpdate, onUpdated, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import ScanOperationOverview from "@/v2/components/Scan/ScanOperationOverview.vue";
+import ScanOperationResults from "@/v2/components/Scan/ScanOperationResults.vue";
 import type { ScanOperationSnapshot } from "@/v2/data/contracts";
 
 interface Props {
@@ -28,6 +29,7 @@ const emit = defineEmits<{
 }>();
 const { t } = useI18n();
 const selected = ref<number[]>([]);
+const results = ref<InstanceType<typeof ScanOperationResults> | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const statusHeading = ref<HTMLElement | null>(null);
 let focusedControl: HTMLElement | null = null;
@@ -114,6 +116,9 @@ function select(id: number, value: boolean | null) {
     ? [...new Set([...selected.value, id])]
     : selected.value.filter((item) => item !== id);
 }
+function openActionRequiredDetails() {
+  results.value?.openActionRequired();
+}
 </script>
 
 <template>
@@ -133,8 +138,9 @@ function select(id: number, value: boolean | null) {
       v-if="snapshot"
       :snapshot="snapshot"
       :status="status"
-      @action-required-details="emit('actionRequiredDetails')"
+      @action-required-details="openActionRequiredDetails"
     />
+    <ScanOperationResults ref="results" :snapshot="snapshot" />
     <ZAAlert v-if="cause" type="warning" role="alert">
       <p>{{ t("scan.recovery-cause-" + cause) }}</p>
       <p>{{ t("scan.recovery-action-" + cause) }}</p>
