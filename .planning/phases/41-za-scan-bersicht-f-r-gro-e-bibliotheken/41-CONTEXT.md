@@ -3,6 +3,8 @@
 **Gathered:** 2026-11-07
 **Status:** Ready for planning
 **Mode:** Autonomous, user requirements supplied with the job
+**ki-run Job:** `261107-8ee7`
+**Job binding:** `.planning/ki-run/261107-8ee7.json` binds this phase directory to the active ZA job.
 
 <domain>
 ## Phase Boundary
