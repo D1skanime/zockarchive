@@ -401,37 +401,9 @@ class FSResourcesHandler(PcComponentResourceStorageMixin, FSHandler):
     async def get_cover(
         self, entity: Rom | Collection | None, overwrite: bool, url_cover: str | None
     ) -> tuple[str | None, str | None]:
-        if not entity:
-            return None, None
-        if isinstance(entity, Rom) and url_cover and url_cover.startswith("https://"):
-            from handler.database import db_rom_handler
-            from handler.metadata.rom_media import discover_provider_media
+        from handler.filesystem.cover_lookup import get_cover
 
-            candidates = discover_provider_media(
-                "provider", {"url_covers": [url_cover]}
-            )
-            if db_rom_handler.get_provider_media_suppressions(entity.id, candidates):
-                return entity.path_cover_s or None, entity.path_cover_l or None
-        from handler.database import db_rom_handler
-
-        if isinstance(entity, Rom) and db_rom_handler.has_removed_original_cover(
-            entity.id
-        ):
-            small = entity.path_cover_s or None
-            large = entity.path_cover_l or None
-        else:
-            small = self._get_cover_path(entity, CoverSize.SMALL)
-            large = self._get_cover_path(entity, CoverSize.BIG)
-        if url_cover:
-            if overwrite or not small:
-                small = (
-                    await self._store_cover(entity, url_cover, CoverSize.SMALL) or small
-                )
-            if overwrite or not large:
-                large = (
-                    await self._store_cover(entity, url_cover, CoverSize.BIG) or large
-                )
-        return small, large
+        return await get_cover(self, entity, overwrite, url_cover)
 
     async def remove_cover(self, entity: Rom | Collection | None):
         if not entity:

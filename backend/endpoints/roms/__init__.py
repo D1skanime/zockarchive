@@ -27,7 +27,6 @@ from fastapi_pagination import resolve_params
 from fastapi_pagination.limit_offset import LimitOffsetPage, LimitOffsetParams
 from fastapi_pagination.types import GreaterEqualZero
 from pydantic import BaseModel, Field
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import selectinload
 
 from config import (
@@ -2087,49 +2086,11 @@ async def update_rom(
         f"Updating {hl(cleaned_data.get('name', ''), color=BLUE)} [{hl(cleaned_data.get('fs_name', ''))}] with data {cleaned_data}"
     )
 
-    from endpoints.roms.edited_cover import prepare_searched_cover
-    from handler.database.edited_cover import update_rom_with_searched_cover
+    from endpoints.roms.edited_cover import persist_rom_cover_edit
 
-    prepared_cover = None
-    applied = None
-    try:
-        if searched_cover_url:
-            prepared_cover = await prepare_searched_cover(
-                rom, searched_cover_url, add_ss_auth_to_url(searched_cover_url)
-            )
-            candidate = prepared_cover.candidate
-            applied = update_rom_with_searched_cover(
-                db_rom_handler,
-                id,
-                cleaned_data,
-                expected_version or rom.updated_at,
-                candidate.provider,
-                candidate.provider_media_id,
-                candidate.display_label,
-                prepared_cover.mime_type,
-                prepared_cover.path,
-                candidate.url,
-            )
-        else:
-            applied = db_rom_handler.update_rom(
-                id, cleaned_data, expected_updated_at=expected_version or rom.updated_at
-            )
-        if applied is None:
-            raise HTTPException(
-                status_code=409, detail="The metadata changed before confirmation"
-            )
-    except IntegrityError as exc:
-        log.error(f"Failed to update ROM {id}: {exc}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update ROM {id}: {exc}",
-        ) from exc
-
-    except ValueError as exc:
-        raise HTTPException(status_code=409, detail=str(exc)) from exc
-    finally:
-        if prepared_cover and prepared_cover.new_file and applied is None:
-            await fs_resource_handler.remove_file(prepared_cover.path)
+    await persist_rom_cover_edit(
+        rom, id, cleaned_data, expected_version, searched_cover_url
+    )
 
     # Rename the file/folder if the name has changed
     if should_update_fs:

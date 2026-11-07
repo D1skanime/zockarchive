@@ -338,7 +338,8 @@ See docs/repository-cutover-verification.md for the receipt contract.
 The standard `PUT /api/roms/{id}` edit path catalogs submitted HTTPS cover
 sources, including the Edit > Search cover > Apply flow. The endpoint defers
 cover publication until the full form has been prepared. `edited_cover.py`
-prepares or reuses a candidate by normalized provider URL; the existing provider
+owns the persistence/error/cleanup boundary and prepares or reuses a candidate
+by normalized provider URL; the existing provider
 identity is retained when a matching catalog entry already exists.
 `handler/filesystem/searched_cover.py` uses the existing validated streaming
 cover downloader at a unique owned-media destination, preserving GIF, WebP and
@@ -354,3 +355,8 @@ its cover-download branch with a narrow dispatch; source preparation, streaming
 storage and transactional publication live in three focused modules. Extracting
 the entire multi-provider edit route is a separate boundary and is not required
 for this correction.
+
+The resource handler delegates retained-cover resolution and original-source
+suppression to `handler/filesystem/cover_lookup.py`. It invokes the original
+handler instance, preserving its storage capabilities and size-specific path
+lookup. This keeps both legacy modules below their pre-change line counts.

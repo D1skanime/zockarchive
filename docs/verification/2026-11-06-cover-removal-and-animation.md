@@ -180,3 +180,22 @@ passes: 19 tests, including nine race executions. Scoped Trunk passes. Independe
 review found no weakened assertions or material issues. The aborted full retry
 and stack evidence are retained under full-harness-deadlock-evidence and
 manual-test-deadlock-stack.log in the job directory. The full gate must run again.
+
+### Modularity gate correction
+
+The complete run passed 1,786 frontend tests, all 5,378 MariaDB tests and the
+277-file Trunk check. The remaining blocking rule was growth of two existing
+oversized modules. Persistence and its exception/cleanup boundary now live in
+endpoints/roms/edited_cover.py; retained-cover resolution lives in the focused
+handler/filesystem/cover_lookup.py. The route and resource handler retain their
+public interfaces and delegate to these modules.
+
+Existing module sizes are now 2,323 versus main's 2,326 lines, and 772 versus
+788 lines. The focused helpers have 108 and 47 lines. AST comparisons confirm
+that both extracted operation sequences are identical, preserving order and
+exception/cleanup handling. Independent review found no material issue.
+All blocking built-in rules and scoped Trunk pass. All 291 targeted tests across
+the edit route, cover catalog, resources, suppression and storage policy pass
+in a disposable MariaDB target. This is a structural extraction with no UI,
+API or functional change; the original human acceptance remains the behavioral
+reference. Full verification is required for this final commit before merge.
