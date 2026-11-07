@@ -29,6 +29,7 @@ from utils.router import APIRouter
 
 router = APIRouter(prefix="/scan-operations", tags=["scan-operations"])
 operations = DBScanOperationsHandler()
+result_query_dependency = Depends()
 
 
 def _admin(request):
@@ -109,7 +110,7 @@ def by_request(request: Request, request_key: RequestKey):
 def by_id(
     request: Request,
     operation_id: UUID,
-    query: ScanOperationResultQuery = Depends(),
+    query: ScanOperationResultQuery = result_query_dependency,
 ):
     return _project(
         _call(

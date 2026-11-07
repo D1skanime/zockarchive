@@ -1,21 +1,31 @@
 """One SQL transaction owns acceptance, dispatch intent and the execution fence."""
 
-import hashlib
-import json
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from uuid import uuid4
 
 from pydantic import TypeAdapter
-from sqlalchemy import select, update
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from decorators.database import begin_session
 from endpoints.responses.scan_operations import (
     RequestKey,
-    ScanOperationItemResult,
 )
 from handler.database.base_handler import DBBaseHandler
 from handler.database.scan_operation_lifecycle import ScanOperationLifecycle
+from handler.database.scan_operation_persistence import (
+    OperationConflict,
+    OperationNotFound,
+    _alive,
+    _cas,
+    _release,
+    _row,
+    _slot,
+    payload_digest,
+    utc_now,
+    validate_transition,
+)
+from handler.database.scan_operation_result_handler import ScanOperationResultRecording
 from handler.filesystem.storage_resolver import normalize_relative_path
 from handler.metadata.metadata_locale import (
     capture_metadata_locale,
@@ -24,83 +34,12 @@ from handler.metadata.metadata_locale import (
 from handler.scan_command import MappedScanCommand, ScanScope, ScanTrigger
 from handler.scan_operation_projection import operation_snapshot
 from handler.scan_operation_state import TERMINAL
-from handler.scan_operation_state import validate_transition as _validate_transition
 from models.scan_operation import ScanExecutionSlot, ScanOperation, ScanOperationItem
 
-_UNSET = object()
 
-
-class OperationConflict(ValueError):
-    pass
-
-
-class OperationNotFound(LookupError):
-    pass
-
-
-def validate_transition(*args, **kwargs):
-    try:
-        _validate_transition(*args, **kwargs)
-    except ValueError as error:
-        raise OperationConflict(str(error)) from None
-
-
-def utc_now():
-    return datetime.now(timezone.utc).replace(tzinfo=None)
-
-
-def payload_digest(payload):
-    return hashlib.sha256(
-        json.dumps(
-            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True
-        ).encode()
-    ).hexdigest()
-
-
-def _alive(expiry):
-    return expiry is not None and expiry.replace(tzinfo=None) > utc_now()
-
-
-def _slot(session):
-    return session.scalars(
-        select(ScanExecutionSlot).where(ScanExecutionSlot.id == 1).with_for_update()
-    ).one()
-
-
-def _row(session, identity, *, actor=None, admin=False):
-    row = session.scalar(
-        select(ScanOperation).where(ScanOperation.id == identity).with_for_update()
-    )
-    if row is None or (actor is not None and row.actor_id != actor and not admin):
-        raise OperationNotFound("operation_not_found")
-    return row
-
-
-def _cas(session, row, version, attempt=_UNSET, **changes):
-    if row.version != version or (attempt is not _UNSET and row.attempt_id != attempt):
-        raise OperationConflict("stale_operation")
-    statement = update(ScanOperation).where(
-        ScanOperation.id == row.id, ScanOperation.version == version
-    )
-    if attempt is not _UNSET:
-        statement = statement.where(ScanOperation.attempt_id == attempt)
-    result = session.execute(
-        statement.values(
-            **changes, version=version + 1, updated_at=utc_now()
-        ).execution_options(synchronize_session=False)
-    )
-    if result.rowcount != 1:
-        raise OperationConflict("stale_operation")
-    session.refresh(row)
-
-
-def _release(slot, row):
-    if slot.active_operation_id == row.id and row.state in TERMINAL:
-        slot.active_operation_id = None
-        slot.version += 1
-
-
-class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
+class DBScanOperationsHandler(
+    ScanOperationResultRecording, ScanOperationLifecycle, DBBaseHandler
+):
     @begin_session
     def replay(self, actor, request_key, digest, *, session: Session = None):  # type: ignore
         _slot(session)
@@ -340,69 +279,6 @@ class DBScanOperationsHandler(ScanOperationLifecycle, DBBaseHandler):
             )
         _cas(session, row, version, attempt_id, **changes)
         _release(slot, row)
-        return operation_snapshot(session, row)
-
-    @begin_session
-    def record_item(self, identity, version, attempt_id, item, *, checkpoint=None, source_evidence=None, _advance_version=True, session: Session = None):  # type: ignore
-        _slot(session)
-        row = _row(session, identity)
-        if row.state != "running" or not _alive(row.lease_expires_at):
-            raise OperationConflict("stale_attempt")
-        from handler.scan_inventory_status import provider_facts
-
-        provider_facts((checkpoint or {}).get("provider_observation"))
-        validated = ScanOperationItemResult(id=1, attempt_id=attempt_id, **item)
-        path = normalize_relative_path(validated.relative_path)
-        matches = [
-            c
-            for c in row.command["commands"]
-            if c["mapping_id"] == validated.mapping_id
-            and c["expected_revision"] == validated.expected_revision
-        ]
-        if not matches or not any(
-            not dict(c.get("options", [])).get("relative_path")
-            or path == dict(c["options"])["relative_path"]
-            or path.startswith(dict(c["options"])["relative_path"] + "/")
-            for c in matches
-        ):
-            raise OperationConflict("item_outside_scan_scope")
-        providers = row.command.get("policies", row.command.get("request", {})).get(
-            "apis", []
-        )
-        if validated.provider not in providers:
-            raise OperationConflict("provider_outside_scan_scope")
-        if (
-            len(json.dumps(checkpoint or {})) > 8192
-            or len(json.dumps(source_evidence or {})) > 8192
-        ):
-            raise ValueError("item_evidence_too_large")
-        if _advance_version:
-            _cas(session, row, version, attempt_id)
-        else:
-            if row.version != version or row.attempt_id != attempt_id:
-                raise OperationConflict("stale_operation")
-            from handler.database.scan_operation_lifecycle import observe_execution
-
-            observe_execution(session, row, {})
-        result = session.scalar(
-            select(ScanOperationItem).where(
-                ScanOperationItem.operation_id == identity,
-                ScanOperationItem.target_key == validated.target_key,
-                ScanOperationItem.provider == validated.provider,
-            )
-        )
-        values = validated.model_dump(
-            exclude={"id", "inventory", "provider_execution"}
-        ) | {
-            "checkpoint": checkpoint or {},
-            "source_evidence": source_evidence or {},
-        }
-        if result is None:
-            session.add(ScanOperationItem(operation_id=identity, **values))
-        else:
-            for key, value in values.items():
-                setattr(result, key, value)
-        session.flush()
         return operation_snapshot(session, row)
 
     @begin_session
