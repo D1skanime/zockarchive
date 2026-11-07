@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ZAAlert, ZABtn, ZACheckbox, ZAProgressLinear } from "@v2/lib";
+import { ZAAlert, ZABtn, ZACheckbox } from "@v2/lib";
 import { computed, onBeforeUpdate, onUpdated, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import InventoryStatusSummary from "@/v2/components/Scan/InventoryStatusSummary.vue";
+import ScanOperationOverview from "@/v2/components/Scan/ScanOperationOverview.vue";
 import type { ScanOperationSnapshot } from "@/v2/data/contracts";
 
 interface Props {
@@ -24,6 +24,7 @@ const emit = defineEmits<{
   resume: [];
   retryStatus: [];
   retry: [ids: string[]];
+  actionRequiredDetails: [];
 }>();
 const { t } = useI18n();
 const selected = ref<number[]>([]);
@@ -80,13 +81,6 @@ const label = computed(() =>
         ? "failed"
         : "idle",
 );
-const stats = computed(() => props.snapshot?.scan_stats ?? {});
-const total = computed(() => stats.value.total_roms ?? 0);
-const progress = computed(() =>
-  total.value > 0 && stats.value.scanned_roms !== undefined
-    ? Math.min(100, (100 * (stats.value.scanned_roms ?? 0)) / total.value)
-    : undefined,
-);
 const cause = computed(() => {
   const code = props.snapshot?.cause_code;
   if (props.uncertain || props.actionError === "acceptance-uncertain")
@@ -135,24 +129,11 @@ function select(id: number, value: boolean | null) {
     </h2>
     <p v-if="disconnected">{{ t("scan.recovery-disconnected") }}</p>
     <p v-else-if="reconciling">{{ t("scan.recovery-reconciling") }}</p>
-    <ZAProgressLinear
-      v-if="running"
-      :indeterminate="progress === undefined"
-      :model-value="progress ?? 0"
-      :aria-label="t('scan.recovery-running')"
-    />
-    <p v-if="total > 0 && stats.scanned_roms !== undefined">
-      {{
-        t("scan.recovery-progress", { current: stats.scanned_roms ?? 0, total })
-      }}
-    </p>
-    <InventoryStatusSummary
+    <ScanOperationOverview
       v-if="snapshot"
-      :stats="snapshot.scan_stats"
-      :items="snapshot.items ?? []"
-      :has-more="hasMore"
-      :loading-more="loadingMore"
-      @load-more="emit('loadMore')"
+      :snapshot="snapshot"
+      :status="status"
+      @action-required-details="emit('actionRequiredDetails')"
     />
     <ZAAlert v-if="cause" type="warning" role="alert">
       <p>{{ t("scan.recovery-cause-" + cause) }}</p>
