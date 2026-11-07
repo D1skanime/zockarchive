@@ -27,6 +27,22 @@ const serviceRoot = resolve(process.cwd(), "src/services/api");
 const routeAuthorities = [
   {
     method: "POST",
+    route:
+      /^\/roms\/\{[^}]+\}\/(?:pc-components\/\{[^}]+\}\/)?media(?:\/cover)?$/,
+    operation: "WRITE",
+    storageClass: "resources",
+    forbidden: false,
+  },
+  {
+    method: "DELETE",
+    route:
+      /^\/roms\/\{[^}]+\}\/(?:pc-components\/\{[^}]+\}\/)?media\/(?:\{[^}]+\}|cover\/original)$/,
+    operation: "DELETE",
+    storageClass: "resources",
+    forbidden: false,
+  },
+  {
+    method: "POST",
     route: /^\/setup\/folders\/assign$/,
     operation: "CONTROL_PLANE",
     storageClass: "database",
@@ -336,6 +352,33 @@ function resolveRoute(
   resolving: Set<string>,
 ): string | null {
   if (ts.isStringLiteralLike(node)) return node.text;
+  if (
+    ts.isPropertyAccessExpression(node) &&
+    node.name.text === "value" &&
+    ts.isIdentifier(node.expression)
+  ) {
+    const initializer = bindings.get(node.expression.text);
+    if (
+      initializer &&
+      ts.isCallExpression(initializer) &&
+      initializer.expression.getText(sourceFile) === "computed"
+    ) {
+      const callback = initializer.arguments[0];
+      if (
+        callback &&
+        ts.isArrowFunction(callback) &&
+        !ts.isBlock(callback.body)
+      ) {
+        return resolveRoute(
+          callback.body,
+          sourceFile,
+          bindings,
+          embedded,
+          resolving,
+        );
+      }
+    }
+  }
   if (
     ts.isParenthesizedExpression(node) ||
     ts.isAsExpression(node) ||
@@ -758,7 +801,34 @@ function collectActiveWrappers(
   };
 }
 
-function extractRawCalls(source: string, importer: string): RawCall[] {
+function extractRawCalls(
+  source: string,
+  importer: string,
+  expandCoverTarget = true,
+): RawCall[] {
+  if (expandCoverTarget && importer.endsWith("/PcCoverMediaTab.vue")) {
+    // Enumerate both owner contracts; validate their production constructors below.
+    const owners = [
+      { endpoint: "/roms/{id}/media", upload: "/roms/{id}/media/upload" },
+      {
+        endpoint: "/roms/{id}/pc-components/{component}/media",
+        upload: "/roms/{id}/pc-components/{component}/media",
+      },
+    ];
+    return owners.flatMap(({ endpoint, upload }) =>
+      extractRawCalls(
+        source
+          .replaceAll("props.target.uploadEndpoint", JSON.stringify(upload))
+          .replaceAll(
+            "props.target.selectionEndpoint",
+            JSON.stringify(endpoint + "/cover"),
+          )
+          .replaceAll("props.target.endpoint", JSON.stringify(endpoint)),
+        importer,
+        false,
+      ),
+    );
+  }
   const code = scriptFrom(source);
   const sourceFile = ts.createSourceFile(
     importer,
@@ -793,6 +863,28 @@ function extractRawCalls(source: string, importer: string): RawCall[] {
     currentBindings: Map<string, ts.Expression>,
     labelNode: ts.Node,
   ): RawCall | null => {
+    const argument = node.arguments[0];
+    if (argument && ts.isConditionalExpression(argument)) {
+      const branch = (route: ts.Expression) =>
+        ts.factory.updateCallExpression(
+          node,
+          node.expression,
+          node.typeArguments,
+          [route, ...node.arguments.slice(1)],
+        );
+      const first = decode(
+        branch(argument.whenTrue),
+        currentBindings,
+        labelNode,
+      );
+      const second = decode(
+        branch(argument.whenFalse),
+        currentBindings,
+        labelNode,
+      );
+      if (second) calls.push(second);
+      return first;
+    }
     const callee = unwrapExpression(node.expression);
     const path = expressionPath(callee);
     const callFor = (transport: string) =>
@@ -1121,6 +1213,48 @@ function inventorySource(
     ...usedServiceCalls(source, importer, callsByFunction),
   ].map(classify);
 }
+
+describe("shared cover owner contracts", () => {
+  it("binds the abstract composite only to the reviewed parent and DLC endpoints", () => {
+    const parent = readFileSync(
+      resolve(v2Root, "components/GameDetails/MediaTab.vue"),
+      "utf8",
+    );
+    const dlc = readFileSync(
+      resolve(v2Root, "components/GameDetails/PcDlcMediaTab.vue"),
+      "utf8",
+    );
+    expect(parent).toContain("endpoint: `/roms/${props.rom.id}/media`");
+    expect(parent).toContain(
+      "uploadEndpoint: `/roms/${props.rom.id}/media/upload`",
+    );
+    expect(parent).toContain(
+      "selectionEndpoint: `/roms/${props.rom.id}/media/cover`",
+    );
+    expect(dlc).toContain(
+      "const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media`",
+    );
+    expect(dlc).toContain("uploadEndpoint: endpoint");
+    expect(dlc).toContain("selectionEndpoint: `${endpoint}/cover`");
+    const callers = v2Files().filter((path) =>
+      readFileSync(path, "utf8").includes("<PcCoverMediaTab"),
+    );
+    expect(callers.map((path) => path.split("/").pop()).sort()).toEqual([
+      "MediaTab.vue",
+      "PcDlcMediaTab.vue",
+    ]);
+  });
+
+  it("resolves computed owner routes and enumerates both conditional delete branches", () => {
+    const source =
+      "const endpoint = computed(() => `/roms/${id}/pc-components/${component}/media`); async function remove() { await api.delete(original ? `${endpoint.value}/cover/original` : `${endpoint.value}/${mediaId}`); }";
+    const calls = extractRawCalls(source, "fixture.vue");
+    expect(calls.map((call) => call.route).sort()).toEqual([
+      "/roms/{id}/pc-components/{component}/media/cover/original",
+      "/roms/{id}/pc-components/{component}/media/{media_id}",
+    ]);
+  });
+});
 
 describe("active v2 source mutation authority inventory", () => {
   const romSource = readFileSync(romServicePath, "utf8");

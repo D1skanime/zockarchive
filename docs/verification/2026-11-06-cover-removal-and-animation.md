@@ -107,3 +107,24 @@ selection also prevents APNG flattening during subsequent reselection.
   after reload (14865 versus 14739 encoded PNG bytes); its loaded DOM source
   remained candidate 671 and natural width 600. This confirms visible animation
   on the selected real cover, not only decodable animation at another endpoint.
+
+## Post-acceptance regression test maintenance
+
+The first full merge gate exposed 24 frontend failures across five test files.
+No merge was performed. The obsolete source assertions now follow placement
+management in its dedicated surface and soundtrack filtering in its composable.
+The DLC cover fixture explicitly selects its candidate and asserts the protected
+content endpoint instead of assuming the first candidate becomes the cover.
+
+The mutation inventory now resolves computed owner endpoints and enumerates
+conditional route arguments. The shared cover composite is inventoried for both
+parent and DLC contracts, with a test pinning the production constructors and
+complete caller set. Unknown routes remain errors. Reviewed media-label digests
+are recorded in a test-only snapshot; the original branding snapshot is retained.
+The previous main digests and exact changed translation keys were checked before
+recording these snapshots.
+
+Validation: all five affected files pass, 86 tests. The inventory includes two
+additional contract tests. Scoped Trunk checks pass. Only tests, test fixtures and
+this verification report changed after human acceptance. The full gate must
+still pass before merge.

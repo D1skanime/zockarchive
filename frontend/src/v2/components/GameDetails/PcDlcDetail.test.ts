@@ -552,10 +552,11 @@ describe("PcDlcDetail", () => {
     expect(wrapper.find("[data-testid='pc-dlc-media']").exists()).toBe(false);
   });
 
-  it("renders a provider-owned cover when no local cover is available", () => {
+  it("renders the selected provider-owned cover through its content endpoint", () => {
     const wrapper = mountDetail({
       ...selectedDlc,
       local_media: [],
+      active_owned_cover_media_id: 42,
       owned_media: [
         {
           id: 42,
@@ -572,7 +573,7 @@ describe("PcDlcDetail", () => {
     });
 
     expect(wrapper.get("img").attributes("src")).toBe(
-      "/assets/romm/resources/roms/1/pc-owned-media/2/provider-cover.jpg",
+      "/api/roms/1/pc-components/2/media/42/content",
     );
     expect(
       wrapper.find("[data-testid='pc-dlc-cover-placeholder']").exists(),

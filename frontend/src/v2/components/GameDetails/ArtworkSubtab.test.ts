@@ -14,11 +14,10 @@ const locale = (name: string) =>
 describe("ArtworkSubtab owned artwork management", () => {
   it("keeps artwork candidates distinct from ordered background placements", () => {
     expect(source).toContain("ownedArtwork");
-    expect(source).toContain("backgrounds");
     expect(source).toContain("hasPlacement");
     expect(source).toContain("togglePlacement");
-    expect(source).toContain("replaceOwnedMediaPlacements");
-    expect(source).toContain('t("rom.backgrounds")');
+    expect(source).toContain("setOwnedMediaPlacement");
+    expect(source).toContain("removeOwnedMediaPlacement");
     expect(source).toContain("t('rom.add-as-background')");
     expect(source).toContain("t('rom.remove-as-background')");
     expect(source).toContain("t('rom.add-to-overview')");
@@ -41,8 +40,8 @@ describe("ArtworkSubtab owned artwork management", () => {
   it("restores authoritative state before reporting an ordering conflict", () => {
     expect(source).toContain("response?.status === 409");
     expect(source).toContain("await refreshCanonical()");
-    expect(source).toContain("common.move-up");
-    expect(source).toContain("common.move-down");
+    expect(source).not.toContain("common.move-up");
+    expect(source).not.toContain("common.move-down");
   });
 
   it("renders artwork controls with the documented shared media composites", () => {
