@@ -1140,3 +1140,21 @@ Plans:
 - [x] 40-12-PLAN.md - Split the reusable tab keyboard-target resolver to restore the primitive source-size limit.
 - [x] 40-13-PLAN.md - Document DLC-owned media boundaries and align main-game media navigation with the shared tab primitive.
 - [x] 40-14-PLAN.md - Provide playable and downloadable component-owned DLC soundtrack tracks.
+
+### Phase 41: ZA: Scan-Übersicht für große Bibliotheken
+
+**Goal:** Make the v2 scan overview understandable and responsive for running and completed large library scans without loading the full result set into the browser.
+**Requirements**: ZA-SCAN-41-01, ZA-SCAN-41-02, ZA-SCAN-41-03, ZA-SCAN-41-04, ZA-SCAN-41-05, ZA-SCAN-41-06
+**Depends on:** Phase 40
+**Plans:** 0 plans
+
+**Success Criteria:**
+
+1. A running scan clearly shows truthful progress and the current platform whenever the existing operation data supports it; a completed scan presents one compact, localized result summary with distinct scan-total and Windows file-inventory labels.
+2. Unidentified games, errors, and other actionable outcomes are prominent, bounded to representative examples, and link to the complete filtered result set.
+3. Results are closed by default, fetched only on demand in pages, and remain bounded after page changes; name search plus platform and outcome filters apply to the complete operation, not merely the current page.
+4. The existing scan execution and settings workflows remain unchanged. Desktop and mobile controls remain accessible through mouse, touch, keyboard, and gamepad input.
+5. Typecheck and production build pass, and agent browser inspection with synthetic running/completed 1,000-game fixtures confirms the progress, compact summary, remote search beyond page one, filtering, pagination, and mobile layout without preloading a mass list.
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 41 to break down)

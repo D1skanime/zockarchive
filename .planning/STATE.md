@@ -245,6 +245,8 @@ _Updated after each plan completion_
 ## Accumulated Context
 
 ### Roadmap Evolution
+
+- Phase 41 added: ZA scan overview for large libraries, assigned to ki-run job 261107-8ee7.
 - Phase 40 added: Unify PC media surfaces and complete Storybook coverage. It owns job 261103-4b37's existing implementation inventory and the remaining Storybook language-ledger correction.
 
 - Phase39 added: ZockArchive approved logo integration, using the user-supplied approved logo package. Awaiting discussion and planning; Phase38 acceptance remains intact.
