@@ -267,7 +267,23 @@ function normalizeStatusQuery(
   };
 }
 
-async function status(id: string, query?: ScanOperationStatusQuery) {
+function status(
+  id: string,
+  query?: ScanOperationStatusQuery,
+): Promise<ScanOperationSnapshot>;
+/** @deprecated Result rows require a typed page query. */
+function status(
+  id: string,
+  legacyOffset?: number,
+  legacyLimit?: number,
+): Promise<ScanOperationSnapshot>;
+async function status(
+  id: string,
+  query?: ScanOperationStatusQuery | number,
+  legacyLimit?: number,
+) {
+  if (typeof query === "number" || legacyLimit !== undefined)
+    throw new OperationTranslationError("scan_result_query_required");
   const context = session();
   const normalized = normalizeStatusQuery(query);
   const { data } = await api.get<ScanOperationSnapshot>(
