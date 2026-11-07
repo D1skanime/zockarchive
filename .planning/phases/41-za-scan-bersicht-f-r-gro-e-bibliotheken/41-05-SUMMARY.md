@@ -22,7 +22,7 @@ metrics:
 
 # Phase 41 Plan 05: Scan Architecture and Pre-UAT Validation Summary
 
-The architecture now records the protected, attempt-scoped scan-result contract and the bounded frontend explorer. Typecheck and a production build pass; the required browser interaction inspection is blocked before the scan panel mounts by an unrelated local application bootstrap error.
+The architecture now records the protected, attempt-scoped scan-result contract and the bounded frontend explorer. Typecheck and a production build pass; the required browser interaction inspection passed with controlled 1,000-game running and completed snapshots.
 
 ## Implemented
 
@@ -36,11 +36,18 @@ The architecture now records the protected, attempt-scoped scan-result contract 
 - The normal `npm run build` reached PWA generation but could not write into the pre-existing `frontend/dist` directory owned by `nobody`. The identical production build passed with an owned job-temporary `--outDir`: 3,912 modules transformed and PWA precache/service-worker artifacts generated.
 - Passed `git diff --check -- docs/FRONTEND_ARCHITECTURE.md docs/BACKEND_ARCHITECTURE.md`.
 
-## Browser Inspection Blocker
+## Browser Inspection
 
-An uncommitted one-off Playwright driver in the job temporary directory intercepted only scan-operation GETs and constructed deterministic, current-attempt running and completed snapshots for 1,000 safe rows. It supplied summary-only snapshots unless `include_items=true`, then served only the requested 50-row slice with matching total, platform options, actionable count, and at most three samples. The fixture included `Phase41 Beyond Page Game 0731`.
+An uncommitted one-off Playwright driver used a disposable local production preview and deterministic, current-attempt running and completed snapshots with 1,000 safe rows. The scan-operation route returned summary-only payloads until `include_items=true`; detail responses were server-bounded to `items.slice(offset, offset + 50)`. The fixture included `Phase41 Beyond Page Game 0731`. The supporting global bootstrap fixture returned `[]` for `/api/collections`, the production response shape required by `fetchCollections()`.
 
-The browser reached the isolated local frontend and issued the expected summary-only `/api/scan-operations/active` request with zero returned item rows. It could not mount the scan result disclosure because the application then failed in pre-existing global initialization with `TypeError: t.find is not a function` from the production frontend bundle. Earlier temporary Vite serving also returned `504 Outdated Optimize Dep` for its Vue dependency. The production preview avoided that Vite dependency error but still exposed the global initialization failure. No scan form, setting, browser control, viewport/theme sweep, pagination, filter, or beyond-page interaction can honestly be claimed from this environment.
+- Running: the compact panel showed `417 von 1000 Spielen geprüft`, `Aktuelle Plattform: PlayStation 2`, clearly labelled `Scan insgesamt`, and 102 actionable cases with exactly three examples and the filtered-details entry point.
+- Completed: the compact panel showed `Mit Warnungen abgeschlossen`, `Scan mit Hinweisen abgeschlossen`, `Scan insgesamt`, 1,000 games, and the same bounded action-required summary.
+- Before opening `Alle Ergebnisse`, the request log had zero detail requests and the DOM had zero detail rows. Opening made one 50-row request. Paging changed the offset from 0 to 50 while the DOM remained at 50 rows.
+- Search found `Phase41 Beyond Page Game 0731` beyond page one. Combined Windows plus `Handlungsbedarf` filtering returned 32 rows and sent both server filters.
+- Closing released all rendered detail rows. Reopening made a fresh bounded page request.
+- The result disclosure remained visible with bounded rows at 320, 600, 960, 1280, and 1920px in dark and light themes for both running and completed snapshots. Existing scan controls and settings were not changed.
+
+The initially occupied local ports 4173 and 4174 were left untouched. Port 4173 returned `504 Outdated Optimize Dep`, so the inspection used a separate temporary production preview on port 4180. This was browser infrastructure only, not a product behavior issue.
 
 ## Tests
 
@@ -55,11 +62,7 @@ No tests, test fixtures, guard tests, pixel checks, or test suites were created 
 - **Fix:** Built with Vite's supported `--outDir` option in the job temporary directory.
 - **Files modified:** None.
 
-### Deferred Issues
-
-**1. [Browser infrastructure] Local global application initialization prevents the required visual interaction proof.**
-- **Issue:** `TypeError: t.find is not a function` occurs after authenticated fixture bootstrap and before `Alle Ergebnisse` renders.
-- **Impact:** The requested browser interaction matrix remains pending human/UAT or a repaired local app bootstrap.
+None - the controlled browser inspection completed after correcting the temporary collection-list fixture.
 
 ## Self-Check: PASSED
 
