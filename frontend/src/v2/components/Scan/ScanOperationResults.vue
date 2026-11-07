@@ -49,7 +49,11 @@ const outcomeItems = computed(() =>
     "indexed",
     "skipped",
   ].map((value) => ({
-    title: t(`scan.operation-results-outcome-${value}`),
+    title: t(
+      value === "all"
+        ? "scan.operation-results-all-outcomes"
+        : `scan.operation-results-outcome-${value}`,
+    ),
     value,
   })),
 );
@@ -194,18 +198,13 @@ defineExpose({ openActionRequired });
             :key="item.id"
             class="r-v2-scan-operation-results__item"
           >
-            <strong>{{ item.target_key }}</strong>
+            <strong>{{ item.relative_path ?? item.target_key }}</strong>
             <span>{{
               item.platform?.name ?? t("scan.operation-results-all-platforms")
             }}</span>
             <span>{{
               t(`scan.operation-results-outcome-${item.result ?? item.outcome}`)
             }}</span>
-            <span
-              v-if="item.relative_path"
-              class="r-v2-scan-operation-results__path"
-              >{{ item.relative_path }}</span
-            >
           </li>
         </ul>
 

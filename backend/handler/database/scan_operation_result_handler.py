@@ -70,7 +70,13 @@ class ScanOperationResultRecording:
             )
         )
         values = validated.model_dump(
-            exclude={"id", "inventory", "provider_execution"}
+            exclude={
+                "id",
+                "inventory",
+                "provider_execution",
+                "result",
+                "platform",
+            }
         ) | {
             "checkpoint": checkpoint or {},
             "source_evidence": source_evidence or {},

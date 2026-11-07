@@ -49,8 +49,8 @@ class ScanOperationResultQuery(StrictContract):
     """Bounded, server-owned selection of a scan operation result page."""
 
     include_items: bool = False
-    offset: int = Field(default=0, ge=0, le=1000000, strict=True)
-    limit: int = Field(default=50, ge=1, le=100, strict=True)
+    offset: int = Field(default=0, ge=0, le=1000000)
+    limit: int = Field(default=50, ge=1, le=100)
     search: str | None = Field(default=None, max_length=120)
     platform_id: PositiveId | None = None
     outcome: ScanExplorerOutcome = "all"
