@@ -139,7 +139,7 @@ describe("GameDetails", () => {
     expect(mediaSource).toContain('file.category === "soundtrack"');
     expect(mediaSource).toContain("owned_background_audio_media_ids");
     expect(mediaSource).toContain('media.role === "soundtrack"');
-    expect(source).toContain('media.state === "active"');
+    expect(mediaSource).toContain('media.state === "active"');
     expect(source).toContain("/media/${media.id}/content");
     expect(source).toContain("backgroundAudio.playRandom(tracks)");
     expect(source).toContain("onCleanup(() => backgroundAudio.stop())");

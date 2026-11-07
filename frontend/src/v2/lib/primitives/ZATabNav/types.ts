@@ -1,6 +1,10 @@
 export type ZATabNavItem = {
   id: string;
   label: string;
+  /** ID of the tab panel controlled by this item, when the nav owns panels. */
+  controls?: string;
+  /** ID assigned to the tab so its panel can reference it as a label. */
+  tabId?: string;
   /** Optional MDI icon name shown before the label. */
   icon?: string;
   /** Optional image URL shown before the label — used when an item needs

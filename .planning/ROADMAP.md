@@ -1116,3 +1116,27 @@ Plans:
 
 Plans:
 - [x] 39-01-PLAN.md: Approved identity assets, blue-glass tokens, static login backdrop, UAT animation variants and frontend documentation.
+
+### Phase 40: Unify PC media surfaces and complete Storybook coverage
+
+**Goal:** Complete the already implemented PC game and DLC media unification by repairing the Storybook language ledger and recording focused, reproducible technical verification without altering persisted media, APIs, or unrelated surfaces.
+**Requirements**: ZA-MEDIA-40-01, ZA-MEDIA-40-02, ZA-MEDIA-40-03
+**Depends on:** Phase 39
+**Status:** Implementation complete; Wave 15 targeted technical verification passed (2026-11-05). Human UAT remains pending before any full regression.
+**Plans:** 14 plans
+
+Plans:
+- [x] 40-01-PLAN.md - Repair the Storybook language-ledger locations and verify the implemented PC media scope with focused frontend checks.
+- [x] 40-02-PLAN.md - Repair deterministic-gate migration/API findings and verify the affected media implementation in dependency waves.
+- [x] 40-03-PLAN.md - Resolve the three remaining isolated MariaDB test failures and record exact evidence.
+- [x] 40-04-PLAN.md - Restore read-only committed PC fixtures to the disposable runner and repeat the exact MariaDB selection.
+- [x] 40-05-PLAN.md - Restore Config authority after failed YAML serialization or atomic replacement and repeat CI shard 5.
+- [x] 40-06-PLAN.md - Extract DLC-owned filesystem storage from the legacy resource handler.
+- [x] 40-07-PLAN.md - Extract component-only response, ORM, and database mutation seams from legacy ROM modules.
+- [x] 40-08-PLAN.md - Close reviewed media-composite, audio filtering, and localization gaps.
+- [x] 40-09-PLAN.md - Render real background comparison states and localize media carousel closing.
+- [x] 40-10-PLAN.md - Reuse accessible tab navigation to keep DLC media below the source-size limit.
+- [x] 40-11-PLAN.md - Complete tab/panel semantics, universal input, and legacy subtab canonicalization.
+- [x] 40-12-PLAN.md - Split the reusable tab keyboard-target resolver to restore the primitive source-size limit.
+- [x] 40-13-PLAN.md - Document DLC-owned media boundaries and align main-game media navigation with the shared tab primitive.
+- [x] 40-14-PLAN.md - Provide playable and downloadable component-owned DLC soundtrack tracks.

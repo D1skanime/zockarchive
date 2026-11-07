@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ZABtn, ZAIcon } from "@v2/lib";
-import { computed } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -16,24 +15,13 @@ const props = withDefaults(
   { tone: "brand", selected: undefined, pressed: undefined },
 );
 const emit = defineEmits<{ click: [] }>();
-const accent = computed(() =>
-  props.tone === "brand"
-    ? "var(--r-color-brand-primary)"
-    : `var(--r-color-${props.tone})`,
-);
 </script>
 <template>
   <ZABtn
     size="small"
     class="za-shot__action"
-    :class="{
-      'za-shot__action--selected': selected,
-      'za-shot__action--danger': tone === 'danger',
-    }"
-    :style="{ '--za-action-accent': accent }"
-    :variant="tone === 'danger' ? 'outlined' : 'translucent'"
-    :border="tone !== 'danger'"
-    :color="accent"
+    :variant="selected ? 'translucent' : 'outlined'"
+    :color="tone === 'brand' ? 'primary' : tone"
     :aria-pressed="pressed ?? selected"
     :aria-label="label"
     :tooltip="label"

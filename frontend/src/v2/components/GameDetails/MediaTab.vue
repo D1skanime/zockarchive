@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// Combined Manual + Screenshots + Artwork + Soundtrack tab for GameDetails.
-// This shell owns the subtab navigation (mirrored to `?subtab=`) and the
-// soundtrack panel; each other subtab is self-contained.
-//
-// The soundtrack player is reused from v1 for now.
-import { ZAEmptyState, ZAIcon } from "@v2/lib";
+// Shared media navigation keeps source catalogs and active placements separate.
+// The parent supplies canonical owner data after each mutation.
+import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { computed, defineAsyncComponent, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
+import ActiveRomMediaPlacements from "@/v2/components/GameDetails/ActiveRomMediaPlacements.vue";
+import PcCoverMediaTab from "@/v2/components/GameDetails/PcCoverMediaTab.vue";
+import type { PcCoverMediaTarget } from "@/v2/components/GameDetails/pcCoverMediaTarget";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
 
 const ManualSubtab = defineAsyncComponent(
@@ -23,16 +23,22 @@ const ArtworkSubtab = defineAsyncComponent(
   () => import("@/v2/components/GameDetails/ArtworkSubtab.vue"),
 );
 
-defineProps<{ rom: DetailedRom }>();
+const props = defineProps<{
+  rom: DetailedRom;
+  refresh: () => Promise<boolean>;
+}>();
 const { t } = useI18n();
 
 // ---------- Subtab state ----------
 // Mirrored to `?subtab=` so the SoundtrackMiniPlayer can detect when the full
 // player is visible here and hide itself to avoid duplication.
 const validSubtabs = [
+  "cover",
   "manual",
   "screenshots",
   "artwork",
+  "backgrounds",
+  "overview-images",
   "soundtrack",
 ] as const;
 type Subtab = (typeof validSubtabs)[number];
@@ -77,69 +83,109 @@ watch(
   },
 );
 
-// ---------- Subtab nav ----------
-// We render the subtab list manually (not via ZATabNav) because each
-// subtab's content panel owns its own section header with title +
-// contextual actions — the sidebar stays navigation-only, mirroring
-// ScreenshotsSubtab.
-type SubtabDef = { id: Subtab; label: string; icon: string };
-const subtabDefs = computed<SubtabDef[]>(() => [
+// ---------- Shared subtab navigation ----------
+const subtabDefs = computed<ZATabNavItem[]>(() => [
+  {
+    id: "cover",
+    label: t("rom.pc-media-role-cover"),
+    icon: "mdi-image-check-outline",
+    controls: "media-panel-cover",
+    tabId: "media-tab-cover",
+  },
   {
     id: "manual",
     label: t("rom.manual"),
     icon: "mdi-book-open-page-variant-outline",
+    controls: "media-panel-manual",
+    tabId: "media-tab-manual",
   },
   {
     id: "screenshots",
     label: t("rom.screenshots"),
     icon: "mdi-image-multiple-outline",
+    controls: "media-panel-screenshots",
+    tabId: "media-tab-screenshots",
   },
   {
     id: "artwork",
     label: t("rom.artwork"),
     icon: "mdi-palette-outline",
+    controls: "media-panel-artwork",
+    tabId: "media-tab-artwork",
+  },
+  {
+    id: "backgrounds",
+    label: t("rom.active-backgrounds"),
+    icon: "mdi-image-multiple-outline",
+    controls: "media-panel-backgrounds",
+    tabId: "media-tab-backgrounds",
+  },
+  {
+    id: "overview-images",
+    label: t("rom.active-overview-images"),
+    icon: "mdi-view-dashboard-outline",
+    controls: "media-panel-overview-images",
+    tabId: "media-tab-overview-images",
   },
   {
     id: "soundtrack",
     label: t("rom.soundtrack"),
     icon: "mdi-music-note-outline",
+    controls: "media-panel-soundtrack",
+    tabId: "media-tab-soundtrack",
   },
 ]);
+const coverTarget = computed<PcCoverMediaTarget>(() => ({
+  endpoint: `/roms/${props.rom.id}/media`,
+  uploadEndpoint: `/roms/${props.rom.id}/media/upload`,
+  selectionEndpoint: `/roms/${props.rom.id}/media/cover`,
+  expectedVersion: props.rom.updated_at ?? null,
+  candidates: (props.rom.owned_media ?? [])
+    .filter(
+      (candidate) =>
+        candidate.role === "cover" &&
+        candidate.state === "active" &&
+        candidate.owned_path,
+    )
+    .map((candidate) => ({
+      id: candidate.id,
+      role: "cover" as const,
+      owned_path: candidate.owned_path,
+    })),
+  activeCandidateId: props.rom.active_owned_cover_media_id ?? null,
+  legacyCoverUrl:
+    props.rom.original_cover_path_large ??
+    props.rom.original_cover_path_small ??
+    props.rom.original_cover_url ??
+    null,
+  supportsOriginalSelection: true,
+  contentUrl: (candidateId) =>
+    `/api/roms/${props.rom.id}/media/${candidateId}/content`,
+  refresh: props.refresh,
+}));
 </script>
 
 <template>
   <div class="r-v2-media">
     <aside class="r-v2-media__sidebar">
-      <ul
-        class="r-v2-media__subtabs"
-        role="tablist"
-        aria-orientation="vertical"
-      >
-        <li
-          v-for="tab in subtabDefs"
-          :key="tab.id"
-          class="r-v2-media__subtab"
-          :class="{ 'r-v2-media__subtab--active': subTab === tab.id }"
-        >
-          <button
-            type="button"
-            role="tab"
-            class="r-v2-media__subtab-btn"
-            :class="{
-              'r-v2-media__subtab-btn--active': subTab === tab.id,
-            }"
-            :aria-selected="subTab === tab.id"
-            :aria-controls="`media-panel-${tab.id}`"
-            @click="subTab = tab.id"
-          >
-            <ZAIcon :icon="tab.icon" size="16" />
-            <span class="r-v2-media__subtab-label">{{ tab.label }}</span>
-          </button>
-        </li>
-      </ul>
+      <ZATabNav
+        v-model="subTab"
+        :items="subtabDefs"
+        variant="pill"
+        orientation="vertical"
+      />
     </aside>
 
     <div class="r-v2-media__content">
+      <section
+        id="media-panel-cover"
+        v-show="subTab === 'cover'"
+        class="r-v2-media__panel"
+        role="tabpanel"
+        aria-labelledby="media-tab-cover"
+      >
+        <PcCoverMediaTab :rom-id="rom.id" :target="coverTarget" />
+      </section>
       <!-- All subtab sections stay mounted (v-show, not v-if). The manual,
            soundtrack and screenshots panels are heavy defineAsyncComponent
            loads — un/remounting them on every subtab switch causes a visible
@@ -153,7 +199,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'manual'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Manual"
+        aria-labelledby="media-tab-manual"
       >
         <ManualSubtab :rom="rom" />
       </section>
@@ -165,7 +211,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'screenshots'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Screenshots"
+        aria-labelledby="media-tab-screenshots"
       >
         <ScreenshotsSubtab :rom="rom" />
       </section>
@@ -177,9 +223,36 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'artwork'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Artwork"
+        aria-labelledby="media-tab-artwork"
       >
         <ArtworkSubtab :rom="rom" />
+      </section>
+
+      <section
+        id="media-panel-backgrounds"
+        v-show="subTab === 'backgrounds'"
+        class="r-v2-media__panel"
+        role="tabpanel"
+        aria-labelledby="media-tab-backgrounds"
+      >
+        <ActiveRomMediaPlacements
+          :rom="rom"
+          surface="background"
+          :refresh="refresh"
+        />
+      </section>
+      <section
+        id="media-panel-overview-images"
+        v-show="subTab === 'overview-images'"
+        class="r-v2-media__panel"
+        role="tabpanel"
+        aria-labelledby="media-tab-overview-images"
+      >
+        <ActiveRomMediaPlacements
+          :rom="rom"
+          surface="overview"
+          :refresh="refresh"
+        />
       </section>
 
       <!-- Soundtrack subtab -->
@@ -188,7 +261,7 @@ const subtabDefs = computed<SubtabDef[]>(() => [
         v-show="subTab === 'soundtrack'"
         class="r-v2-media__panel"
         role="tabpanel"
-        aria-label="Soundtrack"
+        aria-labelledby="media-tab-soundtrack"
       >
         <SoundtrackPanel :rom="rom" class="r-v2-media__soundtrack" />
       </section>
@@ -211,53 +284,6 @@ const subtabDefs = computed<SubtabDef[]>(() => [
 .r-v2-media__sidebar {
   width: 220px;
   flex-shrink: 0;
-}
-
-/* Subtab list — navigation only. Per-section actions (Upload, etc.)
-   live in the content column's section headers, mirroring
-   ScreenshotsSubtab. */
-.r-v2-media__subtabs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.r-v2-media__subtab {
-  display: flex;
-  flex-direction: column;
-}
-.r-v2-media__subtab-btn {
-  width: 100%;
-  appearance: none;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: var(--r-radius-md);
-  color: var(--r-color-fg-muted);
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: var(--r-font-weight-medium);
-  transition:
-    background var(--r-motion-fast) var(--r-motion-ease-out),
-    color var(--r-motion-fast) var(--r-motion-ease-out);
-}
-.r-v2-media__subtab-btn:hover {
-  background: var(--r-color-surface-hover);
-  color: var(--r-color-fg);
-}
-.r-v2-media__subtab-btn--active {
-  background: color-mix(in srgb, var(--r-color-brand-primary) 18%, transparent);
-  color: var(--r-color-brand-primary);
-}
-.r-v2-media__subtab-label {
-  flex: 1;
 }
 
 .r-v2-media__content {

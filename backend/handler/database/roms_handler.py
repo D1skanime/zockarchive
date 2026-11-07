@@ -45,6 +45,10 @@ from sqlalchemy.sql.selectable import Select
 from config import ROMM_DB_DRIVER
 from decorators.database import begin_session
 from decorators.owned_io import serialized_owned_write
+from handler.database.parent_cover_mutations import ParentCoverMutationMixin
+from handler.database.pc_component_media_mutations import (
+    PcComponentMediaMutationMixin,
+)
 from handler.database.provider_media_suppression import (
     is_suppressed,
     suppressed_candidates,
@@ -71,7 +75,6 @@ from models.rom import (
     RomComponentNote,
     RomComponentOwnedMedia,
     RomComponentOwnedMediaOrigin,
-    RomComponentOwnedMediaPlacement,
     RomComponentOwnedMediaRole,
     RomFacets,
     RomFile,
@@ -507,7 +510,9 @@ def with_simple_details(func):
     return wrapper
 
 
-class DBRomsHandler(DBBaseHandler):
+class DBRomsHandler(
+    ParentCoverMutationMixin, PcComponentMediaMutationMixin, DBBaseHandler
+):
     @begin_session
     @with_details
     def add_rom(
@@ -659,6 +664,7 @@ class DBRomsHandler(DBBaseHandler):
             rom is None
             or role
             not in {
+                RomOwnedMediaRole.COVER,
                 RomOwnedMediaRole.ARTWORK,
                 RomOwnedMediaRole.SOUNDTRACK,
             }
@@ -703,7 +709,12 @@ class DBRomsHandler(DBBaseHandler):
             rom is None
             or not provider
             or not provider_media_id
-            or role not in {RomOwnedMediaRole.SCREENSHOT, RomOwnedMediaRole.ARTWORK}
+            or role
+            not in {
+                RomOwnedMediaRole.COVER,
+                RomOwnedMediaRole.SCREENSHOT,
+                RomOwnedMediaRole.ARTWORK,
+            }
             or not owned_path
             or owned_path.startswith("/")
             or ".." in owned_path
@@ -792,7 +803,11 @@ class DBRomsHandler(DBBaseHandler):
             if (
                 not item.provider_media_id
                 or item.role
-                not in {RomOwnedMediaRole.SCREENSHOT, RomOwnedMediaRole.ARTWORK}
+                not in {
+                    RomOwnedMediaRole.COVER,
+                    RomOwnedMediaRole.SCREENSHOT,
+                    RomOwnedMediaRole.ARTWORK,
+                }
                 or not item.owned_path
                 or item.owned_path.startswith("/")
                 or ".." in item.owned_path
@@ -1061,6 +1076,11 @@ class DBRomsHandler(DBBaseHandler):
         )
         if media is None:
             return None
+        if rom.active_owned_cover_media_id == media_id:
+            rom.active_owned_cover_media_id = None
+            rom.path_cover_l = rom.original_cover_path_l
+            rom.path_cover_s = rom.original_cover_path_s
+            rom.url_cover = rom.original_cover_url
         owned_paths = [media.owned_path] if media.owned_path else []
         if media.origin == RomOwnedMediaOrigin.PROVIDER:
             for placement in list(media.placements):
@@ -2946,7 +2966,7 @@ class DBRomsHandler(DBBaseHandler):
         predicates = [
             RomComponent.id == component_id,
             RomComponent.rom_id == rom_id,
-            RomComponent.kind == "dlc",
+            RomComponent.kind.in_((RomComponentKind.DLC, RomComponentKind.EXTRA)),
         ]
         if expected_updated_at is not None:
             predicates.append(RomComponent.updated_at == expected_updated_at)
@@ -3065,6 +3085,8 @@ class DBRomsHandler(DBBaseHandler):
         if role not in {
             RomComponentOwnedMediaRole.GALLERY,
             RomComponentOwnedMediaRole.SCREENSHOT,
+            RomComponentOwnedMediaRole.SOUNDTRACK,
+            RomComponentOwnedMediaRole.COVER,
         }:
             for existing in component.owned_media:
                 if existing.role != role:
@@ -3144,7 +3166,10 @@ class DBRomsHandler(DBBaseHandler):
             return AppliedPcComponentOwnedMedia(existing, replaced_owned_paths)
 
         replaced_owned_paths: list[str] = []
-        if role != RomComponentOwnedMediaRole.SCREENSHOT:
+        if role not in {
+            RomComponentOwnedMediaRole.COVER,
+            RomComponentOwnedMediaRole.SCREENSHOT,
+        }:
             for existing in component.owned_media:
                 if (
                     existing.origin == RomComponentOwnedMediaOrigin.PROVIDER
@@ -3374,74 +3399,13 @@ class DBRomsHandler(DBBaseHandler):
         )
         if media is None:
             return None
+        if component.active_owned_cover_media_id == media_id:
+            component.active_owned_cover_media_id = None
         owned_path = media.owned_path
         session.delete(media)
         component.updated_at = datetime.now(timezone.utc)
         session.flush()
         return owned_path
-
-    @begin_session
-    def set_pc_component_owned_media_placement(
-        self,
-        rom_id: int,
-        component_id: int,
-        user_id: int,
-        media_id: int,
-        expected_updated_at: datetime,
-        selected: bool,
-        session: Session = None,  # type: ignore
-    ) -> RomComponentOwnedMedia | None:
-        if session.get(User, user_id) is None:
-            return None
-        component = self._get_pc_dlc_component(
-            session,
-            rom_id,
-            component_id,
-            expected_updated_at,
-            with_owned_media=True,
-        )
-        if component is None:
-            return None
-        media = next(
-            (item for item in component.owned_media if item.id == media_id), None
-        )
-        if media is None:
-            return None
-        placement = next(
-            (item for item in media.placements if item.component_id == component.id),
-            None,
-        )
-        if selected and placement is None:
-            current = sorted(
-                (item for item in component.owned_media for item in item.placements),
-                key=lambda item: item.position,
-            )
-            media.placements.append(
-                RomComponentOwnedMediaPlacement(
-                    component_id=component.id,
-                    media_id=media.id,
-                    position=len(current),
-                )
-            )
-        elif not selected and placement is not None:
-            media.placements.remove(placement)
-            session.flush()
-            remaining = sorted(
-                (
-                    item
-                    for item in component.owned_media
-                    for item in item.placements
-                    if item.id != placement.id
-                ),
-                key=lambda item: item.position,
-            )
-            for position, item in enumerate(remaining):
-                item.position = position
-        else:
-            return media
-        component.updated_at = datetime.now(timezone.utc)
-        session.flush()
-        return media
 
     @begin_session
     def get_pc_component_notes(

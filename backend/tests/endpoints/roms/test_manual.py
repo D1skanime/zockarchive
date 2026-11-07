@@ -1,8 +1,8 @@
+import asyncio
 import hashlib
 import stat
-from concurrent.futures import ThreadPoolExecutor
+from contextvars import ContextVar
 from pathlib import Path
-from threading import Barrier, Event
 
 import httpx
 import pytest
@@ -69,40 +69,74 @@ def _upload_primary_manual(
     )
 
 
-def test_primary_manual_concurrent_replacement_has_one_winner(
+async def _async_primary_manual_upload(
+    client: httpx.AsyncClient,
+    token: str,
+    rom_id: int,
+    filename: str,
+    content: bytes,
+):
+    return await client.post(
+        f"/api/roms/{rom_id}/manuals",
+        headers={**_auth(token), "x-upload-filename": filename},
+        files={filename: (filename, content, "application/pdf")},
+    )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("_iteration", range(3))
+async def test_primary_manual_concurrent_replacement_has_one_winner(
     client: TestClient,
     access_token: str,
     rom: Rom,
     monkeypatch: pytest.MonkeyPatch,
+    _iteration: int,
 ):
-    manual_dir = Path(RESOURCES_BASE_PATH, rom.fs_resources_path, "manual")
-    manual_dir.mkdir(parents=True, exist_ok=True)
-    prior = manual_dir / "prior.pdf"
-    prior.write_bytes(b"prior-complete")
-    db_rom_handler.update_rom(
-        rom.id, {"path_manual": f"{rom.fs_resources_path}/manual/prior.pdf"}
-    )
+    _prior_path, prior = _set_prior_manual(rom)
+    manual_dir = prior.parent
+    ready = asyncio.Event()
+    arrivals = 0
 
-    barrier = Barrier(2)
-    original_cas = db_primary_manual_handler.compare_and_swap_path
-
-    def synchronized_cas(*args, **kwargs):
+    async def gate():
+        nonlocal arrivals
         assert prior.read_bytes() == b"prior-complete"
-        barrier.wait(timeout=5)
-        return original_cas(*args, **kwargs)
+        arrivals += 1
+        if arrivals == 2:
+            ready.set()
+        await asyncio.wait_for(ready.wait(), timeout=5)
+
+    original_make_directory = manual_endpoint.fs_resource_handler.make_directory
+
+    async def make_directory(path, *args, **kwargs):
+        await original_make_directory(path, *args, **kwargs)
+        if path == f"{rom.fs_resources_path}/manual":
+            await gate()
 
     monkeypatch.setattr(
-        db_primary_manual_handler, "compare_and_swap_path", synchronized_cas
+        manual_endpoint.fs_resource_handler, "make_directory", make_directory
     )
 
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        responses = list(
-            executor.map(
-                lambda item: _upload_primary_manual(
-                    TestClient(client.app), access_token, rom.id, item[0], item[1]
-                ),
-                (("first.pdf", b"first-complete"), ("second.pdf", b"second-complete")),
-            )
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=client.app),
+        base_url="http://test",
+    ) as concurrent_client:
+        responses = await asyncio.wait_for(
+            asyncio.gather(
+                *(
+                    _async_primary_manual_upload(
+                        concurrent_client,
+                        access_token,
+                        rom.id,
+                        filename,
+                        content,
+                    )
+                    for filename, content in (
+                        ("first.pdf", b"first-complete"),
+                        ("second.pdf", b"second-complete"),
+                    )
+                )
+            ),
+            timeout=10,
         )
 
     assert sorted(response.status_code for response in responses) == [
@@ -112,9 +146,12 @@ def test_primary_manual_concurrent_replacement_has_one_winner(
     current = db_rom_handler.get_rom(rom.id)
     assert current is not None
     winner = Path(RESOURCES_BASE_PATH, current.path_manual)
-    assert winner.read_bytes() in {b"first-complete", b"second-complete"}
+    assert _manual_inventory(manual_dir)[winner.name] in {
+        b"first-complete",
+        b"second-complete",
+    }
     assert not prior.exists()
-    assert sorted(path.name for path in manual_dir.iterdir()) == [winner.name]
+    assert sorted(_manual_inventory(manual_dir)) == [winner.name]
 
 
 class _ManualResponse:
@@ -356,7 +393,7 @@ def test_http_redownload_failure_preserves_prior_and_leaves_no_orphan(
     assert _manual_inventory(manual_dir) == {"prior.pdf": b"prior-complete"}
 
 
-def _run_upload_redownload_race(
+async def _run_upload_redownload_race(
     client: TestClient,
     access_token: str,
     rom: Rom,
@@ -368,38 +405,63 @@ def _run_upload_redownload_race(
     manual_dir = prior.parent
     upload_content = b"upload-complete"
     redownload_content = b"redownload-complete"
+    ready = asyncio.Event()
+    first_finished = asyncio.Event()
+    arrivals = 0
+
+    async def gate(content: bytes):
+        nonlocal arrivals
+        assert prior.read_bytes() == b"prior-complete"
+        arrivals += 1
+        if arrivals == 2:
+            ready.set()
+        await asyncio.wait_for(ready.wait(), timeout=5)
+        if content != first_content:
+            await asyncio.wait_for(first_finished.wait(), timeout=5)
+
+    request_content = ContextVar("manual_race_content", default=b"")
+    original_make_directory = manual_endpoint.fs_resource_handler.make_directory
+
+    async def make_directory(path, *args, **kwargs):
+        await original_make_directory(path, *args, **kwargs)
+        if path == f"{rom.fs_resources_path}/manual":
+            await gate(request_content.get())
+
+    monkeypatch.setattr(
+        manual_endpoint.fs_resource_handler, "make_directory", make_directory
+    )
     client.app.state.httpx_client = _ManualClient(_ManualResponse(redownload_content))
-    original_cas = db_primary_manual_handler.compare_and_swap_path
-    barrier = Barrier(2)
-    first_finished = Event()
+    async with httpx.AsyncClient(
+        transport=httpx.ASGITransport(app=client.app),
+        base_url="http://test",
+    ) as concurrent_client:
 
-    def ordered_cas(*args, **kwargs):
-        candidate = Path(RESOURCES_BASE_PATH, kwargs["new_path"])
-        content = candidate.read_bytes()
-        barrier.wait(timeout=10)
-        if content == first_content:
-            try:
-                return original_cas(*args, **kwargs)
-            finally:
+        async def upload():
+            request_content.set(upload_content)
+            response = await _async_primary_manual_upload(
+                concurrent_client,
+                access_token,
+                rom.id,
+                "upload.pdf",
+                upload_content,
+            )
+            if first_content == upload_content:
                 first_finished.set()
-        assert first_finished.wait(timeout=10)
-        return original_cas(*args, **kwargs)
+            return response
 
-    monkeypatch.setattr(db_primary_manual_handler, "compare_and_swap_path", ordered_cas)
+        async def redownload():
+            request_content.set(redownload_content)
+            response = await concurrent_client.post(
+                f"/api/roms/{rom.id}/manuals/redownload",
+                headers=_auth(access_token),
+            )
+            if first_content == redownload_content:
+                first_finished.set()
+            return response
 
-    with ThreadPoolExecutor(max_workers=2) as executor:
-        upload_future = executor.submit(
-            _upload_primary_manual,
-            TestClient(client.app),
-            access_token,
-            rom.id,
-            "upload.pdf",
-            upload_content,
+        responses = await asyncio.wait_for(
+            asyncio.gather(upload(), redownload()), timeout=10
         )
-        redownload_future = executor.submit(
-            _redownload, TestClient(client.app), access_token, rom.id
-        )
-        responses = [upload_future.result(), redownload_future.result()]
 
     assert sorted(response.status_code for response in responses) == [
         (
@@ -412,18 +474,21 @@ def _run_upload_redownload_race(
     current = db_rom_handler.get_rom(rom.id)
     assert current is not None
     winner = Path(RESOURCES_BASE_PATH, current.path_manual)
-    assert winner.read_bytes() == first_content
+    assert _manual_inventory(manual_dir)[winner.name] == first_content
     assert not prior.exists()
     assert _manual_inventory(manual_dir) == {winner.name: first_content}
 
 
-def test_upload_first_redownload_race_has_one_winner_and_no_orphan(
+@pytest.mark.asyncio
+@pytest.mark.parametrize("_iteration", range(3))
+async def test_upload_first_redownload_race_has_one_winner_and_no_orphan(
     client: TestClient,
     access_token: str,
     rom: Rom,
     monkeypatch: pytest.MonkeyPatch,
+    _iteration: int,
 ):
-    _run_upload_redownload_race(
+    await _run_upload_redownload_race(
         client,
         access_token,
         rom,
@@ -432,13 +497,16 @@ def test_upload_first_redownload_race_has_one_winner_and_no_orphan(
     )
 
 
-def test_redownload_first_upload_race_has_one_winner_and_no_orphan(
+@pytest.mark.asyncio
+@pytest.mark.parametrize("_iteration", range(3))
+async def test_redownload_first_upload_race_has_one_winner_and_no_orphan(
     client: TestClient,
     access_token: str,
     rom: Rom,
     monkeypatch: pytest.MonkeyPatch,
+    _iteration: int,
 ):
-    _run_upload_redownload_race(
+    await _run_upload_redownload_race(
         client,
         access_token,
         rom,

@@ -9,11 +9,17 @@ const mocks = vi.hoisted(() => ({
   refresh: vi.fn(),
   post: vi.fn(),
   delete: vi.fn(),
+  put: vi.fn(),
   open: vi.fn(),
   confirm: vi.fn(),
   success: vi.fn(),
   error: vi.fn(),
   editable: true,
+  replace: vi.fn(),
+  route: {
+    path: "/rom/24/dlc/20",
+    query: { tab: "media" } as Record<string, string>,
+  },
 }));
 vi.mock("vue-i18n", () => ({
   useI18n: () => ({
@@ -34,15 +40,21 @@ vi.mock("@/v2/composables/useResponsiveColumns", () => ({
   useResponsiveColumns: () => ({ columns: ref(3) }),
 }));
 vi.mock("@/v2/composables/useWrapGridNav", () => ({ useWrapGridNav: vi.fn() }));
+vi.mock("vue-router", () => ({
+  useRoute: () => mocks.route,
+  useRouter: () => ({ replace: mocks.replace }),
+}));
 vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
   romApi: mocks,
 }));
 vi.mock("@v2/lib", () => ({
   ZABtn: {
-    props: { disabled: Boolean },
+    props: { disabled: Boolean, href: String, download: String },
+    emits: ["click"],
     template:
-      '<button :disabled="disabled"><slot name="prepend" /><slot /></button>',
+      '<component :is="href ? \'a\' : \'button\'" :href="href" :download="download" :disabled="disabled" @click="$emit(\'click\')"><slot name="prepend" /><slot /></component>',
   },
+  ZACard: { template: '<div class="r-card"><slot /></div>' },
   ZAIcon: { props: ["icon"], template: '<span :data-icon="icon" />' },
   ZASelect: { template: "<div />" },
   ZAEmptyState: { template: "<div />" },
@@ -50,13 +62,32 @@ vi.mock("@v2/lib", () => ({
     props: ["items", "modelValue"],
     template: "<div data-carousel />",
   },
+  ZATabNav: {
+    props: ["items", "modelValue"],
+    emits: ["update:modelValue"],
+    template: `
+      <nav role="tablist">
+        <button
+          v-for="item in items"
+          :key="item.id"
+          type="button"
+          role="tab"
+          :id="item.tabId"
+          :aria-controls="item.controls"
+          :aria-label="item.label"
+          :aria-selected="modelValue === item.id"
+          @click="$emit('update:modelValue', item.id)"
+        >{{ item.label }}</button>
+      </nav>
+    `,
+  },
   ZADropzone: defineComponent({
     name: "ZADropzone",
     props: { disabled: Boolean },
     emits: ["files"],
-    setup(_, { slots, expose }) {
+    setup(_, { attrs, slots, expose }) {
       expose({ open: mocks.open });
-      return () => h("div", slots.default?.());
+      return () => h("div", attrs, slots.default?.());
     },
   }),
 }));
@@ -71,7 +102,9 @@ const media = {
   owned_path: "fixture/shot.png",
   created_at: "2026-10-24T10:00:00Z",
   updated_at: "2026-10-24T10:00:00Z",
-  placements: [{ id: 1, media_id: 7, position: 0 }],
+  placements: [
+    { id: 1, media_id: 7, surface: "overview" as const, position: 0 },
+  ],
 };
 const component: PcComponentSchema = {
   id: 20,
@@ -81,8 +114,10 @@ const component: PcComponentSchema = {
   updated_at: "2026-10-24T10:00:00Z",
   owned_media: [media],
 };
-function render(refresh = mocks.refresh) {
-  return mount(PcDlcMediaTab, { props: { romId: 24, component, refresh } });
+function render(refresh = mocks.refresh, currentComponent = component) {
+  return mount(PcDlcMediaTab, {
+    props: { romId: 24, component: currentComponent, refresh },
+  });
 }
 beforeEach(() => {
   vi.clearAllMocks();
@@ -91,25 +126,35 @@ beforeEach(() => {
   mocks.get.mockResolvedValue({ data: [media] });
   mocks.post.mockResolvedValue({ data: {} });
   mocks.delete.mockResolvedValue({ data: {} });
+  mocks.put.mockResolvedValue({ data: {} });
   mocks.confirm.mockResolvedValue(true);
+  mocks.route.path = "/rom/24/dlc/20";
+  mocks.route.query = { tab: "media" };
 });
 describe("DLC media presentation preserves component capabilities", () => {
-  it("keeps the crown selected, displays position one and removes only the component placement", async () => {
+  it("keeps the overview selected, displays position one and removes only the component placement", async () => {
     const wrapper = render();
     await flushPromises();
     const button = wrapper.get('[aria-label="rom.remove-from-overview"]');
     expect(button.attributes("aria-pressed")).toBe("true");
-    expect(button.find('[data-icon="mdi-crown-outline"]').exists()).toBe(true);
+    expect(
+      button.find('[data-icon="mdi-view-dashboard-outline"]').exists(),
+    ).toBe(true);
     expect(button.find(".za-shot__check").exists()).toBe(true);
     expect(wrapper.find(".za-shot__badge").text()).toBe(
       "rom.screenshots-overview-position:1",
     );
-    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(2);
+    expect(wrapper.findAll(".za-shot__actions button")).toHaveLength(3);
+    expect(wrapper.find('[aria-label="rom.add-as-background"]').exists()).toBe(
+      true,
+    );
     await button.trigger("click");
     await flushPromises();
     expect(mocks.delete).toHaveBeenCalledExactlyOnceWith(
       `${endpoint}/7/placement`,
-      { params: { expected_version: component.updated_at } },
+      {
+        params: { expected_version: component.updated_at, surface: "overview" },
+      },
     );
     expect(mocks.refresh).toHaveBeenCalledTimes(1);
   });
@@ -251,5 +296,52 @@ describe("DLC media presentation preserves component capabilities", () => {
       tone: "danger",
     });
     expect(mocks.delete).not.toHaveBeenCalled();
+  });
+
+  it("exposes cover and active placement managers without manual or soundtrack", async () => {
+    const wrapper = render();
+    await flushPromises();
+
+    expect(wrapper.findAll('[role="tab"]')).toHaveLength(5);
+    expect(
+      wrapper
+        .get('[role="tab"][aria-label="rom.screenshots"]')
+        .attributes("aria-controls"),
+    ).toBe("pc-dlc-media-panel-screenshots");
+    const panels = wrapper.findAll('[role="tabpanel"]');
+    expect(panels).toHaveLength(5);
+    expect(
+      wrapper.get("#pc-dlc-media-panel-screenshots").attributes("role"),
+    ).toBe("tabpanel");
+    expect(
+      wrapper
+        .get("#pc-dlc-media-panel-screenshots")
+        .attributes("aria-labelledby"),
+    ).toBe("pc-dlc-media-tab-screenshots");
+    expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
+      "rom.screenshots",
+    );
+    expect(wrapper.text()).toContain("rom.pc-media-role-cover");
+    expect(wrapper.text()).toContain("rom.active-backgrounds");
+    expect(wrapper.text()).toContain("rom.active-overview-images");
+    expect(wrapper.text()).not.toContain("rom.manual");
+    expect(wrapper.text()).not.toContain("rom.soundtrack");
+    expect(wrapper.find('[aria-label="rom.add-as-background"]').exists()).toBe(
+      true,
+    );
+  });
+
+  it("replaces obsolete media subtabs with the screenshots route", async () => {
+    mocks.route.query = { tab: "media", subtab: "obsolete-gallery" };
+    const wrapper = render();
+    await flushPromises();
+
+    expect(mocks.replace).toHaveBeenCalledWith({
+      path: "/rom/24/dlc/20",
+      query: { tab: "media", subtab: "screenshots" },
+    });
+    expect(wrapper.find('[role="tab"][aria-selected="true"]').text()).toContain(
+      "rom.screenshots",
+    );
   });
 });

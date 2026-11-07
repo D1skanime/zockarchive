@@ -8,6 +8,7 @@ from models.rom import (
     RomComponentKind,
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaRole,
+    RomOwnedMediaSurface,
 )
 
 
@@ -136,6 +137,7 @@ def test_component_media_placements_are_ordered_scoped_and_version_guarded(
             admin_user.id,
             second.media.id,
             component.updated_at,
+            RomOwnedMediaSurface.OVERVIEW,
             True,
         )
         is not None
@@ -149,6 +151,7 @@ def test_component_media_placements_are_ordered_scoped_and_version_guarded(
             admin_user.id,
             first.media.id,
             component.updated_at,
+            RomOwnedMediaSurface.OVERVIEW,
             True,
         )
         is not None
@@ -169,9 +172,93 @@ def test_component_media_placements_are_ordered_scoped_and_version_guarded(
         admin_user.id,
         first.media.id,
         datetime(2000, 1, 1, tzinfo=timezone.utc),
+        RomOwnedMediaSurface.OVERVIEW,
         False,
     )
     assert stale is None
+
+
+def test_component_media_placements_are_surface_scoped_and_role_compatible(
+    rom, admin_user
+):
+    component, sibling = _create_components(rom.id)
+    artwork = db_rom_handler.create_pc_component_owned_media(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        RomComponentOwnedMediaRole.ARTWORK,
+        "image/webp",
+        "roms/1/components/owned/art.webp",
+        RomComponentOwnedMediaOrigin.UPLOAD,
+    )
+    assert artwork is not None
+    component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+    assert component is not None
+    soundtrack = db_rom_handler.create_pc_component_owned_media(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        RomComponentOwnedMediaRole.SOUNDTRACK,
+        "audio/flac",
+        "roms/1/components/owned/track.flac",
+        RomComponentOwnedMediaOrigin.UPLOAD,
+    )
+    assert soundtrack is not None
+    component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+    assert component is not None
+
+    background = db_rom_handler.set_pc_component_owned_media_placement(
+        rom.id,
+        component.id,
+        admin_user.id,
+        artwork.media.id,
+        component.updated_at,
+        RomOwnedMediaSurface.BACKGROUND,
+        True,
+    )
+    assert background is not None
+    component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+    assert component is not None
+    selected_track = db_rom_handler.set_pc_component_owned_media_placement(
+        rom.id,
+        component.id,
+        admin_user.id,
+        soundtrack.media.id,
+        component.updated_at,
+        RomOwnedMediaSurface.SOUNDTRACK,
+        True,
+    )
+    assert selected_track is not None
+
+    media = db_rom_handler.get_pc_component_owned_media(
+        rom.id, component.id, admin_user.id
+    )
+    assert {
+        (item.id, placement.surface) for item in media for placement in item.placements
+    } == {
+        (artwork.media.id, RomOwnedMediaSurface.BACKGROUND),
+        (soundtrack.media.id, RomOwnedMediaSurface.SOUNDTRACK),
+    }
+    assert (
+        db_rom_handler.get_pc_component_owned_media(rom.id, sibling.id, admin_user.id)
+        == []
+    )
+    component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+    assert component is not None
+    assert (
+        db_rom_handler.set_pc_component_owned_media_placement(
+            rom.id,
+            component.id,
+            admin_user.id,
+            soundtrack.media.id,
+            component.updated_at,
+            RomOwnedMediaSurface.OVERVIEW,
+            True,
+        )
+        is None
+    )
 
 
 def test_component_notes_are_private_to_their_component_and_owner(rom, admin_user):
@@ -253,6 +340,25 @@ def test_component_resource_helpers_reject_foreign_parent_or_non_dlc_target(
         )
         is None
     )
+
+
+def test_component_manual_path_is_owned_by_its_dlc_not_the_parent_or_sibling(
+    rom, admin_user
+):
+    component, sibling = _create_components(rom.id)
+    applied = db_rom_handler.replace_pc_component_manual(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        "roms/1/pc-manual/component-guide.pdf",
+    )
+
+    assert applied is not None
+    assert applied.component.manual_path == "roms/1/pc-manual/component-guide.pdf"
+    assert applied.replaced_owned_path is None
+    assert db_rom_handler.get_rom(rom.id).path_manual != applied.component.manual_path
+    assert db_rom_handler.get_pc_component_by_id(rom.id, sibling.id).manual_path is None
     assert (
         db_rom_handler.create_pc_component_note(
             rom_id=rom.id,
@@ -263,4 +369,75 @@ def test_component_resource_helpers_reject_foreign_parent_or_non_dlc_target(
             content="Must not persist",
         )
         is None
+    )
+
+
+def test_component_soundtrack_order_is_replaced_only_for_its_own_surface(
+    rom, admin_user
+):
+    component, sibling = _create_components(rom.id)
+    first = db_rom_handler.create_pc_component_owned_media(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        RomComponentOwnedMediaRole.SOUNDTRACK,
+        "audio/mpeg",
+        "roms/1/components/owned/first.mp3",
+        RomComponentOwnedMediaOrigin.UPLOAD,
+    )
+    assert first is not None
+    component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+    assert component is not None
+    second = db_rom_handler.create_pc_component_owned_media(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        RomComponentOwnedMediaRole.SOUNDTRACK,
+        "audio/mpeg",
+        "roms/1/components/owned/second.mp3",
+        RomComponentOwnedMediaOrigin.UPLOAD,
+    )
+    assert second is not None
+    for media_id in (first.media.id, second.media.id):
+        component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+        assert component is not None
+        assert db_rom_handler.set_pc_component_owned_media_placement(
+            rom.id,
+            component.id,
+            admin_user.id,
+            media_id,
+            component.updated_at,
+            RomOwnedMediaSurface.SOUNDTRACK,
+            True,
+        )
+    component = db_rom_handler.get_pc_component_by_id(rom.id, component.id)
+    assert component is not None
+    reordered = db_rom_handler.replace_pc_component_owned_media_placements(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        RomOwnedMediaSurface.SOUNDTRACK,
+        [second.media.id, first.media.id],
+    )
+    assert reordered is not None
+    persisted = db_rom_handler.get_pc_component_owned_media(
+        rom.id, component.id, admin_user.id
+    )
+    assert [
+        item.id
+        for item in sorted(
+            persisted,
+            key=lambda item: next(
+                placement.position
+                for placement in item.placements
+                if placement.surface == RomOwnedMediaSurface.SOUNDTRACK
+            ),
+        )
+    ] == [second.media.id, first.media.id]
+    assert (
+        db_rom_handler.get_pc_component_owned_media(rom.id, sibling.id, admin_user.id)
+        == []
     )

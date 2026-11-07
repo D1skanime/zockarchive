@@ -8,6 +8,10 @@ defineProps<{
   available?: boolean;
   loading?: boolean;
   disabled?: boolean;
+  /** Percentage reported by the owning uploader, when known. */
+  progress?: number;
+  /** Upload failure reported by the owning uploader. */
+  error?: string;
 }>();
 const emit = defineEmits<{ upload: [] }>();
 </script>
@@ -28,5 +32,15 @@ const emit = defineEmits<{ upload: [] }>();
     {{ label }}
   </ZABtn>
   <p class="ma-0 za-media-upload__hint flex-1-1">{{ hint }}</p>
+  <span
+    v-if="progress !== undefined"
+    class="za-media-upload__progress"
+    role="status"
+  >
+    {{ progress }}%
+  </span>
+  <span v-if="error" class="za-media-upload__error" role="alert">{{
+    error
+  }}</span>
 </template>
 <style scoped src="./mediaManagementUpload.css" />

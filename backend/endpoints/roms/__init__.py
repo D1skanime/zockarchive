@@ -27,7 +27,6 @@ from fastapi_pagination import resolve_params
 from fastapi_pagination.limit_offset import LimitOffsetPage, LimitOffsetParams
 from fastapi_pagination.types import GreaterEqualZero
 from pydantic import BaseModel, Field
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import selectinload
 
 from config import (
@@ -1947,6 +1946,7 @@ async def update_rom(
             }
         )
 
+    searched_cover_url: str | None = None
     if remove_cover:
         cleaned_data.update(await fs_resource_handler.remove_cover(rom))
         cleaned_data.update({"url_cover": ""})
@@ -1970,22 +1970,28 @@ async def update_rom(
             url_cover = (
                 form_data.url_cover if "url_cover" in provided_fields else rom.url_cover
             )
-            try:
-                path_cover_s, path_cover_l = await fs_resource_handler.get_cover(
-                    entity=rom,
-                    overwrite=url_cover != rom.url_cover,
-                    url_cover=add_ss_auth_to_url(url_cover),
-                )
-                cleaned_data.update(
-                    {
-                        "url_cover": url_cover,
-                        "path_cover_s": path_cover_s,
-                        "path_cover_l": path_cover_l,
-                    }
-                )
-            except ValidationError as e:
-                log.error(f"Invalid cover URL in update_rom: {str(e)}")
-                raise HTTPException(status_code=400, detail=str(e)) from e
+            if (
+                url_cover
+                and url_cover.startswith("https://")
+                and "url_cover" in provided_fields
+            ):
+                searched_cover_url = url_cover
+            elif rom.active_owned_cover_media_id is None:
+                try:
+                    path_cover_s, path_cover_l = await fs_resource_handler.get_cover(
+                        entity=rom,
+                        overwrite=url_cover != rom.url_cover,
+                        url_cover=add_ss_auth_to_url(url_cover),
+                    )
+                    cleaned_data.update(
+                        {
+                            "url_cover": url_cover,
+                            "path_cover_s": path_cover_s,
+                            "path_cover_l": path_cover_l,
+                        }
+                    )
+                except ValidationError as e:
+                    raise HTTPException(status_code=400, detail=str(e)) from e
 
     url_manual = (
         form_data.url_manual if "url_manual" in provided_fields else rom.url_manual
@@ -2080,20 +2086,11 @@ async def update_rom(
         f"Updating {hl(cleaned_data.get('name', ''), color=BLUE)} [{hl(cleaned_data.get('fs_name', ''))}] with data {cleaned_data}"
     )
 
-    try:
-        applied = db_rom_handler.update_rom(
-            id, cleaned_data, expected_updated_at=expected_version or rom.updated_at
-        )
-        if applied is None:
-            raise HTTPException(
-                status_code=409, detail="The metadata changed before confirmation"
-            )
-    except IntegrityError as exc:
-        log.error(f"Failed to update ROM {id}: {exc}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update ROM {id}: {exc}",
-        ) from exc
+    from endpoints.roms.edited_cover import persist_rom_cover_edit
+
+    await persist_rom_cover_edit(
+        rom, id, cleaned_data, expected_version, searched_cover_url
+    )
 
     # Rename the file/folder if the name has changed
     if should_update_fs:

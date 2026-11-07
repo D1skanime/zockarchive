@@ -252,7 +252,16 @@ export async function mountGallery(
             created_at: item.created_at,
             updated_at: item.updated_at,
             placements:
-              index === 0 ? [{ id: 1, media_id: item.id, position: 0 }] : [],
+              index === 0
+                ? [
+                    {
+                      id: 1,
+                      media_id: item.id,
+                      surface: "overview",
+                      position: 0,
+                    },
+                  ]
+                : [],
           }),
         ),
       },
@@ -295,8 +304,10 @@ export async function mountGallery(
         body: JSON.stringify(body),
       });
     if (url.origin !== "http://127.0.0.1:4177") {
-      (req.url() ===
-      "https://api.github.com/repos/D1skanime/pc-game-download-portal/releases/latest"
+      ([
+        "https://api.github.com/repos/D1skanime/pc-game-download-portal/releases/latest",
+        "https://api.github.com/repos/D1skanime/zockarchive/releases/latest",
+      ].includes(req.url())
         ? state.blocked
         : state.unexpected
       ).push(req.url());
@@ -364,6 +375,13 @@ export async function mountGallery(
     if (path === "/api/streaming/config")
       return json({ enabled: false, containers: [] });
     if (path === "/api/scan-operations/active") return json(null);
+    if (path === "/api/download-transfer-sessions") return json([]);
+    if (
+      options.dlc &&
+      path === "/api/roms/1/pc-components/20/notes" &&
+      req.method() === "GET"
+    )
+      return json([]);
     if (path === "/api/heartbeat")
       return json({ SYSTEM: { VERSION: "fixture", SHOW_SETUP_WIZARD: false } });
     if (path === "/api/config")
@@ -406,6 +424,7 @@ export async function mountGallery(
                 {
                   id,
                   media_id: id,
+                  surface: "overview",
                   position: items.filter((entry) => entry.placements?.length)
                     .length,
                 },

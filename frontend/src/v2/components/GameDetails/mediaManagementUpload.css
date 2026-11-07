@@ -32,6 +32,14 @@
   font-size: var(--r-font-size-md);
   line-height: var(--r-line-height-normal);
 }
+.za-media-upload__progress {
+  color: var(--r-color-fg-muted);
+  font-variant-numeric: tabular-nums;
+}
+.za-media-upload__error {
+  flex-basis: 100%;
+  color: var(--r-color-danger);
+}
 html[data-bp~="sm-and-down"] .za-media-upload {
   top: var(--r-nav-h);
 }

@@ -29,6 +29,9 @@ import type { UserSaveSchema } from './UserSaveSchema';
 import type { UserScreenshotSchema } from './UserScreenshotSchema';
 import type { UserStateSchema } from './UserStateSchema';
 export type DetailedRomSchema = {
+    original_cover_path_small?: (string | null);
+    original_cover_path_large?: (string | null);
+    original_cover_url?: (string | null);
     id: number;
     igdb_id: (number | null);
     sgdb_id: (number | null);
@@ -113,8 +116,8 @@ export type DetailedRomSchema = {
     user_collections: Array<UserCollectionSchema>;
     all_user_notes: Array<UserNoteSchema>;
     owned_media?: Array<RomOwnedMediaSchema>;
+    active_owned_cover_media_id?: (number | null);
     owned_media_placements?: Array<RomOwnedMediaPlacementSchema>;
     local_background_audio_file_ids?: Array<number>;
     owned_background_audio_media_ids?: Array<number>;
 };
-

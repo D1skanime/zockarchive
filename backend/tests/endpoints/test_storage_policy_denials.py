@@ -647,6 +647,7 @@ def _rom_update_fixture() -> SimpleNamespace:
         name_sort_key="Game",
         url_cover="",
         url_manual="",
+        active_owned_cover_media_id=None,
     )
 
 

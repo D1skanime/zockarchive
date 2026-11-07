@@ -145,6 +145,7 @@ class RomOwnedMediaOrigin(enum.StrEnum):
 
 
 class RomOwnedMediaRole(enum.StrEnum):
+    COVER = "cover"
     SCREENSHOT = "screenshot"
     ARTWORK = "artwork"
     SOUNDTRACK = "soundtrack"
@@ -324,6 +325,10 @@ class RomComponent(BaseModel):
             name="romcomponentkind",
         )
     )
+    manual_path: Mapped[str | None] = mapped_column(Text, default=None)
+    active_owned_cover_media_id: Mapped[int | None] = mapped_column(
+        ForeignKey("rom_component_owned_media.id", ondelete="SET NULL"), default=None
+    )
 
     rom: Mapped[Rom] = relationship(back_populates="components")
     manifest_members: Mapped[list[RomComponentManifestMember]] = relationship(
@@ -349,6 +354,10 @@ class RomComponent(BaseModel):
         back_populates="component",
         cascade="all, delete-orphan",
         order_by="RomComponentOwnedMedia.id",
+        foreign_keys="RomComponentOwnedMedia.component_id",
+    )
+    active_owned_cover_media: Mapped["RomComponentOwnedMedia | None"] = relationship(
+        foreign_keys=[active_owned_cover_media_id], post_update=True
     )
     notes: Mapped[list[RomComponentNote]] = relationship(
         lazy="raise",
@@ -503,50 +512,15 @@ class RomComponentOwnedMedia(BaseModel):
     )
     content_sha256: Mapped[str | None] = mapped_column(String(length=64), default=None)
 
-    component: Mapped[RomComponent] = relationship(back_populates="owned_media")
+    component: Mapped[RomComponent] = relationship(
+        back_populates="owned_media", foreign_keys=[component_id]
+    )
     placements: Mapped[list["RomComponentOwnedMediaPlacement"]] = relationship(
         lazy="raise",
         back_populates="media",
         cascade="all, delete-orphan",
         order_by="RomComponentOwnedMediaPlacement.position",
     )
-
-
-class RomComponentOwnedMediaPlacement(BaseModel):
-    __tablename__ = "rom_component_owned_media_placements"
-
-    __table_args__ = (
-        CheckConstraint(
-            "position >= 0", name="ck_rom_component_owned_media_placements_position"
-        ),
-        UniqueConstraint(
-            "component_id",
-            "media_id",
-            name="uq_rom_component_owned_media_placements_media",
-        ),
-        UniqueConstraint(
-            "component_id",
-            "position",
-            name="uq_rom_component_owned_media_placements_position",
-        ),
-        Index(
-            "idx_rom_component_owned_media_placements_component_position",
-            "component_id",
-            "position",
-        ),
-    )
-
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    component_id: Mapped[int] = mapped_column(
-        ForeignKey("rom_components.id", ondelete="CASCADE")
-    )
-    media_id: Mapped[int] = mapped_column(
-        ForeignKey("rom_component_owned_media.id", ondelete="CASCADE")
-    )
-    position: Mapped[int] = mapped_column(Integer)
-
-    component: Mapped[RomComponent] = relationship()
-    media: Mapped[RomComponentOwnedMedia] = relationship(back_populates="placements")
 
 
 class RomOwnedMedia(BaseModel):
@@ -619,7 +593,7 @@ class RomOwnedMedia(BaseModel):
         String(length=OWNED_MEDIA_PROVIDER_ID_MAX_LENGTH), default=None
     )
 
-    rom: Mapped[Rom] = relationship(back_populates="owned_media")
+    rom: Mapped[Rom] = relationship(back_populates="owned_media", foreign_keys=[rom_id])
     placements: Mapped[list[RomOwnedMediaPlacement]] = relationship(
         lazy="raise",
         back_populates="media",
@@ -995,6 +969,12 @@ class Rom(BaseModel):
 
     path_cover_s: Mapped[str | None] = mapped_column(Text, default="")
     path_cover_l: Mapped[str | None] = mapped_column(Text, default="")
+    original_cover_path_s: Mapped[str | None] = mapped_column(Text, default="")
+    original_cover_path_l: Mapped[str | None] = mapped_column(Text, default="")
+    original_cover_url: Mapped[str | None] = mapped_column(Text, default="")
+    active_owned_cover_media_id: Mapped[int | None] = mapped_column(
+        ForeignKey("rom_owned_media.id", ondelete="SET NULL"), default=None
+    )
     url_cover: Mapped[str | None] = mapped_column(
         Text, default="", doc="URL to cover image stored in IGDB"
     )
@@ -1045,6 +1025,10 @@ class Rom(BaseModel):
         back_populates="rom",
         cascade="all, delete-orphan",
         order_by="RomOwnedMedia.id",
+        foreign_keys="RomOwnedMedia.rom_id",
+    )
+    active_owned_cover_media: Mapped["RomOwnedMedia | None"] = relationship(
+        foreign_keys=[active_owned_cover_media_id], post_update=True
     )
     owned_media_placements: Mapped[list[RomOwnedMediaPlacement]] = relationship(
         lazy="raise",
@@ -1520,3 +1504,12 @@ class RomUser(BaseModel):
 
     rom: Mapped[Rom] = relationship(lazy="joined", back_populates="rom_users")
     user: Mapped[User] = relationship(lazy="joined", back_populates="rom_users")
+
+
+# Re-export the component-only placement model for existing model imports.
+# It is imported after this module has registered RomComponent and the surface
+# enum, avoiding a circular declaration while keeping SQLAlchemy relationships
+# resolvable by their stable string names.
+from models.pc_component_owned_media_placement import (  # noqa: E402
+    RomComponentOwnedMediaPlacement,
+)

@@ -78,11 +78,12 @@ def _candidate(
 def discover_provider_media(
     provider: str, media: dict[str, object]
 ) -> list[ProviderMediaCandidate]:
-    """Return the complete persisted screenshot/artwork inventory for refresh."""
+    """Return the complete persisted cover, screenshot and artwork inventory."""
     if not provider or len(provider) > 100:
         raise ValueError("Provider is invalid")
     candidates: list[ProviderMediaCandidate] = []
     for key, role in (
+        ("url_covers", RomOwnedMediaRole.COVER),
         ("url_screenshots", RomOwnedMediaRole.SCREENSHOT),
         ("url_artworks", RomOwnedMediaRole.ARTWORK),
     ):
@@ -116,9 +117,11 @@ async def refresh_provider_owned_media(rom, expected_version, provider: str):
     """Refresh selected provider images within their publication transaction."""
     if not isinstance(provider, str) or not provider:
         raise ValueError("Provider is required")
+    original_cover = getattr(rom, "original_cover_url", None) or rom.url_cover
     source = {
+        "url_covers": [original_cover] if original_cover else [],
         "url_screenshots": rom.url_screenshots or [],
-        "url_artworks": [rom.url_cover] if rom.url_cover else [],
+        "url_artworks": [],
     }
     failures: list[ProviderMediaFailure] = []
     candidates = discover_provider_media(provider, source)

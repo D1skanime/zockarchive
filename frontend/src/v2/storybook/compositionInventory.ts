@@ -32,6 +32,9 @@ export const compositionInventory = {
       "ZATextField",
     ],
   },
+  "components/GameDetails/MediaManagement.stories.ts": {
+    primitives: ["ZABtn", "ZACard", "ZADropzone", "ZAIcon"],
+  },
   "components/shared/AssetList.stories.ts": {
     primitives: ["ZAList", "ZAListItem"],
   },

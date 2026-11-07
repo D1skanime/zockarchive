@@ -1,15 +1,34 @@
 <script setup lang="ts">
-import { ZABtn, ZACarousel, ZADropzone, ZAEmptyState, ZASelect } from "@v2/lib";
-import { computed, nextTick, ref } from "vue";
+import { ZABtn, ZACarousel, ZADropzone, ZAEmptyState, ZATabNav } from "@v2/lib";
+import { computed, nextTick, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRoute, useRouter } from "vue-router";
 import type {
   PcComponentOwnedMediaSchema,
   PcComponentSchema,
   RomComponentOwnedMediaRole,
+  RomOwnedMediaSurface,
 } from "@/__generated__";
+import ActiveComponentMediaPlacements from "@/v2/components/GameDetails/ActiveComponentMediaPlacements.vue";
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
 import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
 import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
+import PcCoverMediaTab from "@/v2/components/GameDetails/PcCoverMediaTab.vue";
+import {
+  componentHasPlacement,
+  componentMediaContentUrl,
+  componentPlacementPosition,
+} from "@/v2/components/GameDetails/pcComponentMediaPlacements";
+import type { PcCoverMediaTarget } from "@/v2/components/GameDetails/pcCoverMediaTarget";
+import {
+  componentMediaRoleLabel,
+  componentMediaSourceLabel,
+  createDlcMediaSubtabDefs,
+  surfaceCaptionKey,
+  surfaceLabelKey,
+  validDlcMediaSubtabs,
+  type DlcMediaSubtab,
+} from "@/v2/components/GameDetails/pcDlcMediaPresentation";
 import { useCan } from "@/v2/composables/useCan";
 import { useConfirm } from "@/v2/composables/useConfirm";
 import { useResponsiveColumns } from "@/v2/composables/useResponsiveColumns";
@@ -29,6 +48,32 @@ const snackbar = useSnackbar();
 const confirm = useConfirm();
 const canEdit = useCan("rom.edit", { kind: "rom", id: props.romId });
 const media = computed(() => props.component.owned_media ?? []);
+const route = useRoute();
+const router = useRouter();
+const subtab = ref<DlcMediaSubtab>("screenshots");
+const subtabDefs = computed(() => createDlcMediaSubtabDefs(t));
+watch(subtab, (value) => {
+  if (route.query.subtab !== value)
+    void router.replace({
+      path: route.path,
+      query: { ...route.query, subtab: value },
+    });
+});
+watch(
+  () => route.query.subtab,
+  (value) => {
+    if (typeof value !== "string") return;
+    if (validDlcMediaSubtabs.includes(value as DlcMediaSubtab)) {
+      subtab.value = value as DlcMediaSubtab;
+      return;
+    }
+    void router.replace({
+      path: route.path,
+      query: { ...route.query, subtab: "screenshots" },
+    });
+  },
+  { immediate: true },
+);
 const uploading = ref(false);
 const placing = ref(false);
 const deleting = ref(false);
@@ -38,61 +83,59 @@ const busy = computed(
   () =>
     uploading.value || placing.value || deleting.value || needsRefresh.value,
 );
-const role = ref<RomComponentOwnedMediaRole>("screenshot");
-const roles: RomComponentOwnedMediaRole[] = [
-  "cover",
-  "gallery",
-  "screenshot",
-  "artwork",
-];
-const roleItems = computed(() =>
-  roles.map((value) => ({
-    title: t(`rom.pc-media-role-${value}`),
-    value,
-  })),
+const activeRoles = computed<RomComponentOwnedMediaRole[]>(() => {
+  if (subtab.value === "screenshots") return ["screenshot"];
+  if (subtab.value === "backgrounds" || subtab.value === "overview-images")
+    return [];
+  return ["artwork", "background", "gallery"];
+});
+const uploadRole = computed<RomComponentOwnedMediaRole>(() =>
+  subtab.value === "screenshots" ? "screenshot" : "artwork",
 );
+const activeImageSurfaces: RomOwnedMediaSurface[] = ["overview", "background"];
 const componentVersion = computed(() => props.component.updated_at ?? null);
 const filteredMedia = computed(() =>
-  media.value.filter((item) => item.role === role.value),
+  media.value.filter((item) => activeRoles.value.includes(item.role)),
+);
+const emptyMediaTitle = computed(() =>
+  subtab.value === "artwork"
+    ? t("rom.pc-media-empty-gallery")
+    : t("rom.screenshots-empty"),
 );
 const mediaUrls = computed(() =>
-  filteredMedia.value.map((item) => mediaContentUrl(item.id)),
+  filteredMedia.value.map((item) =>
+    componentMediaContentUrl(endpoint, item.id),
+  ),
 );
 const gallery = ref<HTMLElement | null>(null);
 const root = ref<HTMLElement | null>(null);
-const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
+const dropzone = ref<InstanceType<typeof ZADropzone>[]>([]);
 const { columns } = useResponsiveColumns(gallery, { cardWidth: 200, gap: 12 });
 useWrapGridNav(root, { cellSelector: "button:not([disabled])" });
-const lightboxIndex = ref(0);
-const lightboxOpen = ref(false);
+const [lightboxIndex, lightboxOpen] = [ref(0), ref(false)];
 
 const endpoint = `/roms/${props.romId}/pc-components/${props.component.id}/media`;
+const coverTarget = computed<PcCoverMediaTarget>(() => ({
+  endpoint,
+  uploadEndpoint: endpoint,
+  selectionEndpoint: `${endpoint}/cover`,
+  expectedVersion: componentVersion.value,
+  candidates: media.value
+    .filter((candidate) => candidate.role === "cover")
+    .map((candidate) => ({
+      id: candidate.id,
+      role: "cover" as const,
+      owned_path: candidate.owned_path,
+    })),
+  activeCandidateId: props.component.active_owned_cover_media_id ?? null,
+  contentUrl: (candidateId) => componentMediaContentUrl(endpoint, candidateId),
+  refresh: props.refresh,
+}));
 
-function mediaContentUrl(mediaId: number) {
-  return `/api${endpoint}/${mediaId}/content`;
+function setGallery(element: unknown) {
+  gallery.value = element instanceof HTMLElement ? element : null;
 }
 
-function mediaRoleLabel(item: PcComponentOwnedMediaSchema) {
-  return t(`rom.pc-media-role-${item.role}`);
-}
-
-function mediaSourceLabel(item: PcComponentOwnedMediaSchema) {
-  if (item.origin === "provider" && item.provider) return item.provider;
-  return item.origin === "provider"
-    ? t("rom.pc-media-source-provider")
-    : t("rom.pc-media-source-uploaded");
-}
-
-function openMedia(index: number) {
-  lightboxIndex.value = index;
-  lightboxOpen.value = true;
-}
-
-function closeLightbox() {
-  lightboxOpen.value = false;
-}
-
-// Mutations stay serialized until the parent's version and owned media are canonical.
 async function reconcile() {
   try {
     const refreshed = await props.refresh();
@@ -124,7 +167,7 @@ async function upload(files: File[]) {
   try {
     const body = new FormData();
     body.append("media", file);
-    body.append("role", role.value);
+    body.append("role", uploadRole.value);
     body.append("expected_version", componentVersion.value);
     await api.post(endpoint, body);
     if (await reconcile()) snackbar.success(t("common.upload"));
@@ -136,28 +179,21 @@ async function upload(files: File[]) {
   }
 }
 
-function placementPosition(item: PcComponentOwnedMediaSchema) {
-  const placement = (item.placements ?? []).find(
-    (entry) => entry.position >= 0,
-  );
-  return placement ? placement.position + 1 : undefined;
-}
-
-function hasPlacement(item: PcComponentOwnedMediaSchema) {
-  return (item.placements ?? []).some((placement) => placement.position >= 0);
-}
-
-async function togglePlacement(item: PcComponentOwnedMediaSchema) {
+async function togglePlacement(
+  item: PcComponentOwnedMediaSchema,
+  surface: RomOwnedMediaSurface,
+) {
   if (!componentVersion.value || !canEdit.value || busy.value) return;
   placing.value = true;
   try {
-    if (hasPlacement(item)) {
+    if (componentHasPlacement(item, surface)) {
       await api.delete(`${endpoint}/${item.id}/placement`, {
-        params: { expected_version: componentVersion.value },
+        params: { expected_version: componentVersion.value, surface },
       });
     } else {
       await api.post(`${endpoint}/${item.id}/placement`, {
         expected_version: componentVersion.value,
+        surface,
       });
     }
     await reconcile();
@@ -196,101 +232,166 @@ async function remove(mediaId: number) {
     <h2 id="pc-dlc-media-heading" class="pc-dlc-media__heading">
       {{ t("rom.media") }}
     </h2>
-    <ZASelect
-      v-model="role"
-      :items="roleItems"
-      item-title="title"
-      item-value="value"
-      :label="t('rom.media')"
-    />
-    <ZADropzone
-      ref="dropzone"
-      overlay
-      :disabled="busy || !componentVersion || !canEdit"
-      accept="image/jpeg,image/png,image/webp"
-      :input-label="t('common.upload')"
-      :release-label="t('common.dropzone-drag-over')"
-      @files="upload"
-    >
-      <header class="za-media-upload d-flex flex-wrap align-center ga-3 pa-4">
-        <MediaUploadControl
-          :available="canEdit"
-          :loading="uploading"
-          :disabled="busy || !componentVersion"
-          :label="t('common.upload')"
-          :hint="t('common.dropzone-hint')"
-          @upload="dropzone?.open()"
+    <div class="pc-dlc-media__layout">
+      <aside class="pc-dlc-media__sidebar">
+        <ZATabNav
+          v-model="subtab"
+          :items="subtabDefs"
+          variant="pill"
+          orientation="vertical"
+          class="pc-dlc-media__tabs"
         />
-      </header>
-      <div v-if="needsRefresh" role="alert" class="d-flex align-center ga-3">
-        <span>{{ t("common.error") }}</span>
-        <ZABtn
-          :loading="recovering"
-          :disabled="recovering"
-          :aria-label="t('common.try-again')"
-          @click="retryReconciliation"
-          >{{ t("common.try-again") }}</ZABtn
+      </aside>
+      <div class="pc-dlc-media__content">
+        <section
+          v-for="tab in subtabDefs"
+          :id="tab.controls"
+          :key="tab.id"
+          v-show="subtab === tab.id"
+          class="pc-dlc-media__panel"
+          role="tabpanel"
+          :aria-labelledby="tab.tabId"
         >
-      </div>
-      <ZAEmptyState
-        v-if="filteredMedia.length === 0"
-        :title="t('rom.artwork-empty')"
-      />
-      <ul
-        v-else
-        ref="gallery"
-        class="pc-dlc-media__list ga-3 ma-0 pa-0 pt-4"
-        :style="{ '--za-shot-columns': columns }"
-      >
-        <li v-for="(item, index) in filteredMedia" :key="item.id">
-          <MediaManagementCard
-            :url="mediaContentUrl(item.id)"
-            :label="`${mediaRoleLabel(item)} ${index + 1}`"
-            @preview="openMedia(index)"
+          <ActiveComponentMediaPlacements
+            v-if="tab.id === 'backgrounds' && subtab === tab.id"
+            :rom-id="romId"
+            :component="component"
+            surface="background"
+            :refresh="refresh"
+          />
+          <ActiveComponentMediaPlacements
+            v-else-if="tab.id === 'overview-images' && subtab === tab.id"
+            :rom-id="romId"
+            :component="component"
+            surface="overview"
+            :refresh="refresh"
+          />
+          <PcCoverMediaTab
+            v-else-if="tab.id === 'cover' && subtab === tab.id"
+            :rom-id="romId"
+            :target="coverTarget"
+          />
+          <ZADropzone
+            v-else-if="subtab === tab.id"
+            ref="dropzone"
+            overlay
+            :disabled="busy || !componentVersion || !canEdit"
+            accept="image/gif,image/jpeg,image/png,image/webp"
+            :input-label="t('common.upload')"
+            :release-label="t('common.dropzone-drag-over')"
+            @files="upload"
           >
-            <span class="za-shot__source">{{ mediaRoleLabel(item) }}</span>
-            <span class="za-shot__source" :title="mediaSourceLabel(item)">{{
-              mediaSourceLabel(item)
-            }}</span>
-            <div class="za-shot__badges d-flex flex-wrap ga-1">
-              <span
-                v-if="hasPlacement(item)"
-                class="za-shot__badge za-shot__badge--overview"
+            <header
+              class="za-media-upload d-flex flex-wrap align-center ga-3 pa-4"
+            >
+              <MediaUploadControl
+                :available="canEdit"
+                :loading="uploading"
+                :disabled="busy || !componentVersion"
+                :label="t('common.upload')"
+                :hint="t('common.dropzone-hint')"
+                @upload="dropzone[0]?.open()"
+              />
+            </header>
+            <div
+              v-if="needsRefresh"
+              role="alert"
+              class="d-flex align-center ga-3"
+            >
+              <span>{{ t("common.error") }}</span>
+              <ZABtn
+                :loading="recovering"
+                :disabled="recovering"
+                :aria-label="t('common.try-again')"
+                @click="retryReconciliation"
+                >{{ t("common.try-again") }}</ZABtn
               >
-                {{
-                  t("rom.screenshots-overview-position", {
-                    position: placementPosition(item),
-                  })
-                }}
-              </span>
             </div>
-            <div v-if="canEdit" class="za-shot__actions d-flex flex-wrap ga-1">
-              <MediaManagementAction
-                icon="mdi-crown-outline"
-                :selected="hasPlacement(item)"
-                :caption="t('rom.screenshots-action-overview')"
-                :label="
-                  hasPlacement(item)
-                    ? t('rom.remove-from-overview')
-                    : t('rom.add-to-overview')
-                "
-                :disabled="!componentVersion || busy"
-                :loading="placing"
-                @click="togglePlacement(item)"
-              />
-              <MediaManagementAction
-                icon="mdi-delete-outline"
-                tone="danger"
-                :caption="t('common.delete')"
-                :label="t('common.delete')"
-                :disabled="!componentVersion || busy"
-                @click="remove(item.id)"
-              />
-            </div>
-          </MediaManagementCard>
-        </li>
-      </ul>
-    </ZADropzone>
+            <ZAEmptyState
+              v-if="filteredMedia.length === 0"
+              :title="emptyMediaTitle"
+            />
+            <ul
+              v-else
+              :ref="setGallery"
+              class="pc-dlc-media__list ga-3 ma-0 pa-0 pt-4"
+              :style="{ '--za-shot-columns': columns }"
+            >
+              <li v-for="(item, index) in filteredMedia" :key="item.id">
+                <MediaManagementCard
+                  :url="componentMediaContentUrl(endpoint, item.id)"
+                  :label="`${componentMediaRoleLabel(t, item)} ${index + 1}`"
+                  @preview="
+                    lightboxIndex = index;
+                    lightboxOpen = true;
+                  "
+                >
+                  <span class="za-shot__source">{{
+                    componentMediaRoleLabel(t, item)
+                  }}</span>
+                  <span
+                    class="za-shot__source"
+                    :title="componentMediaSourceLabel(t, item)"
+                    >{{ componentMediaSourceLabel(t, item) }}</span
+                  >
+                  <div class="za-shot__badges d-flex flex-wrap ga-1">
+                    <span
+                      v-for="surface in activeImageSurfaces"
+                      v-show="componentHasPlacement(item, surface)"
+                      :key="surface"
+                      class="za-shot__badge"
+                      :class="`za-shot__badge--${surface}`"
+                    >
+                      {{
+                        t(`rom.screenshots-${surface}-position`, {
+                          position: componentPlacementPosition(item, surface),
+                        })
+                      }}
+                    </span>
+                  </div>
+                  <div
+                    v-if="canEdit"
+                    class="za-shot__actions d-flex flex-wrap ga-1"
+                  >
+                    <MediaManagementAction
+                      v-for="surface in activeImageSurfaces"
+                      :key="surface"
+                      :icon="
+                        surface === 'overview'
+                          ? 'mdi-view-dashboard-outline'
+                          : 'mdi-image-outline'
+                      "
+                      tone="brand"
+                      :selected="componentHasPlacement(item, surface)"
+                      :caption="t(surfaceCaptionKey(surface))"
+                      :label="
+                        t(
+                          surfaceLabelKey(
+                            surface,
+                            componentHasPlacement(item, surface),
+                          ),
+                        )
+                      "
+                      :disabled="!componentVersion || busy"
+                      :loading="placing"
+                      @click="togglePlacement(item, surface)"
+                    />
+                    <MediaManagementAction
+                      icon="mdi-delete-outline"
+                      tone="danger"
+                      :caption="t('common.delete')"
+                      :label="t('common.delete')"
+                      :disabled="!componentVersion || busy"
+                      @click="remove(item.id)"
+                    />
+                  </div>
+                </MediaManagementCard>
+              </li>
+            </ul>
+          </ZADropzone>
+        </section>
+      </div>
+    </div>
     <ZACarousel
       v-if="lightboxOpen"
       v-model="lightboxIndex"
@@ -298,7 +399,8 @@ async function remove(mediaId: number) {
       fullscreen
       show-thumbnails
       :aria-label="t('rom.media')"
-      @close="closeLightbox"
+      :close-label="t('common.close')"
+      @close="lightboxOpen = false"
     >
       <template #default="{ item, index }">
         <img :src="item" :alt="`${t('rom.media')} ${index + 1}`" />
@@ -310,23 +412,6 @@ async function remove(mediaId: number) {
   </section>
 </template>
 
-<style scoped>
-.pc-dlc-media {
-  min-width: 0;
-}
-.pc-dlc-media__heading {
-  margin: 0;
-  color: var(--r-color-fg);
-  font-size: var(--r-font-size-2xl);
-}
-.pc-dlc-media__list {
-  display: grid;
-  grid-template-columns: repeat(var(--za-shot-columns, 1), minmax(0, 1fr));
-  list-style: none;
-}
-.pc-dlc-media__list > li {
-  min-width: 0;
-}
-</style>
+<style scoped src="./pcDlcMediaTab.css" />
 <style scoped src="./mediaManagementCard.css" />
 <style scoped src="./mediaManagementUpload.css" />

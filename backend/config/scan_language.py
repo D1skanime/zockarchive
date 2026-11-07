@@ -62,6 +62,7 @@ def _persist(path: Path, raw: dict) -> None:
 def _mutate(manager: "ConfigManager", change: Callable[[dict], None]) -> list[str]:
     path = Path(manager.config_file)
     with _MUTATION_LOCK:
+        prior_state = manager.__dict__.copy()
         try:
             if not manager._config_file_writable or not path.stat().st_mode & 0o222:
                 raise ConfigNotWritableException
@@ -81,6 +82,8 @@ def _mutate(manager: "ConfigManager", change: Callable[[dict], None]) -> list[st
                 manager.__dict__.update(candidate.__dict__)
                 return list(candidate.config.SCAN_LANGUAGE_PRIORITY)
         except (OSError, yaml.YAMLError) as error:
+            manager.__dict__.clear()
+            manager.__dict__.update(prior_state)
             raise ConfigNotWritableException from error
 
 

@@ -703,7 +703,7 @@ def test_owned_media_database_rejects_invalid_role(rom):
     candidate = RomOwnedMedia(
         rom_id=rom.id,
         origin=RomOwnedMediaOrigin.UPLOAD,
-        role="cover",
+        role="invalid",
         display_label="operator-upload.webp",
         mime_type="image/webp",
         owned_path="roms/1/media/upload/operator-upload.webp",

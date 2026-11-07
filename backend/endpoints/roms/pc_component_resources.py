@@ -1,16 +1,15 @@
 """Bounded resources belonging to one contained DLC component."""
 
 from datetime import datetime
-from io import BytesIO
 from pathlib import PurePosixPath
 from typing import Annotated, cast
 
 from fastapi import File, Form, HTTPException, Request, UploadFile, status
 from fastapi.responses import StreamingResponse
-from PIL import Image, UnidentifiedImageError
 
 from decorators.auth import protected_route
 from endpoints.responses.rom import (
+    OwnedCoverSelectionRequest,
     PcComponentNoteCreateRequest,
     PcComponentNoteSchema,
     PcComponentNoteUpdateRequest,
@@ -22,45 +21,28 @@ from endpoints.roms.files import (
     _mapped_chunks,
     preflight_mapped_download,
 )
-from exceptions.endpoint_exceptions import RomNotFoundInDatabaseException
+from endpoints.roms.pc_component_manual_resources import router as manual_router
+from endpoints.roms.pc_component_media_order import router as order_router
+from endpoints.roms.pc_component_resource_support import (
+    component_note_or_404,
+    component_upload_content,
+    get_dlc_component,
+)
 from handler.auth.constants import Scope
-from handler.auth.dependencies import assert_rom_visible
 from handler.database import db_rom_handler
 from handler.filesystem import fs_resource_handler, fs_rom_handler, storage_composition
 from handler.filesystem.storage_access import OwnedRead, open_owned_access
 from handler.filesystem.storage_policy import OwnedStorageKind, StorageOperation
 from models.rom import (
-    RomComponentKind,
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaRole,
+    RomOwnedMediaSurface,
 )
 from utils.router import APIRouter
 
 router = APIRouter()
-
-_UPLOAD_LIMIT = 10 * 1024 * 1024
-_UPLOAD_MIME_TYPES = {
-    "JPEG": ("image/jpeg", "jpg"),
-    "PNG": ("image/png", "png"),
-    "WEBP": ("image/webp", "webp"),
-}
-
-
-def _dlc_component(request: Request, rom_id: int, component_id: int):
-    rom = db_rom_handler.get_rom(rom_id)
-    if not rom:
-        raise RomNotFoundInDatabaseException(rom_id)
-    assert_rom_visible(request, rom)
-    component = db_rom_handler.get_pc_component_by_id(rom_id, component_id)
-    if component is None or component.kind != RomComponentKind.DLC:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return rom, component
-
-
-def _note_or_404(value):
-    if value is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    return PcComponentNoteSchema.model_validate(value)
+router.include_router(order_router)
+router.include_router(manual_router)
 
 
 @protected_route(
@@ -69,7 +51,7 @@ def _note_or_404(value):
 async def get_component_notes(
     request: Request, id: int, component_id: int
 ) -> list[PcComponentNoteSchema]:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     return [
         PcComponentNoteSchema.model_validate(note)
         for note in db_rom_handler.get_pc_component_notes(
@@ -84,8 +66,8 @@ async def get_component_notes(
 async def create_component_note(
     request: Request, id: int, component_id: int, note: PcComponentNoteCreateRequest
 ) -> PcComponentNoteSchema:
-    _dlc_component(request, id, component_id)
-    return _note_or_404(
+    get_dlc_component(request, id, component_id)
+    return component_note_or_404(
         db_rom_handler.create_pc_component_note(
             id,
             component_id,
@@ -111,9 +93,9 @@ async def update_component_note(
     note_id: int,
     note: PcComponentNoteUpdateRequest,
 ) -> PcComponentNoteSchema:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     fields = note.model_dump(exclude={"expected_version"}, exclude_none=True)
-    return _note_or_404(
+    return component_note_or_404(
         db_rom_handler.update_pc_component_note(
             id, component_id, request.user.id, note_id, note.expected_version, **fields
         )
@@ -132,7 +114,7 @@ async def delete_component_note(
     note_id: int,
     expected_version: datetime,
 ) -> dict[str, str]:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     if not db_rom_handler.delete_pc_component_note(
         id, component_id, request.user.id, note_id, expected_version
     ):
@@ -146,34 +128,13 @@ async def delete_component_note(
 async def get_component_media(
     request: Request, id: int, component_id: int
 ) -> list[PcComponentOwnedMediaSchema]:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     return [
         PcComponentOwnedMediaSchema.model_validate(media)
         for media in db_rom_handler.get_pc_component_owned_media(
             id, component_id, request.user.id
         )
     ]
-
-
-async def _validated_upload(upload: UploadFile) -> tuple[bytes, str, str]:
-    content = await upload.read(_UPLOAD_LIMIT + 1)
-    if not content or len(content) > _UPLOAD_LIMIT:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Component media must be at most 10 MiB",
-        )
-    try:
-        with Image.open(BytesIO(content)) as image:
-            image.verify()
-            media = _UPLOAD_MIME_TYPES.get(image.format or "")
-    except (UnidentifiedImageError, OSError, ValueError):
-        media = None
-    if media is None:
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Component media must be a PNG, JPEG, or WebP image",
-        )
-    return content, *media
 
 
 @protected_route(
@@ -187,13 +148,21 @@ async def upload_component_media(
     expected_version: Annotated[datetime, Form()],
     media: Annotated[UploadFile, File()],
 ) -> PcComponentOwnedMediaSchema:
-    rom, _ = _dlc_component(request, id, component_id)
-    content, mime_type, extension = await _validated_upload(media)
+    rom, _ = get_dlc_component(request, id, component_id)
+    content, image_mime_type, extension = await component_upload_content(role, media)
     owned_path: str | None = None
     try:
-        owned_path = await fs_resource_handler.store_pc_component_upload(
-            rom, component_id, role, content, extension
-        )
+        if role == RomComponentOwnedMediaRole.SOUNDTRACK:
+            owned_path, mime_type = await fs_resource_handler.store_pc_component_audio(
+                rom, component_id, content, extension
+            )
+        else:
+            owned_path = await fs_resource_handler.store_pc_component_upload(
+                rom, component_id, role, content, extension
+            )
+            assert image_mime_type is not None
+            mime_type = image_mime_type
+        assert owned_path is not None
         applied = db_rom_handler.create_pc_component_owned_media(
             id,
             component_id,
@@ -214,7 +183,54 @@ async def upload_component_media(
         ) from exc
     for replaced_path in applied.replaced_owned_paths:
         await fs_resource_handler.remove_file(replaced_path)
-    return PcComponentOwnedMediaSchema.model_validate(applied.media)
+    persisted = next(
+        (
+            item
+            for item in db_rom_handler.get_pc_component_owned_media(
+                id, component_id, request.user.id
+            )
+            if item.id == applied.media.id
+        ),
+        None,
+    )
+    if persisted is None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+    return PcComponentOwnedMediaSchema.model_validate(persisted)
+
+
+@protected_route(
+    router.post,
+    "/{id}/pc-components/{component_id}/media/cover",
+    [Scope.ROMS_WRITE],
+)
+async def select_component_cover_media(
+    request: Request,
+    id: int,
+    component_id: int,
+    payload: OwnedCoverSelectionRequest,
+) -> PcComponentOwnedMediaSchema:
+    """Select a retained Cover candidate for this exact DLC or expansion."""
+    get_dlc_component(request, id, component_id)
+    component = db_rom_handler.select_pc_component_owned_cover_media(
+        id,
+        component_id,
+        request.user.id,
+        payload.media_id,
+        payload.expected_version,
+    )
+    if component is None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+    selected = next(
+        (
+            media
+            for media in component.owned_media
+            if media.id == component.active_owned_cover_media_id
+        ),
+        None,
+    )
+    if selected is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    return PcComponentOwnedMediaSchema.model_validate(selected)
 
 
 @protected_route(
@@ -229,7 +245,7 @@ async def delete_component_media(
     media_id: int,
     expected_version: datetime,
 ) -> dict[str, str]:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     owned_path = db_rom_handler.delete_pc_component_owned_media(
         id, component_id, request.user.id, media_id, expected_version
     )
@@ -254,9 +270,15 @@ async def add_component_media_placement(
     media_id: int,
     payload: PcComponentOwnedMediaPlacementMutationRequest,
 ) -> PcComponentOwnedMediaSchema:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     media = db_rom_handler.set_pc_component_owned_media_placement(
-        id, component_id, request.user.id, media_id, payload.expected_version, True
+        id,
+        component_id,
+        request.user.id,
+        media_id,
+        payload.expected_version,
+        payload.surface,
+        True,
     )
     if media is None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
@@ -274,10 +296,11 @@ async def remove_component_media_placement(
     component_id: int,
     media_id: int,
     expected_version: datetime,
+    surface: RomOwnedMediaSurface,
 ) -> PcComponentOwnedMediaSchema:
-    _dlc_component(request, id, component_id)
+    get_dlc_component(request, id, component_id)
     media = db_rom_handler.set_pc_component_owned_media_placement(
-        id, component_id, request.user.id, media_id, expected_version, False
+        id, component_id, request.user.id, media_id, expected_version, surface, False
     )
     if media is None:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT)
@@ -292,7 +315,7 @@ async def remove_component_media_placement(
 async def download_component_manifest_member(
     request: Request, id: int, component_id: int, member_id: int
 ):
-    rom, component = _dlc_component(request, id, component_id)
+    rom, component = get_dlc_component(request, id, component_id)
     member = next(
         (item for item in component.manifest_members if item.id == member_id), None
     )
@@ -328,7 +351,7 @@ async def download_component_manifest_member(
 async def download_component_media(
     request: Request, id: int, component_id: int, media_id: int
 ):
-    _, component = _dlc_component(request, id, component_id)
+    _, component = get_dlc_component(request, id, component_id)
     media = next(
         (
             item

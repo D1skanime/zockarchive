@@ -1,0 +1,74 @@
+{
+  "bg_BG": {
+    "common": "0f9891b967145f94dab8db87f96285f30e0dff41c8ad8014045474e046c6438d",
+    "rom": "33803608f26dd1c2c935a429d1796fee990cc469a0acd443328e1876864297d6"
+  },
+  "cs_CZ": {
+    "common": "393a45ca05c8f469aa0e72ea9b31a1ed891a07e613ba1d713c105ac0b274e2b9",
+    "rom": "af19a7eefbc0764c3342d7f47c9f1263117ba7267350be8604ae617ddaa6d6b7"
+  },
+  "de_DE": {
+    "common": "e812f191cb6a819c58e83d8dcebf720e3ba19a427fbf36e995874c867895da3b",
+    "rom": "e8bf04296fa4717b0b49cbede7b9b1274b82d3c155560554f83c8da591efb448"
+  },
+  "en_GB": {
+    "common": "42fd68b58ca577c76887e0cbc73efefaac50d2bf21cb272f992fbf7c8a666bb0",
+    "rom": "9d44d58161591ee3140c1a56eac0637006d2f2a5acbabe8bd31d2db628c1aac6"
+  },
+  "en_US": {
+    "common": "42fd68b58ca577c76887e0cbc73efefaac50d2bf21cb272f992fbf7c8a666bb0",
+    "rom": "af57baaa65c5ef9107871192c64bff5261de28c1694d94908352f5b9bf2fd4bf"
+  },
+  "es_ES": {
+    "common": "2015dc04182e93db75e9ac8d1ac593299a3d0eb081f3d98a6f865d35afde2ff1",
+    "rom": "2d869e362b003c4ecbe7b9506dfe39def5ccd8e6e6f469b37c0dc3bfd3c8fb99"
+  },
+  "fr_FR": {
+    "common": "1fc7a9ff96c0014c03e2d2336610a105cc2caa12bf5441b9ad25acaf1bee6c89",
+    "rom": "22edb782b719df0fb93e736a4bc964f9f9a959dc9e6fc252522916eefa1a26e7"
+  },
+  "hu_HU": {
+    "common": "bed71552ff44d52266905dfd6c3ce12532325ebb920d2c2c5ddefae99aae2cc4",
+    "rom": "1e040dd0236fb64becf949a121582a7e34a82cf2666acf22b6e6bdc5dd81f0eb"
+  },
+  "it_IT": {
+    "common": "04906c1871c2dbb4450bec8aec376f31e23146403b6e8997dd0fc62d7d998628",
+    "rom": "23e5a6c14405bbc80e5331c73f39aceab73156f25b2ea8c42091505ea89579e4"
+  },
+  "ja_JP": {
+    "common": "0a2a1388e1dacc1d8b2dc01cc5def495cb84cde2ecaea5f6b3bbe23bb3220613",
+    "rom": "010f1c6161dc13ee73029f655414f58acc25e295dd41bc4432ebe8daa2465312"
+  },
+  "ko_KR": {
+    "common": "13428cc4c25b1f263a1def8eecd2c4248899181c4e2fed9c4848eec3735108d6",
+    "rom": "3bb330af6409ed6bdd5a4511dc071405e08efa7f1cc3b16a34507169098a72fa"
+  },
+  "pl_PL": {
+    "common": "b9d99835673e5cebf0f45428e22347bfcd9a356560df4d0d6911f5f2080688c4",
+    "rom": "2cfefe20c1a1ce2ffb35937d36945cc78f4be4e66ec29d9b1eebe5c32dc403ae"
+  },
+  "pt_BR": {
+    "common": "83e54177c084b4f697c34518d4ec100d4351a9d37c21f48acc9dc9ed8cac5842",
+    "rom": "35f1ae9e05c2eb9524537baeb55e01fb6863166ced68255def1a2ae99e0f4bf6"
+  },
+  "ro_RO": {
+    "common": "26866a455417313aa950b87c31ccb294b6e431bf459ab306984552965edcb7b6",
+    "rom": "9f258381d86d5ae3c10714100f3f8ddbd6c87680747dabeb8770de0e0ba507ca"
+  },
+  "ru_RU": {
+    "common": "ecb5d2ecfec8aae34910e66bcb417a7e5252cecb03c617d11c53f317f61fdf67",
+    "rom": "1be74056f2a202fa60a0ad9f4b12e51d8f54666f6bffa08ded5bf8bf6807a0fe"
+  },
+  "tr_TR": {
+    "common": "0d4fd08fab7e2b0af2b3d6855cf2bb1d30ad3ba352815ccb124dca42df573186",
+    "rom": "5f1d5d65ef66d52f927371596df36b7d55f8b7b57f5e774e0bd29912b4d41405"
+  },
+  "zh_CN": {
+    "common": "1835508f184419e94bea334ffa6be78ca3633e309425aab974616c2871cfb1ea",
+    "rom": "7388d43392628102227f312a922b8b388f564e540b641c1292a60636f52e4da2"
+  },
+  "zh_TW": {
+    "common": "ec3cf87d667ccc26bdcfc39ff49934f0d9695eb04b2812f7a92fb73a05c73e4c",
+    "rom": "e869b84b6d4dfed7736a50f2351a8e8329a4b8b386a035960efbfe4a3fd6db8f"
+  }
+}

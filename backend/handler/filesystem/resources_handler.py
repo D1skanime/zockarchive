@@ -17,6 +17,7 @@ from config import (
 )
 from config.config_manager import MetadataMediaType
 from handler.database.scan_write_fence import current_scan_write_context
+from handler.filesystem.pc_component_resources import PcComponentResourceStorageMixin
 from handler.filesystem.scan_media_publication import (
     require_scan_media_batch,
     store_resource,
@@ -128,7 +129,7 @@ def _is_chroma_key_placeholder(image_path: Path | BinaryIO) -> bool:
     return green / total >= _CHROMA_KEY_COVERAGE
 
 
-class FSResourcesHandler(FSHandler):
+class FSResourcesHandler(PcComponentResourceStorageMixin, FSHandler):
     def __init__(self, storage: OwnedStorageDescriptor) -> None:
         super().__init__(base_path=RESOURCES_BASE_PATH, storage=storage)
         self.image_converter = ImageConverter()
@@ -155,12 +156,15 @@ class FSResourcesHandler(FSHandler):
             with Image.open(BytesIO(content)) as image:
                 image.verify()
                 media = {
+                    "GIF": ("image/gif", "gif"),
                     "JPEG": ("image/jpeg", "jpg"),
                     "PNG": ("image/png", "png"),
                     "WEBP": ("image/webp", "webp"),
                 }.get(image.format or "")
         except (UnidentifiedImageError, OSError, ValueError) as exc:
-            raise ValueError("Owned media must be a PNG, JPEG, or WebP image") from exc
+            raise ValueError(
+                "Owned media must be a GIF, PNG, JPEG, or WebP image"
+            ) from exc
         if media is None:
             raise ValueError("Owned media image type is not supported")
         mime_type, extension = media
@@ -258,9 +262,12 @@ class FSResourcesHandler(FSHandler):
                 image.verify()
         except (UnidentifiedImageError, OSError, ValueError) as exc:
             raise ValueError("Provider media is not a valid image") from exc
-        extension = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(
-            mime_type
-        )
+        extension = {
+            "image/gif": "gif",
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+        }.get(mime_type)
         if extension is None:
             raise ValueError("Provider media type is not supported")
         content_sha256 = hashlib.sha256(response_content).hexdigest()
@@ -274,20 +281,6 @@ class FSResourcesHandler(FSHandler):
             return path, mime_type, content_sha256
         await self.write_file(response_content, media_path, filename)
         return f"{media_path}/{filename}", mime_type, content_sha256
-
-    async def store_pc_component_upload(
-        self,
-        rom: Rom,
-        component_id: int,
-        role: RomComponentOwnedMediaRole,
-        content: bytes,
-        extension: str,
-    ) -> str:
-        """Store validated uploaded component media in RomM-owned storage."""
-        media_path = f"{rom.fs_resources_path}/pc-owned-media"
-        filename = f"{component_id}-upload-{role.value}.{extension}"
-        await self.write_file(content, media_path, filename)
-        return f"{media_path}/{filename}"
 
     # Cover art
     def cover_exists(self, entity: Rom | Collection, size: CoverSize) -> bool:
@@ -365,12 +358,14 @@ class FSResourcesHandler(FSHandler):
             log.error(f"Unable to remove partial file {relative_path}: {str(exc)}")
 
     async def _store_cover(self, entity, url_cover, size):
+        """Keep a large animated provider cover raw for the legacy hero path."""
         return await store_resource(
             self,
             url_cover,
             f"{entity.fs_resources_path}/cover/{size.value}.png",
             ("image/",),
             cover_size=size.value,
+            preserve_animated_cover=size == CoverSize.BIG,
         )
 
     def _get_cover_path(self, entity: Rom | Collection, size: CoverSize) -> str | None:
@@ -406,20 +401,9 @@ class FSResourcesHandler(FSHandler):
     async def get_cover(
         self, entity: Rom | Collection | None, overwrite: bool, url_cover: str | None
     ) -> tuple[str | None, str | None]:
-        if not entity:
-            return None, None
-        small = self._get_cover_path(entity, CoverSize.SMALL)
-        large = self._get_cover_path(entity, CoverSize.BIG)
-        if url_cover:
-            if overwrite or not small:
-                small = (
-                    await self._store_cover(entity, url_cover, CoverSize.SMALL) or small
-                )
-            if overwrite or not large:
-                large = (
-                    await self._store_cover(entity, url_cover, CoverSize.BIG) or large
-                )
-        return small, large
+        from handler.filesystem.cover_lookup import get_cover
+
+        return await get_cover(self, entity, overwrite, url_cover)
 
     async def remove_cover(self, entity: Rom | Collection | None):
         if not entity:

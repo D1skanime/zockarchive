@@ -21,6 +21,7 @@ import {
 } from "vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZAImg from "../../primitives/ZAImg/ZAImg.vue";
+import { tabNavigationTarget } from "./tabNavigation";
 import type { ZATabNavItem } from "./types";
 
 defineOptions({ inheritAttrs: false });
@@ -40,7 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   orientation: "horizontal",
 });
 
-defineEmits<{
+const emit = defineEmits<{
   (e: "update:modelValue", v: string): void;
 }>();
 
@@ -56,6 +57,24 @@ const animate = ref(false);
 
 function setBtnEl(id: string, el: Element | null) {
   btnEls.set(id, el as HTMLElement | null);
+}
+
+function selectAndFocus(id: string) {
+  emit("update:modelValue", id);
+  void nextTick(() => btnEls.get(id)?.focus());
+}
+
+function onTabKeydown(event: KeyboardEvent, id: string) {
+  const nextId = tabNavigationTarget(
+    event.key,
+    id,
+    visibleItems.value,
+    props.orientation,
+  );
+  if (!nextId) return;
+
+  event.preventDefault();
+  selectAndFocus(nextId);
 }
 
 function update() {
@@ -153,10 +172,13 @@ onBeforeUnmount(() => {
       :ref="(el) => setBtnEl(t.id, el as Element | null)"
       type="button"
       role="tab"
+      :id="t.tabId"
       class="r-tab-nav__btn"
       :class="{ 'r-tab-nav__btn--active': modelValue === t.id }"
       :aria-selected="modelValue === t.id"
-      @click="$emit('update:modelValue', t.id)"
+      :aria-controls="t.controls"
+      @click="emit('update:modelValue', t.id)"
+      @keydown="onTabKeydown($event, t.id)"
     >
       <ZAImg
         v-if="t.image"

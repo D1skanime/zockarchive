@@ -21,6 +21,7 @@ from endpoints.responses.rom import (
     PcMetadataSelectionRequest,
     PcMetadataSelectionResponse,
 )
+from endpoints.roms.pc_metadata_media import persist_selected_pc_metadata_media
 from exceptions.endpoint_exceptions import RomNotFoundInDatabaseException
 from handler.auth.constants import Scope
 from handler.auth.dependencies import assert_rom_visible
@@ -768,40 +769,9 @@ async def select_pc_metadata_candidate(
     confirmed_media = [
         selected_media[media_id] for media_id in selection.selected_media_ids
     ]
-    selected_cover = next(
-        (media["url"] for media in confirmed_media if media["kind"] == "cover"),
-        None,
+    updated = await persist_selected_pc_metadata_media(
+        id, updated, candidate.provider, confirmed_media
     )
-    selected_screenshots = [
-        media["url"]
-        for media in confirmed_media
-        if media["kind"] in {"screenshot", "artwork"}
-    ]
-    media_updates: dict[str, Any] = {}
-    if selected_cover:
-        path_cover_s, path_cover_l = await fs_resource_handler.get_cover(
-            updated, overwrite=True, url_cover=selected_cover
-        )
-        media_updates.update(
-            {
-                "url_cover": selected_cover,
-                "path_cover_s": path_cover_s,
-                "path_cover_l": path_cover_l,
-            }
-        )
-    if selected_screenshots:
-        media_updates.update(
-            {
-                "url_screenshots": [],
-                "path_screenshots": await fs_resource_handler.get_rom_screenshots(
-                    rom=updated,
-                    overwrite=True,
-                    url_screenshots=selected_screenshots,
-                ),
-            }
-        )
-    if media_updates:
-        db_rom_handler.update_rom(id, media_updates)
 
     pc_automation_queue_handler.resolve_after_manual_selection(
         target_kind=PcAutomationTargetKind.PARENT,

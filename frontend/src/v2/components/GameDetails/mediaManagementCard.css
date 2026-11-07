@@ -1,27 +1,20 @@
 .za-shot {
   min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--r-color-border);
-  border-radius: var(--r-radius-card);
-  background: var(--r-color-bg-elevated);
-  backdrop-filter: blur(var(--r-space-2));
   font-size: var(--r-font-size-md);
   line-height: var(--r-line-height-normal);
 }
-.za-shot--new {
-  border-color: var(--r-color-brand-primary);
+.za-shot__surface {
+  min-width: 0;
 }
 .za-shot__preview {
   display: grid;
   place-items: center;
   width: 100%;
   aspect-ratio: 16 / 9;
-  padding: 0;
-  border: 0;
   border-radius: var(--r-radius-art);
   background: var(--r-color-cover-placeholder);
   color: var(--r-color-fg);
-  cursor: pointer;
+  height: auto;
 }
 .za-shot__preview img {
   display: block;
@@ -65,21 +58,15 @@
   min-width: 0;
 }
 /* Touch compatibility mouse events must not shrink action hit targets. */
-.za-shot__actions :deep(button) {
+.za-shot__actions :deep(.r-btn) {
   min-width: var(--r-touch-target);
   min-height: var(--r-touch-target);
 }
-.za-shot__action.r-btn {
-  --za-action-accent: var(--r-color-brand-primary);
+.za-shot__action {
   flex: 1 1 auto;
   min-width: var(--r-touch-target);
   height: auto;
   padding: var(--r-space-2) var(--r-space-1);
-  color: var(--za-action-accent);
-  background: color-mix(in srgb, var(--za-action-accent) 6%, transparent);
-  border: 1px solid
-    color-mix(in srgb, var(--za-action-accent) 22%, var(--r-color-border));
-  border-radius: var(--r-radius-md);
   font-size: var(--r-font-size-xs);
   letter-spacing: normal;
 }
@@ -93,18 +80,6 @@
   white-space: normal;
   overflow-wrap: normal;
 }
-.za-shot__action.r-btn.za-shot__action--selected:not(:disabled) {
-  background: color-mix(
-    in srgb,
-    var(--za-action-accent) 18%,
-    var(--r-color-surface)
-  );
-  border-color: color-mix(
-    in srgb,
-    var(--za-action-accent) 70%,
-    var(--r-color-border)
-  );
-}
 .za-shot__identity {
   position: relative;
   display: inline-flex;
@@ -117,7 +92,4 @@
   position: absolute;
   right: -3px;
   bottom: -2px;
-}
-.za-shot__action.r-btn.za-shot__action--danger {
-  --za-action-accent: var(--r-color-danger);
 }

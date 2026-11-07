@@ -980,6 +980,92 @@ test("DLC placement survives media-to-overview navigation without a page reload"
   ).toBe(1);
 });
 
+test("DLC media primary navigation remains reachable after the media transition", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await open(page, { dlc: true, count: 3, locale: "en_US" });
+
+    const primaryTabs = page.locator(".pc-dlc-detail__tab-bar");
+    const media = primaryTabs.getByRole("tab", {
+      name: "Media",
+      exact: true,
+    });
+    await expect
+      .poll(() =>
+        media.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          const hit = document.elementFromPoint(
+            rect.left + rect.width / 2,
+            rect.top + rect.height / 2,
+          );
+          return Boolean(hit && element.contains(hit));
+        }),
+      )
+      .toBe(true);
+    await expect
+      .poll(() =>
+        media.evaluate((element) => getComputedStyle(element).pointerEvents),
+      )
+      .toBe("auto");
+
+    await media.click();
+    await expect(page).toHaveURL(/tab=media/);
+    await expect(page.locator(".pc-dlc-media")).toBeVisible();
+
+    for (const [name, tab] of [
+      ["Overview", "overview"],
+      ["Game downloads", "pc-components"],
+      ["Files", "files"],
+      ["Notes", "notes"],
+    ] as const) {
+      const primaryTab = primaryTabs.getByRole("tab", { name, exact: true });
+      await primaryTab.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          primaryTab.evaluate((element) => {
+            const rect = element.getBoundingClientRect();
+            const hit = document.elementFromPoint(
+              rect.left + rect.width / 2,
+              rect.top + rect.height / 2,
+            );
+            return Boolean(hit && element.contains(hit));
+          }),
+        )
+        .toBe(true);
+      await expect
+        .poll(() =>
+          primaryTab.evaluate(
+            (element) => getComputedStyle(element).pointerEvents,
+          ),
+        )
+        .toBe("auto");
+      await primaryTab.click();
+      await expect(page).toHaveURL(new RegExp(`tab=${tab}`));
+      await expect(primaryTab).toHaveAttribute("aria-selected", "true");
+      await expect(primaryTab).toBeFocused();
+    }
+
+    await page.getByRole("button", { name: "Actions", exact: true }).click();
+    await page.getByRole("button", { name: "Artwork", exact: true }).click();
+    await expect(page).toHaveURL(/tab=media/);
+    await expect(page.locator(".pc-dlc-media")).toBeVisible();
+    for (const name of ["Screenshots", "Artwork"]) {
+      const subtab = page
+        .locator(".pc-dlc-media__sidebar")
+        .getByRole("tab", { name, exact: true });
+      await subtab.click();
+      await expect(subtab).toHaveAttribute("aria-selected", "true");
+    }
+  }
+
+  expect(pageErrors).toEqual([]);
+});
+
 test("DLC selection preserves card node, dimensions and scroll during delayed reconciliation", async ({
   page,
 }) => {

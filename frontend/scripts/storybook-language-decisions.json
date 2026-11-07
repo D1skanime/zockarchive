@@ -13121,5 +13121,257 @@
     "location": "Zeile 243",
     "text": "Sicherungsfehler bleibt im Dialog sichtbar",
     "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 11",
+    "text": "Marke/ZA-Hintergrund/Spielbilder",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 36",
+    "text": "Helles Spielbild im dunklen Design",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 41",
+    "text": "Dunkles Spielbild im dunklen Design",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 46",
+    "text": "ZA-Fallback ohne Spielbild",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 63",
+    "text": "Crossfade zum ZA-Fallback",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 54",
+    "text": "Der unveränderte ZA-Glas-Fallback ohne Spielbild. Login, Pairing und leere Routen verwenden weiterhin dieselbe Behandlung.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 92",
+    "text": "Der Schalter aktiviert die zweite Ebene, die den unveränderten ZA-Glas-Fallback trägt. Damit ist der reale Übergang vom Spielbild zum Fallback samt getrenntem Overlay sichtbar.",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 108",
+    "text": "Spielbild ist die aktive Ausgangsebene",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 114",
+    "text": "Zum unveränderten ZA-Fallback überblenden",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 105",
+    "text": "Zum ZA-Fallback wechseln",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 22",
+    "text": "Dunkles Design",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 23",
+    "text": "Lesbarkeit über Spielbildern",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 24",
+    "text": "Karten und Bedienelemente behalten im Vordergrund ausreichend Kontrast.",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 81",
+    "text": "Zum ZA-Fallback wechseln",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 85",
+    "text": "{{ activeLayer === 'a' ? 'ZA-Fallback zeigen' : 'Spielbild zeigen' }}",
+    "status": "german"
+  },
+  {
+    "category": "template-interpolation",
+    "file": "src/v2/components/AppShell/BackgroundArt.stories.ts",
+    "location": "Zeile 86",
+    "text": "{{ activeLayer === 'a' ? 'ZA-Fallback zeigen' : 'Spielbild zeigen' }}",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 17",
+    "text": "Cyberpunk 2077",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 32",
+    "text": "Im Einsatz/Zusammengesetzt/Medienverwaltung",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 43",
+    "text": "Medienkarte mit Aktionen",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 83",
+    "text": "Upload-Zustände",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 106",
+    "text": "Hauptspiel-Medienseite",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 123",
+    "text": "DLC-Medienseite",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 46",
+    "text": "Die zusammengesetzte Karte dokumentiert die verwendeten Symbole: Dashboard für Übersicht, Bild für Hintergrund und Papierkorb für Löschen. Die Daten und Ereignisse sind synthetisch.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 86",
+    "text": "Die gemeinsame Uploadleiste zeigt normale, laufende, fehlerhafte und deaktivierte Zustände. Dateityp, Mehrfachauswahl und der Dropbereich bleiben beim jeweiligen Medienbesitzer konfigurierbar.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 109",
+    "text": "Die produktive Hauptspiel-Medienseite mit synthetischen Daten. Die produktive Navigation und ihre Panels werden direkt gerendert; die Story löst keine Medienmutation aus.",
+    "status": "german"
+  },
+  {
+    "category": "docs-description",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 126",
+    "text": "Die produktive DLC-Medienseite mit synthetischer Komponente und einer harmlosen Aktualisierungsfunktion. Sie zeigt die echte Seitenleisten-Navigation für Screenshots, Artwork und Soundtrack, ohne Uploads oder Löschungen auszulösen.",
+    "status": "german"
+  },
+  {
+    "category": "play-step",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 70",
+    "text": "Aktionssymbole besitzen verständliche Beschriftungen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 57",
+    "text": "Beschädigte Vorschau demonstrieren",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 60",
+    "text": "Zur Übersicht hinzufügen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 61",
+    "text": "Als Hintergrund festlegen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 62",
+    "text": "Bild löschen",
+    "status": "german"
+  },
+  {
+    "category": "template-text",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 58",
+    "text": "extrem-langer-dateiname-der-die-medienkarte-auf-schmalen-breiten-prueft.webp",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 96",
+    "text": "Artwork hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 97",
+    "text": "Screenshot hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 98",
+    "text": "Soundtrack hochladen",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/GameDetails/MediaManagement.stories.ts",
+    "location": "Zeile 99",
+    "text": "Handbuch hochladen",
+    "status": "german"
   }
 ]

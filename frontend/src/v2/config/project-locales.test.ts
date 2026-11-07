@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { createI18n } from "vue-i18n";
+import mediaBaseline from "./__tests__/media-locales.baseline.json";
 import baseline from "./project-locales.baseline.json";
 
 const root = resolve(process.cwd(), "src/locales");
@@ -30,7 +31,13 @@ describe("localized product identity", () => {
           readFileSync(resolve(root, locale, `${namespace}.json`), "utf8"),
         );
         // Complete normalized values preserve translations, interpolation, HTML and plural branches.
-        expect(digest(values), namespace).toBe(contract.digest);
+        const approvedMediaDigests = mediaBaseline as Record<
+          string,
+          Record<string, string>
+        >;
+        expect(digest(values), namespace).toBe(
+          approvedMediaDigests[locale]?.[namespace] ?? contract.digest,
+        );
         for (const key of contract.brandedKeys) {
           expect(values[key], `${namespace}.${key}`).toContain("ZockArchive");
           expect(values[key], `${namespace}.${key}`).not.toMatch(/RomM|PGDP/);

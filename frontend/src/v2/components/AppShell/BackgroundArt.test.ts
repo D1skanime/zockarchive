@@ -27,6 +27,79 @@ describe("BackgroundArt", () => {
 
     const layer = wrapper.find(".r-v2-bg__layer--a");
     expect(layer.classes()).not.toContain("r-v2-za-glass-background");
+    expect(layer.classes()).toContain("r-v2-bg__layer--art");
     expect(layer.attributes("style")).toContain("cover.png");
+  });
+
+  it("marks only image layers for the dark art treatment during a cross-fade", () => {
+    const wrapper = mount(BackgroundArt, {
+      props: {
+        layerA: "https://example.test/old-cover.png",
+        layerB: null,
+        activeLayer: "a",
+      },
+    });
+
+    expect(wrapper.find(".r-v2-bg__layer--a").classes()).toContain(
+      "r-v2-bg__layer--art",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--b").classes()).not.toContain(
+      "r-v2-bg__layer--art",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).toContain(
+      "r-v2-bg__overlay--art",
+    );
+  });
+
+  it("can cross-fade from game art to the unchanged ZA glass fallback", () => {
+    const wrapper = mount(BackgroundArt, {
+      props: {
+        layerA: "https://example.test/cover.png",
+        layerB: null,
+        activeLayer: "b",
+      },
+    });
+
+    expect(wrapper.find(".r-v2-bg__layer--a").classes()).toContain(
+      "r-v2-bg__layer--art",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--a").classes()).not.toContain(
+      "r-v2-bg__layer--active",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--b").classes()).toContain(
+      "r-v2-za-glass-background",
+    );
+    expect(wrapper.find(".r-v2-bg__layer--b").classes()).toContain(
+      "r-v2-bg__layer--active",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).toContain(
+      "r-v2-bg__overlay--art",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--b").classes()).toContain(
+      "r-v2-bg__overlay--active",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--b").classes()).not.toContain(
+      "r-v2-bg__overlay--art",
+    );
+  });
+
+  it("does not tint the active fallback when inactive art remains for the cross-fade", () => {
+    const wrapper = mount(BackgroundArt, {
+      props: {
+        layerA: "https://example.test/stale-cover.png",
+        layerB: null,
+        activeLayer: "b",
+      },
+    });
+
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).toContain(
+      "r-v2-bg__overlay--art",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--a").classes()).not.toContain(
+      "r-v2-bg__overlay--active",
+    );
+    expect(wrapper.find(".r-v2-bg__overlay--b").classes()).toContain(
+      "r-v2-bg__overlay--active",
+    );
   });
 });

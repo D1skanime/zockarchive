@@ -173,23 +173,16 @@ const coverPath = computed(() => {
 
 const coverFallback = computed(() => currentRom.value?.url_cover ?? null);
 const resolvedCover = computed(() => coverPath.value ?? coverFallback.value);
-const selectedOverviewArtwork = computed(() => {
+const activeOwnedCoverSrc = computed(() => {
   const rom = currentRom.value;
   if (!rom) return null;
-  const mediaById = new Map(
-    (rom.owned_media ?? []).map((item) => [item.id, item]),
+  const candidate = rom.owned_media?.find(
+    (item) =>
+      item.id === rom.active_owned_cover_media_id &&
+      item.role === "cover" &&
+      item.owned_path,
   );
-  const artwork = (rom.owned_media_placements ?? [])
-    .filter((placement) => placement.surface === "overview")
-    .toSorted((a, b) => a.position - b.position)
-    .map((placement) => mediaById.get(placement.media_id))
-    .find(
-      (media) =>
-        media?.role === "artwork" &&
-        media.state === "active" &&
-        Boolean(media.owned_path),
-    );
-  return artwork ? `/api/roms/${rom.id}/media/${artwork.id}/content` : null;
+  return candidate ? `/api/roms/${rom.id}/media/${candidate.id}/content` : null;
 });
 const selectedOverviewScreenshots = computed(() => {
   const rom = currentRom.value;
@@ -429,14 +422,20 @@ watch(
   { immediate: true },
 );
 
-async function refreshPcDetails() {
-  if (!currentRom.value) return;
+async function refreshPcDetails(): Promise<boolean> {
+  if (!currentRom.value) return false;
   try {
     const { data } = await romApi.getRom({ romId: currentRom.value.id });
     romsStore.setCurrentRom(data);
+    return true;
   } catch (error) {
     console.error(error);
+    return false;
   }
+}
+
+async function refreshPcDetailsForEvent(): Promise<void> {
+  await refreshPcDetails();
 }
 
 function openPcParentMatcher() {
@@ -447,7 +446,7 @@ function openPcParentMatcher() {
       romId: currentRom.value.id,
       label: currentRom.value.name ?? currentRom.value.fs_name_no_tags,
     },
-    refresh: refreshPcDetails,
+    refresh: refreshPcDetailsForEvent,
   });
 }
 
@@ -482,7 +481,7 @@ const tabs = computed<ZATabNavItem[]>(() => [
       <CoverColumn
         :rom="currentRom"
         :alt="title"
-        :cover-src="selectedOverviewArtwork"
+        :cover-src="activeOwnedCoverSrc"
       />
 
       <div class="r-v2-det__info">
@@ -540,12 +539,16 @@ const tabs = computed<ZATabNavItem[]>(() => [
               :components="currentRom.components ?? []"
               :archive-sets="archiveSets"
               :archive-sets-state="archiveSetsState"
-              :refresh="refreshPcDetails"
+              :refresh="refreshPcDetailsForEvent"
               :parent-name="currentRom.name ?? currentRom.fs_name_no_tags"
             />
           </template>
           <PatcherTab v-if="tab === 'patcher' && !isPcRom" :rom="currentRom" />
-          <MediaTab v-if="tab === 'media'" :rom="currentRom" />
+          <MediaTab
+            v-if="tab === 'media'"
+            :rom="currentRom"
+            :refresh="refreshPcDetails"
+          />
           <NotesTab v-if="tab === 'notes'" :rom="currentRom" />
           <AchievementsTab
             v-if="tab === 'achievements'"
@@ -564,123 +567,4 @@ const tabs = computed<ZATabNavItem[]>(() => [
   </section>
 </template>
 
-<style scoped>
-.r-v2-det {
-  position: relative;
-  /* Fits the main viewport exactly (under the fixed AppNav) so the
-     cover + header + tabs stay static and only the tab panel scrolls
-     internally. No overflow at the view level → no document scroll
-     on details. */
-  height: calc(100vh - var(--r-nav-h));
-  display: flex;
-  flex-direction: column;
-  padding-top: 20px;
-}
-
-.r-v2-det__topbar {
-  position: relative;
-  z-index: 2;
-  padding: 20px var(--r-row-pad) 0;
-}
-
-.r-v2-det__body {
-  position: relative;
-  z-index: 2;
-  flex: 1;
-  display: flex;
-  /* `stretch` (default) so the info column fills the body height —
-     needed so the inner panel can use `flex: 1` + `min-height: 0` to
-     scroll. The cover keeps its natural height via `align-self:
-     flex-start` declared on CoverColumn itself. */
-  align-items: stretch;
-  padding: 0 var(--r-row-pad) 32px;
-  gap: 52px;
-  min-height: 0;
-  /* Cap the canvas so the cover + info column stay readable on
-     ultrawide displays. Below the cap this is a no-op. */
-  max-width: var(--r-page-max-w);
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.r-v2-det__info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  /* Required for the inner panel's `flex: 1` + `overflow-y: auto`
-     to compute against this container's height (otherwise flex
-     children can't shrink below their intrinsic content size). */
-  min-height: 0;
-}
-
-.r-v2-det__tabs {
-  margin: 14px 0 16px;
-}
-
-.r-v2-det__panel {
-  /* Sole scroll context within the details view: cover, header and
-     tab nav stay frozen, only the active tab's content scrolls.
-     `position: relative` lets self-contained tabs (FilesTab) anchor
-     an absolutely-positioned root to this panel's visible viewport
-     when they want internal scroll instead of the panel's scroll. */
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--r-color-border-strong) transparent;
-  margin-top: 10px;
-  padding-right: 6px;
-}
-.r-v2-det__panel::-webkit-scrollbar {
-  width: 4px;
-}
-.r-v2-det__panel::-webkit-scrollbar-thumb {
-  background: var(--r-color-border-strong);
-  border-radius: 2px;
-}
-
-.r-v2-det__empty {
-  flex: 1;
-  display: grid;
-  place-items: center;
-  color: var(--r-color-fg-muted);
-  font-size: 13px;
-}
-
-/* Mobile / small tablet: stack the cover above the info column, and — unlike
-   desktop — let the WHOLE view scroll as one document instead of freezing the
-   cover/header/tabs and scrolling only the panel. A phone has no room to keep
-   half the screen static; the desktop "fixed cover + inner panel scroll"
-   layout makes no sense here. So the section grows with its content and the
-   AppLayout document scroll takes over (its bottom-nav padding clears the last
-   content). Every fixed-height / internal-scroll rule is unwound below. */
-html[data-bp~="sm-and-down"] .r-v2-det {
-  padding-top: 8px;
-  height: auto;
-}
-html[data-bp~="sm-and-down"] .r-v2-det__body {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 14px;
-  padding: 8px var(--r-row-pad) 16px;
-  flex: none;
-  min-height: 0;
-}
-html[data-bp~="sm-and-down"] .r-v2-det__info {
-  flex: none;
-  min-height: 0;
-}
-html[data-bp~="sm-and-down"] .r-v2-det__panel {
-  flex: none;
-  min-height: 0;
-  height: auto;
-  overflow: visible;
-  padding-right: 0;
-}
-html[data-bp~="sm-and-down"] .r-v2-det__tabs {
-  margin: 28px 0 12px;
-}
-</style>
+<style scoped src="./gameDetails.css" />

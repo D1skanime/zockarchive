@@ -10,6 +10,7 @@ from fastapi.responses import StreamingResponse
 from decorators.auth import protected_route
 from endpoints.responses.rom import (
     DetailedRomSchema,
+    OwnedCoverSelectionRequest,
     RomLocalBackgroundAudioRequest,
     RomOwnedBackgroundAudioRequest,
     RomOwnedMediaPlacementMutationRequest,
@@ -72,12 +73,19 @@ async def refresh_media(
     """Explicitly reconcile provider images without changing user placements."""
     rom = _visible_rom(request, id)
     try:
-        await refresh_provider_owned_media(rom, expected_version, "provider")
+        _, failures = await refresh_provider_owned_media(
+            rom, expected_version, "provider"
+        )
     except ValueError:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Provider media could not be refreshed",
         ) from None
+    if failures:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Provider media could not be refreshed",
+        )
     return _detailed_rom_response(id, request)
 
 
@@ -201,14 +209,14 @@ async def upload_media(
             path, mime_type = await fs_resource_handler.store_owned_media_audio(
                 rom, content, extension
             )
-        elif role is RomOwnedMediaRole.ARTWORK:
+        elif role in {RomOwnedMediaRole.ARTWORK, RomOwnedMediaRole.COVER}:
             if len(content) > _IMAGE_LIMIT:
                 raise ValueError("Owned media image exceeds the 10 MiB limit")
             path, mime_type = await fs_resource_handler.store_owned_media_image(
                 rom, role, content
             )
         else:
-            raise ValueError("Only artwork and soundtrack uploads are accepted")
+            raise ValueError("Only cover, artwork and soundtrack uploads are accepted")
         applied = db_rom_handler.create_owned_upload_media(
             id, expected_version, role, label, mime_type, path
         )
@@ -220,6 +228,59 @@ async def upload_media(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail=str(exc)
         ) from exc
+    return _detailed_rom_response(id, request)
+
+
+@protected_route(router.post, "/{id}/media/cover", [Scope.ROMS_WRITE])
+async def select_cover_media(
+    request: Request, id: int, payload: OwnedCoverSelectionRequest
+) -> DetailedRomSchema:
+    """Select a retained cover without modifying its validated source bytes."""
+    _visible_rom(request, id)
+    if payload.media_id == 0:
+        if (
+            db_rom_handler.select_owned_cover_media(
+                id, 0, payload.expected_version, "", ""
+            )
+            is None
+        ):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return _detailed_rom_response(id, request)
+    candidate = next(
+        (
+            item
+            for item in db_rom_handler.get_owned_media_catalog(id)
+            if item.id == payload.media_id
+            and item.role is RomOwnedMediaRole.COVER
+            and item.owned_path
+        ),
+        None,
+    )
+    if candidate is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    if not await fs_resource_handler.file_exists(candidate.owned_path):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    # Validated originals are immutable; selection changes references only.
+    applied = db_rom_handler.select_owned_cover_media(
+        id,
+        payload.media_id,
+        payload.expected_version,
+        candidate.owned_path,
+        candidate.owned_path,
+    )
+    if applied is None:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT)
+
+    return _detailed_rom_response(id, request)
+
+
+@protected_route(router.delete, "/{id}/media/cover/original", [Scope.ROMS_WRITE])
+async def delete_original_cover(
+    request: Request, id: int, expected_version: datetime
+) -> DetailedRomSchema:
+    """Remove the retained source, preserving independent selected candidates."""
+    _visible_rom(request, id)
+    _conflict(db_rom_handler.delete_original_cover(id, expected_version))
     return _detailed_rom_response(id, request)
 
 

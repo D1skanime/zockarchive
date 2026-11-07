@@ -142,6 +142,32 @@ def test_component_steam_metadata_uses_its_authoritative_column(rom):
     assert "steam_metadata" not in (saved.component_metadata.provider_metadata or {})
 
 
+def test_component_manual_replacement_never_updates_the_parent_rom(rom, admin_user):
+    component = RomComponent(
+        rom_id=rom.id,
+        relative_path="dlc/manual-owner",
+        kind=RomComponentKind.DLC,
+    )
+    from tests.conftest import session
+
+    with session.begin() as db:
+        db.add(component)
+        db.flush()
+        db.refresh(component)
+
+    applied = db_rom_handler.replace_pc_component_manual(
+        rom.id,
+        component.id,
+        admin_user.id,
+        component.updated_at,
+        "roms/1/pc-manual/component.pdf",
+    )
+
+    assert applied is not None
+    assert applied.component.manual_path == "roms/1/pc-manual/component.pdf"
+    assert db_rom_handler.get_rom(rom.id).path_manual != applied.component.manual_path
+
+
 class TestHasSavesStatesFilter:
     """The has-saves / has-states filters match a user's own assets plus other
     users' public (community) ones, mirroring the shared-assets visibility."""

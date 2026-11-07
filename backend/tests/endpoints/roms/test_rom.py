@@ -862,7 +862,28 @@ def test_update_rom(
     client: TestClient,
     access_token: str,
     rom: Rom,
+    monkeypatch,
 ):
+    from io import BytesIO
+    from unittest.mock import Mock
+
+    import httpx
+    from PIL import Image
+
+    image = BytesIO()
+    Image.new("RGB", (24, 36), "red").save(image, format="JPEG")
+    http = httpx.AsyncClient(
+        transport=httpx.MockTransport(
+            lambda request: httpx.Response(
+                200,
+                headers={"content-type": "image/jpeg"},
+                stream=httpx.ByteStream(image.getvalue()),
+            )
+        )
+    )
+    monkeypatch.setattr(
+        "handler.filesystem.resources_handler.ctx_httpx_client", Mock(get=lambda: http)
+    )
     response = client.put(
         f"/api/roms/{rom.id}",
         headers={"Authorization": f"Bearer {access_token}"},

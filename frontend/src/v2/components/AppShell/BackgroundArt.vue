@@ -6,7 +6,7 @@
 
 defineOptions({ inheritAttrs: false });
 
-defineProps<{
+const props = defineProps<{
   layerA: string | null;
   layerB: string | null;
   activeLayer: "a" | "b";
@@ -19,6 +19,7 @@ defineProps<{
       class="r-v2-bg__layer r-v2-bg__layer--a"
       :class="{
         'r-v2-bg__layer--active': activeLayer === 'a',
+        'r-v2-bg__layer--art': Boolean(layerA),
         'r-v2-za-glass-background': !layerA,
       }"
       :style="layerA ? { backgroundImage: `url('${layerA}')` } : {}"
@@ -27,12 +28,28 @@ defineProps<{
       class="r-v2-bg__layer r-v2-bg__layer--b"
       :class="{
         'r-v2-bg__layer--active': activeLayer === 'b',
+        'r-v2-bg__layer--art': Boolean(layerB),
         'r-v2-za-glass-background': !layerB,
       }"
       :style="layerB ? { backgroundImage: `url('${layerB}')` } : {}"
     />
   </div>
-  <div class="r-v2-bg__overlay" />
+  <div class="r-v2-bg__overlays">
+    <div
+      class="r-v2-bg__overlay r-v2-bg__overlay--a"
+      :class="{
+        'r-v2-bg__overlay--active': activeLayer === 'a',
+        'r-v2-bg__overlay--art': Boolean(layerA),
+      }"
+    />
+    <div
+      class="r-v2-bg__overlay r-v2-bg__overlay--b"
+      :class="{
+        'r-v2-bg__overlay--active': activeLayer === 'b',
+        'r-v2-bg__overlay--art': Boolean(layerB),
+      }"
+    />
+  </div>
 </template>
 
 <style scoped>

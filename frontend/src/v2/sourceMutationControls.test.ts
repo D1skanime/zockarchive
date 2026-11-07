@@ -218,6 +218,7 @@ const stubs = {
     template:
       '<button :disabled="disabled" @click="$emit(\'click\')"><slot /></button>',
   },
+  ZACard: { template: '<div class="r-card"><slot /></div>' },
   ScreenshotManagementCard: false,
   MediaManagementCard: false,
   MediaManagementAction: false,
@@ -333,7 +334,9 @@ describe("maximum-grant source mutation controls", () => {
     expect(files.service).toContain("/roms/${romId}/media/refresh");
     expect(files.media).not.toMatch(/\/soundtracks(?:\/|`|'|")/);
     expect(files.screenshots).not.toMatch(/\/soundtracks(?:\/|`|'|")/);
-    expect(files.media).toContain(":aria-controls=");
+    expect(files.media).toContain("ZATabNav");
+    expect(files.media).toContain('controls: "media-panel-screenshots"');
+    expect(files.media).toContain('tabId: "media-tab-screenshots"');
     expect(files.media).toContain('id="media-panel-screenshots"');
     expect(files.artwork).toContain("owned_media");
   });

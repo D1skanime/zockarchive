@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: phase_human_verification
-stopped_at: Phase39 implementation complete; awaiting human browser UAT
-last_updated: 2026-10-27T08:24:00Z
-last_activity: 2026-10-27
+stopped_at: Phase40 Wave15 targeted technical verification complete, human UAT pending
+last_updated: 2026-11-06T00:00:00Z
+last_activity: 2026-11-06
 progress:
   total_phases: 39
   completed_phases: 24
@@ -21,14 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase39 approved logo integration is implemented and awaiting human browser UAT. Phase38 remains accepted with its documented limitations.
+**Current focus:** Phase40 PC media surface/Storybook completion passed renewed targeted technical verification, including playable and downloadable DLC-owned audio, and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
 
 ## Current Position
 
 Phase:39 (zockarchive-approved-logo-integration)
 Plan:1/1
 Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
-Last activity: 2026-10-28 - Completed quick task 261028-bt1: transparent logo overlays
+Last activity: 2026-11-06 - Completed quick task 261106-hgc: repair visible main-game cover loading after browser inspection
+
+Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
 The user accepted the browser branding, German/English, both themes and narrow-layout UAT on2026-10-26. Physical controller testing was unavailable, and the user explicitly accepted the documented native-client limitation. Technical coverage remains20/21; no native upgrade test is claimed. PR7 was previously merged at467e03dca and Dev deployed under explicit authorization. Read38-UAT.md,38-HUMAN-UAT.md and38-DEV-DEPLOYMENT.md. Historical milestone/production/NAS/artwork gates remain separate. KI setup stays deferred until the separate Claude phase is finished. Phase39 now integrates the approved assets, blue-glass token direction and UAT-only animation proposals without deployment, push, storage/auth/API change or external-media mutation. See39-VERIFICATION.md and39-UAT.md for remaining browser checks.
 
@@ -243,6 +245,7 @@ _Updated after each plan completion_
 ## Accumulated Context
 
 ### Roadmap Evolution
+- Phase 40 added: Unify PC media surfaces and complete Storybook coverage. It owns job 261103-4b37's existing implementation inventory and the remaining Storybook language-ledger correction.
 
 - Phase39 added: ZockArchive approved logo integration, using the user-supplied approved logo package. Awaiting discussion and planning; Phase38 acceptance remains intact.
 - Phase38 added: ZockArchive product and repository rebranding, based on the user-supplied complete specification.
@@ -547,6 +550,16 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261106-fsb | Quality-Gate, PC-Metadaten-Medienpersistenz auslagern | 2026-11-06 | c44b7aa98 | [261106-fsb-quality-gate-pc-metadaten-medienpersiste](./quick/261106-fsb-quality-gate-pc-metadaten-medienpersiste/) |
+| 261106-r9e | Preserve APNG cover animation through metadata selection | 2026-11-06 | committed | [261106-r9e-preserve-apng-cover-animation-through-th](./quick/261106-r9e-preserve-apng-cover-animation-through-th/) |
+| 261106-mz7 | Gate 37 MIME narrowing and DLC cover-presentation extraction | 2026-11-06 | committed | [261106-mz7-fix-the-resource-download-animated-cover](./quick/261106-mz7-fix-the-resource-download-animated-cover/) |
+| 261105-dl5 | Harden DLC image upload filenames, active-art fallback treatment, and scoped media UI | 2026-11-05 | 34b8a8f41 | [261105-dl5-dlc-media-safety-and-background-overlay](./quick/261105-dl5-dlc-media-safety-and-background-overlay/) |
+| 261105-f1c | Render productive media stories, synchronize art overlays, and align soundtrack ordering | 2026-11-05 | d620b4268 | [261105-f1c-productive-media-stories-and-crossfade-continuity](./quick/261105-f1c-productive-media-stories-and-crossfade-continuity/) |
+| 261105-fuc | Remove gate lint debt and split the DLC media ordering route | 2026-11-05 | 4ef080ecb | [261105-fuc-gate-lint-and-component-route-sizing](./quick/261105-fuc-gate-lint-and-component-route-sizing/) |
+| 261105-g00 | Compose the DLC ordering router below bounded resources instead of the ROM aggregator | 2026-11-05 | 688073d8b | [261105-g00-route-aggregator-size](./quick/261105-g00-route-aggregator-size/) |
+| 261105-gnr | Preserve PC game and DLC primary navigation above sticky media controls | 2026-11-05 | 7bd9f948d | [261105-gnr-media-tab-input](./quick/261105-gnr-media-tab-input/) |
+| 261105-j1a | Restore DLC media navigation after live UAT failure | 2026-11-05 | c4d5338a0, f133359a7 | [261105-j1a-fix-dlc-media-navigation-uat-blocker-pre](./quick/261105-j1a-fix-dlc-media-navigation-uat-blocker-pre/) |
+| 261105-lew | Correct visible German soundtrack-upload catalog text | 2026-11-05 | e910ba787 | [261105-lew-correct-visible-german-soundtrack-upload](./quick/261105-lew-correct-visible-german-soundtrack-upload/) |
 | 261028-bt1 | Transparent logo overlays and readable navigation identity | 2026-10-28 | 649c44c6e | [261028-bt1-polish-zockarchive-branding-with-transpa](./quick/261028-bt1-polish-zockarchive-branding-with-transpa/) |
 | 261026-phase34 | Remove disposable Compose volumes after Phase 34 CI runs | 2026-10-26 | 14f51fe8d | [261026-phase34-disposable-volume-cleanup](./quick/261026-phase34-disposable-volume-cleanup/) |
 | 261023-urj | Polish screenshot identity icons, selected glass actions and sticky cloud upload | 2026-10-24 | a6d1f044d | [261023-urj-polish-screenshot-icons-buttons-and-uplo](./quick/261023-urj-polish-screenshot-icons-buttons-and-uplo/) |
@@ -610,6 +623,34 @@ Recent decisions affecting current work:
 Last session: 2026-10-26T09:19:58.998384+00:00
 Stopped at: Phase38 live UAT closed with accepted limitations; no next phase started
 Resume file: None
+
+## Quick Task 261105-mnt
+
+| 261105-mnt | Repair Cover-media TypeScript contracts and restore affected size baselines | 2026-11-05 | e545c5a14 | [261105-mnt-fix-cover-media-typescript-contract-erro](./quick/261105-mnt-fix-cover-media-typescript-contract-erro/) |
+| 261105-n05 | Restore missing ownership-storage imports | 2026-11-05 | 936300f0e | [261105-n05-restore-missing-ownership-storage-import](./quick/261105-n05-restore-missing-ownership-storage-import/) |
+
+## Quick Task 261106-adv
+
+| 261106-adv | Preserve original cover references and add active media managers | 2026-11-06 | pending commit | [261106-adv-preserve-original-cover-references-acros](./quick/261106-adv-preserve-original-cover-references-acros/) |
+
+- Implementation is complete pending renewed UAT. Targeted typecheck and scoped
+  Trunk passed. The supplied UAT routes returned product 404 after login, so
+  browser behavior has not been asserted for those live records.
+
+## Quick Task 261106-b2c
+
+| 261106-b2c | Clean host-contract worktree and repair its Python toolchain boundary | 2026-11-06 | verified, commits ea5cb21ad and 39b7e497e | [261106-b2c-clean-host-contract-worktree](./quick/261106-b2c-clean-host-contract-worktree/) |
+| 261106-d9g | Fix host-contract lint findings | 2026-11-06 | verified, commit 6a7c84c12 | [261106-d9g-fix-trunk-check-lint-issues-in-ci-host-c](./quick/261106-d9g-fix-trunk-check-lint-issues-in-ci-host-c/) |
+| 261106-dm2 | Repair the visible main-game cover | 2026-11-06 | browser verified, commit 1646c13c0 | [261106-dm2-repair-the-runtime-visible-main-game-cov](./quick/261106-dm2-repair-the-runtime-visible-main-game-cov/) |
+| 261106-e1c | Review-Nachbesserung für DLC-Übersichtsplatzierungen | 2026-11-06 | browser verified, committed | [261106-e1c-review-nachbesserung-dlc-bersichtsplatzi](./quick/261106-e1c-review-nachbesserung-dlc-bersichtsplatzi/) |
+| 261106-ecv | Lokalisierung der aktiven Medienverwaltungen | 2026-11-06 | locale and browser verified, committed | [261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b](./quick/261106-ecv-live-uat-rohe-i18n-schl-ssel-in-aktive-b/) |
+| 261106-esh | Sichtprüfung der DLC-Übersichtsbilder | 2026-11-06 | browser verified, no source change | [261106-esh-sichtpr-fung-dlc-aktive-bersichtsbilder-](./quick/261106-esh-sichtpr-fung-dlc-aktive-bersichtsbilder-/) |
+| 261106-fgt | Persistierte Coverauswahl von Übersichtsbildern trennen | 2026-11-06 | browser verified, committed | [261106-fgt-live-uat-explizite-coverauswahl-bleibt-g](./quick/261106-fgt-live-uat-explizite-coverauswahl-bleibt-g/) |
+| 261106-jht | ROM-29-Coverkatalog und animierter Hero | 2026-11-06 | browser verified, committed | [261106-jht-live-uat-rom-29-coverkatalog-und-animier](./quick/261106-jht-live-uat-rom-29-coverkatalog-und-animier/) |
+| 261106-jz1 | TypeScript-Nullsicherheit für aktive Coverquelle | 2026-11-06 | typecheck verified, committed | [261106-jz1-quality-gate-typescript-nullsicherheit-f](./quick/261106-jz1-quality-gate-typescript-nullsicherheit-f/) |
+| 261106-gp5 | Animierte Provider-Cover als persistente Kandidaten erhalten | 2026-11-06 | browser verified, committed | [261106-gp5-live-uat-animierte-gif-und-webp-cover-we](./quick/261106-gp5-live-uat-animierte-gif-und-webp-cover-we/) |
+| 261106-hgc | Sichtprüfung: fehlende Hauptspiel-Covervorschau reparieren | 2026-11-06 | browser verified, committed | [261106-hgc-sichtpr-fung-fehlende-bildvorschau-in-de](./quick/261106-hgc-sichtpr-fung-fehlende-bildvorschau-in-de/) |
+| 261106-m05 | Preserve animated provider and scraper cover originals through normal selection | 2026-11-06 | isolated backend target: 375 passed, 1 skipped; authenticated read-only browser passed, animated-source UAT pending | [261106-m05-preserve-animated-provider-and-scraper-c](./quick/261106-m05-preserve-animated-provider-and-scraper-c/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.

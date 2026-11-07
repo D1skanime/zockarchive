@@ -46,6 +46,7 @@ services:
     volumes:
       - ${P34_REPO}/backend:/app/backend:ro
       - ${P34_REPO}/frontend:/app/frontend
+      - ${P34_REPO}/tests/fixtures:/app/tests/fixtures:ro
       - ${P34_REPO}/pyproject.toml:/app/pyproject.toml:ro
       - ${P34_REPO}/uv.lock:/app/uv.lock:ro
       - ${P34_CONTROL}:/phase34/control:ro

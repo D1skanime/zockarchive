@@ -16,6 +16,13 @@ from endpoints.responses.assets import (
     UserScreenshotSchema,
     UserStateSchema,
 )
+from endpoints.responses.cover_media import OriginalCoverSourceSchema
+from endpoints.responses.pc_component_media import (  # noqa: F401
+    OwnedCoverSelectionRequest,
+    PcComponentManualSchema,
+    PcComponentOwnedMediaPlacementMutationRequest,
+    PcComponentOwnedMediaPlacementSchema,
+)
 from handler.metadata.flashpoint_handler import FlashpointMetadata
 from handler.metadata.gamelist_handler import GamelistMetadata
 from handler.metadata.hasheous_handler import HasheousMetadata
@@ -492,20 +499,6 @@ class PcComponentOwnedMediaSchema(BaseModel):
     )
 
 
-class PcComponentOwnedMediaPlacementSchema(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int
-    media_id: int
-    position: int = Field(ge=0)
-
-
-class PcComponentOwnedMediaPlacementMutationRequest(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    expected_version: UTCDatetime
-
-
 class PcComponentOwnedMediaCreateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -673,6 +666,8 @@ class PcComponentSchema(BaseModel):
     updated_at: UTCDatetime | None = None
     relative_path: str
     kind: RomComponentKind
+    active_owned_cover_media_id: int | None = None
+    manual_path: str | None = None
     manifest_members: list[PcComponentManifestMemberSchema] = Field(
         validation_alias="available_manifest_members"
     )
@@ -1000,7 +995,7 @@ class UserCollectionSchema(BaseModel):
         ]
 
 
-class DetailedRomSchema(RomSchema):
+class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
     steam_metadata: SteamMetadataSchema | None
     user_saves: list[SaveSchema]
     user_states: list[StateSchema]
@@ -1011,6 +1006,7 @@ class DetailedRomSchema(RomSchema):
     user_collections: list[UserCollectionSchema]
     all_user_notes: list[UserNoteSchema]
     owned_media: list[RomOwnedMediaSchema] = Field(default_factory=list)
+    active_owned_cover_media_id: int | None = None
     owned_media_placements: list[RomOwnedMediaPlacementSchema] = Field(
         default_factory=list
     )

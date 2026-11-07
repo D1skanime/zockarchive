@@ -12,6 +12,7 @@ from models.rom import (
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaPlacement,
     RomComponentOwnedMediaRole,
+    RomOwnedMediaSurface,
     derive_pc_component_provider_media_id,
 )
 
@@ -327,6 +328,7 @@ def test_provider_media_reconciliation_merges_exact_duplicates_and_keeps_placeme
             RomComponentOwnedMediaPlacement(
                 component_id=component.id,
                 media_id=second.id,
+                surface=RomOwnedMediaSurface.OVERVIEW,
                 position=0,
             )
         )

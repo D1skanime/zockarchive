@@ -7,7 +7,9 @@ configuration rendering. SQL suites remain inside the existing isolated runner.
 
 import json
 import os
+import shutil
 import subprocess  # nosec B404, fixed host prerequisite argv
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -15,6 +17,28 @@ from pathlib import Path
 import ci_target
 import phase38_cutover_source as source
 from ci_test_profiles import classify_test_files
+
+
+def ensure_supported_python():
+    """Re-exec through the pinned toolchain when the host Python is too old."""
+    if sys.version_info >= (3, 11):
+        return
+    uv_executable = shutil.which("uv")
+    if uv_executable is None:
+        raise RuntimeError("Python 3.13 or the uv toolchain is required")
+    subprocess.run(  # nosec B603: validated uv executable, fixed arguments.
+        [
+            uv_executable,
+            "run",
+            "--no-sync",
+            "--python",
+            "3.13",
+            "python",
+            __file__,
+        ],
+        check=True,
+    )
+    raise SystemExit
 
 
 def workflow_contract(text):
@@ -104,6 +128,7 @@ def run_contracts(root, evidence):
 
 
 def main():
+    ensure_supported_python()
     root = ci_target.preflight()
     evidence = Path(tempfile.mkdtemp(prefix="za-host-contracts-"))
     output = os.environ.get("GITHUB_OUTPUT")

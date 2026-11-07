@@ -2,7 +2,6 @@
 import {
   ZABtn,
   ZACarousel,
-  ZAChip,
   ZADropzone,
   ZAEmptyState,
   ZASkeletonBlock,
@@ -15,6 +14,9 @@ import type {
   RomOwnedMediaSchema,
   RomOwnedMediaSurface,
 } from "@/__generated__";
+import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
+import MediaManagementCard from "@/v2/components/GameDetails/MediaManagementCard.vue";
+import MediaUploadControl from "@/v2/components/GameDetails/MediaUploadControl.vue";
 import { useCan } from "@/v2/composables/useCan";
 import { useConfirm } from "@/v2/composables/useConfirm";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
@@ -44,19 +46,6 @@ const ownedArtwork = computed(() =>
     (item) => item.role === "artwork" && item.state === "active",
   ),
 );
-const backgroundPlacements = computed(() =>
-  (props.rom.owned_media_placements ?? [])
-    .filter((placement) => placement.surface === "background")
-    .toSorted((a, b) => a.position - b.position),
-);
-const backgrounds = computed(() =>
-  backgroundPlacements.value.flatMap((placement) => {
-    const candidate = props.rom.owned_media?.find(
-      (item) => item.id === placement.media_id && item.state === "active",
-    );
-    return candidate ? [{ candidate, placement }] : [];
-  }),
-);
 const artworkUrls = computed(() =>
   ownedArtwork.value.map((item) => mediaContentUrl(item.id)),
 );
@@ -71,11 +60,6 @@ function hasPlacement(
   return (
     item.placements?.some((placement) => placement.surface === surface) ?? false
   );
-}
-function backgroundPosition(item: RomOwnedMediaSchema) {
-  return item.placements?.find(
-    (placement) => placement.surface === "background",
-  )?.position;
 }
 function errorMessage(error: unknown) {
   if (axios.isAxiosError(error))
@@ -116,27 +100,6 @@ async function togglePlacement(
         surface,
         expectedVersion: props.rom.updated_at,
       });
-    await refreshCanonical();
-  } catch (error) {
-    if (!(await recoverFromConflict(error)))
-      snackbar.error(errorMessage(error));
-  } finally {
-    mutatingId.value = null;
-  }
-}
-async function moveBackground(index: number, direction: -1 | 1) {
-  const nextIndex = index + direction;
-  if (nextIndex < 0 || nextIndex >= backgrounds.value.length) return;
-  const ids = backgrounds.value.map(({ candidate }) => candidate.id);
-  [ids[index], ids[nextIndex]] = [ids[nextIndex], ids[index]];
-  mutatingId.value = backgrounds.value[index].candidate.id;
-  try {
-    await romApi.replaceOwnedMediaPlacements({
-      romId: props.rom.id,
-      surface: "background",
-      mediaIds: ids,
-      expectedVersion: props.rom.updated_at,
-    });
     await refreshCanonical();
   } catch (error) {
     if (!(await recoverFromConflict(error)))
@@ -243,13 +206,14 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
               :aria-label="t('common.refresh')"
               @click="refreshProviderArtwork"
           /></ZATooltip>
-          <ZABtn
-            v-if="canManage"
-            prepend-icon="mdi-upload"
+          <MediaUploadControl
+            :available="canManage"
             :loading="uploading"
-            @click="uploadDropzone?.open()"
-            >{{ t("rom.upload-artwork") }}</ZABtn
-          >
+            :disabled="uploading"
+            :label="t('rom.upload-artwork')"
+            :hint="t('rom.owned-media-image-hint')"
+            @upload="uploadDropzone?.open()"
+          />
         </div>
       </header>
       <ZADropzone
@@ -271,60 +235,6 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
         {{ name }} {{ progress }}%
       </p>
     </section>
-    <section class="r-v2-art__section" aria-labelledby="backgrounds-heading">
-      <h3 id="backgrounds-heading" class="r-v2-art__title">
-        {{ t("rom.backgrounds") }}
-      </h3>
-      <div v-if="refreshing && backgrounds.length === 0" class="r-v2-art__rows">
-        <ZASkeletonBlock v-for="index in 2" :key="index" height="64" />
-      </div>
-      <ZAEmptyState
-        v-else-if="backgrounds.length === 0"
-        icon="mdi-image-off-outline"
-        :title="t('rom.backgrounds-empty')"
-      />
-      <ol v-else class="r-v2-art__rows">
-        <li
-          v-for="({ candidate }, index) in backgrounds"
-          :key="candidate.id"
-          class="r-v2-art__row"
-        >
-          <img
-            class="r-v2-art__row-preview"
-            :src="mediaContentUrl(candidate.id)"
-            :alt="candidate.display_label"
-          /><span class="r-v2-art__ordinal">{{ index + 1 }}</span
-          ><span class="r-v2-art__row-label">{{ candidate.display_label }}</span
-          ><span class="r-v2-art__origin">{{ candidate.origin }}</span>
-          <ZATooltip
-            :text="
-              index === 0
-                ? t('rom.background-move-unavailable')
-                : t('common.move-up')
-            "
-            ><ZABtn
-              icon="mdi-arrow-up"
-              :disabled="index === 0 || mutatingId !== null"
-              :aria-label="t('common.move-up')"
-              @click="moveBackground(index, -1)"
-          /></ZATooltip>
-          <ZATooltip
-            :text="
-              index === backgrounds.length - 1
-                ? t('rom.background-move-unavailable')
-                : t('common.move-down')
-            "
-            ><ZABtn
-              icon="mdi-arrow-down"
-              :disabled="
-                index === backgrounds.length - 1 || mutatingId !== null
-              "
-              :aria-label="t('common.move-down')"
-              @click="moveBackground(index, 1)"
-          /></ZATooltip>
-        </li>
-      </ol>
-    </section>
     <section
       class="r-v2-art__section"
       aria-labelledby="artwork-candidates-heading"
@@ -338,70 +248,65 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
         :title="t('rom.artwork-empty')"
       />
       <ul v-else class="r-v2-art__grid">
-        <li
-          v-for="(item, index) in ownedArtwork"
-          :key="item.id"
-          class="r-v2-art__cell"
-        >
-          <button
-            type="button"
-            class="r-v2-art__preview"
-            :aria-label="t('rom.artwork-open', { name: item.display_label })"
-            @click="
+        <li v-for="(item, index) in ownedArtwork" :key="item.id">
+          <MediaManagementCard
+            :url="mediaContentUrl(item.id)"
+            :label="t('rom.artwork-open', { name: item.display_label })"
+            @preview="
               lightboxIndex = index;
               lightboxOpen = true;
             "
           >
-            <img
-              class="r-v2-art__media"
-              :src="mediaContentUrl(item.id)"
-              :alt="item.display_label"
-              loading="lazy"
-            />
-          </button>
-          <p class="r-v2-art__origin">{{ item.origin }}</p>
-          <ZAChip v-if="backgroundPosition(item) != null" size="small">
-            {{ t("rom.backgrounds") }} #{{ backgroundPosition(item)! + 1 }}
-          </ZAChip>
-          <div v-if="canManage" class="r-v2-art__actions">
-            <ZABtn
-              size="small"
-              :loading="mutatingId === item.id"
-              :aria-label="
-                hasPlacement(item, 'overview')
-                  ? t('rom.remove-from-overview')
-                  : t('rom.add-to-overview')
-              "
-              @click="togglePlacement(item, 'overview')"
-              >{{
-                hasPlacement(item, "overview")
-                  ? t("rom.remove-from-overview")
-                  : t("rom.add-to-overview")
-              }}</ZABtn
-            ><ZABtn
-              size="small"
-              :loading="mutatingId === item.id"
-              :aria-label="
-                hasPlacement(item, 'background')
-                  ? t('rom.remove-as-background')
-                  : t('rom.add-as-background')
-              "
-              @click="togglePlacement(item, 'background')"
-              >{{
-                hasPlacement(item, "background")
-                  ? t("rom.remove-as-background")
-                  : t("rom.add-as-background")
-              }}</ZABtn
-            ><ZABtn
-              v-if="item.origin === 'upload' && canManage"
-              icon="mdi-delete-outline"
-              :loading="mutatingId === item.id"
-              :aria-label="t('common.delete')"
-              @click="deleteArtwork(item)"
-              ><ZATooltip activator="parent" :text="t('common.delete')" />
-              ></ZABtn
+            <span class="za-shot__source">{{ item.display_label }}</span>
+            <span class="za-shot__source">{{ item.origin }}</span>
+            <div
+              v-if="canManage"
+              class="za-shot__actions d-flex flex-wrap ga-1"
             >
-          </div>
+              <MediaManagementAction
+                icon="mdi-view-dashboard-outline"
+                :caption="
+                  hasPlacement(item, 'overview')
+                    ? t('rom.remove-from-overview')
+                    : t('rom.add-to-overview')
+                "
+                :label="
+                  hasPlacement(item, 'overview')
+                    ? t('rom.remove-from-overview')
+                    : t('rom.add-to-overview')
+                "
+                :selected="hasPlacement(item, 'overview')"
+                :loading="mutatingId === item.id"
+                @click="togglePlacement(item, 'overview')"
+              />
+              <MediaManagementAction
+                icon="mdi-image-outline"
+                tone="info"
+                :caption="
+                  hasPlacement(item, 'background')
+                    ? t('rom.remove-as-background')
+                    : t('rom.add-as-background')
+                "
+                :label="
+                  hasPlacement(item, 'background')
+                    ? t('rom.remove-as-background')
+                    : t('rom.add-as-background')
+                "
+                :selected="hasPlacement(item, 'background')"
+                :loading="mutatingId === item.id"
+                @click="togglePlacement(item, 'background')"
+              />
+              <MediaManagementAction
+                v-if="item.origin === 'upload'"
+                icon="mdi-delete-outline"
+                tone="danger"
+                :caption="t('common.delete')"
+                :label="t('common.delete')"
+                :loading="mutatingId === item.id"
+                @click="deleteArtwork(item)"
+              />
+            </div>
+          </MediaManagementCard>
         </li>
       </ul>
     </section>
@@ -413,6 +318,7 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
     fullscreen
     show-thumbnails
     :aria-label="t('rom.artwork')"
+    :close-label="t('common.close')"
     @close="lightboxOpen = false"
     ><template #default="{ item, index }"
       ><img :src="item" :alt="ownedArtwork[index]?.display_label" /></template
@@ -438,7 +344,6 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
 }
 .r-v2-art__head,
 .r-v2-art__header-actions,
-.r-v2-art__actions,
 .r-v2-art__row {
   display: flex;
   align-items: center;
@@ -449,19 +354,6 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
 }
 .r-v2-art__header-actions {
   flex-wrap: wrap;
-}
-.r-v2-art__actions {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
-  align-items: stretch;
-}
-.r-v2-art__actions :deep(.r-btn) {
-  width: 100%;
-  min-width: 0;
-  min-height: 36px;
-  line-height: 1.2;
-  text-align: center;
-  white-space: normal;
 }
 .r-v2-art__title {
   margin: 0;
@@ -514,28 +406,6 @@ async function deleteArtwork(item: RomOwnedMediaSchema) {
 }
 .r-v2-art__grid {
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-}
-.r-v2-art__cell {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 8px;
-}
-.r-v2-art__preview {
-  padding: 0;
-  border: 0;
-  border-radius: var(--r-radius-md);
-  background: transparent;
-  cursor: pointer;
-}
-.r-v2-art__media {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 1px solid var(--r-color-border);
-  border-radius: var(--r-radius-md);
-  background: var(--r-color-cover-placeholder);
-  object-fit: contain;
 }
 @media (max-width: 599px) {
   .r-v2-art__head {

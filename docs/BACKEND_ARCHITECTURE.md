@@ -79,7 +79,7 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 - `backend/handler/scan_description_retry.py` shares the existing retry coordinator across unidentified and missing-description work. It selects at most five distinct games per operation and eight existing targets per game. Complete warm targets need no provider request; description-only repair avoids inventory and media work.
 - `backend/handler/database/description_state.py` applies narrow provider-text patches with current identity, version/digest and execution-authority checks. Partial provider replies preserve valid variants and all stored manual text. Existing interactive matching and refresh paths use `backend/handler/metadata/manual_description_refresh.py` and the same provider/merge owners.
 - Library images are RomComponentLocalMedia; uploaded/provider media is copied to owned resources as RomOwnedMedia or RomComponentOwnedMedia, with roles and placements.
-- backend/endpoints/roms/media.py and backend/endpoints/roms/pc_component_resources.py expose owned media. The v2 detail view selects overview, background and audio placements.
+- backend/endpoints/roms/media.py and backend/endpoints/roms/pc_component_resources.py expose owned media. The v2 detail view selects overview, background and audio placements. A normal parent `pc-metadata-selection` downloads one selected provider or scraper Cover through the bounded HTTPS owned-image store, preserving its verified GIF, WebP, JPEG, or PNG bytes and MIME as a parent-owned `cover` candidate. It then selects that exact row with the existing version-checked parent Cover mutation. The active hero reads `/api/roms/{rom_id}/media/{media_id}/content`, not a generated `path_cover_*` derivative. Component selection retains the corresponding component-owned candidate, and its detail hero reads `/api/roms/{rom_id}/pc-components/{component_id}/media/{media_id}/content`; neither flow can substitute a sibling or parent row. The separate legacy provider/scraper cover downloader preserves an `image/gif` or `image/webp` large cover as validated raw bytes at a matching `.gif` or `.webp` resource path, so its assets-backed hero receives the real MIME and can animate. Its small preview and other static cover inputs retain the existing generated derivatives. Header and decoded-image formats must agree before publication. Generated static thumbnails remain valid for legacy/list use, but do not replace an active owned hero source. Migration 0146 records an existing current cover only for rows whose original-source fields were all absent, preserving recoverable legacy media without creating assets or changing selected candidates. A legacy static derivative without a retained original URL or path is irrecoverable and must not be advertised as an original.
 
 ### Provider image deletion and placement
 
@@ -208,6 +208,67 @@ StorageRoot and PlatformStorageMapping in backend/models/storage.py model extern
 
 RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
 
+#### DLC-owned manuals and media
+
+`backend/endpoints/roms/pc_component_resources.py` exposes component resources
+only below their resolved parent ROM: read routes require `roms.read` and
+uploads, deletions, and placement changes require `roms.write`. The
+`/{rom_id}/pc-components/{component_id}/manual` GET, POST, and DELETE routes
+manage a DLC-owned PDF or Markdown manual; `/manual/content` streams only that
+component's owned manual. The POST and DELETE operations require the component
+`expected_version`, so a stale client cannot replace or remove the parent ROM's
+manual or another DLC's manual.
+
+The v2 DLC media navigation intentionally does not expose a manual tab. This is
+a UI scope decision, not a storage migration: existing component manual paths,
+files, and these compatibility routes remain intact, while the main-game manual
+experience remains unchanged.
+
+The same router lists, uploads, streams, deletes, places, and reorders
+`RomComponentOwnedMedia` beneath `/media`. `overview` and `background` accept
+image roles, while `soundtrack` accepts only soundtrack audio. The `surface`
+field records independent ordered placements per component and surface, so a
+DLC's selected overview, background, or soundtrack never aliases parent-ROM
+media. `PUT /media/placements` replaces the complete ordered ID set for one
+component-owned surface under the same `expected_version`; it rejects foreign,
+missing, or stale placement members instead of changing a sibling DLC. Each
+component image upload receives a collision-resistant owned path,
+so retaining multiple gallery or screenshot rows cannot overwrite an earlier
+file. Migration `0139_pc_component_owned_media_surfaces` adds the nullable
+component `manual_path`, the placement surface, and the surface-specific
+constraints/indexes needed for this separation.
+
+`0145_preserve_original_cover_source` keeps a parent ROM's original legacy
+cover paths and provider URL separate from an actively selected upload. A
+cover upload therefore adds a candidate rather than replacing the source. The
+selection mutation snapshots a reliable legacy source before changing the
+active candidate and restores it if that candidate is deleted or the original
+is selected. Rows that had already overwritten their source before the
+migration are intentionally left empty when no reliable source remains.
+Provider, scraper and upload cover candidates retain their own cover role,
+including GIF and WebP source bytes. Selection uses those validated owned
+bytes directly, so animation is not flattened into generated derivatives.
+
+Original parent-ROM covers that predate the owned-media catalog are retired by
+`DELETE /api/roms/{id}/media/cover/original`. The route requires ROM edit access
+and the current `expected_version`. `ParentCoverMutationMixin` clears only the
+retained original-source fields, preserving a separately selected upload, and
+records URL-identity tombstones using the existing provider suppression rules.
+Legacy cover downloads also honor those tombstones. Shared resource files are
+retained rather than unlinked by this source-only operation, because an owned
+candidate or another display surface may still reference them.
+
+`pc_component_resource_support.py` centralizes upload role, extension, and MIME
+validation. `handler/filesystem/pc_component_resources.py` writes accepted
+manuals, images, and audio only into the ZockArchive-owned resource root.
+`handler/database/pc_component_media_mutations.py` resolves the exact DLC,
+applies version-checked manual, placement, and ordering mutations, and enforces
+role-to-surface compatibility. The endpoint deletes a newly written owned file
+when the guarded database mutation fails and removes replaced files only after
+a successful commit. Response schemas stay in
+`endpoints/responses/pc_component_media.py`; generic ROM handlers keep their
+existing parent-media and provider behavior.
+
 ### Background work, WebSockets and deployment
 
 RQ tasks are defined under backend/tasks/ and initialized by backend/startup.py, including scans, cleanup, provider updates, media cleanup, save-hash backfill and sync push/pull. /ws uses Socket.IO with Redis coordination for scan, activity, sync and admin log events; /netplay provides room, WebRTC and input relay events.
@@ -271,3 +332,31 @@ cutover validator requires this successful current-source host proof plus all16
 dual-SQL shards and three schema roundtrips. A missing host artifact, stale
 source, changed membership or skipped suite cannot be classified as acceptance.
 See docs/repository-cutover-verification.md for the receipt contract.
+
+### Searched covers in the standard ROM edit dialog
+
+The standard `PUT /api/roms/{id}` edit path catalogs submitted HTTPS cover
+sources, including the Edit > Search cover > Apply flow. The endpoint defers
+cover publication until the full form has been prepared. `edited_cover.py`
+owns the persistence/error/cleanup boundary and prepares or reuses a candidate
+by normalized provider URL; the existing provider
+identity is retained when a matching catalog entry already exists.
+`handler/filesystem/searched_cover.py` uses the existing validated streaming
+cover downloader at a unique owned-media destination, preserving GIF, WebP and
+APNG animation without overwriting legacy original-cover files.
+`handler/database/edited_cover.py` performs the owner-version check, candidate
+reconciliation, cover selection and remaining form update in one transaction.
+A conflicting or failed edit removes only its newly staged file. Repeated Apply
+reuses the candidate. Ordinary candidate selection changes references only;
+it does not generate first-frame derivatives or write shared legacy cover paths.
+
+Decomposition: the legacy ROM route module remains large. This change replaces
+its cover-download branch with a narrow dispatch; source preparation, streaming
+storage and transactional publication live in three focused modules. Extracting
+the entire multi-provider edit route is a separate boundary and is not required
+for this correction.
+
+The resource handler delegates retained-cover resolution and original-source
+suppression to `handler/filesystem/cover_lookup.py`. It invokes the original
+handler instance, preserving its storage capabilities and size-specific path
+lookup. This keeps both legacy modules below their pre-change line counts.

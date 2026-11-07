@@ -167,3 +167,56 @@ def test_explicit_refresh_preserves_suppression_policy(
     )
     assert response.status_code == 200
     assert "restore_suppressed" not in refresh.call_args.kwargs
+
+
+def test_delete_original_cover_is_versioned_and_preserves_uploads(
+    client, access_token, rom
+):
+    current = db_rom_handler.update_rom(
+        rom.id,
+        {
+            "path_cover_l": "roms/1/cover/big.png",
+            "original_cover_path_l": "roms/1/cover/big.png",
+            "original_cover_url": "https://example.org/cover.png",
+        },
+    )
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.delete(
+        f"/api/roms/{rom.id}/media/cover/original",
+        headers=headers,
+        params={"expected_version": current.updated_at.isoformat()},
+    )
+    assert response.status_code == 200
+    assert response.json()["original_cover_path_large"] is None
+    stale = client.delete(
+        f"/api/roms/{rom.id}/media/cover/original",
+        headers=headers,
+        params={"expected_version": current.updated_at.isoformat()},
+    )
+    assert stale.status_code == 409
+
+
+def test_delete_original_cover_requires_authentication(client, rom):
+    response = client.delete(
+        f"/api/roms/{rom.id}/media/cover/original",
+        params={"expected_version": rom.updated_at.isoformat()},
+    )
+    assert response.status_code == 401
+
+
+def test_viewer_cannot_delete_original_cover(client, viewer_access_token, rom):
+    current = db_rom_handler.update_rom(
+        rom.id,
+        {
+            "original_cover_path_l": "roms/1/cover/big.png",
+        },
+    )
+    response = client.delete(
+        f"/api/roms/{rom.id}/media/cover/original",
+        headers={"Authorization": f"Bearer {viewer_access_token}"},
+        params={"expected_version": current.updated_at.isoformat()},
+    )
+    assert response.status_code == 403
+    assert (
+        db_rom_handler.get_rom(rom.id).original_cover_path_l == "roms/1/cover/big.png"
+    )

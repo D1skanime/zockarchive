@@ -153,7 +153,9 @@ const visibilityLabel = computed(() =>
         v-for="surface in surfaces"
         :key="surface"
         :icon="
-          surface === 'overview' ? 'mdi-crown-outline' : 'mdi-image-outline'
+          surface === 'overview'
+            ? 'mdi-view-dashboard-outline'
+            : 'mdi-image-outline'
         "
         :tone="surface === 'overview' ? 'brand' : 'info'"
         :selected="position(surface) !== undefined"

@@ -16,6 +16,8 @@ import PcDlcFiles from "@/v2/components/GameDetails/PcDlcFiles.vue";
 import PcDlcMediaTab from "@/v2/components/GameDetails/PcDlcMediaTab.vue";
 import PcDlcNotesTab from "@/v2/components/GameDetails/PcDlcNotesTab.vue";
 import ScreenshotsTab from "@/v2/components/GameDetails/ScreenshotsTab.vue";
+import { resolvePcDlcCoverPresentation } from "@/v2/components/GameDetails/pcDlcMediaPresentation";
+import { usePcDlcPrimaryTabSync } from "@/v2/components/GameDetails/pcDlcPrimaryTabSync";
 import { useCan } from "@/v2/composables/useCan";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
 import { descriptionPresentation } from "@/v2/composables/useManualDescription/provenance";
@@ -64,22 +66,7 @@ const tabs = computed(() => [
   { id: "notes", label: t("rom.tab-notes") },
 ]);
 
-watch(tab, (value) => {
-  if (route.query.tab !== value) {
-    void router.replace({
-      path: route.path,
-      query: { ...route.query, tab: value },
-    });
-  }
-});
-watch(
-  () => route.query.tab,
-  (value) => {
-    if (typeof value === "string" && validTabs.includes(value as DlcTab)) {
-      tab.value = value as DlcTab;
-    }
-  },
-);
+const { selectTab } = usePcDlcPrimaryTabSync(tab, validTabs, route, router);
 
 const title = computed(
   () =>
@@ -118,10 +105,12 @@ watch(
     descriptionEditorOpen.value = false;
   },
 );
-const cover = computed(
-  () =>
-    props.component.owned_media?.find((media) => media.role === "cover") ??
-    props.component.local_media?.find((media) => media.role === "cover"),
+const coverPresentation = computed(() =>
+  resolvePcDlcCoverPresentation(
+    props.component,
+    props.parent.id,
+    FRONTEND_RESOURCES_PATH,
+  ),
 );
 
 const overviewPlacements = computed(() =>
@@ -130,7 +119,9 @@ const overviewPlacements = computed(() =>
       (item.placements ?? [])
         .filter(
           (placement) =>
-            placement.media_id === item.id && placement.position >= 0,
+            placement.media_id === item.id &&
+            placement.surface === "overview" &&
+            placement.position >= 0,
         )
         .map((placement) => ({ item, placement })),
     )
@@ -178,7 +169,7 @@ function openMatcher() {
   });
 }
 function showMedia() {
-  tab.value = "media";
+  selectTab("media");
 }
 </script>
 
@@ -194,9 +185,9 @@ function showMedia() {
           {{ t("rom.pc-dlc-back-to-game", { game: parent.name ?? "" }) }}
         </ZABtn>
         <ZAImg
-          v-if="cover"
+          v-if="coverPresentation"
           class="pc-dlc-detail__cover"
-          :src="ownedMediaUrl(cover.owned_path)"
+          :src="coverPresentation.source"
           :alt="title"
           width="240"
           height="324"
@@ -220,7 +211,12 @@ function showMedia() {
         </section>
 
         <div class="pc-dlc-detail__tab-bar">
-          <ZATabNav v-model="tab" :items="tabs" class="r-v2-det__tabs" />
+          <ZATabNav
+            :model-value="tab"
+            :items="tabs"
+            class="r-v2-det__tabs"
+            @update:model-value="selectTab"
+          />
           <ZAMenu location="bottom end">
             <template #activator="{ props: menuProps }">
               <ZABtn
@@ -249,7 +245,7 @@ function showMedia() {
             <ZAMenuItem
               :label="t('rom.download')"
               icon="mdi-download"
-              @click="tab = 'pc-components'"
+              @click="selectTab('pc-components')"
             />
           </ZAMenu>
         </div>

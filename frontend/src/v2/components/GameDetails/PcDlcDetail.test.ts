@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { nextTick } from "vue";
 import type { DetailedRomSchema, PcComponentSchema } from "@/__generated__";
 import PcDlcDetail from "./PcDlcDetail.vue";
 
@@ -172,6 +173,10 @@ function mountDetail(component: PcComponentSchema = selectedDlc) {
           props: ["component"],
           template: "<section data-testid='files' />",
         },
+        PcDlcMediaTab: {
+          name: "PcDlcMediaTab",
+          template: "<section data-testid='pc-dlc-media' />",
+        },
       },
       provide: {
         emitter: { emit: vi.fn() },
@@ -334,7 +339,9 @@ describe("PcDlcDetail", () => {
           provider_media_id: "provider-shot",
           created_at: "2026-09-03T00:00:00+00:00",
           updated_at: "2026-09-03T00:00:00+00:00",
-          placements: [{ id: 1, media_id: 43, position: 0 }],
+          placements: [
+            { id: 1, media_id: 43, surface: "overview", position: 0 },
+          ],
         },
         {
           id: 44,
@@ -346,7 +353,9 @@ describe("PcDlcDetail", () => {
           provider_media_id: "provider-art",
           created_at: "2026-09-03T00:00:00+00:00",
           updated_at: "2026-09-03T00:00:00+00:00",
-          placements: [{ id: 2, media_id: 44, position: 1 }],
+          placements: [
+            { id: 2, media_id: 44, surface: "overview", position: 1 },
+          ],
         },
       ],
     });
@@ -379,6 +388,20 @@ describe("PcDlcDetail", () => {
     expect(tabs.element.compareDocumentPosition(panel.element)).toBe(
       Node.DOCUMENT_POSITION_FOLLOWING,
     );
+  });
+
+  it("keeps the primary tabs usable after the media panel mounts", async () => {
+    const wrapper = mountDetail();
+    const tabs = wrapper.findAll(".r-v2-det__tabs [role='tab']");
+
+    await tabs[2].trigger("click");
+    await nextTick();
+    expect(wrapper.findAll("[data-testid='pc-dlc-media']")).toHaveLength(1);
+
+    await tabs[0].trigger("click");
+    await nextTick();
+    expect(wrapper.findAll("[data-testid='pc-dlc-media']")).toHaveLength(0);
+    expect(wrapper.get(".pc-dlc-detail__overview")).toBeDefined();
   });
 
   it("keeps the header above tabs to the title and DLC tag, with overview details below", () => {
@@ -529,10 +552,11 @@ describe("PcDlcDetail", () => {
     expect(wrapper.find("[data-testid='pc-dlc-media']").exists()).toBe(false);
   });
 
-  it("renders a provider-owned cover when no local cover is available", () => {
+  it("renders the selected provider-owned cover through its content endpoint", () => {
     const wrapper = mountDetail({
       ...selectedDlc,
       local_media: [],
+      active_owned_cover_media_id: 42,
       owned_media: [
         {
           id: 42,
@@ -549,7 +573,7 @@ describe("PcDlcDetail", () => {
     });
 
     expect(wrapper.get("img").attributes("src")).toBe(
-      "/assets/romm/resources/roms/1/pc-owned-media/2/provider-cover.jpg",
+      "/api/roms/1/pc-components/2/media/42/content",
     );
     expect(
       wrapper.find("[data-testid='pc-dlc-cover-placeholder']").exists(),
@@ -570,7 +594,9 @@ describe("PcDlcDetail", () => {
           provider_media_id: "provider-shot",
           created_at: "2026-09-03T00:00:00+00:00",
           updated_at: "2026-09-03T00:00:00+00:00",
-          placements: [{ id: 3, media_id: 43, position: 0 }],
+          placements: [
+            { id: 3, media_id: 43, surface: "overview", position: 0 },
+          ],
         },
       ],
     });
