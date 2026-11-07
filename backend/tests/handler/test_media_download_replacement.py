@@ -121,9 +121,10 @@ async def test_pc_selection_keeps_authoritative_cover_paths(
     )
     before = resource_snapshot(rom)
     async with provider_response(failure="status"):
-        await endpoint.select_pc_metadata_candidate.__wrapped__(
-            request, rom.id, selection
-        )
+        with pytest.raises(ValueError, match="Provider media could not be downloaded"):
+            await endpoint.select_pc_metadata_candidate.__wrapped__(
+                request, rom.id, selection
+            )
     saved = db_rom_handler.get_rom(rom.id)
     assert saved.path_cover_s == paths["path_cover_s"]
     assert saved.path_cover_l == paths["path_cover_l"]

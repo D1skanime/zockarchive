@@ -83,7 +83,7 @@ async def test_reconcile_steam_patch_media_canonicalizes_and_reuses_active_paths
 ):
     rom = _rom()
     active_cover = SimpleNamespace(
-        role=RomOwnedMediaRole.ARTWORK,
+        role=RomOwnedMediaRole.COVER,
         state=RomOwnedMediaState.ACTIVE,
         owned_path="roms/1/73/owned-media/cover.webp",
         mime_type="image/webp",
@@ -123,8 +123,8 @@ async def test_reconcile_steam_patch_media_canonicalizes_and_reuses_active_paths
     assert set(get_inventory.call_args_list[0].args[1]) == set(inventory)
     first_inventory = reconcile.call_args_list[0].args[2]
     assert [item.owned_path for item in first_inventory] == [
-        active_shot.owned_path,
         active_cover.owned_path,
+        active_shot.owned_path,
     ]
 
 

@@ -128,3 +128,19 @@ Validation: all five affected files pass, 86 tests. The inventory includes two
 additional contract tests. Scoped Trunk checks pass. Only tests, test fixtures and
 this verification report changed after human acceptance. The full gate must
 still pass before merge.
+
+### Backend contract fixture maintenance
+
+The full MariaDB run exposed older cover-as-artwork fixtures. Suppression cases
+that source the cover field now seed COVER records; artwork identity-boundary
+cases remain distinct. The invalid-role database test now uses a short invalid
+value, so it exercises the role constraint rather than column length.
+The ROM route policy fixture includes the current active-cover field. Failed
+provider selection explicitly expects its existing ValueError and still checks
+that all prior cover paths and resource bytes survive. The Steam reuse fixture
+uses COVER and the corresponding canonical inventory order.
+
+All 134 tests across the four affected database, suppression, replacement and
+storage-policy files pass in a disposable MariaDB target. The six Steam media
+tests also pass. Scoped Trunk checks pass. These are test-only changes; the full
+merge gate remains pending.

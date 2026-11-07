@@ -24,7 +24,11 @@ URL = "https://fixture.invalid/image.png?a=1&b=2"
 
 
 def candidate(provider, role, url=URL):
-    key = "url_screenshots" if role == RomOwnedMediaRole.SCREENSHOT else "url_artworks"
+    key = {
+        RomOwnedMediaRole.COVER: "url_covers",
+        RomOwnedMediaRole.SCREENSHOT: "url_screenshots",
+        RomOwnedMediaRole.ARTWORK: "url_artworks",
+    }[role]
     return rom_media.discover_provider_media(provider, {key: [url]})[0]
 
 
@@ -64,7 +68,7 @@ def assert_suppressed(rom_id, media_id):
 
 
 @pytest.mark.parametrize(
-    "role", [RomOwnedMediaRole.SCREENSHOT, RomOwnedMediaRole.ARTWORK]
+    "role", [RomOwnedMediaRole.SCREENSHOT, RomOwnedMediaRole.COVER]
 )
 @pytest.mark.parametrize("mode", ["normal", "complete", "media-only", "explicit"])
 @pytest.mark.asyncio
@@ -73,7 +77,7 @@ async def test_suppression_update_modes_repeat(rom, attempt, role, mode):
     rom = db_rom_handler.update_rom(
         rom.id,
         {
-            "url_cover": URL if role == RomOwnedMediaRole.ARTWORK else "",
+            "url_cover": URL if role == RomOwnedMediaRole.COVER else "",
             "url_screenshots": [URL] if role == RomOwnedMediaRole.SCREENSHOT else [],
         },
     )
@@ -102,7 +106,7 @@ async def test_suppression_update_modes_repeat(rom, attempt, role, mode):
                                     "media": {
                                         "cover": (
                                             [URL]
-                                            if role == RomOwnedMediaRole.ARTWORK
+                                            if role == RomOwnedMediaRole.COVER
                                             else []
                                         ),
                                         "screenshots": (
@@ -267,7 +271,7 @@ def test_suppression_identity_boundaries(rom, platform, different):
 async def test_suppression_legacy_delete_during_publication(rom, attempt, monkeypatch):
     from handler.filesystem.scan_media_publication import require_scan_media_batch
 
-    added = seed(rom, "provider", RomOwnedMediaRole.ARTWORK)
+    added = seed(rom, "provider", RomOwnedMediaRole.COVER)
     current = db_rom_handler.update_rom(
         rom.id, {"url_cover": URL, "url_screenshots": []}
     )
