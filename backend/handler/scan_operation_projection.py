@@ -48,9 +48,14 @@ def _classification_predicate(item, outcome):
     return predicates[outcome]
 
 
-def _current_attempt_predicate(row, query):
+def _attempt_predicate(row):
     item = ScanOperationItem
-    conditions = [item.operation_id == row.id, item.attempt_id == row.attempt_id]
+    return [item.operation_id == row.id, item.attempt_id == row.attempt_id]
+
+
+def _current_attempt_predicate(row, query):
+    conditions = _attempt_predicate(row)
+    item = ScanOperationItem
     if query.search:
         conditions.append(func.lower(item.relative_path).contains(query.search))
     if query.platform_id is not None:
@@ -127,13 +132,13 @@ def _totals(session, row):
     )
 
 
-def _platforms(session, row, query):
+def _platforms(session, row):
     item = ScanOperationItem
     statement = (
         select(Platform.id, Platform.name, Platform.custom_name)
         .join(PlatformStorageMapping, PlatformStorageMapping.platform_id == Platform.id)
         .join(item, item.mapping_id == PlatformStorageMapping.id)
-        .where(*_current_attempt_predicate(row, query))
+        .where(*_attempt_predicate(row))
         .distinct()
         .order_by(
             func.lower(func.coalesce(Platform.custom_name, Platform.name)), Platform.id
@@ -214,7 +219,7 @@ def operation_snapshot(session, row, *, query=None):
         items_total=int(total or 0),
         query=query,
         totals=totals,
-        platforms=_platforms(session, row, query),
+        platforms=_platforms(session, row),
         actionable_count=totals.action_required,
         actionable_samples=[
             _item_result(item, platform) for item, platform in actionable_rows

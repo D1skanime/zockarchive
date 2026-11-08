@@ -221,6 +221,11 @@ const liveStatusLabel = computed(() => {
   return t("scan.live-progress");
 });
 
+// The paginated operation explorer is the terminal record. Legacy socket rows
+// remain available for live inspection and subfolder actions only while a scan
+// is active, so a completed large scan cannot render a second full result list.
+const showLivePlatformRows = computed(() => scanning.value || !snapshot.value);
+
 function scan(subfolder?: SubfolderScanRequest) {
   if (!canDiscover.value || (!subfolder && !canStartScan.value)) return;
   scanningStore.reset();
@@ -727,7 +732,7 @@ function stopScan() {
          a vertical stack of expansion panels with a transition group
          so each card animates in. Owns its own scroll so logs never
          push the controls off-screen. -->
-    <section v-if="mappingReady" class="r-v2-scan-live">
+    <section v-if="mappingReady && showLivePlatformRows" class="r-v2-scan-live">
       <ScanLiveHeader
         :label="liveStatusLabel"
         :stats="snapshot?.scan_stats ?? scanStats"

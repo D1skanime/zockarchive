@@ -13,6 +13,9 @@ RequestKey = Annotated[
 ]
 SafeCode = Annotated[str, Field(min_length=1, max_length=64, pattern=r"^[a-z0-9_:-]+$")]
 PositiveId = Annotated[int, Field(strict=True, gt=0)]
+# FastAPI binds URL query values as strings. Keep command payload identities
+# strict, but allow the HTTP boundary to coerce a positive result filter.
+QueryPositiveId = Annotated[int, Field(gt=0)]
 ScanState = Literal[
     "accepted",
     "queued",
@@ -52,7 +55,7 @@ class ScanOperationResultQuery(StrictContract):
     offset: int = Field(default=0, ge=0, le=1000000)
     limit: int = Field(default=50, ge=1, le=100)
     search: str | None = Field(default=None, max_length=120)
-    platform_id: PositiveId | None = None
+    platform_id: QueryPositiveId | None = None
     outcome: ScanExplorerOutcome = "all"
 
     @field_validator("search")
