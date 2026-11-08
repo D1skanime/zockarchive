@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-08T13:00:00Z"
-last_activity: "2026-11-08 - Completed quick task 261108-scan-template-runtime-fix: restore browser-safe Scan decomposition"
+last_updated: "2026-11-08T14:00:00Z"
+last_activity: "2026-11-08 - Completed quick task 261108-rso: classify action-required results only from explicit Windows-inventory facts"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,22 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261108-rso
+
+| 261108-rso | Fix false-positive scan action-required results | 2026-11-08 | MariaDB/browser evidence recorded; commit 1de8191ee | [261108-rso](./quick/261108-rso-fix-false-positive-scan-action-required-/) |
+
+- Only an explicit `identified_windows: false` JSON fact is now unresolved.
+  The saved 37-game scan shows zero action-required and 37 skipped rows at
+  desktop and mobile widths; a renewed human live UAT is required.
+
+## Quick Task 261108-ro7
+
+| 261108-ro7 | Add accepted scan-overview regression coverage | 2026-11-08 | frontend typecheck and 66 focused tests passed; commit 278886e15 | [261108-ro7](./quick/261108-ro7-post-uat-tests-for-scan-overview-phase-4/) |
+
+- This test work began only after the prior live-UAT acceptance. It is retained
+  unchanged by the subsequent UAT correction; no tests were added after that
+  correction request.
 
 ## Quick Task 261108-scan-template-runtime-fix
 
