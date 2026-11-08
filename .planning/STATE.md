@@ -26,7 +26,7 @@ progress:
 
 ## Quick Task 261108-scan-checked-games
 
-| 261108-scan-checked-games | Persist all checked games in scan results | 2026-11-08 | pending commit | [261108-scan-checked-games](./quick/261108-scan-checked-games/) |
+| 261108-scan-checked-games | Persist all checked games in scan results | 2026-11-08 | browser verified, commit 70f2333a3 | [261108-scan-checked-games](./quick/261108-scan-checked-games/) |
 
 - New scans persist canonical game rows for completed and unchanged work, so paginated
   result filters cover all scanned platforms without provider duplicates.
