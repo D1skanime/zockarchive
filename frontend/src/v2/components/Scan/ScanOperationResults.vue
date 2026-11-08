@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   ZABtn,
+  ZACheckbox,
   ZACollapsible,
   ZASelect,
   ZASpinner,
@@ -13,11 +14,16 @@ import { useScanOperationResults } from "@/v2/composables/useScanOperationResult
 import type { ScanOperationOutcome } from "@/v2/data/adapters/scanOperations";
 import type { ScanOperationSnapshot } from "@/v2/data/contracts";
 
-const props = defineProps<{ snapshot: ScanOperationSnapshot | null }>();
+const props = defineProps<{
+  snapshot: ScanOperationSnapshot | null;
+  canManage: boolean;
+}>();
+const emit = defineEmits<{ retry: [ids: number[]] }>();
 const { t } = useI18n();
 const { xs } = useBreakpoint();
 const trigger = ref<InstanceType<typeof ZACollapsible> | null>(null);
 const resultsHeading = ref<HTMLElement | null>(null);
+const selected = ref<number[]>([]);
 const {
   error,
   hide,
@@ -109,8 +115,25 @@ function selectOutcomeValue(value: unknown) {
   if (typeof value === "string") selectOutcome(value as ScanOperationOutcome);
 }
 
+function retryable(item: (typeof items.value)[number]) {
+  return item.outcome === "warning" || item.outcome === "failed";
+}
+
+function select(id: number, value: boolean | null) {
+  selected.value = value
+    ? [...new Set([...selected.value, id])]
+    : selected.value.filter((item) => item !== id);
+}
+
+function retrySelected() {
+  if (selected.value.length) emit("retry", selected.value);
+}
+
 watch(open, (nextOpen) => {
   if (!nextOpen) restoreTriggerFocus();
+});
+watch(items, () => {
+  selected.value = [];
 });
 
 defineExpose({ openActionRequired });
@@ -205,8 +228,27 @@ defineExpose({ openActionRequired });
             <span>{{
               t(`scan.operation-results-outcome-${item.result ?? item.outcome}`)
             }}</span>
+            <ZACheckbox
+              v-if="canManage && retryable(item)"
+              class="r-v2-scan-operation-results__retry-select"
+              :model-value="selected.includes(item.id)"
+              :aria-label="
+                t('scan.recovery-item', {
+                  game: item.relative_path ?? item.target_key,
+                  provider: item.provider,
+                })
+              "
+              @update:model-value="select(item.id, $event)"
+            />
           </li>
         </ul>
+        <ZABtn
+          v-if="canManage && selected.length"
+          class="r-v2-scan-operation-results__retry"
+          @click="retrySelected"
+        >
+          {{ t("scan.recovery-retry-metadata") }}
+        </ZABtn>
 
         <nav
           v-if="pageCount > 1"
@@ -294,6 +336,12 @@ defineExpose({ openActionRequired });
   color: var(--r-color-fg-secondary);
   font-family: var(--r-font-family-mono);
   font-size: 11.5px;
+}
+.r-v2-scan-operation-results__retry-select {
+  grid-column: 1 / -1;
+}
+.r-v2-scan-operation-results__retry {
+  align-self: flex-start;
 }
 .r-v2-scan-operation-results__pagination {
   display: flex;

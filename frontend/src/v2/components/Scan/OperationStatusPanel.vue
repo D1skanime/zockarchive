@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ZAAlert, ZABtn, ZACheckbox } from "@v2/lib";
-import { computed, onBeforeUpdate, onUpdated, ref, watch } from "vue";
+import { ZAAlert, ZABtn } from "@v2/lib";
+import { computed, onBeforeUpdate, onUpdated, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import ScanOperationOverview from "@/v2/components/Scan/ScanOperationOverview.vue";
 import ScanOperationResults from "@/v2/components/Scan/ScanOperationResults.vue";
@@ -28,7 +28,6 @@ const emit = defineEmits<{
   actionRequiredDetails: [];
 }>();
 const { t } = useI18n();
-const selected = ref<number[]>([]);
 const results = ref<InstanceType<typeof ScanOperationResults> | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const statusHeading = ref<HTMLElement | null>(null);
@@ -58,17 +57,6 @@ onUpdated(() => {
     focusedControl = null;
   }
 });
-watch(
-  () => props.snapshot?.attempt_id,
-  () => {
-    selected.value = [];
-  },
-);
-const warnings = computed(() =>
-  (props.snapshot?.items ?? []).filter(
-    (item) => item.outcome === "warning" || item.outcome === "failed",
-  ),
-);
 const running = computed(() =>
   ["accepted", "queued", "running", "recovering", "stopping"].includes(
     props.status,
@@ -111,11 +99,6 @@ const cause = computed(() => {
     return "failed";
   return null;
 });
-function select(id: number, value: boolean | null) {
-  selected.value = value
-    ? [...new Set([...selected.value, id])]
-    : selected.value.filter((item) => item !== id);
-}
 function openActionRequiredDetails() {
   results.value?.openActionRequired();
 }
@@ -140,7 +123,12 @@ function openActionRequiredDetails() {
       :status="status"
       @action-required-details="openActionRequiredDetails"
     />
-    <ScanOperationResults ref="results" :snapshot="snapshot" />
+    <ScanOperationResults
+      ref="results"
+      :snapshot="snapshot"
+      :can-manage="canManage"
+      @retry="emit('retry', $event.map(String))"
+    />
     <ZAAlert v-if="cause" type="warning" role="alert">
       <p>{{ t("scan.recovery-cause-" + cause) }}</p>
       <p>{{ t("scan.recovery-action-" + cause) }}</p>
@@ -171,32 +159,6 @@ function openActionRequiredDetails() {
         >{{ t("scan.recovery-resume") }}</ZABtn
       >
     </div>
-    <fieldset v-if="warnings.length" class="pa-3">
-      <legend>{{ t("scan.recovery-warnings") }}</legend>
-      <div
-        v-for="item in warnings"
-        :key="item.id"
-        class="d-flex align-center ga-2"
-      >
-        <ZACheckbox
-          :model-value="selected.includes(item.id)"
-          :disabled="!canManage"
-          :label="
-            t('scan.recovery-item', {
-              game: item.target_key,
-              provider: item.provider,
-            })
-          "
-          @update:model-value="select(item.id, $event)"
-        />
-      </div>
-      <ZABtn
-        v-if="canManage"
-        :disabled="!selected.length || running"
-        @click="emit('retry', selected.map(String))"
-        >{{ t("scan.recovery-retry-metadata") }}</ZABtn
-      >
-    </fieldset>
   </section>
 </template>
 

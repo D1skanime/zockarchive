@@ -305,7 +305,7 @@ export function useLibraryOperation() {
   }
   async function mutate(
     kind: "cancel" | "resume" | "retry",
-    itemIds: readonly string[] = [],
+    itemIds: readonly (string | number)[] = [],
   ) {
     const current = server.snapshot.value;
     if (!current || mutating.value) return result.value;
@@ -316,16 +316,10 @@ export function useLibraryOperation() {
     )
       return result.value;
     const selected = itemIds.map(Number);
-    const failedIds = new Set(
-      (current.items ?? [])
-        .filter(
-          (item) => item.outcome === "warning" || item.outcome === "failed",
-        )
-        .map((item) => item.id),
-    );
     if (
       kind === "retry" &&
-      (!selected.length || selected.some((id) => !failedIds.has(id)))
+      (!selected.length ||
+        selected.some((id) => !Number.isSafeInteger(id) || id < 1))
     )
       return failed("select-failed-items");
     mutating.value = true;
