@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-08T14:00:00Z"
-last_activity: "2026-11-08 - Completed quick task 261108-rso: classify action-required results only from explicit Windows-inventory facts"
+last_updated: "2026-11-08T21:30:00Z"
+last_activity: "2026-11-08 - Completed quick task 261108-te6: restore selective metadata retries in scan result pages"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,14 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261108-te6
+
+| 261108-te6 | Restore selective metadata retry actions | 2026-11-08 | browser evidence recorded; commit 8731b7f77 | [261108-te6](./quick/261108-te6-restore-selective-metadata-retry-actions/) |
+
+- Retry selection now belongs to the bounded warning/failed result page rather
+  than the summary-only lifecycle snapshot. The renewed human UAT should use a
+  real warning or failed scan item to validate the backend retry completion.
 
 ## Quick Task 261108-rso
 
