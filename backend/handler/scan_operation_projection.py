@@ -27,10 +27,15 @@ def _classification(item):
     return item.outcome
 
 
-def _classification_predicate(item, outcome):
+def _unidentified_predicate(item):
+    """Match only the durable JSON boolean false, never an absent fact."""
     inventory = item.checkpoint["inventory_status"]
+    return inventory["identified_windows"].as_string() == "false"
+
+
+def _classification_predicate(item, outcome):
     provider = item.checkpoint["provider_observation"]
-    unidentified = inventory["identified_windows"].as_boolean().is_(False)
+    unidentified = _unidentified_predicate(item)
     failed = or_(item.outcome == "failed", provider["outcome"].as_string() == "failed")
     warning = item.outcome == "warning"
     predicates = {
@@ -100,9 +105,8 @@ def _rows(session, row, query, *, offset=0, limit=None):
 
 def _totals(session, row):
     item = ScanOperationItem
-    inventory = item.checkpoint["inventory_status"]
     provider = item.checkpoint["provider_observation"]
-    unidentified = inventory["identified_windows"].as_boolean().is_(False)
+    unidentified = _unidentified_predicate(item)
     failed = or_(item.outcome == "failed", provider["outcome"].as_string() == "failed")
     warning = item.outcome == "warning"
     values = session.execute(
