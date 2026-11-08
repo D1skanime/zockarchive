@@ -1,0 +1,421 @@
+<div class="r-v2-scan">
+  <ScanInfoDialog v-model="infoDialogOpen" />
+  <OperationStatusPanel
+    class="r-v2-scan__operation"
+    v-if="snapshot || checking || uncertain || actionError || disconnected"
+    :snapshot="snapshot"
+    :checking="checking"
+    :uncertain="uncertain"
+    :disconnected="disconnected"
+    :reconciling="reconciling"
+    :action-error="actionError"
+    :status="status"
+    :has-more="hasMore"
+    :loading-more="loadingMore"
+    :can-manage="canManageScan"
+    @load-more="libraryOperation.loadMore()"
+    @stop="libraryOperation.cancel()"
+    @resume="libraryOperation.resume()"
+    @retry-status="libraryOperation.retryStatus()"
+    @retry="libraryOperation.retry($event)"
+  />
+
+  <section v-if="!mappingReady" class="r-v2-scan-card r-v2-scan-card--mapping">
+    <ZAIcon icon="mdi-folder-key-outline" size="48" />
+    <h2>{{ t("storage.administration") }}</h2>
+    <p>
+      {{ t( "storage.reconcile-legacy", "An active, reachable, read-only PC
+      mapping is required before a library scan can start.", ) }}
+    </p>
+    <div class="r-v2-scan-card__mapping-actions">
+      <ZABtn
+        variant="flat"
+        color="primary"
+        :to="mappingRoute"
+        prepend-icon="mdi-folder-cog-outline"
+      >
+        {{ t("settings.add-folder-mapping") }}
+      </ZABtn>
+      <ZABtn
+        v-if="mappingReadiness === 'error'"
+        variant="outlined"
+        @click="loadMappingReadiness"
+      >
+        {{ t("common.retry", "Retry") }}
+      </ZABtn>
+    </div>
+  </section>
+
+  <section
+    v-else
+    class="r-v2-scan-card"
+    :class="{ 'r-v2-scan-card--locked': scanning }"
+    :aria-label="t('scan.title')"
+  >
+    <div class="r-v2-scan-card__head">
+      <ZABtn
+        icon="mdi-information-outline"
+        variant="text"
+        size="small"
+        :aria-label="t('scan.info-dialog-title')"
+        @click="infoDialogOpen = true"
+      />
+    </div>
+
+    <div class="r-v2-scan-card__fields">
+      <section class="r-v2-scan-card__section">
+        <h3 class="r-v2-scan-card__section-title">
+          {{ t("scan.section-platforms") }}
+        </h3>
+        <PlatformSelect
+          v-model="platformsToScan"
+          :items="sortedPlatforms"
+          item-key="fs_slug"
+          :label="t('common.platforms')"
+          prepend-inner-icon="mdi-controller"
+          :icon-size="32"
+          multiple
+          clearable
+          hide-details
+          chips
+          show-meta
+          mark-unscanned
+          :unscanned-label="t('scan.folder-not-scanned')"
+          show-all-option
+        />
+      </section>
+      <section class="r-v2-scan-card__section">
+        <h3 class="r-v2-scan-card__section-title">
+          {{ t("scan.section-metadata") }}
+        </h3>
+        <div class="r-v2-scan-card__subsection">
+          <span class="r-v2-scan-card__subsection-label">
+            {{ t("scan.section-providers") }}
+          </span>
+
+          <div class="r-v2-scan-card__providers-group">
+            <span class="r-v2-scan-card__providers-group-label">
+              {{ t("scan.section-providers-general") }}
+            </span>
+            <ZASelect
+              v-model="metadataSources"
+              :items="generalProviders"
+              :label="t('scan.section-providers-general')"
+              item-title="name"
+              prepend-inner-icon="mdi-database-search"
+              variant="outlined"
+              multiple
+              return-object
+              clearable
+              hide-details
+              chips
+              chip-tone="plain"
+              show-all-option
+              @update:all-selected="generalAllSelected = $event"
+            >
+              <template #chip="{ item }">
+                <ZATooltip :text="item.raw.name" location="bottom">
+                  <template #activator="{ props: tipProps }">
+                    <span
+                      v-bind="tipProps"
+                      class="r-v2-scan-card__provider-chip"
+                      :aria-label="item.raw.name"
+                    >
+                      <ZAAvatar
+                        :image="item.raw.logo_path"
+                        size="18"
+                        rounded="sm"
+                      />
+                    </span>
+                  </template>
+                </ZATooltip>
+              </template>
+              <template #item="{ props: itemProps, item }">
+                <li v-bind="itemProps">
+                  <ZAAvatar
+                    :image="item.raw.logo_path"
+                    size="22"
+                    rounded="sm"
+                  />
+                  <div class="r-select__item-stack">
+                    <div class="r-select__item-title">{{ item.raw.name }}</div>
+                    <div
+                      v-if="item.raw.disabled"
+                      class="r-select__item-subtitle"
+                    >
+                      {{ item.raw.disabled }}
+                    </div>
+                  </div>
+                  <div
+                    v-if="item.raw.value === 'launchbox'"
+                    class="r-v2-scan-card__lb-toggle"
+                    @click.stop
+                    @mousedown.stop
+                  >
+                    <span
+                      class="r-v2-scan-card__lb-label"
+                      :class="{
+                          'r-v2-scan-card__lb-inactive': launchboxRemoteEnabled,
+                        }"
+                    >
+                      {{ t("rom.launchbox-local") }}
+                    </span>
+                    <ZASwitch
+                      v-model="launchboxRemoteEnabled"
+                      :disabled="!isLaunchboxSelected"
+                    />
+                    <span
+                      class="r-v2-scan-card__lb-label"
+                      :class="{
+                          'r-v2-scan-card__lb-inactive':
+                            !launchboxRemoteEnabled,
+                        }"
+                    >
+                      {{ t("rom.launchbox-cloud") }}
+                    </span>
+                  </div>
+                </li>
+              </template>
+            </ZASelect>
+          </div>
+
+          <div
+            v-if="specificProviders.length"
+            class="r-v2-scan-card__providers-group"
+          >
+            <span class="r-v2-scan-card__providers-group-label">
+              {{ t("scan.section-providers-specific") }}
+            </span>
+            <ZASelect
+              v-model="metadataSources"
+              :items="specificProviders"
+              :label="t('scan.section-providers-specific')"
+              item-title="name"
+              prepend-inner-icon="mdi-trophy-outline"
+              variant="outlined"
+              multiple
+              return-object
+              clearable
+              hide-details
+              chips
+              chip-tone="plain"
+              show-all-option
+              @update:all-selected="specificAllSelected = $event"
+            >
+              <template #chip="{ item }">
+                <ZATooltip :text="item.raw.name" location="bottom">
+                  <template #activator="{ props: tipProps }">
+                    <span
+                      v-bind="tipProps"
+                      class="r-v2-scan-card__provider-chip"
+                      :aria-label="item.raw.name"
+                    >
+                      <ZAAvatar
+                        :image="item.raw.logo_path"
+                        size="18"
+                        rounded="sm"
+                      />
+                    </span>
+                  </template>
+                </ZATooltip>
+              </template>
+              <template #item="{ props: itemProps, item }">
+                <li v-bind="itemProps">
+                  <ZAAvatar
+                    :image="item.raw.logo_path"
+                    size="22"
+                    rounded="sm"
+                  />
+                  <div class="r-select__item-stack">
+                    <div class="r-select__item-title">{{ item.raw.name }}</div>
+                    <div
+                      v-if="item.raw.disabled"
+                      class="r-select__item-subtitle"
+                    >
+                      {{ item.raw.disabled }}
+                    </div>
+                  </div>
+                </li>
+              </template>
+            </ZASelect>
+          </div>
+        </div>
+        <div class="r-v2-scan-card__subsection">
+          <span class="r-v2-scan-card__subsection-label">
+            {{ t("scan.section-proxies") }}
+          </span>
+          <div
+            class="r-v2-scan-card__matchers"
+            role="group"
+            :aria-label="t('scan.hash-matchers')"
+          >
+            <ZATooltip
+              v-for="matcher in hashMatchers"
+              :key="matcher.value"
+              :text="
+                  matcher.blockedReason
+                    ? `${matcher.name}: ${matcher.blockedReason}`
+                    : matcher.name
+                "
+              location="bottom"
+            >
+              <template #activator="{ props: tipProps }">
+                <div
+                  v-bind="tipProps"
+                  class="r-v2-scan-card__matcher"
+                  :class="{
+                      'r-v2-scan-card__matcher--off': !matcher.switchEnabled,
+                    }"
+                >
+                  <ZAAvatar
+                    :image="matcher.logo"
+                    size="16"
+                    rounded="sm"
+                    class="r-v2-scan-card__matcher-logo"
+                  />
+                  <ZASwitch
+                    :model-value="isHashMatcherOn(matcher)"
+                    :disabled="!matcher.switchEnabled"
+                    :aria-label="matcher.name"
+                    @update:model-value="
+                        (v) => setHashMatcher(matcher.value, v)
+                      "
+                  />
+                </div>
+              </template>
+            </ZATooltip>
+          </div>
+        </div>
+      </section>
+      <section class="r-v2-scan-card__section">
+        <h3 class="r-v2-scan-card__section-title">
+          {{ t("scan.section-scan-type") }}
+        </h3>
+        <ZASelect
+          v-model="scanType"
+          :items="scanOptions"
+          :label="t('scan.scan-options')"
+          prepend-inner-icon="mdi-magnify-scan"
+          hide-details
+          variant="outlined"
+        >
+          <template #item="{ props: itemProps, item }">
+            <li v-bind="itemProps">
+              <div class="r-select__item-stack">
+                <div class="r-select__item-title">{{ item.title }}</div>
+                <div v-if="item.raw.subtitle" class="r-select__item-subtitle">
+                  {{ item.raw.subtitle }}
+                </div>
+              </div>
+            </li>
+          </template>
+        </ZASelect>
+        <p v-if="scanType === 'quick'" class="text-body-2">
+          {{ t("scan.quick-scan-help") }}
+        </p>
+        <p v-if="scanType === 'quick'" class="text-body-2">
+          {{ t("scan.inventory-advisory") }}
+        </p>
+      </section>
+    </div>
+    <footer class="r-v2-scan-card__section r-v2-scan-card__cta">
+      <div class="r-v2-scan-card__hints">
+        <ZAAlert
+          v-if="
+              effectiveMetadataSources.length === 0 && scanType === 'update'
+            "
+          type="warning"
+          density="compact"
+          :icon="false"
+        >
+          {{ t("scan.select-one-source") }}
+        </ZAAlert>
+        <ZAAlert
+          v-if="!calculateHashes"
+          type="warning"
+          density="compact"
+          :icon="false"
+        >
+          <span class="r-v2-scan-card__hash-alert">
+            {{ t("scan.hash-calculation-disabled") }}
+            <ZATooltip location="bottom">
+              <template #activator="{ props: tipProps }">
+                <ZAIcon
+                  v-bind="tipProps"
+                  icon="mdi-information-outline"
+                  size="14"
+                  class="r-v2-scan-card__hash-info"
+                />
+              </template>
+              <span
+                class="r-v2-scan-card__hash-info-text"
+                v-html="t('scan.hashes-disabled-tooltip')"
+              />
+            </ZATooltip>
+          </span>
+        </ZAAlert>
+      </div>
+
+      <ZABtn
+        class="r-v2-scan-card__start"
+        size="large"
+        variant="flat"
+        color="primary"
+        prepend-icon="mdi-magnify-scan"
+        :loading="checking"
+        :disabled="!canStartScan"
+        @click="scan()"
+      >
+        {{ checking ? t("scan.recovery-checking") : t("scan.scan") }}
+      </ZABtn>
+
+      <ZABtn
+        class="r-v2-scan-card__library"
+        variant="outlined"
+        prepend-icon="mdi-table-cog"
+        :to="{ name: ROUTES.LIBRARY_MANAGEMENT }"
+      >
+        {{ t("common.library-management") }}
+      </ZABtn>
+    </footer>
+  </section>
+  <section v-if="mappingReady && showLivePlatformRows" class="r-v2-scan-live">
+    <ScanLiveHeader
+      :label="liveStatusLabel"
+      :stats="snapshot?.scan_stats ?? scanStats"
+      :scanning="scanning"
+      :can-manage="canManageScan"
+      @stop="stopScan"
+    />
+
+    <div ref="scan-log" class="r-v2-scan-live__log" @scroll="onScroll">
+      <div v-if="scanningPlatforms.length === 0" class="r-v2-scan-live__empty">
+        <div class="r-v2-scan-live__empty-orb">
+          <ZAIcon icon="mdi-radar" size="56" />
+        </div>
+        <h2 v-if="!scanning">{{ t("scan.recovery-idle") }}</h2>
+        <p class="r-v2-scan-live__empty-hint">
+          {{ scanning ? t("scan.empty-hint-scanning") : t("scan.empty-hint") }}
+        </p>
+      </div>
+
+      <TransitionGroup
+        v-else
+        name="r-v2-scan-panel"
+        tag="div"
+        class="r-v2-scan-live__panels"
+      >
+        <ScanPlatform
+          v-for="platform in scanningPlatforms"
+          :key="platform.id"
+          :platform="platform"
+          :items="snapshot?.items ?? []"
+          :open="openPlatforms.has(platform.id)"
+          class="r-v2-scan-live__panel"
+          @update:open="(v) => setOpen(platform.id, v)"
+          @scan-subfolder="scanSubfolder"
+        />
+      </TransitionGroup>
+    </div>
+  </section>
+</div>
