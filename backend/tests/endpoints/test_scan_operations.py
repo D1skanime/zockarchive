@@ -473,6 +473,33 @@ def test_subfolder_and_provider_policies_are_frozen_and_replayable(
     )
 
 
+def test_result_query_accepts_http_platform_filter_and_rejects_invalid_ids(
+    client, headers, mapped
+):
+    accepted = client.post(BASE, headers=headers, json=request_body(mapped)).json()
+    url = BASE + "/" + accepted["id"]
+    response = client.get(
+        url,
+        headers=headers,
+        params={
+            "include_items": "true",
+            "offset": "0",
+            "limit": "50",
+            "platform_id": str(mapped.platform_id),
+            "outcome": "all",
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["query"]["platform_id"] == mapped.platform_id
+    for invalid_id in ("0", "-1", "not-a-number"):
+        assert (
+            client.get(
+                url, headers=headers, params={"platform_id": invalid_id}
+            ).status_code
+            == 422
+        )
+
+
 @pytest.mark.parametrize(
     "changes",
     [

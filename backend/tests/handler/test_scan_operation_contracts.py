@@ -40,3 +40,25 @@ def test_request_and_snapshot_reject_client_authority():
             )
     with pytest.raises(ValidationError):
         ScanOperationRequest(request_key="../unsafe", platforms=[1])
+
+
+def test_result_query_normalizes_filters_and_keeps_positive_platform_ids():
+    from pydantic import ValidationError
+
+    from endpoints.responses.scan_operations import ScanOperationResultQuery
+
+    query = ScanOperationResultQuery.model_validate(
+        {
+            "include_items": True,
+            "offset": 50,
+            "limit": 50,
+            "search": "  Zelda   Links  Awakening ",
+            "platform_id": "3",
+            "outcome": "warning",
+        }
+    )
+    assert query.search == "zelda links awakening"
+    assert query.platform_id == 3
+    for value in ("0", "-1", "not-a-number"):
+        with pytest.raises(ValidationError):
+            ScanOperationResultQuery.model_validate({"platform_id": value})

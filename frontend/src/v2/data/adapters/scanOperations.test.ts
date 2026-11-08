@@ -497,10 +497,21 @@ describe("durable scan reconciliation", () => {
         ],
       });
       transport.mockImplementation(async (config) => response(config, server));
-      expect(await scanOperations.status(server.id, 2, 10)).toEqual(server);
+      expect(
+        await scanOperations.status(server.id, {
+          page: 1,
+          name: " Spiel  Name ",
+          platformId: 12,
+          outcome: "warning",
+        }),
+      ).toEqual(server);
       expect(transport.mock.calls[0][0].params).toEqual({
-        offset: 2,
-        limit: 10,
+        include_items: true,
+        offset: 0,
+        limit: 50,
+        search: "spiel name",
+        platform_id: 12,
+        outcome: "warning",
       });
     },
   );
@@ -523,17 +534,11 @@ describe("durable scan reconciliation", () => {
     vi.restoreAllMocks();
   });
 
-  it.each([
-    [-1, 100],
-    [0, 101],
-    [0, 0],
-    [1.5, 100],
-    [0, NaN],
-  ])(
-    "rejects unsafe detail page offset %s limit %s before transport",
-    async (offset, limit) => {
+  it.each([0, -1, 1.5, Number.NaN])(
+    "rejects unsafe detail page %s before transport",
+    async (page) => {
       await expect(
-        scanOperations.status(snapshot().id, offset, limit),
+        scanOperations.status(snapshot().id, { page }),
       ).rejects.toThrow("invalid_scan_page");
       expect(transport).not.toHaveBeenCalled();
     },
@@ -543,7 +548,7 @@ describe("durable scan reconciliation", () => {
       response(config, { ...snapshot(), id: "other-operation" }),
     );
     await expect(
-      scanOperations.status(snapshot().id, 100, 100),
+      scanOperations.status(snapshot().id, { page: 3 }),
     ).rejects.toThrow("scan_response_identity_mismatch");
   });
 });
