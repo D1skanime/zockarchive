@@ -552,7 +552,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
-| 261108-8ee7 | Restore scan platform filter binding and terminal list bounds after live UAT | 2026-11-08 | pending | [261108-scan-platform-filter-live-list](./quick/261108-scan-platform-filter-live-list/) |
+| 261108-8ee7 | Restore scan platform filter binding and terminal list bounds after live UAT | 2026-11-08 | c2b92da30 | [261108-scan-platform-filter-live-list](./quick/261108-scan-platform-filter-live-list/) |
 | 261106-fsb | Quality-Gate, PC-Metadaten-Medienpersistenz auslagern | 2026-11-06 | c44b7aa98 | [261106-fsb-quality-gate-pc-metadaten-medienpersiste](./quick/261106-fsb-quality-gate-pc-metadaten-medienpersiste/) |
 | 261106-r9e | Preserve APNG cover animation through metadata selection | 2026-11-06 | committed | [261106-r9e-preserve-apng-cover-animation-through-th](./quick/261106-r9e-preserve-apng-cover-animation-through-th/) |
 | 261106-mz7 | Gate 37 MIME narrowing and DLC cover-presentation extraction | 2026-11-06 | committed | [261106-mz7-fix-the-resource-download-animated-cover](./quick/261106-mz7-fix-the-resource-download-animated-cover/) |
