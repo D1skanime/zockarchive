@@ -24,6 +24,13 @@ progress:
   repaired feature-component/composable split is typechecked and browser-checked on
   desktop and mobile. Human live UAT remains pending.
 
+## Quick Task 261108-scan-checked-games
+
+| 261108-scan-checked-games | Persist all checked games in scan results | 2026-11-08 | pending commit | [261108-scan-checked-games](./quick/261108-scan-checked-games/) |
+
+- New scans persist canonical game rows for completed and unchanged work, so paginated
+  result filters cover all scanned platforms without provider duplicates.
+
 ## Project Reference
 
 See: .planning/PROJECT.md (updated 2026-08-31)

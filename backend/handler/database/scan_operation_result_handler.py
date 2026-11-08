@@ -47,7 +47,7 @@ class ScanOperationResultRecording:
         providers = row.command.get("policies", row.command.get("request", {})).get(
             "apis", []
         )
-        if validated.provider not in providers:
+        if validated.provider and validated.provider not in providers:
             raise OperationConflict("provider_outside_scan_scope")
         if (
             len(json.dumps(checkpoint or {})) > 8192

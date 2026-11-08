@@ -56,6 +56,8 @@ def _attempt_predicate(row):
 def _current_attempt_predicate(row, query):
     conditions = _attempt_predicate(row)
     item = ScanOperationItem
+    if row.checkpoint.get("game_results_complete"):
+        conditions.append(item.provider == "")
     if query.search:
         conditions.append(func.lower(item.relative_path).contains(query.search))
     if query.platform_id is not None:
@@ -118,7 +120,15 @@ def _totals(session, row):
                     or_(unidentified, failed, warning),
                 )
             ],
-        ).where(item.operation_id == row.id, item.attempt_id == row.attempt_id)
+        ).where(
+            item.operation_id == row.id,
+            item.attempt_id == row.attempt_id,
+            *(
+                [item.provider == ""]
+                if row.checkpoint.get("game_results_complete")
+                else []
+            ),
+        )
     ).one()
     return ScanOperationTotals(
         total=int(values[0] or 0),
@@ -138,7 +148,14 @@ def _platforms(session, row):
         select(Platform.id, Platform.name, Platform.custom_name)
         .join(PlatformStorageMapping, PlatformStorageMapping.platform_id == Platform.id)
         .join(item, item.mapping_id == PlatformStorageMapping.id)
-        .where(*_attempt_predicate(row))
+        .where(
+            *_attempt_predicate(row),
+            *(
+                [item.provider == ""]
+                if row.checkpoint.get("game_results_complete")
+                else []
+            ),
+        )
         .distinct()
         .order_by(
             func.lower(func.coalesce(Platform.custom_name, Platform.name)), Platform.id

@@ -281,6 +281,9 @@ async def _identify_platform(
                 )
 
                 consider_scan_descriptions(rom)
+                from handler.scan_operation_checkpoint import record_checked_game
+
+                record_checked_game(rom, outcome="skipped")
                 skipped_rom_ids.append(rom.id)
                 if rom.id in previously_missing_rom_ids:
                     restored_roms.append(rom)

@@ -224,7 +224,8 @@ class DBScanOperationsHandler(
                     "previous_never_started",
                     "stopped_job_id",
                 }
-            },
+            }
+            | {"game_results_complete": True},
         )
         return operation_snapshot(session, row)
 
