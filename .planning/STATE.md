@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-07T19:03:49.673Z"
-last_activity: "2026-11-06 - Completed quick task 261106-hgc: repair visible main-game cover loading after browser inspection"
+last_updated: "2026-11-08T13:00:00Z"
+last_activity: "2026-11-08 - Completed quick task 261108-scan-template-runtime-fix: restore browser-safe Scan decomposition"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,14 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261108-scan-template-runtime-fix
+
+| 261108-scan-template-runtime-fix | Restore browser-safe scan view decomposition | 2026-11-08 | pending commit | [261108-scan-template-runtime-fix](./quick/261108-scan-template-runtime-fix/) |
+
+- The browser rejected the earlier external Scan template during `/scan` loading. The
+  repaired feature-component/composable split is typechecked and browser-checked on
+  desktop and mobile. Human live UAT remains pending.
 
 ## Project Reference
 
