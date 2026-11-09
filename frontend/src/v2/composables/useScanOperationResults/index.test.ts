@@ -59,6 +59,14 @@ function result(
   };
 }
 
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((done) => {
+    resolve = done;
+  });
+  return { promise, resolve };
+}
+
 describe("scan operation result explorer", () => {
   const scopes: ReturnType<typeof effectScope>[] = [];
 
@@ -140,6 +148,32 @@ describe("scan operation result explorer", () => {
     await flushPromises();
     expect(results.error.value).toBeUndefined();
     expect(results.items.value[0]?.relative_path).toBe("Warning Game");
+  });
+
+  it("keeps the newest platform page when an older request resolves late", async () => {
+    const results = await explorer();
+    results.show();
+    await flushPromises();
+    const older = deferred<ScanOperationSnapshot>();
+    fake.status.mockImplementationOnce(() => older.promise);
+    results.setPlatform(3);
+    await flushPromises();
+    fake.status.mockResolvedValueOnce(
+      result({ offset: 0, platform_id: 8, outcome: "all" }, "Console Game"),
+    );
+    results.setPlatform(8);
+    await flushPromises();
+    expect(results.items.value.map((item) => item.relative_path)).toEqual([
+      "Console Game",
+    ]);
+    older.resolve(
+      result({ offset: 0, platform_id: 3, outcome: "all" }, "Windows Game"),
+    );
+    await flushPromises();
+    expect(results.platformId.value).toBe(8);
+    expect(results.items.value.map((item) => item.relative_path)).toEqual([
+      "Console Game",
+    ]);
   });
 
   it("debounces a normalized name filter before asking the server", async () => {

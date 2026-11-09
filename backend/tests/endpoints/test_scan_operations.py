@@ -6,6 +6,7 @@ from uuid import uuid4
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from sqlalchemy import select
 from starlette.middleware.authentication import AuthenticationMiddleware
 
 from config import ROMM_AUTH_SECRET_KEY
@@ -19,7 +20,7 @@ from handler.auth.middleware.redis_session_middleware import RedisSessionMiddlew
 from handler.database import db_permission_handler
 from handler.database.base_handler import sync_session
 from models.permission import PermAction, PermEntity
-from models.scan_operation import ScanOperation
+from models.scan_operation import ScanOperation, ScanOperationItem
 from models.storage import PlatformStorageMapping, StorageRoot
 
 BASE = "/api/scan-operations"
@@ -189,7 +190,7 @@ def test_unsafe_scope_rejected_before_acceptance(client, headers, mapped, scope)
 def test_missing_and_symlink_scope_do_not_reach_scanner(
     client, headers, mapped, monkeypatch, tmp_path
 ):
-    from endpoints.sockets import scan
+    from endpoints.sockets import scan, scan_mapping_execution
 
     called = []
     monkeypatch.setattr(
@@ -212,7 +213,7 @@ def test_missing_and_symlink_scope_do_not_reach_scanner(
         ),
     )
     monkeypatch.setattr(
-        scan,
+        scan_mapping_execution,
         "get_storage_root_health_snapshot",
         lambda root: StorageRootHealthSnapshot(
             True, True, True, datetime.now(timezone.utc), None
@@ -302,12 +303,16 @@ def test_metadata_retry_is_bounded_to_failed_items(
     row = repo.transition(
         row.id, row.version, row.attempt_id, "completed-with-warnings"
     )
+    with sync_session.begin() as session:
+        item_id = session.scalar(
+            select(ScanOperationItem.id).where(ScanOperationItem.operation_id == row.id)
+        )
     control = headers if admin_control else other_headers
     url = BASE + "/" + row.id + "/retry-metadata"
     body = {
         "request_key": "retry-key",
         "expected_version": row.version,
-        "item_ids": [row.items[0].id],
+        "item_ids": [item_id],
     }
     assert (
         client.post(
