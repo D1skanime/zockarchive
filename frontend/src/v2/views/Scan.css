@@ -398,6 +398,26 @@ html[data-bp~="sm-and-down"] .r-v2-scan-card {
 html[data-bp~="xs"] .r-v2-scan-live__status {
   min-width: 0;
 }
+
+/* Keep the primary action above the fixed phone navigation without moving the
+   scan configuration into a separate flow. The regular spacing remains on
+   wider screens, where the two-column layout provides the required room. */
+html[data-bp~="xs"] .r-v2-scan {
+  row-gap: 0;
+}
+html[data-bp~="xs"] .r-v2-scan-card {
+  gap: 10px;
+}
+html[data-bp~="xs"] .r-v2-scan-card__fields {
+  gap: 12px;
+}
+html[data-bp~="xs"] .r-v2-scan-card__section {
+  gap: 8px;
+  padding-top: 10px;
+}
+html[data-bp~="xs"] .r-v2-scan-card__cta {
+  padding-top: 8px;
+}
 html[data-bp~="xs"] .r-v2-scan-live__status-label {
   display: none;
 }
