@@ -18,6 +18,7 @@ from tests.handler.test_scan_write_fence import context
 
 from config.config_manager import MetadataMediaType
 from endpoints.sockets import scan as scan_module
+from endpoints.sockets import scan_media, scan_rom_identification
 from handler import scan_handler
 from handler.database import db_rom_handler, db_storage_handler
 from handler.database.base_handler import sync_session
@@ -97,7 +98,9 @@ async def configure_scanner(rom, platform, command, monkeypatch, family):
         AsyncMock(return_value=(response, False)),
     )
     monkeypatch.setattr(
-        scan_module, "get_preferred_media_types", lambda: [MetadataMediaType.VIDEO]
+        scan_rom_identification,
+        "get_preferred_media_types",
+        lambda: [MetadataMediaType.VIDEO],
     )
     monkeypatch.setattr(
         scan_handler.meta_ra_handler,
@@ -198,12 +201,12 @@ def configure_dlc(rom, monkeypatch):
         {"igdb_id": 101, "name": "Synthetic DLC"},
     )
     monkeypatch.setattr(
-        scan_module.pc_metadata_match_handler,
+        scan_media.pc_metadata_match_handler,
         "fetch_unique_related_igdb_candidate",
         AsyncMock(return_value=candidate),
     )
     monkeypatch.setattr(
-        scan_module.pc_metadata_match_handler,
+        scan_media.pc_metadata_match_handler,
         "fetch_validated_steam_dlc",
         AsyncMock(return_value=None),
     )

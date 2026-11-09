@@ -34,10 +34,12 @@ from endpoints.sockets.scan_socket_handlers import (
     scan_handler,
     stop_scan_handler,
 )
+from handler.scan_handler import ScanType
 
 __all__ = [
     "STOP_SCAN_FLAG",
     "ScanStats",
+    "ScanType",
     "_emit_scanning_rom",
     "_enrich_pc_dlc_from_igdb",
     "_get_queued_scan_jobs",

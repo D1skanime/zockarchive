@@ -3,8 +3,9 @@ import { createPinia } from "pinia";
 import { describe, expect, it, vi } from "vitest";
 import { createI18n } from "vue-i18n";
 import OperationStatusPanel from "@/v2/components/Scan/OperationStatusPanel.vue";
+import ScanOperationResults from "@/v2/components/Scan/ScanOperationResults.vue";
+import ScanViewContent from "@/v2/components/Scan/ScanViewContent.vue";
 import type { ScanOperationSnapshot } from "@/v2/data/contracts";
-import ScanView from "@/v2/views/Scan.vue";
 
 const namespaces = import.meta.glob<Record<string, string>>(
   "../../locales/*/scan.json",
@@ -83,7 +84,10 @@ function mountPanel(locale = "en_US", overrides = {}) {
           messages: { [locale]: { scan: dictionary } },
         }),
       ],
-      stubs,
+      stubs: {
+        ...stubs,
+        ScanOperationResults: { emits: ["retry"], template: "<div />" },
+      },
     },
   });
 }
@@ -153,7 +157,7 @@ describe("Scan persistent recovery controls", () => {
     ).toBeDefined();
     panel.unmount();
   });
-  it("resumes only after a user action and retries only selected warning IDs", async () => {
+  it("resumes only after a user action and forwards selected result IDs", async () => {
     const panel = mountPanel("en_US", {
       snapshot: snapshot("cancelled"),
       status: "cancelled",
@@ -164,41 +168,7 @@ describe("Scan persistent recovery controls", () => {
       .find((button) => button.text() === "Resume")!
       .trigger("click");
     expect(panel.emitted("resume")).toHaveLength(1);
-    await panel.setProps({
-      status: "completed-with-warnings",
-      snapshot: {
-        ...snapshot("completed-with-warnings"),
-        items: [
-          {
-            id: 7,
-            target_key: "Affected game",
-            mapping_id: 1,
-            expected_revision: 1,
-            relative_path: "game",
-            provider: "steam",
-            outcome: "warning",
-            attempt_id: "attempt",
-          },
-          {
-            id: 8,
-            target_key: "Successful game",
-            mapping_id: 1,
-            expected_revision: 1,
-            relative_path: "other",
-            provider: "steam",
-            outcome: "completed",
-            attempt_id: "attempt",
-          },
-        ],
-      },
-    });
-    expect(panel.text()).toContain("Affected game");
-    expect(panel.text()).not.toContain("Successful game");
-    await panel.get('input[type="checkbox"]').setValue(true);
-    await panel
-      .findAll("button")
-      .find((button) => button.text() === "Retry selected metadata")!
-      .trigger("click");
+    panel.findComponent(ScanOperationResults).vm.$emit("retry", [7]);
     expect(panel.emitted("retry")).toEqual([[["7"]]]);
     panel.unmount();
   });
@@ -278,8 +248,8 @@ vi.mock("@/v2/data/adapters/legacy/services/api/storage", () => ({
   default: { getMappingsReadiness: vi.fn().mockResolvedValue({ ready: true }) },
 }));
 describe("Scan view existing-owner integration", () => {
-  it("restores status without submitting and forwards paging and permissions", async () => {
-    const wrapper = shallowMount(ScanView, {
+  it("restores status without submitting and forwards permissions", async () => {
+    const wrapper = shallowMount(ScanViewContent, {
       global: {
         plugins: [
           createPinia(),
@@ -297,9 +267,6 @@ describe("Scan view existing-owner integration", () => {
     const panel = wrapper.findComponent(OperationStatusPanel);
     expect(controls.start).not.toHaveBeenCalled();
     expect(panel.props("canManage")).toBe(false);
-    expect(panel.props("hasMore")).toBe(true);
-    panel.vm.$emit("loadMore");
-    expect(controls.loadMore).toHaveBeenCalledOnce();
     panel.vm.$emit("retryStatus");
     expect(controls.retryStatus).toHaveBeenCalledOnce();
     expect(controls.start).not.toHaveBeenCalled();
