@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: completed
-stopped_at: Phase 41 regression repair committed; renewed live UAT required
-last_updated: "2026-11-09T15:00:00Z"
-last_activity: "2026-11-09 - Completed quick task 261109-k8t: repair confirmed Gate 15 and Gate 16 MariaDB regressions"
+stopped_at: Phase 41 provider-diagnostic projection correction committed; renewed live UAT required
+last_updated: "2026-11-09T15:32:53Z"
+last_activity: "2026-11-09 - Completed quick task 261109-fix-provider-diagnostics-projection"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,13 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-fix-provider-diagnostics-projection
+
+| 261109-fix-provider-diagnostics-projection | Preserve actionable provider diagnostics in final scan projections | 2026-11-09 | scoped Trunk passed; browser filter path inspected | [provider diagnostics](./quick/261109-fix-provider-diagnostics-projection/) |
+
+- Final explorer projections retain provider warning and failed rows alongside
+  canonical game rows. This product correction requires renewed human live UAT.
 
 ## Quick Task 261109-k8t
 

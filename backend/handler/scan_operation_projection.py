@@ -58,11 +58,19 @@ def _attempt_predicate(row):
     return [item.operation_id == row.id, item.attempt_id == row.attempt_id]
 
 
+def _completed_attempt_visibility(row, item):
+    """Keep canonical games plus actionable provider diagnostics in final views."""
+    if row.checkpoint.get("game_results_complete"):
+        return or_(item.provider == "", item.outcome.in_(("warning", "failed")))
+    return None
+
+
 def _current_attempt_predicate(row, query):
     conditions = _attempt_predicate(row)
     item = ScanOperationItem
-    if row.checkpoint.get("game_results_complete"):
-        conditions.append(item.provider == "")
+    visibility = _completed_attempt_visibility(row, item)
+    if visibility is not None:
+        conditions.append(visibility)
     if query.search:
         conditions.append(func.lower(item.relative_path).contains(query.search))
     if query.platform_id is not None:
@@ -105,6 +113,7 @@ def _rows(session, row, query, *, offset=0, limit=None):
 
 def _totals(session, row):
     item = ScanOperationItem
+    visibility = _completed_attempt_visibility(row, item)
     provider = item.checkpoint["provider_observation"]
     unidentified = _unidentified_predicate(item)
     failed = or_(item.outcome == "failed", provider["outcome"].as_string() == "failed")
@@ -127,11 +136,7 @@ def _totals(session, row):
         ).where(
             item.operation_id == row.id,
             item.attempt_id == row.attempt_id,
-            *(
-                [item.provider == ""]
-                if row.checkpoint.get("game_results_complete")
-                else []
-            ),
+            *([visibility] if visibility is not None else []),
         )
     ).one()
     return ScanOperationTotals(
@@ -148,17 +153,14 @@ def _totals(session, row):
 
 def _platforms(session, row):
     item = ScanOperationItem
+    visibility = _completed_attempt_visibility(row, item)
     statement = (
         select(Platform.id, Platform.name, Platform.custom_name)
         .join(PlatformStorageMapping, PlatformStorageMapping.platform_id == Platform.id)
         .join(item, item.mapping_id == PlatformStorageMapping.id)
         .where(
             *_attempt_predicate(row),
-            *(
-                [item.provider == ""]
-                if row.checkpoint.get("game_results_complete")
-                else []
-            ),
+            *([visibility] if visibility is not None else []),
         )
         .distinct()
         .order_by(
