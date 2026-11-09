@@ -170,7 +170,7 @@ def test_action_results_require_an_explicit_unidentified_windows_fact(
 ):
     row = running(repository(), admin_user, command)
     mapping_id = command["commands"][0]["mapping_id"]
-    cases = (
+    cases: tuple[tuple[str, dict[str, bool | None], str], ...] = (
         ("missing", {}, "skipped"),
         ("null", {"identified_windows": None}, "skipped"),
         ("identified", {"identified_windows": True}, "skipped"),

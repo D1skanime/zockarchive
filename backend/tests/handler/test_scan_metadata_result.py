@@ -59,8 +59,10 @@ def test_provider_auth_error_is_terminal():
 def test_provider_diagnostics_persist_real_sql_and_keep_successful_items(
     admin_user, command
 ):
+    from sqlalchemy import select
     from tests.handler.test_scan_operations import running
 
+    from handler.database.base_handler import sync_session
     from handler.database.scan_operations_handler import DBScanOperationsHandler
     from handler.database.scan_write_fence import (
         ScanWriteContext,
@@ -72,6 +74,7 @@ def test_provider_diagnostics_persist_real_sql_and_keep_successful_items(
     )
     from handler.scan_operation_checkpoint import bind_checkpoint_command
     from handler.scan_operation_recovery import decode_command
+    from models.scan_operation import ScanOperationItem
 
     repository = DBScanOperationsHandler()
     attempt = running(repository, admin_user, command)
@@ -82,9 +85,18 @@ def test_provider_diagnostics_persist_real_sql_and_keep_successful_items(
         record_provider_result("igdb", "Affected.bin", error=TimeoutError())
         record_provider_result("igdb", "Healthy.bin")
     saved = repository.get_by_id(attempt.id, admin_user.id)
-    assert len(saved.items) == 2
+    assert saved.items == []
+    with sync_session.begin() as session:
+        saved_items = list(
+            session.scalars(
+                select(ScanOperationItem).where(
+                    ScanOperationItem.operation_id == attempt.id
+                )
+            )
+        )
+    assert len(saved_items) == 2
     assert {
-        (item.relative_path, item.outcome, item.cause_code) for item in saved.items
+        (item.relative_path, item.outcome, item.cause_code) for item in saved_items
     } == {
         ("Affected.bin", "warning", "metadata_timeout"),
         ("Healthy.bin", "completed", None),
@@ -99,8 +111,10 @@ def test_provider_diagnostics_persist_real_sql_and_keep_successful_items(
 def test_worker_item_adapter_eliminates_heartbeat_snapshot_window(
     admin_user, command, monkeypatch
 ):
+    from sqlalchemy import select
     from tests.handler.test_scan_operations import running
 
+    from handler.database.base_handler import sync_session
     from handler.database.scan_operations_handler import DBScanOperationsHandler
     from handler.database.scan_write_fence import (
         ScanWriteContext,
@@ -112,6 +126,7 @@ def test_worker_item_adapter_eliminates_heartbeat_snapshot_window(
     )
     from handler.scan_operation_checkpoint import bind_checkpoint_command
     from handler.scan_operation_recovery import decode_command
+    from models.scan_operation import ScanOperationItem
 
     repository = DBScanOperationsHandler()
     attempt = running(repository, admin_user, command)
@@ -155,7 +170,14 @@ def test_worker_item_adapter_eliminates_heartbeat_snapshot_window(
         record_provider_result("igdb", "Heartbeat.bin", error=TimeoutError())
     saved = repository.get_by_id(attempt.id, admin_user.id)
     assert saved.version == heartbeat.version + 1
-    assert saved.items[0].cause_code == "metadata_timeout"
+    assert saved.items == []
+    with sync_session.begin() as session:
+        saved_item = session.scalar(
+            select(ScanOperationItem).where(
+                ScanOperationItem.operation_id == attempt.id
+            )
+        )
+    assert saved_item.cause_code == "metadata_timeout"
     assert not snapshots
 
 
@@ -307,9 +329,7 @@ async def test_observation_uses_existing_checked_sql_write_and_rejects_cancel(
         )
         assert observed["requests"] == 1 and observed["outcome"] == "no_match"
         saved = repository.get_by_id(attempt.id, admin_user.id)
-        assert (
-            saved.items[0].outcome == "completed" and saved.items[0].cause_code is None
-        )
+        assert saved.items == []
         from sqlalchemy import select
 
         from handler.database.base_handler import sync_session
@@ -321,13 +341,22 @@ async def test_observation_uses_existing_checked_sql_write_and_rejects_cancel(
                     ScanOperationItem.operation_id == attempt.id
                 )
             )
+            assert durable.outcome == "completed" and durable.cause_code is None
             assert durable.checkpoint["provider_observation"] == observed
         repository.request_cancel(
             attempt.id, admin_user.id, saved.version, "cancel-observation"
         )
         with pytest.raises(ScanWriteRejected):
             record_provider_result("igdb", "Rejected.bin")
-    assert len(repository.get_by_id(attempt.id, admin_user.id).items) == 1
+    with sync_session.begin() as session:
+        items = list(
+            session.scalars(
+                select(ScanOperationItem).where(
+                    ScanOperationItem.operation_id == attempt.id
+                )
+            )
+        )
+    assert len(items) == 1
 
 
 def test_actual_gamelist_cache_hit_and_disabled_invocation():
