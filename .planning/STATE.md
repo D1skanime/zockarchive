@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-09T11:05:00Z"
-last_activity: "2026-11-09 - Completed quick task 261109-ebs: fix post-acceptance scan regression failures"
+last_updated: "2026-11-09T11:25:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-fm3: keep the mobile Scan action clear of the bottom navigation"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,14 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-fm3
+
+| 261109-fm3 | Keep the mobile Scan action clear of the bottom navigation | 2026-11-09 | browser inspection at 1440 px and 390 px; commit 805bcc387 | [261109-fm3](./quick/261109-fm3-prevent-the-mobile-bottom-navigation-fro/) |
+
+- The Scan action now has a full touch target above the fixed mobile navigation.
+  A new product change requires renewed human UAT; the pre-review instruction
+  prohibited test suites.
 
 ## Quick Task 261109-ebs
 
@@ -607,6 +615,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261109-fm3 | Keep the mobile Scan action clear of the bottom navigation | 2026-11-09 | 805bcc387 | [261109-fm3](./quick/261109-fm3-prevent-the-mobile-bottom-navigation-fro/) |
 | 261108-8ee7-size | Decompose Scan view source surface for the quality gate | 2026-11-08 | 898ba5fb4 | [261108-scan-view-size-decomposition](./quick/261108-scan-view-size-decomposition/) |
 | 261108-8ee7 | Restore scan platform filter binding and terminal list bounds after live UAT | 2026-11-08 | c2b92da30 | [261108-scan-platform-filter-live-list](./quick/261108-scan-platform-filter-live-list/) |
 | 261106-fsb | Quality-Gate, PC-Metadaten-Medienpersistenz auslagern | 2026-11-06 | c44b7aa98 | [261106-fsb-quality-gate-pc-metadaten-medienpersiste](./quick/261106-fsb-quality-gate-pc-metadaten-medienpersiste/) |
