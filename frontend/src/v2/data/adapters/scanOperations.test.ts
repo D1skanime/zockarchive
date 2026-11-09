@@ -660,6 +660,18 @@ describe("confirmed scan control", () => {
     ]);
   });
 
+  it("surfaces a metadata retry conflict without a second command", async () => {
+    transport.mockImplementation(async (config) => {
+      throw failure(config, 409);
+    });
+    await expect(
+      scanOperations.retryMetadata(snapshot(), [7], "retry-34-07"),
+    ).rejects.toMatchObject({ response: { status: 409 } });
+    expect(transport.mock.calls.map(([c]) => [c.method, c.url])).toEqual([
+      ["post", "/scan-operations/" + snapshot().id + "/retry-metadata"],
+    ]);
+  });
+
   it("rejects empty, oversized and unsafe metadata retry scopes before transport", async () => {
     for (const items of [
       [],
