@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-08T21:30:00Z"
-last_activity: "2026-11-08 - Completed quick task 261108-te6: restore selective metadata retries in scan result pages"
+last_updated: "2026-11-09T09:26:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-d0c: add direct metadata retry regression coverage after accepted live UAT"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,14 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-d0c
+
+| 261109-d0c | Add direct metadata-retry regression coverage | 2026-11-09 | typecheck, 53 focused tests and scoped Trunk passed; commits pending | [261109-d0c](./quick/261109-d0c-add-direct-regression-coverage-for-selec/) |
+
+- Following accepted live UAT, direct tests now cover selected paginated-result
+  retries without lifecycle item accumulation, invalid selections, retry
+  failures and conflict propagation. No production code changed.
 
 ## Quick Task 261108-te6
 
