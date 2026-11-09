@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="PC Games – Gaming-Monitor mit Controller">
+<defs>
+ <linearGradient id="case" x1="0" x2="1" y2="1"><stop stop-color="#7286a2"/><stop offset=".18" stop-color="#293b55"/><stop offset=".65" stop-color="#142031"/><stop offset="1" stop-color="#536780"/></linearGradient>
+ <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123963"/><stop offset=".57" stop-color="#071d35"/><stop offset="1" stop-color="#112b51"/></linearGradient>
+ <linearGradient id="pad" x1="0" x2=".65" y2="1"><stop stop-color="#697d94"/><stop offset=".23" stop-color="#34445a"/><stop offset=".75" stop-color="#141e2d"/><stop offset="1" stop-color="#43576e"/></linearGradient>
+ <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#28efff"/><stop offset="1" stop-color="#007cdb"/></linearGradient>
+ <filter id="glow" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="2.8"/></filter>
+</defs>
+<!-- Transparent canvas: no backdrop, tile or frame -->
+<g transform="translate(10 22)">
+ <rect x="10" y="24" width="211" height="145" rx="15" fill="#02cffa" opacity=".25" filter="url(#glow)"/>
+ <rect x="10" y="24" width="211" height="145" rx="15" fill="url(#case)" stroke="#87a3ba" stroke-width="2.2"/>
+ <rect x="20" y="34" width="191" height="122" rx="7" fill="#020a15" stroke="#07cbed" stroke-opacity=".7" stroke-width="1.5"/>
+ <rect x="24" y="38" width="183" height="114" rx="3" fill="url(#screen)"/>
+ <path d="M24 136 Q114 115 207 68" stroke="#11d9ff" stroke-opacity=".45" stroke-width="2" fill="none"/>
+ <path d="M24 143 Q110 126 207 92" stroke="#0867c1" stroke-opacity=".65" stroke-width="5" fill="none"/>
+ <g transform="translate(93 70) skewY(-4)">
+  <path d="M0 3 25 0 V25 H0Z M30 -1 58 -5 V25 H30Z M0 30 H25 V55 L0 52Z M30 30 H58 V60 L30 56Z" fill="url(#cyan)" stroke="#78ffff" stroke-width=".8"/>
+ </g>
+ <path d="M104 169 V186 L84 199 H150 L130 186 V169Z" fill="url(#case)" stroke="#5c7a91" stroke-width="1.4"/>
+ <rect x="63" y="197" width="106" height="9" rx="4" fill="url(#case)" stroke="#48e7f3" stroke-width="1.4"/>
+ <rect x="31" y="160" width="46" height="3" rx="1.5" fill="#0befff"/>
+</g>
+<g transform="translate(75 136)">
+ <path d="M20 25 Q34 11 59 14 L108 14 Q128 9 142 23 Q154 37 169 84 Q178 114 159 122 Q149 126 135 111 L117 93 Q105 83 88 84 L78 84 Q60 83 48 97 L31 113 Q13 131 3 113 Q-4 101 3 80 Q8 48 20 25Z" fill="#13dbff" opacity=".3" filter="url(#glow)"/>
+ <path d="M20 25 Q34 11 59 14 L108 14 Q128 9 142 23 Q154 37 169 84 Q178 114 159 122 Q149 126 135 111 L117 93 Q105 83 88 84 L78 84 Q60 83 48 97 L31 113 Q13 131 3 113 Q-4 101 3 80 Q8 48 20 25Z" fill="url(#pad)" stroke="#88a4bb" stroke-width="2"/>
+ <path d="M18 80 Q8 109 17 116 M145 80 Q165 111 156 116" stroke="#00e7ff" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+ <circle cx="44" cy="44" r="20" fill="#101a2a" stroke="#23cefc" stroke-width="2.4"/>
+ <circle cx="44" cy="44" r="12" fill="#27364c" stroke="#819db6" stroke-width="2"/>
+ <circle cx="111" cy="74" r="18" fill="#101a2a" stroke="#23cefc" stroke-width="2.4"/>
+ <circle cx="111" cy="74" r="10.5" fill="#27364c" stroke="#819db6" stroke-width="1.8"/>
+ <path d="M65 62 H76 V51 H87 V62 H98 V73 H87 V84 H76 V73 H65Z" fill="#091322" stroke="#6d849b" stroke-width="1.5"/>
+ <g fill="#10dafa" stroke="#9bfaff" stroke-width=".65"><circle cx="129" cy="40" r="7"/><circle cx="147" cy="50" r="7"/><circle cx="129" cy="60" r="7"/><circle cx="111" cy="50" r="7"/></g>
+ <rect x="80" y="34" width="10" height="4" rx="2" fill="#7a94a8"/>
+</g>
+</svg>
