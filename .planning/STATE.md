@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-09T09:26:00Z"
-last_activity: "2026-11-09 - Completed quick task 261109-d0c: add direct metadata retry regression coverage after accepted live UAT"
+last_updated: "2026-11-09T11:05:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-ebs: fix post-acceptance scan regression failures"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,14 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-ebs
+
+| 261109-ebs | Fix post-acceptance full-regression failures | 2026-11-09 | frontend unit suite and MariaDB shard 8 passed; commits pending | [261109-ebs](./quick/261109-ebs-fix-post-acceptance-full-regression-fail/) |
+
+- The scan socket facade again exports `ScanType` for the Phase 9 seed. Tests
+  now follow the focused module ownership while keeping the bounded explorer
+  architecture intact. A production code change requires renewed live UAT.
 
 ## Quick Task 261109-d0c
 
