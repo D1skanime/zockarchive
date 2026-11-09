@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: completed
-stopped_at: Phase 41 live UAT approved, regression-test repair committed
-last_updated: "2026-11-09T14:21:27Z"
-last_activity: "2026-11-09 - Completed quick task 261109-jt1: repair Phase 41 regression tests after bounded snapshots"
+stopped_at: Phase 41 regression repair committed; renewed live UAT required
+last_updated: "2026-11-09T15:00:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-k8t: repair confirmed Gate 15 and Gate 16 MariaDB regressions"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,13 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-k8t
+
+| 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | targeted MariaDB groups passed; commit a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
+
+- Collection result paths now preserve mapping-relative scope. This product
+  correction requires renewed human live UAT before a merge decision.
 
 ## Quick Task 261109-jt1
 
@@ -629,6 +636,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
 | 261109-jt1 | Repair Phase 41 regression tests after bounded snapshots | 2026-11-09 | 0009f6d45 | [261109-jt1](./quick/261109-jt1-repair-phase-41-regression-tests-after-t/) |
 | 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |
 | 261109-fm3 | Keep the mobile Scan action clear of the bottom navigation | 2026-11-09 | 805bcc387 | [261109-fm3](./quick/261109-fm3-prevent-the-mobile-bottom-navigation-fro/) |
