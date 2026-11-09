@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: completed
-stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-09T11:25:00Z"
-last_activity: "2026-11-09 - Completed quick task 261109-fm3: keep the mobile Scan action clear of the bottom navigation"
+stopped_at: Phase 41 live UAT approved, direct regression coverage committed
+last_updated: "2026-11-09T13:29:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-ihy: add direct regression tests for the live-UAT-approved scan overview"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,13 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-ihy
+
+| 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | 50 focused frontend and 57 MariaDB scan tests passed; commit e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |
+
+- Post-approval coverage directly protects stale explorer responses and the
+  explicit-false action-required classification. Product code remains unchanged.
 
 ## Quick Task 261109-fm3
 
@@ -615,6 +622,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |
 | 261109-fm3 | Keep the mobile Scan action clear of the bottom navigation | 2026-11-09 | 805bcc387 | [261109-fm3](./quick/261109-fm3-prevent-the-mobile-bottom-navigation-fro/) |
 | 261108-8ee7-size | Decompose Scan view source surface for the quality gate | 2026-11-08 | 898ba5fb4 | [261108-scan-view-size-decomposition](./quick/261108-scan-view-size-decomposition/) |
 | 261108-8ee7 | Restore scan platform filter binding and terminal list bounds after live UAT | 2026-11-08 | c2b92da30 | [261108-scan-platform-filter-live-list](./quick/261108-scan-platform-filter-live-list/) |
