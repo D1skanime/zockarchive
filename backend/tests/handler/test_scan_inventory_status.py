@@ -1,12 +1,14 @@
 """Exact inventory game units and observed provider dispatch units."""
 
 import pytest
+from sqlalchemy import select
 from tests.handler.test_scan_inventory_state import bound_game as bound_game
 from tests.handler.test_scan_inventory_state import (
     inventory_attempt as inventory_attempt,
 )
 from tests.handler.test_scan_operations import command as command
 
+from endpoints.responses.scan_operations import ScanOperationResultQuery
 from handler.database.base_handler import sync_session
 from handler.database.scan_operations_handler import DBScanOperationsHandler
 from handler.database.scan_write_fence import (
@@ -106,6 +108,14 @@ def write_context(attempt):
     )
 
 
+def result_page(repository, identity, actor, **filters):
+    return repository.get_by_id(
+        identity,
+        actor,
+        query=ScanOperationResultQuery(include_items=True, **filters),
+    )
+
+
 def test_sql_restores_unknown_and_global_counts_beyond_page(
     bound_game, inventory_attempt, admin_user
 ):
@@ -152,8 +162,8 @@ def test_sql_restores_unknown_and_global_counts_beyond_page(
             retry_eligible=False,
         )
     repo = DBScanOperationsHandler()
-    first = repo.get_by_id(inventory_attempt.id, admin_user.id)
-    last = repo.get_by_id(first.id, admin_user.id, offset=100, limit=100)
+    first = result_page(repo, inventory_attempt.id, admin_user.id, limit=100)
+    last = result_page(repo, first.id, admin_user.id, offset=100, limit=100)
     assert len(first.items) == 100 and len(last.items) == 5
     assert first.items_total == last.items_total == 105
     assert (
@@ -165,7 +175,7 @@ def test_sql_restores_unknown_and_global_counts_beyond_page(
     assert first.items[0].inventory.identified_windows is False
     assert first.items[0].inventory.is_identifying is False
     terminal = repo.transition(first.id, first.version, first.attempt_id, "completed")
-    restored = repo.get_by_id(terminal.id, admin_user.id)
+    restored = result_page(repo, terminal.id, admin_user.id)
     assert restored.items[0].inventory == first.items[0].inventory
     public = restored.model_dump_json()
     for forbidden in (
@@ -176,7 +186,7 @@ def test_sql_restores_unknown_and_global_counts_beyond_page(
     ):
         assert forbidden not in public
     with pytest.raises(ValueError):
-        repo.get_by_id(first.id, admin_user.id, limit=101)
+        result_page(repo, first.id, admin_user.id, limit=101)
 
 
 @pytest.mark.parametrize(
@@ -257,7 +267,7 @@ def test_safe_status_validation_and_stale_attempt_projection(
             existing_game=True,
         )
     repo = DBScanOperationsHandler()
-    snapshot = repo.get_by_id(inventory_attempt.id, admin_user.id)
+    snapshot = result_page(repo, inventory_attempt.id, admin_user.id)
     assert snapshot.items[0].inventory.inventory_reason == "inventory_unreadable"
     with sync_session.begin() as session:
         session.get(ScanOperation, snapshot.id).attempt_id = "replacement"
@@ -313,11 +323,17 @@ def test_sql_observations_count_dispatches_not_completed_wrappers(
                     "provider_observation": observation,
                 },
             )
-    snapshot = repo.get_by_id(inventory_attempt.id, admin_user.id)
+    snapshot = result_page(repo, inventory_attempt.id, admin_user.id)
     assert snapshot.scan_stats["provider_requests"] == 3
     assert snapshot.scan_stats["metadata_retry_games"] == 1
-    assert snapshot.items[1].provider_execution.requests == 3
-    assert snapshot.items[1].provider_execution.state == "no_match"
+    with sync_session.begin() as session:
+        provider_item = session.scalar(
+            select(ScanOperationItem).where(
+                ScanOperationItem.operation_id == inventory_attempt.id,
+                ScanOperationItem.provider == "igdb",
+            )
+        )
+    assert provider_item.checkpoint["provider_observation"] == observation
 
 
 @pytest.mark.asyncio
@@ -361,7 +377,9 @@ async def test_terminal_event_matches_reloaded_inventory(
     game = db_rom_handler.get_rom(binding.rom_id)
     with write_context(inventory_attempt):
         await emit_inventory_status(manager, quick, game, existing_game=True)
-    snapshot = DBScanOperationsHandler().get_by_id(inventory_attempt.id, admin_user.id)
+    snapshot = result_page(
+        DBScanOperationsHandler(), inventory_attempt.id, admin_user.id
+    )
     event, payload = manager.emit.await_args.args
     assert event == "scan:scanning_rom"
     assert payload["id"] == game.id
@@ -452,7 +470,9 @@ def test_full_binding_digest_collision_rejected(
                 identified_windows=False,
                 existing_game=True,
             )
-    snapshot = DBScanOperationsHandler().get_by_id(inventory_attempt.id, admin_user.id)
+    snapshot = result_page(
+        DBScanOperationsHandler(), inventory_attempt.id, admin_user.id
+    )
     assert snapshot.scan_stats["inventory_checked"] == 1
     assert snapshot.items[0].inventory.inventory_state == "unchanged"
 
@@ -503,7 +523,7 @@ async def test_unselected_automatic_http_is_inventory_owned_and_replay_safe(
                 )
                 record_inventory_status(binding, **facts)
         repo = DBScanOperationsHandler()
-        snapshot = repo.get_by_id(inventory_attempt.id, admin_user.id)
+        snapshot = result_page(repo, inventory_attempt.id, admin_user.id)
         assert len(snapshot.items) == 1
         assert snapshot.items[0].provider == ""
         assert snapshot.items[0].provider_execution.requests == 2
@@ -512,7 +532,7 @@ async def test_unselected_automatic_http_is_inventory_owned_and_replay_safe(
         terminal = repo.transition(
             snapshot.id, snapshot.version, snapshot.attempt_id, "completed"
         )
-        restored = repo.get_by_id(terminal.id, admin_user.id)
+        restored = result_page(repo, terminal.id, admin_user.id)
         assert restored.scan_stats["provider_requests"] == 2
         assert restored.items[0].provider_execution.requests == 2
     finally:

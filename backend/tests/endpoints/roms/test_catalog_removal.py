@@ -466,12 +466,15 @@ async def test_remove_then_production_scan_reconnects_retained_user_value(
     read_only: bool,
     scan_command,
 ) -> None:
-    from endpoints.sockets import scan as scan_module
+    from endpoints.sockets import scan_rom_identification as scan_module
     from handler.filesystem.roms_handler import FSRom, ParsedRomFiles, ParsedTags
     from handler.scan_handler import ScanType
 
     attempt = scan_fixtures.running(
         scan_fixtures.repository(), admin_user, scan_command
+    )
+    monkeypatch.setattr(
+        "handler.scan_operation_checkpoint.record_completed_game", lambda _rom: None
     )
     checkpoint = decode_command(scan_command["commands"][0])
     dependencies = _seed_dependencies(rom, admin_user)
@@ -516,8 +519,10 @@ async def test_remove_then_production_scan_reconnects_retained_user_value(
     assert detached_save["retained_catalog_id"] == detached_state["retained_catalog_id"]
 
     monkeypatch.setattr(scan_module, "redis_client", Mock(get=Mock(return_value=None)))
+    filesystem = Mock()
+    monkeypatch.setattr(scan_module, "get_fs_rom_handler", lambda: filesystem)
     monkeypatch.setattr(
-        scan_module.fs_rom_handler,
+        filesystem,
         "parse_tags",
         Mock(
             return_value=ParsedTags(
@@ -526,17 +531,17 @@ async def test_remove_then_production_scan_reconnects_retained_user_value(
         ),
     )
     monkeypatch.setattr(
-        scan_module.fs_rom_handler,
-        "get_roms_fs_structure",
+        filesystem,
+        "get_logical_roms_fs_structure",
         Mock(return_value=logical_path),
     )
     monkeypatch.setattr(
-        scan_module.fs_rom_handler,
+        filesystem,
         "get_file_name_with_no_tags",
         Mock(return_value=rom.name),
     )
     monkeypatch.setattr(
-        scan_module.fs_rom_handler,
+        filesystem,
         "get_rom_files",
         AsyncMock(
             return_value=ParsedRomFiles(

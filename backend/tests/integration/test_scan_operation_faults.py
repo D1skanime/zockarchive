@@ -21,7 +21,7 @@ from handler.database.scan_operations_handler import DBScanOperationsHandler, ut
 from handler.redis_handler import redis_client
 from models.platform import Platform
 from models.rom import Rom
-from models.scan_operation import ScanOperation
+from models.scan_operation import ScanOperation, ScanOperationItem
 from tasks.scan_operation_dispatch import WORKER_FUNC, dispatch_operation
 
 command = command_fixture
@@ -454,7 +454,7 @@ def test_real_worker_fatal_rom_error_cannot_report_completed(
 import json,sys
 from rq import Queue,Worker
 from handler.redis_handler import redis_client
-from endpoints.sockets import scan
+from endpoints.sockets import scan_platform_identification as scan
 async def fatal_rom(*args,**kwargs):
  raise RuntimeError("synthetic_fatal_catalog_error")
 scan._identify_rom=fatal_rom
@@ -509,9 +509,16 @@ Worker([Queue(payload["queue"],connection=redis_client)],connection=redis_client
     assert current.state == "completed-with-warnings", current
     assert count_roms() >= 1
     assert current.scan_stats["scanned_roms"] >= 1
+    with sync_session.begin() as session:
+        diagnostics = list(
+            session.scalars(
+                select(ScanOperationItem).where(
+                    ScanOperationItem.operation_id == accepted.id,
+                    ScanOperationItem.provider == "igdb",
+                )
+            )
+        )
     assert any(
-        item.provider == "igdb"
-        and item.outcome == "warning"
-        and item.cause_code == "metadata_timeout"
-        for item in current.items
+        item.outcome == "warning" and item.cause_code == "metadata_timeout"
+        for item in diagnostics
     )

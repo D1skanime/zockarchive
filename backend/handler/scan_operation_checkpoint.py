@@ -5,6 +5,7 @@ import json
 import stat
 from contextlib import contextmanager
 from contextvars import ContextVar
+from pathlib import PurePosixPath
 
 from handler.filesystem.storage_policy import StorageOperation
 from handler.storage.read_context import MappingReadContext
@@ -205,7 +206,17 @@ def record_checked_game(rom, *, outcome):
         return
     from handler.database.scan_operations_handler import DBScanOperationsHandler
 
-    relative_path = rom.fs_name
+    mapping = MappingReadContext(
+        command.mapping_id, command.expected_revision
+    ).validate()
+    try:
+        relative_path = (
+            (PurePosixPath(rom.fs_path) / rom.fs_name)
+            .relative_to(PurePosixPath(mapping.relative_path))
+            .as_posix()
+        )
+    except ValueError:
+        raise SourceEvidenceRejected("source_outside_mapping") from None
     target = f"{command.mapping_id}:{rom.id}:{relative_path}"
     DBScanOperationsHandler().record_worker_item(
         context,

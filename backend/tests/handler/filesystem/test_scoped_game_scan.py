@@ -64,7 +64,7 @@ async def test_full_scan_checks_known_child_without_discovering_unknown_children
 ):
     from unittest.mock import AsyncMock, Mock
 
-    from endpoints.sockets import scan
+    from endpoints.sockets import scan_platform_identification as scan
     from handler.scan_handler import ScanType
 
     parent = tmp_path / "pc-Games/Castlevania"

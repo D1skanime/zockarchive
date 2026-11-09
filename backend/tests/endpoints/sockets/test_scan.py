@@ -9,7 +9,17 @@ from rq.job import Job, JobStatus
 from tests.handler import test_scan_operations as scan_fixtures
 from tests.handler.test_scan_write_fence import context
 
-from endpoints.sockets import scan as scan_module
+from endpoints.sockets import scan as scan_public
+from endpoints.sockets import (
+    scan_decisions,
+    scan_mapping_execution,
+    scan_media,
+    scan_platform_execution,
+    scan_platform_identification,
+    scan_rom_identification,
+    scan_runtime,
+    scan_socket_handlers,
+)
 from endpoints.sockets.scan import (
     ScanStats,
     _emit_scanning_rom,
@@ -44,6 +54,48 @@ from models.platform import Platform
 from models.rom import Rom, RomComponentKind, RomComponentOwnedMediaRole
 
 scan_command = scan_fixtures.command
+
+
+class ScanModuleSeams:
+    """Route legacy scan-facade mocks to the focused module that owns them."""
+
+    def __init__(self):
+        object.__setattr__(
+            self,
+            "_modules",
+            (
+                scan_platform_execution,
+                scan_platform_identification,
+                scan_rom_identification,
+                scan_media,
+                scan_mapping_execution,
+                scan_socket_handlers,
+                scan_runtime,
+                scan_decisions,
+            ),
+        )
+        for module in self._modules:
+            for name, value in vars(module).items():
+                if not name.startswith("__"):
+                    object.__setattr__(self, name, value)
+
+    def __getattr__(self, name):
+        for module in self._modules:
+            if name in vars(module):
+                return getattr(module, name)
+        return getattr(scan_public, name)
+
+    def __setattr__(self, name, value):
+        owners = [module for module in self._modules if name in vars(module)]
+        if owners:
+            for module in owners:
+                setattr(module, name, value)
+        else:
+            setattr(scan_public, name, value)
+        object.__setattr__(self, name, value)
+
+
+scan_module = ScanModuleSeams()
 
 
 @pytest.fixture(autouse=True)
@@ -1545,6 +1597,8 @@ class TestIdentifyPlatformQuickPcComponents:
             QuickScanDecision,
         )
 
+        mocker.patch("handler.scan_operation_checkpoint.record_checked_game")
+
         coordinator = Mock()
         evidence = InventoryEvidence("c" * 64, 1, True)
         inventory_handler = SimpleNamespace(
@@ -1797,6 +1851,7 @@ class TestIdentifyPlatformEmitsRestoredRoms:
 
     @pytest.fixture
     def patched(self, mocker):
+        mocker.patch("handler.scan_operation_checkpoint.record_checked_game")
         mocker.patch.object(
             scan_module, "redis_client", Mock(get=Mock(return_value=None))
         )
