@@ -228,6 +228,90 @@ def test_action_results_require_an_explicit_unidentified_windows_fact(
     assert action_results.actionable_count == 2
 
 
+def test_completed_attempt_keeps_provider_warning_in_explorer_views(
+    admin_user, command
+):
+    row = running(repository(), admin_user, command)
+    mapping_id = command["commands"][0]["mapping_id"]
+    canonical = {
+        "rom_id": 1,
+        "inventory_status": {
+            "rom_id": 1,
+            "inventory_state": "unchanged",
+            "existing_game": True,
+        },
+        "provider_observation": {"invoked": False, "requests": 0},
+    }
+    warning = {
+        "rom_id": 1,
+        "provider_observation": {
+            "outcome": "failed",
+            "invoked": True,
+            "requests": 1,
+            "cached": False,
+        },
+    }
+    with sync_session.begin() as session:
+        platform_id = session.get(PlatformStorageMapping, mapping_id).platform_id
+        session.get(ScanOperation, row.id).checkpoint = {"game_results_complete": True}
+        session.add_all(
+            [
+                ScanOperationItem(
+                    operation_id=row.id,
+                    target_key="checked-game",
+                    mapping_id=mapping_id,
+                    expected_revision=1,
+                    relative_path="Games/Checked.bin",
+                    provider="",
+                    outcome="skipped",
+                    attempt_id=row.attempt_id,
+                    checkpoint=canonical,
+                ),
+                ScanOperationItem(
+                    operation_id=row.id,
+                    target_key="provider-warning",
+                    mapping_id=mapping_id,
+                    expected_revision=1,
+                    relative_path="Games/Checked.bin",
+                    provider="igdb",
+                    outcome="warning",
+                    cause_code="metadata_timeout",
+                    attempt_id=row.attempt_id,
+                    checkpoint=warning,
+                ),
+            ]
+        )
+    with sync_session.begin() as session:
+        persisted = session.get(ScanOperation, row.id)
+        all_results = operation_snapshot(
+            session,
+            persisted,
+            query=ScanOperationResultQuery(include_items=True),
+        )
+        action_results = operation_snapshot(
+            session,
+            persisted,
+            query=ScanOperationResultQuery(
+                include_items=True, outcome="action-required"
+            ),
+        )
+    assert [item.provider for item in all_results.items] == ["", "igdb"]
+    assert [item.provider for item in action_results.items] == ["igdb"]
+    assert action_results.actionable_count == action_results.totals.action_required == 1
+    assert [item.provider for item in action_results.actionable_samples] == ["igdb"]
+    assert action_results.totals.model_dump() == {
+        "total": 2,
+        "indexed": 0,
+        "completed": 0,
+        "warning": 1,
+        "failed": 1,
+        "skipped": 1,
+        "unidentified": 0,
+        "action_required": 1,
+    }
+    assert [platform.id for platform in action_results.platforms] == [platform_id]
+
+
 def test_cancel_confirm_resume_fences_stale_items(admin_user, command):
     from handler.database.scan_operations_handler import OperationConflict
 

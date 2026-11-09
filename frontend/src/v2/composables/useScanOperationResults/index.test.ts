@@ -39,6 +39,7 @@ const operation = ref<ScanOperationSnapshot | null>({
 function result(
   query: Record<string, unknown>,
   item = "Game One",
+  platforms: NonNullable<ScanOperationSnapshot["platforms"]> = [],
 ): ScanOperationSnapshot {
   return {
     ...operation.value!,
@@ -56,6 +57,7 @@ function result(
         attempt_id: "attempt-one",
       },
     ],
+    platforms,
   };
 }
 
@@ -129,6 +131,33 @@ describe("scan operation result explorer", () => {
     results.hide();
     expect(results.items.value).toEqual([]);
     expect(results.platforms.value).toEqual([]);
+  });
+
+  it("keeps all server platform choices while one platform is filtered", async () => {
+    const results = await explorer();
+    results.show();
+    await flushPromises();
+    const choices = [
+      { id: 3, name: "Windows" },
+      { id: 8, name: "Nintendo 64" },
+    ];
+    fake.status.mockResolvedValueOnce(
+      result(
+        { offset: 0, platform_id: 3, outcome: "all" },
+        "Windows Game",
+        choices,
+      ),
+    );
+    results.setPlatform(3);
+    await flushPromises();
+    expect(fake.status).toHaveBeenLastCalledWith(
+      "scan-one",
+      expect.objectContaining({ page: 1, platformId: 3 }),
+    );
+    expect(results.items.value.map((item) => item.relative_path)).toEqual([
+      "Windows Game",
+    ]);
+    expect(results.platforms.value).toEqual(choices);
   });
 
   it("keeps the current page on an error and retry replaces it", async () => {
