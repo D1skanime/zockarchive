@@ -12,6 +12,16 @@ import {
   OperationTranslationError,
   toScanOperationRequest,
 } from "../operations";
+import {
+  normalizeStatusQuery,
+  type ScanOperationStatusQuery,
+} from "./scanOperationStatusQuery";
+
+export {
+  scanOperationResultPageSize,
+  type ScanOperationOutcome,
+  type ScanOperationStatusQuery,
+} from "./scanOperationStatusQuery";
 
 const options = { timeout: 5000 };
 const storagePrefix = "pgdp.scan-operation.";
@@ -191,21 +201,38 @@ async function byRequest(key: string) {
   return lookup(session(), key);
 }
 
-async function status(id: string, offset = 0, limit = 100) {
+function status(
+  id: string,
+  query?: ScanOperationStatusQuery,
+): Promise<ScanOperationSnapshot>;
+/** @deprecated Result rows require a typed page query. */
+function status(
+  id: string,
+  legacyOffset?: number,
+  legacyLimit?: number,
+): Promise<ScanOperationSnapshot>;
+async function status(
+  id: string,
+  query?: ScanOperationStatusQuery | number,
+  legacyLimit?: number,
+) {
+  if (typeof query === "number" || legacyLimit !== undefined)
+    throw new OperationTranslationError("scan_result_query_required");
   const context = session();
-  if (
-    !Number.isSafeInteger(offset) ||
-    offset < 0 ||
-    !Number.isSafeInteger(limit) ||
-    limit < 1 ||
-    limit > 100
-  )
-    throw new OperationTranslationError("invalid_scan_page");
+  const normalized = normalizeStatusQuery(query);
   const { data } = await api.get<ScanOperationSnapshot>(
     `/scan-operations/${encodeURIComponent(id)}`,
     {
       ...options,
-      params: { offset, limit },
+      signal: normalized.signal,
+      params: {
+        include_items: normalized.includeItems,
+        offset: normalized.offset,
+        limit: normalized.limit,
+        search: normalized.name,
+        platform_id: normalized.platformId,
+        outcome: normalized.outcome,
+      },
     },
   );
   return confirmed(context, data, undefined, id);

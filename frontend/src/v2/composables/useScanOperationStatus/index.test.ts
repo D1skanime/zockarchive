@@ -175,125 +175,28 @@ describe("authoritative scan status owner", () => {
       metadata_retry_games: 2,
     });
   });
-  function rows(start: number, count: number) {
-    return Array.from({ length: count }, (_, index) => ({
-      id: start + index,
-      target_key: "game-" + (start + index),
-      mapping_id: 2,
-      expected_revision: 3,
-      relative_path: "Collection/" + (start + index),
-      provider: "",
-      outcome: "skipped" as const,
-      attempt_id: "attempt-one",
-      inventory: {
-        rom_id: start + index,
-        inventory_state: "unchanged" as const,
-        existing_game: true,
-        identified_windows: false,
-        is_identifying: false,
-      },
-    }));
-  }
-  it("restores over 100 terminal unknowns, deduplicates pages, and retains loaded rows on reconnect", async () => {
+  it("drops result pages from lifecycle snapshots and never loads more", async () => {
     fake.restore.mockResolvedValue({
       ...sample(2, "completed"),
-      items: rows(1, 100),
+      items: [{ id: 1 }],
       items_offset: 0,
       items_total: 105,
       scan_stats: { unresolved_games: 105 },
     });
     const status = await owner();
     await flushPromises();
-    const first = status.snapshot.value?.items?.[0];
-    fake.status.mockResolvedValue({
-      ...sample(2, "completed"),
-      items: rows(100, 6),
-      items_offset: 100,
-      items_total: 105,
-      scan_stats: { unresolved_games: 105 },
-    });
     await status.loadMore();
-    expect(fake.status).toHaveBeenLastCalledWith("scan-one", 100, 100);
-    expect(status.snapshot.value?.items).toHaveLength(105);
-    expect(status.snapshot.value?.items?.[0]).toEqual(first);
-    expect(status.hasMore.value).toBe(false);
-    fake.status.mockResolvedValue({
-      ...sample(2, "completed"),
-      items: rows(1, 100),
-      items_offset: 0,
-      items_total: 105,
-      scan_stats: { unresolved_games: 105 },
-    });
-    fake.handlers.get("connect")?.();
-    await flushPromises();
-    expect(status.snapshot.value?.items).toHaveLength(105);
-    expect(status.snapshot.value?.scan_stats?.unresolved_games).toBe(105);
-  });
-  it("rejects delayed pages after attempt replacement and same-version attempt changes", async () => {
-    fake.restore.mockResolvedValue({
-      ...sample(2),
-      items: rows(1, 100),
-      items_total: 105,
-    });
-    const status = await owner();
-    await flushPromises();
-    let release!: (value: ScanOperationSnapshot) => void;
-    fake.status.mockImplementation(
-      () =>
-        new Promise((done) => {
-          release = done;
-        }),
-    );
-    const page = status.loadMore();
-    status.accept({
-      ...sample(3),
-      attempt_id: "attempt-new",
-      items: [],
-      items_total: 0,
-    });
-    release({
-      ...sample(2),
-      items: rows(101, 5),
-      items_offset: 100,
-      items_total: 105,
-    });
-    await page;
-    expect(status.snapshot.value?.attempt_id).toBe("attempt-new");
-    expect(status.snapshot.value?.items).toEqual([]);
-    status.accept({ ...sample(3), items: rows(1, 100) });
-    expect(status.snapshot.value?.attempt_id).toBe("attempt-new");
-  });
-  it("isolates delayed page and refresh responses across actors", async () => {
-    fake.restore.mockResolvedValue({
-      ...sample(2),
-      items: rows(1, 100),
-      items_total: 105,
-    });
-    const status = await owner();
-    await flushPromises();
-    let release!: (value: ScanOperationSnapshot) => void;
-    fake.status.mockImplementation(
-      () =>
-        new Promise((done) => {
-          release = done;
-        }),
-    );
-    const page = status.loadMore();
-    fake.restore.mockResolvedValue({
-      ...sample(1, "completed"),
-      id: "actor-two",
-    });
-    fake.auth.user = { id: 2 };
-    await flushPromises();
-    release({
-      ...sample(2),
-      items: rows(101, 5),
-      items_offset: 100,
-      items_total: 105,
-    });
-    await page;
-    expect(status.snapshot.value?.id).toBe("actor-two");
     expect(status.snapshot.value?.items).toBeUndefined();
+    expect(status.hasMore.value).toBe(false);
+    expect(fake.status).not.toHaveBeenCalled();
+  });
+  it("uses a summary-only typed query for a refresh", async () => {
+    const status = await owner();
+    await flushPromises();
+    await status.refresh();
+    expect(fake.status).toHaveBeenLastCalledWith("scan-one", {
+      summaryOnly: true,
+    });
   });
 
   it("clears optional counters on actor changes and operation replacement", async () => {

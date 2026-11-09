@@ -2,13 +2,14 @@
 
 from uuid import UUID
 
-from fastapi import HTTPException, Query, Request
+from fastapi import Depends, HTTPException, Request
 
 from decorators.auth import protected_route
 from endpoints.responses.scan_operations import (
     RequestKey,
     ScanOperationMutationRequest,
     ScanOperationRequest,
+    ScanOperationResultQuery,
     ScanOperationSnapshot,
 )
 from exceptions.storage_exceptions import StorageResolutionError
@@ -28,6 +29,7 @@ from utils.router import APIRouter
 
 router = APIRouter(prefix="/scan-operations", tags=["scan-operations"])
 operations = DBScanOperationsHandler()
+result_query_dependency = Depends()
 
 
 def _admin(request):
@@ -108,8 +110,7 @@ def by_request(request: Request, request_key: RequestKey):
 def by_id(
     request: Request,
     operation_id: UUID,
-    offset: int = Query(0, ge=0, le=1000000),
-    limit: int = Query(100, ge=1, le=100),
+    query: ScanOperationResultQuery = result_query_dependency,
 ):
     return _project(
         _call(
@@ -117,8 +118,7 @@ def by_id(
             str(operation_id),
             request.user.id,
             admin=_admin(request),
-            offset=offset,
-            limit=limit,
+            query=query,
         )
     )
 

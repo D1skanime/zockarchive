@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ZABtn } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import InventoryStatusDetail from "@/v2/components/Scan/InventoryStatusDetail.vue";
 import type {
   ScanOperationItemResult,
   ScanStatsTransport,
@@ -10,11 +8,8 @@ import type {
 
 const props = defineProps<{
   stats?: ScanStatsTransport;
-  items: ScanOperationItemResult[];
-  hasMore?: boolean;
-  loadingMore?: boolean;
+  items?: ScanOperationItemResult[];
 }>();
-defineEmits<{ loadMore: [] }>();
 const { t } = useI18n();
 const metrics = [
   ["inventory_checked", "inventory-checked"],
@@ -22,15 +17,14 @@ const metrics = [
   ["inventory_changed", "inventory-changed"],
   ["inventory_refresh_required", "inventory-refresh-required"],
   ["inventory_incomplete", "inventory-incomplete"],
-  ["unresolved_games", "not-identified"],
-  ["metadata_retry_games", "metadata-retry-games"],
-  ["provider_requests", "provider-requests"],
 ] as const;
 const available = computed(() =>
-  metrics.filter(([field]) => props.stats?.[field] !== undefined),
-);
-const details = computed(() =>
-  props.items.filter((item) => item.inventory || item.provider_execution),
+  metrics.filter(([field]) => {
+    const value = props.stats?.[field];
+    return (
+      typeof value === "number" && Number.isSafeInteger(value) && value >= 0
+    );
+  }),
 );
 </script>
 <template>
@@ -39,33 +33,10 @@ const details = computed(() =>
       <div v-for="[field, label] in available" :key="field">
         <dt>{{ t("scan." + label) }}</dt>
         <dd>
-          {{
-            t(
-              field === "provider_requests"
-                ? "scan.provider-requests-count"
-                : "scan.games-count",
-              { n: stats![field] },
-              stats![field],
-            )
-          }}
+          {{ t("scan.games-count", { n: stats![field] }, stats![field]) }}
         </dd>
       </div>
     </dl>
-    <ul v-if="details.length" class="r-v2-inventory-summary__details">
-      <InventoryStatusDetail
-        v-for="item in details"
-        :key="item.id"
-        :item="item"
-      />
-    </ul>
-    <ZABtn
-      v-if="hasMore"
-      :loading="loadingMore"
-      :disabled="loadingMore"
-      variant="outlined"
-      @click="$emit('loadMore')"
-      >{{ t("gallery.load-more") }}</ZABtn
-    >
   </div>
 </template>
 <style scoped>
@@ -83,10 +54,5 @@ const details = computed(() =>
 .r-v2-inventory-summary__metrics dd {
   margin: 4px 0 0;
   color: var(--r-color-fg);
-}
-.r-v2-inventory-summary__details {
-  padding: 0;
-  margin: 0 0 16px;
-  list-style: none;
 }
 </style>

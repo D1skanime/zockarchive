@@ -2,19 +2,124 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: phase_human_verification
-stopped_at: Phase40 Wave15 targeted technical verification complete, human UAT pending
-last_updated: 2026-11-06T00:00:00Z
-last_activity: 2026-11-06
+status: completed
+stopped_at: Phase 41 branch refreshed to current origin/main; renewed live UAT required
+last_updated: "2026-11-09T16:05:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-integrate-main-win-svg-refresh"
 progress:
-  total_phases: 39
-  completed_phases: 24
-  total_plans: 308
-  completed_plans: 269
-  percent: 63
+  total_phases: 41
+  completed_phases: 31
+  total_plans: 320
+  completed_plans: 289
+  percent: 76
 ---
 
 # Project State
+
+## Quick Task 261109-integrate-main-win-svg-refresh
+
+| 261109-integrate-main-win-svg-refresh | Refresh the integrated Windows platform artwork from current main | 2026-11-09 | merge `26f603931`; desktop/mobile icon inspection passed | [refreshed icon integration](./quick/261109-integrate-main-win-svg-refresh/) |
+
+- `origin/main` is an ancestor of the job branch and the Windows SVG matches
+  current main exactly. The product remains pending renewed human live UAT.
+
+## Quick Task 261109-integrate-main-win-svg
+
+| 261109-integrate-main-win-svg | Merge updated `origin/main` platform icon into the Phase 41 job branch | 2026-11-09 | merge `f4c14aca4`; browser `/scan` inspected at desktop and mobile widths | [main icon integration](./quick/261109-integrate-main-win-svg/) |
+
+- `origin/main` is an ancestor of the job branch. The available browser session
+  had no stored scan snapshot, so provider-warning UAT remains for the human run.
+
+## Quick Task 261109-fix-provider-diagnostics-projection
+
+| 261109-fix-provider-diagnostics-projection | Preserve actionable provider diagnostics in final scan projections | 2026-11-09 | scoped Trunk passed; browser filter path inspected | [provider diagnostics](./quick/261109-fix-provider-diagnostics-projection/) |
+
+- Final explorer projections retain provider warning and failed rows alongside
+  canonical game rows. This product correction requires renewed human live UAT.
+
+## Quick Task 261109-k8t
+
+| 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | targeted MariaDB groups passed; commit a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
+
+- Collection result paths now preserve mapping-relative scope. This product
+  correction requires renewed human live UAT before a merge decision.
+
+## Quick Task 261109-jt1
+
+| 261109-jt1 | Repair Phase 41 regression tests after bounded snapshots | 2026-11-09 | 39 targeted MariaDB tests and scoped Trunk passed; commit 0009f6d45 | [261109-jt1](./quick/261109-jt1-repair-phase-41-regression-tests-after-t/) |
+
+- Tests now use the explicit row-free summary contract and verify provider
+  diagnostics from their durable SQL records. Product code remains unchanged.
+
+## Quick Task 261109-ihy
+
+| 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | 50 focused frontend and 57 MariaDB scan tests passed; commit e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |
+
+- Post-approval coverage directly protects stale explorer responses and the
+  explicit-false action-required classification. Product code remains unchanged.
+
+## Quick Task 261109-fm3
+
+| 261109-fm3 | Keep the mobile Scan action clear of the bottom navigation | 2026-11-09 | browser inspection at 1440 px and 390 px; commit 805bcc387 | [261109-fm3](./quick/261109-fm3-prevent-the-mobile-bottom-navigation-fro/) |
+
+- The Scan action now has a full touch target above the fixed mobile navigation.
+  A new product change requires renewed human UAT; the pre-review instruction
+  prohibited test suites.
+
+## Quick Task 261109-ebs
+
+| 261109-ebs | Fix post-acceptance full-regression failures | 2026-11-09 | frontend unit suite and MariaDB shard 8 passed; commits pending | [261109-ebs](./quick/261109-ebs-fix-post-acceptance-full-regression-fail/) |
+
+- The scan socket facade again exports `ScanType` for the Phase 9 seed. Tests
+  now follow the focused module ownership while keeping the bounded explorer
+  architecture intact. A production code change requires renewed live UAT.
+
+## Quick Task 261109-d0c
+
+| 261109-d0c | Add direct metadata-retry regression coverage | 2026-11-09 | typecheck, 53 focused tests and scoped Trunk passed; commits pending | [261109-d0c](./quick/261109-d0c-add-direct-regression-coverage-for-selec/) |
+
+- Following accepted live UAT, direct tests now cover selected paginated-result
+  retries without lifecycle item accumulation, invalid selections, retry
+  failures and conflict propagation. No production code changed.
+
+## Quick Task 261108-te6
+
+| 261108-te6 | Restore selective metadata retry actions | 2026-11-08 | browser evidence recorded; commit 8731b7f77 | [261108-te6](./quick/261108-te6-restore-selective-metadata-retry-actions/) |
+
+- Retry selection now belongs to the bounded warning/failed result page rather
+  than the summary-only lifecycle snapshot. The renewed human UAT should use a
+  real warning or failed scan item to validate the backend retry completion.
+
+## Quick Task 261108-rso
+
+| 261108-rso | Fix false-positive scan action-required results | 2026-11-08 | MariaDB/browser evidence recorded; commit 1de8191ee | [261108-rso](./quick/261108-rso-fix-false-positive-scan-action-required-/) |
+
+- Only an explicit `identified_windows: false` JSON fact is now unresolved.
+  The saved 37-game scan shows zero action-required and 37 skipped rows at
+  desktop and mobile widths; a renewed human live UAT is required.
+
+## Quick Task 261108-ro7
+
+| 261108-ro7 | Add accepted scan-overview regression coverage | 2026-11-08 | frontend typecheck and 66 focused tests passed; commit 278886e15 | [261108-ro7](./quick/261108-ro7-post-uat-tests-for-scan-overview-phase-4/) |
+
+- This test work began only after the prior live-UAT acceptance. It is retained
+  unchanged by the subsequent UAT correction; no tests were added after that
+  correction request.
+
+## Quick Task 261108-scan-template-runtime-fix
+
+| 261108-scan-template-runtime-fix | Restore browser-safe scan view decomposition | 2026-11-08 | pending commit | [261108-scan-template-runtime-fix](./quick/261108-scan-template-runtime-fix/) |
+
+- The browser rejected the earlier external Scan template during `/scan` loading. The
+  repaired feature-component/composable split is typechecked and browser-checked on
+  desktop and mobile. Human live UAT remains pending.
+
+## Quick Task 261108-scan-checked-games
+
+| 261108-scan-checked-games | Persist all checked games in scan results | 2026-11-08 | desktop/mobile browser evidence recorded, commit 841b9ac6a | [261108-scan-checked-games](./quick/261108-scan-checked-games/) |
+
+- New scans persist canonical game rows for completed and unchanged work, so paginated
+  result filters cover all scanned platforms without provider duplicates.
 
 ## Project Reference
 
@@ -28,7 +133,7 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 Phase:39 (zockarchive-approved-logo-integration)
 Plan:1/1
 Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
-Last activity: 2026-11-06 - Completed quick task 261106-hgc: repair visible main-game cover loading after browser inspection
+Last activity: 2026-11-09 - Completed quick task 261109-n26: add direct scan-result regression coverage
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -245,6 +350,8 @@ _Updated after each plan completion_
 ## Accumulated Context
 
 ### Roadmap Evolution
+
+- Phase 41 added: ZA scan overview for large libraries, assigned to ki-run job 261107-8ee7.
 - Phase 40 added: Unify PC media surfaces and complete Storybook coverage. It owns job 261103-4b37's existing implementation inventory and the remaining Storybook language-ledger correction.
 
 - Phase39 added: ZockArchive approved logo integration, using the user-supplied approved logo package. Awaiting discussion and planning; Phase38 acceptance remains intact.
@@ -550,6 +657,13 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
+| 261109-jt1 | Repair Phase 41 regression tests after bounded snapshots | 2026-11-09 | 0009f6d45 | [261109-jt1](./quick/261109-jt1-repair-phase-41-regression-tests-after-t/) |
+| 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |
+| 261109-n26 | Add direct coverage for accepted scan results behavior | 2026-11-09 | d68a838d7 | [261109-n26](./quick/261109-n26-add-direct-tests-for-accepted-scan-overv/) |
+| 261109-fm3 | Keep the mobile Scan action clear of the bottom navigation | 2026-11-09 | 805bcc387 | [261109-fm3](./quick/261109-fm3-prevent-the-mobile-bottom-navigation-fro/) |
+| 261108-8ee7-size | Decompose Scan view source surface for the quality gate | 2026-11-08 | 898ba5fb4 | [261108-scan-view-size-decomposition](./quick/261108-scan-view-size-decomposition/) |
+| 261108-8ee7 | Restore scan platform filter binding and terminal list bounds after live UAT | 2026-11-08 | c2b92da30 | [261108-scan-platform-filter-live-list](./quick/261108-scan-platform-filter-live-list/) |
 | 261106-fsb | Quality-Gate, PC-Metadaten-Medienpersistenz auslagern | 2026-11-06 | c44b7aa98 | [261106-fsb-quality-gate-pc-metadaten-medienpersiste](./quick/261106-fsb-quality-gate-pc-metadaten-medienpersiste/) |
 | 261106-r9e | Preserve APNG cover animation through metadata selection | 2026-11-06 | committed | [261106-r9e-preserve-apng-cover-animation-through-th](./quick/261106-r9e-preserve-apng-cover-animation-through-th/) |
 | 261106-mz7 | Gate 37 MIME narrowing and DLC cover-presentation extraction | 2026-11-06 | committed | [261106-mz7-fix-the-resource-download-animated-cover](./quick/261106-mz7-fix-the-resource-download-animated-cover/) |
@@ -620,9 +734,9 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-10-26T09:19:58.998384+00:00
-Stopped at: Phase38 live UAT closed with accepted limitations; no next phase started
-Resume file: None
+Last session: 2026-11-07T19:03:49.650Z
+Stopped at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
+Resume file: .planning/phases/41-za-scan-bersicht-f-r-gro-e-bibliotheken/41-VERIFICATION.md
 
 ## Quick Task 261105-mnt
 

@@ -6,7 +6,9 @@ from threading import Barrier
 import pytest
 from sqlalchemy import func, select
 
+from endpoints.responses.scan_operations import ScanOperationResultQuery
 from handler.database.base_handler import sync_session
+from handler.scan_operation_projection import operation_snapshot
 from models.scan_operation import ScanExecutionSlot, ScanOperation, ScanOperationItem
 from models.storage import PlatformStorageMapping, StorageRoot
 
@@ -102,10 +104,11 @@ def test_acceptance_is_committed_before_enqueue(admin_user, command):
 def test_dispatch_precision_never_rounds_into_future(admin_user, command, monkeypatch):
     from datetime import datetime, timedelta
 
-    from handler.database import scan_operations_handler
+    from handler.database import scan_operation_persistence, scan_operations_handler
 
     instant = datetime(2026, 1, 1, 0, 0, 0, 777777)
     monkeypatch.setattr(scan_operations_handler, "utc_now", lambda: instant)
+    monkeypatch.setattr(scan_operation_persistence, "utc_now", lambda: instant)
     repo = repository()
     accepted = repo.accept(admin_user.id, "precision-key", command)
     with sync_session.begin() as session:
@@ -160,6 +163,153 @@ def running(repo, user, command):
     row = repo.claim_dispatch(row.id, row.version, "dispatcher")
     row = repo.mark_enqueued(row.id, row.version, "dispatcher")
     return repo.claim_attempt(row.id, row.version, "worker")
+
+
+def test_action_results_require_an_explicit_unidentified_windows_fact(
+    admin_user, command
+):
+    row = running(repository(), admin_user, command)
+    mapping_id = command["commands"][0]["mapping_id"]
+    cases: tuple[tuple[str, dict[str, bool | None], str], ...] = (
+        ("missing", {}, "skipped"),
+        ("null", {"identified_windows": None}, "skipped"),
+        ("identified", {"identified_windows": True}, "skipped"),
+        ("unidentified", {"identified_windows": False}, "unidentified"),
+        ("warning", {}, "warning"),
+    )
+    with sync_session.begin() as session:
+        for index, (name, inventory, _) in enumerate(cases, start=1):
+            session.add(
+                ScanOperationItem(
+                    operation_id=row.id,
+                    target_key=f"classification-{name}",
+                    mapping_id=mapping_id,
+                    expected_revision=1,
+                    relative_path=f"Classification/{name}.bin",
+                    provider="",
+                    outcome="warning" if name == "warning" else "skipped",
+                    attempt_id=row.attempt_id,
+                    checkpoint={
+                        "rom_id": index,
+                        "inventory_status": {
+                            "rom_id": index,
+                            "inventory_state": "unchanged",
+                            "existing_game": True,
+                            **inventory,
+                        },
+                        "provider_observation": {
+                            "invoked": False,
+                            "requests": 0,
+                        },
+                    },
+                )
+            )
+        persisted = session.get(ScanOperation, row.id)
+        all_results = operation_snapshot(
+            session,
+            persisted,
+            query=ScanOperationResultQuery(include_items=True),
+        )
+        action_results = operation_snapshot(
+            session,
+            persisted,
+            query=ScanOperationResultQuery(
+                include_items=True, outcome="action-required"
+            ),
+        )
+    assert {
+        item.relative_path.rsplit("/", 1)[-1].removesuffix(".bin"): item.result
+        for item in all_results.items
+    } == {name: expected for name, _, expected in cases}
+    assert [item.relative_path for item in action_results.items] == [
+        "Classification/unidentified.bin",
+        "Classification/warning.bin",
+    ]
+    assert action_results.actionable_count == 2
+
+
+def test_completed_attempt_keeps_provider_warning_in_explorer_views(
+    admin_user, command
+):
+    row = running(repository(), admin_user, command)
+    mapping_id = command["commands"][0]["mapping_id"]
+    canonical = {
+        "rom_id": 1,
+        "inventory_status": {
+            "rom_id": 1,
+            "inventory_state": "unchanged",
+            "existing_game": True,
+        },
+        "provider_observation": {"invoked": False, "requests": 0},
+    }
+    warning = {
+        "rom_id": 1,
+        "provider_observation": {
+            "outcome": "failed",
+            "invoked": True,
+            "requests": 1,
+            "cached": False,
+        },
+    }
+    with sync_session.begin() as session:
+        platform_id = session.get(PlatformStorageMapping, mapping_id).platform_id
+        session.get(ScanOperation, row.id).checkpoint = {"game_results_complete": True}
+        session.add_all(
+            [
+                ScanOperationItem(
+                    operation_id=row.id,
+                    target_key="checked-game",
+                    mapping_id=mapping_id,
+                    expected_revision=1,
+                    relative_path="Games/Checked.bin",
+                    provider="",
+                    outcome="skipped",
+                    attempt_id=row.attempt_id,
+                    checkpoint=canonical,
+                ),
+                ScanOperationItem(
+                    operation_id=row.id,
+                    target_key="provider-warning",
+                    mapping_id=mapping_id,
+                    expected_revision=1,
+                    relative_path="Games/Checked.bin",
+                    provider="igdb",
+                    outcome="warning",
+                    cause_code="metadata_timeout",
+                    attempt_id=row.attempt_id,
+                    checkpoint=warning,
+                ),
+            ]
+        )
+    with sync_session.begin() as session:
+        persisted = session.get(ScanOperation, row.id)
+        all_results = operation_snapshot(
+            session,
+            persisted,
+            query=ScanOperationResultQuery(include_items=True),
+        )
+        action_results = operation_snapshot(
+            session,
+            persisted,
+            query=ScanOperationResultQuery(
+                include_items=True, outcome="action-required"
+            ),
+        )
+    assert [item.provider for item in all_results.items] == ["", "igdb"]
+    assert [item.provider for item in action_results.items] == ["igdb"]
+    assert action_results.actionable_count == action_results.totals.action_required == 1
+    assert [item.provider for item in action_results.actionable_samples] == ["igdb"]
+    assert action_results.totals.model_dump() == {
+        "total": 2,
+        "indexed": 0,
+        "completed": 0,
+        "warning": 1,
+        "failed": 1,
+        "skipped": 1,
+        "unidentified": 0,
+        "action_required": 1,
+    }
+    assert [platform.id for platform in action_results.platforms] == [platform_id]
 
 
 def test_cancel_confirm_resume_fences_stale_items(admin_user, command):
@@ -221,7 +371,16 @@ def test_item_crud_lease_and_scope_are_fenced(admin_user, command):
         cause_code="provider_timeout",
     )
     saved = repo.record_item(row.id, row.version, row.attempt_id, item)
-    assert saved.items_total == 1 and saved.items[0].outcome == "warning"
+    assert saved.items == []
+    with sync_session.begin() as session:
+        assert (
+            session.scalar(
+                select(ScanOperationItem.outcome).where(
+                    ScanOperationItem.operation_id == saved.id
+                )
+            )
+            == "warning"
+        )
     with pytest.raises(OperationConflict):
         repo.record_item(row.id, row.version, row.attempt_id, item)
     for changes in (
@@ -237,7 +396,16 @@ def test_item_crud_lease_and_scope_are_fenced(admin_user, command):
         saved.attempt_id,
         item | {"outcome": "completed", "cause_code": None},
     )
-    assert updated.items_total == 1 and updated.items[0].outcome == "completed"
+    assert updated.items == []
+    with sync_session.begin() as session:
+        assert (
+            session.scalar(
+                select(ScanOperationItem.outcome).where(
+                    ScanOperationItem.operation_id == updated.id
+                )
+            )
+            == "completed"
+        )
 
 
 def test_cancel_completion_race_has_one_winner(admin_user, command):

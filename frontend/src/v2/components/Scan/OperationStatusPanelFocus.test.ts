@@ -29,7 +29,13 @@ function render() {
       status: "idle",
       canManage: false,
     },
-    global: { stubs: { ZABtn: false } },
+    global: {
+      stubs: {
+        ZABtn: false,
+        ScanOperationOverview: true,
+        ScanOperationResults: true,
+      },
+    },
   });
   mounted.push(wrapper);
   return wrapper;

@@ -13,6 +13,9 @@ RequestKey = Annotated[
 ]
 SafeCode = Annotated[str, Field(min_length=1, max_length=64, pattern=r"^[a-z0-9_:-]+$")]
 PositiveId = Annotated[int, Field(strict=True, gt=0)]
+# FastAPI binds URL query values as strings. Keep command payload identities
+# strict, but allow the HTTP boundary to coerce a positive result filter.
+QueryPositiveId = Annotated[int, Field(gt=0)]
 ScanState = Literal[
     "accepted",
     "queued",
@@ -26,10 +29,58 @@ ScanState = Literal[
     "completed",
     "completed-with-warnings",
 ]
+ScanExplorerOutcome = Literal[
+    "all",
+    "action-required",
+    "unidentified",
+    "failed",
+    "warning",
+    "completed",
+    "indexed",
+    "skipped",
+]
+ScanResultClassification = Literal[
+    "unidentified", "failed", "warning", "completed", "indexed", "skipped"
+]
 
 
 class StrictContract(BaseModel):
     model_config = ConfigDict(extra="forbid", from_attributes=True)
+
+
+class ScanOperationResultQuery(StrictContract):
+    """Bounded, server-owned selection of a scan operation result page."""
+
+    include_items: bool = False
+    offset: int = Field(default=0, ge=0, le=1000000)
+    limit: int = Field(default=50, ge=1, le=100)
+    search: str | None = Field(default=None, max_length=120)
+    platform_id: QueryPositiveId | None = None
+    outcome: ScanExplorerOutcome = "all"
+
+    @field_validator("search")
+    @classmethod
+    def normalize_search(cls, value):
+        if value is None:
+            return None
+        normalized = " ".join(value.split()).casefold()
+        return normalized or None
+
+
+class ScanOperationPlatform(StrictContract):
+    id: PositiveId
+    name: Annotated[str, Field(min_length=1, max_length=400)]
+
+
+class ScanOperationTotals(StrictContract):
+    total: int = Field(ge=0)
+    indexed: int = Field(ge=0)
+    completed: int = Field(ge=0)
+    warning: int = Field(ge=0)
+    failed: int = Field(ge=0)
+    skipped: int = Field(ge=0)
+    unidentified: int = Field(ge=0)
+    action_required: int = Field(ge=0)
 
 
 class CollectionPromotionRequest(StrictContract):
@@ -134,8 +185,10 @@ class ScanOperationItemResult(StrictContract):
     relative_path: str = Field(max_length=700)
     provider: str = Field(max_length=32)
     outcome: Literal["indexed", "completed", "warning", "failed", "skipped"]
+    result: ScanResultClassification = "completed"
     cause_code: SafeCode | None = None
     attempt_id: str
+    platform: ScanOperationPlatform | None = None
     inventory: ScanInventoryFacts | None = None
     provider_execution: ScanProviderFacts | None = None
 
@@ -160,10 +213,28 @@ class ScanOperationSnapshot(StrictContract):
     next_action: SafeCode | None = None
     intentional_cancel: bool
     dispatch_pending: bool
-    checkpoint: dict[str, int | str | bool] = Field(default_factory=dict, max_length=32)
     items: list[ScanOperationItemResult] = Field(default_factory=list, max_length=100)
     items_offset: int = 0
     items_total: int = 0
+    query: ScanOperationResultQuery = Field(default_factory=ScanOperationResultQuery)
+    totals: ScanOperationTotals = Field(
+        default_factory=lambda: ScanOperationTotals(
+            total=0,
+            indexed=0,
+            completed=0,
+            warning=0,
+            failed=0,
+            skipped=0,
+            unidentified=0,
+            action_required=0,
+        )
+    )
+    platforms: list[ScanOperationPlatform] = Field(default_factory=list, max_length=256)
+    actionable_count: int = Field(default=0, ge=0)
+    actionable_samples: list[ScanOperationItemResult] = Field(
+        default_factory=list, max_length=3
+    )
+    active_platform: ScanOperationPlatform | None = None
     queue_status: str | None = Field(default=None, max_length=32)
     queue_condition: Literal["available", "expired", "unavailable", "pending"] = (
         "pending"

@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 from unittest.mock import Mock
 
-from endpoints.sockets import scan as scan_module
+from endpoints.sockets import scan_mapping_execution as scan_module
 from handler.scan_command import ScanScope, ScanTrigger
 from handler.scan_handler import ScanType
 

@@ -1,9 +1,11 @@
 """Bounded source evidence, retained privately and never accepted from clients."""
 
+import hashlib
 import json
 import stat
 from contextlib import contextmanager
 from contextvars import ContextVar
+from pathlib import PurePosixPath
 
 from handler.filesystem.storage_policy import StorageOperation
 from handler.storage.read_context import MappingReadContext
@@ -191,3 +193,40 @@ def record_completed_game(rom):
     from handler.scan_collection_finalize import finalize_completed_game
 
     finalize_completed_game(rom, command)
+    record_checked_game(rom, outcome="completed")
+
+
+def record_checked_game(rom, *, outcome):
+    """Persist one canonical result per scanned game, independent of providers."""
+    from handler.database.scan_write_fence import current_scan_write_context
+
+    context = current_scan_write_context()
+    command = current_checkpoint_command()
+    if context is None or command is None:
+        return
+    from handler.database.scan_operations_handler import DBScanOperationsHandler
+
+    mapping = MappingReadContext(
+        command.mapping_id, command.expected_revision
+    ).validate()
+    try:
+        relative_path = (
+            (PurePosixPath(rom.fs_path) / rom.fs_name)
+            .relative_to(PurePosixPath(mapping.relative_path))
+            .as_posix()
+        )
+    except ValueError:
+        raise SourceEvidenceRejected("source_outside_mapping") from None
+    target = f"{command.mapping_id}:{rom.id}:{relative_path}"
+    DBScanOperationsHandler().record_worker_item(
+        context,
+        {
+            "target_key": "checked-" + hashlib.sha256(target.encode()).hexdigest(),
+            "mapping_id": command.mapping_id,
+            "expected_revision": command.expected_revision,
+            "relative_path": relative_path,
+            "provider": "",
+            "outcome": outcome,
+        },
+        checkpoint={"rom_id": rom.id, "game_result": True},
+    )

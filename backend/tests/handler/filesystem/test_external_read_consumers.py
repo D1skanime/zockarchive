@@ -73,7 +73,7 @@ async def test_firmware_hashes_use_read_capability(monkeypatch, tmp_path: Path) 
 def test_enumeration_and_scan_modules_declare_exact_capabilities() -> None:
     expected = {
         "backend/handler/scan_handler.py": "SCAN",
-        "backend/endpoints/sockets/scan.py": "SCAN",
+        "backend/endpoints/sockets/scan_platform_execution.py": "SCAN",
         "backend/endpoints/heartbeat.py": "LIST",
         "backend/config/config_manager.py": "LIST",
     }

@@ -7,7 +7,7 @@ from tests.endpoints.test_scan_operations import mapped as mapped
 from tests.handler.test_scan_collection_policy import promotion_body as promotion_body
 
 from endpoints.responses.scan_operations import ScanOperationRequest
-from endpoints.sockets import scan
+from endpoints.sockets import scan_platform_identification as scan
 from handler.database.base_handler import sync_session
 from handler.filesystem.roms_handler import FSRomsHandler
 from handler.scan_collection_policy import digest_path

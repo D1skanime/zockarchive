@@ -1268,7 +1268,7 @@ async def test_scan_media_families_actual_scanner_special_inventory(
 
     import httpx
 
-    from endpoints.sockets import scan as scan_module
+    from endpoints.sockets import scan_rom_identification as scan_module
     from handler import scan_handler
     from handler.database import db_storage_handler
     from handler.filesystem import fs_rom_handler, use_fs_rom_handler
@@ -1406,7 +1406,7 @@ def test_scan_media_families_actual_dlc_stream_orders(
 
     import httpx
 
-    from endpoints.sockets.scan import (
+    from endpoints.sockets.scan_media import (
         _enrich_pc_dlc_from_igdb,
         pc_metadata_match_handler,
     )

@@ -131,7 +131,9 @@ def test_failure_before_parent_retirement_rolls_back_classification_and_checkpoi
             )
             == 0
         )
-    assert repository.execution(attempt.id)["checkpoint"] == {}
+    assert repository.execution(attempt.id)["checkpoint"] == {
+        "game_results_complete": True
+    }
 
 
 def test_success_replay_is_idempotent_and_parent_cannot_be_republished(
@@ -231,7 +233,9 @@ def test_revoked_attempt_preserves_parent_and_has_no_classification(
             )
             == 0
         )
-    assert repository.execution(attempt.id)["checkpoint"] == {}
+    assert repository.execution(attempt.id)["checkpoint"] == {
+        "game_results_complete": True
+    }
 
 
 def test_empty_child_cannot_retire_parent(promotion_body, admin_user):

@@ -1,7 +1,9 @@
-import { flushPromises, shallowMount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
-import Scan from "./Scan.vue";
+import { defineComponent, ref } from "vue";
+import { useScanView } from "@/v2/composables/useScanView";
+
+type ViewScanType = ReturnType<typeof useScanView>["scanType"]["value"];
 
 const api = vi.hoisted(() => ({
   start: vi.fn().mockResolvedValue(undefined),
@@ -85,18 +87,17 @@ describe("Scan collection selection request", () => {
     "uses filesystem discovery for explicit child selection while $mode is selected with $providers",
     async ({ mode, providers }) => {
       api.providers = providers;
-      const wrapper = shallowMount(Scan);
+      let view: ReturnType<typeof useScanView> | undefined;
+      const wrapper = mount(
+        defineComponent({
+          setup() {
+            view = useScanView();
+            return () => null;
+          },
+        }),
+      );
       await flushPromises();
-      const typeSelect = wrapper
-        .findAllComponents({ name: "ZASelect" })
-        .find((select) =>
-          select
-            .props("items")
-            ?.some((item: { value: string }) => item.value === "quick"),
-        )!;
-      expect(typeSelect).toBeDefined();
-      typeSelect.vm.$emit("update:modelValue", mode);
-      await flushPromises();
+      view!.scanType.value = mode as ViewScanType;
       const collectionPromotion = {
         parent_rom_id: 41,
         mapping_id: 12,
@@ -104,13 +105,11 @@ describe("Scan collection selection request", () => {
         parent_relative_path: "Castlevania",
         selected_child_relative_path: "Castlevania/Belmonts.Curse",
       };
-      wrapper
-        .getComponent({ name: "ScanPlatform" })
-        .vm.$emit("scan-subfolder", {
-          platformFsSlug: "win",
-          relativePath: collectionPromotion.selected_child_relative_path,
-          collectionPromotion,
-        });
+      view!.scanSubfolder({
+        platformFsSlug: "win",
+        relativePath: collectionPromotion.selected_child_relative_path,
+        collectionPromotion,
+      });
       await flushPromises();
       expect(api.start).toHaveBeenCalledOnce();
       expect(api.start.mock.calls[0][0]).toMatchObject({

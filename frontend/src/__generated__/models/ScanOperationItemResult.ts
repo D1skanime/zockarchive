@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ScanInventoryFacts } from './ScanInventoryFacts';
+import type { ScanOperationPlatform } from './ScanOperationPlatform';
 import type { ScanProviderFacts } from './ScanProviderFacts';
 export type ScanOperationItemResult = {
     id: number;
@@ -12,8 +13,10 @@ export type ScanOperationItemResult = {
     relative_path: string;
     provider: string;
     outcome: 'indexed' | 'completed' | 'warning' | 'failed' | 'skipped';
+    result?: 'unidentified' | 'failed' | 'warning' | 'completed' | 'indexed' | 'skipped';
     cause_code?: (string | null);
     attempt_id: string;
+    platform?: (ScanOperationPlatform | null);
     inventory?: (ScanInventoryFacts | null);
     provider_execution?: (ScanProviderFacts | null);
 };

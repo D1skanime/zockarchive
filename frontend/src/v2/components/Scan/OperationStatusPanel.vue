@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ZAAlert, ZABtn, ZACheckbox, ZAProgressLinear } from "@v2/lib";
-import { computed, onBeforeUpdate, onUpdated, ref, watch } from "vue";
+import { ZAAlert, ZABtn } from "@v2/lib";
+import { computed, onBeforeUpdate, onUpdated, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import InventoryStatusSummary from "@/v2/components/Scan/InventoryStatusSummary.vue";
+import ScanOperationOverview from "@/v2/components/Scan/ScanOperationOverview.vue";
+import ScanOperationResults from "@/v2/components/Scan/ScanOperationResults.vue";
 import type { ScanOperationSnapshot } from "@/v2/data/contracts";
 
 interface Props {
@@ -24,9 +25,10 @@ const emit = defineEmits<{
   resume: [];
   retryStatus: [];
   retry: [ids: string[]];
+  actionRequiredDetails: [];
 }>();
 const { t } = useI18n();
-const selected = ref<number[]>([]);
+const results = ref<InstanceType<typeof ScanOperationResults> | null>(null);
 const panel = ref<HTMLElement | null>(null);
 const statusHeading = ref<HTMLElement | null>(null);
 let focusedControl: HTMLElement | null = null;
@@ -55,17 +57,6 @@ onUpdated(() => {
     focusedControl = null;
   }
 });
-watch(
-  () => props.snapshot?.attempt_id,
-  () => {
-    selected.value = [];
-  },
-);
-const warnings = computed(() =>
-  (props.snapshot?.items ?? []).filter(
-    (item) => item.outcome === "warning" || item.outcome === "failed",
-  ),
-);
 const running = computed(() =>
   ["accepted", "queued", "running", "recovering", "stopping"].includes(
     props.status,
@@ -79,13 +70,6 @@ const label = computed(() =>
       : props.actionError
         ? "failed"
         : "idle",
-);
-const stats = computed(() => props.snapshot?.scan_stats ?? {});
-const total = computed(() => stats.value.total_roms ?? 0);
-const progress = computed(() =>
-  total.value > 0 && stats.value.scanned_roms !== undefined
-    ? Math.min(100, (100 * (stats.value.scanned_roms ?? 0)) / total.value)
-    : undefined,
 );
 const cause = computed(() => {
   const code = props.snapshot?.cause_code;
@@ -115,10 +99,8 @@ const cause = computed(() => {
     return "failed";
   return null;
 });
-function select(id: number, value: boolean | null) {
-  selected.value = value
-    ? [...new Set([...selected.value, id])]
-    : selected.value.filter((item) => item !== id);
+function openActionRequiredDetails() {
+  results.value?.openActionRequired();
 }
 </script>
 
@@ -135,24 +117,17 @@ function select(id: number, value: boolean | null) {
     </h2>
     <p v-if="disconnected">{{ t("scan.recovery-disconnected") }}</p>
     <p v-else-if="reconciling">{{ t("scan.recovery-reconciling") }}</p>
-    <ZAProgressLinear
-      v-if="running"
-      :indeterminate="progress === undefined"
-      :model-value="progress ?? 0"
-      :aria-label="t('scan.recovery-running')"
-    />
-    <p v-if="total > 0 && stats.scanned_roms !== undefined">
-      {{
-        t("scan.recovery-progress", { current: stats.scanned_roms ?? 0, total })
-      }}
-    </p>
-    <InventoryStatusSummary
+    <ScanOperationOverview
       v-if="snapshot"
-      :stats="snapshot.scan_stats"
-      :items="snapshot.items ?? []"
-      :has-more="hasMore"
-      :loading-more="loadingMore"
-      @load-more="emit('loadMore')"
+      :snapshot="snapshot"
+      :status="status"
+      @action-required-details="openActionRequiredDetails"
+    />
+    <ScanOperationResults
+      ref="results"
+      :snapshot="snapshot"
+      :can-manage="canManage"
+      @retry="emit('retry', $event.map(String))"
     />
     <ZAAlert v-if="cause" type="warning" role="alert">
       <p>{{ t("scan.recovery-cause-" + cause) }}</p>
@@ -184,32 +159,6 @@ function select(id: number, value: boolean | null) {
         >{{ t("scan.recovery-resume") }}</ZABtn
       >
     </div>
-    <fieldset v-if="warnings.length" class="pa-3">
-      <legend>{{ t("scan.recovery-warnings") }}</legend>
-      <div
-        v-for="item in warnings"
-        :key="item.id"
-        class="d-flex align-center ga-2"
-      >
-        <ZACheckbox
-          :model-value="selected.includes(item.id)"
-          :disabled="!canManage"
-          :label="
-            t('scan.recovery-item', {
-              game: item.target_key,
-              provider: item.provider,
-            })
-          "
-          @update:model-value="select(item.id, $event)"
-        />
-      </div>
-      <ZABtn
-        v-if="canManage"
-        :disabled="!selected.length || running"
-        @click="emit('retry', selected.map(String))"
-        >{{ t("scan.recovery-retry-metadata") }}</ZABtn
-      >
-    </fieldset>
   </section>
 </template>
 

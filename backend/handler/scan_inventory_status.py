@@ -85,7 +85,7 @@ def inventory_counts(session, operation):
         select(
             *buckets,
             func.sum(
-                case((facts["identified_windows"].as_boolean().is_(False), 1), else_=0)
+                case((facts["identified_windows"].as_string() == "false", 1), else_=0)
             ),
         ).where(*current, item.provider == "")
     ).one()

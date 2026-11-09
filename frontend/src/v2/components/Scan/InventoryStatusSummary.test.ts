@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import type { ScanOperationItemResult } from "@/v2/data/contracts";
+import InventoryStatusDetail from "./InventoryStatusDetail.vue";
 import InventoryStatusSummary from "./InventoryStatusSummary.vue";
 
 vi.mock("vue-i18n", () => ({
@@ -29,36 +30,36 @@ const item: ScanOperationItemResult = {
   },
   provider_execution: { state: "no_request", invoked: false, requests: 0 },
 };
-function render(stats = {}, items = [item]) {
+function renderSummary(stats = {}) {
   return mount(InventoryStatusSummary, {
-    props: { stats, items, hasMore: true, loadingMore: false },
+    props: { stats },
+  });
+}
+function renderDetail(value = item) {
+  return mount(InventoryStatusDetail, {
+    props: { item: value },
     global: {
       stubs: {
-        ZABtn: {
-          props: ["loading"],
-          emits: ["click"],
-          template: "<button @click=\"$emit('click')\"><slot /></button>",
-        },
         ZATag: { props: ["text"], template: "<span>{{ text }}</span>" },
       },
     },
   });
 }
 describe("InventoryStatusSummary", () => {
-  it("keeps absent counters unavailable and uses global game/request units", () => {
-    const panel = render({
+  it("keeps absent counters unavailable and uses global game units", () => {
+    const panel = renderSummary({
       inventory_checked: 500,
       inventory_unchanged: 490,
       unresolved_games: 12,
       provider_requests: 700,
     });
     expect(panel.text()).toContain('"n":500');
-    expect(panel.text()).toContain('"n":700');
+    expect(panel.text()).not.toContain('"n":700');
     expect(panel.text()).not.toContain("scan.inventory-changed");
     expect(panel.text()).not.toContain('"n":1}');
   });
   it("renders escaped terminal unresolved facts and server eligibility with timezone", () => {
-    const panel = render();
+    const panel = renderDetail();
     expect(panel.text()).toContain("scan.not-identified");
     expect(panel.text()).toContain("scan.inventory-unchanged");
     expect(panel.text()).toContain("scan.provider-no-request");
@@ -67,26 +68,18 @@ describe("InventoryStatusSummary", () => {
     expect(panel.find("game").exists()).toBe(false);
     expect(panel.find(".r-v2-scan-platform__identifying").exists()).toBe(false);
   });
-  it("requests another page only through an explicit existing-owner event", async () => {
-    const panel = render();
-    expect(panel.emitted("loadMore")).toBeUndefined();
-    await panel.get("button").trigger("click");
-    expect(panel.emitted("loadMore")).toHaveLength(1);
-  });
   it.each(["cached", "no_match", "failed"] as const)(
     "keeps %s observations distinct from retry eligibility",
     (state) => {
-      const panel = render({}, [
-        {
-          ...item,
-          provider_execution: {
-            state,
-            invoked: true,
-            requests: state === "cached" ? 0 : 2,
-          },
-          inventory: { ...item.inventory!, retry_state: "budget_deferred" },
+      const panel = renderDetail({
+        ...item,
+        provider_execution: {
+          state,
+          invoked: true,
+          requests: state === "cached" ? 0 : 2,
         },
-      ]);
+        inventory: { ...item.inventory!, retry_state: "budget_deferred" },
+      });
       expect(panel.text()).toContain(
         "scan.provider-" +
           (
@@ -102,18 +95,18 @@ describe("InventoryStatusSummary", () => {
     },
   );
   it("omits missing inventory and invalid server times without fabricating values", () => {
-    const panel = render({}, [
-      {
-        ...item,
-        inventory: { ...item.inventory!, next_eligible_at: "invalid" },
-        provider_execution: undefined,
-      },
-    ]);
+    const panel = renderDetail({
+      ...item,
+      inventory: { ...item.inventory!, next_eligible_at: "invalid" },
+      provider_execution: undefined,
+    });
     expect(panel.text()).not.toContain("scan.metadata-retry-available-after");
     expect(panel.text()).not.toContain("scan.provider-requests-count");
-    const absent = render({}, [
-      { ...item, inventory: undefined, provider_execution: undefined },
-    ]);
-    expect(absent.find("li").exists()).toBe(false);
+    const absent = renderDetail({
+      ...item,
+      inventory: undefined,
+      provider_execution: undefined,
+    });
+    expect(absent.text()).not.toContain("scan.inventory-");
   });
 });

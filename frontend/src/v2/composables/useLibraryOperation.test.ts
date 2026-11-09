@@ -167,19 +167,9 @@ describe("confirmed library operation facade", () => {
     await operation.resume();
     expect(fake.resume).toHaveBeenCalledTimes(1);
   });
-  it("retries selected warning rows only and disposal never cancels", async () => {
+  it("retries selected result IDs without retaining lifecycle result rows", async () => {
     const operation = await owner();
-    const warning = {
-      id: 7,
-      target_key: "game",
-      mapping_id: 1,
-      expected_revision: 1,
-      relative_path: "game",
-      provider: "steam",
-      outcome: "warning" as const,
-      attempt_id: "attempt-one",
-    };
-    snapshot.value = { ...state("completed-with-warnings"), items: [warning] };
+    snapshot.value = { ...state("completed-with-warnings"), items: undefined };
     await flushPromises();
     fake.retryMetadata.mockResolvedValue(state("queued", 2));
     await operation.retry(["7"]);
@@ -190,6 +180,23 @@ describe("confirmed library operation facade", () => {
     );
     operation.dispose();
     expect(fake.cancel).not.toHaveBeenCalled();
+  });
+  it("rejects unsafe selected result IDs before retry dispatch", async () => {
+    const operation = await owner();
+    snapshot.value = { ...state("completed-with-warnings"), items: undefined };
+    await flushPromises();
+    await operation.retry(["0", "not-an-id"]);
+    expect(fake.retryMetadata).not.toHaveBeenCalled();
+    expect(operation.actionError.value).toBe("select-failed-items");
+  });
+  it("keeps the retry error visible and refreshes summary status", async () => {
+    const operation = await owner();
+    snapshot.value = { ...state("completed-with-warnings"), items: undefined };
+    await flushPromises();
+    fake.retryMetadata.mockRejectedValue(new Error("network"));
+    await operation.retry(["7"]);
+    expect(fake.refresh).toHaveBeenCalledTimes(1);
+    expect(operation.actionError.value).toBe("status-unavailable");
   });
   it("bounds concurrency and preserves order", async () => {
     const { runWithConcurrency, withRateLimitBackoff } =

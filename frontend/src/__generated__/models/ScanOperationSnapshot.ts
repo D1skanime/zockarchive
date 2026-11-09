@@ -3,6 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ScanOperationItemResult } from './ScanOperationItemResult';
+import type { ScanOperationPlatform } from './ScanOperationPlatform';
+import type { ScanOperationResultQuery } from './ScanOperationResultQuery';
+import type { ScanOperationTotals } from './ScanOperationTotals';
 export type ScanOperationSnapshot = {
     id: string;
     request_key: string;
@@ -15,10 +18,15 @@ export type ScanOperationSnapshot = {
     next_action?: (string | null);
     intentional_cancel: boolean;
     dispatch_pending: boolean;
-    checkpoint?: Record<string, (number | string | boolean)>;
     items?: Array<ScanOperationItemResult>;
     items_offset?: number;
     items_total?: number;
+    query?: ScanOperationResultQuery;
+    totals?: ScanOperationTotals;
+    platforms?: Array<ScanOperationPlatform>;
+    actionable_count?: number;
+    actionable_samples?: Array<ScanOperationItemResult>;
+    active_platform?: (ScanOperationPlatform | null);
     queue_status?: (string | null);
     queue_condition?: 'available' | 'expired' | 'unavailable' | 'pending';
     created_at: string;
