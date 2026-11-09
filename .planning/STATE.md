@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: completed
-stopped_at: Phase 41 provider-diagnostic projection correction committed; renewed live UAT required
-last_updated: "2026-11-09T15:32:53Z"
-last_activity: "2026-11-09 - Completed quick task 261109-fix-provider-diagnostics-projection"
+stopped_at: Phase 41 branch synchronized with origin/main; renewed live UAT required
+last_updated: "2026-11-09T15:45:00Z"
+last_activity: "2026-11-09 - Completed quick task 261109-integrate-main-win-svg"
 progress:
   total_phases: 41
   completed_phases: 31
@@ -15,6 +15,13 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261109-integrate-main-win-svg
+
+| 261109-integrate-main-win-svg | Merge updated `origin/main` platform icon into the Phase 41 job branch | 2026-11-09 | merge `f4c14aca4`; browser `/scan` inspected at desktop and mobile widths | [main icon integration](./quick/261109-integrate-main-win-svg/) |
+
+- `origin/main` is an ancestor of the job branch. The available browser session
+  had no stored scan snapshot, so provider-warning UAT remains for the human run.
 
 ## Quick Task 261109-fix-provider-diagnostics-projection
 
