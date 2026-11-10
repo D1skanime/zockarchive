@@ -225,12 +225,8 @@ COPY --from=backend-build /src/.venv /src/.venv
 
 ENV PATH="/src/.venv/bin:${PATH}"
 
-# ScreenScraper developer (application) credentials, injected at build time from
-# CI secrets. Kept out of the source tree; empty when not supplied at build.
-ARG SCREENSCRAPER_DEV_ID
-ARG SCREENSCRAPER_DEV_PASSWORD
-ENV SCREENSCRAPER_DEV_ID=${SCREENSCRAPER_DEV_ID}
-ENV SCREENSCRAPER_DEV_PASSWORD=${SCREENSCRAPER_DEV_PASSWORD}
+# Provider credentials are supplied only when the container starts.
+# Never bake developer credentials into public release images.
 
 # Security: Set security-focused environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
