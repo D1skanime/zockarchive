@@ -79,4 +79,53 @@ describe("explicit locale profile persistence", () => {
     expect(await saving).toBe(false);
     expect(mocks.auth.setCurrentUser).not.toHaveBeenCalled();
   });
+
+  it("serializes repeated persistence requests for the active account", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    let finishFirst!: (value: {
+      data: { id: number; ui_settings: object };
+    }) => void;
+    const { useUISettings } = await import("./useUISettings");
+    const settings = useUISettings();
+    await new Promise((resolve) => setTimeout(resolve, 60));
+    mocks.update.mockReset();
+    mocks.update
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) => {
+            finishFirst = resolve;
+          }),
+      )
+      .mockResolvedValueOnce({
+        data: {
+          id: 1,
+          ui_settings: { showSimilarGamesOutsideLibrary: true },
+        },
+      });
+
+    const firstSave = settings.saveUISettings();
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(mocks.update).toHaveBeenCalledTimes(1);
+    expect(
+      JSON.parse(mocks.update.mock.calls[0][0].ui_settings)
+        .showSimilarGamesOutsideLibrary,
+    ).toBe(true);
+
+    const secondSave = settings.saveUISettings();
+    expect(mocks.update).toHaveBeenCalledTimes(1);
+
+    finishFirst({
+      data: { id: 1, ui_settings: { showSimilarGamesOutsideLibrary: true } },
+    });
+    await flushPromises();
+    expect(await firstSave).toBe(false);
+    expect(await secondSave).toBe(true);
+    expect(mocks.update).toHaveBeenCalledTimes(2);
+    expect(
+      JSON.parse(mocks.update.mock.calls[1][0].ui_settings)
+        .showSimilarGamesOutsideLibrary,
+    ).toBe(true);
+    warn.mockRestore();
+  });
 });

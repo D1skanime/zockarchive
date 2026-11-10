@@ -16,6 +16,13 @@ progress:
 
 # Project State
 
+## Quick Task 261110-j1o
+
+| 261110-j1o | Add direct Phase 42 accepted-behaviour logic tests | 2026-11-10 | 2 affected Vitest files, 7 tests passed; commit pending | [Phase 42 accepted tests](./quick/261110-j1o-phase-42-angenommene-logiktests/) |
+
+- The human-approved setting and resolver behaviour now has direct coverage;
+  ki-run may proceed with its full regression gate.
+
 ## Quick Task 261110-hpm
 
 | 261110-hpm | Serialize rapid UI-setting writes so the latest switch value survives reload | 2026-11-10 | Browser recheck at desktop and mobile widths passed; commit pending | [serialized UI persistence](./quick/261110-hpm-serialisierte-ui-einstellungsspeicherung/) |
