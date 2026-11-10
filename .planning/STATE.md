@@ -16,6 +16,13 @@ progress:
 
 # Project State
 
+## Quick Task 261110-hpm
+
+| 261110-hpm | Serialize rapid UI-setting writes so the latest switch value survives reload | 2026-11-10 | Browser recheck at desktop and mobile widths passed; commit pending | [serialized UI persistence](./quick/261110-hpm-serialisierte-ui-einstellungsspeicherung/) |
+
+- The settings persistence queue preserves backend write order for the active
+  account. Human live UAT remains pending.
+
 ## Quick Task 261109-integrate-main-win-svg-refresh
 
 | 261109-integrate-main-win-svg-refresh | Refresh the integrated Windows platform artwork from current main | 2026-11-09 | merge `26f603931`; desktop/mobile icon inspection passed | [refreshed icon integration](./quick/261109-integrate-main-win-svg-refresh/) |

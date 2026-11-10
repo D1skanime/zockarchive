@@ -183,6 +183,9 @@ function createUISettings() {
 
   let explicitLocaleSave = false;
   let saveSequence = 0;
+  // Preserve the user's edit order at the backend. Concurrent PUTs can finish
+  // out of order and resurrect an older toggle value after a reload.
+  let saveQueue: Promise<void> = Promise.resolve();
   const saveUISettings = async (explicit = false): Promise<boolean> => {
     if (!user.value) return true;
     if (isSyncing.value && !explicit) return false;
@@ -191,28 +194,40 @@ function createUISettings() {
 
     const currentSettings = collectSettings();
 
-    try {
-      const { data } = await userApi.updateUser({
-        id: user.value.id,
-        ui_settings: JSON.stringify(currentSettings),
-      } as Partial<UserSchema> & { ui_settings: string });
+    const persist = async (): Promise<boolean> => {
+      if (user.value?.id !== userId) return false;
+      try {
+        const { data } = await userApi.updateUser({
+          id: userId,
+          ui_settings: JSON.stringify(currentSettings),
+        } as Partial<UserSchema> & { ui_settings: string });
 
-      if (user.value?.id !== userId || sequence !== saveSequence) return false;
+        if (user.value?.id !== userId || sequence !== saveSequence) {
+          return false;
+        }
 
-      // Update the user in the store with the new settings (without triggering sync)
-      isSyncing.value = true;
-      const dataWithSettings = data as UserSchema;
-      if (dataWithSettings.ui_settings) {
-        authStore.setCurrentUser(data);
+        // Update the user in the store with the new settings (without triggering sync)
+        isSyncing.value = true;
+        const dataWithSettings = data as UserSchema;
+        if (dataWithSettings.ui_settings) {
+          authStore.setCurrentUser(data);
+        }
+        setTimeout(() => {
+          isSyncing.value = false;
+        }, 50);
+      } catch (error) {
+        console.error("Failed to save UI settings to backend:", error);
+        return false;
       }
-      setTimeout(() => {
-        isSyncing.value = false;
-      }, 50);
-    } catch (error) {
-      console.error("Failed to save UI settings to backend:", error);
-      return false;
-    }
-    return true;
+      return true;
+    };
+
+    const result = saveQueue.then(persist, persist);
+    saveQueue = result.then(
+      () => undefined,
+      () => undefined,
+    );
+    return result;
   };
 
   // Watch all localStorage refs for changes (only set up once)
