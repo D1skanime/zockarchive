@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261110-rbr
+
+| 261110-rbr | Repair Phase 43 round-three release documentation and workflow contracts | 2026-11-10 | Static YAML, metadata contract and diff checks passed; no tests or test suites started | [round-three release contracts](./quick/261110-rbr-repair-phase-43-round-three-release-docu/) |
+
+- The independent beta-image paragraph is classified literally, and the Full and Slim release image paths again keep matching registry metadata and build contracts.
+
 ## Quick Task 261110-r74
 
 | 261110-r74 | Repair Phase 43 round-two documentation contracts | 2026-11-10 | Fixed-string checks and `git diff --check` passed; no tests or test suites started | [round-two documentation contracts](./quick/261110-r74-fix-phase-43-naming-retention-classifica/) |
@@ -693,6 +699,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261110-rbr | Repair Phase 43 round-three release documentation and workflow contracts | 2026-11-10 | current commit | [261110-rbr](./quick/261110-rbr-repair-phase-43-round-three-release-docu/) |
 | 261110-deg | Resolve Phase 42 Quality Gate round 2 resolver typecheck findings | 2026-11-10 | defffd9af | [261110-deg](./quick/261110-deg-quality-gate-runde-2-resolver-typecheck/) |
 | 261110-d7t | Resolve Phase 42 Quality Gate round 1 lint and source-size findings | 2026-11-10 | fab2eae41 | [261110-d7t](./quick/261110-d7t-quality-gate-runde-1-lintfehler-und-gr-e/) |
 | 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |

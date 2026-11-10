@@ -106,3 +106,37 @@ jobs:
           build-args: |
             SCREENSCRAPER_DEV_ID=${{ secrets.SCREENSCRAPER_DEV_ID }}
             SCREENSCRAPER_DEV_PASSWORD=${{ secrets.SCREENSCRAPER_DEV_PASSWORD }}
+
+      - name: Generate Docker metadata (slim)
+        id: meta-slim
+        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
+        with:
+          images: |
+            name=ghcr.io/d1skanime/pc-game-download-portal
+            name=d1skanime/pc-game-download-portal,enable=${{ env.USE_DOCKERHUB == 'true' }}
+          flavor: |
+            latest=false
+            suffix=-slim,onlatest=true
+          tags: |
+            type=raw,value=${{ needs.validate-tag-semver.outputs.normalized }}
+            type=raw,value=beta
+          labels: |
+            org.opencontainers.image.version=${{ needs.validate-tag-semver.outputs.normalized }}
+            org.opencontainers.image.title="ZockArchive"
+            org.opencontainers.image.description="ZockArchive provides a self-hosted PC and console game library with metadata, media, and managed downloads."
+            org.opencontainers.image.source=https://github.com/D1skanime/zockarchive
+            org.opencontainers.image.licenses="AGPLv3"
+
+      - name: Build slim image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
+        with:
+          file: docker/Dockerfile
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta-slim.outputs.tags }}
+          labels: ${{ steps.meta-slim.outputs.labels }}
+          target: slim-image
+          build-args: |
+            SCREENSCRAPER_DEV_ID=${{ secrets.SCREENSCRAPER_DEV_ID }}
+            SCREENSCRAPER_DEV_PASSWORD=${{ secrets.SCREENSCRAPER_DEV_PASSWORD }}
