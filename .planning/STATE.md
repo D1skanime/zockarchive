@@ -16,6 +16,13 @@ progress:
 
 # Project State
 
+## Quick Task 261110-k8m
+
+| 261110-k8m | Repair post-acceptance regression test fixtures and locale ledgers | 2026-11-10 | typecheck plus 27 affected frontend tests passed; commit pending | [regression gate fixtures](./quick/261110-k8m-regressionsgate-testfixtures/) |
+
+- The test data now matches the accepted Phase 42 locale catalogues without
+  changing product behaviour.
+
 ## Quick Task 261110-j1o
 
 | 261110-j1o | Add direct Phase 42 accepted-behaviour logic tests | 2026-11-10 | 2 affected Vitest files, 7 tests passed; commit pending | [Phase 42 accepted tests](./quick/261110-j1o-phase-42-angenommene-logiktests/) |

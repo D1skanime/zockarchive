@@ -9,7 +9,13 @@ vi.mock("@/services/api/rom", () => ({
 }));
 
 function game(id: number): IGDBRelatedGame {
-  return { id, name: `Game ${id}`, slug: `game-${id}`, type: "similar" };
+  return {
+    id,
+    name: `Game ${id}`,
+    slug: `game-${id}`,
+    type: "similar",
+    cover_url: "",
+  };
 }
 
 describe("useSimilarGameLibraryResolution", () => {
