@@ -68,6 +68,7 @@ export function useSimilarGameLibraryResolution(
   const resolvedGames = ref<SimilarGameLibraryEntry[]>([]);
   const successfulLookups = new Map<number, SuccessfulLookupResult>();
   const inFlight = new Map<number, Promise<LookupResult>>();
+  const inFlightTokens = new Map<number, symbol>();
   let activeAccountId: AccountIdentity | null = null;
   let generation = 0;
   let disposed = false;
@@ -85,6 +86,7 @@ export function useSimilarGameLibraryResolution(
     activeAccountId = accountId;
     successfulLookups.clear();
     inFlight.clear();
+    inFlightTokens.clear();
   }
 
   function begin(): ResolutionCapture {
@@ -121,7 +123,8 @@ export function useSimilarGameLibraryResolution(
     const pending = inFlight.get(igdbId);
     if (pending) return pending;
 
-    const request = (async () => {
+    const token = Symbol(`igdb-${igdbId}`);
+    const request: Promise<LookupResult> = (async (): Promise<LookupResult> => {
       try {
         const response = await romApi.getRomByMetadataProvider({
           field: "igdb_id",
@@ -141,11 +144,22 @@ export function useSimilarGameLibraryResolution(
         if (!disposed && activeAccountId === accountId)
           successfulLookups.set(igdbId, result);
         return result;
-      } finally {
-        if (inFlight.get(igdbId) === request) inFlight.delete(igdbId);
       }
     })();
     inFlight.set(igdbId, request);
+    inFlightTokens.set(igdbId, token);
+    void request.then(
+      () => {
+        if (inFlightTokens.get(igdbId) !== token) return;
+        inFlight.delete(igdbId);
+        inFlightTokens.delete(igdbId);
+      },
+      () => {
+        if (inFlightTokens.get(igdbId) !== token) return;
+        inFlight.delete(igdbId);
+        inFlightTokens.delete(igdbId);
+      },
+    );
     return request;
   }
 
