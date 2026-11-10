@@ -658,6 +658,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261110-deg | Resolve Phase 42 Quality Gate round 2 resolver typecheck findings | 2026-11-10 | defffd9af | [261110-deg](./quick/261110-deg-quality-gate-runde-2-resolver-typecheck/) |
 | 261110-d7t | Resolve Phase 42 Quality Gate round 1 lint and source-size findings | 2026-11-10 | fab2eae41 | [261110-d7t](./quick/261110-d7t-quality-gate-runde-1-lintfehler-und-gr-e/) |
 | 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
 | 261109-jt1 | Repair Phase 41 regression tests after bounded snapshots | 2026-11-09 | 0009f6d45 | [261109-jt1](./quick/261109-jt1-repair-phase-41-regression-tests-after-t/) |
