@@ -121,8 +121,7 @@ export function useSimilarGameLibraryResolution(
     const pending = inFlight.get(igdbId);
     if (pending) return pending;
 
-    let request!: Promise<LookupResult>;
-    request = (async () => {
+    const request = (async () => {
       try {
         const response = await romApi.getRomByMetadataProvider({
           field: "igdb_id",

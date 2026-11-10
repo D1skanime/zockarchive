@@ -11,8 +11,6 @@ import { storeToRefs } from "pinia";
 import { computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
-import type { IGDBRelatedGame } from "@/__generated__";
-import { useUISettings } from "@/composables/useUISettings";
 import { ROUTES } from "@/plugins/router";
 import type { Events } from "@/types/emitter";
 import { FRONTEND_RESOURCES_PATH } from "@/utils";
@@ -41,7 +39,7 @@ import { resolveDescription } from "@/v2/composables/useManualDescription";
 import { usePageTitle } from "@/v2/composables/usePageTitle";
 import { useReducedMotion } from "@/v2/composables/useReducedMotion";
 import { useRightStickScroll } from "@/v2/composables/useRightStickScroll";
-import { useSimilarGameLibraryResolution } from "@/v2/composables/useSimilarGameLibraryResolution";
+import { useVisibleSimilarGames } from "@/v2/composables/useVisibleSimilarGames";
 import { useWebpSupport } from "@/v2/composables/useWebpSupport";
 import api from "@/v2/data/adapters/legacy/services/api";
 import romApi from "@/v2/data/adapters/legacy/services/api/rom";
@@ -58,11 +56,6 @@ const { currentRom } = storeToRefs(romsStore);
 const { toWebp } = useWebpSupport();
 const { locale, t } = useI18n();
 const emitter = inject<Emitter<Events>>("emitter");
-const {
-  showSimilarGamesOutsideLibrary,
-  isSimilarGamesOutsideLibraryReady,
-  similarGamesOutsideLibraryAccountId,
-} = useUISettings();
 
 const setBgArt = useBackgroundArt();
 const backgroundAudio = useBackgroundAudio();
@@ -319,30 +312,14 @@ const earnedAchievementIds = computed<ReadonlySet<string>>(() => {
 const achievementsEarned = computed(() => earnedAchievementIds.value.size);
 
 const igdb = computed(() => currentRom.value?.igdb_metadata ?? null);
-const routeRomId = computed(() => {
-  const id = Number(route.params.rom);
-  return Number.isSafeInteger(id) && id > 0 ? id : null;
+const { visibleGames: visibleSimilarGames } = useVisibleSimilarGames({
+  currentRom,
+  routeRom: computed(() => route.params.rom),
 });
-const similarGames = computed<IGDBRelatedGame[]>(() =>
-  currentRom.value?.id === routeRomId.value
-    ? (igdb.value?.similar_games ?? [])
-    : [],
-);
-const { visibleGames: visibleSimilarGames } = useSimilarGameLibraryResolution({
-  similarGames,
-  gameId: routeRomId,
-  accountId: similarGamesOutsideLibraryAccountId,
-  showOutsideLibrary: showSimilarGamesOutsideLibrary,
-  preferenceReady: isSimilarGamesOutsideLibraryReady,
-});
-const remakes = computed<IGDBRelatedGame[]>(() => igdb.value?.remakes ?? []);
-const remasters = computed<IGDBRelatedGame[]>(
-  () => igdb.value?.remasters ?? [],
-);
-const expansions = computed<IGDBRelatedGame[]>(
-  () => igdb.value?.expansions ?? [],
-);
-const dlcs = computed<IGDBRelatedGame[]>(() => igdb.value?.dlcs ?? []);
+const remakes = computed(() => igdb.value?.remakes ?? []);
+const remasters = computed(() => igdb.value?.remasters ?? []);
+const expansions = computed(() => igdb.value?.expansions ?? []);
+const dlcs = computed(() => igdb.value?.dlcs ?? []);
 type LocalDlcOverviewCandidate = {
   igdbId: number;
   componentId: number;
