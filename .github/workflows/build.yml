@@ -9,11 +9,12 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   validate-tag-semver:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       valid: ${{ steps.check_tag.outputs.valid }}
       normalized: ${{ steps.check_tag.outputs.normalized }}
