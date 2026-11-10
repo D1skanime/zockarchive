@@ -55,9 +55,10 @@ The Storybook iframe rendered each required real composition at both widths:
   confirmed local card while resolution was pending, no section for no matches,
   and one confirmed local card when another lookup failed.
 
-The normal login-form submission remained on its login page despite an HTTP
-200 `/api/login` response. The authenticated API-session fallback was valid for
-the inspection; this separate form-flow observation remains for live UAT.
+The normal login form was rerun with its specific submit control. It completed
+the login response, session and CSRF-cookie handoff, current-user request and
+redirect to the start page. The earlier observation had selected ambiguously
+between this control and the hidden reset-form submit control.
 
 ## Screenshots
 
@@ -67,8 +68,6 @@ and result.
 
 ## Limitations
 
-- The normal login-form redirect/session handoff needs separate investigation;
-  it did not prevent the authenticated page inspection.
 - The live data did not supply every deterministic Storybook edge case, so the
   mixed, late-match, pending, empty and error cases were demonstrated in their
   real-component Storybook compositions.
