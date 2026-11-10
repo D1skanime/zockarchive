@@ -49,3 +49,7 @@ None. ROM heading catalogues were intentionally not changed because their owners
 ## Known Limitations
 
 This independent batch does not perform cross-locale parity validation. That validation belongs to the final locale batch after all assigned catalogues are complete.
+
+## Self-Check: PASSED
+
+The summary exists and commit `ba3845db3` is present in the repository history.
