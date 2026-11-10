@@ -445,6 +445,8 @@
   "show-regions-desc": "Régiózászlók megjelenítése a galériában",
   "show-siblings": "Verziók megjelenítése",
   "show-siblings-desc": "A verziók számának megjelenítése a galériában (ROM-ok csoportosítása esetén)",
+  "show-similar-games-outside-library": "Hasonló játékok megjelenítése a könyvtáron kívül",
+  "show-similar-games-outside-library-desc": "Azokat a hasonló játékokat is megjeleníti, amelyek nem érhetők el a könyvtáradban.",
   "show-smart-collections": "Intelligens gyűjtemények megjelenítése",
   "show-smart-collections-desc": "Intelligens gyűjtemények szakasz megjelenítése a kezdőlapon",
   "show-stats": "Statisztikák megjelenítése",
