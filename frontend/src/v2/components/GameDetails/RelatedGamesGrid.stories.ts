@@ -244,10 +244,12 @@ export const AusTrefferNachPositionSieben: Story = {
 
 export const AusAufloesungLaeuft: Story = {
   name: "Aus: Auflösung läuft",
-  render: renderOverview([
-    local(401, "Bereits bestätigter Treffer", 801),
-    status(402, "Noch nicht aufgelöste Empfehlung", "pending"),
-  ]),
+  render: renderOverview(
+    visibleLocalEntries([
+      local(401, "Bereits bestätigter Treffer", 801),
+      status(402, "Noch nicht aufgelöste Empfehlung", "pending"),
+    ]),
+  ),
 };
 
 export const AusKeineBibliothekstreffer: Story = {
@@ -257,8 +259,10 @@ export const AusKeineBibliothekstreffer: Story = {
 
 export const AusLookupFehler: Story = {
   name: "Aus: Lookup-Fehler",
-  render: renderOverview([
-    local(501, "Bestätigter Treffer trotz Fehler", 901),
-    status(502, "Fehlerhafte Abfrage", "error"),
-  ]),
+  render: renderOverview(
+    visibleLocalEntries([
+      local(501, "Bestätigter Treffer trotz Fehler", 901),
+      status(502, "Fehlerhafte Abfrage", "error"),
+    ]),
+  ),
 };
