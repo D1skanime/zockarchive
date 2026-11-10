@@ -23,8 +23,10 @@ Slim multi-architecture images from independent metadata outputs.
 ## Verification
 
 - Parsed `.github/workflows/build.yml` as YAML.
-- Checked the required retained paragraph and Full/Slim metadata and build
-  contracts with fixed-string and count checks.
+- Checked the required retained paragraph and the Full/Slim metadata and build
+  contracts with structural fixed-string checks.
+- The earlier static check missed the host contract's newline-sensitive exact
+  Docker Hub alias count. Quick task `261110-rgy` corrects that evidence gap.
 - Ran `git diff --check` and reviewed the intended diff.
 - No tests, test suites, Docker commands, registry operations, releases, tags,
   or pushes were started.
