@@ -3,20 +3,22 @@
 //
 // Used by both the "Additional content" tab (Expansions / DLC) and the
 // "Related" tab (Remakes / Remasters / Similar). Multiple sections per
-// tab? Render this component multiple times — one per section. Each
-// card is a RelatedGameCard, which owns the per-card cross-reference
-// against the local RomM library — so this grid stays a thin renderer.
+// tab? Render this component multiple times — one per section. Similar
+// games can instead supply centralized resolution, while other sections
+// keep their existing card-owned library lookup.
 import { computed } from "vue";
 import type { IGDBRelatedGame } from "@/__generated__";
 import RelatedGameCard from "@/v2/components/GameDetails/RelatedGameCard.vue";
+import type { SimilarGameLibraryEntry } from "@/v2/composables/useSimilarGameLibraryResolution";
 
 defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{
   title?: string;
-  items: IGDBRelatedGame[];
+  items?: IGDBRelatedGame[];
   isDlc?: boolean;
   parentRomId?: number;
+  resolvedSimilarGames?: SimilarGameLibraryEntry[];
   localCandidates?: Array<{
     igdbId: number;
     componentId: number;
@@ -26,17 +28,29 @@ const props = defineProps<{
 }>();
 
 const cards = computed(() => {
+  if (props.resolvedSimilarGames) {
+    return props.resolvedSimilarGames.map((entry) => ({
+      game: entry.game,
+      local: undefined,
+      localRomId: entry.status === "local" ? entry.romId : undefined,
+      skipLibraryLookup: true,
+    }));
+  }
+
   const localByIgdbId = new Map(
     (props.localCandidates ?? []).map((candidate) => [
       candidate.igdbId,
       candidate,
     ]),
   );
-  const remoteIds = new Set(props.items.map((item) => item.id));
+  const items = props.items ?? [];
+  const remoteIds = new Set(items.map((item) => item.id));
   return [
-    ...props.items.map((game) => ({
+    ...items.map((game) => ({
       game,
       local: localByIgdbId.get(game.id),
+      localRomId: undefined,
+      skipLibraryLookup: false,
     })),
     ...(props.localCandidates ?? [])
       .filter((candidate) => !remoteIds.has(candidate.igdbId))
@@ -49,6 +63,8 @@ const cards = computed(() => {
           cover_url: "",
         } satisfies IGDBRelatedGame,
         local: candidate,
+        localRomId: undefined,
+        skipLibraryLookup: false,
       })),
   ];
 });
@@ -68,6 +84,8 @@ const cards = computed(() => {
         :parent-rom-id="parentRomId"
         :local-component-id="card.local?.componentId"
         :local-cover-url="card.local?.coverUrl"
+        :local-rom-id="card.localRomId"
+        :skip-library-lookup="card.skipLibraryLookup"
       />
     </div>
   </section>

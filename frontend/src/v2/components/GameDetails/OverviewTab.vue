@@ -49,6 +49,7 @@ import {
   descriptionPresentation,
   type ProviderMetadata,
 } from "@/v2/composables/useManualDescription/provenance";
+import type { SimilarGameLibraryEntry } from "@/v2/composables/useSimilarGameLibraryResolution";
 import { useWebpSupport } from "@/v2/composables/useWebpSupport";
 import storeCollections from "@/v2/data/adapters/legacy/stores/collections";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
@@ -86,7 +87,7 @@ const props = defineProps<{
   }>;
   remakes: IGDBRelatedGame[];
   remasters: IGDBRelatedGame[];
-  similarGames: IGDBRelatedGame[];
+  similarGames: SimilarGameLibraryEntry[];
 }>();
 
 const emit = defineEmits<{ refresh: [] }>();
@@ -530,9 +531,9 @@ const youtubeEmbedUrl = computed(() =>
       <div v-if="similarGames.length" class="overview-tab__section">
         <h4 class="overview-tab__section-heading">
           <ZAIcon icon="mdi-shape-outline" size="14" />
-          Similar games
+          {{ t("rom.similar-games") }}
         </h4>
-        <RelatedGamesGrid title="" :items="similarGames" />
+        <RelatedGamesGrid title="" :resolved-similar-games="similarGames" />
       </div>
     </template>
 
