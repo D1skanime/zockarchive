@@ -1,5 +1,89 @@
 [
   {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 39",
+    "text": "Story-Spiel",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 105",
+    "text": "Im Einsatz/Spieldetails/Ähnliche Spiele",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 130",
+    "text": "An: gemischte Empfehlungen",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 135",
+    "text": "Aus: nur Bibliothekstreffer",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 140",
+    "text": "Aus: Treffer nach Position sieben",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 145",
+    "text": "Aus: Auflösung läuft",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 153",
+    "text": "Aus: keine Bibliothekstreffer",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/GameDetails/RelatedGamesGrid.stories.ts",
+    "location": "Zeile 158",
+    "text": "Aus: Lookup-Fehler",
+    "status": "german"
+  },
+  {
+    "category": "story-data",
+    "file": "src/v2/components/Settings/SettingsToggleRow.stories.ts",
+    "location": "Zeile 12",
+    "text": "Formulare/Einstellungen/SettingsToggleRow",
+    "status": "german"
+  },
+  {
+    "category": "story-name",
+    "file": "src/v2/components/Settings/SettingsToggleRow.stories.ts",
+    "location": "Zeile 30",
+    "text": "Ähnliche Spiele ausserhalb der Bibliothek",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute",
+    "file": "src/v2/components/Settings/SettingsToggleRow.stories.ts",
+    "location": "Zeile 38",
+    "text": "Galerie",
+    "status": "german"
+  },
+  {
+    "category": "template-attribute-dynamic",
+    "file": "src/v2/components/Settings/SettingsToggleRow.stories.ts",
+    "location": "Zeile 42",
+    "text": "Dynamischer title-Attributwert: settingTitle",
+    "status": "german"
+  },
+  {
     "category": "story-data",
     "file": "src/v2/lib/InUse.stories.ts",
     "location": "Zeile 15",
