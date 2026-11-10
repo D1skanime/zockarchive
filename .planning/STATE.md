@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261110-y3q
+
+| 261110-y3q | Complete direct Phase 42 post-acceptance preference coverage | 2026-11-10 | 2 affected Vitest files, 8 tests passed; committed | [Phase 42 test completion](./quick/261110-y3q-phase-42-freigabe-testerganzung/) |
+
+- The missing-value default is now directly covered without changing product behaviour.
+
 ## Quick Task 261110-k8m
 
 | 261110-k8m | Repair post-acceptance regression test fixtures and locale ledgers | 2026-11-10 | typecheck plus 27 affected frontend tests passed; commit pending | [regression gate fixtures](./quick/261110-k8m-regressionsgate-testfixtures/) |

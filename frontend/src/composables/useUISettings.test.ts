@@ -80,6 +80,14 @@ describe("explicit locale profile persistence", () => {
     expect(mocks.auth.setCurrentUser).not.toHaveBeenCalled();
   });
 
+  it("defaults a missing preference to enabled before recommendations may render", async () => {
+    const { useUISettings } = await import("./useUISettings");
+    const settings = useUISettings();
+    expect(settings.showSimilarGamesOutsideLibrary.value).toBe(true);
+    expect(settings.isSimilarGamesOutsideLibraryReady.value).toBe(true);
+    expect(settings.similarGamesOutsideLibraryAccountId.value).toBe(1);
+  });
+
   it("serializes repeated persistence requests for the active account", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     let finishFirst!: (value: {
