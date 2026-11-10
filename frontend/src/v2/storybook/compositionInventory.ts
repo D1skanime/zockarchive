@@ -12,6 +12,12 @@ export type CompositionRecord = {
 };
 
 export const compositionInventory = {
+  "components/Settings/SettingsToggleRow.stories.ts": {
+    primitives: ["ZASwitch", "ZAIcon"],
+  },
+  "components/GameDetails/RelatedGamesGrid.stories.ts": {
+    primitives: ["ZABtn", "ZAIcon"],
+  },
   "components/GameCard/GameCard.stories.ts": {
     primitives: ["ZABtn", "ZACheckbox", "ZAPlatformIcon", "ZATooltip"],
   },

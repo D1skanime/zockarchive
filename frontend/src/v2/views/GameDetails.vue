@@ -11,7 +11,6 @@ import { storeToRefs } from "pinia";
 import { computed, inject, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
-import type { IGDBRelatedGame } from "@/__generated__";
 import { ROUTES } from "@/plugins/router";
 import type { Events } from "@/types/emitter";
 import { FRONTEND_RESOURCES_PATH } from "@/utils";
@@ -40,6 +39,7 @@ import { resolveDescription } from "@/v2/composables/useManualDescription";
 import { usePageTitle } from "@/v2/composables/usePageTitle";
 import { useReducedMotion } from "@/v2/composables/useReducedMotion";
 import { useRightStickScroll } from "@/v2/composables/useRightStickScroll";
+import { useVisibleSimilarGames } from "@/v2/composables/useVisibleSimilarGames";
 import { useWebpSupport } from "@/v2/composables/useWebpSupport";
 import api from "@/v2/data/adapters/legacy/services/api";
 import romApi from "@/v2/data/adapters/legacy/services/api/rom";
@@ -312,21 +312,14 @@ const earnedAchievementIds = computed<ReadonlySet<string>>(() => {
 const achievementsEarned = computed(() => earnedAchievementIds.value.size);
 
 const igdb = computed(() => currentRom.value?.igdb_metadata ?? null);
-// IGDB ships up to ~10 similar games per title; rendering all of them
-// would dominate the overview and push HLTB/Achievements below the
-// fold. Cap to keep the section to ~2 rows of cards at typical widths.
-const SIMILAR_GAMES_MAX = 6;
-const similarGames = computed<IGDBRelatedGame[]>(() =>
-  (igdb.value?.similar_games ?? []).slice(0, SIMILAR_GAMES_MAX),
-);
-const remakes = computed<IGDBRelatedGame[]>(() => igdb.value?.remakes ?? []);
-const remasters = computed<IGDBRelatedGame[]>(
-  () => igdb.value?.remasters ?? [],
-);
-const expansions = computed<IGDBRelatedGame[]>(
-  () => igdb.value?.expansions ?? [],
-);
-const dlcs = computed<IGDBRelatedGame[]>(() => igdb.value?.dlcs ?? []);
+const { visibleGames: visibleSimilarGames } = useVisibleSimilarGames({
+  currentRom,
+  routeRom: computed(() => route.params.rom),
+});
+const remakes = computed(() => igdb.value?.remakes ?? []);
+const remasters = computed(() => igdb.value?.remasters ?? []);
+const expansions = computed(() => igdb.value?.expansions ?? []);
+const dlcs = computed(() => igdb.value?.dlcs ?? []);
 type LocalDlcOverviewCandidate = {
   igdbId: number;
   componentId: number;
@@ -518,7 +511,7 @@ const tabs = computed<ZATabNavItem[]>(() => [
             :local-expansion-candidates="localExpansionCandidates"
             :remakes="remakes"
             :remasters="remasters"
-            :similar-games="similarGames"
+            :similar-games="visibleSimilarGames"
             @refresh="refreshPcDetails"
           />
           <FilesTab v-if="tab === 'files'" :rom="currentRom" />

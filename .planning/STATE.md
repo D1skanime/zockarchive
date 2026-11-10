@@ -4,10 +4,10 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 branch refreshed to current origin/main; renewed live UAT required
-last_updated: "2026-11-09T16:05:00Z"
-last_activity: "2026-11-09 - Completed quick task 261109-integrate-main-win-svg-refresh"
+last_updated: "2026-11-10T00:00:00Z"
+last_activity: "2026-11-10 - Completed quick task 261110-d7t: resolve Phase 42 quality-gate lint and source-size findings"
 progress:
-  total_phases: 41
+  total_phases: 42
   completed_phases: 31
   total_plans: 320
   completed_plans: 289
@@ -15,6 +15,33 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261110-y3q
+
+| 261110-y3q | Complete direct Phase 42 post-acceptance preference coverage | 2026-11-10 | 2 affected Vitest files, 8 tests passed; committed | [Phase 42 test completion](./quick/261110-y3q-phase-42-freigabe-testerganzung/) |
+
+- The missing-value default is now directly covered without changing product behaviour.
+
+## Quick Task 261110-k8m
+
+| 261110-k8m | Repair post-acceptance regression test fixtures and locale ledgers | 2026-11-10 | typecheck plus 27 affected frontend tests passed; commit pending | [regression gate fixtures](./quick/261110-k8m-regressionsgate-testfixtures/) |
+
+- The test data now matches the accepted Phase 42 locale catalogues without
+  changing product behaviour.
+
+## Quick Task 261110-j1o
+
+| 261110-j1o | Add direct Phase 42 accepted-behaviour logic tests | 2026-11-10 | 2 affected Vitest files, 7 tests passed; commit pending | [Phase 42 accepted tests](./quick/261110-j1o-phase-42-angenommene-logiktests/) |
+
+- The human-approved setting and resolver behaviour now has direct coverage;
+  ki-run may proceed with its full regression gate.
+
+## Quick Task 261110-hpm
+
+| 261110-hpm | Serialize rapid UI-setting writes so the latest switch value survives reload | 2026-11-10 | Browser recheck at desktop and mobile widths passed; commit pending | [serialized UI persistence](./quick/261110-hpm-serialisierte-ui-einstellungsspeicherung/) |
+
+- The settings persistence queue preserves backend write order for the active
+  account. Human live UAT remains pending.
 
 ## Quick Task 261109-integrate-main-win-svg-refresh
 
@@ -351,6 +378,7 @@ _Updated after each plan completion_
 
 ### Roadmap Evolution
 
+- Phase 42 added: Per-user related-games preference for recommendations outside the accessible ZA library, assigned to ki-run job 261110-824a.
 - Phase 41 added: ZA scan overview for large libraries, assigned to ki-run job 261107-8ee7.
 - Phase 40 added: Unify PC media surfaces and complete Storybook coverage. It owns job 261103-4b37's existing implementation inventory and the remaining Storybook language-ledger correction.
 
@@ -657,6 +685,8 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261110-deg | Resolve Phase 42 Quality Gate round 2 resolver typecheck findings | 2026-11-10 | defffd9af | [261110-deg](./quick/261110-deg-quality-gate-runde-2-resolver-typecheck/) |
+| 261110-d7t | Resolve Phase 42 Quality Gate round 1 lint and source-size findings | 2026-11-10 | fab2eae41 | [261110-d7t](./quick/261110-d7t-quality-gate-runde-1-lintfehler-und-gr-e/) |
 | 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
 | 261109-jt1 | Repair Phase 41 regression tests after bounded snapshots | 2026-11-09 | 0009f6d45 | [261109-jt1](./quick/261109-jt1-repair-phase-41-regression-tests-after-t/) |
 | 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |

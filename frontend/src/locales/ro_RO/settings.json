@@ -445,6 +445,8 @@
   "show-regions-desc": "Afișează steagurile regiunilor în galerie",
   "show-siblings": "Afișează versiunile",
   "show-siblings-desc": "Afișează numărul versiunilor în galerie când opțiunea „Grupare rom-uri” este activată",
+  "show-similar-games-outside-library": "Afișează jocuri similare din afara bibliotecii",
+  "show-similar-games-outside-library-desc": "Afișează și jocuri similare care nu sunt disponibile în biblioteca ta.",
   "show-smart-collections": "Afișează colecțiile inteligente",
   "show-smart-collections-desc": "Afișează secțiunea colecțiilor inteligente pe pagina principală",
   "show-stats": "Afișează statistici",

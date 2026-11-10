@@ -612,7 +612,7 @@ Plans:
 **Goal:** Automatically discover newly added, correctly named PC game folders on a safe periodic schedule, apply only unambiguous Steam/IGDB/DLC metadata and media, and route every uncertain case to one protected, efficient administrator review queue.
 **Requirements**: D-01, D-02, D-03, D-04, D-05, D-06, D-07, D-08
 **Depends on:** Phase 21
-**Plans:** 6 plans
+**Plans:** 8 plans
 
 Plans:
 
@@ -1175,3 +1175,20 @@ Plans:
 **Wave 4**
 
 - [x] 41-05-PLAN.md - Architecture documentation, typecheck, temporary production build, and synthetic browser inspection.
+
+### Phase 42: Ähnliche Spiele ausserhalb der Bibliothek ein- oder ausblenden
+
+**Goal:** Let each user decide whether the related-games section may include recommendations outside their accessible ZA library, while preserving provider order, bounded lookups, safe asynchronous resolution, and the existing local navigation behavior.
+**Requirements**: ZA-RELATED-42-01, ZA-RELATED-42-02, ZA-RELATED-42-03, ZA-RELATED-42-04, ZA-RELATED-42-05, ZA-RELATED-42-06
+**Depends on:** Phase 41
+**Plans:** 6 plans
+
+Plans:
+- [ ] 42-01-PLAN.md - Account-authoritative persisted setting and existing settings switch.
+- [ ] 42-02-PLAN.md - Async authorized Similar-games resolver with scoped cache and stale-result safety.
+- [ ] 42-03-PLAN.md - Resolver integration from full provider list to overview/grid/card navigation.
+- [ ] 42-04-PLAN.md - First file-exclusive settings locale batch.
+- [ ] 42-07-PLAN.md - Second file-exclusive settings and ROM locale batch.
+- [ ] 42-08-PLAN.md - Final ROM locale batch and parity/sort validation.
+- [ ] 42-05-PLAN.md - Real-component Storybook compositions and catalogue registrations.
+- [ ] 42-06-PLAN.md - Frontend architecture, allowed build/catalog checks, and desktop/mobile sight inspection.

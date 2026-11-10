@@ -22,6 +22,7 @@ import WidgetReorderList from "@/v2/components/Home/Widgets/WidgetReorderList.vu
 import SettingsSection from "@/v2/components/Settings/SettingsSection.vue";
 import SettingsSubsection from "@/v2/components/Settings/SettingsSubsection.vue";
 import SettingsToggleRow from "@/v2/components/Settings/SettingsToggleRow.vue";
+import SimilarGamesOutsideLibrarySetting from "@/v2/components/Settings/SimilarGamesOutsideLibrarySetting.vue";
 import LanguageSelector from "@/v2/components/shared/LanguageSelector.vue";
 import { isBoxartStyle } from "@/v2/composables/useCoverArt";
 import { useCrtMode } from "@/v2/composables/useCrtMode";
@@ -32,7 +33,6 @@ import storeCollections from "@/v2/data/adapters/legacy/stores/collections";
 const { t } = useI18n();
 const { enabled: debugEnabled } = useDebugMode();
 const collectionsStore = storeCollections();
-
 const {
   theme: selectedTheme,
   // Home
@@ -62,7 +62,6 @@ const {
   // Gameplay
   confirmProtectedLaunch,
 } = useUISettings();
-
 type Theme = "dark" | "light" | "auto";
 const themeOptions: { value: Theme; label: string; icon: string }[] = [
   {
@@ -340,6 +339,7 @@ function onVirtualCollectionTypeChange(value: unknown) {
           :title="t('settings.disable-animations')"
           :description="t('settings.disable-animations-desc')"
         />
+        <SimilarGamesOutsideLibrarySetting />
         <SettingsToggleRow
           v-model="enableExperimentalCache"
           :title="t('settings.enable-experimental-cache')"

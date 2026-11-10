@@ -39,6 +39,7 @@ import LocalizedDescriptionEditor from "@/v2/components/GameDetails/LocalizedDes
 import PlayerCountBadge from "@/v2/components/GameDetails/PlayerCountBadge.vue";
 import RelatedGamesGrid from "@/v2/components/GameDetails/RelatedGamesGrid.vue";
 import ScreenshotsTab from "@/v2/components/GameDetails/ScreenshotsTab.vue";
+import SimilarGamesSection from "@/v2/components/GameDetails/SimilarGamesSection.vue";
 import { PROVIDERS, providerId } from "@/v2/components/GameDetails/providers";
 import { useCan } from "@/v2/composables/useCan";
 import type {
@@ -49,6 +50,7 @@ import {
   descriptionPresentation,
   type ProviderMetadata,
 } from "@/v2/composables/useManualDescription/provenance";
+import type { SimilarGameLibraryEntry } from "@/v2/composables/useSimilarGameLibraryResolution";
 import { useWebpSupport } from "@/v2/composables/useWebpSupport";
 import storeCollections from "@/v2/data/adapters/legacy/stores/collections";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
@@ -86,7 +88,7 @@ const props = defineProps<{
   }>;
   remakes: IGDBRelatedGame[];
   remasters: IGDBRelatedGame[];
-  similarGames: IGDBRelatedGame[];
+  similarGames: SimilarGameLibraryEntry[];
 }>();
 
 const emit = defineEmits<{ refresh: [] }>();
@@ -527,13 +529,7 @@ const youtubeEmbedUrl = computed(() =>
         </h4>
         <RelatedGamesGrid title="" :items="remasters" />
       </div>
-      <div v-if="similarGames.length" class="overview-tab__section">
-        <h4 class="overview-tab__section-heading">
-          <ZAIcon icon="mdi-shape-outline" size="14" />
-          Similar games
-        </h4>
-        <RelatedGamesGrid title="" :items="similarGames" />
-      </div>
+      <SimilarGamesSection :items="similarGames" />
     </template>
 
     <!-- 6. Attribution — credit the metadata + cover-art sources -->

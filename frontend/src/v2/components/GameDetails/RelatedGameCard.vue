@@ -8,12 +8,9 @@
 // all suppressed by `static + showPlatformIcon=false` — we only want
 // "a tile that looks like a game".
 //
-// IGDB → RomM cross-reference (per v1's
-// the related-game contract: on mount
-// the card asks the backend whether the IGDB id resolves to a local
-// ROM. If it does, the click jumps to the internal detail page via
-// the router; otherwise the click opens the IGDB game page in a new
-// tab so the user can still reach metadata for games they don't own.
+// The legacy related-game path resolves IGDB IDs per card. Controlled
+// Similar-game cards receive the authorized target from their section
+// resolver and must not repeat that lookup.
 import { ZAIcon } from "@v2/lib";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
@@ -36,16 +33,20 @@ const props = defineProps<{
   parentRomId?: number;
   localComponentId?: number;
   localCoverUrl?: string;
+  localRomId?: number;
+  skipLibraryLookup?: boolean;
 }>();
 
 const { t } = useI18n();
 const router = useRouter();
 const romId = ref<number | null>(null);
-const inLibrary = computed(() => romId.value !== null);
+const inLibrary = computed(
+  () => props.localRomId !== undefined || romId.value !== null,
+);
 const availableLocally = computed(() => props.localComponentId !== undefined);
 
 onMounted(async () => {
-  if (props.isDlc) return;
+  if (props.isDlc || props.skipLibraryLookup) return;
   try {
     const res = await romApi.getRomByMetadataProvider({
       field: "igdb_id",
@@ -182,6 +183,10 @@ function onClick(e: MouseEvent) {
         params: { rom: props.parentRomId, component: props.localComponentId },
       });
     }
+    return;
+  }
+  if (props.localRomId !== undefined) {
+    void router.push(`/rom/${props.localRomId}`);
     return;
   }
   if (inLibrary.value) {

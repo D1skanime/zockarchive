@@ -445,6 +445,8 @@
   "show-regions-desc": "Mostrar bandeiras de regiões na galeria",
   "show-siblings": "Mostrar versões",
   "show-siblings-desc": "Mostrar contagem de versões na galeria quando a opção \"Agrupar ROMs\" estiver ativada",
+  "show-similar-games-outside-library": "Mostrar jogos semelhantes fora da biblioteca",
+  "show-similar-games-outside-library-desc": "Também mostra jogos semelhantes que não estão disponíveis na sua biblioteca.",
   "show-smart-collections": "Mostrar coleções inteligentes",
   "show-smart-collections-desc": "Mostrar seção de coleções inteligentes na página inicial",
   "show-stats": "Mostrar estatísticas",

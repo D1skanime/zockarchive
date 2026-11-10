@@ -79,7 +79,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "e2c8f24761535c95abf0b45172b09e4b760ce97c46cf0c5d0d695016de72673c",
+      "digest": "9122016dbd6add331a6c3959a66af8cf7e982fccf4b51a8d3e6c616b927beea0",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -180,7 +180,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "6615d12e7342d7b224e8f344a7c9d568eb7aaee45ea86ada6c7c1cfade25db8f",
+      "digest": "a4c0f8d99929bfa590d46d00bd2c8cf9f9ad89fba547451a0051014bb4288216",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -282,7 +282,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "e32804c8b568b16d83be8a0cc1a061757588beff5f3d6be97e4a4382eaed87f3",
+      "digest": "5af77bd90632390dd24207f98306ea0ae630af7f80cc8193875c0c060fcb72f4",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -388,7 +388,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "b9b4d1a434e62229b5c21ace1ed57c4be894017f294311bcd5e003445217dafa",
+      "digest": "3a0fb09b9e44b9232fb27e73b9f27e497130b05830e76c25b7617393660690b0",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -494,7 +494,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "4229a58bf73474b9e0f40ca1a112c8abb65992ace0f965dda1029fe4eb2e8c4b",
+      "digest": "420d53294d460544b60718269769b15cb2a50c509951f929bda83699c236e42d",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -596,7 +596,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "68dee634ca7cbf86e7b1b64b705f02b118b9733d83b98bf714a2a6fd44e0bfd5",
+      "digest": "41cc758029990b2b81906c18fb22ecaf818c87e96444f57fec46410119128423",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -702,7 +702,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "2e3c3836254e27555e37b3652f162e809c80c5eef6281074e3322d9e9db4e8b7",
+      "digest": "94d9d540a9f337764ad006abe7345b84eeeadbd7d753bbf8b37f4561c75bdc21",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -808,7 +808,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "7196ecc196949b1ebe4f32fb695eff74f8b5d29f45d981254839480abb7877a1",
+      "digest": "1c00959139475607406d8f2b2ff2f10d2604a16cb1acf4027753ef5e6d35bc4c",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -910,7 +910,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "77491f857d1b5c4447bfe939d80fce39383d0a87ed7777cbf12c192ba8592ea4",
+      "digest": "0266bf741fa5888b48b1e5a8fd1eada8c1774565ab629d4355d869d5fd56e0f2",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1014,7 +1014,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "f732155c0dff8e80aaa135e45e0599f22345cfdf7e6dd3f10042811b4635409e",
+      "digest": "5d56acbd5271ee2c8c7f878eb0ce2d7e18c3028761953eb41d39dfe11a59cb32",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1118,7 +1118,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "15a48d4c8a6a1fed312914940158cbdb4edcf2f2577f5077c55018c7c710a0df",
+      "digest": "0537905313af88257d87ecbb13d131ecd1f89db1b77d9b7a1a558486100f9caa",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1222,7 +1222,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "afae2d86d47f600a7f0eded76ecaa5acf3e021e00ecd9684c05d5b5284c1a76c",
+      "digest": "5eb4c8267ce5ce47b6b62c9650042f889a649f0596edbaeeaf38700865e4f8e2",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1326,7 +1326,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "6f2052bb3fb56a387d4f45845aa13964c2a1b26a26b48a674b9a6fdf74c9fe6c",
+      "digest": "187813f9a7921c9fe1a3ce8d5ab1240730f46502053534dfde0e9def3134d400",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1430,7 +1430,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "425c3bd5e14f327f75caed34d460935a99188e6160ba61b2d10afadc3f8976aa",
+      "digest": "546a42e21489dbb10a21c8995654cde98f24938ddc22851d4c4391a776342429",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1534,7 +1534,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "33d88fcff4a4cd38c927228314c4bf7ebf9a712c6851724c3eb4d11a3d291927",
+      "digest": "75c4a304b287172e695021daaf426f19d3d86902c85a498786e4bf02c571e804",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1642,7 +1642,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "e9264088f904d4adef110033e6ab4e1ac9d789b39e808ce25cc29a404bf1315c",
+      "digest": "f0fc57fd64129d4ddcd5d6c5072c456dd7f1944d1e510f75f19582d80a581cc5",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1745,7 +1745,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "827faba2d2c5b08bcf60103d89a6ff3ee3fbe0240538689e6a68e045b6e76ec7",
+      "digest": "d2e9191564d3bf01ff664ea61a471996be981ac839bc80543a4e21229c41186b",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1845,7 +1845,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "32d6abacd584c2d1b32a06de823d7fb35853e6934b1e59c9efd5fbffba5d8680",
+      "digest": "d1724ad0857c63651eeb5e69915ffc985fbb5a54b5fa337f55050cd24632df45",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",

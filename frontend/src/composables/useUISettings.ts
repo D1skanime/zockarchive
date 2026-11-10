@@ -68,6 +68,10 @@ export const UI_SETTINGS_KEYS = {
   showStatus: { key: "settings.showStatus", default: true },
   showActionBar: { key: "settings.showActionBar", default: false },
   showGameTitle: { key: "settings.showGameTitle", default: false },
+  showSimilarGamesOutsideLibrary: {
+    key: "settings.showSimilarGamesOutsideLibrary",
+    default: true,
+  },
   enable3DEffect: { key: "settings.enable3DEffect", default: false },
   disableAnimations: { key: "settings.disableAnimations", default: false },
   enableExperimentalCache: {
@@ -131,13 +135,22 @@ function createUISettings() {
     ]),
   ) as UISettingsRefs;
 
+  // Similar-game rendering must know whether this value belongs to the active
+  // account before it can expose an external destination.
+  const isSimilarGamesOutsideLibraryReady = ref(false);
+  const similarGamesOutsideLibraryAccountId = ref<number | null>(null);
+
   // Initialize settings from backend user data
   function initialize() {
     const userWithSettings = user.value as UserSchema | null;
-    if (!userWithSettings?.ui_settings) return;
+    if (!userWithSettings) {
+      isSimilarGamesOutsideLibraryReady.value = false;
+      similarGamesOutsideLibraryAccountId.value = null;
+      return;
+    }
 
     isSyncing.value = true;
-    const backendSettings = userWithSettings.ui_settings;
+    const backendSettings = userWithSettings.ui_settings ?? {};
 
     // Sync backend settings to localStorage
     Object.entries(localStorageRefs).forEach(([key, ref]) => {
@@ -145,6 +158,15 @@ function createUISettings() {
         ref.value = backendSettings[key as UISettingsKey];
       }
     });
+
+    const storedSimilarGamesPreference =
+      backendSettings.showSimilarGamesOutsideLibrary;
+    localStorageRefs.showSimilarGamesOutsideLibrary.value =
+      typeof storedSimilarGamesPreference === "boolean"
+        ? storedSimilarGamesPreference
+        : true;
+    similarGamesOutsideLibraryAccountId.value = userWithSettings.id;
+    isSimilarGamesOutsideLibraryReady.value = true;
 
     // Use nextTick-like delay to ensure all updates are done
     setTimeout(() => {
@@ -161,6 +183,9 @@ function createUISettings() {
 
   let explicitLocaleSave = false;
   let saveSequence = 0;
+  // Preserve the user's edit order at the backend. Concurrent PUTs can finish
+  // out of order and resurrect an older toggle value after a reload.
+  let saveQueue: Promise<void> = Promise.resolve();
   const saveUISettings = async (explicit = false): Promise<boolean> => {
     if (!user.value) return true;
     if (isSyncing.value && !explicit) return false;
@@ -169,28 +194,40 @@ function createUISettings() {
 
     const currentSettings = collectSettings();
 
-    try {
-      const { data } = await userApi.updateUser({
-        id: user.value.id,
-        ui_settings: JSON.stringify(currentSettings),
-      } as Partial<UserSchema> & { ui_settings: string });
+    const persist = async (): Promise<boolean> => {
+      if (user.value?.id !== userId) return false;
+      try {
+        const { data } = await userApi.updateUser({
+          id: userId,
+          ui_settings: JSON.stringify(currentSettings),
+        } as Partial<UserSchema> & { ui_settings: string });
 
-      if (user.value?.id !== userId || sequence !== saveSequence) return false;
+        if (user.value?.id !== userId || sequence !== saveSequence) {
+          return false;
+        }
 
-      // Update the user in the store with the new settings (without triggering sync)
-      isSyncing.value = true;
-      const dataWithSettings = data as UserSchema;
-      if (dataWithSettings.ui_settings) {
-        authStore.setCurrentUser(data);
+        // Update the user in the store with the new settings (without triggering sync)
+        isSyncing.value = true;
+        const dataWithSettings = data as UserSchema;
+        if (dataWithSettings.ui_settings) {
+          authStore.setCurrentUser(data);
+        }
+        setTimeout(() => {
+          isSyncing.value = false;
+        }, 50);
+      } catch (error) {
+        console.error("Failed to save UI settings to backend:", error);
+        return false;
       }
-      setTimeout(() => {
-        isSyncing.value = false;
-      }, 50);
-    } catch (error) {
-      console.error("Failed to save UI settings to backend:", error);
-      return false;
-    }
-    return true;
+      return true;
+    };
+
+    const result = saveQueue.then(persist, persist);
+    saveQueue = result.then(
+      () => undefined,
+      () => undefined,
+    );
+    return result;
   };
 
   // Watch all localStorage refs for changes (only set up once)
@@ -204,19 +241,12 @@ function createUISettings() {
   });
 
   // Watch user changes to initialize settings
-  watch(
-    user,
-    (newUser) => {
-      const userWithSettings = newUser as UserSchema | null;
-      if (userWithSettings?.ui_settings) {
-        initialize();
-      }
-    },
-    { immediate: true },
-  );
+  watch(user, () => initialize(), { immediate: true, flush: "sync" });
 
   return {
     ...localStorageRefs,
+    isSimilarGamesOutsideLibraryReady,
+    similarGamesOutsideLibraryAccountId,
     async setLocale(value: string): Promise<boolean> {
       explicitLocaleSave = true;
       localStorageRefs.locale.value = value;
