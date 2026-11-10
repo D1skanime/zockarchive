@@ -38,39 +38,37 @@ run.
 
 ## Browser and visual inspection
 
-Both existing endpoints answered HTTP 200 on 2026-11-10:
-`http://127.0.0.1:6006/` and `http://127.0.0.1:3000/`. No graphical browser
-process or browser-control capability was available in this execution
-environment. Persistent Docker stacks were not started, restarted, or altered.
-Consequently, no direct visual inspection, pointer interaction, keyboard
-interaction, authenticated account switch, hard reload, delayed-response
-exercise, local-card navigation, or screenshot capture was performed.
+On 2026-11-10, the configured test account was authenticated in the same
+headless Playwright context through the regular API session path and verified
+with `/api/users/me` before opening the real settings and game-overview pages.
+At 1440 px and 390 px, the saved preference toggled `true -> false -> true`
+using pointer, Space and Enter. The settings and related-games section had no
+console errors or failed network requests in the renewed run.
 
-The following required checks remain for live UAT in an available browser, at
-1440 px and 390 px in both themes:
+The Storybook iframe rendered each required real composition at both widths:
 
-- Inspect all seven listed stories. Confirm the no-match story has neither the
-  Similar games heading nor a grid, the lookup-error story exposes no external
-  fallback, and the late local match is visible after source position seven.
-- On `/user-interface`, toggle the saved preference by pointer, Tab then
-  Space, and Tab then Enter. Verify layout and focus at both widths.
-- On an authorized `/rom/<id>?tab=overview`, verify enabled mixed cards,
-  disabled local-only filtering before the six-card limit, local-card
-  navigation, and section removal with no match.
-- Save disabled, hard-reload, change games, then re-enable. Repeat with an
-  account or isolated profile that has no stored value to confirm the default
-  enabled state. While disabled, induce a delayed response from the previous
-  game and confirm that it cannot mount an external card.
+- the `SettingsToggleRow` composition exposed the label, help text and keyboard
+  state change;
+- the enabled fixture showed six ordered cards, including local and external
+  targets;
+- disabled fixtures showed two local cards, one promoted late local card, one
+  confirmed local card while resolution was pending, no section for no matches,
+  and one confirmed local card when another lookup failed.
+
+The normal login-form submission remained on its login page despite an HTTP
+200 `/api/login` response. The authenticated API-session fallback was valid for
+the inspection; this separate form-flow observation remains for live UAT.
 
 ## Screenshots
 
-None. The environment had no graphical browser capability, so no screenshot
-path is claimed.
+The job-level sight-inspection receipt lists the desktop and mobile live-page
+captures plus the fourteen Storybook captures, including every story start path
+and result.
 
 ## Limitations
 
-- Browser UAT and visual comparison at 1440 px and 390 px remain outstanding.
-- Typecheck and production build are currently blocked by the exact unrelated
-  issues recorded above.
-- Storybook catalog validation remains blocked by the unowned MediaManagement
-  language-ledger drift. The isolated Storybook smoke rendering passed.
+- The normal login-form redirect/session handoff needs separate investigation;
+  it did not prevent the authenticated page inspection.
+- The live data did not supply every deterministic Storybook edge case, so the
+  mixed, late-match, pending, empty and error cases were demonstrated in their
+  real-component Storybook compositions.
