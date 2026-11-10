@@ -8,8 +8,7 @@ on:
     types: [published]
 
 permissions:
-  id-token: write
-  contents: write
+  contents: read
   packages: write
 
 jobs:
@@ -21,8 +20,10 @@ jobs:
     steps:
       - name: Check if tag follows SemVer
         id: check_tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
-          TAG="${{ github.event.release.tag_name }}"
+          TAG="$RELEASE_TAG"
           NORMALIZED_TAG="${TAG#v}"
           if [[ "$TAG" =~ ^v?0\.1\.0-beta\.1$ ]]; then
             echo "valid=true" >> $GITHUB_OUTPUT
@@ -39,8 +40,7 @@ jobs:
     env:
       USE_DOCKERHUB: ${{ secrets.DOCKER_USERNAME != '' && secrets.DOCKER_PASSWORD != '' }}
     permissions:
-      id-token: write
-      contents: write
+      contents: read
       packages: write
     steps:
       - name: Run only once per release

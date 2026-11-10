@@ -54,7 +54,8 @@ services:
       start_period: 60s
 
   za-mariadb:
-    image: mariadb:11.3
+    # MariaDB 11.3 multi-architecture image index, compatible with amd64 and arm64.
+    image: mariadb:11.3@sha256:e101f9db31916a5d4d7d594dd0dd092fb23ab4f499f1d7a7425d1afd4162c4bc
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${ZA_DB_ROOT_PASSWORD:?Set ZA_DB_ROOT_PASSWORD as a Portainer secret}
@@ -72,7 +73,8 @@ services:
       retries: 5
 
   za-valkey:
-    image: valkey/valkey:8.1-alpine
+    # Valkey 8.1 Alpine multi-architecture image index, compatible with amd64 and arm64.
+    image: valkey/valkey:8.1-alpine@sha256:2602ace2be6569bc2bbb06f873776516ab9089821525be34f4305c67eb9db02a
     restart: unless-stopped
     command: valkey-server --appendonly yes
     volumes:
