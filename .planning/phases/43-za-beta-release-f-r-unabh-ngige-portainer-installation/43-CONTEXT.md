@@ -3,6 +3,8 @@
 **Gathered:** 2026-11-10
 **Status:** Ready for planning
 
+This context and the complete GSD chain (discuss/context, plans, summaries, verification) belong to active ki-run job `261110-0413` and are authoritatively bound to `.planning/phases/43-za-beta-release-f-r-unabh-ngige-portainer-installation` by `.planning/ki-run/261110-0413.json`.
+
 <domain>
 ## Phase Boundary
 
