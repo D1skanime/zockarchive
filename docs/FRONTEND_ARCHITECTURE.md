@@ -237,6 +237,28 @@ Home.vue uses CardRow and v2 home adapters. Platform, Search, and Collection vie
 
 GameDetails.vue is a cover column plus tab panel. ?tab= is persistent. The typed resolveDescription contract in useManualDescription selects requested exact/base manual text, requested exact/base provider text, manual English, provider English, then empty. It exposes source and resolved language, labels English fallback, and never displays the scalar legacy summary as a description. Tabs cover overview, metadata/providers, files/downloads, media, saves/states, achievements, notes, patcher, related games, screenshots, artwork, soundtrack, and PC components.
 
+The Overview Similar games section is controlled by the persisted, per-account
+`showSimilarGamesOutsideLibrary` UI setting from `useUISettings`. An absent
+stored value defaults to `true`, preserving the established provider-card view.
+Once the active account is known, its synchronized preference is authoritative:
+the readiness flag prevents a local-storage value from another account, or an
+uninitialized value, from mounting an external card. Settings, backend
+architecture, and generated API types do not change for this feature.
+
+`useSimilarGameLibraryResolution` is the single ownership boundary for Similar
+games. It deduplicates ordered IGDB IDs and uses the existing authorized
+metadata-provider lookup as proof that a ROM is accessible to the current
+account. Its result per source entry is pending, confirmed local with a ZA ROM
+ID, confirmed absent, or lookup error. `RelatedGamesGrid` and
+`RelatedGameCard` consume the resolved local target, so Similar cards do not
+repeat a per-card lookup. In enabled mode, the first six provider-ordered
+entries retain their existing external destination when no local target is
+confirmed. In disabled mode, only confirmed local entries remain, in provider
+order, and the list is limited to six only after filtering. Therefore a local
+match after the sixth source item can appear, while pending, absent, and error
+entries cannot expose an external card. If no local card remains, OverviewTab
+mounts neither the Similar games heading nor its grid.
+
 ### PC and DLC
 
 The DLC media UI intentionally has no DLC manual or soundtrack tab. Its Cover
@@ -318,6 +340,17 @@ services/socket.ts creates a Socket.IO client at /ws/socket.io/ with websocket a
 ## 15. Caching Strategy
 
 Pinia retains active user, platform, collection, ROM, scan, task, permission, and streaming state. services/cache/index.ts wraps the browser Cache API and services/cache/api.ts provides the compatibility helper. usePlatformIconCache prefetches platform icons. useBrowserDownloadQueue retains browser queue/verification state; downloadHash.worker.ts avoids main-thread hashing. localStorage persists theme, gallery mode, box-art style, scan providers, hash switches, and metadata locale. main.ts handles stale Vite chunks with one guarded reload. Views refresh ROM or transfer/session lists explicitly after mutations.
+
+`useSimilarGameLibraryResolution` keeps a focused in-memory cache only for
+successful local and confirmed-absent IGDB lookups, scoped to the active
+account. Concurrent IDs share one in-flight request, which prevents duplicate
+metadata-provider calls within a displayed Similar-games list. Lookup failures
+are not cached as absence, preserving error/retry semantics. Every refresh
+captures the current game, account, preference, and preference-readiness
+generation; a response whose capture is stale is discarded before reactive
+state changes. This protects route, account, and setting changes from
+overwriting the current view or leaking an external card into the disabled
+view.
 
 ---
 
