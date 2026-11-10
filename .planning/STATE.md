@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: completed
-stopped_at: Phase 41 branch refreshed to current origin/main; renewed live UAT required
-last_updated: "2026-11-10T00:00:00Z"
-last_activity: "2026-11-10 - Completed quick task 261110-d7t: resolve Phase 42 quality-gate lint and source-size findings"
+status: awaiting_human_verification
+stopped_at: Phase 43 technical verification complete; temporary Portainer UAT ready
+last_updated: "2026-11-10T19:30:00Z"
+last_activity: 2026-11-10 -- Phase 43 technically verified; human Portainer UAT pending
 progress:
-  total_phases: 42
-  completed_phases: 31
-  total_plans: 320
-  completed_plans: 289
-  percent: 76
+  total_phases: 43
+  completed_phases: 32
+  total_plans: 332
+  completed_plans: 297
+  percent: 74
 ---
 
 # Project State
@@ -153,14 +153,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase40 PC media surface/Storybook completion passed renewed targeted technical verification, including playable and downloadable DLC-owned audio, and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
+**Current focus:** Phase 43 — ZA Beta Release for Independent Portainer Installation
 
 ## Current Position
 
-Phase:39 (zockarchive-approved-logo-integration)
-Plan:1/1
-Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
-Last activity: 2026-11-09 - Completed quick task 261109-n26: add direct scan-result regression coverage
+Phase: 43 (ZA Beta Release for Independent Portainer Installation)
+Plan: 4 of 4
+Status: Technical verification complete (7/7); human Portainer UAT pending
+Last activity: 2026-11-10 -- Phase 43 technically verified; temporary UAT is ready
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -377,6 +377,8 @@ _Updated after each plan completion_
 ## Accumulated Context
 
 ### Roadmap Evolution
+
+- Phase 43 added: ZA: Beta-Release für unabhängige Portainer-Installation
 
 - Phase 42 added: Per-user related-games preference for recommendations outside the accessible ZA library, assigned to ki-run job 261110-824a.
 - Phase 41 added: ZA scan overview for large libraries, assigned to ki-run job 261107-8ee7.
