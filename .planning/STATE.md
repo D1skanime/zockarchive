@@ -4,10 +4,10 @@ milestone: v1.2
 milestone_name: milestone
 status: completed
 stopped_at: Phase 41 branch refreshed to current origin/main; renewed live UAT required
-last_updated: "2026-11-09T16:05:00Z"
-last_activity: "2026-11-09 - Completed quick task 261109-integrate-main-win-svg-refresh"
+last_updated: "2026-11-10T00:00:00Z"
+last_activity: "2026-11-10 - Phase 42 added for related-games library visibility preference (ki-run job 261110-824a)"
 progress:
-  total_phases: 41
+  total_phases: 42
   completed_phases: 31
   total_plans: 320
   completed_plans: 289
@@ -351,6 +351,7 @@ _Updated after each plan completion_
 
 ### Roadmap Evolution
 
+- Phase 42 added: Per-user related-games preference for recommendations outside the accessible ZA library, assigned to ki-run job 261110-824a.
 - Phase 41 added: ZA scan overview for large libraries, assigned to ki-run job 261107-8ee7.
 - Phase 40 added: Unify PC media surfaces and complete Storybook coverage. It owns job 261103-4b37's existing implementation inventory and the remaining Storybook language-ledger correction.
 

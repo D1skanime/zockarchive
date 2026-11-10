@@ -55,6 +55,7 @@ const {
   showLanguages,
   showStatus,
   disableAnimations,
+  showSimilarGamesOutsideLibrary,
   enableExperimentalCache,
   boxartStyle,
   boxartStyleDetails,
@@ -339,6 +340,11 @@ function onVirtualCollectionTypeChange(value: unknown) {
           v-model="disableAnimations"
           :title="t('settings.disable-animations')"
           :description="t('settings.disable-animations-desc')"
+        />
+        <SettingsToggleRow
+          v-model="showSimilarGamesOutsideLibrary"
+          :title="t('settings.show-similar-games-outside-library')"
+          :description="t('settings.show-similar-games-outside-library-desc')"
         />
         <SettingsToggleRow
           v-model="enableExperimentalCache"

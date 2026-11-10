@@ -68,6 +68,10 @@ export const UI_SETTINGS_KEYS = {
   showStatus: { key: "settings.showStatus", default: true },
   showActionBar: { key: "settings.showActionBar", default: false },
   showGameTitle: { key: "settings.showGameTitle", default: false },
+  showSimilarGamesOutsideLibrary: {
+    key: "settings.showSimilarGamesOutsideLibrary",
+    default: true,
+  },
   enable3DEffect: { key: "settings.enable3DEffect", default: false },
   disableAnimations: { key: "settings.disableAnimations", default: false },
   enableExperimentalCache: {
@@ -131,13 +135,22 @@ function createUISettings() {
     ]),
   ) as UISettingsRefs;
 
+  // Similar-game rendering must know whether this value belongs to the active
+  // account before it can expose an external destination.
+  const isSimilarGamesOutsideLibraryReady = ref(false);
+  const similarGamesOutsideLibraryAccountId = ref<number | null>(null);
+
   // Initialize settings from backend user data
   function initialize() {
     const userWithSettings = user.value as UserSchema | null;
-    if (!userWithSettings?.ui_settings) return;
+    if (!userWithSettings) {
+      isSimilarGamesOutsideLibraryReady.value = false;
+      similarGamesOutsideLibraryAccountId.value = null;
+      return;
+    }
 
     isSyncing.value = true;
-    const backendSettings = userWithSettings.ui_settings;
+    const backendSettings = userWithSettings.ui_settings ?? {};
 
     // Sync backend settings to localStorage
     Object.entries(localStorageRefs).forEach(([key, ref]) => {
@@ -145,6 +158,15 @@ function createUISettings() {
         ref.value = backendSettings[key as UISettingsKey];
       }
     });
+
+    const storedSimilarGamesPreference =
+      backendSettings.showSimilarGamesOutsideLibrary;
+    localStorageRefs.showSimilarGamesOutsideLibrary.value =
+      typeof storedSimilarGamesPreference === "boolean"
+        ? storedSimilarGamesPreference
+        : true;
+    similarGamesOutsideLibraryAccountId.value = userWithSettings.id;
+    isSimilarGamesOutsideLibraryReady.value = true;
 
     // Use nextTick-like delay to ensure all updates are done
     setTimeout(() => {
@@ -204,19 +226,12 @@ function createUISettings() {
   });
 
   // Watch user changes to initialize settings
-  watch(
-    user,
-    (newUser) => {
-      const userWithSettings = newUser as UserSchema | null;
-      if (userWithSettings?.ui_settings) {
-        initialize();
-      }
-    },
-    { immediate: true },
-  );
+  watch(user, () => initialize(), { immediate: true, flush: "sync" });
 
   return {
     ...localStorageRefs,
+    isSimilarGamesOutsideLibraryReady,
+    similarGamesOutsideLibraryAccountId,
     async setLocale(value: string): Promise<boolean> {
       explicitLocaleSave = true;
       localStorageRefs.locale.value = value;
