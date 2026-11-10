@@ -12,6 +12,9 @@ verified_at: 2026-11-10
 - `cd frontend && npm run typecheck` passed after quick fix `261110-cyq`.
 - Locale parity and sorted-key checks passed. Storybook smoke rendering passed with a temporary cache.
 - Independent review found one warning in the disabled pending story; quick fix `261110-pending-story-safe` corrected it and the Storybook smoke check passed.
+- Quick fix `261110-hpm` serializes rapid UI-setting writes after browser
+  inspection exposed an out-of-order backend persistence race. Desktop and
+  mobile hard-reload checks retained the final disabled value.
 
 ## Human verification required
 
