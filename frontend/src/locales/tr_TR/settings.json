@@ -445,6 +445,8 @@
   "show-regions-desc": "Galeride bölge bayraklarını göster",
   "show-siblings": "Kardeşleri göster",
   "show-siblings-desc": "\"ROM'ları Grupla\" seçeneği etkinken galeride kardeş sayısını göster",
+  "show-similar-games-outside-library": "Kütüphane dışındaki benzer oyunları göster",
+  "show-similar-games-outside-library-desc": "Kütüphanenizde bulunmayan benzer oyunları da gösterir.",
   "show-smart-collections": "Akıllı koleksiyonları göster",
   "show-smart-collections-desc": "Ana sayfada akıllı koleksiyonlar bölümünü göster",
   "show-stats": "İstatistikleri göster",
