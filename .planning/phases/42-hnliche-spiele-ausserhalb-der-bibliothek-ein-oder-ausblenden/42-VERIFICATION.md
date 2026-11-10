@@ -15,7 +15,14 @@ verified_at: 2026-11-10
 
 ## Human verification required
 
-The required browser inspection at 1440px and 390px could not be performed because no graphical browser was available. Follow `sichtpruefung.md` for the exact live and Storybook cases, including account separation, hard reload, promoted post-six local match, delayed old-page response, keyboard control, and local-card navigation.
+The pre-UAT browser inspection ran headlessly at 1440px and 390px. It covered
+the real settings and overview pages, keyboard control, normal-login session
+handoff, and all seven real-component Storybook compositions. Follow
+`sichtpruefung.md` for the exact evidence and capture paths.
+
+Human live acceptance remains required for account separation, hard reload,
+promoted post-six local match, delayed old-page response and local-card
+navigation against a controlled live data set.
 
 ## Known non-phase gate constraints
 
