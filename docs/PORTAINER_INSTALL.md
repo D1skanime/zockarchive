@@ -55,7 +55,7 @@ Set all required `ZA_*` values before deployment:
 - `ZA_LIBRARY_PATH`, `ZA_ASSETS_PATH`, and `ZA_CONFIG_PATH` are existing absolute paths on the Docker host.
 - Optional `ZA_*` provider values enable their matching metadata providers. Leave them empty when the provider is not configured.
 
-The normal release image is `ghcr.io/d1skanime/pc-game-download-portal:0.1.0-beta.1`. The `:beta` alias is also available for the approved beta series. Never use `:latest`. Portainer rejects missing required variables before it starts a partial stack. `ZA_IMAGE_REPOSITORY` is reserved for the isolated local proof and should remain unset for an ordinary release deployment.
+The normal release image is `ghcr.io/d1skanime/pc-game-download-portal:0.1.0-beta.1`. The `:beta` alias is also available for the approved beta series. Never use `:latest`. An image source other than the reviewed GHCR release is **unverified** and must not be deployed. Portainer rejects missing required variables before it starts a partial stack. `ZA_IMAGE_REPOSITORY` is reserved for the isolated local proof and should remain unset for an ordinary release deployment.
 
 The release stack starts ZA only after its MariaDB and Valkey services are healthy. It keeps the established application entrypoint, which applies migrations and owns empty-database initialization. For a new database, open the configured URL after the services are healthy and complete the browser first-user setup. Do not run SQL manually.
 

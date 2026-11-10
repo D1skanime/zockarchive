@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261110-r74
+
+| 261110-r74 | Repair Phase 43 round-two documentation contracts | 2026-11-10 | Fixed-string checks and `git diff --check` passed; no tests or test suites started | [round-two documentation contracts](./quick/261110-r74-fix-phase-43-naming-retention-classifica/) |
+
+- The retained Git-source compatibility line now has an exact branding-contract record, and the independent image guidance explicitly rejects unverified image sources.
+
 ## Quick Task 261110-y3q
 
 | 261110-y3q | Complete direct Phase 42 post-acceptance preference coverage | 2026-11-10 | 2 affected Vitest files, 8 tests passed; committed | [Phase 42 test completion](./quick/261110-y3q-phase-42-freigabe-testerganzung/) |
