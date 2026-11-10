@@ -5,7 +5,7 @@ milestone_name: milestone
 status: completed
 stopped_at: Phase 41 branch refreshed to current origin/main; renewed live UAT required
 last_updated: "2026-11-10T00:00:00Z"
-last_activity: "2026-11-10 - Phase 42 added for related-games library visibility preference (ki-run job 261110-824a)"
+last_activity: "2026-11-10 - Completed quick task 261110-d7t: resolve Phase 42 quality-gate lint and source-size findings"
 progress:
   total_phases: 42
   completed_phases: 31
@@ -658,6 +658,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261110-d7t | Resolve Phase 42 Quality Gate round 1 lint and source-size findings | 2026-11-10 | fab2eae41 | [261110-d7t](./quick/261110-d7t-quality-gate-runde-1-lintfehler-und-gr-e/) |
 | 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |
 | 261109-jt1 | Repair Phase 41 regression tests after bounded snapshots | 2026-11-09 | 0009f6d45 | [261109-jt1](./quick/261109-jt1-repair-phase-41-regression-tests-after-t/) |
 | 261109-ihy | Add direct regression tests for the live-UAT-approved scan overview | 2026-11-09 | e0787c21d | [261109-ihy](./quick/261109-ihy-add-direct-regression-tests-for-the-live/) |
