@@ -3,6 +3,14 @@
 **Gathered:** 2026-11-11
 **Status:** Ready for planning
 
+## Job Binding
+
+**Job ID: 261111-98c5**
+
+This GSD context belongs to the ki-run job bound in
+`.planning/ki-run/261111-98c5.json`. Its `phase_dir` targets this Phase 44
+directory: `.planning/phases/44-za-einrichtungsassistent-ordner-ausschlie-en-und-plattformen`.
+
 <domain>
 ## Phase Boundary
 
@@ -49,9 +57,10 @@ outside this phase until explicit human approval.
 ## Existing Code Insights
 
 The implementation already exists in commits `1293dd139`, `9a398b364`,
-`647f17e37`, and `fb4f1afa8` on the job branch. It has not previously been
-bound to a GSD phase. Planning must inventory this honestly and only schedule
-remaining phase artifacts, verification, and genuine corrections.
+`647f17e37`, and `fb4f1afa8` on the job branch. The GSD lifecycle evidence is
+bound to job `261111-98c5` through the Job Binding above. Planning must
+inventory the implementation honestly and only schedule remaining phase
+artifacts, verification, and genuine corrections.
 </code_context>
 
 <specifics>

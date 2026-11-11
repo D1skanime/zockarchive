@@ -28,7 +28,11 @@ human_verification:
 
 ## Phase Artifact and Attribution Check
 
-The job binding contains exactly `job_id` and the relative `phase_dir`, and points to this existing phase directory. The phase has `44-CONTEXT.md`, a YAML-frontmatter plan with `wave: 1` and `depends_on: []`, `44-01-SUMMARY.md`, and this verification report.
+Job `261111-98c5` is explicitly identified in `44-CONTEXT.md` and bound by
+`.planning/ki-run/261111-98c5.json`. That binding contains exactly `job_id`
+and the relative `phase_dir`, and points to this existing phase directory. The
+phase has `44-CONTEXT.md`, a YAML-frontmatter plan with `wave: 1` and
+`depends_on: []`, `44-01-SUMMARY.md`, and this verification report.
 
 The inspected implementation predates this phase-record commit. It remains correctly attributed to these prior commits:
 
