@@ -70,5 +70,5 @@ None.
 ## Self-Check: PASSED
 
 The modified schemas and architecture guide, the sanitized report, and both PNG evidence
-files exist. Commit verification is recorded in the execution handoff after the atomic
-commit is created.
+files exist. The implementation/documentation commit `c049d0981` and the planning/UAT
+commit `1313efcdd` exist in the job branch history.
