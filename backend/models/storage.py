@@ -448,6 +448,3 @@ class LegacyMigrationCatalogChange(BaseModel):
     migration: Mapped[LegacyMigration] = relationship(
         lazy="raise", back_populates="catalog_changes"
     )
-
-
-from models.setup_folder_exclusion import SetupFolderExclusion  # noqa: E402, F401
