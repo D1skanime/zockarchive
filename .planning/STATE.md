@@ -735,6 +735,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261111-0faa | Brand Docker init banner and log prefix as ZockArchive | 2026-11-11 | this commit | N/A |
 | 261111-hr4 | Repair typed release-error response fixtures in approved behavior tests | 2026-11-11 | this commit | [261111-hr4](./quick/261111-hr4-fix-typed-mocked-response-objects-in-pha/) |
 | 261111-ghs | Add direct Phase 43 accepted-release behavior tests | 2026-11-11 | current commit | [261111-ghs](./quick/261111-ghs-add-direct-behavior-tests-for-the-approv/) |
 | 261110-t8b | Align the ZA beta GHCR image contract after the Portainer gate finding | 2026-11-11 | 6e3e9d44b | [261110-t8b](./quick/261110-t8b-classify-the-missing-za-library-mount-do/) |

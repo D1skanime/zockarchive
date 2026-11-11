@@ -35,14 +35,13 @@ RESET='\033[0;00m'
 print_banner() {
 	local version
 	version=$(python3 -c "exec(open('__version__.py').read()); print(__version__)")
-	info_log "               _____                 __  __ "
-	info_log '              |  __ \               |  \/  |'
-	info_log '              | |__) |___  _ __ ___ | \  / |'
-	info_log "              |  _  // _ \\| '_ \` _ \\| |\\/| |"
-	info_log '              | | \ \ (_) | | | | | | |  | |'
-	info_log '              |_|  \_\___/|_| |_| |_|_|  |_|'
+	info_log "  ______    _    "
+	info_log " |___  /___| | __"
+	info_log "    / // _ \ |/ /"
+	info_log "   / /| (_) |   < "
+	info_log '  /____\___/|_|\_\'
 	info_log ""
-	info_log "The beautiful, powerful, self-hosted Rom manager and player"
+	info_log "ZockArchive, the self-hosted game library, metadata manager and download portal"
 	info_log ""
 	info_log "Version: ${version}"
 	info_log ""
@@ -51,20 +50,20 @@ print_banner() {
 debug_log() {
 	# print debug log output if enabled
 	if [[ ${LOGLEVEL} == "DEBUG" ]]; then
-		echo -e "${LIGHTMAGENTA}DEBUG:    ${BLUE}[RomM]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
+		echo -e "${LIGHTMAGENTA}DEBUG:    ${BLUE}[ZockArchive]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
 	fi
 }
 
 info_log() {
-	echo -e "${GREEN}INFO:     ${BLUE}[RomM]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
+	echo -e "${GREEN}INFO:     ${BLUE}[ZockArchive]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
 }
 
 warn_log() {
-	echo -e "${YELLOW}WARNING:  ${BLUE}[RomM]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
+	echo -e "${YELLOW}WARNING:  ${BLUE}[ZockArchive]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
 }
 
 error_log() {
-	echo -e "${RED}ERROR:    ${BLUE}[RomM]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
+	echo -e "${RED}ERROR:    ${BLUE}[ZockArchive]${LIGHTMAGENTA}[init]${CYAN}[$(date +"%Y-%m-%d %T")]${RESET}" "${@}" || true
 	exit 1
 }
 
