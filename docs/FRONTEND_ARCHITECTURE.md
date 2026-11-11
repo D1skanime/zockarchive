@@ -147,7 +147,7 @@ ROM and DLC guards accept only decimal safe integers and fetch the parent ROM wh
 
 ### Guards and permissions
 
-Login, setup, reset-password, register, and pair are auth-exempt. Unauthenticated users are sent to login with the destination. SHOW_SETUP_WIZARD sends users to setup. Route scopes are checked for client tokens (me.write), scan and library management (platforms.write), upload (roms.write), administration (users.write), and logs (logs.read). Logs 404 when DISABLE_LOGS_VIEWER is enabled.
+Login, setup, reset-password, register, and pair are auth-exempt. Unauthenticated users are sent to login with the destination. SHOW_SETUP_WIZARD sends users to setup, except that an authenticated administrator with authoritative completed setup status may leave the completion page despite a stale heartbeat. Route scopes are checked for client tokens (me.write), scan and library management (platforms.write), upload (roms.write), administration (users.write), and logs (logs.read). Logs 404 when DISABLE_LOGS_VIEWER is enabled.
 
 ---
 
