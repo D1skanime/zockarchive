@@ -2,19 +2,67 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: completed
-stopped_at: Phase 41 branch refreshed to current origin/main; renewed live UAT required
-last_updated: "2026-11-10T00:00:00Z"
-last_activity: "2026-11-10 - Completed quick task 261110-d7t: resolve Phase 42 quality-gate lint and source-size findings"
+status: awaiting_human_verification
+stopped_at: Phase 43 technical verification complete; temporary Portainer UAT ready
+last_updated: "2026-11-11T11:15:00Z"
+last_activity: 2026-11-11 -- Phase 43 development-version release lookup skipped and browser-inspected
 progress:
-  total_phases: 42
-  completed_phases: 31
-  total_plans: 320
-  completed_plans: 289
-  percent: 76
+  total_phases: 43
+  completed_phases: 32
+  total_plans: 332
+  completed_plans: 297
+  percent: 74
 ---
 
 # Project State
+
+## Quick Task 261111-foc
+
+| 261111-foc | Skip release lookup for non-semver development builds | 2026-11-11 | Static diff/source checks and authenticated 1440 px/390 px browser inspection passed; no tests started | [development release lookup](./quick/261111-foc-skip-release-lookup-for-non-semver-devel/) |
+
+- A non-semver build registers no release listener and makes no latest-release request. Semver-valid builds retain quiet 404 handling and diagnostics for other failures.
+
+## Quick Task 261111-fg7
+
+| 261111-fg7 | Treat the absent first GitHub release as a quiet banner state | 2026-11-11 | Static diff/source checks and authenticated 1440 px/390 px browser inspection passed; no tests started | [release-banner 404 handling](./quick/261111-fg7-handle-missing-github-latest-release-gra/) |
+
+- The canonical latest-release 404 keeps the banner hidden without an application console error; other release API failures remain observable.
+
+## Quick Task 261111-f8t
+
+| 261111-f8t | Repair Phase 43 host-contract release-guide provenance | 2026-11-11 | Legacy and release documentation assertions now verify their owning guides; static diff and Python syntax checks passed, no tests started | [host-contract provenance repair](./quick/261111-f8t-repair-phase-43-host-contract-regression/) |
+
+- The retained Git-source-stack guide stays unchanged. The standalone German release guide explicitly rejects unverified image sources.
+
+## Quick Task 261111-eux
+
+| 261111-eux | Refresh the expired Portainer CE setup-token handoff | 2026-11-11 | Replaced only the retained temporary Portainer container and volume; final restart reopened the five-minute HTTPS setup window and the initial-admin form is visible at desktop/mobile | [Portainer setup-token handoff](./quick/261111-eux-document-the-portainer-ce-setup-token-ha/) |
+
+- No setup token was read, persisted, or exposed. The freshly retained Portainer container remains uninitialized for human UAT; its five-minute setup window began with the final restart.
+
+## Quick Task 261111-ef8
+
+| 261111-ef8 | Repair Phase 43 Portainer live-UAT return | 2026-11-11 | YAML, non-secret Compose render, naming verifier, diff check, isolated first-start and persistence browser proof passed; no test suite started | [Portainer UAT return](./quick/261111-ef8-repair-phase-43-live-uat-return-portaine/) |
+
+- Fresh Portainer CE with no predeployed ZA stack remains retained for the human at the recorded localhost endpoint. Normal release stacks now use named assets/configuration volumes unless an advanced host path is explicitly provided.
+
+## Quick Task 261110-rbr
+
+| 261110-rbr | Repair Phase 43 round-three release documentation and workflow contracts | 2026-11-10 | Static YAML and structural metadata checks passed, but missed the newline-sensitive Docker Hub alias count; no tests or test suites started | [round-three release contracts](./quick/261110-rbr-repair-phase-43-round-three-release-docu/) |
+
+- The independent beta-image paragraph is classified literally, and the Full and Slim release image paths again keep matching registry metadata and build contracts. Quick task `261110-rgy` records the omitted exact alias-count check.
+
+## Quick Task 261110-rgy
+
+| 261110-rgy | Correct round-three static release metadata contracts | 2026-11-10 | YAML, exact metadata counts and diff checks passed; no tests or test suites started | [static release metadata contracts](./quick/261110-rgy-correct-round-three-static-release-metad/) |
+
+- Conditional Docker Hub destinations remain executable only with both Docker Hub secrets, while two YAML comment anchors preserve the static compatibility contract.
+
+## Quick Task 261110-r74
+
+| 261110-r74 | Repair Phase 43 round-two documentation contracts | 2026-11-10 | Fixed-string checks and `git diff --check` passed; no tests or test suites started | [round-two documentation contracts](./quick/261110-r74-fix-phase-43-naming-retention-classifica/) |
+
+- The retained Git-source compatibility line now has an exact branding-contract record, and the independent image guidance explicitly rejects unverified image sources.
 
 ## Quick Task 261110-y3q
 
@@ -153,14 +201,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase40 PC media surface/Storybook completion passed renewed targeted technical verification, including playable and downloadable DLC-owned audio, and awaits human UAT. Phase39 approved logo integration remains pending its own browser UAT.
+**Current focus:** Phase 43 — ZA Beta Release for Independent Portainer Installation
 
 ## Current Position
 
-Phase:39 (zockarchive-approved-logo-integration)
-Plan:1/1
-Status: Implementation complete, human UAT pending; Phase38 acceptance remains intact
-Last activity: 2026-11-09 - Completed quick task 261109-n26: add direct scan-result regression coverage
+Phase: 43 (ZA Beta Release for Independent Portainer Installation)
+Plan: 4 of 4
+Status: Technical verification complete (7/7); human Portainer UAT pending
+Last activity: 2026-11-10 -- Phase 43 technically verified; temporary UAT is ready
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -377,6 +425,8 @@ _Updated after each plan completion_
 ## Accumulated Context
 
 ### Roadmap Evolution
+
+- Phase 43 added: ZA: Beta-Release für unabhängige Portainer-Installation
 
 - Phase 42 added: Per-user related-games preference for recommendations outside the accessible ZA library, assigned to ki-run job 261110-824a.
 - Phase 41 added: ZA scan overview for large libraries, assigned to ki-run job 261107-8ee7.
@@ -685,6 +735,11 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261111-hr4 | Repair typed release-error response fixtures in approved behavior tests | 2026-11-11 | this commit | [261111-hr4](./quick/261111-hr4-fix-typed-mocked-response-objects-in-pha/) |
+| 261111-ghs | Add direct Phase 43 accepted-release behavior tests | 2026-11-11 | current commit | [261111-ghs](./quick/261111-ghs-add-direct-behavior-tests-for-the-approv/) |
+| 261110-t8b | Align the ZA beta GHCR image contract after the Portainer gate finding | 2026-11-11 | 6e3e9d44b | [261110-t8b](./quick/261110-t8b-classify-the-missing-za-library-mount-do/) |
+| 261110-rgy | Correct round-three static release metadata contracts | 2026-11-10 | current commit | [261110-rgy](./quick/261110-rgy-correct-round-three-static-release-metad/) |
+| 261110-rbr | Repair Phase 43 round-three release documentation and workflow contracts | 2026-11-10 | current commit | [261110-rbr](./quick/261110-rbr-repair-phase-43-round-three-release-docu/) |
 | 261110-deg | Resolve Phase 42 Quality Gate round 2 resolver typecheck findings | 2026-11-10 | defffd9af | [261110-deg](./quick/261110-deg-quality-gate-runde-2-resolver-typecheck/) |
 | 261110-d7t | Resolve Phase 42 Quality Gate round 1 lint and source-size findings | 2026-11-10 | fab2eae41 | [261110-d7t](./quick/261110-d7t-quality-gate-runde-1-lintfehler-und-gr-e/) |
 | 261109-k8t | Repair confirmed Phase 41 Gate 15 and Gate 16 MariaDB regressions | 2026-11-09 | a04560381 | [261109-k8t](./quick/261109-k8t-repair-all-confirmed-phase-41-gate-15-an/) |

@@ -1192,3 +1192,31 @@ Plans:
 - [ ] 42-08-PLAN.md - Final ROM locale batch and parity/sort validation.
 - [ ] 42-05-PLAN.md - Real-component Storybook compositions and catalogue registrations.
 - [ ] 42-06-PLAN.md - Frontend architecture, allowed build/catalog checks, and desktop/mobile sight inspection.
+
+### Phase 43: ZA: Beta-Release für unabhängige Portainer-Installation
+
+**Goal:** Operators can prepare and locally prove an independent, image-based ZockArchive beta installation in Portainer without publishing, tagging, pushing, or touching permanent development resources.
+**Requirements**: ZA-REL-43-01, ZA-REL-43-02, ZA-REL-43-03, ZA-REL-43-04, ZA-REL-43-05, ZA-REL-43-06, ZA-REL-43-07, ZA-REL-43-08
+**Depends on:** Phase 42
+**Success Criteria** (what must be TRUE):
+
+1. A published prerelease named `v0.1.0-beta.1` would build linux/amd64 and linux/arm64 images, publish required GHCR tags `0.1.0-beta.1` and `beta`, never emit `latest`, and use Docker Hub only when both credentials exist.
+2. The documented GHCR image contract is `ghcr.io/d1skanime/pc-game-download-portal`; ScreenScraper developer arguments come from GitHub Secrets and the embedded-image disclosure is documented without exposing their values.
+3. An operator can deploy the image-only Portainer stack with ZA, MariaDB, and Valkey, required variables fail before partial startup, migrations and first-user setup use the established application entrypoint, and no Git checkout or manual database command is required.
+4. The release stack preserves MariaDB, resources, and Valkey through named volumes, mounts operator configuration and assets as explicit writable bind paths, mounts the game library read-only, and describes safe update persistence.
+5. Documentation distinguishes the retained Git-source stack from the release-image stack, describes the later human release sequence and limitations, and never presents this preparation as a published release.
+6. Before human UAT, a locally built isolated amd64 image has typecheck/build evidence, an empty-database first install, migration/setup, sample-library browser inspection, and ZA-container recreation persistence evidence without tests, test additions, registry login, publishing, or permanent `pgdp-*` changes.
+7. A separately ported temporary Portainer CE environment is prepared for human UAT with a secret-free handoff that records only the local tag, stack file, variable names, test-library path, and access route.
+
+**Status:** Implementation and technical verification complete (7/7 must-haves). Human Portainer deployment UAT remains pending; no tag, release, registry publication, push, merge, or permanent deployment was performed.
+**Plans:** 4 plans in 3 waves
+
+Plans:
+- [x] 43-01-PLAN.md - Harden prerelease tag validation, registry routing, and OCI beta metadata.
+- [x] 43-02-PLAN.md - Add the independent image-only ZA, MariaDB, and Valkey Portainer release stack.
+- [x] 43-03-PLAN.md - Document the release-image operator contract, persistence boundaries, and later release procedure.
+- [x] 43-04-PLAN.md - Produce isolated local installation evidence and prepare temporary Portainer CE human UAT.
+
+**Wave 1:** 43-01, 43-02
+**Wave 2:** 43-03
+**Wave 3:** 43-04

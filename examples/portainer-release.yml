@@ -1,0 +1,90 @@
+# Image-only ZockArchive release stack for Portainer. This stack pulls a tagged
+# OCI image and intentionally has no build context or source checkout dependency.
+volumes:
+  # Keep catalog, managed resources, and Valkey state across ZA recreation.
+  za_mariadb_data:
+  za_resources:
+  za_assets:
+  za_config:
+  za_valkey_data:
+
+services:
+  za:
+    # Override ZA_IMAGE_REPOSITORY only for a local Phase 43 proof image. Normal
+    # Portainer deployments use the authoritative GHCR repository and beta tag.
+    image: ${ZA_IMAGE_REPOSITORY:-ghcr.io/d1skanime/zockarchive}:${ZA_IMAGE_TAG:-0.1.0-beta.1}
+    restart: unless-stopped
+    environment:
+      DB_HOST: za-mariadb
+      DB_NAME: ${ZA_DB_NAME:-zockarchive}
+      DB_USER: ${ZA_DB_USER:-zockarchive}
+      DB_PASSWD: ${ZA_DB_PASSWORD:?Set ZA_DB_PASSWORD as a Portainer secret}
+      ROMM_AUTH_SECRET_KEY: ${ZA_AUTH_SECRET_KEY:?Set ZA_AUTH_SECRET_KEY as a Portainer secret}
+      REDIS_HOST: za-valkey
+      REDIS_PORT: "6379"
+      TZ: ${ZA_TZ:-UTC}
+      SCREENSCRAPER_USER: ${ZA_SCREENSCRAPER_USER:-}
+      SCREENSCRAPER_PASSWORD: ${ZA_SCREENSCRAPER_PASSWORD:-}
+      RETROACHIEVEMENTS_API_KEY: ${ZA_RETROACHIEVEMENTS_API_KEY:-}
+      STEAMGRIDDB_API_KEY: ${ZA_STEAMGRIDDB_API_KEY:-}
+      IGDB_CLIENT_ID: ${ZA_IGDB_CLIENT_ID:-}
+      IGDB_CLIENT_SECRET: ${ZA_IGDB_CLIENT_SECRET:-}
+      HASHEOUS_API_ENABLED: ${ZA_HASHEOUS_API_ENABLED:-true}
+    volumes:
+      - za_resources:/romm/resources
+      - ${ZA_LIBRARY_PATH:?Set ZA_LIBRARY_PATH to the operator game-library path}:/romm/library:ro
+      # Empty advanced variables select persistent named volumes. An absolute
+      # host path intentionally replaces the matching named-volume mount.
+      - ${ZA_ASSETS_PATH:-za_assets}:/romm/assets
+      - ${ZA_CONFIG_PATH:-za_config}:/romm/config
+    ports:
+      - "${ZA_HTTP_PORT:-8080}:8080"
+    depends_on:
+      za-mariadb:
+        condition: service_healthy
+        restart: true
+      za-valkey:
+        condition: service_healthy
+        restart: true
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q -O - http://127.0.0.1:8080/api/heartbeat >/dev/null || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  za-mariadb:
+    # MariaDB 11.3 multi-architecture image index, compatible with amd64 and arm64.
+    image: mariadb:11.3@sha256:e101f9db31916a5d4d7d594dd0dd092fb23ab4f499f1d7a7425d1afd4162c4bc
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${ZA_DB_ROOT_PASSWORD:?Set ZA_DB_ROOT_PASSWORD as a Portainer secret}
+      MARIADB_DATABASE: ${ZA_DB_NAME:-zockarchive}
+      MARIADB_USER: ${ZA_DB_USER:-zockarchive}
+      MARIADB_PASSWORD: ${ZA_DB_PASSWORD:?Set ZA_DB_PASSWORD as a Portainer secret}
+    volumes:
+      - za_mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 30s
+      start_interval: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  za-valkey:
+    # Valkey 8.1 Alpine multi-architecture image index, compatible with amd64 and arm64.
+    image: valkey/valkey:8.1-alpine@sha256:2602ace2be6569bc2bbb06f873776516ab9089821525be34f4305c67eb9db02a
+    restart: unless-stopped
+    command: valkey-server --appendonly yes
+    volumes:
+      - za_valkey_data:/data
+    healthcheck:
+      test: ["CMD", "valkey-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

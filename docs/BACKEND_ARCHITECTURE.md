@@ -275,7 +275,11 @@ existing parent-media and provider behavior.
 
 RQ tasks are defined under backend/tasks/ and initialized by backend/startup.py, including scans, cleanup, provider updates, media cleanup, save-hash backfill and sync push/pull. /ws uses Socket.IO with Redis coordination for scan, activity, sync and admin log events; /netplay provides room, WebRTC and input relay events.
 
-The Git-based production contract is examples/portainer-stack.yml. It builds docker/Dockerfile, persists MariaDB, resources and Redis data, mounts /romm/library read-only, and mounts operator-owned assets and config as writable paths. Required Portainer secrets include PGDP_DB_PASSWORD, PGDP_DB_ROOT_PASSWORD and PGDP_AUTH_SECRET_KEY. The exact host paths are deployment-specific.
+The retained Git-source Portainer contract is `examples/portainer-stack.yml`. It builds `docker/Dockerfile`, persists MariaDB, resources and Redis data, mounts `/romm/library` read-only, and mounts operator-owned assets and config as writable paths. Required Portainer secrets include `PGDP_DB_PASSWORD`, `PGDP_DB_ROOT_PASSWORD` and `PGDP_AUTH_SECRET_KEY`. The exact host paths are deployment-specific.
+
+The independent image-only Portainer contract is `examples/portainer-release.yml`. It pulls a reviewed GHCR release image instead of building source and uses separate `ZA_*` variables. MariaDB, `za_resources`, Valkey, assets and configuration have named volumes by default. Only `ZA_LIBRARY_PATH` is required and mounted at `/romm/library:ro`; advanced operators may replace the assets or configuration volume with an explicit writable host path. The stack does not mount the Docker socket. These boundaries keep catalog, cache, managed resources, configuration, assets, and the source library under distinct ownership.
+
+The image-only stack sets `REDIS_HOST=za-valkey` and `REDIS_PORT=6379`, selecting the external health-gated Valkey service instead of the image's internal fallback. The established application entrypoint remains responsible for waiting on its dependencies, applying Alembic migrations, and presenting browser first-user setup for an empty database. Portainer and Compose provide configuration and service dependency wiring; the application container owns migration and setup behavior; MariaDB, Valkey, named volumes, and operator bind mounts own durable state.
 
 ### Configuration and verification
 

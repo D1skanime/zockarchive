@@ -36,6 +36,7 @@ surface|frontend/src/PGDP.vue|
 surface|frontend/src/v2/config/project.ts|
 surface|README.md|
 surface|docs/PORTAINER_INSTALL.md|
+surface|docs/INSTALLATION_PORTAINER.md|
 surface|examples/README.md|
 surface|examples/portainer-stack.yml|
 surface|examples/portainer.env.example|
@@ -53,6 +54,7 @@ require|README.md|# ZockArchive
 require|README.md|https://github.com/D1skanime/zockarchive
 require|docs/PORTAINER_INSTALL.md|# ZockArchive
 require|docs/PORTAINER_INSTALL.md|https://github.com/D1skanime/zockarchive.git
+require|docs/INSTALLATION_PORTAINER.md|# ZockArchive
 require|examples/README.md|https://github.com/D1skanime/zockarchive.git
 require|examples/portainer-stack.yml|# ZockArchive
 require|examples/portainer.env.example|# ZockArchive
@@ -71,6 +73,8 @@ retain|docs/PORTAINER_INSTALL.md|| `pgdp_redis_data`   | `/redis-data`     | Per
 retain|docs/PORTAINER_INSTALL.md|| `pgdp_mysql_data`   | `/var/lib/mysql`  | Persistent MariaDB catalog        |
 retain|docs/PORTAINER_INSTALL.md|For QNAP use actual storage-pool/share paths exposed to its Docker daemon. Linux examples are `/srv/pgdp/library`, `/srv/pgdp/assets` and `/srv/pgdp/config`. Confirm ownership and read/write access before deploying. Existing paths remain valid under the ZockArchive name.
 retain|docs/PORTAINER_INSTALL.md|Build context `..` resolves from `examples/` to the repository root. The stack builds `docker/Dockerfile`, target `full-image`. `PGDP_IMAGE` defaults to `pc-game-download-portal:portainer`, the local tag for that build. Preserve existing overrides. A deliberate prebuilt-image deployment requires separate provenance/version verification.
+retain|docs/PORTAINER_INSTALL.md|> Dieses Dokument beschreibt den beibehaltenen Git-Quellstack mit `PGDP_*`.
+retain|docs/PORTAINER_INSTALL.md|- The retained Git-source [stack](../examples/portainer-stack.yml) builds a reviewed repository revision with the `PGDP_*` variables documented below.
 retain|docs/PORTAINER_INSTALL.md|A source rename does not move the canonical development checkout `/home/d1sk/pc-game-download-portal` or migrate registry packages and Docker storage. Do not create a differently named replacement stack and assume it reuses the same data. Portainer changes are operator actions, not performed by reading this guide.
 retain|docs/PORTAINER_INSTALL.md|All `PGDP_*` and `ROMM_*` keys retain their exact names and values.
 retain|docs/PORTAINER_INSTALL.md|| `PGDP_PROJECT_NAME`      | `pgdp`, Compose project                              |
@@ -96,10 +100,14 @@ retain|docs/PORTAINER_INSTALL.md|Upstream RomM images and embedded application c
 retain|docs/PORTAINER_INSTALL.md|1. Wait for `pgdp-db`, then `pgdp`, to become healthy.
 retain|docs/PORTAINER_INSTALL.md|- Actual project-prefixed `pgdp_mysql_data`, `pgdp_resources` and `pgdp_redis_data` volumes.
 retain|docs/PORTAINER_INSTALL.md|- `PGDP_ASSETS_PATH` and `PGDP_CONFIG_PATH`.
-retain|docs/PORTAINER_INSTALL.md|Release automation retains full/slim aliases `d1skanime/pc-game-download-portal` and `ghcr.io/d1skanime/pc-game-download-portal`. Preview automation retains `pc-game-download-portal-testing` in the selected registry/credential namespace. These are configured destinations, not proof of publication or access.
+retain|docs/PORTAINER_INSTALL.md|Release automation retains the optional Docker Hub full/slim alias `d1skanime/zockarchive`. Preview automation retains `pc-game-download-portal-testing` in the selected registry/credential namespace. These are configured destinations, not proof of publication or access.
+retain|docs/INSTALLATION_PORTAINER.md|Der Pfad wird schreibgeschützt eingebunden. In der Stack-Variable steht links immer
+retain|docs/INSTALLATION_PORTAINER.md|Ihr eigener Host-Pfad, zum Beispiel `/srv/spiele:/romm/library:ro`. `/romm/...` ist
+retain|docs/INSTALLATION_PORTAINER.md|ein fester interner Container-Pfad und wird nicht angepasst.
+retain|docs/INSTALLATION_PORTAINER.md|Der ältere Git-Quellstack mit `PGDP_*` bleibt separat dokumentiert in
 retain|docs/PORTAINER_INSTALL.md|Use [ZockArchive issues](https://github.com/D1skanime/zockarchive/issues), [releases](https://github.com/D1skanime/zockarchive/releases) and repository docs. [Upstream RomM](https://github.com/rommapp/romm) remains the origin. Its docs, community and donation accounts belong to upstream.
 retain|examples/README.md|The stack builds the selected Git revision using `docker/Dockerfile`. `PGDP_IMAGE` defaults to the existing local tag `pc-game-download-portal:portainer`. It is not an advertised public image. Preserve project, service, database, volume and host-path overrides.
-retain|examples/README.md|`docker-compose.example.yml` is a manual prebuilt-image example. Its local `pc-game-download-portal:latest` tag must already be built or supplied by an operator who verified its provenance. It is not a verified registry publication.
+retain|examples/README.md|`docker-compose.example.yml` is a manual prebuilt-image example. Its local `pc-game-download-portal:latest` tag must already be built or supplied by an operator who verified its provenance. It is not the independent release contract.
 retain|examples/README.md|Optional provider credentials may remain blank. ScreenScraper source builds need the two `PGDP_SCREENSCRAPER_DEV_*` build inputs as well as personal credentials.
 retain|examples/portainer-stack.yml|name: ${PGDP_PROJECT_NAME:-pgdp}
 retain|examples/portainer-stack.yml|  pgdp_mysql_data:

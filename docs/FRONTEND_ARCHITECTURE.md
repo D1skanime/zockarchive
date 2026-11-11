@@ -377,10 +377,14 @@ emblem. AuthCard owns the shared login/register/reset/setup
 frame; the labelled Home link hides redundant brand artwork from assistive
 technology. The pairing QR remains unmodified, with
 product identity outside its encoded area.
-VersionTag, AboutDialog and NewVersionBanner share `projectReleaseTagUrl`;
-the banner fetches the canonical release API and preserves its age/dismissal
-rules. About links current documentation to repository docs and labels the
-retained RomM community link as upstream.
+VersionTag, AboutDialog and NewVersionBanner share `projectReleaseTagUrl`.
+Only semver-valid running builds query the canonical latest-release API;
+development and other non-semver builds deliberately make no release lookup.
+A valid build treats a 404 as the normal not-yet-published state, staying
+hidden without a console error while other failures remain observable. It
+preserves its age and dismissal rules.
+About links current documentation to repository docs and labels the retained
+RomM community link as upstream.
 
 Localized product copy uses invariant ZockArchive spelling in the existing locale
 values, including the retained `about-romm` and `upload-to-romm` keys. The

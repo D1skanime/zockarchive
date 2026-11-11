@@ -1,7 +1,7 @@
 import { mount, flushPromises } from "@vue/test-utils";
 import { shallowMount } from "@vue/test-utils";
 import { readFileSync } from "node:fs";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import AppNav from "@/v2/components/AppShell/AppNav.vue";
 import AboutDialog from "@/v2/components/Dialogs/AboutDialog.vue";
 import NewVersionBanner from "@/v2/components/Notifications/NewVersionBanner.vue";
@@ -53,9 +53,24 @@ vi.mock("vue-i18n", () => ({
 vi.mock("@/v2/composables/useNavDestinations", () => ({
   useNavDestinations: () => ({ destinations: [], activeId: "home" }),
 }));
+const heartbeatVersion = vi.hoisted(() => ({ value: "v1.2.3" }));
+
+function failedJsonResponse(status: number): Response {
+  return new Response(JSON.stringify({}), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 vi.mock("@/v2/data/adapters/legacy/stores/heartbeat", () => ({
-  default: () => ({ value: { SYSTEM: { VERSION: "v1.2.3" } } }),
+  default: () => ({ value: { SYSTEM: { VERSION: heartbeatVersion.value } } }),
 }));
+
+afterEach(() => {
+  heartbeatVersion.value = "v1.2.3";
+  localStorage.removeItem("ui.dismissedVersion");
+  vi.restoreAllMocks();
+});
 
 describe("brand consumers", () => {
   it("uses the shared auth glass tokens instead of a fixed dark canvas", () => {
@@ -156,34 +171,96 @@ describe("rendered release identity", () => {
     about.unmount();
   });
 
-  it("fetches the project latest release and opens its truthful tag", async () => {
-    localStorage.removeItem("ui.dismissedVersion");
+  it.each(["development", "not-a-semver"])(
+    "does not request releases for the non-semver %s heartbeat",
+    async (version) => {
+      heartbeatVersion.value = version;
+      const fetch = vi.spyOn(globalThis, "fetch");
+      const wrapper = shallowMount(NewVersionBanner, {
+        global: { stubs: { ZABtn: { template: "<button><slot /></button>" } } },
+      });
+
+      document.dispatchEvent(new Event("network-quiesced"));
+      await flushPromises();
+
+      expect(fetch).not.toHaveBeenCalled();
+      wrapper.unmount();
+    },
+  );
+
+  it("keeps a missing latest release quiet and hidden", async () => {
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(failedJsonResponse(404));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const wrapper = shallowMount(NewVersionBanner, {
+      global: { stubs: { ZABtn: { template: "<button><slot /></button>" } } },
+    });
+
+    document.dispatchEvent(new Event("network-quiesced"));
+    await flushPromises();
+
+    expect(fetch).toHaveBeenCalledWith(
+      "https://api.github.com/repos/D1skanime/zockarchive/releases/latest",
+    );
+    expect(consoleError).not.toHaveBeenCalled();
+    expect(wrapper.find(".r-v2-new-version").exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it("diagnoses a non-404 latest-release failure without showing a banner", async () => {
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(failedJsonResponse(500));
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const wrapper = shallowMount(NewVersionBanner, {
+      global: { stubs: { ZABtn: { template: "<button><slot /></button>" } } },
+    });
+
+    document.dispatchEvent(new Event("network-quiesced"));
+    await flushPromises();
+
+    expect(fetch).toHaveBeenCalledOnce();
+    expect(consoleError).toHaveBeenCalledWith(
+      "Failed to fetch latest version from GitHub",
+      expect.objectContaining({
+        message: "GitHub latest-release request failed with status 500",
+      }),
+    );
+    expect(wrapper.find(".r-v2-new-version").exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it("removes the lifecycle listener after its request and during unmount", async () => {
     const fetch = vi.spyOn(globalThis, "fetch").mockResolvedValue({
+      status: 200,
+      ok: true,
       json: async () => ({
         tag_name: "v1.3.0",
         published_at: "2020-01-01T00:00:00Z",
       }),
     } as Response);
-    const open = vi.spyOn(window, "open").mockImplementation(() => null);
     const wrapper = shallowMount(NewVersionBanner, {
       global: { stubs: { ZABtn: { template: "<button><slot /></button>" } } },
     });
+
     document.dispatchEvent(new Event("network-quiesced"));
     await flushPromises();
+
     expect(fetch).toHaveBeenCalledWith(
       "https://api.github.com/repos/D1skanime/zockarchive/releases/latest",
     );
-    expect(wrapper.text()).toContain("v1.3.0");
-    await wrapper.findAll("button")[0]!.trigger("click");
-    expect(open).toHaveBeenCalledWith(
-      "https://github.com/D1skanime/zockarchive/releases/tag/v1.3.0",
-      "_blank",
-      "noopener,noreferrer",
-    );
-    await wrapper.findAll("button")[1]!.trigger("click");
-    expect(localStorage.getItem("ui.dismissedVersion")).toBe("v1.3.0");
+    document.dispatchEvent(new Event("network-quiesced"));
+    await flushPromises();
+    expect(fetch).toHaveBeenCalledOnce();
+
     wrapper.unmount();
-    fetch.mockRestore();
-    open.mockRestore();
+    document.dispatchEvent(new Event("network-quiesced"));
+    await flushPromises();
+    expect(fetch).toHaveBeenCalledOnce();
   });
 });

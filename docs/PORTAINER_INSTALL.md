@@ -1,6 +1,14 @@
 # ZockArchive Portainer installation
 
-This guide covers PC and console libraries using the Git-source [stack](../examples/portainer-stack.yml) and [environment template](../examples/portainer.env.example). Keep filled environment files and secrets outside Git.
+> Für die eigenständige Release-Installation ohne Git-Checkout siehe die
+> deutsche Anleitung [INSTALLATION_PORTAINER.md](INSTALLATION_PORTAINER.md).
+> Dieses Dokument beschreibt den beibehaltenen Git-Quellstack mit `PGDP_*`.
+
+This guide covers two separate Portainer contracts for PC and console libraries. Keep filled environment files and secrets outside Git.
+
+- The retained Git-source [stack](../examples/portainer-stack.yml) builds a reviewed repository revision with the `PGDP_*` variables documented below.
+
+Do not mix this Compose file, its variable prefixes, volume names, or update procedure with the release stack. The release image path does not require a Git checkout, source build, or manual database command.
 
 ## Storage and prerequisites
 
@@ -109,9 +117,7 @@ Select the reviewed revision, rebuild and redeploy the existing stack with the s
 
 ## Image publication and support ownership
 
-Release automation retains full/slim aliases `d1skanime/pc-game-download-portal` and `ghcr.io/d1skanime/pc-game-download-portal`. Preview automation retains `pc-game-download-portal-testing` in the selected registry/credential namespace. These are configured destinations, not proof of publication or access.
-
-Package accessibility is **unverified**: inventory returned HTTP 403 without `read:packages`. No new public ZockArchive GHCR/Docker Hub alias is advertised. Repository redirects do not establish registry redirects or package migration. This guide uses Git-source builds.
+The future release workflow publishes the authoritative image to `ghcr.io/d1skanime/zockarchive` after a human-approved published release. It emits exact release and beta tags, never `latest`. This documentation change does not publish an image or establish package access. Repository redirects do not establish registry redirects or package migration.
 
 Use [ZockArchive issues](https://github.com/D1skanime/zockarchive/issues), [releases](https://github.com/D1skanime/zockarchive/releases) and repository docs. [Upstream RomM](https://github.com/rommapp/romm) remains the origin. Its docs, community and donation accounts belong to upstream.
 
