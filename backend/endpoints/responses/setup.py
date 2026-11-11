@@ -24,7 +24,7 @@ class SetupFoldersResponse(BaseModel):
 
 class SetupFolderAssignmentSchema(BaseModel):
     folder_name: str = Field(min_length=1, max_length=255)
-    disposition: Literal["platform", "excluded"]
+    disposition: Literal["platform", "excluded"] = Field(default="platform")
     platform_slug: str | None = Field(default=None, min_length=1, max_length=100)
 
 
@@ -40,7 +40,7 @@ class SetupRootHealthSchema(BaseModel):
 
 class SetupFolderMappingSchema(BaseModel):
     folder_name: str = Field(min_length=1, max_length=255)
-    disposition: Literal["platform", "excluded"]
+    disposition: Literal["platform", "excluded"] = Field(default="platform")
     platform_slug: str | None = Field(default=None, min_length=1, max_length=100)
     mapping_id: int | None = Field(default=None, gt=0)
     relative_path: str = Field(min_length=1, max_length=700)
