@@ -18,9 +18,9 @@ progress:
 
 ## Quick Task 261111-eux
 
-| 261111-eux | Refresh the expired Portainer CE setup-token handoff | 2026-11-11 | Replaced only the retained temporary Portainer container and volume; HTTPS initial-admin form is visible at desktop/mobile and the secret-safe handoff is refreshed | [Portainer setup-token handoff](./quick/261111-eux-document-the-portainer-ce-setup-token-ha/) |
+| 261111-eux | Refresh the expired Portainer CE setup-token handoff | 2026-11-11 | Replaced only the retained temporary Portainer container and volume; final restart reopened the five-minute HTTPS setup window and the initial-admin form is visible at desktop/mobile | [Portainer setup-token handoff](./quick/261111-eux-document-the-portainer-ce-setup-token-ha/) |
 
-- No setup token was read, persisted, or exposed. The freshly retained Portainer container remains uninitialized for human UAT.
+- No setup token was read, persisted, or exposed. The freshly retained Portainer container remains uninitialized for human UAT; its five-minute setup window began with the final restart.
 
 ## Quick Task 261111-ef8
 
