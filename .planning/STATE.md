@@ -735,6 +735,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261111-nja | Repair completed-setup first-scan navigation | 2026-11-11 | 07f0050d2 | [261111-nja](./quick/261111-nja-sichtpr-fung-erstscan-schaltfl-che-im-ab/) |
 | 261111-nbd | Repair the StorageRoot exclusion annotation import | 2026-11-11 | f2f236808 | [261111-nbd](./quick/261111-nbd-ruff-f821-setupfolderexclusion-typimport/) |
 | 261111-m0v | Extract setup exclusions and ZASelect responsibilities below the hard file limit | 2026-11-11 | 04c2ac519, 78b06ed3e, d0c0137d8 | [261111-m0v](./quick/261111-m0v-quality-gate-runde-3-gr-enverst-e-bei-se/) |
 | 261111-lx9 | Make the Phase 44 GSD context explicitly identify job 261111-98c5 | 2026-11-11 | this commit | [261111-lx9](./quick/261111-lx9-quality-gate-runde-2-auftragskennung-im/) |
