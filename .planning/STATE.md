@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261111-pbs
+
+| 261111-pbs | Default omitted setup dispositions to platform | 2026-11-11 | Structural checks and live desktop/mobile browser inspection completed; no tests started. Step 1 remained behind the normal Login route, and the bounded log observation confirmed the `[ZockArchive]` prefix but not a retained init banner. | [setup disposition review](./quick/261111-pbs-review-runde-1-standardwert-fuer-setup-o/) |
+
+- Setup assignment and mapping schemas now retain legacy omitted dispositions as platform mappings. The sanitized UAT report records the authenticated-route blocker without changing durable setup, Docker state, or source storage.
+
 ## Quick Task 261111-foc
 
 | 261111-foc | Skip release lookup for non-semver development builds | 2026-11-11 | Static diff/source checks and authenticated 1440 px/390 px browser inspection passed; no tests started | [development release lookup](./quick/261111-foc-skip-release-lookup-for-non-semver-devel/) |
