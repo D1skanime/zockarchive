@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261111-ef8
+
+| 261111-ef8 | Repair Phase 43 Portainer live-UAT return | 2026-11-11 | YAML, non-secret Compose render, naming verifier, diff check, isolated first-start and persistence browser proof passed; no test suite started | [Portainer UAT return](./quick/261111-ef8-repair-phase-43-live-uat-return-portaine/) |
+
+- Fresh Portainer CE with no predeployed ZA stack remains retained for the human at the recorded localhost endpoint. Normal release stacks now use named assets/configuration volumes unless an advanced host path is explicitly provided.
+
 ## Quick Task 261110-rbr
 
 | 261110-rbr | Repair Phase 43 round-three release documentation and workflow contracts | 2026-11-10 | Static YAML and structural metadata checks passed, but missed the newline-sensitive Docker Hub alias count; no tests or test suites started | [round-three release contracts](./quick/261110-rbr-repair-phase-43-round-three-release-docu/) |
