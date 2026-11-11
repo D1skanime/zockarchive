@@ -37,8 +37,10 @@ nur in Portainer oder einem Passwort-Manager.
 4. Klicken Sie **Deploy the stack**. Fehlende Pflichtwerte verhindern einen Teilstart.
 
 Der normale Imagepfad ist `ghcr.io/d1skanime/zockarchive:0.1.0-beta.1`.
-Nutzen Sie niemals `latest`. Assets und Konfiguration werden standardmäßig in
-benannten Volumes gespeichert. Fortgeschrittene können optional `ZA_ASSETS_PATH`
+Eine Image-Quelle außerhalb des geprüften GHCR-Releases ist nicht verifiziert
+(`unverified`) und darf nicht bereitgestellt werden. Nutzen Sie niemals `latest`.
+Assets und Konfiguration werden standardmäßig in benannten Volumes gespeichert.
+Fortgeschrittene können optional `ZA_ASSETS_PATH`
 und `ZA_CONFIG_PATH` auf beschreibbare absolute Host-Pfade setzen; dann ersetzen
 diese Pfade jeweils das zugehörige Volume.
 

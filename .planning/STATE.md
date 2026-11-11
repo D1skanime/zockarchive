@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261111-f8t
+
+| 261111-f8t | Repair Phase 43 host-contract release-guide provenance | 2026-11-11 | Legacy and release documentation assertions now verify their owning guides; static diff and Python syntax checks passed, no tests started | [host-contract provenance repair](./quick/261111-f8t-repair-phase-43-host-contract-regression/) |
+
+- The retained Git-source-stack guide stays unchanged. The standalone German release guide explicitly rejects unverified image sources.
+
 ## Quick Task 261111-eux
 
 | 261111-eux | Refresh the expired Portainer CE setup-token handoff | 2026-11-11 | Replaced only the retained temporary Portainer container and volume; final restart reopened the five-minute HTTPS setup window and the initial-admin form is visible at desktop/mobile | [Portainer setup-token handoff](./quick/261111-eux-document-the-portainer-ce-setup-token-ha/) |

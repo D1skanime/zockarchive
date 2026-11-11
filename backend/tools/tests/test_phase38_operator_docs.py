@@ -71,7 +71,6 @@ class OperatorDocsTests(unittest.TestCase):
             "pgdp_resources",
             "pgdp_redis_data",
             "pc-game-download-portal:portainer",
-            "unverified",
             "PGDP_SCREENSCRAPER_DEV_ID",
             "PGDP_SCREENSCRAPER_DEV_PASSWORD",
         ):
@@ -86,6 +85,7 @@ class OperatorDocsTests(unittest.TestCase):
             "ZA_LIBRARY_PATH",
             "za_assets",
             "za_config",
+            "unverified",
         ):
             self.assertIn(value, release)
 
