@@ -63,6 +63,8 @@ interface Props {
   items?: unknown[];
   label?: string;
   placeholder?: string;
+  /** Text to render when the model deliberately uses an out-of-list value. */
+  displayValue?: string;
   variant?: "outlined" | "filled" | "underlined" | "plain";
   density?: "default" | "comfortable" | "compact";
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -128,12 +130,15 @@ interface Props {
   /** Label used by the "All" row in the menu and as the activator
    *  display when nothing is selected. Defaults to "All". */
   allOptionLabel?: string;
+  /** A consumer-provided action pinned above filtered options. */
+  pinnedActionLabel?: string;
 }
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   items: () => [],
   label: undefined,
   placeholder: undefined,
+  displayValue: undefined,
   variant: "outlined",
   density: "comfortable",
   itemTitle: "title",
@@ -165,6 +170,7 @@ const props = withDefaults(defineProps<Props>(), {
   chipTone: "brand",
   showAllOption: false,
   allOptionLabel: "All",
+  pinnedActionLabel: undefined,
 });
 const emit = defineEmits<{
   (e: "update:modelValue", value: unknown): void;
@@ -179,6 +185,7 @@ const emit = defineEmits<{
   (e: "clear"): void;
   (e: "open"): void;
   (e: "close"): void;
+  (e: "pinned-action"): void;
 }>();
 
 const slots = useSlots();
@@ -462,6 +469,7 @@ function selectItem(item: NormalisedItem) {
 const showAllRow = computed(
   () => props.multiple && props.showAllOption && !internalSearch.value.trim(),
 );
+const hasPinnedAction = computed(() => Boolean(props.pinnedActionLabel));
 
 // All non-disabled item values exposed by *this* select. Used by the
 // "All" toggle to scope its changes to its own items, so two selects
@@ -525,6 +533,11 @@ function toggleAllItems() {
       emit("update:modelValue", []);
     }
   }
+}
+
+function activatePinnedAction() {
+  emit("pinned-action");
+  closeMenu();
 }
 
 function removeSelection(value: unknown) {
@@ -751,7 +764,20 @@ const activeIndex = ref(0);
 
 function moveActive(delta: number) {
   const list = filteredItems.value;
-  if (!list.length) return;
+  if (!list.length) {
+    if (hasPinnedAction.value) activeIndex.value = -1;
+    return;
+  }
+  if (hasPinnedAction.value && activeIndex.value === -1) {
+    activeIndex.value = delta > 0 ? 0 : list.length - 1;
+    scrollActiveIntoView();
+    return;
+  }
+  if (hasPinnedAction.value && delta < 0 && activeIndex.value === 0) {
+    activeIndex.value = -1;
+    scrollActiveIntoView();
+    return;
+  }
   let i = activeIndex.value + delta;
   // Wrap + skip disabled.
   for (let n = 0; n < list.length; n++) {
@@ -792,6 +818,10 @@ function onActivatorKey(evt: KeyboardEvent) {
         openMenu();
       } else {
         evt.preventDefault();
+        if (activeIndex.value === -1 && hasPinnedAction.value) {
+          activatePinnedAction();
+          break;
+        }
         const item = filteredItems.value[activeIndex.value];
         if (item) selectItem(item);
       }
@@ -820,6 +850,10 @@ function onSearchKey(evt: KeyboardEvent) {
       break;
     case "Enter": {
       evt.preventDefault();
+      if (activeIndex.value === -1 && hasPinnedAction.value) {
+        activatePinnedAction();
+        break;
+      }
       const item = filteredItems.value[activeIndex.value];
       if (item) selectItem(item);
       break;
@@ -991,6 +1025,9 @@ const hasPrependInner = computed(
             />
           </template>
         </ZATag>
+        <span v-else-if="!hasSelection && displayValue" class="r-select__title">
+          {{ displayValue }}
+        </span>
         <span v-else-if="!hasSelection" class="r-select__placeholder">
           <slot name="placeholder">{{ effectivePlaceholder }}</slot>
         </span>
@@ -1146,6 +1183,26 @@ const hasPrependInner = computed(
           </div>
 
           <ul class="r-select__list">
+            <template v-if="hasPinnedAction">
+              <!-- eslint-disable-next-line vuejs-accessibility/click-events-have-key-events, vuejs-accessibility/mouse-events-have-key-events -- keyboard activation uses the shared listbox roving index -->
+              <li
+                class="r-select__item r-select__item--pinned"
+                :class="{ 'r-select__item--active': activeIndex === -1 }"
+                role="option"
+                :aria-selected="false"
+                data-r-select-index="-1"
+                tabindex="-1"
+                @click="activatePinnedAction"
+                @mouseenter="activeIndex = -1"
+              >
+                <span class="r-select__item-title">{{
+                  pinnedActionLabel
+                }}</span>
+              </li>
+              <li class="r-select__divider" aria-hidden="true">
+                <ZADivider />
+              </li>
+            </template>
             <!-- Synthetic "All" row — multi-select only, suppressed
                  while the user is filtering. Sits above the regular
                  items and is separated by a divider so it reads as a

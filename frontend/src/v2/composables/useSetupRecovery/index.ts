@@ -1,11 +1,12 @@
 import { computed, ref } from "vue";
-import type { SetupRecoverySnapshot } from "@/__generated__";
 import type { AdminUserDraft } from "@/v2/components/Auth/SetupStepAdmin.vue";
 import { refetchCSRFToken } from "@/v2/data/adapters/legacy/services/api";
 import identityApi from "@/v2/data/adapters/legacy/services/api/identity";
 import setupApi, {
   type SetupFolderAssignment,
   type SetupFolderDraft,
+  type SetupRecoverySnapshot,
+  SETUP_EXCLUDED,
 } from "@/v2/data/adapters/legacy/services/api/setup";
 import userApi from "@/v2/data/adapters/legacy/services/api/user";
 import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
@@ -37,7 +38,8 @@ export function useSetupRecovery() {
   function mergeDraft(draft: SetupFolderDraft): SetupFolderDraft {
     const merged = { ...draft };
     for (const saved of snapshot.value?.saved_assignments ?? [])
-      merged[saved.folder_name] = saved.platform_slug;
+      merged[saved.folder_name] =
+        saved.disposition === "excluded" ? SETUP_EXCLUDED : saved.platform_slug;
     return merged;
   }
   async function retryCheck() {
@@ -98,7 +100,9 @@ export function useSetupRecovery() {
         const saved = new Map(
           current.saved_assignments.map((item) => [
             item.folder_name,
-            item.platform_slug,
+            item.disposition === "excluded"
+              ? SETUP_EXCLUDED
+              : item.platform_slug,
           ]),
         );
         const missing = assignments.filter(

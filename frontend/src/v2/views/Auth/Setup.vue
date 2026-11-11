@@ -14,6 +14,7 @@ import type {
   SetupFolderDiscovery,
   SetupFolderDraft,
 } from "@/v2/data/adapters/legacy/services/api/setup";
+import { SETUP_EXCLUDED } from "@/v2/data/adapters/legacy/services/api/setup";
 
 const { t } = useI18n();
 const recovery = useSetupRecovery();
@@ -54,12 +55,26 @@ const assignments = computed(
     discovery.value?.folders
       .map((folder) => ({
         folder_name: folder.name,
-        platform_slug: folderDraft.value[folder.name],
+        disposition:
+          folderDraft.value[folder.name] === SETUP_EXCLUDED
+            ? ("excluded" as const)
+            : ("platform" as const),
+        platform_slug:
+          folderDraft.value[folder.name] === SETUP_EXCLUDED
+            ? null
+            : folderDraft.value[folder.name],
       }))
       .filter(
-        (item): item is { folder_name: string; platform_slug: string } =>
-          typeof item.platform_slug === "string" &&
-          item.platform_slug.length > 0,
+        (
+          item,
+        ): item is {
+          folder_name: string;
+          disposition: "platform" | "excluded";
+          platform_slug: string | null;
+        } =>
+          item.disposition === "excluded" ||
+          (typeof item.platform_slug === "string" &&
+            item.platform_slug.length > 0),
       ) ?? [],
 );
 const allFoldersAssigned = computed(() =>
@@ -97,7 +112,8 @@ async function loadDiscovery() {
       Object.fromEntries(
         data.folders.map((folder) => [
           folder.name,
-          folderDraft.value[folder.name] ?? folder.suggested_platform,
+          folderDraft.value[folder.name] ??
+            (folder.excluded ? SETUP_EXCLUDED : folder.suggested_platform),
         ]),
       ),
     );
