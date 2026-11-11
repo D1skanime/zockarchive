@@ -1,0 +1,106 @@
+.r-select__panel {
+  position: fixed;
+  z-index: var(--r-z-menu, 2500);
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+  max-width: min(480px, calc(100vw - 16px));
+  overflow: hidden;
+  background: var(--r-color-panel);
+  border: 1px solid var(--r-color-panel-border);
+  border-radius: 10px;
+  box-shadow:
+    0 12px 32px color-mix(in srgb, black 38%, transparent),
+    0 2px 4px color-mix(in srgb, black 22%, transparent);
+  backdrop-filter: blur(28px);
+  color: var(--r-color-fg);
+  font-family: var(--r-font-family-sans);
+}
+.r-select__search {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 6px;
+  background: var(--r-color-panel);
+  backdrop-filter: blur(28px);
+  border-bottom: 1px solid var(--r-color-border);
+}
+.r-select__list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.r-select__empty {
+  padding: 12px 14px;
+  color: var(--r-color-fg-muted);
+  font-size: 13px;
+  text-align: center;
+}
+.r-select__item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 12px;
+  border-radius: 9px;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: var(--r-font-weight-medium);
+  color: var(--r-color-fg-secondary);
+  cursor: pointer;
+}
+.r-select__item--active,
+.r-select__item--all:hover {
+  background: var(--r-color-surface);
+  color: var(--r-color-fg);
+}
+.r-select__item--selected,
+.r-select__item-check {
+  color: var(--r-color-brand-primary);
+}
+.r-select__item--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.r-select__item--all {
+  font-weight: var(--r-font-weight-semibold);
+}
+.r-select__item-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.r-select__divider {
+  padding: 0;
+  margin: 4px 0;
+  pointer-events: none;
+  list-style: none;
+}
+.r-select-pop-enter-from,
+.r-select-pop-leave-to {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+}
+.r-select-pop-enter-active {
+  transition:
+    opacity 140ms var(--r-motion-ease-out),
+    transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.r-select-pop-leave-active {
+  transition:
+    opacity 100ms var(--r-motion-ease-in),
+    transform 100ms var(--r-motion-ease-in);
+}
+@media (prefers-reduced-motion: reduce) {
+  .r-select-pop-enter-from,
+  .r-select-pop-leave-to {
+    transform: none;
+  }
+  .r-select-pop-enter-active,
+  .r-select-pop-leave-active {
+    transition: opacity 100ms linear;
+  }
+}
