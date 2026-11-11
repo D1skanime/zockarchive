@@ -77,7 +77,7 @@ jobs:
           # Stable Docker Hub alias for optional registry compatibility.
           # name=d1skanime/pc-game-download-portal
           images: |
-            name=ghcr.io/d1skanime/pc-game-download-portal
+            name=ghcr.io/d1skanime/zockarchive
             name=d1skanime/pc-game-download-portal,enable=${{ env.USE_DOCKERHUB == 'true' }}
           flavor: |
             latest=false
@@ -116,7 +116,7 @@ jobs:
           # Stable Docker Hub alias for optional registry compatibility.
           # name=d1skanime/pc-game-download-portal
           images: |
-            name=ghcr.io/d1skanime/pc-game-download-portal
+            name=ghcr.io/d1skanime/zockarchive
             name=d1skanime/pc-game-download-portal,enable=${{ env.USE_DOCKERHUB == 'true' }}
           flavor: |
             latest=false

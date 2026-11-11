@@ -16,7 +16,7 @@ The stack builds the selected Git revision using `docker/Dockerfile`. `PGDP_IMAG
 
 ## Independent release-image stack
 
-Use `portainer-release.yml` with Portainer's stack editor or upload flow after a reviewed beta release is published. It pulls `ghcr.io/d1skanime/pc-game-download-portal:0.1.0-beta.1` by default. `:beta` is the beta alias. Never use `:latest` for this stack.
+Use `portainer-release.yml` with Portainer's stack editor or upload flow after a reviewed beta release is published. It pulls `ghcr.io/d1skanime/zockarchive:0.1.0-beta.1` by default. `:beta` is the beta alias. Never use `:latest` for this stack.
 
 Set every required variable named by `portainer-release.env.example` in Portainer's protected stack environment. The image-only stack has no build context and needs no Git checkout. Its `ZA_LIBRARY_PATH` bind mount is read-only; `ZA_ASSETS_PATH` and `ZA_CONFIG_PATH` are writable operator-owned paths. It preserves MariaDB, Valkey, and application resources in named volumes. On an empty database, the existing application entrypoint runs migrations and the browser opens first-user setup.
 

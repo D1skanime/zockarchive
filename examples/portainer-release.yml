@@ -10,7 +10,7 @@ services:
   za:
     # Override ZA_IMAGE_REPOSITORY only for a local Phase 43 proof image. Normal
     # Portainer deployments use the authoritative GHCR repository and beta tag.
-    image: ${ZA_IMAGE_REPOSITORY:-ghcr.io/d1skanime/pc-game-download-portal}:${ZA_IMAGE_TAG:-0.1.0-beta.1}
+    image: ${ZA_IMAGE_REPOSITORY:-ghcr.io/d1skanime/zockarchive}:${ZA_IMAGE_TAG:-0.1.0-beta.1}
     restart: unless-stopped
     environment:
       DB_HOST: za-mariadb

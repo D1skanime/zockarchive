@@ -80,12 +80,10 @@ class PublicationTests(unittest.TestCase):
     def test_release_aliases_remain_full_and_slim(self):
         text = read(".github/workflows/build.yml")
         self.assertEqual(text.count("name=d1skanime/pc-game-download-portal\n"), 2)
-        self.assertEqual(
-            text.count("name=ghcr.io/d1skanime/pc-game-download-portal\n"), 2
-        )
+        self.assertEqual(text.count("name=ghcr.io/d1skanime/zockarchive\n"), 2)
         self.assertIn("suffix=-slim,onlatest=true", text)
         self.assertNotIn("name=d1skanime/zockarchive", text)
-        self.assertNotIn("name=ghcr.io/d1skanime/zockarchive", text)
+        self.assertNotIn("name=ghcr.io/d1skanime/pc-game-download-portal", text)
 
     def test_oci_metadata_describes_product_and_current_source(self):
         for name, count in (("build.yml", 2), ("test-build.yml", 1)):

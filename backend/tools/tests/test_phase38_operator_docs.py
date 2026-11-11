@@ -75,7 +75,8 @@ class OperatorDocsTests(unittest.TestCase):
             "PGDP_SCREENSCRAPER_DEV_PASSWORD",
         ):
             self.assertIn(value, install)
-        self.assertNotIn("ghcr.io/d1skanime/zockarchive", install)
+        self.assertIn("ghcr.io/d1skanime/zockarchive", install)
+        self.assertNotIn("ghcr.io/d1skanime/pc-game-download-portal", install)
 
     def test_canonical_execution_path_is_preserved(self):
         for name in ("AGENTS.md", "CLAUDE.md"):

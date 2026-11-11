@@ -7,8 +7,8 @@ This procedure describes a future, human-controlled beta publication. It does no
 The first intended prerelease is `v0.1.0-beta.1`. A published GitHub release triggers the workflow, which accepts the optional leading `v` and publishes linux/amd64 and linux/arm64 images to the authoritative retained package path:
 
 ```text
-ghcr.io/d1skanime/pc-game-download-portal:0.1.0-beta.1
-ghcr.io/d1skanime/pc-game-download-portal:beta
+ghcr.io/d1skanime/zockarchive:0.1.0-beta.1
+ghcr.io/d1skanime/zockarchive:beta
 ```
 
 The workflow never publishes `latest`, major, or minor aliases. Operators should communicate and deploy an exact reviewed image tag. The `beta` alias is only for the approved beta series.
