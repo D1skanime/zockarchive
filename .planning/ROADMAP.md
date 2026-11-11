@@ -1220,3 +1220,24 @@ Plans:
 **Wave 1:** 43-01, 43-02
 **Wave 2:** 43-03
 **Wave 3:** 43-04
+
+### Phase 44: ZA: Einrichtungsassistent – Ordner ausschließen und Plattformen suchen
+
+**Goal:** Administrators can complete setup with every direct Games folder either mapped to a platform or explicitly excluded, while the existing picker supports accessible text search and the Docker init output consistently identifies ZockArchive.
+**Requirements**: ZA-SETUP-44-01, ZA-SETUP-44-02, ZA-SETUP-44-03, ZA-SETUP-44-04, ZA-INIT-44-01
+**Depends on:** Phase 43
+**Success Criteria** (what must be TRUE):
+
+1. A discovered direct Games subfolder has exactly one durable disposition, an active platform mapping or a root-relative explicit exclusion. An exclusion is visible after recovery, can be replaced by selecting a platform, does not mutate source content, and has no mapping-backed first or later scan command.
+2. Setup may continue when every discovered folder is mapped or excluded, but continues to reject any unresolved folder.
+3. The existing ZASelect-based platform picker exposes a visible case-insensitive text search, so `win` finds Windows, and keeps the visibly separated fixed `Nicht scannen` action above filtered platform results, including empty result sets, for pointer and keyboard activation.
+4. The Docker init banner and all init log prefixes identify ZockArchive while the version output and startup control flow stay unchanged.
+5. Before live UAT, validation consists only of static inspection, typecheck/build and truthful browser evidence when an isolated authentic environment is available. No new tests or test suite run is performed.
+
+**Status:** Technical pre-UAT verification complete. Existing implementation remains correctly attributed to commits `1293dd139`, `9a398b364`, `647f17e37`, and `fb4f1afa8`; Phase 44 records inventory and evidence without rewriting that history. Human UAT is pending.
+**Plans:** 1 plan in 1 wave
+
+Plans:
+- [x] 44-01-PLAN.md - Inventory existing delivery, perform pre-UAT non-test verification, and record Phase 44 evidence.
+
+**Wave 1:** 44-01
