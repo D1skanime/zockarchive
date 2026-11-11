@@ -29,6 +29,7 @@ defineOptions({ inheritAttrs: false });
 const { t } = useI18n();
 const heartbeat = storeHeartbeat();
 const { VERSION } = heartbeat.value.SYSTEM;
+const hasValidRunningVersion = Boolean(semver.valid(VERSION));
 
 const latestVersion = ref(VERSION);
 const dismissed = ref(VERSION === "development");
@@ -36,7 +37,7 @@ const dismissedVersion = useLocalStorage("ui.dismissedVersion", "");
 
 const visible = computed(
   () =>
-    semver.valid(VERSION) &&
+    hasValidRunningVersion &&
     !dismissed.value &&
     semver.valid(latestVersion.value) &&
     semver.gt(latestVersion.value, VERSION),
@@ -56,6 +57,10 @@ function onOpenRelease() {
 }
 
 async function fetchLatestVersion() {
+  if (!hasValidRunningVersion) {
+    return;
+  }
+
   try {
     const response = await fetch(PROJECT_RELEASE_API_URL + "/latest");
     if (response.status === 404) {
@@ -83,7 +88,9 @@ async function fetchLatestVersion() {
 }
 
 onMounted(() => {
-  document.addEventListener("network-quiesced", fetchLatestVersion);
+  if (hasValidRunningVersion) {
+    document.addEventListener("network-quiesced", fetchLatestVersion);
+  }
 });
 onBeforeUnmount(() => {
   document.removeEventListener("network-quiesced", fetchLatestVersion);

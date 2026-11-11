@@ -5,7 +5,7 @@ milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 43 technical verification complete; temporary Portainer UAT ready
 last_updated: "2026-11-11T11:15:00Z"
-last_activity: 2026-11-11 -- Phase 43 release-banner 404 state corrected and browser-inspected
+last_activity: 2026-11-11 -- Phase 43 development-version release lookup skipped and browser-inspected
 progress:
   total_phases: 43
   completed_phases: 32
@@ -15,6 +15,12 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261111-foc
+
+| 261111-foc | Skip release lookup for non-semver development builds | 2026-11-11 | Static diff/source checks and authenticated 1440 px/390 px browser inspection passed; no tests started | [development release lookup](./quick/261111-foc-skip-release-lookup-for-non-semver-devel/) |
+
+- A non-semver build registers no release listener and makes no latest-release request. Semver-valid builds retain quiet 404 handling and diagnostics for other failures.
 
 ## Quick Task 261111-fg7
 

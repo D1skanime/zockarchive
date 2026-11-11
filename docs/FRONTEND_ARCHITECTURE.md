@@ -378,9 +378,11 @@ frame; the labelled Home link hides redundant brand artwork from assistive
 technology. The pairing QR remains unmodified, with
 product identity outside its encoded area.
 VersionTag, AboutDialog and NewVersionBanner share `projectReleaseTagUrl`.
-The banner fetches the canonical latest-release API, treating a 404 as the
-normal not-yet-published state, staying hidden without a console error while
-other failures remain observable. It preserves its age and dismissal rules.
+Only semver-valid running builds query the canonical latest-release API;
+development and other non-semver builds deliberately make no release lookup.
+A valid build treats a 404 as the normal not-yet-published state, staying
+hidden without a console error while other failures remain observable. It
+preserves its age and dismissal rules.
 About links current documentation to repository docs and labels the retained
 RomM community link as upstream.
 
