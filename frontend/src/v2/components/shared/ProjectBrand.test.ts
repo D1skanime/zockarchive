@@ -55,6 +55,13 @@ vi.mock("@/v2/composables/useNavDestinations", () => ({
 }));
 const heartbeatVersion = vi.hoisted(() => ({ value: "v1.2.3" }));
 
+function failedJsonResponse(status: number): Response {
+  return new Response(JSON.stringify({}), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 vi.mock("@/v2/data/adapters/legacy/stores/heartbeat", () => ({
   default: () => ({ value: { SYSTEM: { VERSION: heartbeatVersion.value } } }),
 }));
@@ -182,11 +189,9 @@ describe("rendered release identity", () => {
   );
 
   it("keeps a missing latest release quiet and hidden", async () => {
-    const fetch = vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      status: 404,
-      ok: false,
-      json: vi.fn(),
-    } as Response);
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(failedJsonResponse(404));
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -206,11 +211,9 @@ describe("rendered release identity", () => {
   });
 
   it("diagnoses a non-404 latest-release failure without showing a banner", async () => {
-    const fetch = vi.spyOn(globalThis, "fetch").mockResolvedValue({
-      status: 500,
-      ok: false,
-      json: vi.fn(),
-    } as Response);
+    const fetch = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(failedJsonResponse(500));
     const consoleError = vi
       .spyOn(console, "error")
       .mockImplementation(() => {});
