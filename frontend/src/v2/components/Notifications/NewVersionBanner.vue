@@ -58,6 +58,15 @@ function onOpenRelease() {
 async function fetchLatestVersion() {
   try {
     const response = await fetch(PROJECT_RELEASE_API_URL + "/latest");
+    if (response.status === 404) {
+      return;
+    }
+    if (!response.ok) {
+      throw new Error(
+        `GitHub latest-release request failed with status ${response.status}`,
+      );
+    }
+
     const json = await response.json();
     latestVersion.value = json.tag_name;
 
@@ -68,9 +77,9 @@ async function fetchLatestVersion() {
       publishedAt.getTime() + 2 * 60 * 60 * 1000 > Date.now();
   } catch (error) {
     console.error("Failed to fetch latest version from GitHub", error);
+  } finally {
+    document.removeEventListener("network-quiesced", fetchLatestVersion);
   }
-
-  document.removeEventListener("network-quiesced", fetchLatestVersion);
 }
 
 onMounted(() => {

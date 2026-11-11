@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 43 technical verification complete; temporary Portainer UAT ready
-last_updated: "2026-11-10T19:30:00Z"
-last_activity: 2026-11-10 -- Phase 43 technically verified; human Portainer UAT pending
+last_updated: "2026-11-11T11:15:00Z"
+last_activity: 2026-11-11 -- Phase 43 release-banner 404 state corrected and browser-inspected
 progress:
   total_phases: 43
   completed_phases: 32
@@ -15,6 +15,12 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261111-fg7
+
+| 261111-fg7 | Treat the absent first GitHub release as a quiet banner state | 2026-11-11 | Static diff/source checks and authenticated 1440 px/390 px browser inspection passed; no tests started | [release-banner 404 handling](./quick/261111-fg7-handle-missing-github-latest-release-gra/) |
+
+- The canonical latest-release 404 keeps the banner hidden without an application console error; other release API failures remain observable.
 
 ## Quick Task 261111-f8t
 
