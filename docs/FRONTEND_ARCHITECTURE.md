@@ -175,6 +175,8 @@ The scan-operation endpoint is authoritative for the compact operation snapshot.
 
 LibraryManagement.vue exposes mapping, storage, excluded, and missing tabs. StorageRootsSection, FolderMappingsSection, ExcludedSection, and MissingGamesSection render them. PlatformStorageMapping.vue uses storageApi to load roots/mappings, browse relative folders, test/save mappings, refresh previews, and inspect removal consequences. It checks useCan("app.admin"). The frontend presents backend results; filesystem authorization remains backend-owned.
 
+The v2 setup flow renders each direct Games folder in SetupStepPlatforms. Its platform ZASelect enables the primitive's built-in, case-insensitive text filter and provides the translated fixed "Do not scan" action through ZASelect's pinned action contract. That action remains above filtered platform rows, is available to pointer and listbox keyboard selection, and renders as the selected disposition in the folder row. Completing setup accepts either a platform assignment or this durable exclusion; only active mappings are passed into later scans.
+
 ### Gallery flow
 
 Gallery views combine roms, platforms, galleryFilter, galleryView, URL/query composables, GalleryShell, GameCard/GameListRow, selection/actions, and virtualized helpers. Genre and theme values become ROM query/filter parameters.
