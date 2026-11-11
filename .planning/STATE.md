@@ -705,6 +705,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261110-t8b | Align the ZA beta GHCR image contract after the Portainer gate finding | 2026-11-11 | 6e3e9d44b | [261110-t8b](./quick/261110-t8b-classify-the-missing-za-library-mount-do/) |
 | 261110-rgy | Correct round-three static release metadata contracts | 2026-11-10 | current commit | [261110-rgy](./quick/261110-rgy-correct-round-three-static-release-metad/) |
 | 261110-rbr | Repair Phase 43 round-three release documentation and workflow contracts | 2026-11-10 | current commit | [261110-rbr](./quick/261110-rbr-repair-phase-43-round-three-release-docu/) |
 | 261110-deg | Resolve Phase 42 Quality Gate round 2 resolver typecheck findings | 2026-11-10 | defffd9af | [261110-deg](./quick/261110-deg-quality-gate-runde-2-resolver-typecheck/) |
