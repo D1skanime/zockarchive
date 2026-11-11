@@ -26,7 +26,7 @@ jobs:
         run: |
           TAG="$RELEASE_TAG"
           NORMALIZED_TAG="${TAG#v}"
-          if [[ "$TAG" =~ ^v?0\.1\.0-beta\.1$ ]]; then
+          if [[ "$TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?(\+[0-9A-Za-z.-]+)?$ ]]; then
             echo "valid=true" >> $GITHUB_OUTPUT
             echo "normalized=$NORMALIZED_TAG" >> $GITHUB_OUTPUT
           else
@@ -74,16 +74,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
         with:
-          # Stable Docker Hub alias for optional registry compatibility.
-          # name=d1skanime/pc-game-download-portal
+          # Optional Docker Hub mirror, enabled only with both credentials.
           images: |
             name=ghcr.io/d1skanime/zockarchive
-            name=d1skanime/pc-game-download-portal,enable=${{ env.USE_DOCKERHUB == 'true' }}
+            name=d1skanime/zockarchive,enable=${{ env.USE_DOCKERHUB == 'true' }}
           flavor: |
             latest=false
           tags: |
             type=raw,value=${{ needs.validate-tag-semver.outputs.normalized }}
-            type=raw,value=beta
+            type=raw,value=beta,enable=${{ contains(needs.validate-tag-semver.outputs.normalized, '-') }}
           labels: |
             org.opencontainers.image.version=${{ needs.validate-tag-semver.outputs.normalized }}
             org.opencontainers.image.title="ZockArchive"
@@ -113,17 +112,16 @@ jobs:
         id: meta-slim
         uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
         with:
-          # Stable Docker Hub alias for optional registry compatibility.
-          # name=d1skanime/pc-game-download-portal
+          # Optional Docker Hub mirror, enabled only with both credentials.
           images: |
             name=ghcr.io/d1skanime/zockarchive
-            name=d1skanime/pc-game-download-portal,enable=${{ env.USE_DOCKERHUB == 'true' }}
+            name=d1skanime/zockarchive,enable=${{ env.USE_DOCKERHUB == 'true' }}
           flavor: |
             latest=false
             suffix=-slim,onlatest=true
           tags: |
             type=raw,value=${{ needs.validate-tag-semver.outputs.normalized }}
-            type=raw,value=beta
+            type=raw,value=beta,enable=${{ contains(needs.validate-tag-semver.outputs.normalized, '-') }}
           labels: |
             org.opencontainers.image.version=${{ needs.validate-tag-semver.outputs.normalized }}
             org.opencontainers.image.title="ZockArchive"

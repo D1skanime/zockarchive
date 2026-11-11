@@ -12,6 +12,7 @@ DOCS = (
     "DEVELOPER_SETUP.md",
     "CONTRIBUTING.md",
     "examples/README.md",
+    "docs/INSTALLATION_PORTAINER.md",
     "docs/PORTAINER_INSTALL.md",
     "docs/external-read-only-library-operations.md",
     "docs/BACKEND_ARCHITECTURE.md",
@@ -77,6 +78,16 @@ class OperatorDocsTests(unittest.TestCase):
             self.assertIn(value, install)
         self.assertIn("ghcr.io/d1skanime/zockarchive", install)
         self.assertNotIn("ghcr.io/d1skanime/pc-game-download-portal", install)
+        release = read("docs/INSTALLATION_PORTAINER.md")
+        for value in (
+            "ZA_DB_PASSWORD",
+            "ZA_DB_ROOT_PASSWORD",
+            "ZA_AUTH_SECRET_KEY",
+            "ZA_LIBRARY_PATH",
+            "za_assets",
+            "za_config",
+        ):
+            self.assertIn(value, release)
 
     def test_canonical_execution_path_is_preserved(self):
         for name in ("AGENTS.md", "CLAUDE.md"):

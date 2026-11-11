@@ -1,11 +1,14 @@
 # ZockArchive Portainer installation
 
+> Für die eigenständige Release-Installation ohne Git-Checkout siehe die
+> deutsche Anleitung [INSTALLATION_PORTAINER.md](INSTALLATION_PORTAINER.md).
+> Dieses Dokument beschreibt den beibehaltenen Git-Quellstack mit `PGDP_*`.
+
 This guide covers two separate Portainer contracts for PC and console libraries. Keep filled environment files and secrets outside Git.
 
 - The retained Git-source [stack](../examples/portainer-stack.yml) builds a reviewed repository revision with the `PGDP_*` variables documented below.
-- The independent image-only [release stack](../examples/portainer-release.yml) pulls a reviewed release image with its separate `ZA_*` variable inventory in [portainer-release.env.example](../examples/portainer-release.env.example).
 
-Do not mix their Compose files, variable prefixes, volume names, or update procedures. The release image path does not require a Git checkout, source build, or manual database command.
+Do not mix this Compose file, its variable prefixes, volume names, or update procedure with the release stack. The release image path does not require a Git checkout, source build, or manual database command.
 
 ## Storage and prerequisites
 
@@ -44,37 +47,6 @@ For QNAP use actual storage-pool/share paths exposed to its Docker daemon. Linux
 8. Review the revision and storage settings, then deploy.
 
 Build context `..` resolves from `examples/` to the repository root. The stack builds `docker/Dockerfile`, target `full-image`. `PGDP_IMAGE` defaults to `pc-game-download-portal:portainer`, the local tag for that build. Preserve existing overrides. A deliberate prebuilt-image deployment requires separate provenance/version verification.
-
-## Deploy the independent release image
-
-Use this path only after a reviewed beta release has been published. In Portainer, open **Stacks > Add stack > Web editor** or upload [portainer-release.yml](../examples/portainer-release.yml), then copy the names from [portainer-release.env.example](../examples/portainer-release.env.example) into the protected stack environment. The tracked template is intentionally value-free.
-
-Set all required `ZA_*` values before deployment:
-
-- `ZA_DB_PASSWORD`, `ZA_DB_ROOT_PASSWORD`, and `ZA_AUTH_SECRET_KEY` are independent high-entropy secrets.
-- `ZA_LIBRARY_PATH`, `ZA_ASSETS_PATH`, and `ZA_CONFIG_PATH` are existing absolute paths on the Docker host.
-- Optional `ZA_*` provider values enable their matching metadata providers. Leave them empty when the provider is not configured.
-
-The normal release image is `ghcr.io/d1skanime/zockarchive:0.1.0-beta.1`. The `:beta` alias is also available for the approved beta series. Never use `:latest`. An image source other than the reviewed GHCR release is **unverified** and must not be deployed. Portainer rejects missing required variables before it starts a partial stack. `ZA_IMAGE_REPOSITORY` is reserved for the isolated local proof and should remain unset for an ordinary release deployment.
-
-The release stack starts ZA only after its MariaDB and Valkey services are healthy. It keeps the established application entrypoint, which applies migrations and owns empty-database initialization. For a new database, open the configured URL after the services are healthy and complete the browser first-user setup. Do not run SQL manually.
-
-### Release-image storage and updates
-
-The release stack owns these state boundaries:
-
-| State                         | Storage                              | Update rule                                            |
-| ----------------------------- | ------------------------------------ | ------------------------------------------------------ |
-| Catalog and users             | `za_mariadb_data` named volume       | Retain it across ZA image updates.                     |
-| Queue and cache state         | `za_valkey_data` named volume        | Retain it across ZA image updates.                     |
-| Managed application resources | `za_resources` named volume          | Retain it across ZA image updates.                     |
-| Operator configuration        | `ZA_CONFIG_PATH` writable bind mount | Back up and retain the same host path.                 |
-| Assets, saves, and states     | `ZA_ASSETS_PATH` writable bind mount | Back up and retain the same host path.                 |
-| Source game library           | `ZA_LIBRARY_PATH:/romm/library:ro`   | Keep it read-only and outside application-owned state. |
-
-To update the release-image stack, review the target release, change only `ZA_IMAGE_TAG` to its exact reviewed tag, and redeploy while retaining all named volumes and bind mounts. Verify health, login, and a small authorized library action afterwards. Replacing volumes or host paths creates a different state boundary and is not an update.
-
-Docker Hub is optional for the release workflow. Its login and push occur only when both Docker Hub credentials are configured as GitHub repository secrets. Missing Docker Hub credentials do not prevent the authoritative GHCR publication.
 
 ## Existing installations and Git URL changes
 

@@ -4,6 +4,8 @@ volumes:
   # Keep catalog, managed resources, and Valkey state across ZA recreation.
   za_mariadb_data:
   za_resources:
+  za_assets:
+  za_config:
   za_valkey_data:
 
 services:
@@ -31,8 +33,10 @@ services:
     volumes:
       - za_resources:/romm/resources
       - ${ZA_LIBRARY_PATH:?Set ZA_LIBRARY_PATH to the operator game-library path}:/romm/library:ro
-      - ${ZA_ASSETS_PATH:?Set ZA_ASSETS_PATH to a writable operator path}:/romm/assets
-      - ${ZA_CONFIG_PATH:?Set ZA_CONFIG_PATH to a writable operator path}:/romm/config
+      # Empty advanced variables select persistent named volumes. An absolute
+      # host path intentionally replaces the matching named-volume mount.
+      - ${ZA_ASSETS_PATH:-za_assets}:/romm/assets
+      - ${ZA_CONFIG_PATH:-za_config}:/romm/config
     ports:
       - "${ZA_HTTP_PORT:-8080}:8080"
     depends_on:

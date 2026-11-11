@@ -18,10 +18,10 @@ The stack builds the selected Git revision using `docker/Dockerfile`. `PGDP_IMAG
 
 Use `portainer-release.yml` with Portainer's stack editor or upload flow after a reviewed beta release is published. It pulls `ghcr.io/d1skanime/zockarchive:0.1.0-beta.1` by default. `:beta` is the beta alias. Never use `:latest` for this stack.
 
-Set every required variable named by `portainer-release.env.example` in Portainer's protected stack environment. The image-only stack has no build context and needs no Git checkout. Its `ZA_LIBRARY_PATH` bind mount is read-only; `ZA_ASSETS_PATH` and `ZA_CONFIG_PATH` are writable operator-owned paths. It preserves MariaDB, Valkey, and application resources in named volumes. On an empty database, the existing application entrypoint runs migrations and the browser opens first-user setup.
+Set the three required secret variables and `ZA_LIBRARY_PATH` from `portainer-release.env.example` in Portainer's protected stack environment. The image-only stack has no build context and needs no Git checkout. Its library bind mount is read-only, while assets and configuration use persistent named volumes by default. Advanced operators can set `ZA_ASSETS_PATH` or `ZA_CONFIG_PATH` to writable absolute host paths instead. It preserves MariaDB, Valkey, and application resources in named volumes. On an empty database, the existing application entrypoint runs migrations and the browser opens first-user setup.
 
 Keep this contract separate from the Git-source stack. Updates change only the reviewed exact `ZA_IMAGE_TAG` and retain the same named volumes and bind mounts. Docker Hub is optional and does not affect the authoritative GHCR release when its two workflow credentials are absent.
 
 Optional provider credentials may remain blank. ScreenScraper source builds need the two `PGDP_SCREENSCRAPER_DEV_*` build inputs as well as personal credentials.
 
-See the [English installation guide](../docs/PORTAINER_INSTALL.md) for retained operator keys, backups, updates and external verification limits.
+See the [German release installation guide](../docs/INSTALLATION_PORTAINER.md) for deployment, backups and updates. The retained Git-source instructions are in [PORTAINER_INSTALL.md](../docs/PORTAINER_INSTALL.md).
