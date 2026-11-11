@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 44 pre-UAT technical verification complete; setup and Docker branding human UAT pending
-last_updated: "2026-11-11T15:45:00Z"
-last_activity: 2026-11-11 -- Phase 44 inventory and non-test verification completed; human UAT pending
+last_updated: "2026-11-11T16:49:00Z"
+last_activity: 2026-11-11 -- Quick task 261111-nbd restored the StorageRoot exclusion annotation import; human UAT pending
 progress:
   total_phases: 44
   completed_phases: 32
@@ -735,6 +735,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261111-nbd | Repair the StorageRoot exclusion annotation import | 2026-11-11 | pending | [261111-nbd](./quick/261111-nbd-ruff-f821-setupfolderexclusion-typimport/) |
 | 261111-m0v | Extract setup exclusions and ZASelect responsibilities below the hard file limit | 2026-11-11 | 04c2ac519, 78b06ed3e, d0c0137d8 | [261111-m0v](./quick/261111-m0v-quality-gate-runde-3-gr-enverst-e-bei-se/) |
 | 261111-lx9 | Make the Phase 44 GSD context explicitly identify job 261111-98c5 | 2026-11-11 | this commit | [261111-lx9](./quick/261111-lx9-quality-gate-runde-2-auftragskennung-im/) |
 | 261111-ltm | Record the Quality Gate repair for the job-to-Phase-44 GSD binding | 2026-11-11 | this commit | [261111-ltm](./quick/261111-ltm-quality-gate-gsd-phasenbindung-f-r-auftr/) |

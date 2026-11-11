@@ -20,7 +20,7 @@ from models.base import BaseModel
 
 if TYPE_CHECKING:
     from models.platform import Platform
-
+    from models.setup_folder_exclusion import SetupFolderExclusion
 STORAGE_ROOT_NAME_MAX_LENGTH = 400
 STORAGE_ROOT_PATH_MAX_LENGTH = 700
 STORAGE_ROOT_MODE_MAX_LENGTH = 32
