@@ -18,7 +18,8 @@ from handler.filesystem.storage_resolver import (
     normalize_relative_path,
 )
 from models.platform import Platform
-from models.storage import PlatformStorageMapping, SetupFolderExclusion, StorageRoot
+from models.setup_folder_exclusion import SetupFolderExclusion
+from models.storage import PlatformStorageMapping, StorageRoot
 from utils.platform_identity import legacy_platform_slug_for_filesystem_slug
 from utils.platforms import get_supported_platforms
 

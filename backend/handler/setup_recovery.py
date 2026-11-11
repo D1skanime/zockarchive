@@ -27,10 +27,10 @@ from handler.filesystem.storage_resolver import (
 )
 from handler.setup_folder_handler import ROOT_LABEL, setup_folder_handler
 from models.platform import Platform
+from models.setup_folder_exclusion import SetupFolderExclusion
 from models.storage import (
     EXTERNAL_READ_ONLY_MODE,
     PlatformStorageMapping,
-    SetupFolderExclusion,
     StorageRoot,
 )
 from models.user import Role, User
