@@ -1,6 +1,7 @@
 """Current operator identity and installation compatibility contracts."""
 
 import hashlib
+import re
 import unittest
 from pathlib import Path
 
@@ -88,6 +89,34 @@ class OperatorDocsTests(unittest.TestCase):
             "unverified",
         ):
             self.assertIn(value, release)
+
+    def test_release_stack_defaults_to_persistent_image_only_installation(self):
+        stack = read("examples/portainer-release.yml")
+        guide = read("docs/INSTALLATION_PORTAINER.md")
+
+        self.assertIn(
+            "${ZA_IMAGE_REPOSITORY:-ghcr.io/d1skanime/zockarchive}:${ZA_IMAGE_TAG:-0.1.0-beta.1}",
+            stack,
+        )
+        self.assertNotRegex(stack, r"(?m)^\s*build:")
+        self.assertEqual(
+            set(re.findall(r"\$\{(ZA_[A-Z_]+):\?", stack)),
+            {
+                "ZA_DB_PASSWORD",
+                "ZA_DB_ROOT_PASSWORD",
+                "ZA_AUTH_SECRET_KEY",
+                "ZA_LIBRARY_PATH",
+            },
+        )
+        self.assertIn("${ZA_ASSETS_PATH:-za_assets}:/romm/assets", stack)
+        self.assertIn("${ZA_CONFIG_PATH:-za_config}:/romm/config", stack)
+        self.assertIn("za_assets:", stack)
+        self.assertIn("za_config:", stack)
+        self.assertIn("ghcr.io/d1skanime/zockarchive:0.1.0-beta.1", guide)
+        self.assertIn("`/romm/...` ist", guide)
+        self.assertIn("fester interner Container-Pfad", guide)
+        self.assertIn("ZA_ASSETS_PATH", guide)
+        self.assertIn("ZA_CONFIG_PATH", guide)
 
     def test_canonical_execution_path_is_preserved(self):
         for name in ("AGENTS.md", "CLAUDE.md"):

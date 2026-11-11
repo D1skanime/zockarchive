@@ -96,6 +96,22 @@ class PublicationTests(unittest.TestCase):
             2,
         )
 
+    def test_release_tag_validation_supports_semver_without_latest_alias(self):
+        text = read(".github/workflows/build.yml")
+        self.assertIn('NORMALIZED_TAG="${TAG#v}"', text)
+        self.assertIn(
+            '[[ "$TAG" =~ ^v?[0-9]+\\.[0-9]+\\.[0-9]+(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$ ]]',
+            text,
+        )
+        self.assertNotIn("v0.1.0-beta.1", text)
+        self.assertEqual(text.count("latest=false"), 2)
+        self.assertEqual(
+            text.count(
+                "type=raw,value=beta,enable=${{ contains(needs.validate-tag-semver.outputs.normalized, '-') }}"
+            ),
+            2,
+        )
+
     def test_oci_metadata_describes_product_and_current_source(self):
         for name, count in (("build.yml", 2), ("test-build.yml", 1)):
             text = read(".github/workflows/" + name)
