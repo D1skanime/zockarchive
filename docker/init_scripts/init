@@ -39,7 +39,7 @@ print_banner() {
 	info_log " |___  /___| | __"
 	info_log "    / // _ \ |/ /"
 	info_log "   / /| (_) |   < "
-	info_log '  /____\___/|_|\_\'
+	info_log '  /____\___/|_|_'\\
 	info_log ""
 	info_log "ZockArchive, the self-hosted game library, metadata manager and download portal"
 	info_log ""

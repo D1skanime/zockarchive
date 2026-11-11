@@ -735,6 +735,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261111-ke4 | Fix ShellCheck SC1003 in the ZockArchive init banner | 2026-11-11 | this commit | [261111-ke4](./quick/261111-ke4-fix-shellcheck-sc1003-in-zockarchive-doc/) |
 | 261111-0faa | Brand Docker init banner and log prefix as ZockArchive | 2026-11-11 | this commit | N/A |
 | 261111-hr4 | Repair typed release-error response fixtures in approved behavior tests | 2026-11-11 | this commit | [261111-hr4](./quick/261111-hr4-fix-typed-mocked-response-objects-in-pha/) |
 | 261111-ghs | Add direct Phase 43 accepted-release behavior tests | 2026-11-11 | current commit | [261111-ghs](./quick/261111-ghs-add-direct-behavior-tests-for-the-approv/) |
