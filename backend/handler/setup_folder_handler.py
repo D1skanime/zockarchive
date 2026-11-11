@@ -5,10 +5,12 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from config import LIBRARY_BASE_PATH
 from config.config_manager import config_manager as cm
+from decorators.database import begin_session
 from exceptions.storage_exceptions import MissingPlatformStorageMappingError
 from handler.database import db_platform_handler, db_storage_handler
 from handler.filesystem.storage_resolver import (
@@ -16,7 +18,7 @@ from handler.filesystem.storage_resolver import (
     normalize_relative_path,
 )
 from models.platform import Platform
-from models.storage import StorageRoot
+from models.storage import PlatformStorageMapping, SetupFolderExclusion, StorageRoot
 from utils.platform_identity import legacy_platform_slug_for_filesystem_slug
 from utils.platforms import get_supported_platforms
 
@@ -141,11 +143,29 @@ class SetupFolderHandler:
         )
         return DiscoveryResult(tuple(entries), options)
 
-    def discover_response(self) -> dict[str, Any]:
-        result = self.discover(self.root())
+    @staticmethod
+    def exclusions(
+        root: StorageRoot, session: Session
+    ) -> dict[str, SetupFolderExclusion]:
+        """Return only normalized direct-folder exclusions owned by this root."""
+        rows = session.scalars(
+            select(SetupFolderExclusion).where(
+                SetupFolderExclusion.storage_root_id == root.id
+            )
+        ).all()
+        return {normalize_relative_path(row.relative_path): row for row in rows}
+
+    @begin_session
+    def discover_response(self, *, session: Session = None) -> dict[str, Any]:  # type: ignore
+        root = self.root(session=session)
+        result = self.discover(root)
+        exclusions = self.exclusions(root, session)
         return {
             "root_label": ROOT_LABEL,
-            "folders": [asdict(folder) for folder in result.folders],
+            "folders": [
+                asdict(folder) | {"excluded": folder.relative_path in exclusions}
+                for folder in result.folders
+            ],
             "platform_options": list(result.platform_options),
         }
 
@@ -202,7 +222,7 @@ class SetupFolderHandler:
     def assign(
         self,
         root: StorageRoot,
-        assignments: list[dict[str, str]],
+        assignments: list[dict[str, Any]],
         actor: dict[str, Any],
         *,
         session: Session | None = None,
@@ -211,19 +231,41 @@ class SetupFolderHandler:
         expected = {
             folder.name: folder.relative_path for folder in self.discover(root).folders
         }
-        provided = {
-            item.get("folder_name", ""): item.get("platform_slug", "")
-            for item in assignments
-        }
+        provided = {item.get("folder_name", ""): item for item in assignments}
         if set(provided) != set(expected) or any(not name for name in provided):
             raise ValueError("every discovered folder must be assigned exactly once")
-        if len(provided) != len(assignments) or len(set(provided.values())) != len(
-            assignments
-        ):
+        if len(provided) != len(assignments):
+            raise ValueError("Folder assignments must be unique")
+        excluded_paths = set()
+        platform_assignments: dict[str, str] = {}
+        for name, item in provided.items():
+            disposition = item.get("disposition")
+            slug = item.get("platform_slug")
+            if disposition == "excluded" and slug is None:
+                excluded_paths.add(expected[name])
+            elif disposition in {None, "platform"} and isinstance(slug, str) and slug:
+                platform_assignments[name] = slug
+            else:
+                raise ValueError("invalid setup folder disposition")
+        if len(set(platform_assignments.values())) != len(platform_assignments):
             raise ValueError("Folder and platform assignments must be unique")
+        if excluded_paths and session is None:
+            raise ValueError("setup exclusions require a transaction")
+        if excluded_paths and session is not None:
+            active_paths = set(
+                session.scalars(
+                    select(PlatformStorageMapping.relative_path).where(
+                        PlatformStorageMapping.active.is_(True),
+                        PlatformStorageMapping.storage_root_id == root.id,
+                        PlatformStorageMapping.relative_path.in_(excluded_paths),
+                    )
+                ).all()
+            )
+            if active_paths:
+                raise ValueError("excluded folder has an active mapping")
         platforms = {
             name: self._resolve_platform(slug, **shared)
-            for name, slug in provided.items()
+            for name, slug in platform_assignments.items()
         }
         for name, platform in platforms.items():
             relative_path = expected[name]
@@ -246,18 +288,49 @@ class SetupFolderHandler:
                     exclude_mapping_id=existing.id,
                     **shared,
                 )
+        exclusions = self.exclusions(root, session) if session is not None else {}
+        if session is not None:
+            for relative_path in excluded_paths:
+                if relative_path not in exclusions:
+                    session.add(
+                        SetupFolderExclusion(
+                            storage_root_id=root.id,
+                            relative_path=relative_path,
+                        )
+                    )
+            for name in platform_assignments:
+                exclusion = exclusions.get(expected[name])
+                if exclusion is not None:
+                    session.delete(exclusion)
+            session.flush()
+
         mappings = []
         for name in sorted(expected, key=lambda value: value.encode("utf-8")):
-            platform = platforms[name]
-            mapping = self._reconcile(root, platform, expected[name], actor, **shared)
-            mappings.append(
-                {
-                    "folder_name": name,
-                    "platform_slug": platform.slug,
-                    "mapping_id": mapping.id,
-                    "relative_path": mapping.relative_path,
-                }
-            )
+            relative_path = expected[name]
+            if relative_path in excluded_paths:
+                mappings.append(
+                    {
+                        "folder_name": name,
+                        "disposition": "excluded",
+                        "platform_slug": None,
+                        "mapping_id": None,
+                        "relative_path": relative_path,
+                    }
+                )
+            else:
+                platform = platforms[name]
+                mapping = self._reconcile(
+                    root, platform, relative_path, actor, **shared
+                )
+                mappings.append(
+                    {
+                        "folder_name": name,
+                        "disposition": "platform",
+                        "platform_slug": platform.slug,
+                        "mapping_id": mapping.id,
+                        "relative_path": mapping.relative_path,
+                    }
+                )
         health = self._root_health(root)
         ready = bool(
             health.reachable

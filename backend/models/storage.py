@@ -65,6 +65,11 @@ class StorageRoot(BaseModel):
         back_populates="storage_root",
         passive_deletes=True,
     )
+    setup_exclusions: Mapped[list[SetupFolderExclusion]] = relationship(
+        lazy="raise",
+        back_populates="storage_root",
+        passive_deletes=True,
+    )
 
 
 class PlatformStorageMapping(BaseModel):
@@ -99,6 +104,31 @@ class PlatformStorageMapping(BaseModel):
     )
     storage_root: Mapped[StorageRoot] = relationship(
         lazy="joined", back_populates="platform_mappings"
+    )
+
+
+class SetupFolderExclusion(BaseModel):
+    """A setup-only declaration that a direct Games child is never scanned."""
+
+    __tablename__ = "setup_folder_exclusions"
+    __table_args__ = (
+        UniqueConstraint(
+            "storage_root_id",
+            "relative_path",
+            name="uq_setup_folder_exclusions_root_relative_path",
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    storage_root_id: Mapped[int] = mapped_column(
+        ForeignKey("storage_roots.id", ondelete="CASCADE")
+    )
+    relative_path: Mapped[str] = mapped_column(
+        String(length=STORAGE_MAPPING_PATH_MAX_LENGTH)
+    )
+
+    storage_root: Mapped[StorageRoot] = relationship(
+        lazy="joined", back_populates="setup_exclusions"
     )
 
 

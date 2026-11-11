@@ -27,7 +27,12 @@ from handler.filesystem.storage_resolver import (
 )
 from handler.setup_folder_handler import ROOT_LABEL, setup_folder_handler
 from models.platform import Platform
-from models.storage import EXTERNAL_READ_ONLY_MODE, PlatformStorageMapping, StorageRoot
+from models.storage import (
+    EXTERNAL_READ_ONLY_MODE,
+    PlatformStorageMapping,
+    SetupFolderExclusion,
+    StorageRoot,
+)
 from models.user import Role, User
 
 
@@ -69,9 +74,27 @@ class SetupRecoveryHandler:
             result.append(
                 SetupFolderMappingSchema(
                     folder_name=mapping.relative_path,
+                    disposition="platform",
                     platform_slug=slug,
                     mapping_id=mapping.id,
                     relative_path=mapping.relative_path,
+                )
+            )
+        exclusions = session.scalars(
+            select(SetupFolderExclusion)
+            .where(SetupFolderExclusion.storage_root_id == root.id)
+            .order_by(SetupFolderExclusion.id)
+            .limit(101)
+        ).all()
+        for exclusion in exclusions:
+            relative_path = normalize_relative_path(exclusion.relative_path)
+            result.append(
+                SetupFolderMappingSchema(
+                    folder_name=relative_path,
+                    disposition="excluded",
+                    platform_slug=None,
+                    mapping_id=None,
+                    relative_path=relative_path,
                 )
             )
         return result
@@ -106,12 +129,18 @@ class SetupRecoveryHandler:
                 discovery = setup_folder_handler.discover(root)
                 by_path = {row.relative_path: row for row in saved}
                 supported = {option["slug"] for option in discovery.platform_options}
-                for folder in discovery.folders:
-                    mapping = by_path.get(folder.relative_path)
-                    if mapping is None or mapping.platform_slug not in supported:
-                        missing.append(SetupFolderSchema(**asdict(folder)))
-                    else:
-                        resolve_directory(root, mapping.relative_path)
+                if len(by_path) != len(saved):
+                    cause = "mapping_conflict"
+                else:
+                    for folder in discovery.folders:
+                        mapping = by_path.get(folder.relative_path)
+                        if mapping is None or (
+                            mapping.disposition == "platform"
+                            and mapping.platform_slug not in supported
+                        ):
+                            missing.append(SetupFolderSchema(**asdict(folder)))
+                        elif mapping.disposition == "platform":
+                            resolve_directory(root, mapping.relative_path)
                 paths = {folder.relative_path for folder in discovery.folders}
                 if any(row.relative_path not in paths for row in saved):
                     cause = "mapping_conflict"
@@ -178,13 +207,27 @@ class SetupRecoveryHandler:
             raise ValueError(snapshot.cause_code)
         root = setup_folder_handler.root(session=session)
         saved = {
-            row.folder_name: row.platform_slug for row in snapshot.saved_assignments
+            row.folder_name: {
+                "folder_name": row.folder_name,
+                "disposition": row.disposition,
+                "platform_slug": row.platform_slug,
+            }
+            for row in snapshot.saved_assignments
         }
-        provided = {row["folder_name"]: row["platform_slug"] for row in assignments}
+        provided = {row["folder_name"]: row for row in assignments}
         if len(provided) != len(assignments):
             raise ValueError("setup_assignment_conflict")
-        for name, slug in provided.items():
-            if name in saved and saved[name] != slug:
+        for name, assignment in provided.items():
+            if (
+                name in saved
+                and saved[name]["disposition"] == "platform"
+                and saved[name] != assignment
+            ):
+                raise ValueError("setup_assignment_conflict")
+            if assignment["disposition"] == "excluded":
+                continue
+            slug = assignment["platform_slug"]
+            if not isinstance(slug, str):
                 raise ValueError("setup_assignment_conflict")
             platform = setup_folder_handler._resolve_platform(slug, session=session)
             try:
@@ -195,10 +238,7 @@ class SetupRecoveryHandler:
                 continue
             if mapping.storage_root_id != root.id or mapping.relative_path != name:
                 raise ValueError("setup_assignment_conflict")
-        merged = [
-            {"folder_name": name, "platform_slug": slug}
-            for name, slug in (saved | provided).items()
-        ]
+        merged = list((saved | provided).values())
         result = setup_folder_handler.assign(root, merged, actor, session=session)
         response = setup_folder_handler.response(result)
         recovery = self.snapshot(session=session)

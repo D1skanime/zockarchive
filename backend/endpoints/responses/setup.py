@@ -8,6 +8,7 @@ class SetupFolderSchema(BaseModel):
     relative_path: str = Field(min_length=1, max_length=700)
     association: Literal["known", "unknown"]
     suggested_platform: str | None = Field(default=None, max_length=100)
+    excluded: bool = False
 
 
 class SetupPlatformOptionSchema(BaseModel):
@@ -23,7 +24,8 @@ class SetupFoldersResponse(BaseModel):
 
 class SetupFolderAssignmentSchema(BaseModel):
     folder_name: str = Field(min_length=1, max_length=255)
-    platform_slug: str = Field(min_length=1, max_length=100)
+    disposition: Literal["platform", "excluded"]
+    platform_slug: str | None = Field(default=None, min_length=1, max_length=100)
 
 
 class SetupFolderAssignmentRequest(BaseModel):
@@ -38,8 +40,9 @@ class SetupRootHealthSchema(BaseModel):
 
 class SetupFolderMappingSchema(BaseModel):
     folder_name: str = Field(min_length=1, max_length=255)
-    platform_slug: str = Field(min_length=1, max_length=100)
-    mapping_id: int = Field(gt=0)
+    disposition: Literal["platform", "excluded"]
+    platform_slug: str | None = Field(default=None, min_length=1, max_length=100)
+    mapping_id: int | None = Field(default=None, gt=0)
     relative_path: str = Field(min_length=1, max_length=700)
 
 
