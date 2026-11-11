@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261111-eux
+
+| 261111-eux | Document the Portainer CE setup-token handoff | 2026-11-11 | Secret-safe external handoff added; retained endpoint reached at desktop/mobile, but Portainer displayed its security-timeout page rather than the initial-admin form | [Portainer setup-token handoff](./quick/261111-eux-document-the-portainer-ce-setup-token-ha/) |
+
+- No setup token was read, persisted, or exposed. The retained Portainer container was not changed and requires an authorized recovery before human UAT can continue.
+
 ## Quick Task 261111-ef8
 
 | 261111-ef8 | Repair Phase 43 Portainer live-UAT return | 2026-11-11 | YAML, non-secret Compose render, naming verifier, diff check, isolated first-start and persistence browser proof passed; no test suite started | [Portainer UAT return](./quick/261111-ef8-repair-phase-43-live-uat-return-portaine/) |
