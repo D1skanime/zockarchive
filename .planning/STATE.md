@@ -735,6 +735,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261111-m0v | Extract setup exclusions and ZASelect responsibilities below the hard file limit | 2026-11-11 | 04c2ac519, 78b06ed3e, d0c0137d8 | [261111-m0v](./quick/261111-m0v-quality-gate-runde-3-gr-enverst-e-bei-se/) |
 | 261111-lx9 | Make the Phase 44 GSD context explicitly identify job 261111-98c5 | 2026-11-11 | this commit | [261111-lx9](./quick/261111-lx9-quality-gate-runde-2-auftragskennung-im/) |
 | 261111-ltm | Record the Quality Gate repair for the job-to-Phase-44 GSD binding | 2026-11-11 | this commit | [261111-ltm](./quick/261111-ltm-quality-gate-gsd-phasenbindung-f-r-auftr/) |
 | 261111-l9o | Prepare setup exclusions and the ZockArchive Docker start banner for live UAT | 2026-11-11 | fb4f1afa8 | [261111-l9o](./quick/261111-l9o-za-einrichtungsausschl-sse-und-docker-st/) |
