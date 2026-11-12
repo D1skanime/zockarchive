@@ -32,6 +32,16 @@ export interface SetupFolderDisposition {
   mapping_id: number | null;
   relative_path: string;
 }
+export interface SetupFolderAdministration extends SetupFolder {
+  disposition: "platform" | "excluded";
+  platform_slug: string | null;
+  mapping_id: number | null;
+}
+export interface SetupFolderAdministrationResponse {
+  root_label: string;
+  folders: SetupFolderAdministration[];
+  platform_options: SetupPlatformOption[];
+}
 export interface SetupRecoverySnapshot {
   enrolled: boolean;
   setup_complete: boolean;
@@ -72,10 +82,21 @@ function assignFolders(assignments: SetupFolderAssignment[]) {
     assignments,
   });
 }
+function getFolderAssignments() {
+  return api.get<SetupFolderAdministrationResponse>(
+    "/setup/folders/assignments",
+  );
+}
 function getLibraryInfo() {
   return api.get<SetupLibraryInfo>("/setup/library");
 }
 function getStatus() {
   return api.get<SetupRecoverySnapshot>("/setup/status", { timeout: 5000 });
 }
-export default { discoverFolders, assignFolders, getLibraryInfo, getStatus };
+export default {
+  discoverFolders,
+  assignFolders,
+  getFolderAssignments,
+  getLibraryInfo,
+  getStatus,
+};

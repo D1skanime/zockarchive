@@ -100,6 +100,39 @@ class SetupRecoveryHandler:
         return result
 
     @begin_session
+    def administration_projection(self, *, session: Session = None) -> dict:  # type: ignore
+        """Return completed setup's direct-folder dispositions for administrators.
+
+        This is a read projection over the same mapping and exclusion records used
+        by setup assignment. It deliberately does not expose config-file filters.
+        """
+        snapshot = self.snapshot(session=session)
+        if not snapshot.setup_complete:
+            raise ValueError("setup_assignment_conflict")
+        root = self.root(session)
+        discovery = setup_folder_handler.discover(root)
+        saved = {row.relative_path: row for row in snapshot.saved_assignments}
+        folders = []
+        for folder in discovery.folders:
+            disposition = saved.get(folder.relative_path)
+            if disposition is None:
+                raise ValueError("setup_assignment_conflict")
+            folders.append(
+                asdict(folder)
+                | {
+                    "excluded": disposition.disposition == "excluded",
+                    "disposition": disposition.disposition,
+                    "platform_slug": disposition.platform_slug,
+                    "mapping_id": disposition.mapping_id,
+                }
+            )
+        return {
+            "root_label": ROOT_LABEL,
+            "folders": folders,
+            "platform_options": list(discovery.platform_options),
+        }
+
+    @begin_session
     def snapshot(self, *, session: Session = None) -> SetupRecoverySnapshot:  # type: ignore
         enrolled = bool(db_user_handler.get_admin_users(session=session))
         root = self.root(session)
