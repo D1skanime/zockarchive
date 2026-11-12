@@ -2,6 +2,7 @@
 import { ZAAlert, ZABtn, ZAIcon, ZASpinner, ZASteps } from "@v2/lib";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { ROUTES } from "@/plugins/router";
 import SetupStepAdmin from "@/v2/components/Auth/SetupStepAdmin.vue";
 import type { AdminUserDraft } from "@/v2/components/Auth/SetupStepAdmin.vue";
@@ -17,6 +18,7 @@ import type {
 import { SETUP_EXCLUDED } from "@/v2/data/adapters/legacy/services/api/setup";
 
 const { t } = useI18n();
+const router = useRouter();
 const recovery = useSetupRecovery();
 const snackbar = useSnackbar();
 const TOTAL_STEPS = 3;
@@ -127,6 +129,9 @@ async function loadDiscovery() {
 function updateDraft(next: SetupFolderDraft) {
   folderDraft.value = next;
 }
+function startScan() {
+  void router.push({ name: ROUTES.SCAN });
+}
 function prev() {
   if (step.value > 1) {
     stepDirection.value = "back";
@@ -175,7 +180,7 @@ onMounted(async () => {
     >
       <h2>{{ t("setup.recovery-complete") }}</h2>
       <p>{{ t("setup.recovery-read-only") }}</p>
-      <ZABtn color="primary" :to="{ name: ROUTES.SCAN }">{{
+      <ZABtn color="primary" @click="startScan">{{
         t("setup.recovery-start-scan")
       }}</ZABtn>
     </section>
