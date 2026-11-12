@@ -100,6 +100,23 @@ class SetupRecoveryHandler:
         return result
 
     @begin_session
+    def excluded_folder_paths(self, *, session: Session = None) -> set[str]:  # type: ignore
+        """Return direct Games children deliberately excluded during setup.
+
+        The scan coordinator uses this same persisted disposition authority so an
+        excluded child cannot fall back into the legacy filesystem scan path.
+        """
+        root = self.root(session)
+        return {
+            normalize_relative_path(exclusion.relative_path)
+            for exclusion in session.scalars(
+                select(SetupFolderExclusion.relative_path).where(
+                    SetupFolderExclusion.storage_root_id == root.id
+                )
+            )
+        }
+
+    @begin_session
     def administration_projection(self, *, session: Session = None) -> dict:  # type: ignore
         """Return completed setup's direct-folder dispositions for administrators.
 

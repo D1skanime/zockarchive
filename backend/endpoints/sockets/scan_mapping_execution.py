@@ -14,6 +14,7 @@ from handler.filesystem.storage_resolver import get_storage_root_health_snapshot
 from handler.scan_command import MappedScanCommand, ScanScope, ScanTrigger
 from handler.scan_handler import MappedScanCommand as HandlerMappedScanCommand
 from handler.scan_handler import ScanType, execute_mapped_scan
+from handler.setup_recovery import setup_recovery_handler
 from logger.logger import log
 
 
@@ -192,7 +193,12 @@ async def execute_mixed_scans(
         ]
     else:
         all_fs_slugs = await fs_platform_handler.get_platforms()
-        legacy_fs_slugs = [slug for slug in all_fs_slugs if slug not in mapped_fs_slugs]
+        excluded_paths = setup_recovery_handler.excluded_folder_paths()
+        legacy_fs_slugs = [
+            slug
+            for slug in all_fs_slugs
+            if slug not in mapped_fs_slugs and slug not in excluded_paths
+        ]
 
     if (
         legacy_ids
