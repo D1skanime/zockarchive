@@ -30,41 +30,45 @@ metrics:
 # Quick Task 261111-pbs: Setup disposition default and review UAT summary
 
 Both public setup schemas now convert an omitted legacy disposition into the established
-platform behavior, while explicit exclusions remain strict. The constrained UAT produced
-desktop and mobile browser evidence and documents the completed persistent-setup blocker
-without altering persistent setup or container state.
+platform behavior, while explicit exclusions remain strict. Step 1 was not live verified
+in this job service because its setup was already complete; by the locked human decision,
+feature and update-path UAT move to the existing Portainer stack without a temporary
+First-Run instance.
 
 ## Completed work
 
 - Added `default="platform"` to `SetupFolderAssignmentSchema.disposition` and
   `SetupFolderMappingSchema.disposition`.
 - Documented the omission compatibility contract in the backend architecture guide.
-- Captured the live authenticated `/setup` route at desktop and mobile widths.
-- Recorded the completed persistent-setup blocker, authenticated screenshots, and the
-  observed live `[ZockArchive]` log prefix in a sanitized UAT report.
+- Preserved the prior authenticated `/setup` screenshots as evidence only of the
+  completed setup state.
+- Updated the sanitized UAT report with concrete German feature-UAT and Portainer
+  update-path checklists, without changing runtime infrastructure.
 
 ## Verification
 
 - `git diff --check` passed.
 - Structural schema and documentation assertions passed.
 - No test or test suite was run, as required.
-- Normal-form Playwright login rendered the completed `/setup` state at 1440 px and
-  390 px, with zero console errors and zero failed requests in each view.
 
 ## Deviations from Plan
 
-### Completed persistent-setup blocker
+### Human-approved UAT handoff
 
 After normal-form login, `/setup` rendered the completed persistent-setup state in both
 viewports. The application provides no supported non-mutating return path to Step 1, so
 the folder exclusion, search, pointer/keyboard selection, persistence, and scan checks
-were not executed. The authenticated screenshots and sanitized report document this
-result; no reset, database edit, API forgery, route mock, or replacement stack was used.
+were not executed in this job service. The locked human decision declines a temporary
+First-Run instance and assigns both feature UAT and update-path UAT to the existing
+Portainer stack. The sanitized report provides the German checklists and explicitly
+forbids a DB reset or volume deletion.
 
 ### Docker-init observation limit
 
 The bounded live log query confirmed the `[ZockArchive]` application log prefix. Its
 rolling window contained no init-banner line, so no unverified init-banner claim is made.
+The Portainer checklist confines the future observation to the ZockArchive banner/prefix
+and migrations and deliberately does not invent an image tag.
 
 ## Known Stubs
 

@@ -18,9 +18,9 @@ progress:
 
 ## Quick Task 261111-pbs
 
-| 261111-pbs | Default omitted setup dispositions to platform | 2026-11-11 | Structural checks and live desktop/mobile browser inspection completed; no tests started. Step 1 remained behind the normal Login route, and the bounded log observation confirmed the `[ZockArchive]` prefix but not a retained init banner. | [setup disposition review](./quick/261111-pbs-review-runde-1-standardwert-fuer-setup-o/) |
+| 261111-pbs | Default omitted setup dispositions to platform | 2026-11-11 | Structural checks and prior desktop/mobile browser inspection completed; no tests started. Step 1 was not live verified in this job service because setup was already complete. By locked decision, feature and update-path UAT move to the existing Portainer stack without a temporary First-Run instance. | [setup disposition review](./quick/261111-pbs-review-runde-1-standardwert-fuer-setup-o/) |
 
-- Setup assignment and mapping schemas now retain legacy omitted dispositions as platform mappings. The sanitized UAT report records the authenticated-route blocker without changing durable setup, Docker state, or source storage.
+- Setup assignment and mapping schemas now retain legacy omitted dispositions as platform mappings. The sanitized UAT report records the job-service limitation and German feature/update-path checklists for the existing Portainer stack, without changing durable setup, Docker state, or source storage.
 
 ## Quick Task 261111-foc
 
