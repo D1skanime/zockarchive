@@ -16,7 +16,6 @@ from config import (
     SENTRY_DSN,
 )
 from config.config_manager import config_manager as cm
-from exceptions.storage_exceptions import MissingPlatformStorageMappingError
 from handler.database import db_platform_handler, db_storage_handler
 from handler.filesystem.storage_resolver import resolve_directory
 from handler.metadata import (

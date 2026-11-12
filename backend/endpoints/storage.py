@@ -858,10 +858,8 @@ async def bootstrap_legacy_storage(
         root_path = Path(LIBRARY_BASE_PATH) / relative_root
         old_mapping = None
         try:
-            old_mapping = next(
-                iter(db_storage_handler.list_active_mappings(pc_platform.id)), None
-            )
-        except StorageResolutionError:
+            old_mapping = db_storage_handler.get_active_mapping(pc_platform.id)
+        except MissingPlatformStorageMappingError:
             pass
 
         roots = db_storage_handler.get_roots()
@@ -992,10 +990,7 @@ def get_platform_storage_mapping(
 ) -> StorageMappingSchema:
     assert_admin(request)
     try:
-        mappings = db_storage_handler.list_active_mappings(platform_id)
-        if not mappings:
-            raise MissingPlatformStorageMappingError(platform_id)
-        return _mapping_schema(mappings[0])
+        return _mapping_schema(db_storage_handler.get_active_mapping(platform_id))
     except StorageResolutionError as error:
         _raise_mapping_conflict(error)
 
@@ -1046,10 +1041,7 @@ def preview_platform_storage_mapping(
 ) -> StorageMappingPreviewSchema:
     assert_admin(request)
     try:
-        mappings = db_storage_handler.list_active_mappings(platform_id)
-        if not mappings:
-            raise MissingPlatformStorageMappingError(platform_id)
-        mapping = mappings[0]
+        mapping = db_storage_handler.get_active_mapping(platform_id)
         root = db_storage_handler.get_root(mapping.storage_root_id)
         preview = preview_storage_mapping(mapping, root, limit, cursor)
     except StorageResolutionError as error:

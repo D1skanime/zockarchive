@@ -290,7 +290,13 @@ class DBStorageHandler(DBBaseHandler):
             ).all()
         )
 
-    def active_mapping_for_platform_path(
+    def get_active_mapping(self, platform_id: int) -> PlatformStorageMapping:
+        mappings = self.list_active_mappings(platform_id)
+        if not mappings:
+            raise MissingPlatformStorageMappingError(platform_id)
+        return mappings[0]
+
+    def path_mapping(
         self,
         platform_id: int,
         full_path: str,

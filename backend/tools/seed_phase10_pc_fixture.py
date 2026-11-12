@@ -15,9 +15,6 @@ if str(BACKEND_ROOT) not in sys.path:
 from fastapi import HTTPException  # noqa: E402
 
 from endpoints.sockets.scan import ScanType, scan_platforms  # noqa: E402
-from exceptions.storage_exceptions import (  # noqa: E402
-    MissingPlatformStorageMappingError,
-)
 from handler.database import (  # noqa: E402
     db_platform_handler,
     db_rom_handler,

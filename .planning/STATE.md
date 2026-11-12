@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: verifying
 stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-12T11:00:49.693Z"
-last_activity: 2026-11-11 -- Made the Phase 44 GSD context explicitly identify job 261111-98c5 and its ki-run binding, without changing product behavior
+last_updated: "2026-11-12T12:24:00Z"
+last_activity: 2026-11-12 -- Repaired Quality-Gate round 1 lint findings and removed Phase 44 endpoint size regressions without changing behavior
 progress:
   total_phases: 44
   completed_phases: 34
@@ -15,6 +15,12 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261112-h21
+
+| 261112-h21 | Repair Quality-Gate round 1 lint and endpoint size regressions | 2026-11-12 | Complete: removed four stale imports, restored the compact legacy active-mapping projection over the plural mapping contract, and returned all reported endpoint files to their prior sizes. Targeted Trunk and compilation checks passed with no new issues; no tests were run. | [quality-gate repair](./quick/261112-h21-quality-gate-runde-1-ungenutzte-missingp/) |
+
+- The reported main movement predates this quick task and is the separately logged `ki/za-261111-0faa` Docker-banner merge. This job branch neither checked out nor changed main.
 
 ## Quick Task 261112-fj9
 

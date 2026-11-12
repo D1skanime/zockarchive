@@ -72,9 +72,7 @@ def _content_disposition(disposition: str, filename: str) -> str:
 
 def preflight_mapped_download(rom, file, *, first_use_operation: str = "download"):
     """Authorize the current mapping revision and open one download handle."""
-    mapping = db_storage_handler.active_mapping_for_platform_path(
-        rom.platform_id, file.full_path
-    )
+    mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
     context = MappingReadContext(mapping.id, mapping.version)
     access = context.open(
         StorageOperation.DOWNLOAD,
@@ -92,9 +90,7 @@ def preflight_mapped_download(rom, file, *, first_use_operation: str = "download
 
 def preflight_mapped_stat(rom, file) -> int:
     """Authorize the current mapping revision and read non-productive metadata."""
-    mapping = db_storage_handler.active_mapping_for_platform_path(
-        rom.platform_id, file.full_path
-    )
+    mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
     context = MappingReadContext(mapping.id, mapping.version)
     with context.open(
         StorageOperation.STAT,
