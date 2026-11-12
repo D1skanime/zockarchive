@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 44 pre-UAT technical verification complete; setup and Docker branding human UAT pending
-last_updated: "2026-11-11T16:49:00Z"
-last_activity: 2026-11-11 -- Quick task 261111-nbd restored the StorageRoot exclusion annotation import; human UAT pending
+last_updated: "2026-11-12T08:40:00Z"
+last_activity: 2026-11-12 -- Quick task 261112-bob restored native keyboard activation for the completed-setup Scan action and recorded desktop/mobile browser evidence
 progress:
   total_phases: 44
   completed_phases: 32
@@ -741,6 +741,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261112-bob | Restore native keyboard activation for completed-setup Scan navigation | 2026-11-12 | ef220d60e | [261112-bob](./quick/261112-bob-sichtpr-fung-tastaturaktivierung-der-abs/) |
 | 261111-nja | Repair completed-setup first-scan navigation | 2026-11-11 | 07f0050d2 | [261111-nja](./quick/261111-nja-sichtpr-fung-erstscan-schaltfl-che-im-ab/) |
 | 261111-nbd | Repair the StorageRoot exclusion annotation import | 2026-11-11 | f2f236808 | [261111-nbd](./quick/261111-nbd-ruff-f821-setupfolderexclusion-typimport/) |
 | 261111-m0v | Extract setup exclusions and ZASelect responsibilities below the hard file limit | 2026-11-11 | 04c2ac519, 78b06ed3e, d0c0137d8 | [261111-m0v](./quick/261111-m0v-quality-gate-runde-3-gr-enverst-e-bei-se/) |
