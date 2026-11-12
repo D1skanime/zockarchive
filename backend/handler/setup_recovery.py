@@ -273,7 +273,13 @@ class SetupRecoveryHandler:
                 and saved[name] != assignment
             ):
                 raise ValueError("setup_assignment_conflict")
-            if assignment["disposition"] == "excluded" or name not in saved:
+            # An excluded direct child has no mapping yet, so an administrator
+            # may promote it through the completed-setup Games page.
+            if (
+                assignment["disposition"] == "excluded"
+                or name not in saved
+                or saved[name]["disposition"] == "excluded"
+            ):
                 continue
             slug = assignment["platform_slug"]
             if not isinstance(slug, str):
