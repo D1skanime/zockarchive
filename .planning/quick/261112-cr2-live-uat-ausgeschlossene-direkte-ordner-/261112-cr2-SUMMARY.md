@@ -58,3 +58,10 @@ None.
 ## Next Phase Readiness
 
 Blocked pending a decision on whether a platform may own multiple direct Games paths. The exact token-labelled runtime, volumes, network, image, and temporary root have been removed and their absence verified; the stale similarly named volume remains untouched.
+
+## Self-Check: PASSED
+
+- The summary and sanitized job report exist.
+- Commit `9167d14a0` exists in the current branch history.
+- Zero exact token-labelled containers, network, and volumes remain; the token-labelled temporary root is absent.
+- The stale `za-261112-cr2-uat-mariadb-data` volume remains present and untouched.
