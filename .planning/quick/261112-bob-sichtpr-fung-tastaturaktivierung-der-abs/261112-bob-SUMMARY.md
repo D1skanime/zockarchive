@@ -39,3 +39,8 @@ first-step exclusion and platform-search flow was not reset or simulated.
 ## Commits
 
 - `ef220d60e` fix: Scan-Start per Tastatur aktivieren
+
+## Self-Check: PASSED
+
+The focused source files and this summary exist. Both the source correction
+(`ef220d60e`) and its planning record (`25a7010a8`) exist in Git.
