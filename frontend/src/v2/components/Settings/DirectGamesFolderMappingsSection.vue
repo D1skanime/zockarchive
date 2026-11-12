@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ZAAlert, ZABtn, ZASelect, ZASkeletonBlock } from "@v2/lib";
-import { computed, onMounted, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import setupApi, {
   type SetupFolderAdministration,
@@ -18,6 +18,8 @@ const selections = ref<Record<string, string | null>>({});
 const loading = ref(true);
 const submitting = ref(false);
 const failed = ref(false);
+let loadPromise: Promise<void> | null = null;
+let loadGeneration = 0;
 
 const platformItems = computed(() =>
   platformOptions.value.map((platform) => ({
@@ -44,19 +46,32 @@ async function load() {
     loading.value = false;
     return;
   }
-  loading.value = true;
-  failed.value = false;
+  if (loadPromise) return loadPromise;
+
+  const generation = ++loadGeneration;
+  loadPromise = (async () => {
+    loading.value = true;
+    failed.value = false;
+    try {
+      const { data } = await setupApi.getFolderAssignments();
+      if (!canAdmin.value || generation !== loadGeneration) return;
+
+      folders.value = data.folders;
+      platformOptions.value = data.platform_options;
+      selections.value = Object.fromEntries(
+        data.folders.map((folder) => [folder.name, folder.platform_slug]),
+      );
+    } catch {
+      if (canAdmin.value && generation === loadGeneration) failed.value = true;
+    } finally {
+      if (generation === loadGeneration) loading.value = false;
+    }
+  })();
+
   try {
-    const { data } = await setupApi.getFolderAssignments();
-    folders.value = data.folders;
-    platformOptions.value = data.platform_options;
-    selections.value = Object.fromEntries(
-      data.folders.map((folder) => [folder.name, folder.platform_slug]),
-    );
-  } catch {
-    failed.value = true;
+    await loadPromise;
   } finally {
-    loading.value = false;
+    if (generation === loadGeneration) loadPromise = null;
   }
 }
 
@@ -86,7 +101,22 @@ async function save() {
   }
 }
 
-onMounted(() => void load());
+watch(
+  canAdmin,
+  (isAdmin) => {
+    if (isAdmin) {
+      void load();
+      return;
+    }
+
+    // Permission hydration is asynchronous. Invalidate any earlier request so
+    // an old authorized response cannot populate the hidden admin surface.
+    loadGeneration += 1;
+    loadPromise = null;
+    loading.value = false;
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
