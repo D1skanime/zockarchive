@@ -273,7 +273,7 @@ class SetupRecoveryHandler:
                 and saved[name] != assignment
             ):
                 raise ValueError("setup_assignment_conflict")
-            if assignment["disposition"] == "excluded":
+            if assignment["disposition"] == "excluded" or name not in saved:
                 continue
             slug = assignment["platform_slug"]
             if not isinstance(slug, str):
