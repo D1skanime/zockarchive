@@ -84,9 +84,8 @@ async def _get_or_register_windows_platform():
 
 
 def _ensure_compatible_mapping(platform, root, admin):
-    try:
-        mapping = db_storage_handler.get_active_mapping(platform.id)
-    except MissingPlatformStorageMappingError:
+    mappings = db_storage_handler.list_active_mappings(platform.id)
+    if not mappings:
         return db_storage_handler.create_mapping(
             platform.id,
             root.id,
@@ -94,6 +93,7 @@ def _ensure_compatible_mapping(platform, root, admin):
             actor_user_id=admin.id,
             actor_display_name=admin.username,
         )
+    mapping = mappings[0]
 
     if (
         mapping.storage_root_id != root.id

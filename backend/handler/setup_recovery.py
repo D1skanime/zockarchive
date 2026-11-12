@@ -15,7 +15,6 @@ from endpoints.responses.setup import (
     SetupRootHealthSchema,
 )
 from exceptions.storage_exceptions import (
-    MissingPlatformStorageMappingError,
     OwnedWriterBusyError,
     StorageResolutionError,
 )
@@ -280,13 +279,13 @@ class SetupRecoveryHandler:
             if not isinstance(slug, str):
                 raise ValueError("setup_assignment_conflict")
             platform = setup_folder_handler._resolve_platform(slug, session=session)
-            try:
-                mapping = db_storage_handler.get_active_mapping(
-                    platform.id, session=session
-                )
-            except MissingPlatformStorageMappingError:
-                continue
-            if mapping.storage_root_id != root.id or mapping.relative_path != name:
+            mappings = db_storage_handler.list_active_mappings(
+                platform.id, session=session
+            )
+            if not any(
+                mapping.storage_root_id == root.id and mapping.relative_path == name
+                for mapping in mappings
+            ):
                 raise ValueError("setup_assignment_conflict")
         merged = list((saved | provided).values())
         result = setup_folder_handler.assign(root, merged, actor, session=session)

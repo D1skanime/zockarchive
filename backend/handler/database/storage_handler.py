@@ -3,7 +3,7 @@ import binascii
 import json
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PurePath
 
 from sqlalchemy import and_, func, or_, select, update
 from sqlalchemy.exc import IntegrityError
@@ -74,7 +74,6 @@ class MappingRemovalResult:
 
 class DBStorageHandler(DBBaseHandler):
     _MAPPING_UNIQUE_CONSTRAINTS = {
-        "uq_platform_storage_mappings_platform_id",
         "uq_platform_storage_mappings_root_relative_path",
     }
 
@@ -206,16 +205,6 @@ class DBStorageHandler(DBBaseHandler):
         _, relative_path = self._load_and_validate(
             session, storage_root_id, relative_path
         )
-        active_mapping_id = session.scalar(
-            select(PlatformStorageMapping.id)
-            .where(
-                PlatformStorageMapping.platform_id == platform_id,
-                PlatformStorageMapping.active.is_(True),
-            )
-            .with_for_update(of=PlatformStorageMapping)
-        )
-        if active_mapping_id is not None:
-            raise DuplicateStorageMappingError(platform_id, storage_root_id)
         # Re-load under the same root lock immediately before persistence.
         self._load_and_validate(session, storage_root_id, relative_path)
         mapping = PlatformStorageMapping(
@@ -285,18 +274,52 @@ class DBStorageHandler(DBBaseHandler):
         session.flush()
 
     @begin_session
-    def get_active_mapping(
+    def list_active_mappings(
         self, platform_id: int, *, session: Session = None  # type: ignore
-    ) -> PlatformStorageMapping:
-        mapping = session.scalar(
-            select(PlatformStorageMapping).where(
-                PlatformStorageMapping.platform_id == platform_id,
-                PlatformStorageMapping.active.is_(True),
-            )
+    ) -> list[PlatformStorageMapping]:
+        """Return every active platform mapping in stable mapping-id order."""
+        return list(
+            session.scalars(
+                select(PlatformStorageMapping)
+                .where(
+                    PlatformStorageMapping.platform_id == platform_id,
+                    PlatformStorageMapping.active.is_(True),
+                )
+                .options(selectinload(PlatformStorageMapping.storage_root))
+                .order_by(PlatformStorageMapping.id)
+            ).all()
         )
-        if mapping is None:
+
+    def active_mapping_for_platform_path(
+        self,
+        platform_id: int,
+        full_path: str,
+        *,
+        session: Session = None,  # type: ignore
+    ) -> PlatformStorageMapping:
+        """Resolve one known catalog path to its owning active mapping.
+
+        A platform may have several direct Games folders. The longest matching
+        root-relative path is the sole owner because mapping overlap is rejected
+        at persistence time.
+        """
+        parts = PurePath(full_path).parts
+        relative_path = PurePath(*parts).as_posix() if parts else ""
+        matches = [
+            mapping
+            for mapping in self.list_active_mappings(platform_id, session=session)
+            if relative_path == mapping.relative_path
+            or relative_path.startswith(f"{mapping.relative_path}/")
+        ]
+        if not matches:
             raise MissingPlatformStorageMappingError(platform_id)
-        return mapping
+        return max(
+            matches,
+            key=lambda mapping: (
+                len(PurePath(mapping.relative_path).parts),
+                mapping.id,
+            ),
+        )
 
     @begin_session
     def get_mapping(
@@ -328,14 +351,6 @@ class DBStorageHandler(DBBaseHandler):
             relative_path,
             exclude_mapping_id=exclude_mapping_id,
         )
-        active_mapping = session.scalar(
-            select(PlatformStorageMapping.id).where(
-                PlatformStorageMapping.platform_id == platform_id,
-                PlatformStorageMapping.active.is_(True),
-            )
-        )
-        if active_mapping is not None and active_mapping != exclude_mapping_id:
-            raise DuplicateStorageMappingError(platform_id, storage_root_id)
         return PlatformStorageMapping(
             platform_id=platform_id,
             storage_root_id=storage_root_id,
@@ -385,16 +400,6 @@ class DBStorageHandler(DBBaseHandler):
         _, relative_path = self._load_and_validate(
             session, storage_root_id, relative_path
         )
-        active_mapping_id = session.scalar(
-            select(PlatformStorageMapping.id)
-            .where(
-                PlatformStorageMapping.platform_id == platform_id,
-                PlatformStorageMapping.active.is_(True),
-            )
-            .with_for_update(of=PlatformStorageMapping)
-        )
-        if active_mapping_id is not None:
-            raise DuplicateStorageMappingError(platform_id, storage_root_id)
         mapping = self._create_mapping_record(
             session, platform_id, storage_root_id, relative_path
         )
@@ -649,18 +654,6 @@ class DBStorageHandler(DBBaseHandler):
             mapping.relative_path,
             exclude_mapping_id=mapping.id,
         )
-        active_mapping_id = session.scalar(
-            select(PlatformStorageMapping.id)
-            .where(
-                PlatformStorageMapping.platform_id == mapping.platform_id,
-                PlatformStorageMapping.active.is_(True),
-            )
-            .with_for_update(of=PlatformStorageMapping)
-        )
-        if active_mapping_id is not None:
-            raise DuplicateStorageMappingError(
-                mapping.platform_id, mapping.storage_root_id
-            )
         old = self._snapshot(mapping)
         mapping.active = True
         mapping.version += 1

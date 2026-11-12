@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 from config import LIBRARY_BASE_PATH
 from config.config_manager import config_manager as cm
 from decorators.database import begin_session
-from exceptions.storage_exceptions import MissingPlatformStorageMappingError
 from handler.database import db_platform_handler, db_storage_handler
 from handler.filesystem.storage_resolver import (
     get_storage_root_health_snapshot,
@@ -200,24 +199,18 @@ class SetupFolderHandler:
         session: Session | None = None,
     ) -> Any:
         shared = {"session": session} if session is not None else {}
-        try:
-            mapping = db_storage_handler.get_active_mapping(platform.id, **shared)
-        except MissingPlatformStorageMappingError:
-            return db_storage_handler.create_mapping(
-                platform.id, root.id, relative_path, **actor, **shared
-            )
-        if (
-            mapping.storage_root_id == root.id
-            and mapping.relative_path == relative_path
-        ):
-            return mapping
-        return db_storage_handler.update_mapping(
-            mapping.id,
-            root.id,
-            relative_path,
-            expected_version=mapping.version,
-            **actor,
-            **shared,
+        mappings = db_storage_handler.list_active_mappings(platform.id, **shared)
+        mapping = next(
+            (
+                item
+                for item in mappings
+                if item.storage_root_id == root.id
+                and item.relative_path == relative_path
+            ),
+            None,
+        )
+        return mapping or db_storage_handler.create_mapping(
+            platform.id, root.id, relative_path, **actor, **shared
         )
 
     def assign(
@@ -248,8 +241,6 @@ class SetupFolderHandler:
                 platform_assignments[name] = slug
             else:
                 raise ValueError("invalid setup folder disposition")
-        if len(set(platform_assignments.values())) != len(platform_assignments):
-            raise ValueError("Folder and platform assignments must be unique")
         if excluded_paths and session is None:
             raise ValueError("setup exclusions require a transaction")
         if excluded_paths and session is not None:
@@ -270,24 +261,20 @@ class SetupFolderHandler:
         }
         for name, platform in platforms.items():
             relative_path = expected[name]
-            try:
-                existing = db_storage_handler.get_active_mapping(platform.id, **shared)
-            except MissingPlatformStorageMappingError:
-                existing = None
+            existing = next(
+                (
+                    mapping
+                    for mapping in db_storage_handler.list_active_mappings(
+                        platform.id, **shared
+                    )
+                    if mapping.storage_root_id == root.id
+                    and mapping.relative_path == relative_path
+                ),
+                None,
+            )
             if existing is None:
                 db_storage_handler.test_mapping(
                     platform.id, root.id, relative_path, **shared
-                )
-            elif (
-                existing.storage_root_id != root.id
-                or existing.relative_path != relative_path
-            ):
-                db_storage_handler.test_mapping(
-                    platform.id,
-                    root.id,
-                    relative_path,
-                    exclude_mapping_id=existing.id,
-                    **shared,
                 )
         exclusions = self.exclusions(root, session) if session is not None else {}
         if session is not None:

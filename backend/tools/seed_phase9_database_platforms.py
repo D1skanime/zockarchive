@@ -71,14 +71,10 @@ async def main() -> int:
         db_platform_handler.add_platform(scanned_platform)
     arcade = db_platform_handler.get_platform_by_fs_slug("arcade")
     if arcade is not None:
-        try:
-            db_storage_handler.get_active_mapping(arcade.id)
-        except MissingPlatformStorageMappingError as error:
+        if not db_storage_handler.list_active_mappings(arcade.id):
             admin = db_user_handler.get_user_by_username(PHASE9_E2E_ADMIN_USERNAME)
             if admin is None:
-                raise RuntimeError(
-                    "Phase 9 browser seed requires the e2e admin user"
-                ) from error
+                raise RuntimeError("Phase 9 browser seed requires the e2e admin user")
             db_storage_handler.create_mapping(
                 arcade.id,
                 root.id,
@@ -93,14 +89,10 @@ async def main() -> int:
         )
     windows = db_platform_handler.get_platform_by_fs_slug("win")
     if windows is not None:
-        try:
-            db_storage_handler.get_active_mapping(windows.id)
-        except MissingPlatformStorageMappingError as error:
+        if not db_storage_handler.list_active_mappings(windows.id):
             admin = db_user_handler.get_user_by_username(PHASE9_E2E_ADMIN_USERNAME)
             if admin is None:
-                raise RuntimeError(
-                    "Phase 9 browser seed requires the e2e admin user"
-                ) from error
+                raise RuntimeError("Phase 9 browser seed requires the e2e admin user")
             db_storage_handler.create_mapping(
                 windows.id,
                 root.id,

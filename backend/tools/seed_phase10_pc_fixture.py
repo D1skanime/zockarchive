@@ -77,14 +77,10 @@ async def main() -> int:
     if platform is None:
         raise RuntimeError("could not register isolated Windows platform")
 
-    try:
-        db_storage_handler.get_active_mapping(platform.id)
-    except MissingPlatformStorageMappingError as error:
+    if not db_storage_handler.list_active_mappings(platform.id):
         admin = db_user_handler.get_user_by_username(ADMIN_USERNAME)
         if admin is None:
-            raise RuntimeError(
-                "Phase 10 browser seed requires the e2e admin user"
-            ) from error
+            raise RuntimeError("Phase 10 browser seed requires the e2e admin user")
         db_storage_handler.create_mapping(
             platform.id,
             root.id,

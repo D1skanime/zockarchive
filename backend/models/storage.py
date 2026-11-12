@@ -100,7 +100,7 @@ class PlatformStorageMapping(BaseModel):
     version: Mapped[int] = mapped_column(Integer, default=1)
 
     platform: Mapped[Platform] = relationship(
-        lazy="joined", back_populates="storage_mapping"
+        lazy="joined", back_populates="storage_mappings"
     )
     storage_root: Mapped[StorageRoot] = relationship(
         lazy="joined", back_populates="platform_mappings"
