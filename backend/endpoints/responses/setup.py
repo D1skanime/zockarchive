@@ -8,6 +8,7 @@ class SetupFolderSchema(BaseModel):
     relative_path: str = Field(min_length=1, max_length=700)
     association: Literal["known", "unknown"]
     suggested_platform: str | None = Field(default=None, max_length=100)
+    excluded: bool = False
 
 
 class SetupPlatformOptionSchema(BaseModel):
@@ -23,7 +24,8 @@ class SetupFoldersResponse(BaseModel):
 
 class SetupFolderAssignmentSchema(BaseModel):
     folder_name: str = Field(min_length=1, max_length=255)
-    platform_slug: str = Field(min_length=1, max_length=100)
+    disposition: Literal["platform", "excluded"] = Field(default="platform")
+    platform_slug: str | None = Field(default=None, min_length=1, max_length=100)
 
 
 class SetupFolderAssignmentRequest(BaseModel):
@@ -38,9 +40,26 @@ class SetupRootHealthSchema(BaseModel):
 
 class SetupFolderMappingSchema(BaseModel):
     folder_name: str = Field(min_length=1, max_length=255)
-    platform_slug: str = Field(min_length=1, max_length=100)
-    mapping_id: int = Field(gt=0)
+    disposition: Literal["platform", "excluded"] = Field(default="platform")
+    platform_slug: str | None = Field(default=None, min_length=1, max_length=100)
+    mapping_id: int | None = Field(default=None, gt=0)
     relative_path: str = Field(min_length=1, max_length=700)
+
+
+class SetupFolderAdministrationSchema(SetupFolderSchema):
+    """A discovered direct folder with its persisted setup disposition."""
+
+    disposition: Literal["platform", "excluded"]
+    platform_slug: str | None = Field(default=None, max_length=100)
+    mapping_id: int | None = Field(default=None, gt=0)
+
+
+class SetupFolderAdministrationResponse(BaseModel):
+    """Administrative projection of the setup folder assignment authority."""
+
+    root_label: str = Field(min_length=1, max_length=100)
+    folders: list[SetupFolderAdministrationSchema] = Field(max_length=100)
+    platform_options: list[SetupPlatformOptionSchema] = Field(max_length=500)
 
 
 class SetupRecoverySnapshot(BaseModel):

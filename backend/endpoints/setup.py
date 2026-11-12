@@ -2,6 +2,7 @@ from fastapi import HTTPException, Request, status
 
 from decorators.auth import protected_route
 from endpoints.responses.setup import (
+    SetupFolderAdministrationResponse,
     SetupFolderAssignmentRequest,
     SetupFolderAssignmentResponse,
     SetupFoldersResponse,
@@ -48,6 +49,23 @@ def assign_setup_folders(request: Request, body: SetupFolderAssignmentRequest) -
                 "actor_display_name": request.user.username,
             },
         )
+    except (ValueError, StorageResolutionError, OSError) as error:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="setup_assignment_conflict"
+        ) from error
+
+
+@protected_route(
+    router.get,
+    "/setup/folders/assignments",
+    [Scope.USERS_WRITE],
+    response_model=SetupFolderAdministrationResponse,
+)
+def get_setup_folder_assignments(request: Request) -> dict:
+    """Expose completed setup's direct Games folder dispositions to an admin."""
+    assert_admin(request)
+    try:
+        return setup_recovery_handler.administration_projection()
     except (ValueError, StorageResolutionError, OSError) as error:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, detail="setup_assignment_conflict"

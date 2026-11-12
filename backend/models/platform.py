@@ -55,11 +55,11 @@ class Platform(BaseModel):
     firmware: Mapped[list[Firmware]] = relationship(
         lazy="raise", back_populates="platform"
     )
-    storage_mapping: Mapped[PlatformStorageMapping | None] = relationship(
+    storage_mappings: Mapped[list[PlatformStorageMapping]] = relationship(
         lazy="raise",
         back_populates="platform",
-        uselist=False,
         passive_deletes=True,
+        order_by="PlatformStorageMapping.id",
     )
 
     aspect_ratio: Mapped[str] = mapped_column(

@@ -15,9 +15,6 @@ if str(BACKEND_ROOT) not in sys.path:
 from fastapi import HTTPException  # noqa: E402
 
 from endpoints.sockets.scan import ScanType, scan_platforms  # noqa: E402
-from exceptions.storage_exceptions import (  # noqa: E402
-    MissingPlatformStorageMappingError,
-)
 from handler.database import (  # noqa: E402
     db_platform_handler,
     db_rom_handler,
@@ -77,14 +74,10 @@ async def main() -> int:
     if platform is None:
         raise RuntimeError("could not register isolated Windows platform")
 
-    try:
-        db_storage_handler.get_active_mapping(platform.id)
-    except MissingPlatformStorageMappingError as error:
+    if not db_storage_handler.list_active_mappings(platform.id):
         admin = db_user_handler.get_user_by_username(ADMIN_USERNAME)
         if admin is None:
-            raise RuntimeError(
-                "Phase 10 browser seed requires the e2e admin user"
-            ) from error
+            raise RuntimeError("Phase 10 browser seed requires the e2e admin user")
         db_storage_handler.create_mapping(
             platform.id,
             root.id,

@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
+import DirectGamesFolderMappingsSection from "@/v2/components/Settings/DirectGamesFolderMappingsSection.vue";
 import ExcludedSection from "@/v2/components/Settings/ExcludedSection.vue";
 import FolderMappingsSection from "@/v2/components/Settings/FolderMappingsSection.vue";
 import MissingGamesSection from "@/v2/components/Settings/MissingGamesSection.vue";
@@ -17,8 +18,14 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-type Tab = "mapping" | "storage" | "excluded" | "missing";
-const validTabs: Tab[] = ["mapping", "storage", "excluded", "missing"];
+type Tab = "mapping" | "direct" | "storage" | "excluded" | "missing";
+const validTabs: Tab[] = [
+  "mapping",
+  "direct",
+  "storage",
+  "excluded",
+  "missing",
+];
 
 const tab = ref<Tab>(
   (validTabs as string[]).includes(route.query.tab as string)
@@ -50,6 +57,11 @@ watch(
 );
 
 const tabs = computed<ZATabNavItem[]>(() => [
+  {
+    id: "direct",
+    label: t("settings.games-label"),
+    icon: "mdi-folder-game-outline",
+  },
   {
     id: "mapping",
     label: t("settings.folder-mappings"),
@@ -115,6 +127,7 @@ const tabModel = computed<string>({
     <ZATabNav v-model="tabModel" :items="tabs" class="r-v2-lib__tabs" />
 
     <FolderMappingsSection v-if="tab === 'mapping'" />
+    <DirectGamesFolderMappingsSection v-else-if="tab === 'direct'" />
     <StorageRootsSection v-else-if="tab === 'storage'" />
     <ExcludedSection v-else-if="tab === 'excluded'" />
     <MissingGamesSection v-else-if="tab === 'missing'" />

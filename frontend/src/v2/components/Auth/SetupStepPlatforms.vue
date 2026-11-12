@@ -2,12 +2,14 @@
 import { ZASelect } from "@v2/lib";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { SETUP_EXCLUDED } from "@/v2/data/adapters/legacy/services/api/setup";
 
 export interface SetupFolder {
   name: string;
   relative_path: string;
   association: "known" | "unknown";
   suggested_platform: string | null;
+  excluded?: boolean;
 }
 export interface SetupPlatformOption {
   slug: string;
@@ -44,6 +46,10 @@ const updateFolder = (folder: SetupFolder, value: unknown) => {
     [folder.name]: typeof value === "string" ? value : null,
   });
 };
+const isExcluded = (folder: SetupFolder) =>
+  props.draft[folder.name] === SETUP_EXCLUDED;
+const excludeFolder = (folder: SetupFolder) =>
+  updateFolder(folder, SETUP_EXCLUDED);
 </script>
 <template>
   <section class="r-setup-platforms" aria-labelledby="setup-folders-title">
@@ -70,9 +76,10 @@ const updateFolder = (folder: SetupFolder, value: unknown) => {
           <tr v-for="folder in rows" :key="folder.relative_path">
             <th scope="row">
               <span>{{ folder.name }}</span
-              ><small v-if="folder.association === 'unknown'">{{
-                t("setup.folder-needs-assignment")
-              }}</small>
+              ><small
+                v-if="folder.association === 'unknown' && !isExcluded(folder)"
+                >{{ t("setup.folder-needs-assignment") }}</small
+              >
             </th>
             <td>
               <ZASelect
@@ -80,12 +87,18 @@ const updateFolder = (folder: SetupFolder, value: unknown) => {
                 :items="options"
                 item-title="display_name"
                 item-value="slug"
+                searchable
+                :pinned-action-label="t('setup.do-not-scan')"
+                :display-value="
+                  isExcluded(folder) ? t('setup.do-not-scan') : undefined
+                "
                 :disabled="disabled || submitting"
                 :label="t('setup.assign-folder', { folder: folder.name })"
                 :placeholder="t('setup.choose-platform')"
                 :search-placeholder="t('common.search')"
                 hide-details
                 @update:model-value="updateFolder(folder, $event)"
+                @pinned-action="excludeFolder(folder)"
               />
             </td>
           </tr>

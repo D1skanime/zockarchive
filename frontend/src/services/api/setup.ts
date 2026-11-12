@@ -1,12 +1,14 @@
-import type { SetupRecoverySnapshot } from "@/__generated__";
 import api from "@/services/api";
 import type { Platform } from "@/stores/platforms";
+
+export const SETUP_EXCLUDED = "__setup_excluded__";
 
 export interface SetupFolder {
   name: string;
   relative_path: string;
   association: "known" | "unknown";
   suggested_platform: string | null;
+  excluded?: boolean;
 }
 export interface SetupPlatformOption {
   slug: string;
@@ -20,15 +22,42 @@ export interface SetupFolderDiscovery {
 export type SetupFolderDraft = Record<string, string | null>;
 export interface SetupFolderAssignment {
   folder_name: string;
-  platform_slug: string;
+  disposition?: "platform" | "excluded";
+  platform_slug: string | null;
+}
+export interface SetupFolderDisposition {
+  folder_name: string;
+  disposition?: "platform" | "excluded";
+  platform_slug: string | null;
+  mapping_id: number | null;
+  relative_path: string;
+}
+export interface SetupFolderAdministration extends SetupFolder {
+  disposition: "platform" | "excluded";
+  platform_slug: string | null;
+  mapping_id: number | null;
+}
+export interface SetupFolderAdministrationResponse {
+  root_label: string;
+  folders: SetupFolderAdministration[];
+  platform_options: SetupPlatformOption[];
+}
+export interface SetupRecoverySnapshot {
+  enrolled: boolean;
+  setup_complete: boolean;
+  current_step: "account" | "folders" | "complete";
+  saved_assignments: SetupFolderDisposition[];
+  missing_assignments: SetupFolder[];
+  root_health: {
+    reachable: boolean;
+    readable: boolean;
+    non_writable: boolean | null;
+  };
+  cause_code: string | null;
+  next_action: string;
 }
 export interface SetupFolderAssignmentResponse {
-  mappings: Array<{
-    folder_name: string;
-    platform_slug: string;
-    mapping_id: number;
-    relative_path: string;
-  }>;
+  mappings: SetupFolderDisposition[];
   ready: boolean;
   root_health: {
     reachable: boolean;
@@ -53,10 +82,21 @@ function assignFolders(assignments: SetupFolderAssignment[]) {
     assignments,
   });
 }
+function getFolderAssignments() {
+  return api.get<SetupFolderAdministrationResponse>(
+    "/setup/folders/assignments",
+  );
+}
 function getLibraryInfo() {
   return api.get<SetupLibraryInfo>("/setup/library");
 }
 function getStatus() {
   return api.get<SetupRecoverySnapshot>("/setup/status", { timeout: 5000 });
 }
-export default { discoverFolders, assignFolders, getLibraryInfo, getStatus };
+export default {
+  discoverFolders,
+  assignFolders,
+  getFolderAssignments,
+  getLibraryInfo,
+  getStatus,
+};

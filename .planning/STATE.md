@@ -3,18 +3,42 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
-stopped_at: Phase 43 technical verification complete; temporary Portainer UAT ready
-last_updated: "2026-11-11T11:15:00Z"
-last_activity: 2026-11-11 -- Phase 43 development-version release lookup skipped and browser-inspected
+stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
+last_updated: "2026-11-12T12:40:00Z"
+last_activity: 2026-11-12 -- Integrated Phase 44 from ki/za-261111-98c5 on the current banner baseline and retained fresh UAT
 progress:
-  total_phases: 43
-  completed_phases: 32
-  total_plans: 332
-  completed_plans: 297
-  percent: 74
+  total_phases: 44
+  completed_phases: 34
+  total_plans: 334
+  completed_plans: 303
+  percent: 77
 ---
 
 # Project State
+
+## Quick Task 261112-h21
+
+| 261112-h21 | Repair Quality-Gate round 1 lint and endpoint size regressions | 2026-11-12 | Complete: removed four stale imports, restored the compact legacy active-mapping projection over the plural mapping contract, and returned all reported endpoint files to their prior sizes. Targeted Trunk and compilation checks passed with no new issues; no tests were run. | [quality-gate repair](./quick/261112-h21-quality-gate-runde-1-ungenutzte-missingp/) |
+
+- The reported main movement predates this quick task and is the separately logged `ki/za-261111-0faa` Docker-banner merge. This job branch neither checked out nor changed main.
+
+## Quick Task 261112-fj9
+
+| 261112-fj9 | Permit multiple direct Games folders for one platform | 2026-11-12 | Complete: isolated browser UAT proved the first Aster-only scan, durable Aster plus Beryl Windows mappings after reload, a later exact Aster plus Beryl catalog, and Cinder exclusion. The narrow excluded-to-platform recovery fix is `16438a22d`; token-labelled UAT resources remain for human acceptance. | [multiple direct Games UAT](./quick/261112-fj9-uat-entscheidung-mehrere-direkte-games-o/) |
+
+- The temporary UAT compose bypasses the entrypoint and therefore cannot emit the exact `[ZockArchive][init]` entrypoint prefix; the report records visible ZockArchive UI/version and sanitized runtime prefix evidence without claiming the absent line.
+
+## Quick Task 261112-cr2
+
+| 261112-cr2 | Live UAT for reassigning excluded direct Games folders | 2026-11-12 | Blocked: the real first scan proved exactly Quartz-UAT-Title and both excluded titles absent, but Ruby-to-Windows was rejected because Windows already has Quartz's sole active PlatformStorageMapping. The later scan therefore could not prove two mapped titles. Sanitized evidence and cleanup receipt are in the job report. | [direct-folder UAT](./quick/261112-cr2-live-uat-ausgeschlossene-direkte-ordner-/) |
+
+- Do not broaden the current single-active-path platform storage model as a UAT fix. A follow-up needs an architectural decision on multi-path mappings for one platform.
+
+## Quick Task 261111-pbs
+
+| 261111-pbs | Default omitted setup dispositions to platform | 2026-11-11 | Structural checks and prior desktop/mobile browser inspection completed; no tests started. Step 1 was not live verified in this job service because setup was already complete. By locked decision, feature and update-path UAT move to the existing Portainer stack without a temporary First-Run instance. | [setup disposition review](./quick/261111-pbs-review-runde-1-standardwert-fuer-setup-o/) |
+
+- Setup assignment and mapping schemas now retain legacy omitted dispositions as platform mappings. The sanitized UAT report records the job-service limitation and German feature/update-path checklists for the existing Portainer stack, without changing durable setup, Docker state, or source storage.
 
 ## Quick Task 261111-foc
 
@@ -205,10 +229,10 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 
 ## Current Position
 
-Phase: 43 (ZA Beta Release for Independent Portainer Installation)
-Plan: 4 of 4
-Status: Technical verification complete (7/7); human Portainer UAT pending
-Last activity: 2026-11-10 -- Phase 43 technically verified; temporary UAT is ready
+Phase: 44 (ZA Setup Assistant Folder Exclusions and Platform Search)
+Plan: 2 of 2
+Status: Integrated and technically re-verified; fresh setup human UAT retained
+Last activity: 2026-11-12 -- Bound integration job 261112-240c to the existing Phase 44 and retained the untouched three-folder setup
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -737,6 +761,13 @@ Recent decisions affecting current work:
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
 | 261111-ke4 | Fix ShellCheck SC1003 in the ZockArchive init banner | 2026-11-11 | this commit | [261111-ke4](./quick/261111-ke4-fix-shellcheck-sc1003-in-zockarchive-doc/) |
 | 261111-0faa | Brand Docker init banner and log prefix as ZockArchive | 2026-11-11 | this commit | N/A |
+| 261112-bob | Restore native keyboard activation for completed-setup Scan navigation | 2026-11-12 | ef220d60e | [261112-bob](./quick/261112-bob-sichtpr-fung-tastaturaktivierung-der-abs/) |
+| 261111-nja | Repair completed-setup first-scan navigation | 2026-11-11 | 07f0050d2 | [261111-nja](./quick/261111-nja-sichtpr-fung-erstscan-schaltfl-che-im-ab/) |
+| 261111-nbd | Repair the StorageRoot exclusion annotation import | 2026-11-11 | f2f236808 | [261111-nbd](./quick/261111-nbd-ruff-f821-setupfolderexclusion-typimport/) |
+| 261111-m0v | Extract setup exclusions and ZASelect responsibilities below the hard file limit | 2026-11-11 | 04c2ac519, 78b06ed3e, d0c0137d8 | [261111-m0v](./quick/261111-m0v-quality-gate-runde-3-gr-enverst-e-bei-se/) |
+| 261111-lx9 | Make the Phase 44 GSD context explicitly identify job 261111-98c5 | 2026-11-11 | this commit | [261111-lx9](./quick/261111-lx9-quality-gate-runde-2-auftragskennung-im/) |
+| 261111-ltm | Record the Quality Gate repair for the job-to-Phase-44 GSD binding | 2026-11-11 | this commit | [261111-ltm](./quick/261111-ltm-quality-gate-gsd-phasenbindung-f-r-auftr/) |
+| 261111-kqo | Persist setup folder exclusions and add platform text search | 2026-11-11 | 1293dd139, 9a398b364, 647f17e37 | [261111-kqo](./quick/261111-kqo-za-einrichtung-ordner-ausschlie-en-und-p/) |
 | 261111-hr4 | Repair typed release-error response fixtures in approved behavior tests | 2026-11-11 | this commit | [261111-hr4](./quick/261111-hr4-fix-typed-mocked-response-objects-in-pha/) |
 | 261111-ghs | Add direct Phase 43 accepted-release behavior tests | 2026-11-11 | current commit | [261111-ghs](./quick/261111-ghs-add-direct-behavior-tests-for-the-approv/) |
 | 261110-t8b | Align the ZA beta GHCR image contract after the Portainer gate finding | 2026-11-11 | 6e3e9d44b | [261110-t8b](./quick/261110-t8b-classify-the-missing-za-library-mount-do/) |
@@ -821,9 +852,9 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-11-07T19:03:49.650Z
+Last session: 2026-11-12T11:00:49.670Z
 Stopped at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-Resume file: .planning/phases/41-za-scan-bersicht-f-r-gro-e-bibliotheken/41-VERIFICATION.md
+Resume file: None
 
 ## Quick Task 261105-mnt
 

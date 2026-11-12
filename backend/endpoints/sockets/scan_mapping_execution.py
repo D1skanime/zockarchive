@@ -14,6 +14,7 @@ from handler.filesystem.storage_resolver import get_storage_root_health_snapshot
 from handler.scan_command import MappedScanCommand, ScanScope, ScanTrigger
 from handler.scan_handler import MappedScanCommand as HandlerMappedScanCommand
 from handler.scan_handler import ScanType, execute_mapped_scan
+from handler.setup_recovery import setup_recovery_handler
 from logger.logger import log
 
 
@@ -82,7 +83,10 @@ def mapping_scan_commands(
     commands = []
     for platform in selected:
         try:
-            mapping = db_storage_handler.get_active_mapping(platform.id)
+            mappings = db_storage_handler.list_active_mappings(platform.id)
+        except (MissingPlatformStorageMappingError, StorageResolutionError):
+            continue
+        for mapping in mappings:
             health = get_storage_root_health_snapshot(mapping.storage_root)
             if health.non_writable is not True:
                 log.info(
@@ -90,22 +94,20 @@ def mapping_scan_commands(
                     platform.fs_slug,
                 )
                 continue
-        except (MissingPlatformStorageMappingError, StorageResolutionError):
-            continue
-        options: tuple[tuple[str, str], ...] = ()
-        scope_path = (filesystem_scope_paths or {}).get(platform.fs_slug)
-        if scope_path:
-            options = (("relative_path", scope_path),)
-        commands.append(
-            MappedScanCommand(
-                mapping_id=mapping.id,
-                expected_revision=mapping.version,
-                trigger=trigger,
-                scope=scope,
-                scan_type=scan_type.value,
-                options=options,
+            options: tuple[tuple[str, str], ...] = ()
+            scope_path = (filesystem_scope_paths or {}).get(platform.fs_slug)
+            if scope_path:
+                options = (("relative_path", scope_path),)
+            commands.append(
+                MappedScanCommand(
+                    mapping_id=mapping.id,
+                    expected_revision=mapping.version,
+                    trigger=trigger,
+                    scope=scope,
+                    scan_type=scan_type.value,
+                    options=options,
+                )
             )
-        )
     return commands
 
 
@@ -192,7 +194,12 @@ async def execute_mixed_scans(
         ]
     else:
         all_fs_slugs = await fs_platform_handler.get_platforms()
-        legacy_fs_slugs = [slug for slug in all_fs_slugs if slug not in mapped_fs_slugs]
+        excluded_paths = setup_recovery_handler.excluded_folder_paths()
+        legacy_fs_slugs = [
+            slug
+            for slug in all_fs_slugs
+            if slug not in mapped_fs_slugs and slug not in excluded_paths
+        ]
 
     if (
         legacy_ids
