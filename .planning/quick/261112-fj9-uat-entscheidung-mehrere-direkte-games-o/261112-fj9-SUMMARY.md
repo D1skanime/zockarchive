@@ -1,7 +1,7 @@
 ---
 quick_id: 261112-fj9-uat-entscheidung-mehrere-direkte-games-o
-status: blocked
-commit: 7c11af65c
+status: complete
+commits: [7c11af65c, 79096883b, 16438a22d]
 ---
 
 # Multiple direct Games folders, execution handoff
@@ -36,22 +36,42 @@ and the fixed `Nicht scannen` action for pointer and keyboard input.
   That container path is read-only on the host. No migration was applied.
 - `git diff --check` passed before commit.
 
-## UAT status
+## Isolated browser UAT
 
-No isolated 261112-fj9 Docker stack, browser session, screenshot, or retained
-resource was created. The checked-in compose file hard-codes the permanent
-development container names (`pgdp-dev`, `pgdp-db-dev`, and `pgdp-valkey-dev`),
-so it cannot satisfy the required fresh token-labelled isolation without a
-separate reviewed disposable Compose definition. Consequently no browser URL,
-first-scan Aster-only receipt, Beryl remap receipt, later Aster-plus-Beryl
-receipt, Cinder exclusion receipt, banner/init-prefix receipt, or keep manifest
-is claimed. The stale `za-261112-cr2-uat-mariadb-data` volume was not inspected
-or modified.
+The retained disposable project is
+`za-261111-98c5-261112-fj9-uat-my97pn`, available at
+`http://127.0.0.1:32772`. The browser workflow used the exact menu path
+`Settings -> Library Management -> Games` and only temporary fixture folders:
+`Aster-261112-fj9`, `Beryl-261112-fj9`, and `Cinder-261112-fj9`.
 
-## Deferred human UAT
+- The setup picker visibly used the case-insensitive `win` search to select
+  Windows for Aster. Beryl and Cinder were initially `Do not scan`.
+- The first real browser scan completed with one game, and Search visibly
+  showed exactly `Aster UAT 261112-fj9`. Beryl and Cinder were absent.
+- In Library Management, Beryl was changed to Windows, saved, and reloaded.
+  The visible dispositions were Aster Windows, Beryl Windows, and Cinder Do
+  not scan.
+- The later real browser scan visibly completed with two games. Search showed
+  exactly `Aster UAT 261112-fj9` and `Beryl UAT 261112-fj9`, with Cinder
+  absent. The two-game scan and catalog count demonstrate that neither active
+  physical folder was duplicated.
 
-Create a token-labelled disposable Compose definition with no fixed container
-names and a temporary read-only fixture root, then perform the required browser
-workflow at `Settings -> Library Management -> Games`. Retain only resources
-whose names contain `261112-fj9`, record the usable browser URL here, and write
-`/tmp/ki-uat-keep.txt` only if such a stack is retained.
+The initial Beryl promotion exposed a recovery-path conflict. Commit
+`16438a22d` permits an excluded child to become a new platform mapping while
+retaining the conflict for changing an already active mapping. The focused fix
+passed Python compilation with temporary bytecode output and `git diff --check`.
+No tests were created or run.
+
+Desktop/mobile screenshots and the sanitized report are under
+`/home/d1sk/ki-run/data/jobs/za/261111-98c5/` with the `261112-fj9-` prefix.
+The UI showed the ZockArchive header and `development` version. Sanitized
+runtime observations retain the `[ZockArchive]` logger prefix, but this
+isolated compose directly starts the backend and did not emit the exact
+`[ZockArchive][init]` entrypoint prefix. No raw logs or credentials are stored.
+
+## Retention
+
+The exact token-labelled app, worker, database, queue, network, two volumes,
+and temporary root remain for human acceptance. `/tmp/ki-uat-keep.txt` lists
+only those allowed resources and the TMPDIR-relative temporary path. No
+permanent service, NAS mount, Team4s resource, or stale UAT volume was used.

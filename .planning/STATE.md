@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Quick Task 261112-fj9
+
+| 261112-fj9 | Permit multiple direct Games folders for one platform | 2026-11-12 | Complete: isolated browser UAT proved the first Aster-only scan, durable Aster plus Beryl Windows mappings after reload, a later exact Aster plus Beryl catalog, and Cinder exclusion. The narrow excluded-to-platform recovery fix is `16438a22d`; token-labelled UAT resources remain for human acceptance. | [multiple direct Games UAT](./quick/261112-fj9-uat-entscheidung-mehrere-direkte-games-o/) |
+
+- The temporary UAT compose bypasses the entrypoint and therefore cannot emit the exact `[ZockArchive][init]` entrypoint prefix; the report records visible ZockArchive UI/version and sanitized runtime prefix evidence without claiming the absent line.
+
 ## Quick Task 261112-cr2
 
 | 261112-cr2 | Live UAT for reassigning excluded direct Games folders | 2026-11-12 | Blocked: the real first scan proved exactly Quartz-UAT-Title and both excluded titles absent, but Ruby-to-Windows was rejected because Windows already has Quartz's sole active PlatformStorageMapping. The later scan therefore could not prove two mapped titles. Sanitized evidence and cleanup receipt are in the job report. | [direct-folder UAT](./quick/261112-cr2-live-uat-ausgeschlossene-direkte-ordner-/) |
