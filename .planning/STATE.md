@@ -2,19 +2,25 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: awaiting_human_verification
-stopped_at: Phase 44 pre-UAT technical verification complete; setup and Docker branding human UAT pending
-last_updated: "2026-11-12T08:40:00Z"
-last_activity: 2026-11-12 -- Quick task 261112-bob restored native keyboard activation for the completed-setup Scan action and recorded desktop/mobile browser evidence
+status: verifying
+stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
+last_updated: "2026-11-12T11:00:49.693Z"
+last_activity: 2026-11-11 -- Made the Phase 44 GSD context explicitly identify job 261111-98c5 and its ki-run binding, without changing product behavior
 progress:
   total_phases: 44
-  completed_phases: 32
+  completed_phases: 34
   total_plans: 333
-  completed_plans: 298
-  percent: 74
+  completed_plans: 302
+  percent: 77
 ---
 
 # Project State
+
+## Quick Task 261112-cr2
+
+| 261112-cr2 | Live UAT for reassigning excluded direct Games folders | 2026-11-12 | Blocked: the real first scan proved exactly Quartz-UAT-Title and both excluded titles absent, but Ruby-to-Windows was rejected because Windows already has Quartz's sole active PlatformStorageMapping. The later scan therefore could not prove two mapped titles. Sanitized evidence and cleanup receipt are in the job report. | [direct-folder UAT](./quick/261112-cr2-live-uat-ausgeschlossene-direkte-ordner-/) |
+
+- Do not broaden the current single-active-path platform storage model as a UAT fix. A follow-up needs an architectural decision on multi-path mappings for one platform.
 
 ## Quick Task 261111-pbs
 
@@ -833,9 +839,9 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-11-07T19:03:49.650Z
+Last session: 2026-11-12T11:00:49.670Z
 Stopped at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-Resume file: .planning/phases/41-za-scan-bersicht-f-r-gro-e-bibliotheken/41-VERIFICATION.md
+Resume file: None
 
 ## Quick Task 261105-mnt
 
