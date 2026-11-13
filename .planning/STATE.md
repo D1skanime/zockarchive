@@ -763,6 +763,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261113-c9k | Classify the retained ScreenScraper compatibility input for the quality gate | 2026-11-13 | 62baa3eb1 | [261113-c9k](./quick/261113-c9k-quality-gate-namensklassifizierung-und-host-contracts/) |
 | 261111-ke4 | Fix ShellCheck SC1003 in the ZockArchive init banner | 2026-11-11 | this commit | [261111-ke4](./quick/261111-ke4-fix-shellcheck-sc1003-in-zockarchive-doc/) |
 | 261111-0faa | Brand Docker init banner and log prefix as ZockArchive | 2026-11-11 | this commit | N/A |
 | 261112-bob | Restore native keyboard activation for completed-setup Scan navigation | 2026-11-12 | ef220d60e | [261112-bob](./quick/261112-bob-sichtpr-fung-tastaturaktivierung-der-abs/) |
