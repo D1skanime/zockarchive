@@ -27,8 +27,17 @@ services:
       SCREENSCRAPER_PASSWORD: ${ZA_SCREENSCRAPER_PASSWORD:-}
       RETROACHIEVEMENTS_API_KEY: ${ZA_RETROACHIEVEMENTS_API_KEY:-}
       STEAMGRIDDB_API_KEY: ${ZA_STEAMGRIDDB_API_KEY:-}
-      IGDB_CLIENT_ID: ${ZA_IGDB_CLIENT_ID:-}
-      IGDB_CLIENT_SECRET: ${ZA_IGDB_CLIENT_SECRET:-}
+      # Direct runtime names are the Portainer-facing contract.  Keep ZA_
+      # names as an input-only compatibility fallback for existing stacks.
+      IGDB_CLIENT_ID: ${IGDB_CLIENT_ID:-${ZA_IGDB_CLIENT_ID:-}}
+      IGDB_CLIENT_SECRET: ${IGDB_CLIENT_SECRET:-${ZA_IGDB_CLIENT_SECRET:-}}
+      MOBYGAMES_API_KEY: ${MOBYGAMES_API_KEY:-${ZA_MOBYGAMES_API_KEY:-}}
+      STEAM_API_ENABLED: ${STEAM_API_ENABLED:-${ZA_STEAM_API_ENABLED:-false}}
+      STEAM_API_LANGUAGE: ${STEAM_API_LANGUAGE:-${ZA_STEAM_API_LANGUAGE:-german}}
+      STEAM_API_COUNTRY: ${STEAM_API_COUNTRY:-${ZA_STEAM_API_COUNTRY:-CH}}
+      STEAM_API_FALLBACK_LANGUAGE: ${STEAM_API_FALLBACK_LANGUAGE:-${ZA_STEAM_API_FALLBACK_LANGUAGE:-english}}
+      STEAM_API_FALLBACK_COUNTRY: ${STEAM_API_FALLBACK_COUNTRY:-${ZA_STEAM_API_FALLBACK_COUNTRY:-US}}
+      STEAM_API_TEXT_LANGUAGES: ${STEAM_API_TEXT_LANGUAGES:-${ZA_STEAM_API_TEXT_LANGUAGES:-german,english}}
       HASHEOUS_API_ENABLED: ${ZA_HASHEOUS_API_ENABLED:-true}
     volumes:
       - za_resources:/romm/resources
@@ -71,7 +80,6 @@ services:
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 30s
-      start_interval: 10s
       interval: 10s
       timeout: 5s
       retries: 5

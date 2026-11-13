@@ -22,6 +22,11 @@ Set the three required secret variables and `ZA_LIBRARY_PATH` from `portainer-re
 
 Keep this contract separate from the Git-source stack. Updates change only the reviewed exact `ZA_IMAGE_TAG` and retain the same named volumes and bind mounts. Docker Hub is optional and does not affect the authoritative GHCR release when its two workflow credentials are absent.
 
-Optional provider credentials may remain blank. ScreenScraper source builds need the two `PGDP_SCREENSCRAPER_DEV_*` build inputs as well as personal credentials.
+Optional provider credentials may remain blank. In the release stack, use the runtime
+names displayed by setup: `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET`,
+`MOBYGAMES_API_KEY`, and the `STEAM_API_*` family. The legacy matching `ZA_`
+names remain input aliases for existing Portainer stacks, but direct runtime names
+take precedence when both are present. ScreenScraper source builds need the two
+`PGDP_SCREENSCRAPER_DEV_*` build inputs as well as personal credentials.
 
 See the [German release installation guide](../docs/INSTALLATION_PORTAINER.md) for deployment, backups and updates. The retained Git-source instructions are in [PORTAINER_INSTALL.md](../docs/PORTAINER_INSTALL.md).
