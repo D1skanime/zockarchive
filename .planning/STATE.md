@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261113-bem
+
+| 261113-bem | Align release provider variables with setup guidance | 2026-11-13 | Complete: release Portainer inputs now accept direct setup-visible IGDB, MobyGames, and Steam names with ZA_ fallback compatibility. Synthetic desktop and mobile setup browser checks confirmed configured provider states and unchanged folder controls; no tests were run. | [provider variable alignment](./quick/261113-bem-release-provider-variablen-mit-dem-setup/) |
+
 ## Quick Task 261112-h21
 
 | 261112-h21 | Repair Quality-Gate round 1 lint and endpoint size regressions | 2026-11-12 | Complete: removed four stale imports, restored the compact legacy active-mapping projection over the plural mapping contract, and returned all reported endpoint files to their prior sizes. Targeted Trunk and compilation checks passed with no new issues; no tests were run. | [quality-gate repair](./quick/261112-h21-quality-gate-runde-1-ungenutzte-missingp/) |
