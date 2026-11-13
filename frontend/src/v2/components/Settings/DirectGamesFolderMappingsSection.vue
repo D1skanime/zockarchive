@@ -301,14 +301,12 @@ watch(
   display: flex;
   justify-content: flex-end;
 }
-html[data-bp~="sm-and-down"] .r-v2-direct-mappings__header {
-  display: none;
-}
+html[data-bp~="sm-and-down"] .r-v2-direct-mappings__header,
 html[data-bp~="sm-and-down"] .r-v2-direct-mappings__row {
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
 }
 html[data-bp~="sm-and-down"] .r-v2-direct-mappings__dirty,
 html[data-bp~="sm-and-down"] .r-v2-direct-mappings__error {
-  grid-column: 1;
+  grid-column: 2;
 }
 </style>

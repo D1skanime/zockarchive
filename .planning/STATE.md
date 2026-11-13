@@ -16,9 +16,13 @@ progress:
 
 # Project State
 
+## Quick Task 261113-w8k
+
+| 261113-w8k | Preserve direct-folder columns on narrow screens | 2026-11-13 | Complete: mobile Games retains labeled Folder and Platform columns with fluid tracks; authenticated browser inspection passed at 390 px and 1440 px without post-login browser errors. No tests were run. | [mobile direct-folder columns](./quick/261113-w8k-mobile-direct-folder-columns/) |
+
 ## Quick Task 261113-ptu
 
-| 261113-ptu | Repair Library Management UAT 4 | 2026-11-13 | Complete: Games is a two-column direct-child authority with independent root health and row-local save errors; Storage navigation redirects to Games. Typecheck and locale checks passed. Browser navigation timed out before isolated scan proof, so that evidence remains open. | [UAT 4 library repair](./quick/261113-ptu-repair-library-management-uat4/) |
+| 261113-ptu | Repair Library Management UAT 4 | 2026-11-13 | Complete: Games is a two-column direct-child authority with independent root health and row-local save errors; Storage navigation redirects to Games. Typecheck and locale checks passed. Refreshed pgdp-dev browser evidence confirms desktop/mobile UI, HTTP 409 conflict feedback and a completed HTTP-202 quick scan. The isolated A/B/C fixture promotion remains separately evidenced, not repeated in pgdp-dev because its configured folders are pre-existing active mappings. | [UAT 4 library repair](./quick/261113-ptu-repair-library-management-uat4/) |
 
 ## Quick Task 261113-iyg
 
