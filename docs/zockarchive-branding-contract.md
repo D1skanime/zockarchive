@@ -109,6 +109,7 @@ retain|docs/PORTAINER_INSTALL.md|Use [ZockArchive issues](https://github.com/D1s
 retain|examples/README.md|The stack builds the selected Git revision using `docker/Dockerfile`. `PGDP_IMAGE` defaults to the existing local tag `pc-game-download-portal:portainer`. It is not an advertised public image. Preserve project, service, database, volume and host-path overrides.
 retain|examples/README.md|`docker-compose.example.yml` is a manual prebuilt-image example. Its local `pc-game-download-portal:latest` tag must already be built or supplied by an operator who verified its provenance. It is not the independent release contract.
 retain|examples/README.md|Optional provider credentials may remain blank. ScreenScraper source builds need the two `PGDP_SCREENSCRAPER_DEV_*` build inputs as well as personal credentials.
+retain|examples/README.md|`PGDP_SCREENSCRAPER_DEV_*` build inputs as well as personal credentials.
 retain|examples/portainer-stack.yml|name: ${PGDP_PROJECT_NAME:-pgdp}
 retain|examples/portainer-stack.yml|  pgdp_mysql_data:
 retain|examples/portainer-stack.yml|  pgdp_resources:
