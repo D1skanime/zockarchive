@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261113-icc
+
+| 261113-icc | Repair About dialog community attribution and responsive brand layout | 2026-11-13 | Complete: the About dialog now omits the unverified upstream Discord community tile and constrains only its wordmark to the 32 px icon slot. Authenticated desktop/mobile browser checks confirmed all three retained GitHub targets, no overlay, and no browser errors. No tests were run. | [About dialog repair](./quick/261113-icc-about-dialog-community-link-and-responsi/) |
+
 ## Quick Task 261113-bem
 
 | 261113-bem | Align release provider variables with setup guidance | 2026-11-13 | Complete: release Portainer inputs now accept direct setup-visible IGDB, MobyGames, and Steam names with ZA_ fallback compatibility. Synthetic desktop and mobile setup browser checks confirmed configured provider states and unchanged folder controls; no tests were run. | [provider variable alignment](./quick/261113-bem-release-provider-variablen-mit-dem-setup/) |

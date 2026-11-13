@@ -67,9 +67,14 @@ defineProps<Props>();
   letter-spacing: -0.025em;
   line-height: 1.2;
 }
+.project-brand--about {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .project-brand--about .project-brand__wordmark {
-  width: 148px;
-  height: auto;
+  width: 100%;
+  height: 100%;
 }
 html[data-bp~="md-and-up"][data-bp~="md-and-down"] .project-brand__name {
   display: none;
