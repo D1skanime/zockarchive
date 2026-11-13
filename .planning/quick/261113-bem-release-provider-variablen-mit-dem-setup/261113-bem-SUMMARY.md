@@ -37,3 +37,9 @@ MariaDB healthcheck keeps its health and dependency behavior without
 
 Synthetic provider inputs prove setup configuration state, not a successful external
 provider authentication. The reserved fresh UAT stack on port 32774 remains unchanged.
+
+## Self-Check: PASSED
+
+- The release contract, all locale changes, and this quick summary exist on the
+  current branch.
+- The three task commits are present and the branch worktree is clean.
