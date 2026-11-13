@@ -24,6 +24,7 @@ branding contract without changing verifier behavior.
 ## Commits
 
 - `62baa3eb1` `docs(za): classify ScreenScraper compatibility input`
+- `b4499b461` `docs(za): record naming quality gate`
 
 ## Deviations
 
