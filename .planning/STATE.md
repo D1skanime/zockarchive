@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261113-iyg
+
+| 261113-iyg | Reconcile direct folder mappings and scan evidence | 2026-11-13 | Complete: direct setup children use the Games projection only, generic mapping rows no longer mislabel exclusions. Isolated A/B/C scans completed with A then A+B persisted and C excluded; no tests were run. | [direct mapping repair](./quick/261113-iyg-reconcile-direct-folder-mappings-and-sca/) |
+
 ## Quick Task 261113-icc
 
 | 261113-icc | Repair About dialog community attribution and responsive brand layout | 2026-11-13 | Complete: the About dialog now omits the unverified upstream Discord community tile and constrains only its wordmark to the 32 px icon slot. Authenticated desktop/mobile browser checks confirmed all three retained GitHub targets, no overlay, and no browser errors. No tests were run. | [About dialog repair](./quick/261113-icc-about-dialog-community-link-and-responsi/) |
