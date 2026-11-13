@@ -37,6 +37,8 @@ MariaDB healthcheck keeps its health and dependency behavior without
 
 Synthetic provider inputs prove setup configuration state, not a successful external
 provider authentication. The reserved fresh UAT stack on port 32774 remains unchanged.
+The isolated browser containers, network, and synthetic credentials were removed
+after the check.
 
 ## Self-Check: PASSED
 
