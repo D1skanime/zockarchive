@@ -206,6 +206,8 @@
   "invite-link": "Link zaproszenia",
   "invite-link-created": "Link zaproszenia utworzony",
   "language": "Język",
+  "library-root-reachable": "Folder biblioteki jest dostępny.",
+  "library-root-unreachable": "Folder biblioteki jest niedostępny.",
   "link-copied": "Link skopiowany do schowka",
   "main-platform": "Główna platforma",
   "manual": "Ręczne",

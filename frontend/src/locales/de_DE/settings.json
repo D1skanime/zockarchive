@@ -206,6 +206,8 @@
   "invite-link": "Einladungslink",
   "invite-link-created": "Einladungslink erstellt",
   "language": "Sprache",
+  "library-root-reachable": "Bibliotheksordner ist erreichbar.",
+  "library-root-unreachable": "Bibliotheksordner ist nicht erreichbar.",
   "link-copied": "Link in die Zwischenablage kopiert",
   "main-platform": "Haupt-Plattform",
   "manual": "Manuell",

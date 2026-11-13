@@ -206,6 +206,8 @@
   "invite-link": "초대 링크",
   "invite-link-created": "초대 링크가 생성되었습니다",
   "language": "언어",
+  "library-root-reachable": "라이브러리 폴더에 접근할 수 있습니다.",
+  "library-root-unreachable": "라이브러리 폴더에 접근할 수 없습니다.",
   "link-copied": "링크가 클립보드에 복사되었습니다",
   "main-platform": "메인 플랫폼",
   "manual": "수동",

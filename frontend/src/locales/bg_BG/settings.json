@@ -206,6 +206,8 @@
   "invite-link": "Линк за покана",
   "invite-link-created": "Линкът за покана е създаден",
   "language": "Език",
+  "library-root-reachable": "Папката на библиотеката е достъпна.",
+  "library-root-unreachable": "Папката на библиотеката не е достъпна.",
   "link-copied": "Линкът е копиран в клипборда",
   "main-platform": "Основна платформа",
   "manual": "Ръчно",

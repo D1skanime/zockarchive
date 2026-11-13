@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261113-ptu
+
+| 261113-ptu | Repair Library Management UAT 4 | 2026-11-13 | Complete: Games is a two-column direct-child authority with independent root health and row-local save errors; Storage navigation redirects to Games. Typecheck and locale checks passed. Browser navigation timed out before isolated scan proof, so that evidence remains open. | [UAT 4 library repair](./quick/261113-ptu-repair-library-management-uat4/) |
+
 ## Quick Task 261113-iyg
 
 | 261113-iyg | Reconcile direct folder mappings and scan evidence | 2026-11-13 | Complete: direct setup children use the Games projection only, generic mapping rows no longer mislabel exclusions. Isolated A/B/C scans completed with A then A+B persisted and C excluded; no tests were run. | [direct mapping repair](./quick/261113-iyg-reconcile-direct-folder-mappings-and-sca/) |

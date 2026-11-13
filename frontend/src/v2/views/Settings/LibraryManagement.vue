@@ -11,21 +11,14 @@ import DirectGamesFolderMappingsSection from "@/v2/components/Settings/DirectGam
 import ExcludedSection from "@/v2/components/Settings/ExcludedSection.vue";
 import FolderMappingsSection from "@/v2/components/Settings/FolderMappingsSection.vue";
 import MissingGamesSection from "@/v2/components/Settings/MissingGamesSection.vue";
-import StorageRootsSection from "@/v2/components/Settings/StorageRootsSection.vue";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
 
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-type Tab = "mapping" | "direct" | "storage" | "excluded" | "missing";
-const validTabs: Tab[] = [
-  "mapping",
-  "direct",
-  "storage",
-  "excluded",
-  "missing",
-];
+type Tab = "mapping" | "direct" | "excluded" | "missing";
+const validTabs: Tab[] = ["mapping", "direct", "excluded", "missing"];
 
 const tab = ref<Tab>(
   (validTabs as string[]).includes(route.query.tab as string)
@@ -45,6 +38,14 @@ watch(tab, (newTab) => {
 watch(
   () => route.query.tab,
   (newTab) => {
+    if (newTab === "storage") {
+      tab.value = "direct";
+      void router.replace({
+        path: route.path,
+        query: { ...route.query, tab: "direct" },
+      });
+      return;
+    }
     if (
       newTab &&
       (validTabs as string[]).includes(newTab as string) &&
@@ -66,11 +67,6 @@ const tabs = computed<ZATabNavItem[]>(() => [
     id: "mapping",
     label: t("settings.folder-mappings"),
     icon: "mdi-folder-multiple-outline",
-  },
-  {
-    id: "storage",
-    label: t("storage.administration", "Storage mapping"),
-    icon: "mdi-database-cog-outline",
   },
   {
     id: "excluded",
@@ -128,7 +124,6 @@ const tabModel = computed<string>({
 
     <FolderMappingsSection v-if="tab === 'mapping'" />
     <DirectGamesFolderMappingsSection v-else-if="tab === 'direct'" />
-    <StorageRootsSection v-else-if="tab === 'storage'" />
     <ExcludedSection v-else-if="tab === 'excluded'" />
     <MissingGamesSection v-else-if="tab === 'missing'" />
   </div>

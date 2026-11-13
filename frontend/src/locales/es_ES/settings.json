@@ -206,6 +206,8 @@
   "invite-link": "Enlace de invitación",
   "invite-link-created": "Enlace de invitación creado",
   "language": "Idioma",
+  "library-root-reachable": "La carpeta de la biblioteca está disponible.",
+  "library-root-unreachable": "La carpeta de la biblioteca no está disponible.",
   "link-copied": "Enlace copiado al portapapeles",
   "main-platform": "Plataforma principal",
   "manual": "Manual",

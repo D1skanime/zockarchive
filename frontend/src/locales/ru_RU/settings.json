@@ -206,6 +206,8 @@
   "invite-link": "Пригласительная ссылка",
   "invite-link-created": "Пригласительная ссылка создана",
   "language": "Язык",
+  "library-root-reachable": "Папка библиотеки доступна.",
+  "library-root-unreachable": "Папка библиотеки недоступна.",
   "link-copied": "Ссылка скопирована в буфер обмена",
   "main-platform": "Основная платформа",
   "manual": "Ручной",
