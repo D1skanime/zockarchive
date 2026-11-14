@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261114-phr
+
+| 261114-phr | Avoid exclusion readiness requests | 2026-11-14 | Complete: Home and generic Folder Mappings now omit completed-setup direct exclusions before legacy per-platform mapping requests. Authenticated desktop/mobile browser checks clicked the Scan link and all library tabs with no final post-login console or network errors; pc remained Windows and Wii remained excluded. No new tests were added or run before UAT. | [exclude readiness requests](./quick/261114-phr-avoid-exclusion-readiness-request-on-home/) |
+
 ## Quick Task 261114-p3q
 
 | 261114-p3q | Restore scan readiness after exclusions | 2026-11-14 | Complete: Scan readiness now validates only active direct setup mappings, so excluded Wii no longer turns its expected missing mapping into a blocked scan UI. The sole Scan-page Library Management action opens Games. Typecheck and authenticated desktop/mobile browser checks passed, including two consecutive completed scans and reload. No new tests were added or run before UAT. | [scan readiness after exclusions](./quick/261114-p3q-restore-scan-readiness-after-exclusions/) |

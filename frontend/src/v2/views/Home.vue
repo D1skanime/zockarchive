@@ -155,8 +155,20 @@ async function loadMappingReadiness() {
     if (platformsStore.allPlatforms.length === 0) {
       await platformsStore.fetchPlatforms();
     }
+    const { data: assignments } = await setupApi.getFolderAssignments();
+    const mappedPlatformSlugs = new Set(
+      assignments.folders
+        .filter(
+          (folder) =>
+            folder.disposition === "platform" && folder.mapping_id !== null,
+        )
+        .map((folder) => folder.platform_slug)
+        .filter((slug): slug is string => slug !== null),
+    );
     const readiness = await storageApi.getMappingsReadiness(
-      platformsStore.allPlatforms.map((platform) => platform.id),
+      platformsStore.allPlatforms
+        .filter((platform) => mappedPlatformSlugs.has(platform.slug))
+        .map((platform) => platform.id),
     );
     mappingReadiness.value = readiness.ready ? "ready" : "blocked";
   } catch {

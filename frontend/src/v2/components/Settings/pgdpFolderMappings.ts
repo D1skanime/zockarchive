@@ -11,10 +11,20 @@ export interface PgdPFolderMappingRow {
 export async function loadPgdPFolderMappings(
   platforms: readonly Platform[],
   directFolderPaths: ReadonlySet<string> = new Set(),
+  directPlatformSlugs: ReadonlySet<string> = new Set(),
 ): Promise<PgdPFolderMappingRow[]> {
   const rows = await Promise.all(
     platforms
-      .filter((platform) => platform.id > 0)
+      // Direct Games folders are exclusively administered by the setup
+      // projection. Skip their platform request entirely because an explicit
+      // exclusion intentionally has no active storage mapping.
+      .filter(
+        (platform) =>
+          platform.id > 0 &&
+          !directPlatformSlugs.has(platform.slug) &&
+          !directFolderPaths.has(platform.slug) &&
+          !directFolderPaths.has(platform.fs_slug),
+      )
       .map(async (platform) => {
         try {
           const { data } = await storageApi.getMapping(platform.id);

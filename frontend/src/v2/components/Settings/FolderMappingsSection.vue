@@ -271,9 +271,15 @@ onMounted(async () => {
         (folder) => folder.relative_path,
       ) ?? [],
     );
+    const directPlatformSlugs = new Set(
+      directFoldersResponse?.data.folders
+        .map((folder) => folder.platform_slug)
+        .filter((slug): slug is string => slug !== null) ?? [],
+    );
     pgdpMappings.value = await loadPgdPFolderMappings(
       supportedPlatforms.value,
       directFolderPaths,
+      directPlatformSlugs,
     );
     // Populate the in-memory icon cache so every PlatformIcon
     // rendered by the table rows + Platform picker reads blob URLs
