@@ -65,7 +65,7 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 ### Library Scan and PC Enrichment
 
 1. backend/tasks/scheduled/scan_library.py or scan endpoints create bounded mapped commands.
-2. backend/handler/scan_handler.py reads the external root, hashes files, persists Rom/RomFile, and reconciles PC layouts defined in backend/handler/filesystem/roms_handler.py.
+2. backend/handler/scan_handler.py reads the external root, hashes files, persists Rom/RomFile, and reconciles PC layouts defined in backend/handler/filesystem/roms_handler.py. Every mapped scan uses its logical mapped path plus filename as the catalog identity, so a direct-folder rename cannot reuse an identically named ROM from a stale path.
 3. RomComponent represents base, update, DLC, hotfix, language pack, extra or unresolved entries. RomComponentManifestMember retains relative path, size, SHA-256 and missing-from-filesystem state.
 4. pc_steam_enrichment.py resolves guarded Steam patches; pc_match_handler.py collects reviewable candidates.
 5. pc_automation.py applies only unique guarded matches. Ambiguity or protected/manual targets enter pc_automation_queue.
