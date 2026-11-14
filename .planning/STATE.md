@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261114-p3q
+
+| 261114-p3q | Restore scan readiness after exclusions | 2026-11-14 | Complete: Scan readiness now validates only active direct setup mappings, so excluded Wii no longer turns its expected missing mapping into a blocked scan UI. The sole Scan-page Library Management action opens Games. Typecheck and authenticated desktop/mobile browser checks passed, including two consecutive completed scans and reload. No new tests were added or run before UAT. | [scan readiness after exclusions](./quick/261114-p3q-restore-scan-readiness-after-exclusions/) |
+
 ## Quick Task 261114-oq0
 
 | 261114-oq0 | Test existing direct-folder exclusion | 2026-11-14 | Complete: post-UAT endpoint and scan-command coverage verifies active direct-folder exclusion, reload and remapping, preserves unrelated mappings, and retains the explicit conflict response. The isolated Phase 34 backend run completed and cleaned up. No product code changed. | [direct-folder exclusion tests](./quick/261114-oq0-test-existing-direct-folder-exclusion/) |

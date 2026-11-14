@@ -103,7 +103,7 @@ provide(scanViewKey, proxyRefs(view));
           :to="mappingRoute"
           prepend-icon="mdi-folder-cog-outline"
         >
-          {{ t("settings.add-folder-mapping") }}
+          {{ t("common.library-management") }}
         </ZABtn>
         <ZABtn
           v-if="mappingReadiness === 'error'"

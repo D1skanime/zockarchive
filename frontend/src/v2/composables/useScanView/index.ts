@@ -9,6 +9,7 @@ import { useCan } from "@/v2/composables/useCan";
 import { useLibraryOperation } from "@/v2/composables/useLibraryOperation";
 import { useScanProviders } from "@/v2/composables/useScanProviders";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
+import setupApi from "@/v2/data/adapters/legacy/services/api/setup";
 import storageApi from "@/v2/data/adapters/legacy/services/api/storage";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
 import storePlatforms from "@/v2/data/adapters/legacy/stores/platforms";
@@ -50,7 +51,10 @@ export function useScanView() {
     "loading",
   );
   const mappingReady = computed(() => mappingReadiness.value === "ready");
-  const mappingRoute = { name: ROUTES.LIBRARY_MANAGEMENT };
+  const mappingRoute = {
+    name: ROUTES.LIBRARY_MANAGEMENT,
+    query: { tab: "direct" },
+  };
 
   async function loadMappingReadiness() {
     mappingReadiness.value = "loading";
@@ -58,8 +62,20 @@ export function useScanView() {
       if (platformsStore.allPlatforms.length === 0) {
         await platformsStore.fetchPlatforms();
       }
+      const { data: assignments } = await setupApi.getFolderAssignments();
+      const mappedPlatformSlugs = new Set(
+        assignments.folders
+          .filter(
+            (folder) =>
+              folder.disposition === "platform" && folder.mapping_id !== null,
+          )
+          .map((folder) => folder.platform_slug)
+          .filter((slug): slug is string => slug !== null),
+      );
       const readiness = await storageApi.getMappingsReadiness(
-        platformsStore.allPlatforms.map((platform) => platform.id),
+        platformsStore.allPlatforms
+          .filter((platform) => mappedPlatformSlugs.has(platform.slug))
+          .map((platform) => platform.id),
       );
       mappingReadiness.value = readiness.ready ? "ready" : "blocked";
     } catch {

@@ -59,7 +59,10 @@ if (!view) throw new Error("Scan view state is unavailable.");
       class="r-v2-scan-card__library"
       variant="outlined"
       prepend-icon="mdi-table-cog"
-      :to="{ name: ROUTES.LIBRARY_MANAGEMENT }"
+      :to="{
+        name: ROUTES.LIBRARY_MANAGEMENT,
+        query: { tab: 'direct' },
+      }"
       >{{ view.t("common.library-management") }}</ZABtn
     >
   </footer>
