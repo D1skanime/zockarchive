@@ -9,12 +9,11 @@ import { useCan } from "@/v2/composables/useCan";
 import { useLibraryOperation } from "@/v2/composables/useLibraryOperation";
 import { useScanProviders } from "@/v2/composables/useScanProviders";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
-import setupApi from "@/v2/data/adapters/legacy/services/api/setup";
-import storageApi from "@/v2/data/adapters/legacy/services/api/storage";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
 import storePlatforms from "@/v2/data/adapters/legacy/stores/platforms";
 import storeScanning from "@/v2/data/adapters/legacy/stores/scanning";
 import type { OperationScope, SubfolderScanRequest } from "@/v2/data/contracts";
+import { getDirectFolderMappingReadiness } from "@/v2/data/directFolderMappingReadiness";
 import {
   buildLibraryScanRequest,
   resolveMediaOnlyScope,
@@ -62,20 +61,8 @@ export function useScanView() {
       if (platformsStore.allPlatforms.length === 0) {
         await platformsStore.fetchPlatforms();
       }
-      const { data: assignments } = await setupApi.getFolderAssignments();
-      const mappedPlatformSlugs = new Set(
-        assignments.folders
-          .filter(
-            (folder) =>
-              folder.disposition === "platform" && folder.mapping_id !== null,
-          )
-          .map((folder) => folder.platform_slug)
-          .filter((slug): slug is string => slug !== null),
-      );
-      const readiness = await storageApi.getMappingsReadiness(
-        platformsStore.allPlatforms
-          .filter((platform) => mappedPlatformSlugs.has(platform.slug))
-          .map((platform) => platform.id),
+      const readiness = await getDirectFolderMappingReadiness(
+        platformsStore.allPlatforms,
       );
       mappingReadiness.value = readiness.ready ? "ready" : "blocked";
     } catch {

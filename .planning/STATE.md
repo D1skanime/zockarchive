@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261114-ppl
+
+| 261114-ppl | Extract direct mapping readiness | 2026-11-14 | Complete: shared direct-folder readiness helper removes duplicated Home and Scan logic. Home is restored to its 684-line main baseline, resolving the new line-growth finding. Typecheck and diff whitespace checks passed. No tests were added or run before UAT. | [direct readiness extraction](./quick/261114-ppl-extract-direct-mapping-readiness/) |
+
 ## Quick Task 261114-phr
 
 | 261114-phr | Avoid exclusion readiness requests | 2026-11-14 | Complete: Home and generic Folder Mappings now omit completed-setup direct exclusions before legacy per-platform mapping requests. Authenticated desktop/mobile browser checks clicked the Scan link and all library tabs with no final post-login console or network errors; pc remained Windows and Wii remained excluded. No new tests were added or run before UAT. | [exclude readiness requests](./quick/261114-phr-avoid-exclusion-readiness-request-on-home/) |

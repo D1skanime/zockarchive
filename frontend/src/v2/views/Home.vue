@@ -24,7 +24,7 @@ import {
   type SetupLibraryInfo,
   type SimpleRom,
 } from "@/v2/data/adapters/home";
-import storageApi from "@/v2/data/adapters/legacy/services/api/storage";
+import { getDirectFolderMappingReadiness } from "@/v2/data/directFolderMappingReadiness";
 import { collectionCoverList } from "@/v2/utils/collectionCovers";
 
 const { t } = useI18n();
@@ -155,20 +155,8 @@ async function loadMappingReadiness() {
     if (platformsStore.allPlatforms.length === 0) {
       await platformsStore.fetchPlatforms();
     }
-    const { data: assignments } = await setupApi.getFolderAssignments();
-    const mappedPlatformSlugs = new Set(
-      assignments.folders
-        .filter(
-          (folder) =>
-            folder.disposition === "platform" && folder.mapping_id !== null,
-        )
-        .map((folder) => folder.platform_slug)
-        .filter((slug): slug is string => slug !== null),
-    );
-    const readiness = await storageApi.getMappingsReadiness(
-      platformsStore.allPlatforms
-        .filter((platform) => mappedPlatformSlugs.has(platform.slug))
-        .map((platform) => platform.id),
+    const readiness = await getDirectFolderMappingReadiness(
+      platformsStore.allPlatforms,
     );
     mappingReadiness.value = readiness.ready ? "ready" : "blocked";
   } catch {
