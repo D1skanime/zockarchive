@@ -52,6 +52,7 @@ class SetupFolderAdministrationSchema(SetupFolderSchema):
     disposition: Literal["platform", "excluded"]
     platform_slug: str | None = Field(default=None, max_length=100)
     mapping_id: int | None = Field(default=None, gt=0)
+    pending_assignment: bool = False
 
 
 class SetupFolderAdministrationResponse(BaseModel):

@@ -15,7 +15,7 @@ const snackbar = useSnackbar();
 const folders = ref<SetupFolderAdministration[]>([]);
 const platformOptions = ref<SetupPlatformOption[]>([]);
 const selections = ref<Record<string, string | null>>({});
-const loadedSelections = ref<Record<string, string | null>>({});
+const loadedSelections = ref<Record<string, string | null | undefined>>({});
 const rowErrors = ref<Record<string, string>>({});
 const rootReachable = ref<boolean | null>(null);
 const loading = ref(true);
@@ -99,7 +99,12 @@ async function load() {
       selections.value = Object.fromEntries(
         data.folders.map((folder) => [folder.name, folder.platform_slug]),
       );
-      loadedSelections.value = { ...selections.value };
+      loadedSelections.value = Object.fromEntries(
+        data.folders.map((folder) => [
+          folder.name,
+          folder.pending_assignment ? undefined : folder.platform_slug,
+        ]),
+      );
       rowErrors.value = {};
       void setupApi
         .getStatus()

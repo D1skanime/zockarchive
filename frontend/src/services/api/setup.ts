@@ -36,6 +36,7 @@ export interface SetupFolderAdministration extends SetupFolder {
   disposition: "platform" | "excluded";
   platform_slug: string | null;
   mapping_id: number | null;
+  pending_assignment: boolean;
 }
 export interface SetupFolderAdministrationResponse {
   root_label: string;

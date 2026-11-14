@@ -120,7 +120,8 @@ class SetupRecoveryHandler:
         """Return completed setup's direct-folder dispositions for administrators.
 
         This is a read projection over the same mapping and exclusion records used
-        by setup assignment. It deliberately does not expose config-file filters.
+        by setup assignment. A newly discovered child remains pending until its
+        administrator explicitly saves a platform mapping or exclusion.
         """
         snapshot = self.snapshot(session=session)
         if not snapshot.setup_complete:
@@ -132,7 +133,21 @@ class SetupRecoveryHandler:
         for folder in discovery.folders:
             disposition = saved.get(folder.relative_path)
             if disposition is None:
-                raise ValueError("setup_assignment_conflict")
+                folders.append(
+                    asdict(folder)
+                    | {
+                        "excluded": folder.suggested_platform is None,
+                        "disposition": (
+                            "platform"
+                            if folder.suggested_platform is not None
+                            else "excluded"
+                        ),
+                        "platform_slug": folder.suggested_platform,
+                        "mapping_id": None,
+                        "pending_assignment": True,
+                    }
+                )
+                continue
             folders.append(
                 asdict(folder)
                 | {
@@ -140,6 +155,7 @@ class SetupRecoveryHandler:
                     "disposition": disposition.disposition,
                     "platform_slug": disposition.platform_slug,
                     "mapping_id": disposition.mapping_id,
+                    "pending_assignment": False,
                 }
             )
         return {
@@ -190,10 +206,7 @@ class SetupRecoveryHandler:
                             missing.append(SetupFolderSchema(**asdict(folder)))
                         elif mapping.disposition == "platform":
                             resolve_directory(root, mapping.relative_path)
-                paths = {folder.relative_path for folder in discovery.folders}
-                if any(row.relative_path not in paths for row in saved):
-                    cause = "mapping_conflict"
-                elif missing:
+                if missing and not saved:
                     cause = "assignments_missing"
         except (ValueError, OSError, StorageResolutionError):
             cause = cause or "root_discovery_failed"
@@ -255,6 +268,10 @@ class SetupRecoveryHandler:
         if snapshot.cause_code not in {None, "assignments_missing"}:
             raise ValueError(snapshot.cause_code)
         root = setup_folder_handler.root(session=session)
+        current_paths = {
+            folder.relative_path
+            for folder in setup_folder_handler.discover(root).folders
+        }
         saved = {
             row.folder_name: {
                 "folder_name": row.folder_name,
@@ -262,6 +279,7 @@ class SetupRecoveryHandler:
                 "platform_slug": row.platform_slug,
             }
             for row in snapshot.saved_assignments
+            if row.relative_path in current_paths
         }
         provided = {row["folder_name"]: row for row in assignments}
         if len(provided) != len(assignments):
@@ -293,6 +311,40 @@ class SetupRecoveryHandler:
                 for mapping in mappings
             ):
                 raise ValueError("setup_assignment_conflict")
+        root_mappings = session.scalars(
+            select(PlatformStorageMapping)
+            .where(
+                PlatformStorageMapping.active.is_(True),
+                PlatformStorageMapping.storage_root_id == root.id,
+            )
+            .order_by(PlatformStorageMapping.id)
+        ).all()
+        stale_mappings = [
+            mapping
+            for mapping in root_mappings
+            if "/" not in mapping.relative_path
+            and mapping.relative_path not in current_paths
+        ]
+        for mapping in stale_mappings:
+            db_storage_handler.deactivate_mapping(
+                mapping.id,
+                expected_version=mapping.version,
+                actor_user_id=actor["actor_user_id"],
+                actor_display_name=actor["actor_display_name"],
+                session=session,
+            )
+        root_exclusions = session.scalars(
+            select(SetupFolderExclusion).where(
+                SetupFolderExclusion.storage_root_id == root.id,
+            )
+        ).all()
+        for exclusion in root_exclusions:
+            if (
+                "/" in exclusion.relative_path
+                or exclusion.relative_path in current_paths
+            ):
+                continue
+            session.delete(exclusion)
         merged = list((saved | provided).values())
         result = setup_folder_handler.assign(root, merged, actor, session=session)
         response = setup_folder_handler.response(result)
