@@ -18,7 +18,7 @@ progress:
 
 ## Quick Task 261114-kvw
 
-| 261114-kvw | Preserve completed setup after folder rename | 2026-11-14 | Complete: completed accounts remain in Library Management when a direct child is renamed or newly discovered; `pc` is shown as a pending Windows selection until saved and supports exclusion. Typecheck passed. Desktop/mobile browser evidence confirms navigation, save/reload and catalog visibility. A normal scan processed 21 entries but subsequently reported `source_unverifiable`; this observed lifecycle limitation is documented, not claimed as a successful scan. No tests were run. | [rename recovery](./quick/261114-kvw-preserve-completed-setup-after-folder-rename/) |
+| 261114-kvw | Preserve completed setup after folder rename | 2026-11-14 | Complete: completed accounts remain in Library Management when a direct child is renamed or newly discovered; `pc` is shown as a pending Windows selection until saved and supports exclusion. Typecheck passed. Desktop/mobile browser evidence confirms navigation, save/reload and catalog visibility. A normal scan processed 21 entries but subsequently reported `source_unverifiable`; this observed lifecycle limitation is documented, not claimed as a successful scan. Its test lock was stopped through the normal UI. No tests were run. | [rename recovery](./quick/261114-kvw-preserve-completed-setup-after-folder-rename/) |
 
 ## Quick Task 261113-w8k
 

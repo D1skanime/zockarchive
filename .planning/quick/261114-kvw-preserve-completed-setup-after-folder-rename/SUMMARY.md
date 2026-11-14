@@ -32,6 +32,7 @@
   Windows games. The operation subsequently became `blocked` with
   `source_unverifiable` after its worker had processed all entries. This is
   documented as an observed scan-lifecycle limitation, not represented as a
-  successful terminal scan.
+  successful terminal scan. The resulting test operation was then stopped
+  through the normal browser UI, leaving no active scan lock.
 
 Evidence is recorded in the job sight-check report and screenshots.
