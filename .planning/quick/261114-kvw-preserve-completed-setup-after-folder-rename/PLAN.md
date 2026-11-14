@@ -1,6 +1,6 @@
 ---
 quick_id: 261114-kvw
-status: in_progress
+status: complete
 ---
 
 # Preserve completed setup after direct-folder discovery changes
