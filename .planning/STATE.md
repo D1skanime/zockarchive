@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261114-oq0
+
+| 261114-oq0 | Test existing direct-folder exclusion | 2026-11-14 | Complete: post-UAT endpoint and scan-command coverage verifies active direct-folder exclusion, reload and remapping, preserves unrelated mappings, and retains the explicit conflict response. The isolated Phase 34 backend run completed and cleaned up. No product code changed. | [direct-folder exclusion tests](./quick/261114-oq0-test-existing-direct-folder-exclusion/) |
+
 ## Quick Task 261114-nj9
 
 | 261114-nj9 | Toggle existing direct-folder exclusion | 2026-11-14 | Complete: existing direct mappings can now be explicitly changed to excluded and then remapped, while platform-to-platform changes remain conflicts. Authenticated desktop and mobile browser checks saved/reloaded Wii exclusion and remapping with pc kept on Windows. A normal UI quick scan completed with 27 result rows. Python compilation, typecheck and diff whitespace checks passed. No tests were run. | [existing mapping exclusion](./quick/261114-nj9-toggle-existing-direct-folder-exclusion/) |

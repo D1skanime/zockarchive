@@ -20,6 +20,7 @@ from handler.database.base_handler import sync_session
 from handler.redis_handler import redis_client
 from handler.setup_folder_handler import setup_folder_handler
 from models.scan_operation import ScanOperation
+from models.setup_folder_exclusion import SetupFolderExclusion
 from models.storage import PlatformStorageMapping, StorageMappingAudit
 
 BASE = "/api/setup"
@@ -232,6 +233,7 @@ def test_conflicting_saved_request_is_not_rewritten(recovery_client, admin_user)
     ]
     response = save(recovery_client, changed, csrf)
     assert response.status_code == 409
+    assert response.json()["detail"] == "setup_assignment_conflict"
     snapshot = recovery_client.get(BASE + "/status").json()
     assert (
         next(
@@ -249,6 +251,76 @@ def test_conflicting_saved_request_is_not_rewritten(recovery_client, admin_user)
             .count()
             == 8
         )
+
+
+def test_existing_direct_mapping_can_be_excluded_and_remapped(
+    recovery_client, admin_user
+):
+    """An explicit exclusion replaces only its direct mapping and can be undone."""
+    csrf = login(recovery_client)
+    initial = save(recovery_client, ASSIGNMENTS, csrf)
+    assert initial.status_code == 200, initial.text
+    initial_mappings = {
+        row["folder_name"]: row["mapping_id"] for row in initial.json()["mappings"]
+    }
+    excluded = [
+        (
+            row | {"disposition": "excluded", "platform_slug": None}
+            if row["folder_name"] == "PC"
+            else row
+        )
+        for row in ASSIGNMENTS
+    ]
+
+    response = save(recovery_client, excluded, csrf)
+
+    assert response.status_code == 200, response.text
+    assert next(
+        row for row in response.json()["mappings"] if row["folder_name"] == "PC"
+    ) == {
+        "folder_name": "PC",
+        "disposition": "excluded",
+        "platform_slug": None,
+        "mapping_id": None,
+        "relative_path": "PC",
+    }
+    projection = recovery_client.get(BASE + "/folders/assignments")
+    assert projection.status_code == 200
+    assert (
+        next(row for row in projection.json()["folders"] if row["name"] == "PC")[
+            "disposition"
+        ]
+        == "excluded"
+    )
+    with sync_session.begin() as session:
+        original = session.get(PlatformStorageMapping, initial_mappings["PC"])
+        assert original is not None and not original.active
+        assert session.scalar(
+            select(SetupFolderExclusion.id).where(
+                SetupFolderExclusion.relative_path == "PC"
+            )
+        )
+        assert session.get(PlatformStorageMapping, initial_mappings["PSP"]).active
+
+    remapped = save(recovery_client, ASSIGNMENTS, csrf)
+
+    assert remapped.status_code == 200, remapped.text
+    remapped_pc = next(
+        row for row in remapped.json()["mappings"] if row["folder_name"] == "PC"
+    )
+    assert remapped_pc["disposition"] == "platform"
+    assert remapped_pc["platform_slug"] == "win"
+    assert remapped_pc["mapping_id"] != initial_mappings["PC"]
+    with sync_session.begin() as session:
+        assert (
+            session.scalar(
+                select(SetupFolderExclusion.id).where(
+                    SetupFolderExclusion.relative_path == "PC"
+                )
+            )
+            is None
+        )
+        assert session.get(PlatformStorageMapping, initial_mappings["PSP"]).active
 
 
 def test_concurrent_assignment_retries_are_idempotent(
