@@ -289,6 +289,7 @@ class SetupRecoveryHandler:
                 name in saved
                 and saved[name]["disposition"] == "platform"
                 and saved[name] != assignment
+                and assignment["disposition"] != "excluded"
             ):
                 raise ValueError("setup_assignment_conflict")
             # An excluded direct child has no mapping yet, so an administrator
@@ -326,6 +327,25 @@ class SetupRecoveryHandler:
             and mapping.relative_path not in current_paths
         ]
         for mapping in stale_mappings:
+            db_storage_handler.deactivate_mapping(
+                mapping.id,
+                expected_version=mapping.version,
+                actor_user_id=actor["actor_user_id"],
+                actor_display_name=actor["actor_display_name"],
+                session=session,
+            )
+        excluded_mappings = [
+            mapping
+            for mapping in root_mappings
+            if (
+                "/" not in mapping.relative_path
+                and provided.get(mapping.relative_path, {}).get("disposition")
+                == "excluded"
+            )
+        ]
+        for mapping in excluded_mappings:
+            # An exclusion owns the direct path, so retire its active mapping
+            # before SetupFolderHandler creates the mutually exclusive record.
             db_storage_handler.deactivate_mapping(
                 mapping.id,
                 expected_version=mapping.version,

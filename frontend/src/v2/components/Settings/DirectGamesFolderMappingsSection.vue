@@ -222,6 +222,11 @@ watch(
             :model-value="selections[folder.name]"
             :items="platformItems"
             :label="t('common.platform')"
+            :placeholder="
+              selections[folder.name] === null
+                ? t('setup.do-not-scan')
+                : undefined
+            "
             item-title="title"
             item-value="value"
             searchable

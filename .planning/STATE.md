@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261114-nj9
+
+| 261114-nj9 | Toggle existing direct-folder exclusion | 2026-11-14 | Complete: existing direct mappings can now be explicitly changed to excluded and then remapped, while platform-to-platform changes remain conflicts. Authenticated desktop and mobile browser checks saved/reloaded Wii exclusion and remapping with pc kept on Windows. A normal UI quick scan completed with 27 result rows. Python compilation, typecheck and diff whitespace checks passed. No tests were run. | [existing mapping exclusion](./quick/261114-nj9-toggle-existing-direct-folder-exclusion/) |
+
 ## Quick Task 261114-lm4
 
 | 261114-lm4 | Complete mapped scan after folder rename | 2026-11-14 | Complete: mapped scans now match existing catalog entries by their logical mapped path and filename, preventing stale same-name entries from invalidating Windows inventory bindings after a direct-folder rename. Python compilation and typecheck passed. Authenticated browser scan completed with eight platforms, 37 ROMs and 29 operation items; desktop/mobile UI inspection had no post-login browser errors. No tests were run. | [mapped scan completion](./quick/261114-lm4-complete-scan-operation-after-worker-finishes/) |
