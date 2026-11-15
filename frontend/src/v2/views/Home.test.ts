@@ -5,7 +5,7 @@ const source = readFileSync("src/v2/views/Home.vue", "utf8");
 
 describe("Home mapping readiness gate", () => {
   it("uses the GET-only server readiness contract before exposing Scan", () => {
-    expect(source).toContain("storageApi.getMappingsReadiness");
+    expect(source).toContain("getDirectFolderMappingReadiness");
     expect(source).toContain('v-if="mappingReady"');
     expect(source).not.toContain('platform.slug === "win"');
   });

@@ -131,6 +131,48 @@ describe("storage service", () => {
     expect(mocks.apiPost).not.toHaveBeenCalled();
   });
 
+  it("treats the direct-folder missing-mapping conflict as absent", async () => {
+    mocks.apiGet.mockImplementation((url: string) => {
+      if (url === "/storage/roots") return Promise.resolve({ data: [root] });
+      if (url === "/storage/mappings/platforms/17")
+        return Promise.resolve({ data: mapping });
+      if (url === "/storage/mappings/platforms/18")
+        return Promise.reject({
+          isAxiosError: true,
+          response: {
+            status: 409,
+            data: { detail: { code: "platform_mapping_missing" } },
+          },
+        });
+      return Promise.reject(new Error(`unexpected GET ${url}`));
+    });
+
+    await expect(storageApi.getMappingsReadiness([17, 18])).resolves.toEqual({
+      ready: true,
+      mappings: [{ ready: true, mapping, root }],
+    });
+    expect(mocks.apiPost).not.toHaveBeenCalled();
+  });
+
+  it("keeps unrelated mapping conflicts observable", async () => {
+    const conflict = {
+      isAxiosError: true,
+      response: {
+        status: 409,
+        data: { detail: { code: "setup_assignment_conflict" } },
+      },
+    };
+    mocks.apiGet.mockImplementation((url: string) => {
+      if (url === "/storage/roots") return Promise.resolve({ data: [root] });
+      if (url === "/storage/mappings/platforms/17")
+        return Promise.reject(conflict);
+      return Promise.reject(new Error(`unexpected GET ${url}`));
+    });
+
+    await expect(storageApi.getMappingsReadiness([17])).rejects.toBe(conflict);
+    expect(mocks.apiPost).not.toHaveBeenCalled();
+  });
+
   it("remains blocked while no persisted mappings are returned", async () => {
     mocks.apiGet.mockImplementation((url: string) => {
       if (url === "/storage/roots") return Promise.resolve({ data: [] });

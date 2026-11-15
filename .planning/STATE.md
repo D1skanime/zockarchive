@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261115-2p0
+
+| 261115-2p0 | Add Phase 44 accepted behavior tests | 2026-11-15 | Complete: direct logic coverage now verifies active direct mappings feed scan readiness, exclusions remain out of readiness and generic mappings, expected missing mappings stay non-fatal, and unrelated conflicts propagate. Focused frontend and isolated backend suites passed. No product code changed. | [Phase 44 post-UAT tests](./quick/261115-2p0-post-uat-phase44-logic-tests/) |
+
 ## Quick Task 261114-ppl
 
 | 261114-ppl | Extract direct mapping readiness | 2026-11-14 | Complete: shared direct-folder readiness helper removes duplicated Home and Scan logic. Home is restored to its 684-line main baseline, resolving the new line-growth finding. Typecheck and diff whitespace checks passed. No tests were added or run before UAT. | [direct readiness extraction](./quick/261114-ppl-extract-direct-mapping-readiness/) |
