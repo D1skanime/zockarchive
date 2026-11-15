@@ -92,7 +92,8 @@ async function mountScanView() {
     throw new Error("Scan view test harness was not mounted");
   }
 
-  return { wrapper, view: mountedView };
+  // Vue mounts setup asynchronously; retain the declared hook type across that boundary.
+  return { wrapper, view: mountedView as ReturnType<typeof useScanView> };
 }
 
 describe("Scan collection selection request", () => {

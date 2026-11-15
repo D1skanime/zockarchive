@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
-last_updated: "2026-11-15T13:15:00Z"
-last_activity: 2026-11-15 -- Consolidated the Phase 44 ScanView test harness to repair the full-regression lint finding
+last_updated: "2026-11-15T14:08:00Z"
+last_activity: 2026-11-15 -- Repaired the Phase 44 ScanView harness type across Vue's asynchronous mount boundary
 progress:
   total_phases: 44
   completed_phases: 34
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-jlh
+
+| 261115-jlh | Repair ScanView harness frontend typecheck | 2026-11-15 | Complete: the shared test harness now explicitly retains the declared ScanView hook type after the asynchronous Vue mount. Full frontend typecheck, 15 focused tests and the targeted Trunk check passed. No product code changed. | [ScanView typecheck repair](./quick/261115-jlh-frontend-typecheck-reparieren-den-gemein/) |
 
 ## Quick Task 261115-id3
 
