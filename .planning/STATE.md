@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261115-53r
+
+| 261115-53r | Repair Phase 44 full regression | 2026-11-15 | Complete: refreshed stale frontend contracts and locale baselines for approved UI behavior, plus backend fixtures for the multi-direct-folder mapping model. Focused Vitest, typecheck, and 258 isolated MariaDB tests passed. No product code changed. | [Phase 44 regression repair](./quick/261115-53r-repair-full-regression-phase44/) |
+
 ## Quick Task 261115-2p0
 
 | 261115-2p0 | Add Phase 44 accepted behavior tests | 2026-11-15 | Complete: direct logic coverage now verifies active direct mappings feed scan readiness, exclusions remain out of readiness and generic mappings, expected missing mappings stay non-fatal, and unrelated conflicts propagate. Focused frontend and isolated backend suites passed. No product code changed. | [Phase 44 post-UAT tests](./quick/261115-2p0-post-uat-phase44-logic-tests/) |

@@ -116,7 +116,7 @@ describe("brand consumers", () => {
     expect(wrapper.find("r-img-stub").exists()).toBe(false);
   });
 
-  it("uses project docs and explicitly attributes upstream community", () => {
+  it("uses project docs without presenting an unverified community link", () => {
     const wrapper = shallowMount(AboutDialog, {
       global: {
         provide: { emitter: { on: vi.fn(), off: vi.fn() } },
@@ -138,12 +138,10 @@ describe("brand consumers", () => {
       ),
     ).toBe(true);
     expect(
-      links
-        .find((link) =>
-          link.attributes("href")?.startsWith("https://discord.com"),
-        )
-        ?.text(),
-    ).toContain("RomM (upstream)");
+      links.some((link) =>
+        link.attributes("href")?.startsWith("https://discord.com"),
+      ),
+    ).toBe(false);
     expect(wrapper.find("r-img-stub").exists()).toBe(false);
     wrapper.unmount();
   });

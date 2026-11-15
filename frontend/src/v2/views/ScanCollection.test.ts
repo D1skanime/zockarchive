@@ -8,7 +8,7 @@ type ViewScanType = ReturnType<typeof useScanView>["scanType"]["value"];
 const api = vi.hoisted(() => ({
   start: vi.fn().mockResolvedValue(undefined),
   providers: ["igdb"],
-  getMappingsReadiness: vi.fn().mockResolvedValue({ ready: true }),
+  getDirectFolderMappingReadiness: vi.fn().mockResolvedValue({ ready: true }),
 }));
 vi.mock("pinia", async (importOriginal) => ({
   ...(await importOriginal<typeof import("pinia")>()),
@@ -53,8 +53,8 @@ vi.mock("@/v2/composables/useScanProviders", () => ({
     specificAllSelected: ref(false),
   }),
 }));
-vi.mock("@/v2/data/adapters/legacy/services/api/storage", () => ({
-  default: { getMappingsReadiness: api.getMappingsReadiness },
+vi.mock("@/v2/data/directFolderMappingReadiness", () => ({
+  getDirectFolderMappingReadiness: api.getDirectFolderMappingReadiness,
 }));
 vi.mock("@/v2/data/adapters/legacy/stores/config", () => ({
   default: () => ({ config: ref({ SKIP_HASH_CALCULATION: false }) }),

@@ -79,7 +79,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "9122016dbd6add331a6c3959a66af8cf7e982fccf4b51a8d3e6c616b927beea0",
+      "digest": "70213aba9eeffc94b920fdee523e6f6116120da3fba7ebdb4d0871da2d009db7",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -91,7 +91,7 @@
       ]
     },
     "setup": {
-      "digest": "8d9ea0d5e530908cedb2531c782920dd14d1124bbefa386fca28b934368a2ac8",
+      "digest": "d3351548ed072dbb08c5c2035d8e02db93890a41abe564690a6d8709c2f340f1",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -180,7 +180,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "a4c0f8d99929bfa590d46d00bd2c8cf9f9ad89fba547451a0051014bb4288216",
+      "digest": "499b56559f759eb2604597c7ff4eee07f8ce576f6b48929c8c89246676d493a7",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -193,7 +193,7 @@
       ]
     },
     "setup": {
-      "digest": "8d3df80e61bb07ffae65382a548c1b296836a605851641dec59bf001a03f3ce1",
+      "digest": "f70e14914284befe0d4ccf549e4d4385e8113acd4d09762acbdf59ba6ad4e8da",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -282,7 +282,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "5af77bd90632390dd24207f98306ea0ae630af7f80cc8193875c0c060fcb72f4",
+      "digest": "6dcbdcf5fcc1bb4e5efd3cdaa5672069df5d286773c465bcf370449827b03056",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -295,7 +295,7 @@
       ]
     },
     "setup": {
-      "digest": "0a11f741bd5a8bf8f37ca7486afa43337c02eef7c0d7720215dd034db687bbf8",
+      "digest": "7c1c2e953ac89584e769c526d774e7fa05f88980d3652343855aa6e755c6cbc1",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -388,7 +388,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "3a0fb09b9e44b9232fb27e73b9f27e497130b05830e76c25b7617393660690b0",
+      "digest": "a0175c3707d9fcb1ebef9659a7b64c187c21a1929eec4f71df056e8ef3bfa1f8",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -401,7 +401,7 @@
       ]
     },
     "setup": {
-      "digest": "8019aab429909a414526601ad6fd3cc4a4cbf7603d91d05746f2a670913ebec8",
+      "digest": "b5b6327afbc6c8057d4582e5fdc06a6e477127963e0f85810f6df41844a2426e",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -494,7 +494,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "420d53294d460544b60718269769b15cb2a50c509951f929bda83699c236e42d",
+      "digest": "20e840907e36a75ef0bd19e3b8f8463a09a71f3b2332bf49b8985ecd02bb5b85",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -507,7 +507,7 @@
       ]
     },
     "setup": {
-      "digest": "26074e6dc6e5633a2f6b9099586cd84c87cd88f6c7f173d226c3082da22444de",
+      "digest": "ab55e7070dae71f1652c68189e35367abdf98f5c35a04b0c315734842c7346d0",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -596,7 +596,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "41cc758029990b2b81906c18fb22ecaf818c87e96444f57fec46410119128423",
+      "digest": "46612514d18563362cae0f8f634569436e2f209883ec19a6145d0510e1bf8781",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -609,7 +609,7 @@
       ]
     },
     "setup": {
-      "digest": "4c50462ae4b007aaa561e4414777aeb347c7e2d0538c9bbae3914480ea086364",
+      "digest": "d6a2c7aa25ccba725be7903ea9a8697e519734871c5522772322efbe61f5a97e",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -702,7 +702,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "94d9d540a9f337764ad006abe7345b84eeeadbd7d753bbf8b37f4561c75bdc21",
+      "digest": "9e0d387441d70c8f113432aed61f566e0eaa305d19a9f81c046897f96ae43ee2",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -715,7 +715,7 @@
       ]
     },
     "setup": {
-      "digest": "5d67c9782d093a82c539af38050d575b74ad2bec1a3643e8f1a892495563652e",
+      "digest": "d991de406bab0ff142609683bd741e3062aa5b4f5b92307ccc58aeeca9f26805",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -808,7 +808,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "1c00959139475607406d8f2b2ff2f10d2604a16cb1acf4027753ef5e6d35bc4c",
+      "digest": "5c096b349b073f0dde67ba2b0d49c93d03cce1dd20d85d5f8b16ba5d4fc370d6",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -821,7 +821,7 @@
       ]
     },
     "setup": {
-      "digest": "ab218d2d61fe0f49613302c8331d1f81993b05c7cf1df3d75727c64b64db2338",
+      "digest": "520042dd97b4fbeff0a42adbe81f154202b03a67634c253a5872b34c28e49717",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -910,7 +910,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "0266bf741fa5888b48b1e5a8fd1eada8c1774565ab629d4355d869d5fd56e0f2",
+      "digest": "4055e79161be6a96c018399ac2b6fd66c98f3556dcafbbad3e376c3db69ef23f",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -923,7 +923,7 @@
       ]
     },
     "setup": {
-      "digest": "99e50731911002264768d47ca3cdb003f7b55f0134ac6e2b83990fe585b082bd",
+      "digest": "c0534ef47e6a48a9474cbc1a7253a5ddc9ab3a3ad387839df0b7dc152e147b82",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1014,7 +1014,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "5d56acbd5271ee2c8c7f878eb0ce2d7e18c3028761953eb41d39dfe11a59cb32",
+      "digest": "576f169ada38617f2b418e00202efc1967ccf2b10c4f8c8909c5ddc051084f49",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1027,7 +1027,7 @@
       ]
     },
     "setup": {
-      "digest": "34c17316d3b315ae850217f2ab75a2b408cc9ef75da1f715c3432f211604c50b",
+      "digest": "21064fb84bca6f21bf5cb60fb8449b4c9f54535c0ef22fd440d626a1a642225d",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1118,7 +1118,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "0537905313af88257d87ecbb13d131ecd1f89db1b77d9b7a1a558486100f9caa",
+      "digest": "b028e62f77c56a192bb8c3de0a1e37c171bb753cdcacd82937fc7a3769b6f302",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1131,7 +1131,7 @@
       ]
     },
     "setup": {
-      "digest": "0ac12a73cdb2a2b086eed3d500718d6915b9f0b25fdc9cb9c8f0dce04d5ae0f5",
+      "digest": "908bf9cd5884bf004ce244600ab19c064cbc9b47b2b31bda5617fad9f0a4dd7d",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1222,7 +1222,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "5eb4c8267ce5ce47b6b62c9650042f889a649f0596edbaeeaf38700865e4f8e2",
+      "digest": "67823072805e91e00b49e15401ec215ff01e5cc739357bc3524c623eaaaaa67d",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1235,7 +1235,7 @@
       ]
     },
     "setup": {
-      "digest": "701476c40e3bbb6019a42ad63236d831920386a4520bdf73a43d00e151b6d9ef",
+      "digest": "7d3f252e71c361924d40bb53e6a51c185c84cde67c322ce75c94f2db68b51540",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1326,7 +1326,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "187813f9a7921c9fe1a3ce8d5ab1240730f46502053534dfde0e9def3134d400",
+      "digest": "9ca76e8ee4e1cecd29a5cea7e07f377760469f6207a713a5766dc61b5ccb989d",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1339,7 +1339,7 @@
       ]
     },
     "setup": {
-      "digest": "02cfd900183c5e612073da16d3d4ad6e42f895c40641cf0632e90b9b3efd13e7",
+      "digest": "372846f47cd801c5e0748ca1bde1d6c65d0cdfbe5355db87ef4dcbbd8531c6d4",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1430,7 +1430,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "546a42e21489dbb10a21c8995654cde98f24938ddc22851d4c4391a776342429",
+      "digest": "50ebb051fd66728c43ead3cf69f4bb9b8b3695afcf903659a8581b94c405e9ce",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1443,7 +1443,7 @@
       ]
     },
     "setup": {
-      "digest": "258ee7cc443e8b2f329f753af7cb454891210106f2b40b42d077d4649ba58ab9",
+      "digest": "8c085119bb4eedd28524cd08eaeb5aa25b3ff36916bf230b35e994750c9918c4",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1534,7 +1534,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "75c4a304b287172e695021daaf426f19d3d86902c85a498786e4bf02c571e804",
+      "digest": "29b6def94f85d3681b2856cf7e46ee60233f4ef0ef563a5073f844380014705b",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1547,7 +1547,7 @@
       ]
     },
     "setup": {
-      "digest": "49816a56d74dd2a140a9823f8d5cef1bde134d6fd248b22b202db728e12141d5",
+      "digest": "30fd695428f7fa6c092d6d2a1828473a213c95728d71196678f91b17578dc744",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1642,7 +1642,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "f0fc57fd64129d4ddcd5d6c5072c456dd7f1944d1e510f75f19582d80a581cc5",
+      "digest": "6a58a60cb180907903d15f85b343dc9c633ab41c9ae726da8cfed6ccbd9e753f",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1654,7 +1654,7 @@
       ]
     },
     "setup": {
-      "digest": "2976f96d1ed030ae83ae181ba4655dca549193461b90d409cd3e5c5e95ecff26",
+      "digest": "429ab5bc048388ff9e20075c2c3413003b18ac11c9b9a0769ac93426bdc27ffd",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1745,7 +1745,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "d2e9191564d3bf01ff664ea61a471996be981ac839bc80543a4e21229c41186b",
+      "digest": "4e3587b0c35dc8eb0ac0ef9f73a62317a65b09d35522e41f64a77958ab757752",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1758,7 +1758,7 @@
       ]
     },
     "setup": {
-      "digest": "67222de42eceb451557b0e9b06bdf070009fe5dfa8170c6e69b204da57d832cd",
+      "digest": "e0a503c19354cd0ba500a93d4a0a6ef1b9abac65641b924a6f7b3584edc29380",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",
@@ -1845,7 +1845,7 @@
       "brandedKeys": ["scan-types-info"]
     },
     "settings": {
-      "digest": "d1724ad0857c63651eeb5e69915ffc985fbb5a54b5fa337f55050cd24632df45",
+      "digest": "e3be34293ccc5e3d5430c1ad2e7edd116946283fbe6d771bbfea10d90f867ab5",
       "brandedKeys": [
         "config-file-parse-error-desc",
         "device-auth-subheading",
@@ -1858,7 +1858,7 @@
       ]
     },
     "setup": {
-      "digest": "ef3372447698073e3e118ae67d3ea1d34b9a14b05e518c2ee6a83484fca65f3e",
+      "digest": "9283ec377a75d6cab1208448468892279dba3f75110acb332fd6912c4ec468ed",
       "brandedKeys": [
         "assign-folder",
         "choose-platform",

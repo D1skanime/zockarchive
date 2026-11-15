@@ -730,9 +730,9 @@ def test_get_rom_content_resolves_a_file_inside_the_relative_mapping(
         file.file_path = "roms/arcade"
         file.file_name = "game-list.txt"
         mapping = session.query(PlatformStorageMapping).one()
-        mapping.relative_path = "arcade"
+        mapping.relative_path = "roms/arcade"
 
-    source = mapped_rom_storage / "arcade" / "game-list.txt"
+    source = mapped_rom_storage / "roms" / "arcade" / "game-list.txt"
     source.parent.mkdir(parents=True, exist_ok=True)
     source.write_text("fixture", encoding="utf-8")
 

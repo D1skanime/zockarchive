@@ -113,8 +113,18 @@ describe("mounted setup recovery", () => {
           "recovery-complete"
         ],
       );
-      expect(panel.find('button[data-route="scan"]').exists()).toBe(true);
-      expect(fake.scan).not.toHaveBeenCalled();
+      const startScan = panel
+        .findAll("button")
+        .find(
+          (button) =>
+            button.text() ===
+            namespaces["../../../locales/" + locale + "/setup.json"][
+              "recovery-start-scan"
+            ],
+        );
+      expect(startScan).toBeDefined();
+      await startScan!.trigger("click");
+      expect(fake.push).toHaveBeenCalledWith({ name: "scan" });
       complete.value = false;
       cause.value = "root_unreadable";
       await flushPromises();
@@ -141,7 +151,7 @@ describe("mounted setup recovery", () => {
     await flushPromises();
     expect(fake.finish).toHaveBeenCalledTimes(1);
     expect(fake.push).not.toHaveBeenCalled();
-    expect(fake.scan).not.toHaveBeenCalled();
+    expect(fake.push).not.toHaveBeenCalled();
     panel.unmount();
   });
   it("keeps persistent errors, supports GET-only retry, and links enrollment recovery to login", async () => {
