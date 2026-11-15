@@ -18,14 +18,15 @@
   scan workflow.
 - No test was added or test suite run.
 
-## Browser proof status
+## Browser proof
 
-The disposable MariaDB/Valkey test stack was isolated under a temporary
-project and did not touch the NAS stack. Its first startup was blocked by an
-existing host port because Compose appended port bindings. A replacement-only
-override started both containers, but Alembic attempted its connection before
-MariaDB completed initialization. Cleanup ran through the temporary compose
-project. The required HTTP LAN-IP browser scan proof remains pending.
+Chromium loaded the emitted production bundle over ordinary HTTP at
+`http://192.168.235.196:13456`, not loopback, with no secure-context override.
+The browser initialization removed `crypto.randomUUID`; a UI quick scan was
+accepted with an RFC 4122 v4 UUID and reached `completed`. There were no
+post-login console errors. The disposable MariaDB/Valkey project waited for
+MariaDB health before migrations and was removed with its containers, network,
+and volume after the proof. The NAS stack was never contacted or changed.
 
 ## Scope
 

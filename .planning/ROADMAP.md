@@ -1254,4 +1254,4 @@ API-compatible UUIDs when the page is served over a LAN HTTP origin where
 **Plans:** 1 plan
 
 Plans:
-- [ ] `45-01-PLAN.md` - Secure UUID compatibility for scan workflow and HTTP LAN browser proof
+- [x] `45-01-PLAN.md` - Secure UUID compatibility for scan workflow and HTTP LAN browser proof

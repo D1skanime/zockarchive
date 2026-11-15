@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-15T17:29:25.716Z"
-last_activity: 2026-11-15 -- Phase 45 execution started
+stopped_at: Phase 45 technisch verifiziert, menschliche Live-Abnahme ausstehend
+last_updated: "2026-11-15T20:10:00Z"
+last_activity: 2026-11-15 -- Phase 45 HTTP-LAN browser proof completed
 progress:
   total_phases: 45
   completed_phases: 35
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-rg5
+
+| 261115-rg5 | Fix duplicate ZASelect provider chips in scan metadata selection | 2026-11-15 | Complete: the measurement mirror now owns its scoped concealment selector. Production-bundle Chromium inspection over HTTP LAN confirmed one visible IGDB logo and no `+1` for IGDB alone, then one visible logo per provider in a multiple selection. No tests were added or run before live UAT. | [provider-chip mirror fix](./quick/261115-rg5-fix-duplicate-zaselect-provider-chips-in/) |
 
 ## Quick Task 261115-jlh
 
