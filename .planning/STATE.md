@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-15T20:10:26Z"
-last_activity: 2026-11-15 -- Quality Gate round 1 bound Phase 45 context explicitly to job 261115-a60d
+last_updated: "2026-11-15T20:47:23Z"
+last_activity: 2026-11-15 -- Phase 45 accepted HTTP-LAN scan logic tests completed
 progress:
   total_phases: 45
   completed_phases: 35
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-sts
+
+| 261115-sts | Add accepted HTTP-LAN scan logic tests | 2026-11-15 | Complete after live UAT approval: direct UUID fallback, normal/subfolder scan hook, and cancel/resume/metadata-retry mutation-key coverage added. Four focused frontend test files, 65 tests, passed. No product code changed. | [accepted HTTP-LAN scan tests](./quick/261115-sts-add-accepted-http-scan-logic-tests/) |
 
 ## Quick Task 261115-s0p
 

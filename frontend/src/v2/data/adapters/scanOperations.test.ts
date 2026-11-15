@@ -15,6 +15,8 @@ import { buildLibraryScanRequest, toScanOperationRequest } from "../operations";
 import { startLegacyScan, stopLegacyScan } from "./legacy/scan";
 import scanOperations from "./scanOperations";
 
+const uuid = vi.hoisted(() => ({ createUuid: vi.fn() }));
+
 vi.mock("@/plugins/router", () => ({
   default: {
     currentRoute: { value: { name: "scan" } },
@@ -25,6 +27,7 @@ vi.mock("@/plugins/router", () => ({
   isAuthExemptRoute: () => false,
 }));
 vi.mock("@/services/socket", () => ({ default: { emit: vi.fn() } }));
+vi.mock("@/v2/utils/uuid", () => ({ createUuid: uuid.createUuid }));
 
 const actor = (id = 7): UserSchema => ({
   id,
@@ -108,6 +111,7 @@ beforeEach(() => {
   localStorage.clear();
   vi.clearAllMocks();
   Cookies.set("romm_csrftoken", "synthetic-csrf");
+  uuid.createUuid.mockReturnValue("adapter-generated-key");
   api.defaults.adapter = transport;
   transport.mockImplementation(async (config) => response(config, snapshot()));
 });
@@ -554,6 +558,31 @@ describe("durable scan reconciliation", () => {
 });
 
 describe("confirmed scan control", () => {
+  it("generates distinct default keys for cancel, resume, and metadata retry", async () => {
+    uuid.createUuid
+      .mockReturnValueOnce("adapter-cancel-key")
+      .mockReturnValueOnce("adapter-resume-key")
+      .mockReturnValueOnce("adapter-retry-key");
+    transport.mockImplementation(async (config) =>
+      response(config, snapshot()),
+    );
+
+    await scanOperations.cancel(snapshot());
+    await scanOperations.resume(snapshot());
+    await scanOperations.retryMetadata(snapshot(), [7]);
+
+    expect(uuid.createUuid).toHaveBeenCalledTimes(3);
+    expect(
+      transport.mock.calls.map(
+        ([config]) => JSON.parse(config.data).request_key,
+      ),
+    ).toEqual([
+      "adapter-cancel-key",
+      "adapter-resume-key",
+      "adapter-retry-key",
+    ]);
+  });
+
   it("sends explicit versioned resume and selected metadata retry commands", async () => {
     const stopped = snapshot({ state: "cancelled", intentional_cancel: true });
     const recovered = snapshot({
