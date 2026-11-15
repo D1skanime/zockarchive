@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
-last_updated: "2026-11-15T12:22:00Z"
-last_activity: 2026-11-15 -- Added post-UAT direct readiness tests for the Phase 44 scan flow
+last_updated: "2026-11-15T13:15:00Z"
+last_activity: 2026-11-15 -- Consolidated the Phase 44 ScanView test harness to repair the full-regression lint finding
 progress:
   total_phases: 44
   completed_phases: 34
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-id3
+
+| 261115-id3 | Repair ScanView test-harness lint regression | 2026-11-15 | Complete: a single shared ScanView harness preserves the direct discovery and readiness assertions while satisfying the one-component-per-file rule. Three focused frontend files, 15 tests, and the targeted Trunk check passed. No product code changed. | [ScanView harness regression repair](./quick/261115-id3-regression-reparieren-gemeinsamen-scanvi/) |
 
 ## Quick Task 261115-h42
 

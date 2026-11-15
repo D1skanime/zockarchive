@@ -74,6 +74,27 @@ vi.mock("@/v2/data/adapters/legacy/stores/scanning", () => ({
   }),
 }));
 
+let mountedView: ReturnType<typeof useScanView> | undefined;
+
+const ScanViewHarness = defineComponent({
+  setup() {
+    mountedView = useScanView();
+    return () => null;
+  },
+});
+
+async function mountScanView() {
+  mountedView = undefined;
+  const wrapper = mount(ScanViewHarness);
+  await flushPromises();
+
+  if (!mountedView) {
+    throw new Error("Scan view test harness was not mounted");
+  }
+
+  return { wrapper, view: mountedView };
+}
+
 describe("Scan collection selection request", () => {
   beforeEach(() => {
     api.start.mockClear();
@@ -92,17 +113,8 @@ describe("Scan collection selection request", () => {
     "uses filesystem discovery for explicit child selection while $mode is selected with $providers",
     async ({ mode, providers }) => {
       api.providers = providers;
-      let view: ReturnType<typeof useScanView> | undefined;
-      const wrapper = mount(
-        defineComponent({
-          setup() {
-            view = useScanView();
-            return () => null;
-          },
-        }),
-      );
-      await flushPromises();
-      view!.scanType.value = mode as ViewScanType;
+      const { wrapper, view } = await mountScanView();
+      view.scanType.value = mode as ViewScanType;
       const collectionPromotion = {
         parent_rom_id: 41,
         mapping_id: 12,
@@ -110,7 +122,7 @@ describe("Scan collection selection request", () => {
         parent_relative_path: "Castlevania",
         selected_child_relative_path: "Castlevania/Belmonts.Curse",
       };
-      view!.scanSubfolder({
+      view.scanSubfolder({
         platformFsSlug: "win",
         relativePath: collectionPromotion.selected_child_relative_path,
         collectionPromotion,
@@ -151,22 +163,12 @@ describe("Scan collection selection request", () => {
       } else {
         api.getDirectFolderMappingReadiness.mockResolvedValueOnce(result);
       }
-      let view: ReturnType<typeof useScanView> | undefined;
-      const wrapper = mount(
-        defineComponent({
-          setup() {
-            view = useScanView();
-            return () => null;
-          },
-        }),
-      );
+      const { wrapper, view } = await mountScanView();
 
-      await flushPromises();
-
-      expect(view!.mappingReadiness.value).toBe(state);
-      expect(view!.mappingReady.value).toBe(false);
-      expect(view!.canStartScan.value).toBe(false);
-      view!.scan();
+      expect(view.mappingReadiness.value).toBe(state);
+      expect(view.mappingReady.value).toBe(false);
+      expect(view.canStartScan.value).toBe(false);
+      view.scan();
       await flushPromises();
       expect(api.start).not.toHaveBeenCalled();
       wrapper.unmount();
