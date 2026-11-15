@@ -21,6 +21,7 @@ import {
   normalizeOperationRequest,
   operationItemIds,
 } from "@/v2/data/operations";
+import { createUuid } from "@/v2/utils/uuid";
 
 export interface LibraryOperationState {
   status: Ref<OperationStatus>;
@@ -323,7 +324,7 @@ export function useLibraryOperation() {
     )
       return failed("select-failed-items");
     mutating.value = true;
-    mutationKey ??= crypto.randomUUID();
+    mutationKey ??= createUuid();
     if (kind === "cancel") pendingStop.value = true;
     localError.value = null;
     try {

@@ -1243,3 +1243,15 @@ Plans:
 
 **Wave 1:** 44-01
 **Wave 2:** 44-02
+
+### Phase 45: ZA Hotfix für Beta 4: Scan-Start mit sicherer UUID unter HTTP-LAN
+
+**Goal:** Scan initiation and all scan-operation mutation paths generate secure,
+API-compatible UUIDs when the page is served over a LAN HTTP origin where
+`crypto.randomUUID` is unavailable.
+**Requirements**: ZA-SCAN-45-01, ZA-SCAN-45-02, ZA-SCAN-45-03
+**Depends on:** Phase 44
+**Plans:** 1 plan
+
+Plans:
+- [ ] `45-01-PLAN.md` - Secure UUID compatibility for scan workflow and HTTP LAN browser proof
