@@ -94,16 +94,6 @@
   padding: 0 var(--r-tf-pad-x);
   overflow: hidden;
 }
-.r-select__value-mirror {
-  position: absolute;
-  visibility: hidden;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: inline-flex;
-  gap: 6px;
-  white-space: nowrap;
-}
 .r-select__selection {
   display: flex;
   align-items: center;
