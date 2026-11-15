@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
-last_updated: "2026-11-12T12:40:00Z"
-last_activity: 2026-11-12 -- Integrated Phase 44 from ki/za-261111-98c5 on the current banner baseline and retained fresh UAT
+last_updated: "2026-11-15T04:15:00Z"
+last_activity: 2026-11-15 -- Gated the scan footer behind direct-folder readiness and refreshed the retained fresh UAT handoff
 progress:
   total_phases: 44
   completed_phases: 34
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-5x1
+
+| 261115-5x1 | Fix scan readiness fallback and refresh fresh-UAT handoff evidence | 2026-11-15 | Complete: Scan footer is absent during readiness fallback, leaving one management action only. Browser checks at 1440 px and 390 px confirmed fallback and ready states without post-login errors. The untouched three-folder wizard remains retained at loopback port 32774 for human UAT. No tests were run. | [scan footer and fresh UAT](./quick/261115-5x1-review-befunde-beheben-scancardfooter-nu/) |
 
 ## Quick Task 261115-53r
 
