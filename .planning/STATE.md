@@ -3,18 +3,114 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
-stopped_at: Phase 43 technical verification complete; temporary Portainer UAT ready
-last_updated: "2026-11-11T11:15:00Z"
-last_activity: 2026-11-11 -- Phase 43 development-version release lookup skipped and browser-inspected
+stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
+last_updated: "2026-11-15T14:08:00Z"
+last_activity: 2026-11-15 -- Repaired the Phase 44 ScanView harness type across Vue's asynchronous mount boundary
 progress:
-  total_phases: 43
-  completed_phases: 32
-  total_plans: 332
-  completed_plans: 297
-  percent: 74
+  total_phases: 44
+  completed_phases: 34
+  total_plans: 334
+  completed_plans: 303
+  percent: 77
 ---
 
 # Project State
+
+## Quick Task 261115-jlh
+
+| 261115-jlh | Repair ScanView harness frontend typecheck | 2026-11-15 | Complete: the shared test harness now explicitly retains the declared ScanView hook type after the asynchronous Vue mount. Full frontend typecheck, 15 focused tests and the targeted Trunk check passed. No product code changed. | [ScanView typecheck repair](./quick/261115-jlh-frontend-typecheck-reparieren-den-gemein/) |
+
+## Quick Task 261115-id3
+
+| 261115-id3 | Repair ScanView test-harness lint regression | 2026-11-15 | Complete: a single shared ScanView harness preserves the direct discovery and readiness assertions while satisfying the one-component-per-file rule. Three focused frontend files, 15 tests, and the targeted Trunk check passed. No product code changed. | [ScanView harness regression repair](./quick/261115-id3-regression-reparieren-gemeinsamen-scanvi/) |
+
+## Quick Task 261115-h42
+
+| 261115-h42 | Add accepted Phase 44 readiness tests | 2026-11-15 | Complete: direct Scan hook coverage now blocks operations for blocked and failed direct-folder readiness while retaining the success path. Three focused frontend files, 15 tests, passed. No product code changed. | [post-UAT readiness tests](./quick/261115-h42-nach-live-uat-freigabe-direkte-tests-f-r/) |
+
+## Quick Task 261115-5x1
+
+| 261115-5x1 | Fix scan readiness fallback and refresh fresh-UAT handoff evidence | 2026-11-15 | Complete: Scan footer is absent during readiness fallback, leaving one management action only. Browser checks at 1440 px and 390 px confirmed fallback and ready states without post-login errors. The untouched three-folder wizard remains retained at loopback port 32774 for human UAT. No tests were run. | [scan footer and fresh UAT](./quick/261115-5x1-review-befunde-beheben-scancardfooter-nu/) |
+
+## Quick Task 261115-53r
+
+| 261115-53r | Repair Phase 44 full regression | 2026-11-15 | Complete: refreshed stale frontend contracts and locale baselines for approved UI behavior, plus backend fixtures for the multi-direct-folder mapping model. Focused Vitest, typecheck, and 258 isolated MariaDB tests passed. No product code changed. | [Phase 44 regression repair](./quick/261115-53r-repair-full-regression-phase44/) |
+
+## Quick Task 261115-2p0
+
+| 261115-2p0 | Add Phase 44 accepted behavior tests | 2026-11-15 | Complete: direct logic coverage now verifies active direct mappings feed scan readiness, exclusions remain out of readiness and generic mappings, expected missing mappings stay non-fatal, and unrelated conflicts propagate. Focused frontend and isolated backend suites passed. No product code changed. | [Phase 44 post-UAT tests](./quick/261115-2p0-post-uat-phase44-logic-tests/) |
+
+## Quick Task 261114-ppl
+
+| 261114-ppl | Extract direct mapping readiness | 2026-11-14 | Complete: shared direct-folder readiness helper removes duplicated Home and Scan logic. Home is restored to its 684-line main baseline, resolving the new line-growth finding. Typecheck and diff whitespace checks passed. No tests were added or run before UAT. | [direct readiness extraction](./quick/261114-ppl-extract-direct-mapping-readiness/) |
+
+## Quick Task 261114-phr
+
+| 261114-phr | Avoid exclusion readiness requests | 2026-11-14 | Complete: Home and generic Folder Mappings now omit completed-setup direct exclusions before legacy per-platform mapping requests. Authenticated desktop/mobile browser checks clicked the Scan link and all library tabs with no final post-login console or network errors; pc remained Windows and Wii remained excluded. No new tests were added or run before UAT. | [exclude readiness requests](./quick/261114-phr-avoid-exclusion-readiness-request-on-home/) |
+
+## Quick Task 261114-p3q
+
+| 261114-p3q | Restore scan readiness after exclusions | 2026-11-14 | Complete: Scan readiness now validates only active direct setup mappings, so excluded Wii no longer turns its expected missing mapping into a blocked scan UI. The sole Scan-page Library Management action opens Games. Typecheck and authenticated desktop/mobile browser checks passed, including two consecutive completed scans and reload. No new tests were added or run before UAT. | [scan readiness after exclusions](./quick/261114-p3q-restore-scan-readiness-after-exclusions/) |
+
+## Quick Task 261114-oq0
+
+| 261114-oq0 | Test existing direct-folder exclusion | 2026-11-14 | Complete: post-UAT endpoint and scan-command coverage verifies active direct-folder exclusion, reload and remapping, preserves unrelated mappings, and retains the explicit conflict response. The isolated Phase 34 backend run completed and cleaned up. No product code changed. | [direct-folder exclusion tests](./quick/261114-oq0-test-existing-direct-folder-exclusion/) |
+
+## Quick Task 261114-nj9
+
+| 261114-nj9 | Toggle existing direct-folder exclusion | 2026-11-14 | Complete: existing direct mappings can now be explicitly changed to excluded and then remapped, while platform-to-platform changes remain conflicts. Authenticated desktop and mobile browser checks saved/reloaded Wii exclusion and remapping with pc kept on Windows. A normal UI quick scan completed with 27 result rows. Python compilation, typecheck and diff whitespace checks passed. No tests were run. | [existing mapping exclusion](./quick/261114-nj9-toggle-existing-direct-folder-exclusion/) |
+
+## Quick Task 261114-lm4
+
+| 261114-lm4 | Complete mapped scan after folder rename | 2026-11-14 | Complete: mapped scans now match existing catalog entries by their logical mapped path and filename, preventing stale same-name entries from invalidating Windows inventory bindings after a direct-folder rename. Python compilation and typecheck passed. Authenticated browser scan completed with eight platforms, 37 ROMs and 29 operation items; desktop/mobile UI inspection had no post-login browser errors. No tests were run. | [mapped scan completion](./quick/261114-lm4-complete-scan-operation-after-worker-finishes/) |
+
+## Quick Task 261114-kvw
+
+| 261114-kvw | Preserve completed setup after folder rename | 2026-11-14 | Complete: completed accounts remain in Library Management when a direct child is renamed or newly discovered; `pc` is shown as a pending Windows selection until saved and supports exclusion. Typecheck passed. Desktop/mobile browser evidence confirms navigation, save/reload and catalog visibility. A normal scan processed 21 entries but subsequently reported `source_unverifiable`; this observed lifecycle limitation is documented, not claimed as a successful scan. Its test lock was stopped through the normal UI. No tests were run. | [rename recovery](./quick/261114-kvw-preserve-completed-setup-after-folder-rename/) |
+
+## Quick Task 261113-w8k
+
+| 261113-w8k | Preserve direct-folder columns on narrow screens | 2026-11-13 | Complete: mobile Games retains labeled Folder and Platform columns with fluid tracks; authenticated browser inspection passed at 390 px and 1440 px without post-login browser errors. No tests were run. | [mobile direct-folder columns](./quick/261113-w8k-mobile-direct-folder-columns/) |
+
+## Quick Task 261113-ptu
+
+| 261113-ptu | Repair Library Management UAT 4 | 2026-11-13 | Complete: Games is a two-column direct-child authority with independent root health and row-local save errors; Storage navigation redirects to Games. Typecheck and locale checks passed. Refreshed pgdp-dev browser evidence confirms desktop/mobile UI, HTTP 409 conflict feedback and a completed HTTP-202 quick scan. The isolated A/B/C fixture promotion remains separately evidenced, not repeated in pgdp-dev because its configured folders are pre-existing active mappings. | [UAT 4 library repair](./quick/261113-ptu-repair-library-management-uat4/) |
+
+## Quick Task 261113-iyg
+
+| 261113-iyg | Reconcile direct folder mappings and scan evidence | 2026-11-13 | Complete: direct setup children use the Games projection only, generic mapping rows no longer mislabel exclusions. Isolated A/B/C scans completed with A then A+B persisted and C excluded; no tests were run. | [direct mapping repair](./quick/261113-iyg-reconcile-direct-folder-mappings-and-sca/) |
+
+## Quick Task 261113-icc
+
+| 261113-icc | Repair About dialog community attribution and responsive brand layout | 2026-11-13 | Complete: the About dialog now omits the unverified upstream Discord community tile and constrains only its wordmark to the 32 px icon slot. Authenticated desktop/mobile browser checks confirmed all three retained GitHub targets, no overlay, and no browser errors. No tests were run. | [About dialog repair](./quick/261113-icc-about-dialog-community-link-and-responsi/) |
+
+## Quick Task 261113-bem
+
+| 261113-bem | Align release provider variables with setup guidance | 2026-11-13 | Complete: release Portainer inputs now accept direct setup-visible IGDB, MobyGames, and Steam names with ZA_ fallback compatibility. Synthetic desktop and mobile setup browser checks confirmed configured provider states and unchanged folder controls; no tests were run. | [provider variable alignment](./quick/261113-bem-release-provider-variablen-mit-dem-setup/) |
+
+## Quick Task 261112-h21
+
+| 261112-h21 | Repair Quality-Gate round 1 lint and endpoint size regressions | 2026-11-12 | Complete: removed four stale imports, restored the compact legacy active-mapping projection over the plural mapping contract, and returned all reported endpoint files to their prior sizes. Targeted Trunk and compilation checks passed with no new issues; no tests were run. | [quality-gate repair](./quick/261112-h21-quality-gate-runde-1-ungenutzte-missingp/) |
+
+- The reported main movement predates this quick task and is the separately logged `ki/za-261111-0faa` Docker-banner merge. This job branch neither checked out nor changed main.
+
+## Quick Task 261112-fj9
+
+| 261112-fj9 | Permit multiple direct Games folders for one platform | 2026-11-12 | Complete: isolated browser UAT proved the first Aster-only scan, durable Aster plus Beryl Windows mappings after reload, a later exact Aster plus Beryl catalog, and Cinder exclusion. The narrow excluded-to-platform recovery fix is `16438a22d`; token-labelled UAT resources remain for human acceptance. | [multiple direct Games UAT](./quick/261112-fj9-uat-entscheidung-mehrere-direkte-games-o/) |
+
+- The temporary UAT compose bypasses the entrypoint and therefore cannot emit the exact `[ZockArchive][init]` entrypoint prefix; the report records visible ZockArchive UI/version and sanitized runtime prefix evidence without claiming the absent line.
+
+## Quick Task 261112-cr2
+
+| 261112-cr2 | Live UAT for reassigning excluded direct Games folders | 2026-11-12 | Blocked: the real first scan proved exactly Quartz-UAT-Title and both excluded titles absent, but Ruby-to-Windows was rejected because Windows already has Quartz's sole active PlatformStorageMapping. The later scan therefore could not prove two mapped titles. Sanitized evidence and cleanup receipt are in the job report. | [direct-folder UAT](./quick/261112-cr2-live-uat-ausgeschlossene-direkte-ordner-/) |
+
+- Do not broaden the current single-active-path platform storage model as a UAT fix. A follow-up needs an architectural decision on multi-path mappings for one platform.
+
+## Quick Task 261111-pbs
+
+| 261111-pbs | Default omitted setup dispositions to platform | 2026-11-11 | Structural checks and prior desktop/mobile browser inspection completed; no tests started. Step 1 was not live verified in this job service because setup was already complete. By locked decision, feature and update-path UAT move to the existing Portainer stack without a temporary First-Run instance. | [setup disposition review](./quick/261111-pbs-review-runde-1-standardwert-fuer-setup-o/) |
+
+- Setup assignment and mapping schemas now retain legacy omitted dispositions as platform mappings. The sanitized UAT report records the job-service limitation and German feature/update-path checklists for the existing Portainer stack, without changing durable setup, Docker state, or source storage.
 
 ## Quick Task 261111-foc
 
@@ -205,10 +301,10 @@ See: .planning/PROJECT.md (updated 2026-08-31)
 
 ## Current Position
 
-Phase: 43 (ZA Beta Release for Independent Portainer Installation)
-Plan: 4 of 4
-Status: Technical verification complete (7/7); human Portainer UAT pending
-Last activity: 2026-11-10 -- Phase 43 technically verified; temporary UAT is ready
+Phase: 44 (ZA Setup Assistant Folder Exclusions and Platform Search)
+Plan: 2 of 2
+Status: Integrated and technically re-verified; fresh setup human UAT retained
+Last activity: 2026-11-12 -- Bound integration job 261112-240c to the existing Phase 44 and retained the untouched three-folder setup
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -735,8 +831,16 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261113-c9k | Classify the retained ScreenScraper compatibility input for the quality gate | 2026-11-13 | 62baa3eb1 | [261113-c9k](./quick/261113-c9k-quality-gate-namensklassifizierung-und-host-contracts/) |
 | 261111-ke4 | Fix ShellCheck SC1003 in the ZockArchive init banner | 2026-11-11 | this commit | [261111-ke4](./quick/261111-ke4-fix-shellcheck-sc1003-in-zockarchive-doc/) |
 | 261111-0faa | Brand Docker init banner and log prefix as ZockArchive | 2026-11-11 | this commit | N/A |
+| 261112-bob | Restore native keyboard activation for completed-setup Scan navigation | 2026-11-12 | ef220d60e | [261112-bob](./quick/261112-bob-sichtpr-fung-tastaturaktivierung-der-abs/) |
+| 261111-nja | Repair completed-setup first-scan navigation | 2026-11-11 | 07f0050d2 | [261111-nja](./quick/261111-nja-sichtpr-fung-erstscan-schaltfl-che-im-ab/) |
+| 261111-nbd | Repair the StorageRoot exclusion annotation import | 2026-11-11 | f2f236808 | [261111-nbd](./quick/261111-nbd-ruff-f821-setupfolderexclusion-typimport/) |
+| 261111-m0v | Extract setup exclusions and ZASelect responsibilities below the hard file limit | 2026-11-11 | 04c2ac519, 78b06ed3e, d0c0137d8 | [261111-m0v](./quick/261111-m0v-quality-gate-runde-3-gr-enverst-e-bei-se/) |
+| 261111-lx9 | Make the Phase 44 GSD context explicitly identify job 261111-98c5 | 2026-11-11 | this commit | [261111-lx9](./quick/261111-lx9-quality-gate-runde-2-auftragskennung-im/) |
+| 261111-ltm | Record the Quality Gate repair for the job-to-Phase-44 GSD binding | 2026-11-11 | this commit | [261111-ltm](./quick/261111-ltm-quality-gate-gsd-phasenbindung-f-r-auftr/) |
+| 261111-kqo | Persist setup folder exclusions and add platform text search | 2026-11-11 | 1293dd139, 9a398b364, 647f17e37 | [261111-kqo](./quick/261111-kqo-za-einrichtung-ordner-ausschlie-en-und-p/) |
 | 261111-hr4 | Repair typed release-error response fixtures in approved behavior tests | 2026-11-11 | this commit | [261111-hr4](./quick/261111-hr4-fix-typed-mocked-response-objects-in-pha/) |
 | 261111-ghs | Add direct Phase 43 accepted-release behavior tests | 2026-11-11 | current commit | [261111-ghs](./quick/261111-ghs-add-direct-behavior-tests-for-the-approv/) |
 | 261110-t8b | Align the ZA beta GHCR image contract after the Portainer gate finding | 2026-11-11 | 6e3e9d44b | [261110-t8b](./quick/261110-t8b-classify-the-missing-za-library-mount-do/) |
@@ -821,9 +925,9 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-11-07T19:03:49.650Z
+Last session: 2026-11-12T11:00:49.670Z
 Stopped at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
-Resume file: .planning/phases/41-za-scan-bersicht-f-r-gro-e-bibliotheken/41-VERIFICATION.md
+Resume file: None
 
 ## Quick Task 261105-mnt
 

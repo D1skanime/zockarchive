@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, Mock
 
 import pytest
 
@@ -73,11 +73,7 @@ def _install_happy_path(monkeypatch: pytest.MonkeyPatch, module):
     )
     monkeypatch.setattr(module, "scan_platform", AsyncMock(return_value=platform))
     monkeypatch.setattr(module.db_platform_handler, "add_platform", lambda _: None)
-    monkeypatch.setattr(
-        module.db_storage_handler,
-        "get_active_mapping",
-        lambda _: (_ for _ in ()).throw(module.MissingPlatformStorageMappingError(11)),
-    )
+    monkeypatch.setattr(module.db_storage_handler, "list_active_mappings", lambda _: [])
 
     def create_mapping(platform_id, root_id, relative_path, **_):
         created.append((platform_id, root_id, relative_path))
@@ -126,7 +122,7 @@ async def test_main_reuses_a_correct_mapping_without_creating_audit_or_scan_job(
     mapping = SimpleNamespace(
         id=13, storage_root_id=root.id, relative_path="win", active=True
     )
-    create_mapping = AsyncMock()
+    create_mapping = Mock()
 
     monkeypatch.setattr(module, "_wait_for_platform_table", AsyncMock())
     monkeypatch.setattr(
@@ -143,7 +139,7 @@ async def test_main_reuses_a_correct_mapping_without_creating_audit_or_scan_job(
         module.db_platform_handler, "get_platform_by_fs_slug", lambda _: platform
     )
     monkeypatch.setattr(
-        module.db_storage_handler, "get_active_mapping", lambda _: mapping
+        module.db_storage_handler, "list_active_mappings", lambda _: [mapping]
     )
     monkeypatch.setattr(module.db_storage_handler, "create_mapping", create_mapping)
 
@@ -200,8 +196,8 @@ async def test_main_refuses_an_incompatible_active_mapping(
     )
     monkeypatch.setattr(
         module.db_storage_handler,
-        "get_active_mapping",
-        lambda _: incompatible_mapping,
+        "list_active_mappings",
+        lambda _: [incompatible_mapping],
     )
 
     with pytest.raises(RuntimeError, match="incompatible active mapping"):

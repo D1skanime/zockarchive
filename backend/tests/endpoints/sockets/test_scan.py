@@ -1220,7 +1220,6 @@ class TestIdentifyRomReassociation:
         mocker.patch.object(
             scan_module, "redis_client", Mock(get=Mock(return_value=None))
         )
-
         fs = scan_module.fs_rom_handler
         mocker.patch.object(
             fs,
@@ -1652,6 +1651,9 @@ class TestIdentifyPlatformQuickPcComponents:
         mocker.patch.object(
             scan_module, "redis_client", Mock(get=Mock(return_value=None))
         )
+        mocker.patch.object(
+            scan_module, "current_checkpoint_command", return_value=None
+        )
         platform = Platform(name="Windows", slug=UPS.WIN, fs_slug=UPS.WIN)
         platform.id = 1
         platform.missing_from_fs = False
@@ -1774,6 +1776,9 @@ class TestIdentifyPlatformMarksMissingBeforeScan:
         mocker.patch.object(
             scan_module, "redis_client", Mock(get=Mock(return_value=None))
         )
+        mocker.patch.object(
+            scan_module, "current_checkpoint_command", return_value=None
+        )
 
         platform = Platform(name="Test", slug="test", fs_slug="test")
         platform.id = 1
@@ -1854,6 +1859,9 @@ class TestIdentifyPlatformEmitsRestoredRoms:
         mocker.patch("handler.scan_operation_checkpoint.record_checked_game")
         mocker.patch.object(
             scan_module, "redis_client", Mock(get=Mock(return_value=None))
+        )
+        mocker.patch.object(
+            scan_module, "current_checkpoint_command", return_value=None
         )
 
         platform = Platform(name="Test", slug="test", fs_slug="test")

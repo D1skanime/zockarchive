@@ -7,18 +7,18 @@ import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
+import DirectGamesFolderMappingsSection from "@/v2/components/Settings/DirectGamesFolderMappingsSection.vue";
 import ExcludedSection from "@/v2/components/Settings/ExcludedSection.vue";
 import FolderMappingsSection from "@/v2/components/Settings/FolderMappingsSection.vue";
 import MissingGamesSection from "@/v2/components/Settings/MissingGamesSection.vue";
-import StorageRootsSection from "@/v2/components/Settings/StorageRootsSection.vue";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
 
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-type Tab = "mapping" | "storage" | "excluded" | "missing";
-const validTabs: Tab[] = ["mapping", "storage", "excluded", "missing"];
+type Tab = "mapping" | "direct" | "excluded" | "missing";
+const validTabs: Tab[] = ["mapping", "direct", "excluded", "missing"];
 
 const tab = ref<Tab>(
   (validTabs as string[]).includes(route.query.tab as string)
@@ -38,6 +38,14 @@ watch(tab, (newTab) => {
 watch(
   () => route.query.tab,
   (newTab) => {
+    if (newTab === "storage") {
+      tab.value = "direct";
+      void router.replace({
+        path: route.path,
+        query: { ...route.query, tab: "direct" },
+      });
+      return;
+    }
     if (
       newTab &&
       (validTabs as string[]).includes(newTab as string) &&
@@ -51,14 +59,14 @@ watch(
 
 const tabs = computed<ZATabNavItem[]>(() => [
   {
+    id: "direct",
+    label: t("settings.games-label"),
+    icon: "mdi-folder-game-outline",
+  },
+  {
     id: "mapping",
     label: t("settings.folder-mappings"),
     icon: "mdi-folder-multiple-outline",
-  },
-  {
-    id: "storage",
-    label: t("storage.administration", "Storage mapping"),
-    icon: "mdi-database-cog-outline",
   },
   {
     id: "excluded",
@@ -115,7 +123,7 @@ const tabModel = computed<string>({
     <ZATabNav v-model="tabModel" :items="tabs" class="r-v2-lib__tabs" />
 
     <FolderMappingsSection v-if="tab === 'mapping'" />
-    <StorageRootsSection v-else-if="tab === 'storage'" />
+    <DirectGamesFolderMappingsSection v-else-if="tab === 'direct'" />
     <ExcludedSection v-else-if="tab === 'excluded'" />
     <MissingGamesSection v-else-if="tab === 'missing'" />
   </div>

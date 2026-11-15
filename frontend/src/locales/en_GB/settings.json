@@ -206,6 +206,8 @@
   "invite-link": "Invite link",
   "invite-link-created": "Invite link created",
   "language": "Language",
+  "library-root-reachable": "Library folder is reachable.",
+  "library-root-unreachable": "Library folder is not reachable.",
   "link-copied": "Link copied to clipboard",
   "main-platform": "Main platform",
   "manual": "Manual",

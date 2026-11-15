@@ -59,12 +59,6 @@ const links = computed<Link[]>(() => [
     value: "GitHub",
     href: PROJECT_DOCS_URL,
   },
-  {
-    icon: "mdi-account-group",
-    label: t("common.about-community"),
-    value: "RomM (upstream) Discord",
-    href: "https://discord.com/invite/P5HtHnhUDH",
-  },
 ]);
 </script>
 

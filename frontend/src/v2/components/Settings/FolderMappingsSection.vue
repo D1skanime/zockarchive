@@ -22,6 +22,7 @@ import {
 import { storeToRefs } from "pinia";
 import { computed, onMounted, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import setupApi from "@/services/api/setup";
 import FolderMappingPlatformCell from "@/v2/components/Settings/FolderMappingPlatformCell.vue";
 import FolderMappingTypeCell from "@/v2/components/Settings/FolderMappingTypeCell.vue";
 import { loadPgdPFolderMappings } from "@/v2/components/Settings/pgdpFolderMappings";
@@ -256,9 +257,30 @@ onMounted(async () => {
   initialLoading.value = true;
   loading.value = true;
   try {
-    const { data } = await platformApi.getSupportedPlatforms();
+    const [platformResponse, directFoldersResponse] = await Promise.all([
+      platformApi.getSupportedPlatforms(),
+      // The setup projection is the authority for every direct child, whether
+      // it is mapped or deliberately excluded. Its absence on older or
+      // incomplete setups must not hide genuine generic mappings.
+      setupApi.getFolderAssignments().catch(() => null),
+    ]);
+    const data = platformResponse.data;
     supportedPlatforms.value = data || [];
-    pgdpMappings.value = await loadPgdPFolderMappings(supportedPlatforms.value);
+    const directFolderPaths = new Set(
+      directFoldersResponse?.data.folders.map(
+        (folder) => folder.relative_path,
+      ) ?? [],
+    );
+    const directPlatformSlugs = new Set(
+      directFoldersResponse?.data.folders
+        .map((folder) => folder.platform_slug)
+        .filter((slug): slug is string => slug !== null) ?? [],
+    );
+    pgdpMappings.value = await loadPgdPFolderMappings(
+      supportedPlatforms.value,
+      directFolderPaths,
+      directPlatformSlugs,
+    );
     // Populate the in-memory icon cache so every PlatformIcon
     // rendered by the table rows + Platform picker reads blob URLs
     // instead of refetching. Fires in idle time, non-blocking.

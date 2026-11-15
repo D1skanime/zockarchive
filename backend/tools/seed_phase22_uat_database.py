@@ -14,9 +14,6 @@ if str(BACKEND_ROOT) not in sys.path:
 
 from fastapi import HTTPException  # noqa: E402
 
-from exceptions.storage_exceptions import (  # noqa: E402
-    MissingPlatformStorageMappingError,
-)
 from handler.database import (  # noqa: E402
     db_platform_handler,
     db_storage_handler,
@@ -84,9 +81,8 @@ async def _get_or_register_windows_platform():
 
 
 def _ensure_compatible_mapping(platform, root, admin):
-    try:
-        mapping = db_storage_handler.get_active_mapping(platform.id)
-    except MissingPlatformStorageMappingError:
+    mappings = db_storage_handler.list_active_mappings(platform.id)
+    if not mappings:
         return db_storage_handler.create_mapping(
             platform.id,
             root.id,
@@ -94,6 +90,7 @@ def _ensure_compatible_mapping(platform, root, admin):
             actor_user_id=admin.id,
             actor_display_name=admin.username,
         )
+    mapping = mappings[0]
 
     if (
         mapping.storage_root_id != root.id

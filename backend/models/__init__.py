@@ -2,6 +2,7 @@ from .pc_automation import PcAutomationQueue
 from .scan_collection import ScanCollectionFolder
 from .scan_inventory import ScanInventoryBaseline, ScanMetadataRetry
 from .scan_operation import ScanExecutionSlot, ScanOperation, ScanOperationItem
+from .setup_folder_exclusion import SetupFolderExclusion
 
 __all__ = [
     "PcAutomationQueue",
@@ -11,4 +12,5 @@ __all__ = [
     "ScanMetadataRetry",
     "ScanOperation",
     "ScanOperationItem",
+    "SetupFolderExclusion",
 ]

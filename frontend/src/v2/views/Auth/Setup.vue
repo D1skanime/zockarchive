@@ -2,6 +2,7 @@
 import { ZAAlert, ZABtn, ZAIcon, ZASpinner, ZASteps } from "@v2/lib";
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { ROUTES } from "@/plugins/router";
 import SetupStepAdmin from "@/v2/components/Auth/SetupStepAdmin.vue";
 import type { AdminUserDraft } from "@/v2/components/Auth/SetupStepAdmin.vue";
@@ -14,8 +15,10 @@ import type {
   SetupFolderDiscovery,
   SetupFolderDraft,
 } from "@/v2/data/adapters/legacy/services/api/setup";
+import { SETUP_EXCLUDED } from "@/v2/data/adapters/legacy/services/api/setup";
 
 const { t } = useI18n();
+const router = useRouter();
 const recovery = useSetupRecovery();
 const snackbar = useSnackbar();
 const TOTAL_STEPS = 3;
@@ -54,12 +57,26 @@ const assignments = computed(
     discovery.value?.folders
       .map((folder) => ({
         folder_name: folder.name,
-        platform_slug: folderDraft.value[folder.name],
+        disposition:
+          folderDraft.value[folder.name] === SETUP_EXCLUDED
+            ? ("excluded" as const)
+            : ("platform" as const),
+        platform_slug:
+          folderDraft.value[folder.name] === SETUP_EXCLUDED
+            ? null
+            : folderDraft.value[folder.name],
       }))
       .filter(
-        (item): item is { folder_name: string; platform_slug: string } =>
-          typeof item.platform_slug === "string" &&
-          item.platform_slug.length > 0,
+        (
+          item,
+        ): item is {
+          folder_name: string;
+          disposition: "platform" | "excluded";
+          platform_slug: string | null;
+        } =>
+          item.disposition === "excluded" ||
+          (typeof item.platform_slug === "string" &&
+            item.platform_slug.length > 0),
       ) ?? [],
 );
 const allFoldersAssigned = computed(() =>
@@ -97,7 +114,8 @@ async function loadDiscovery() {
       Object.fromEntries(
         data.folders.map((folder) => [
           folder.name,
-          folderDraft.value[folder.name] ?? folder.suggested_platform,
+          folderDraft.value[folder.name] ??
+            (folder.excluded ? SETUP_EXCLUDED : folder.suggested_platform),
         ]),
       ),
     );
@@ -110,6 +128,9 @@ async function loadDiscovery() {
 }
 function updateDraft(next: SetupFolderDraft) {
   folderDraft.value = next;
+}
+function startScan() {
+  void router.push({ name: ROUTES.SCAN });
 }
 function prev() {
   if (step.value > 1) {
@@ -159,7 +180,7 @@ onMounted(async () => {
     >
       <h2>{{ t("setup.recovery-complete") }}</h2>
       <p>{{ t("setup.recovery-read-only") }}</p>
-      <ZABtn color="primary" :to="{ name: ROUTES.SCAN }">{{
+      <ZABtn color="primary" @click="startScan">{{
         t("setup.recovery-start-scan")
       }}</ZABtn>
     </section>

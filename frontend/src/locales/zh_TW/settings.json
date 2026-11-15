@@ -206,6 +206,8 @@
   "invite-link": "邀請鏈接",
   "invite-link-created": "邀請連結已建立",
   "language": "語言",
+  "library-root-reachable": "可存取資料庫資料夾。",
+  "library-root-unreachable": "無法存取資料庫資料夾。",
   "link-copied": "連結已複製到剪貼簿",
   "main-platform": "主平台",
   "manual": "手動",

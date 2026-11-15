@@ -130,13 +130,13 @@ describe("SetupStepMetadata Steam", () => {
       "Steam metadata for PC games and DLCs, using the Steam Store.",
     );
     expect(enSetup["provider-steam-setup"]).toBe(
-      "No API key is required. Enable globally with STEAM_API_ENABLED=true.",
+      "No API key is required. In Portainer, enable globally with STEAM_API_ENABLED=true.",
     );
     expect(deSetup["provider-steam-desc"]).toBe(
       "Steam-Metadaten für PC-Spiele und DLCs aus dem Steam Store.",
     );
     expect(deSetup["provider-steam-setup"]).toBe(
-      "Kein API-Schlüssel erforderlich. Global mit STEAM_API_ENABLED=true aktivieren.",
+      "Kein API-Schlüssel erforderlich. In Portainer global mit STEAM_API_ENABLED=true aktivieren.",
     );
   });
 });

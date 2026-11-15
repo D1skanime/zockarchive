@@ -51,6 +51,16 @@ Warten Sie, bis MariaDB und Valkey gesund sind. Öffnen Sie anschließend
 Sie die Bibliothek ein. Datenbankinitialisierung und Migrationen laufen beim ersten
 Start automatisch, führen Sie keine SQL-Befehle aus.
 
+### Optionale Metadatenanbieter
+
+Tragen Sie optionale Anbieter unter den Namen ein, die auch der
+Einrichtungsassistent anzeigt: `IGDB_CLIENT_ID`, `IGDB_CLIENT_SECRET`,
+`MOBYGAMES_API_KEY` sowie die `STEAM_API_*`-Einstellungen. Steam benötigt keinen
+Schlüssel; mit `STEAM_API_ENABLED=true` wird es aktiviert. Bestehende Release-Stacks
+dürfen weiterhin die entsprechenden `ZA_`-Namen verwenden, zum Beispiel
+`ZA_IGDB_CLIENT_ID` oder `ZA_STEAM_API_ENABLED`. Wenn beide Varianten gesetzt sind,
+gilt der Name ohne `ZA_`.
+
 ## 4. Aktualisieren
 
 Prüfen Sie die Release-Notizen. Ändern Sie nur `ZA_IMAGE_TAG` auf den exakten,

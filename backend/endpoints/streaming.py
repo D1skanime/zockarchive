@@ -532,7 +532,7 @@ async def claim_session(
             detail=f"No streaming container configured for platform '{rom.platform_slug}'",
         )
 
-    mapping = db_storage_handler.get_active_mapping(rom.platform_id)
+    mapping = db_storage_handler.path_mapping(rom.platform_id, rom.full_path)
     context = MappingReadContext(mapping.id, mapping.version)
     parts = Path(rom.full_path).parts
     relative_path = Path(*parts[1:]).as_posix() if len(parts) > 1 else rom.fs_name

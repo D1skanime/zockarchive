@@ -8,11 +8,16 @@ vi.mock("@/services/api/storage", () => ({
   default: { getMapping: vi.fn() },
 }));
 
-function platform(id: number, displayName = "Windows"): Platform {
+function platform(
+  id: number,
+  displayName = "Windows",
+  slug = "win",
+  fsSlug = slug,
+): Platform {
   return {
     id,
-    slug: "win",
-    fs_slug: "win",
+    slug,
+    fs_slug: fsSlug,
     name: "Windows",
     display_name: displayName,
     rom_count: 0,
@@ -98,5 +103,29 @@ describe("saved folder mappings", () => {
     expect(await loadPgdPFolderMappings([platform(1), platform(2)])).toEqual(
       [],
     );
+  });
+
+  it("leaves direct assignments and exclusions to the Games projection", async () => {
+    getMapping.mockImplementation(async (id) => mapping(id, "archive"));
+
+    await expect(
+      loadPgdPFolderMappings(
+        [
+          platform(1, "Windows", "win", "pc"),
+          platform(2, "Wii", "wii"),
+          platform(3, "Archive", "archive"),
+        ],
+        new Set(["pc", "wii"]),
+        new Set(["win"]),
+      ),
+    ).resolves.toEqual([
+      {
+        fsSlug: "archive",
+        slug: "archive",
+        displayName: "Archive",
+        type: "auto",
+      },
+    ]);
+    expect(getMapping.mock.calls).toEqual([[3]]);
   });
 });

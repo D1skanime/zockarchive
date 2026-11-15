@@ -8,7 +8,7 @@ type ViewScanType = ReturnType<typeof useScanView>["scanType"]["value"];
 const api = vi.hoisted(() => ({
   start: vi.fn().mockResolvedValue(undefined),
   providers: ["igdb"],
-  getMappingsReadiness: vi.fn().mockResolvedValue({ ready: true }),
+  getDirectFolderMappingReadiness: vi.fn().mockResolvedValue({ ready: true }),
 }));
 vi.mock("pinia", async (importOriginal) => ({
   ...(await importOriginal<typeof import("pinia")>()),
@@ -53,8 +53,8 @@ vi.mock("@/v2/composables/useScanProviders", () => ({
     specificAllSelected: ref(false),
   }),
 }));
-vi.mock("@/v2/data/adapters/legacy/services/api/storage", () => ({
-  default: { getMappingsReadiness: api.getMappingsReadiness },
+vi.mock("@/v2/data/directFolderMappingReadiness", () => ({
+  getDirectFolderMappingReadiness: api.getDirectFolderMappingReadiness,
 }));
 vi.mock("@/v2/data/adapters/legacy/stores/config", () => ({
   default: () => ({ config: ref({ SKIP_HASH_CALCULATION: false }) }),
@@ -74,8 +74,35 @@ vi.mock("@/v2/data/adapters/legacy/stores/scanning", () => ({
   }),
 }));
 
+let mountedView: ReturnType<typeof useScanView> | undefined;
+
+const ScanViewHarness = defineComponent({
+  setup() {
+    mountedView = useScanView();
+    return () => null;
+  },
+});
+
+async function mountScanView() {
+  mountedView = undefined;
+  const wrapper = mount(ScanViewHarness);
+  await flushPromises();
+
+  if (!mountedView) {
+    throw new Error("Scan view test harness was not mounted");
+  }
+
+  // Vue mounts setup asynchronously; retain the declared hook type across that boundary.
+  return { wrapper, view: mountedView as ReturnType<typeof useScanView> };
+}
+
 describe("Scan collection selection request", () => {
-  beforeEach(() => api.start.mockClear());
+  beforeEach(() => {
+    api.start.mockClear();
+    api.getDirectFolderMappingReadiness.mockReset().mockResolvedValue({
+      ready: true,
+    });
+  });
 
   it.each([
     { mode: "media", providers: ["igdb"] },
@@ -87,17 +114,8 @@ describe("Scan collection selection request", () => {
     "uses filesystem discovery for explicit child selection while $mode is selected with $providers",
     async ({ mode, providers }) => {
       api.providers = providers;
-      let view: ReturnType<typeof useScanView> | undefined;
-      const wrapper = mount(
-        defineComponent({
-          setup() {
-            view = useScanView();
-            return () => null;
-          },
-        }),
-      );
-      await flushPromises();
-      view!.scanType.value = mode as ViewScanType;
+      const { wrapper, view } = await mountScanView();
+      view.scanType.value = mode as ViewScanType;
       const collectionPromotion = {
         parent_rom_id: 41,
         mapping_id: 12,
@@ -105,7 +123,7 @@ describe("Scan collection selection request", () => {
         parent_relative_path: "Castlevania",
         selected_child_relative_path: "Castlevania/Belmonts.Curse",
       };
-      view!.scanSubfolder({
+      view.scanSubfolder({
         platformFsSlug: "win",
         relativePath: collectionPromotion.selected_child_relative_path,
         collectionPromotion,
@@ -127,6 +145,33 @@ describe("Scan collection selection request", () => {
       });
       expect(api.start.mock.calls[0][0].metadataOnly).not.toBe(true);
       expect(api.start.mock.calls[0][0].mediaOnly).not.toBe(true);
+      wrapper.unmount();
+    },
+  );
+
+  it.each([
+    { name: "blocked", result: { ready: false }, state: "blocked" },
+    {
+      name: "failed",
+      result: new Error("assignments unavailable"),
+      state: "error",
+    },
+  ])(
+    "does not submit a scan while direct-folder readiness is $name",
+    async ({ result, state }) => {
+      if (result instanceof Error) {
+        api.getDirectFolderMappingReadiness.mockRejectedValueOnce(result);
+      } else {
+        api.getDirectFolderMappingReadiness.mockResolvedValueOnce(result);
+      }
+      const { wrapper, view } = await mountScanView();
+
+      expect(view.mappingReadiness.value).toBe(state);
+      expect(view.mappingReady.value).toBe(false);
+      expect(view.canStartScan.value).toBe(false);
+      view.scan();
+      await flushPromises();
+      expect(api.start).not.toHaveBeenCalled();
       wrapper.unmount();
     },
   );

@@ -204,7 +204,7 @@ def preflight_mapped_downloads(items) -> list[AuthorizedZipSource]:
     sources: list[AuthorizedZipSource] = []
     try:
         for rom, file, download_name in items:
-            mapping = db_storage_handler.get_active_mapping(rom.platform_id)
+            mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
             context = MappingReadContext(mapping.id, mapping.version)
             access = cast(
                 DownloadCapability,

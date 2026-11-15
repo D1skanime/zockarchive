@@ -206,6 +206,8 @@
   "invite-link": "Link invitație",
   "invite-link-created": "Link de invitație creat",
   "language": "Limbă",
+  "library-root-reachable": "Dosarul bibliotecii este accesibil.",
+  "library-root-unreachable": "Dosarul bibliotecii nu este accesibil.",
   "link-copied": "Linkul a fost copiat în clipboard",
   "main-platform": "Platformă principală",
   "manual": "Manual",

@@ -16,7 +16,6 @@ from config import (
     SENTRY_DSN,
 )
 from config.config_manager import config_manager as cm
-from exceptions.storage_exceptions import MissingPlatformStorageMappingError
 from handler.database import db_platform_handler, db_storage_handler
 from handler.filesystem.storage_resolver import resolve_directory
 from handler.metadata import (
@@ -79,10 +78,7 @@ def _metadata_sources() -> list[str]:
 def _active_mappings() -> list[object]:
     mappings = []
     for platform in db_platform_handler.get_platforms():
-        try:
-            mappings.append(db_storage_handler.get_active_mapping(platform.id))
-        except MissingPlatformStorageMappingError:
-            continue
+        mappings.extend(db_storage_handler.list_active_mappings(platform.id))
     return mappings
 
 

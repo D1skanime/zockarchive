@@ -10,10 +10,21 @@ export interface PgdPFolderMappingRow {
 
 export async function loadPgdPFolderMappings(
   platforms: readonly Platform[],
+  directFolderPaths: ReadonlySet<string> = new Set(),
+  directPlatformSlugs: ReadonlySet<string> = new Set(),
 ): Promise<PgdPFolderMappingRow[]> {
   const rows = await Promise.all(
     platforms
-      .filter((platform) => platform.id > 0)
+      // Direct Games folders are exclusively administered by the setup
+      // projection. Skip their platform request entirely because an explicit
+      // exclusion intentionally has no active storage mapping.
+      .filter(
+        (platform) =>
+          platform.id > 0 &&
+          !directPlatformSlugs.has(platform.slug) &&
+          !directFolderPaths.has(platform.slug) &&
+          !directFolderPaths.has(platform.fs_slug),
+      )
       .map(async (platform) => {
         try {
           const { data } = await storageApi.getMapping(platform.id);
@@ -29,7 +40,13 @@ export async function loadPgdPFolderMappings(
       }),
   );
 
-  return rows
-    .filter((row): row is NonNullable<typeof row> => row !== null)
-    .sort((a, b) => a.fsSlug.localeCompare(b.fsSlug));
+  return (
+    rows
+      .filter((row): row is NonNullable<typeof row> => row !== null)
+      // Direct children are administered by the setup disposition projection.
+      // Keep them out of the generic mapping table so an excluded child cannot
+      // be presented as an automatically detected platform mapping.
+      .filter((row) => !directFolderPaths.has(row.fsSlug))
+      .sort((a, b) => a.fsSlug.localeCompare(b.fsSlug))
+  );
 }

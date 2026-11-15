@@ -147,7 +147,9 @@ def test_storage_root_delete_is_restricted(storage_root: StorageRoot):
         db.execute(delete(StorageRoot).where(StorageRoot.id == storage_root.id))
 
 
-def test_platform_mapping_relationship_is_scalar(storage_root: StorageRoot):
+def test_platform_mapping_relationship_supports_multiple_direct_folders(
+    storage_root: StorageRoot,
+):
     platform = _platform("pc")
     with session.begin() as db:
         db.add(
@@ -157,8 +159,8 @@ def test_platform_mapping_relationship_is_scalar(storage_root: StorageRoot):
                 relative_path="PC",
             )
         )
-    relationship = inspect(Platform).relationships.storage_mapping
-    assert relationship.uselist is False
+    relationship = inspect(Platform).relationships.storage_mappings
+    assert relationship.uselist is True
     assert relationship.back_populates == "platform"
 
 

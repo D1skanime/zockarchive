@@ -18,7 +18,7 @@ def test_setup_assignment_identity_becomes_mapping_bound_scan_command(monkeypatc
         scan_module.db_platform_handler, "get_platforms", lambda: [platform]
     )
     monkeypatch.setattr(
-        scan_module.db_storage_handler, "get_active_mapping", lambda _id: mapping
+        scan_module.db_storage_handler, "list_active_mappings", lambda _id: [mapping]
     )
     monkeypatch.setattr(
         scan_module,
@@ -36,6 +36,46 @@ def test_setup_assignment_identity_becomes_mapping_bound_scan_command(monkeypatc
     assert [
         (command.mapping_id, command.expected_revision) for command in commands
     ] == [(mapping.id, mapping.version)]
+
+
+def test_multiple_direct_folders_for_one_platform_each_get_a_scan_command(
+    monkeypatch,
+):
+    platform = SimpleNamespace(id=17, fs_slug="windows")
+    mappings = [
+        SimpleNamespace(
+            id=41,
+            version=9,
+            storage_root=SimpleNamespace(mode="external_read_only"),
+        ),
+        SimpleNamespace(
+            id=42,
+            version=3,
+            storage_root=SimpleNamespace(mode="external_read_only"),
+        ),
+    ]
+    monkeypatch.setattr(
+        scan_module.db_platform_handler, "get_platforms", lambda: [platform]
+    )
+    monkeypatch.setattr(
+        scan_module.db_storage_handler, "list_active_mappings", lambda _id: mappings
+    )
+    monkeypatch.setattr(
+        scan_module,
+        "get_storage_root_health_snapshot",
+        lambda _root: SimpleNamespace(non_writable=True),
+    )
+
+    commands = scan_module.mapping_scan_commands(
+        [platform.id],
+        trigger=ScanTrigger.MANUAL,
+        scope=ScanScope.PLATFORM,
+        scan_type=ScanType.QUICK,
+    )
+
+    assert [
+        (command.mapping_id, command.expected_revision) for command in commands
+    ] == [(41, 9), (42, 3)]
 
 
 def test_browser_paths_are_not_resolved_as_platform_selections(monkeypatch):

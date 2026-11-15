@@ -206,6 +206,8 @@
   "invite-link": "Pozvánkový odkaz",
   "invite-link-created": "Pozvánkový odkaz vytvořen",
   "language": "Jazyk",
+  "library-root-reachable": "Složka knihovny je dostupná.",
+  "library-root-unreachable": "Složka knihovny není dostupná.",
   "link-copied": "Odkaz zkopírován do schránky",
   "main-platform": "Hlavní platforma",
   "manual": "Manuál",

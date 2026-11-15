@@ -9,11 +9,11 @@ import { useCan } from "@/v2/composables/useCan";
 import { useLibraryOperation } from "@/v2/composables/useLibraryOperation";
 import { useScanProviders } from "@/v2/composables/useScanProviders";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
-import storageApi from "@/v2/data/adapters/legacy/services/api/storage";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
 import storePlatforms from "@/v2/data/adapters/legacy/stores/platforms";
 import storeScanning from "@/v2/data/adapters/legacy/stores/scanning";
 import type { OperationScope, SubfolderScanRequest } from "@/v2/data/contracts";
+import { getDirectFolderMappingReadiness } from "@/v2/data/directFolderMappingReadiness";
 import {
   buildLibraryScanRequest,
   resolveMediaOnlyScope,
@@ -50,7 +50,10 @@ export function useScanView() {
     "loading",
   );
   const mappingReady = computed(() => mappingReadiness.value === "ready");
-  const mappingRoute = { name: ROUTES.LIBRARY_MANAGEMENT };
+  const mappingRoute = {
+    name: ROUTES.LIBRARY_MANAGEMENT,
+    query: { tab: "direct" },
+  };
 
   async function loadMappingReadiness() {
     mappingReadiness.value = "loading";
@@ -58,8 +61,8 @@ export function useScanView() {
       if (platformsStore.allPlatforms.length === 0) {
         await platformsStore.fetchPlatforms();
       }
-      const readiness = await storageApi.getMappingsReadiness(
-        platformsStore.allPlatforms.map((platform) => platform.id),
+      const readiness = await getDirectFolderMappingReadiness(
+        platformsStore.allPlatforms,
       );
       mappingReadiness.value = readiness.ready ? "ready" : "blocked";
     } catch {

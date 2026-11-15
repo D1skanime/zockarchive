@@ -206,6 +206,8 @@
   "invite-link": "Lien d'invitation",
   "invite-link-created": "Lien d'invitation créé",
   "language": "Langue",
+  "library-root-reachable": "Le dossier de la bibliothèque est accessible.",
+  "library-root-unreachable": "Le dossier de la bibliothèque n’est pas accessible.",
   "link-copied": "Lien copié dans le presse-papiers",
   "main-platform": "Plateforme principale",
   "manual": "Manuel",

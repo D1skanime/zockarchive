@@ -11,7 +11,6 @@ from sqlalchemy import event, select
 from sqlalchemy.exc import IntegrityError
 
 from exceptions.storage_exceptions import (
-    DuplicateStorageMappingError,
     InvalidRelativePathError,
     MissingPlatformStorageMappingError,
     MissingStoragePlatformError,
@@ -175,15 +174,15 @@ def test_cross_root_canonical_overlap_and_text_prefix_non_overlap(tmp_path: Path
         db_storage_handler.save_mapping(platforms[2].id, roots[0].id, "target-old")
 
 
-def test_platform_unique_constraint_is_backstop(tmp_path: Path):
+def test_platform_can_have_multiple_non_overlapping_active_mappings(tmp_path: Path):
     (tmp_path / "a").mkdir()
     (tmp_path / "b").mkdir()
     with sync_session.begin() as session:
         roots, platforms = add_objects(session, tmp_path, [("root", tmp_path)])
     with patch("handler.filesystem.storage_resolver.os.access", side_effect=access):
         db_storage_handler.save_mapping(platforms[0].id, roots[0].id, "a")
-        with pytest.raises(DuplicateStorageMappingError):
-            db_storage_handler.save_mapping(platforms[0].id, roots[0].id, "b")
+        db_storage_handler.save_mapping(platforms[0].id, roots[0].id, "b")
+    assert len(db_storage_handler.list_active_mappings(platforms[0].id)) == 2
 
 
 def test_missing_platform_is_bounded_and_not_duplicate(tmp_path: Path):
@@ -221,10 +220,7 @@ def test_unrelated_integrity_error_is_bounded_and_not_duplicate(tmp_path: Path):
     assert str(error.value) == "Storage mapping could not be persisted"
 
 
-MAPPING_UNIQUE_KEYS = (
-    "uq_platform_storage_mappings_platform_id",
-    "uq_platform_storage_mappings_root_relative_path",
-)
+MAPPING_UNIQUE_KEYS = ("uq_platform_storage_mappings_root_relative_path",)
 
 
 def dbapi_original(message: str, *, constraint_name=None, errno=None):

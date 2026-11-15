@@ -206,6 +206,8 @@
   "invite-link": "邀请链接",
   "invite-link-created": "邀请链接已创建",
   "language": "语言",
+  "library-root-reachable": "可以访问库文件夹。",
+  "library-root-unreachable": "无法访问库文件夹。",
   "link-copied": "链接已复制到剪贴板",
   "main-platform": "主平台",
   "manual": "手动",

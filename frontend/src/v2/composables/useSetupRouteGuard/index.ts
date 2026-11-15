@@ -10,22 +10,32 @@ interface SetupRouteContext {
 }
 export async function resolveSetupRoute(context: SetupRouteContext) {
   if (!context.connected) return undefined;
-  if (context.showWizard)
-    return context.route === "setup" ? undefined : { name: "setup" };
   if (!context.user)
-    return context.route === "setup"
-      ? { name: "login", query: { next: "/setup" } }
-      : undefined;
+    return context.showWizard
+      ? context.route === "setup"
+        ? undefined
+        : { name: "setup" }
+      : context.route === "setup"
+        ? { name: "login", query: { next: "/setup" } }
+        : undefined;
   if (context.user.role !== "admin")
-    return context.route === "setup" ? { name: "home" } : undefined;
+    return context.showWizard
+      ? context.route === "setup"
+        ? undefined
+        : { name: "setup" }
+      : context.route === "setup"
+        ? { name: "home" }
+        : undefined;
   try {
     const { data } = await setupApi.getStatus();
     if (!data.setup_complete)
       return context.route === "setup" ? undefined : { name: "setup" };
-    // The explicit completion page remains reachable until the user leaves it.
+    // Authoritative completion permits leaving setup despite a stale heartbeat.
     return undefined;
   } catch {
-    // Unreachable status must neither claim completion nor create a redirect loop.
-    return undefined;
+    // A stale heartbeat remains fail-closed when status cannot confirm completion.
+    return context.showWizard && context.route !== "setup"
+      ? { name: "setup" }
+      : undefined;
   }
 }

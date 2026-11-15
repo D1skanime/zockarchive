@@ -38,6 +38,12 @@ export interface StorageMappingsReadiness {
   mappings: StorageMappingReadiness[];
 }
 
+type StorageMappingErrorResponse = {
+  detail?: {
+    code?: string;
+  };
+};
+
 function getRoots() {
   return api.get<StorageRootSchema[]>("/storage/roots");
 }
@@ -49,6 +55,16 @@ function bootstrapLegacy() {
 function getMapping(platformId: number) {
   return api.get<StorageMappingSchema>(
     `/storage/mappings/platforms/${platformId}`,
+  );
+}
+
+function isAbsentMappingError(error: unknown) {
+  if (!isAxiosError<StorageMappingErrorResponse>(error)) return false;
+
+  return (
+    error.response?.status === 404 ||
+    (error.response?.status === 409 &&
+      error.response.data?.detail?.code === "platform_mapping_missing")
   );
 }
 
@@ -76,7 +92,7 @@ async function getMappingReadiness(
   try {
     mapping = (await getMapping(platformId)).data;
   } catch (error) {
-    if (isAxiosError(error) && error.response?.status === 404) {
+    if (isAbsentMappingError(error)) {
       return { ready: false, mapping: null, root: null };
     }
     throw error;
@@ -97,7 +113,7 @@ async function getMappingsReadiness(
           roots,
         );
       } catch (error) {
-        if (isAxiosError(error) && error.response?.status === 404) {
+        if (isAbsentMappingError(error)) {
           return null;
         }
         throw error;

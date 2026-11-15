@@ -20,6 +20,7 @@ from handler.metadata import meta_gamelist_handler
 from handler.metadata.ss_handler import log_quota as log_ss_quota
 from handler.redis_handler import redis_client
 from handler.scan_handler import MetadataSource, ScanType, scan_platform
+from handler.scan_operation_checkpoint import current_checkpoint_command
 from logger.formatter import BLUE, LIGHTYELLOW
 from logger.formatter import highlight as hl
 from logger.logger import log
@@ -128,9 +129,10 @@ async def _identify_platform(
         identify_collection_game,
     )
 
-    fs_roms, classified_inventory = collection_inventory(
-        platform, fs_roms, filesystem_scope_path
-    )
+    fs_roms, _ = collection_inventory(platform, fs_roms, filesystem_scope_path)
+    # A mapping-backed scan has an authoritative logical root. File names alone
+    # are not identities when a renamed direct folder still has catalog entries.
+    mapping_inventory = current_checkpoint_command() is not None
 
     if len(fs_roms) == 0:
         log.warning(
@@ -163,7 +165,7 @@ async def _identify_platform(
         }
         identities.update((rom.fs_path, rom.fs_name) for rom in known_nested)
         missing_options = (
-            {"filesystem_identities": identities} if classified_inventory else {}
+            {"filesystem_identities": identities} if mapping_inventory else {}
         )
         db_rom_handler.mark_missing_roms(platform.id, fs_rom_names, **missing_options)
 
@@ -215,7 +217,7 @@ async def _identify_platform(
             fs_names={fs_rom["fs_name"] for fs_rom in fs_roms_batch},
         )
 
-        collection_roms = (
+        mapped_roms = (
             db_rom_handler.get_roms_by_filesystem_identity(
                 platform.id,
                 {
@@ -223,7 +225,7 @@ async def _identify_platform(
                     for entry in fs_roms_batch
                 },
             )
-            if classified_inventory
+            if mapping_inventory
             else {}
         )
 
@@ -234,10 +236,10 @@ async def _identify_platform(
 
         for fs_rom in fs_roms_batch:
             rom = (
-                collection_roms.get(
+                mapped_roms.get(
                     filesystem_identity(get_fs_rom_handler(), platform, fs_rom)
                 )
-                if classified_inventory
+                if mapping_inventory
                 else roms_by_fs_name.get(fs_rom["fs_name"])
             )
             quick = await inspect_discovered_game(

@@ -206,6 +206,8 @@
   "invite-link": "Meghívó link",
   "invite-link-created": "Meghívó link létrehozva",
   "language": "Nyelv",
+  "library-root-reachable": "A könyvtár mappája elérhető.",
+  "library-root-unreachable": "A könyvtár mappája nem érhető el.",
   "link-copied": "Link a vágólapra másolva",
   "main-platform": "Fő platform",
   "manual": "Kézikönyv",

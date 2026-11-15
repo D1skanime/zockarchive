@@ -206,6 +206,8 @@
   "invite-link": "Davet bağlantısı",
   "invite-link-created": "Davet bağlantısı oluşturuldu",
   "language": "Dil",
+  "library-root-reachable": "Kitaplık klasörüne erişilebilir.",
+  "library-root-unreachable": "Kitaplık klasörüne erişilemiyor.",
   "link-copied": "Bağlantı panoya kopyalandı",
   "main-platform": "Ana platform",
   "manual": "Kılavuz",

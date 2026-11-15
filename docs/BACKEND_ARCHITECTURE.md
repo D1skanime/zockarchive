@@ -65,7 +65,7 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 ### Library Scan and PC Enrichment
 
 1. backend/tasks/scheduled/scan_library.py or scan endpoints create bounded mapped commands.
-2. backend/handler/scan_handler.py reads the external root, hashes files, persists Rom/RomFile, and reconciles PC layouts defined in backend/handler/filesystem/roms_handler.py.
+2. backend/handler/scan_handler.py reads the external root, hashes files, persists Rom/RomFile, and reconciles PC layouts defined in backend/handler/filesystem/roms_handler.py. Every mapped scan uses its logical mapped path plus filename as the catalog identity, so a direct-folder rename cannot reuse an identically named ROM from a stale path.
 3. RomComponent represents base, update, DLC, hotfix, language pack, extra or unresolved entries. RomComponentManifestMember retains relative path, size, SHA-256 and missing-from-filesystem state.
 4. pc_steam_enrichment.py resolves guarded Steam patches; pc_match_handler.py collects reviewable candidates.
 5. pc_automation.py applies only unique guarded matches. Ambiguity or protected/manual targets enter pc_automation_queue.
@@ -204,7 +204,16 @@ Role is user or admin in backend/models/user.py. Admin bypasses the granular mat
 
 MariaDB is the default driver. MySQL and PostgreSQL are supported by backend/config/config_manager.py and Alembic. docker-compose.yml includes MariaDB for ZockArchive and a separate PostgreSQL service for Authentik. The production Portainer stack uses MariaDB 11.3 and Valkey-compatible Redis runtime state.
 
-StorageRoot and PlatformStorageMapping in backend/models/storage.py model external_read_only roots and versioned platform mappings. backend/handler/storage/read_context.py validates mapping revision and root health. backend/handler/filesystem/storage_policy.py permits only resolve/list/stat/read/scan/hash/stream/download on external roots; writes go to classified ZockArchive-owned roots.
+The image-only Portainer release stack exposes provider inputs using the runtime
+names consumed by backend/config/**init**.py: `IGDB_CLIENT_ID`,
+`IGDB_CLIENT_SECRET`, `MOBYGAMES_API_KEY`, and the `STEAM_API_*` family. Its
+Compose mapping accepts matching legacy `ZA_`-prefixed inputs only as fallbacks, so
+an explicitly configured runtime name wins. This compatibility boundary is limited
+to the release stack and does not change the retained Git-source stack contract.
+
+StorageRoot and PlatformStorageMapping in backend/models/storage.py model external_read_only roots and versioned platform mappings. A platform owns a deterministic, id-ordered collection of active mappings, so several non-overlapping direct Games children can share one platform without replacing one another. PlatformStorageMapping remains the durable owner of each normalized `(platform_id, storage_root_id, relative_path)` disposition, while SetupFolderExclusion in backend/models/setup_folder_exclusion.py owns the mutually exclusive explicit "do not scan" disposition for that direct root-relative path. Setup assignment locks and validates the root, rejects duplicate or overlapping resolved paths, preserves audit snapshots and optimistic mapping revisions, then reconciles every folder independently in one transaction. It never moves an existing mapping merely because a later folder selects the same platform.
+
+The mapping scan coordinator emits one immutable MappedScanCommand per active mapping, in mapping-id order. A catalog path resolves to exactly one owner, and the mixed scan excludes every mapped platform route plus persisted setup exclusions from legacy fallback. Consequently a physical direct Games folder is scanned at most once. The 0148 migration only removes a surviving historical platform-wide unique constraint after dialect inspection. It preserves rows and audit history on MariaDB, MySQL, and PostgreSQL, and its downgrade refuses to restore singular uniqueness while plural platform data exists. After completed setup, `GET /setup/folders/assignments` gives an authenticated administrator a bounded current-discovery projection of every direct-folder disposition, including a pending suggested or excluded state for a newly discovered child. A changed direct-child inventory never reopens setup for an enrolled administrator. `POST /setup/folders/assign` atomically writes the current complete set and deactivates only vanished direct mappings during that explicit save, preserving an audit trail and avoiding stale scan paths. An administrator may explicitly replace an active direct mapping with `excluded`; the transaction deactivates that mapping before creating the mutually exclusive exclusion, and a later explicit platform selection creates a new mapping. Changing one active platform directly to a different platform remains a conflict. It is not the unrelated config-file exclusion list. backend/handler/storage/read_context.py validates mapping revision and root health. backend/handler/filesystem/storage_policy.py permits only resolve/list/stat/read/scan/hash/stream/download on external roots; writes go to classified ZockArchive-owned roots.
 
 ### PC models, metadata, DLC and descriptions
 
