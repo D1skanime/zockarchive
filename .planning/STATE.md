@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Phase 45 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-15T20:47:23Z"
-last_activity: 2026-11-15 -- Phase 45 accepted HTTP-LAN scan logic tests completed
+stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
+last_updated: "2026-11-15T21:40:00Z"
+last_activity: 2026-11-15 -- repaired post-UAT HTTP scan test typecheck findings
 progress:
   total_phases: 45
   completed_phases: 35
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-u1y
+
+| 261115-u1y | Repair post-UAT HTTP scan test typecheck | 2026-11-15 | Complete: corrected the partial Web Crypto test double and complete subfolder request fixture. Frontend typecheck and four focused frontend test files, 65 tests, passed. No product code changed. | [post-UAT test typecheck repair](./quick/261115-u1y-fix-post-uat-test-typecheck/) |
 
 ## Quick Task 261115-sts
 

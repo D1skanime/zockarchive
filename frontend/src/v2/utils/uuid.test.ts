@@ -6,7 +6,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe("createUuid", () => {
   it("preserves the browser-provided UUID when randomUUID is available", () => {
     const randomUUID = vi.fn(() => "123e4567-e89b-42d3-a456-426614174000");
-    vi.stubGlobal("crypto", { randomUUID } as Crypto);
+    vi.stubGlobal("crypto", { randomUUID });
 
     expect(createUuid()).toBe("123e4567-e89b-42d3-a456-426614174000");
     expect(randomUUID).toHaveBeenCalledOnce();

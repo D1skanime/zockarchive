@@ -118,6 +118,13 @@ describe("Scan collection selection request", () => {
     view.scanSubfolder({
       platformFsSlug: "win",
       relativePath: "Game/Disc 1",
+      collectionPromotion: {
+        parent_rom_id: 41,
+        mapping_id: 12,
+        expected_revision: 3,
+        parent_relative_path: "Game",
+        selected_child_relative_path: "Game/Disc 1",
+      },
     });
     await flushPromises();
 
