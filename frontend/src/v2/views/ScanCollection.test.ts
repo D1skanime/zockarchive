@@ -75,7 +75,12 @@ vi.mock("@/v2/data/adapters/legacy/stores/scanning", () => ({
 }));
 
 describe("Scan collection selection request", () => {
-  beforeEach(() => api.start.mockClear());
+  beforeEach(() => {
+    api.start.mockClear();
+    api.getDirectFolderMappingReadiness.mockReset().mockResolvedValue({
+      ready: true,
+    });
+  });
 
   it.each([
     { mode: "media", providers: ["igdb"] },
@@ -127,6 +132,43 @@ describe("Scan collection selection request", () => {
       });
       expect(api.start.mock.calls[0][0].metadataOnly).not.toBe(true);
       expect(api.start.mock.calls[0][0].mediaOnly).not.toBe(true);
+      wrapper.unmount();
+    },
+  );
+
+  it.each([
+    { name: "blocked", result: { ready: false }, state: "blocked" },
+    {
+      name: "failed",
+      result: new Error("assignments unavailable"),
+      state: "error",
+    },
+  ])(
+    "does not submit a scan while direct-folder readiness is $name",
+    async ({ result, state }) => {
+      if (result instanceof Error) {
+        api.getDirectFolderMappingReadiness.mockRejectedValueOnce(result);
+      } else {
+        api.getDirectFolderMappingReadiness.mockResolvedValueOnce(result);
+      }
+      let view: ReturnType<typeof useScanView> | undefined;
+      const wrapper = mount(
+        defineComponent({
+          setup() {
+            view = useScanView();
+            return () => null;
+          },
+        }),
+      );
+
+      await flushPromises();
+
+      expect(view!.mappingReadiness.value).toBe(state);
+      expect(view!.mappingReady.value).toBe(false);
+      expect(view!.canStartScan.value).toBe(false);
+      view!.scan();
+      await flushPromises();
+      expect(api.start).not.toHaveBeenCalled();
       wrapper.unmount();
     },
   );

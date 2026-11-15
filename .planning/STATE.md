@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: awaiting_human_verification
 stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
-last_updated: "2026-11-15T04:15:00Z"
-last_activity: 2026-11-15 -- Gated the scan footer behind direct-folder readiness and refreshed the retained fresh UAT handoff
+last_updated: "2026-11-15T12:22:00Z"
+last_activity: 2026-11-15 -- Added post-UAT direct readiness tests for the Phase 44 scan flow
 progress:
   total_phases: 44
   completed_phases: 34
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-h42
+
+| 261115-h42 | Add accepted Phase 44 readiness tests | 2026-11-15 | Complete: direct Scan hook coverage now blocks operations for blocked and failed direct-folder readiness while retaining the success path. Three focused frontend files, 15 tests, passed. No product code changed. | [post-UAT readiness tests](./quick/261115-h42-nach-live-uat-freigabe-direkte-tests-f-r/) |
 
 ## Quick Task 261115-5x1
 
