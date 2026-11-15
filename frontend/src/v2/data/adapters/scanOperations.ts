@@ -2,6 +2,7 @@ import axios, { type AxiosResponse } from "axios";
 import { effectScope, watch } from "vue";
 import api from "@/services/api";
 import useAuthStore from "@/stores/auth";
+import { createUuid } from "@/v2/utils/uuid";
 import type {
   OperationRequest,
   ScanOperationMutationRequest,
@@ -382,7 +383,7 @@ async function mutate(
 
 async function cancel(
   snapshot: ScanOperationSnapshot,
-  key: string = crypto.randomUUID(),
+  key: string = createUuid(),
 ) {
   const context = session();
   const body = mutationBody(snapshot, key);
@@ -397,7 +398,7 @@ async function cancel(
 
 async function resume(
   snapshot: ScanOperationSnapshot,
-  key: string = crypto.randomUUID(),
+  key: string = createUuid(),
 ) {
   const context = session();
   const body = mutationBody(snapshot, key);
@@ -413,7 +414,7 @@ async function resume(
 async function retryMetadata(
   snapshot: ScanOperationSnapshot,
   itemIds: number[],
-  key: string = crypto.randomUUID(),
+  key: string = createUuid(),
 ) {
   const context = session();
   if (!itemIds.length)

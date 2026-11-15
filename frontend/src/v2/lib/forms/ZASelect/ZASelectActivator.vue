@@ -209,3 +209,16 @@ defineEmits<{
     </div>
   </component>
 </template>
+
+<style scoped>
+.r-select__value-mirror {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+</style>

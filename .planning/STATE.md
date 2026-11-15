@@ -2,19 +2,35 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
-status: awaiting_human_verification
-stopped_at: Phase 44 integration technically verified; fresh setup UAT retained
-last_updated: "2026-11-15T14:08:00Z"
-last_activity: 2026-11-15 -- Repaired the Phase 44 ScanView harness type across Vue's asynchronous mount boundary
+status: executing
+stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
+last_updated: "2026-11-15T21:40:00Z"
+last_activity: 2026-11-15 -- repaired post-UAT HTTP scan test typecheck findings
 progress:
-  total_phases: 44
-  completed_phases: 34
-  total_plans: 334
-  completed_plans: 303
-  percent: 77
+  total_phases: 45
+  completed_phases: 35
+  total_plans: 335
+  completed_plans: 304
+  percent: 78
 ---
 
 # Project State
+
+## Quick Task 261115-u1y
+
+| 261115-u1y | Repair post-UAT HTTP scan test typecheck | 2026-11-15 | Complete: corrected the partial Web Crypto test double and complete subfolder request fixture. Frontend typecheck and four focused frontend test files, 65 tests, passed. No product code changed. | [post-UAT test typecheck repair](./quick/261115-u1y-fix-post-uat-test-typecheck/) |
+
+## Quick Task 261115-sts
+
+| 261115-sts | Add accepted HTTP-LAN scan logic tests | 2026-11-15 | Complete after live UAT approval: direct UUID fallback, normal/subfolder scan hook, and cancel/resume/metadata-retry mutation-key coverage added. Four focused frontend test files, 65 tests, passed. No product code changed. | [accepted HTTP-LAN scan tests](./quick/261115-sts-add-accepted-http-scan-logic-tests/) |
+
+## Quick Task 261115-s0p
+
+| 261115-s0p | Bind Phase 45 context to the active ki-run job | 2026-11-15 | Complete: Phase 45 CONTEXT now explicitly records job `261115-a60d`, its exact phase directory, and the durable `.planning/ki-run/261115-a60d.json` binding. No product code or tests changed. | [Phase 45 job-context binding](./quick/261115-s0p-bind-phase45-job-context/) |
+
+## Quick Task 261115-rg5
+
+| 261115-rg5 | Fix duplicate ZASelect provider chips in scan metadata selection | 2026-11-15 | Complete: the measurement mirror now owns its scoped concealment selector. Production-bundle Chromium inspection over HTTP LAN confirmed one visible IGDB logo and no `+1` for IGDB alone, then one visible logo per provider in a multiple selection. No tests were added or run before live UAT. | [provider-chip mirror fix](./quick/261115-rg5-fix-duplicate-zaselect-provider-chips-in/) |
 
 ## Quick Task 261115-jlh
 
@@ -297,14 +313,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase 43 — ZA Beta Release for Independent Portainer Installation
+**Current focus:** Phase 45 — ZA Hotfix für Beta 4: Scan-Start mit sicherer UUID unter HTTP-LAN
 
 ## Current Position
 
-Phase: 44 (ZA Setup Assistant Folder Exclusions and Platform Search)
-Plan: 2 of 2
-Status: Integrated and technically re-verified; fresh setup human UAT retained
-Last activity: 2026-11-12 -- Bound integration job 261112-240c to the existing Phase 44 and retained the untouched three-folder setup
+Phase: 45 (ZA Hotfix für Beta 4: Scan-Start mit sicherer UUID unter HTTP-LAN) — EXECUTING
+Plan: 1 of 1
+Status: Executing Phase 45
+Last activity: 2026-11-15 -- Phase 45 execution started
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -522,6 +538,7 @@ _Updated after each plan completion_
 
 ### Roadmap Evolution
 
+- Phase 45 added: ZA Hotfix for Beta 4 scan start with a secure UUID over HTTP LAN, assigned to ki-run job 261115-a60d.
 - Phase 43 added: ZA: Beta-Release für unabhängige Portainer-Installation
 
 - Phase 42 added: Per-user related-games preference for recommendations outside the accessible ZA library, assigned to ki-run job 261110-824a.

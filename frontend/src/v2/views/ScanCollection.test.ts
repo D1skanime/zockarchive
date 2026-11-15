@@ -10,6 +10,7 @@ const api = vi.hoisted(() => ({
   providers: ["igdb"],
   getDirectFolderMappingReadiness: vi.fn().mockResolvedValue({ ready: true }),
 }));
+const uuid = vi.hoisted(() => ({ createUuid: vi.fn() }));
 vi.mock("pinia", async (importOriginal) => ({
   ...(await importOriginal<typeof import("pinia")>()),
   storeToRefs: (store: object) => store,
@@ -56,6 +57,7 @@ vi.mock("@/v2/composables/useScanProviders", () => ({
 vi.mock("@/v2/data/directFolderMappingReadiness", () => ({
   getDirectFolderMappingReadiness: api.getDirectFolderMappingReadiness,
 }));
+vi.mock("@/v2/utils/uuid", () => ({ createUuid: uuid.createUuid }));
 vi.mock("@/v2/data/adapters/legacy/stores/config", () => ({
   default: () => ({ config: ref({ SKIP_HASH_CALCULATION: false }) }),
 }));
@@ -99,9 +101,49 @@ async function mountScanView() {
 describe("Scan collection selection request", () => {
   beforeEach(() => {
     api.start.mockClear();
+    uuid.createUuid.mockReset().mockReturnValue("fallback-uuid");
     api.getDirectFolderMappingReadiness.mockReset().mockResolvedValue({
       ready: true,
     });
+  });
+
+  it("uses the shared UUID source for normal and subfolder scan requests", async () => {
+    uuid.createUuid
+      .mockReturnValueOnce("normal-fallback-uuid")
+      .mockReturnValueOnce("subfolder-fallback-uuid");
+    const { wrapper, view } = await mountScanView();
+
+    view.scan();
+    await flushPromises();
+    view.scanSubfolder({
+      platformFsSlug: "win",
+      relativePath: "Game/Disc 1",
+      collectionPromotion: {
+        parent_rom_id: 41,
+        mapping_id: 12,
+        expected_revision: 3,
+        parent_relative_path: "Game",
+        selected_child_relative_path: "Game/Disc 1",
+      },
+    });
+    await flushPromises();
+
+    expect(uuid.createUuid).toHaveBeenCalledTimes(2);
+    expect(
+      api.start.mock.calls.map(([request]) => request.operationId),
+    ).toEqual([
+      "library-scan-normal-fallback-uuid",
+      "library-scan-subfolder-fallback-uuid",
+    ]);
+    expect(api.start.mock.calls[1][0]).toMatchObject({
+      scanType: "quick",
+      scope: {
+        kind: "filesystem",
+        platformFsSlugs: ["win"],
+        relativePaths: { win: "Game/Disc 1" },
+      },
+    });
+    wrapper.unmount();
   });
 
   it.each([

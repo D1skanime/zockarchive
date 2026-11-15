@@ -18,6 +18,7 @@ import {
   buildLibraryScanRequest,
   resolveMediaOnlyScope,
 } from "@/v2/data/operations";
+import { createUuid } from "@/v2/utils/uuid";
 
 export type ScanView = ShallowUnwrapRef<ReturnType<typeof useScanView>>;
 export const scanViewKey: InjectionKey<ScanView> = Symbol("scanView");
@@ -221,7 +222,7 @@ export function useScanView() {
     const playmatchMatcher = hashMatchers.value.find(
       (m) => m.value === "playmatch",
     );
-    const operationId = "library-scan-" + crypto.randomUUID();
+    const operationId = "library-scan-" + createUuid();
     const selectedScanType = subfolder ? "quick" : scanType.value;
     let scope: OperationScope;
     try {
