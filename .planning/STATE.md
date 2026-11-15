@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 technisch verifiziert, menschliche Live-Abnahme ausstehend
-last_updated: "2026-11-15T20:10:00Z"
-last_activity: 2026-11-15 -- Phase 45 HTTP-LAN browser proof completed
+last_updated: "2026-11-15T20:10:26Z"
+last_activity: 2026-11-15 -- Quality Gate round 1 bound Phase 45 context explicitly to job 261115-a60d
 progress:
   total_phases: 45
   completed_phases: 35
@@ -15,6 +15,10 @@ progress:
 ---
 
 # Project State
+
+## Quick Task 261115-s0p
+
+| 261115-s0p | Bind Phase 45 context to the active ki-run job | 2026-11-15 | Complete: Phase 45 CONTEXT now explicitly records job `261115-a60d`, its exact phase directory, and the durable `.planning/ki-run/261115-a60d.json` binding. No product code or tests changed. | [Phase 45 job-context binding](./quick/261115-s0p-bind-phase45-job-context/) |
 
 ## Quick Task 261115-rg5
 

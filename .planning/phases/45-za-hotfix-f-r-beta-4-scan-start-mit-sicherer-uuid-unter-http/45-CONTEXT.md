@@ -3,6 +3,17 @@
 **Gathered:** 2026-11-15
 **Status:** Ready for planning
 
+<job_binding>
+## ki-run Job Binding
+
+- **job_id:** `261115-a60d`
+- **phase_dir:** `.planning/phases/45-za-hotfix-f-r-beta-4-scan-start-mit-sicherer-uuid-unter-http`
+- **binding record:** `.planning/ki-run/261115-a60d.json`
+
+This Phase 45 context belongs exclusively to the active ki-run job above. The
+binding record and this context intentionally name the same job and phase path.
+</job_binding>
+
 <domain>
 ## Phase Boundary
 
