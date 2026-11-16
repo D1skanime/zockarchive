@@ -1,5 +1,5 @@
 ---
-status: incomplete
+status: complete
 ---
 
 # Quick task summary
@@ -20,3 +20,11 @@ existing PWA generation failed because Workbox found neither precache files nor
 runtime caching. A direct archive utility fixture was blocked by an unrelated
 backend module initialization cycle in this non-container environment. Local
 HTTP browser evidence for Windows, Wii and Xbox remains required before UAT.
+
+The final disposable harness used a deliberately sleeping extractor only for an
+actual temporary Wii `.7z`. Its quick scan failed with the archive-evidence
+message while the same operation recorded Windows, Wii, and Xbox. The restored
+extractor then completed a normal quick scan for all three platforms. The
+authenticated browser view rendered the Scan page, quick-scan controls, and
+the live-progress card. The harness cleanup confirmed no remaining containers,
+volumes, or networks and an unchanged source fixture.
