@@ -52,8 +52,44 @@ from handler.scan_operation_recovery import decode_command
 from models.firmware import Firmware
 from models.platform import Platform
 from models.rom import Rom, RomComponentKind, RomComponentOwnedMediaRole
+from utils.archives import ArchiveReadError
 
 scan_command = scan_fixtures.command
+
+
+@pytest.mark.asyncio
+async def test_mapped_archive_failure_continues_legacy_platforms(mocker):
+    command = SimpleNamespace(mapping_id=7)
+    mocker.patch.object(
+        scan_mapping_execution,
+        "execute_mapping_scans",
+        AsyncMock(side_effect=ArchiveReadError("Dreamcast archive incomplete")),
+    )
+    legacy = mocker.patch.object(
+        scan_mapping_execution,
+        "scan_platforms",
+        AsyncMock(return_value=ScanStats(scanned_platforms=3)),
+    )
+    mocker.patch.object(
+        scan_mapping_execution.db_storage_handler,
+        "get_mapping",
+        return_value=SimpleNamespace(platform_id=7),
+    )
+    mocker.patch.object(
+        scan_mapping_execution.db_platform_handler,
+        "get_platforms",
+        return_value=[SimpleNamespace(id=7, fs_slug="dreamcast")],
+    )
+
+    with pytest.raises(ArchiveReadError, match="Dreamcast archive incomplete"):
+        await scan_mapping_execution.execute_mixed_scans(
+            [command],
+            platform_ids=[],
+            platform_fs_slugs=["dreamcast", "windows", "wii", "xbox"],
+            metadata_sources=[],
+        )
+
+    assert legacy.await_args.kwargs["platform_fs_slugs"] == ["windows", "wii", "xbox"]
 
 
 class ScanModuleSeams:

@@ -4,6 +4,7 @@ import hashlib
 import os
 import subprocess
 import time
+from contextlib import contextmanager
 from pathlib import Path
 
 import pytest
@@ -18,6 +19,20 @@ from handler.filesystem.owned_content_proof import (
 
 def identity(info):
     return info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns
+
+
+def test_direct_owned_proof_reserves_its_known_byte_budget(monkeypatch):
+    captured = {}
+
+    @contextmanager
+    def scope(**kwargs):
+        captured.update(kwargs)
+        yield type("Proof", (), {"verify": lambda *_args: None})()
+
+    monkeypatch.setattr(runtime, "content_proof_scope", scope)
+    runtime.verify_owned_content(7, "digest", 1234, (1, 2, 3, 4, 5))
+
+    assert captured == {"expected_bytes": 1234, "expected_records": 1}
 
 
 @pytest.mark.parametrize("changed", [False, True])
