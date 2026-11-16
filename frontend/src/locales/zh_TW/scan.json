@@ -106,6 +106,7 @@
   "recovery-action-worker": "請檢查工作程序和狀態。已接受的工作仍會保留。",
   "recovery-blocked": "已封鎖",
   "recovery-cancelled": "已取消",
+  "recovery-cause-archive": "無法完整讀取來源封存檔。",
   "recovery-cause-failed": "無法確認或完成操作。",
   "recovery-cause-mapping": "資料夾對應已變更。",
   "recovery-cause-metadata": "部分中繼資料無法取得。",

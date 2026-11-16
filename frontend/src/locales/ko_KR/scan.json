@@ -106,6 +106,7 @@
   "recovery-action-worker": "작업자와 상태를 확인하세요. 접수된 작업은 저장되어 있습니다.",
   "recovery-blocked": "차단됨",
   "recovery-cancelled": "취소됨",
+  "recovery-cause-archive": "원본 아카이브를 완전히 읽을 수 없습니다.",
   "recovery-cause-failed": "작업을 확인하거나 완료하지 못했습니다.",
   "recovery-cause-mapping": "폴더 매핑이 변경되었습니다.",
   "recovery-cause-metadata": "일부 메타데이터를 가져오지 못했습니다.",

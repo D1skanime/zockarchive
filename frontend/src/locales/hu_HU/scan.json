@@ -106,6 +106,7 @@
   "recovery-action-worker": "Ellenőrizd a feldolgozót és az állapotot. Az elfogadott munka megmarad.",
   "recovery-blocked": "Blokkolva",
   "recovery-cancelled": "Megszakítva",
+  "recovery-cause-archive": "Egy forrásarchívum nem olvasható be teljesen.",
   "recovery-cause-failed": "A művelet nem erősíthető meg vagy nem fejezhető be.",
   "recovery-cause-mapping": "A mappahozzárendelés megváltozott.",
   "recovery-cause-metadata": "Néhány metaadat nem tölthető le.",

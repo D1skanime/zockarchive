@@ -1,6 +1,6 @@
 ---
 quick_id: 261116-uat02
-status: incomplete
+status: complete
 completed: 2026-11-16
 ---
 
@@ -16,7 +16,11 @@ the reference dialog, and quick-scan action. Both views showed queued live
 progress. The initial unauthenticated current-user 401 occurs before login;
 no post-login browser failure was observed.
 
-The separate isolated mapped-timeout harness was not available in this job
-temporary directory and must still be recreated before this Quick task can be
-marked complete. No NAS or real library data was used for the proof check, and
-no test suite was created or run.
+The recreated isolated HTTP harness used a real tiny `.7z` plus a temporary
+extractor wrapper that deliberately exceeded the two-second archive deadline.
+The mapped Dreamcast scan recorded the archive evidence failure, then the same
+operation reached the legacy Wii, Windows, and Xbox folders before failing.
+The authenticated desktop browser showed `Failed` and the safe archive-read
+message; it had no post-login console errors or failed requests. The screenshot
+is stored outside the repository with the job evidence. No NAS, real library
+data, test suite, or new test was used.

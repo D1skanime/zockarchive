@@ -106,6 +106,7 @@
   "recovery-action-worker": "Çalışanı ve durumu denetleyin. Kabul edilen iş kaydedilmiştir.",
   "recovery-blocked": "Engellendi",
   "recovery-cancelled": "İptal edildi",
+  "recovery-cause-archive": "Kaynak arşiv tamamen okunamadı.",
   "recovery-cause-failed": "İşlem doğrulanamadı veya tamamlanamadı.",
   "recovery-cause-mapping": "Klasör eşlemesi değişti.",
   "recovery-cause-metadata": "Bazı meta veriler alınamadı.",

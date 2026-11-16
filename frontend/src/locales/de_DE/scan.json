@@ -106,6 +106,7 @@
   "recovery-action-worker": "Worker und Status prüfen. Angenommene Arbeit bleibt gespeichert.",
   "recovery-blocked": "Blockiert",
   "recovery-cancelled": "Abgebrochen",
+  "recovery-cause-archive": "Ein Quellarchiv konnte nicht vollständig gelesen werden.",
   "recovery-cause-failed": "Der Vorgang konnte nicht bestätigt oder abgeschlossen werden.",
   "recovery-cause-mapping": "Die Ordnerzuordnung wurde geändert.",
   "recovery-cause-metadata": "Einige Metadaten konnten nicht geladen werden.",

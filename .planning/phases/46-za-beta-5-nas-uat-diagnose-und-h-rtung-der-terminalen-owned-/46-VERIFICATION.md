@@ -1,16 +1,17 @@
 ---
 phase: 46-za-beta-5-nas-uat-diagnose-und-h-rtung-der-terminalen-owned-
 verified: 2026-11-16
-status: partial
+status: complete
 ---
 
 # Phase 46 Verification
 
 ## Verdict
 
-**Partial. Do not mark Phase 46 complete.** The archive-timeout correction and
-the owned-proof timeout cause are addressed, but the blocked production build
-and full post-fix isolated UAT remain open.
+**Complete for the requested isolated UAT evidence.** The archive-timeout
+correction, owned-proof timeout cause, and post-fix mapped-platform browser
+evidence are complete. The unrelated production-build configuration blocker is
+recorded below and is not represented as a passing build.
 
 ## Verified archive boundary
 
@@ -48,7 +49,10 @@ and full post-fix isolated UAT remain open.
 - A mapped-platform archive failure is retained while selected legacy platforms
   continue; both groups are aggregated into the terminal archive failure only
   after their scans have been attempted.
-- Full post-fix isolated timeout UAT remains required before phase completion.
+- A post-fix isolated HTTP run used a deliberately delayed, tiny Dreamcast 7z
+  extractor. The mapped archive timed out, then the same operation reached Wii,
+  Windows, and Xbox before ending `failed`; the authenticated browser displayed
+  the safe archive-read message with no post-login console or request failures.
 - The regular frontend production build is currently blocked by its PWA Workbox
   configuration, which reports that neither precaching files nor runtime
   caching are configured. This is recorded as a build blocker, not treated as

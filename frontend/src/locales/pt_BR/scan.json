@@ -106,6 +106,7 @@
   "recovery-action-worker": "Verifique o processo e o estado. O trabalho aceito continua salvo.",
   "recovery-blocked": "Bloqueado",
   "recovery-cancelled": "Cancelado",
+  "recovery-cause-archive": "Não foi possível ler completamente um arquivo de origem.",
   "recovery-cause-failed": "Não foi possível confirmar ou concluir a operação.",
   "recovery-cause-mapping": "O mapeamento de pastas mudou.",
   "recovery-cause-metadata": "Não foi possível obter alguns metadados.",

@@ -106,6 +106,7 @@
   "recovery-action-worker": "Check the worker and retry status. Accepted work remains saved.",
   "recovery-blocked": "Blocked",
   "recovery-cancelled": "Cancelled",
+  "recovery-cause-archive": "A source archive could not be read completely.",
   "recovery-cause-failed": "The operation could not be confirmed or completed.",
   "recovery-cause-mapping": "The folder mapping has changed.",
   "recovery-cause-metadata": "Some metadata could not be retrieved.",

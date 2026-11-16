@@ -106,6 +106,7 @@
   "recovery-action-worker": "Проверьте рабочий процесс и состояние. Принятая работа сохранена.",
   "recovery-blocked": "Заблокировано",
   "recovery-cancelled": "Отменено",
+  "recovery-cause-archive": "Исходный архив не удалось прочитать полностью.",
   "recovery-cause-failed": "Не удалось подтвердить или завершить операцию.",
   "recovery-cause-mapping": "Сопоставление папок изменилось.",
   "recovery-cause-metadata": "Не удалось получить некоторые метаданные.",

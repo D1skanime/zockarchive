@@ -106,6 +106,7 @@
   "recovery-action-worker": "Vérifiez le processus et l’état. Le travail accepté reste enregistré.",
   "recovery-blocked": "Bloqué",
   "recovery-cancelled": "Annulé",
+  "recovery-cause-archive": "Une archive source n’a pas pu être lue intégralement.",
   "recovery-cause-failed": "L’opération n’a pas pu être confirmée ou terminée.",
   "recovery-cause-mapping": "L’association des dossiers a changé.",
   "recovery-cause-metadata": "Certaines métadonnées n’ont pas pu être récupérées.",

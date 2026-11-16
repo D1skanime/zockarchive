@@ -106,6 +106,7 @@
   "recovery-action-worker": "Controlla il processo e lo stato. Il lavoro accettato resta salvato.",
   "recovery-blocked": "Bloccata",
   "recovery-cancelled": "Annullata",
+  "recovery-cause-archive": "Non è stato possibile leggere completamente un archivio sorgente.",
   "recovery-cause-failed": "Impossibile confermare o completare l’operazione.",
   "recovery-cause-mapping": "L’associazione delle cartelle è cambiata.",
   "recovery-cause-metadata": "Impossibile recuperare alcuni metadati.",

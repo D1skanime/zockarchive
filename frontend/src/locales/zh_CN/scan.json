@@ -106,6 +106,7 @@
   "recovery-action-worker": "请检查工作进程和状态。已接受的任务仍然保存。",
   "recovery-blocked": "已阻止",
   "recovery-cancelled": "已取消",
+  "recovery-cause-archive": "无法完整读取源归档文件。",
   "recovery-cause-failed": "无法确认或完成操作。",
   "recovery-cause-mapping": "文件夹映射已更改。",
   "recovery-cause-metadata": "部分元数据无法获取。",

@@ -106,6 +106,7 @@
   "recovery-action-worker": "ワーカーと状態を確認してください。受け付けた作業は保存されています。",
   "recovery-blocked": "ブロック中",
   "recovery-cancelled": "キャンセル済み",
+  "recovery-cause-archive": "ソースアーカイブを完全に読み取れませんでした。",
   "recovery-cause-failed": "処理を確認または完了できませんでした。",
   "recovery-cause-mapping": "フォルダーの割り当てが変更されました。",
   "recovery-cause-metadata": "一部のメタデータを取得できませんでした。",

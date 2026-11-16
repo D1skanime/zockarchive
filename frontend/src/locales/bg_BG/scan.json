@@ -106,6 +106,7 @@
   "recovery-action-worker": "Провери работния процес и състоянието. Приетата работа е запазена.",
   "recovery-blocked": "Блокирано",
   "recovery-cancelled": "Отменено",
+  "recovery-cause-archive": "Архивът на източника не можа да бъде прочетен напълно.",
   "recovery-cause-failed": "Операцията не може да бъде потвърдена или завършена.",
   "recovery-cause-mapping": "Съпоставянето на папките е променено.",
   "recovery-cause-metadata": "Някои метаданни не бяха получени.",

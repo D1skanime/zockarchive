@@ -89,6 +89,7 @@ const cause = computed(() => {
   )
     return "worker";
   if (code === "mapping_changed") return "mapping";
+  if (code === "archive_evidence_incomplete") return "archive";
   if (code?.startsWith("source_")) return "source";
   if (
     code ||
@@ -131,7 +132,11 @@ function openActionRequiredDetails() {
     />
     <ZAAlert v-if="cause" type="warning" role="alert">
       <p>{{ t("scan.recovery-cause-" + cause) }}</p>
-      <p>{{ t("scan.recovery-action-" + cause) }}</p>
+      <p>
+        {{
+          t("scan.recovery-action-" + (cause === "archive" ? "failed" : cause))
+        }}
+      </p>
     </ZAAlert>
     <div class="d-flex flex-wrap ga-3">
       <ZABtn

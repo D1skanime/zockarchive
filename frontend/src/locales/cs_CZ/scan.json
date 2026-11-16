@@ -106,6 +106,7 @@
   "recovery-action-worker": "Ověřte pracovní proces a stav. Přijatá práce zůstává uložena.",
   "recovery-blocked": "Blokováno",
   "recovery-cancelled": "Zrušeno",
+  "recovery-cause-archive": "Zdrojový archiv nebylo možné přečíst celý.",
   "recovery-cause-failed": "Operaci se nepodařilo potvrdit nebo dokončit.",
   "recovery-cause-mapping": "Mapování složek se změnilo.",
   "recovery-cause-metadata": "Některá metadata se nepodařilo získat.",

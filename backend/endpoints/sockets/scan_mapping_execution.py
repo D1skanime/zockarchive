@@ -14,6 +14,7 @@ from handler.filesystem.storage_resolver import get_storage_root_health_snapshot
 from handler.scan_command import MappedScanCommand, ScanScope, ScanTrigger
 from handler.scan_handler import MappedScanCommand as HandlerMappedScanCommand
 from handler.scan_handler import ScanType, execute_mapped_scan
+from handler.scan_operation_checkpoint import bind_checkpoint_command
 from handler.setup_recovery import setup_recovery_handler
 from logger.logger import log
 
@@ -127,16 +128,17 @@ async def execute_mapping_scans(
     archive_failures: list[str] = []
     for command in commands:
         try:
-            result = await execute_mapping_scan(
-                command,
-                metadata_sources=metadata_sources,
-                roms_ids=roms_ids,
-                launchbox_remote_enabled=launchbox_remote_enabled,
-                playmatch_enabled=playmatch_enabled,
-                metadata_locale=metadata_locale,
-                metadata_only=metadata_only,
-                media_only=media_only,
-            )
+            with bind_checkpoint_command(command):
+                result = await execute_mapping_scan(
+                    command,
+                    metadata_sources=metadata_sources,
+                    roms_ids=roms_ids,
+                    launchbox_remote_enabled=launchbox_remote_enabled,
+                    playmatch_enabled=playmatch_enabled,
+                    metadata_locale=metadata_locale,
+                    metadata_only=metadata_only,
+                    media_only=media_only,
+                )
         except Exception as error:
             # This import cannot run during endpoint initialization because it
             # would re-enter filesystem handler initialization.

@@ -106,6 +106,7 @@
   "recovery-action-worker": "Verifică procesul și starea. Lucrul acceptat rămâne salvat.",
   "recovery-blocked": "Blocat",
   "recovery-cancelled": "Anulat",
+  "recovery-cause-archive": "O arhivă sursă nu a putut fi citită complet.",
   "recovery-cause-failed": "Operațiunea nu a putut fi confirmată sau finalizată.",
   "recovery-cause-mapping": "Asocierea folderelor s-a schimbat.",
   "recovery-cause-metadata": "Unele metadate nu au putut fi preluate.",
