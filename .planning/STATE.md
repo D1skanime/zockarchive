@@ -976,6 +976,9 @@ Resume file: None
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 46 added: Diagnose and harden terminal owned-content verification for Beta 5 NAS UAT without changing NAS data.
+- Quick task 261116-qg1 completed: restored the missing Phase 46 summary and
+  verification artifacts with an explicit partial verdict; the owned-content
+  proof work remains open.
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.
   \n## Quick Task 261010-skc\n\n| 261010-skc | Match PC DLC overview media image grid to main game overview layout | 2026-10-10 | pending | [261010-skc-match-pc-dlc-overview-media-image-grid-t](./quick/261010-skc-match-pc-dlc-overview-media-image-grid-t/) |\n

@@ -1,7 +1,8 @@
 # Phase 46: Beta 5 owned-content verification and archive timeout diagnosis - Context
 
 **Gathered:** 2026-11-16
-**Status:** Ready for planning
+**Status:** Partially executed. Archive-timeout handling is implemented and
+documented; the terminal owned-content-proof investigation and fix remain open.
 
 <job_binding>
 ## ki-run Job Binding
