@@ -29,7 +29,6 @@ SEVEN_ZIP_PATH = "/usr/bin/7zz"
 BSDTAR_PATH = "/usr/bin/bsdtar"
 
 RAR_FILE_EXTENSIONS: Final = (".rar",)
-
 # libarchive escapes the backslash and every byte outside printable ASCII as a
 # 3-digit octal sequence in the mtree listings we parse RAR members from.
 _MTREE_OCTAL_ESCAPE: Final = re.compile(rb"\\([0-7]{3})")
@@ -49,8 +48,6 @@ COMPRESSED_MIME_TYPES: Final = frozenset(
     )
 )
 
-# CHD (Compressed Hunks of Data) v5 format constants
-# See: https://github.com/mamedev/mame/blob/master/src/lib/util/chd.h
 CHD_SIGNATURE: Final = b"MComprHD"
 CHD_SIGNATURE_LENGTH: Final = 8
 CHD_MIN_HEADER_LENGTH: Final = 16  # Minimum to read signature and version
