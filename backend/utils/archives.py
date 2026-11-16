@@ -4,7 +4,6 @@ import bz2
 import fnmatch
 import os
 import re
-import select
 import subprocess
 import tarfile
 import tempfile
@@ -21,6 +20,7 @@ import zipfile_inflate64  # trunk-ignore(ruff/F401): Patches zipfile to support 
 from config import SEVEN_ZIP_TIMEOUT
 from handler.filesystem.storage_access import ReadCapability
 from logger.logger import log
+from utils.archive_streaming import stream_process_stdout_until_deadline
 from utils.filesystem import COMPRESSED_FILE_EXTENSIONS
 
 # 7zip archives are read through 7zz.
@@ -317,30 +317,9 @@ def _stream_7z_chunks(
     deadline: float,
     on_timeout: Callable[[], None],
 ) -> Iterator[bytes]:
-    assert process.stdout is not None
-    output_fd = process.stdout.fileno()
-    while True:
-        remaining = deadline - time.monotonic()
-        if remaining <= 0:
-            process.terminate()
-            try:
-                process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                process.wait()
-            on_timeout()
-            return
-
-        # BufferedReader.read() can wait indefinitely for a full requested
-        # chunk. Wait on the pipe itself, then use os.read so a silent 7z
-        # extractor cannot bypass the archive's shared deadline.
-        readable, _, _ = select.select([output_fd], [], [], remaining)
-        if not readable:
-            continue
-        chunk = os.read(output_fd, FILE_READ_CHUNK_SIZE)
-        if not chunk:
-            return
-        yield chunk
+    yield from stream_process_stdout_until_deadline(
+        process, deadline, on_timeout, chunk_size=FILE_READ_CHUNK_SIZE
+    )
 
 
 def _is_member_excluded(
@@ -375,11 +354,15 @@ def _stream_archive_members(
     def _mark_timed_out() -> None:
         nonlocal timed_out
         timed_out = True
+        process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
 
     for name, size in entries:
-        # Once the shared budget is spent, stop spawning a subprocess per
-        # remaining member; otherwise each one trips the deadline and spams
-        # an identical error line for every entry left in the archive.
+        # Do not spawn a new extractor after the shared archive budget expires.
         if timed_out or time.monotonic() > deadline:
             timed_out = True
             break
@@ -393,8 +376,7 @@ def _stream_archive_members(
                 if process.stdout is None:
                     continue
                 yield name, size, _stream_7z_chunks(process, deadline, _mark_timed_out)
-            # A timeout terminates the subprocess, so a non-zero return code is
-            # expected then and is covered by the single raise below.
+            # A timed-out extractor is reaped above, so its return code is expected.
             if not timed_out and process.returncode != 0:
                 raise ArchiveReadError(
                     f"Extraction of {name} from {file_path} failed "

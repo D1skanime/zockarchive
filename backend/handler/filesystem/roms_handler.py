@@ -992,13 +992,9 @@ class FSRomsHandler(ExternalFSHandler):
                     )
                 )
         elif hashable_platform and rom_ext in ARCHIVE_READERS:
-            # Multi-file archive: compute a composite hash across all
-            # internal entries (in ASCII path order) for hash-database
-            # matching, while still emitting a single RomFile for the
-            # archive file itself. Per-member hashes are stored on that
-            # RomFile in `archive_members` so consumers can identify each
-            # internal file without us inventing RomFile rows whose
-            # full_path would point inside the archive and break downloads.
+            # One archive RomFile has a composite member hash for matching;
+            # archive_members records its internal files without inventing
+            # download rows whose paths would point inside the archive.
             assert rom_md5_h is not None and rom_sha1_h is not None
 
             def _hash_archive_entries(
@@ -1006,7 +1002,7 @@ class FSRomsHandler(ExternalFSHandler):
             ) -> tuple[list[dict[str, Any]], int, Any, Any]:
                 # Accumulate into copies so an archive we can't read in full
                 # leaves the caller's hashers untouched for the raw fallback.
-                original_crc, md5_h, sha1_h = crc, md5_h.copy(), sha1_h.copy()
+                md5_h, sha1_h = md5_h.copy(), sha1_h.copy()
                 members: list[dict[str, Any]] = []
                 try:
                     for name, size, chunks in ARCHIVE_READERS[rom_ext](
