@@ -36,12 +36,22 @@ files nor runtime caching configured. No test or test suite was created or run.
 
 ## Not Delivered
 
-Task 2 was not executed. `owned_content_proof.py`, `owned_content_child.py`,
-and the scan lifecycle UI have not been changed, and no isolated reproduction
-of the terminal owned-content verification timeout was completed. Therefore
-this plan does not establish a causal link between the 7z timeout and the
-owned-content timeout, and it does not claim the owned-content-proof requirement
-is fixed.
+The direct owned-publication path was found to discard its known byte size when
+opening `content_proof_scope`. It therefore always gave the isolated verifier
+the fixed two-second allowance, even though the verifier must re-read the full
+file. `verify_owned_content` now passes its known size and one expected record
+to the existing finite byte-aware budget. The existing 900-second cap, child
+isolation, read-only descriptor check, full SHA-256, identity checks, and
+nonce/operation/attempt echo are unchanged.
+
+The archive and owned-proof timeouts are independent: archive extraction waits
+on a 7z pipe before content publication; the proof child only receives an
+owned read-only descriptor after staging. A 7z timeout can fail a scan but
+cannot consume the proof child budget. The shared visible symptom was a timeout,
+not a shared limiting resource.
+
+Mixed scans now retain an archive failure from a mapped platform, continue the
+legacy platform group, and raise the aggregate only after both groups finish.
 
 Task 3 is complete only for the archive boundary and the available temporary
 browser evidence. It cannot attest to the planned owned-proof browser classes
@@ -54,3 +64,4 @@ or a green production build.
 - `7eb2563d8` continue selected platforms after archive error
 - `1eb3fe951` ensure worker-level continuation for all selected platforms
 - `9a04300a0` and `c72c5d930` archive timeout UAT documentation
+- `c4ca193c8` focused archive pipe reader extraction

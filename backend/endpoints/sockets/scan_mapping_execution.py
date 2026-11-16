@@ -176,23 +176,32 @@ async def execute_mixed_scans(
 ) -> ScanStats:
     """Run protected PC mappings and writable legacy platforms exactly once."""
     combined = ScanStats()
+    archive_failures: list[str] = []
     if commands:
-        mapped_result = await execute_mapping_scans(
-            commands,
-            metadata_sources=metadata_sources,
-            roms_ids=roms_ids,
-            launchbox_remote_enabled=launchbox_remote_enabled,
-            playmatch_enabled=playmatch_enabled,
-            metadata_locale=metadata_locale,
-            metadata_only=metadata_only,
-            media_only=media_only,
-        )
-        for field in mapped_result.to_dict():
-            setattr(
-                combined,
-                field,
-                getattr(combined, field) + getattr(mapped_result, field),
+        try:
+            mapped_result = await execute_mapping_scans(
+                commands,
+                metadata_sources=metadata_sources,
+                roms_ids=roms_ids,
+                launchbox_remote_enabled=launchbox_remote_enabled,
+                playmatch_enabled=playmatch_enabled,
+                metadata_locale=metadata_locale,
+                metadata_only=metadata_only,
+                media_only=media_only,
             )
+        except Exception as error:
+            from utils.archives import ArchiveReadError
+
+            if not isinstance(error, ArchiveReadError):
+                raise
+            archive_failures.append(str(error))
+        else:
+            for field in mapped_result.to_dict():
+                setattr(
+                    combined,
+                    field,
+                    getattr(combined, field) + getattr(mapped_result, field),
+                )
 
     mapped_platform_ids = {
         db_storage_handler.get_mapping(command.mapping_id).platform_id
@@ -226,22 +235,34 @@ async def execute_mixed_scans(
         or legacy_fs_slugs
         or (not platform_ids and not platform_fs_slugs and not mapped_platform_ids)
     ):
-        legacy_result = await scan_platforms(
-            platform_ids=legacy_ids,
-            metadata_sources=metadata_sources,
-            scan_type=scan_type,
-            roms_ids=roms_ids,
-            launchbox_remote_enabled=launchbox_remote_enabled,
-            playmatch_enabled=playmatch_enabled,
-            platform_fs_slugs=legacy_fs_slugs,
-            metadata_locale=metadata_locale,
-            metadata_only=metadata_only,
-            media_only=media_only,
-        )
-        for field in legacy_result.to_dict():
-            setattr(
-                combined,
-                field,
-                getattr(combined, field) + getattr(legacy_result, field),
+        try:
+            legacy_result = await scan_platforms(
+                platform_ids=legacy_ids,
+                metadata_sources=metadata_sources,
+                scan_type=scan_type,
+                roms_ids=roms_ids,
+                launchbox_remote_enabled=launchbox_remote_enabled,
+                playmatch_enabled=playmatch_enabled,
+                platform_fs_slugs=legacy_fs_slugs,
+                metadata_locale=metadata_locale,
+                metadata_only=metadata_only,
+                media_only=media_only,
             )
+        except Exception as error:
+            from utils.archives import ArchiveReadError
+
+            if not isinstance(error, ArchiveReadError):
+                raise
+            archive_failures.append(str(error))
+        else:
+            for field in legacy_result.to_dict():
+                setattr(
+                    combined,
+                    field,
+                    getattr(combined, field) + getattr(legacy_result, field),
+                )
+    if archive_failures:
+        from utils.archives import ArchiveReadError
+
+        raise ArchiveReadError("; ".join(archive_failures))
     return combined

@@ -8,9 +8,9 @@ status: partial
 
 ## Verdict
 
-**Partial. Do not mark Phase 46 complete.** The archive-timeout correction is
-verified with isolated evidence. The terminal owned-content-proof path remains
-open, so the phase goal as a whole is not yet verified.
+**Partial. Do not mark Phase 46 complete.** The archive-timeout correction and
+the owned-proof timeout cause are addressed, but the blocked production build
+and full post-fix isolated UAT remain open.
 
 ## Verified archive boundary
 
@@ -40,9 +40,15 @@ open, so the phase goal as a whole is not yet verified.
 
 ## Remaining blockers and scope
 
-- No isolated owned-content proof timeout has been reproduced or classified.
-- No owned-content proof budget or terminal UI feedback implementation has been
-  made, and all proof integrity checks remain unchanged.
+- Direct owned publication previously opened the proof scope without its known
+  byte size, so the full-byte verifier always had only the fixed two-second
+  allowance. It now opens the existing byte-aware scope with that size and one
+  record. This is independent of a stalled 7z extractor, which runs before
+  owned publication and has no shared child, descriptor, or deadline.
+- A mapped-platform archive failure is retained while selected legacy platforms
+  continue; both groups are aggregated into the terminal archive failure only
+  after their scans have been attempted.
+- Full post-fix isolated timeout UAT remains required before phase completion.
 - The regular frontend production build is currently blocked by its PWA Workbox
   configuration, which reports that neither precaching files nor runtime
   caching are configured. This is recorded as a build blocker, not treated as

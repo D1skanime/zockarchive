@@ -218,7 +218,10 @@ def content_proof_scope(
 def verify_owned_content(descriptor, digest, size, identity):
     if digest is None or size is None:
         raise OwnedContentProofRejected("Owned content has no expected digest")
-    with content_proof_scope() as proof:
+    # Direct publication must reserve the same finite byte-aware proof budget
+    # as batch publication. The verifier still re-reads every byte and checks
+    # digest, identity, and request echo before a write can proceed.
+    with content_proof_scope(expected_bytes=size, expected_records=1) as proof:
         proof.verify(descriptor, digest, size, identity)
 
 
