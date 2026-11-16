@@ -6,12 +6,14 @@ status: incomplete
 
 Implemented the concrete archive-evidence correction: an incomplete 7z member
 read now raises a safe archive-specific failure instead of falling back to a
-raw-archive result. The platform loop records that failure, continues with
-subsequent selected platforms, and reports the operation as failed after the
+raw-archive result. Both platform loops record that failure, continue with
+subsequent selected platforms, and report the operation as failed after the
 loop, so unverified archive members are never accepted as a successful scan.
+The reader now waits on the extractor pipe with the archive deadline, so a
+silent extractor cannot block a scan beyond it.
 
-`py_compile` with a temporary bytecode cache, `git diff --check`, and frontend
-typecheck passed. The code commit is `601f203a8`.
+`py_compile` with a temporary bytecode cache and `git diff --check` passed.
+The code commits are `6f93b1923`, `1ee86bd12`, and `7eb2563d8`.
 
 The production frontend build reached successful module transformation but its
 existing PWA generation failed because Workbox found neither precache files nor
