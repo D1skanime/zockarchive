@@ -187,6 +187,16 @@ def test_indeterminate_publication_is_blocked_for_reconciliation():
     )
 
 
+def test_archive_evidence_failure_is_terminal_and_safe():
+    from utils.archives import ArchiveReadError
+
+    assert worker._failure_outcome(ArchiveReadError("member inventory incomplete")) == (
+        "failed",
+        "archive_evidence_incomplete",
+        "new_scan",
+    )
+
+
 def test_live_progress_and_heartbeat_preserve_cancel_command_version(
     admin_user, command
 ):

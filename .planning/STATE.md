@@ -848,6 +848,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261116-mce | Add post-UAT direct scan timeout regression coverage | 2026-11-16 | this commit | [261116-mce](./quick/261116-mce-post-uat-scan-tests/) |
 | 261116-uat02 | Complete isolated mapped archive-timeout browser evidence | 2026-11-16 | this commit | [261116-uat02](./quick/261116-uat02-postfix-isolated-proof/) |
 | 261116-review01 | Fix owned-proof budget and mixed archive continuation review findings | 2026-11-16 | this commit | [261116-review01](./quick/261116-review01-owned-proof-and-mixed-scan/) |
 | 261116-gate02 | Fix Phase 46 trunk and source-size quality-gate findings | 2026-11-16 | this commit | [261116-gate02](./quick/261116-gate02-fix-trunk-and-line-limit/) |
