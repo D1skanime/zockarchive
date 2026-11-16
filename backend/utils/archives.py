@@ -317,8 +317,17 @@ def _stream_7z_chunks(
     deadline: float,
     on_timeout: Callable[[], None],
 ) -> Iterator[bytes]:
+    def _reap_on_timeout() -> None:
+        process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+        on_timeout()
+
     yield from stream_process_stdout_until_deadline(
-        process, deadline, on_timeout, chunk_size=FILE_READ_CHUNK_SIZE
+        process, deadline, _reap_on_timeout, chunk_size=FILE_READ_CHUNK_SIZE
     )
 
 
@@ -354,12 +363,6 @@ def _stream_archive_members(
     def _mark_timed_out() -> None:
         nonlocal timed_out
         timed_out = True
-        process.terminate()
-        try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
 
     for name, size in entries:
         # Do not spawn a new extractor after the shared archive budget expires.

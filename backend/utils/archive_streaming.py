@@ -27,6 +27,13 @@ def stream_process_stdout_until_deadline(
     """
     assert process.stdout is not None
     output_fd = process.stdout.fileno()
+    if not isinstance(output_fd, int):
+        while chunk := process.stdout.read(chunk_size):
+            if time.monotonic() >= deadline:
+                on_timeout()
+                return
+            yield chunk
+        return
     while True:
         remaining = deadline - time.monotonic()
         if remaining <= 0:

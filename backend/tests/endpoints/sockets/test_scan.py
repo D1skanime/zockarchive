@@ -59,7 +59,9 @@ scan_command = scan_fixtures.command
 
 @pytest.mark.asyncio
 async def test_mapped_archive_failure_continues_legacy_platforms(mocker):
-    command = SimpleNamespace(mapping_id=7)
+    command = MappedScanCommand(
+        7, 1, ScanTrigger.MANUAL, ScanScope.PLATFORM, ScanType.QUICK.value
+    )
     mocker.patch.object(
         scan_mapping_execution,
         "execute_mapping_scans",
