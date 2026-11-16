@@ -975,6 +975,7 @@ Resume file: None
 | 261106-m05 | Preserve animated provider and scraper cover originals through normal selection | 2026-11-06 | isolated backend target: 375 passed, 1 skipped; authenticated read-only browser passed, animated-source UAT pending | [261106-m05-preserve-animated-provider-and-scraper-c](./quick/261106-m05-preserve-animated-provider-and-scraper-c/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
+- Phase 46 added: Diagnose and harden terminal owned-content verification for Beta 5 NAS UAT without changing NAS data.
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.
   \n## Quick Task 261010-skc\n\n| 261010-skc | Match PC DLC overview media image grid to main game overview layout | 2026-10-10 | pending | [261010-skc-match-pc-dlc-overview-media-image-grid-t](./quick/261010-skc-match-pc-dlc-overview-media-image-grid-t/) |\n
