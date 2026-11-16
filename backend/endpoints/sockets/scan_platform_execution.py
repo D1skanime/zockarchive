@@ -257,21 +257,30 @@ async def scan_platforms(
                 f"Found {hl(str(len(platform_list)))} platforms in the file system"
             )
 
+        # Delay this filesystem-reader import until scan startup. Importing it
+        # while endpoint modules initialize would re-enter filesystem handlers.
+        from utils.archives import ArchiveReadError
+
+        archive_failures: list[str] = []
         for platform_slug in platform_list:
-            scan_stats = await _identify_platform(
-                platform_slug=platform_slug,
-                scan_type=scan_type,
-                fs_platforms=fs_platforms,
-                roms_ids=roms_ids,
-                metadata_sources=metadata_sources,
-                launchbox_remote_enabled=launchbox_remote_enabled,
-                playmatch_enabled=playmatch_enabled,
-                metadata_locale=metadata_locale,
-                metadata_only=metadata_only,
-                socket_manager=socket_manager,
-                scan_stats=scan_stats,
-                filesystem_scope_path=filesystem_scope_path,
-            )
+            try:
+                scan_stats = await _identify_platform(
+                    platform_slug=platform_slug,
+                    scan_type=scan_type,
+                    fs_platforms=fs_platforms,
+                    roms_ids=roms_ids,
+                    metadata_sources=metadata_sources,
+                    launchbox_remote_enabled=launchbox_remote_enabled,
+                    playmatch_enabled=playmatch_enabled,
+                    metadata_locale=metadata_locale,
+                    metadata_only=metadata_only,
+                    socket_manager=socket_manager,
+                    scan_stats=scan_stats,
+                    filesystem_scope_path=filesystem_scope_path,
+                )
+            except ArchiveReadError as error:
+                archive_failures.append(str(error))
+                log.error("Scan evidence failed for %s: %s", platform_slug, error)
 
         missed_platforms = db_platform_handler.mark_missing_platforms(
             fs_platforms,
@@ -320,6 +329,9 @@ async def scan_platforms(
                         gamelist=config.GAMELIST_AUTO_EXPORT_ON_SCAN,
                         pegasus=config.PEGASUS_AUTO_EXPORT_ON_SCAN,
                     )
+
+        if archive_failures:
+            raise ArchiveReadError("; ".join(archive_failures))
 
         await socket_manager.emit("scan:done", scan_stats.to_dict())
     except ScanStoppedException:

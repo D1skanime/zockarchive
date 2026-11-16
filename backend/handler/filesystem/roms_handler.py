@@ -1035,7 +1035,11 @@ class FSRomsHandler(ExternalFSHandler):
                         )
                 except ArchiveReadError as e:
                     log.error(f"Incomplete read of archive {rom_dir}: {e}")
-                    return [], original_crc, None, None
+                    # A raw container hash cannot stand in for a complete member
+                    # inventory. Callers must fail the scan attempt explicitly.
+                    raise ArchiveReadError(
+                        f"Archive member inventory incomplete: {rom.fs_name}"
+                    ) from e
                 return members, crc, md5_h, sha1_h
 
             members, rom_crc_c, archive_md5_h, archive_sha1_h = await asyncio.to_thread(
