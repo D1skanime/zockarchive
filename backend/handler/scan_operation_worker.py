@@ -222,6 +222,7 @@ async def run_scan_operation(operation_id):
                 retry_items = (
                     repository.retry_items(operation_id, retry_ids) if retry_ids else []
                 )
+                archive_failures: list[str] = []
                 batches = [(data, None) for data in current["command"]["commands"]]
                 if retry_ids:
                     batches = [
@@ -248,34 +249,46 @@ async def run_scan_operation(operation_id):
 
                         validate_game_evidence(command, retry_item["source_evidence"])
                         command = replace(command, scan_type=ScanType.COMPLETE.value)
-                    with bind_scan_stats_base(
-                        combined.to_dict(),
-                        total_known=batch_index == len(batches) - 1,
-                        retry=bool(retry_ids),
-                    ), bind_checkpoint_command(command):
-                        stats = await execute_mapping_scan(
-                            command,
-                            metadata_sources=(
-                                [retry_item["provider"]]
-                                if retry_item
-                                else policy.get("apis", [])
-                            ),
-                            roms_ids=(
-                                [retry_item["checkpoint"]["rom_id"]]
-                                if retry_item
-                                else policy.get("roms_ids", [])
-                            ),
-                            metadata_only=bool(retry_item)
-                            or policy.get("metadata_only", False),
-                            media_only=policy.get("media_only", False),
-                            launchbox_remote_enabled=policy.get(
-                                "launchbox_remote_enabled", True
-                            ),
-                            playmatch_enabled=policy.get("playmatch_enabled", True),
-                            metadata_locale=policy["metadata_locale"],
-                        )
+                    try:
+                        with bind_scan_stats_base(
+                            combined.to_dict(),
+                            total_known=batch_index == len(batches) - 1,
+                            retry=bool(retry_ids),
+                        ), bind_checkpoint_command(command):
+                            stats = await execute_mapping_scan(
+                                command,
+                                metadata_sources=(
+                                    [retry_item["provider"]]
+                                    if retry_item
+                                    else policy.get("apis", [])
+                                ),
+                                roms_ids=(
+                                    [retry_item["checkpoint"]["rom_id"]]
+                                    if retry_item
+                                    else policy.get("roms_ids", [])
+                                ),
+                                metadata_only=bool(retry_item)
+                                or policy.get("metadata_only", False),
+                                media_only=policy.get("media_only", False),
+                                launchbox_remote_enabled=policy.get(
+                                    "launchbox_remote_enabled", True
+                                ),
+                                playmatch_enabled=policy.get("playmatch_enabled", True),
+                                metadata_locale=policy["metadata_locale"],
+                            )
+                    except Exception as error:
+                        from utils.archives import ArchiveReadError
+
+                        if not isinstance(error, ArchiveReadError):
+                            raise
+                        archive_failures.append(str(error))
+                        continue
                     for field, value in stats.to_dict().items():
                         setattr(combined, field, getattr(combined, field) + value)
+                if archive_failures:
+                    from utils.archives import ArchiveReadError
+
+                    raise ArchiveReadError("; ".join(archive_failures))
                 check_worker_boundary()
                 if not retry_ids:
                     with bind_scan_stats_base(combined.to_dict(), retry=True):
