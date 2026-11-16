@@ -4,6 +4,7 @@ import bz2
 import fnmatch
 import os
 import re
+import select
 import subprocess
 import tarfile
 import tempfile
@@ -317,10 +318,27 @@ def _stream_7z_chunks(
     on_timeout: Callable[[], None],
 ) -> Iterator[bytes]:
     assert process.stdout is not None
-    while chunk := process.stdout.read(FILE_READ_CHUNK_SIZE):
-        if time.monotonic() > deadline:
+    output_fd = process.stdout.fileno()
+    while True:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
             process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
             on_timeout()
+            return
+
+        # BufferedReader.read() can wait indefinitely for a full requested
+        # chunk. Wait on the pipe itself, then use os.read so a silent 7z
+        # extractor cannot bypass the archive's shared deadline.
+        readable, _, _ = select.select([output_fd], [], [], remaining)
+        if not readable:
+            continue
+        chunk = os.read(output_fd, FILE_READ_CHUNK_SIZE)
+        if not chunk:
             return
         yield chunk
 
