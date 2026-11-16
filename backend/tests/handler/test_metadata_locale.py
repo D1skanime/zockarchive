@@ -216,8 +216,9 @@ async def test_actual_worker_and_retry_use_only_accepted_snapshot(
     preference.SCAN_LANGUAGE_PRIORITY = ["fr"]
     observed = []
 
-    async def scan_mapping(*args, **kwargs):
+    async def scan_mixed(*args, **kwargs):
         observed.append(kwargs["metadata_locale"])
+        assert kwargs["scan_type"].value == "quick"
         preference.SCAN_LANGUAGE_PRIORITY = ["en"]
         return scan.ScanStats()
 
@@ -228,7 +229,7 @@ async def test_actual_worker_and_retry_use_only_accepted_snapshot(
         assert before == after
         assert after.locale == "de"
 
-    monkeypatch.setattr(scan, "execute_mapping_scan", scan_mapping)
+    monkeypatch.setattr(scan, "execute_mixed_scans", scan_mixed)
     monkeypatch.setattr(
         scan, "_get_socket_manager", lambda: SimpleNamespace(emit=AsyncMock())
     )

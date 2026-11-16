@@ -247,7 +247,11 @@ async def run_scan_operation(operation_id):
                                 platform_ids=policy.get("platforms", []),
                                 platform_fs_slugs=policy.get("platform_fs_slugs", []),
                                 metadata_sources=policy.get("apis", []),
-                                scan_type=ScanType(policy["type"]),
+                                # Operations accepted before the type field was persisted
+                                # remain valid quick scans when their durable snapshot is replayed.
+                                scan_type=ScanType(
+                                    policy.get("type", ScanType.QUICK.value)
+                                ),
                                 roms_ids=policy.get("roms_ids", []),
                                 metadata_only=policy.get("metadata_only", False),
                                 media_only=policy.get("media_only", False),

@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261116-p8z
+
+| 261116-p8z | Repair post-UAT locale contracts and legacy scan snapshots | 2026-11-16 | Complete: approved all 18 translated scan contracts, retained full locale validator coverage with a CI-safe budget, and restored the quick-scan default for durable snapshots without `type`. Focused Vitest (64 tests) and isolated MariaDB shard 5 passed. | [locale and scan snapshot regression](./quick/261116-p8z-regression-locale-and-scan-snapshot/) |
+
 ## Quick Task 261115-u1y
 
 | 261115-u1y | Repair post-UAT HTTP scan test typecheck | 2026-11-15 | Complete: corrected the partial Web Crypto test double and complete subfolder request fixture. Frontend typecheck and four focused frontend test files, 65 tests, passed. No product code changed. | [post-UAT test typecheck repair](./quick/261115-u1y-fix-post-uat-test-typecheck/) |
