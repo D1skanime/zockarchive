@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261117-fu2
+
+| 261117-fu2 | Archive idle timeout and ROM-local recovery | 2026-11-17 | In progress: archive member stalls now fall back to the individual container and no longer abort platform, mapping or worker. The required current isolated ISO, multipart-RAR and repack proof remains open. | [archive idle recovery](./quick/261117-fu2-archive-idle-and-rom-local-recovery/) |
+
 ## Quick Task 261117-f1s
 
 | 261117-f1s | Stabilize scan read session process regression | 2026-11-17 | Complete: retained subprocess lock-order and import-alias assertions while increasing finite cold-import budgets for parallel MariaDB CI. Shard 6 passed with cleanup and source-immutability checks. No product code changed. | [scan read session regression](./quick/261117-f1s-stabilize-scan-read-session-regression/) |
