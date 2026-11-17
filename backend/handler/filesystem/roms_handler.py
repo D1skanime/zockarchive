@@ -1029,7 +1029,7 @@ class FSRomsHandler(ExternalFSHandler):
                                 "sha1_hash": member_sha1.hexdigest(),
                             }
                         )
-                except ArchiveReadError as e:
+                except ArchiveReadError:
                     # The container is still a valid ROM input. Keep its raw hash
                     # and deliberately omit member evidence, rather than losing
                     # later games in this platform because one extractor stalled.
