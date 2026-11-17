@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261117-f1s
+
+| 261117-f1s | Stabilize scan read session process regression | 2026-11-17 | Complete: retained subprocess lock-order and import-alias assertions while increasing finite cold-import budgets for parallel MariaDB CI. Shard 6 passed with cleanup and source-immutability checks. No product code changed. | [scan read session regression](./quick/261117-f1s-stabilize-scan-read-session-regression/) |
+
 ## Quick Task 261117-coq
 
 | 261117-coq | Add post-UAT scan snapshot logic tests | 2026-11-17 | Complete: direct SQL worker coverage now proves both legacy missing-type quick fallback and explicit complete-type preservation, while retaining the accepted metadata locale. MariaDB shards 5 and 6 passed, including archive continuation and owned-proof coverage. No product code changed. | [post-UAT scan snapshot tests](./quick/261117-coq-post-uat-scan-snapshot-tests/) |
