@@ -13,6 +13,18 @@ Provider-Kontext erhalten bleibt. Windows-Inventurfehler werden für bestehende
 Spiele als Vorgangswarnung behandelt; neue Windows-Ordner fallen auf die normale,
 nicht bytehashende Entdeckung zurück.
 
-Offen bleibt der verlangte vollständige isolierte Nachweis für ISO, mehrteiliges
-RAR und Repack-Ordner samt aktueller Browserinstanz. Er wurde nicht als erledigt
-behauptet und benötigt vor UAT die bereitgestellte isolierte Harness.
+Der isolierte ZA-Entwicklungscontainer (`pgdp-pgdp-dev:latest`) wurde als
+Wegwerfcontainer geprüft: `/usr/bin/7zz` und `/usr/bin/bsdtar` sind vorhanden.
+Der erste direkte Leser-Harness konnte die Anwendungsmodule außerhalb ihres
+vollständigen Startkontexts nicht laden, weil `utils.archives` über
+`handler.filesystem` in einen bereits bestehenden zyklischen Initialisierungsweg
+führt. Die nächste Harness-Ausführung muss deshalb die vollständige Compose-
+Startkonfiguration verwenden, nicht nur `PYTHONPATH` auf den Backend-Quellbaum.
+
+`content_proof_scope` wird im Scan ausschließlich von
+`scan_media_publication.py` und `scan_output_publication.py` verwendet. Es
+verifiziert ZA-eigene Medien- und Ausgabestaging-Dateien, nie Dateien aus der
+externen PC-Spielebibliothek. Die Obergrenze von 900 Sekunden kann daher keinen
+Windows-ROM-Scan abbrechen. Bei 150 GiB und 100 MiB/s wären es 1.536 Sekunden;
+dies bestätigt, warum der Proof für Spielbytes unzulässig wäre, nicht aber eine
+Änderung an der weiterhin notwendigen Prüfung eigener Daten.
