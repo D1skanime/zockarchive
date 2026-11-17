@@ -28,3 +28,13 @@ externen PC-Spielebibliothek. Die Obergrenze von 900 Sekunden kann daher keinen
 Windows-ROM-Scan abbrechen. Bei 150 GiB und 100 MiB/s wären es 1.536 Sekunden;
 dies bestätigt, warum der Proof für Spielbytes unzulässig wäre, nicht aber eine
 Änderung an der weiterhin notwendigen Prüfung eigener Daten.
+
+Der aktuelle Branch lief im Wegwerfcontainer mit der normalen `startup`-
+Importreihenfolge. 7z las eine 2 MiB nicht komprimierbare Datei vollständig;
+mit einer absichtlich auf null gesetzten Frist wurde der reale Listingpfad als
+unvollständig erkannt. ISO blieb im Rohdateipfad, der Repack-Ordner blieb ein
+einziger verschachtelter Spieleordner mit `setup.exe` und `fg-*.bin`. Das
+vorhandene RAR-Fixture wurde von bsdtar als unvollständig abgewiesen; dieser
+Pfad erzeugt jetzt ebenfalls `ArchiveReadError` und kann somit ROM-lokal auf
+den Containerhash zurückfallen. Ein echtes mehrteiliges RAR konnte ohne
+Archiv-Erzeuger nicht hergestellt werden; dies bleibt als NAS-UAT-Fall offen.
