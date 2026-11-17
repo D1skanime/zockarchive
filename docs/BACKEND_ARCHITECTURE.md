@@ -215,7 +215,18 @@ StorageRoot and PlatformStorageMapping in backend/models/storage.py model extern
 
 The mapping scan coordinator emits one immutable MappedScanCommand per active mapping, in mapping-id order. A catalog path resolves to exactly one owner, and the mixed scan excludes every mapped platform route plus persisted setup exclusions from legacy fallback. Consequently a physical direct Games folder is scanned at most once. The 0148 migration only removes a surviving historical platform-wide unique constraint after dialect inspection. It preserves rows and audit history on MariaDB, MySQL, and PostgreSQL, and its downgrade refuses to restore singular uniqueness while plural platform data exists. After completed setup, `GET /setup/folders/assignments` gives an authenticated administrator a bounded current-discovery projection of every direct-folder disposition, including a pending suggested or excluded state for a newly discovered child. A changed direct-child inventory never reopens setup for an enrolled administrator. `POST /setup/folders/assign` atomically writes the current complete set and deactivates only vanished direct mappings during that explicit save, preserving an audit trail and avoiding stale scan paths. An administrator may explicitly replace an active direct mapping with `excluded`; the transaction deactivates that mapping before creating the mutually exclusive exclusion, and a later explicit platform selection creates a new mapping. Changing one active platform directly to a different platform remains a conflict. It is not the unrelated config-file exclusion list. backend/handler/storage/read_context.py validates mapping revision and root health. backend/handler/filesystem/storage_policy.py permits only resolve/list/stat/read/scan/hash/stream/download on external roots; writes go to classified ZockArchive-owned roots.
 
-Archive member enumeration has a single bounded deadline per container. An incomplete member read is not replaced with a raw-container success result: the scan records the safe archive filename as failed evidence, continues independent selected platforms, then reports the enclosing operation as failed with the safe `archive_evidence_incomplete` cause. The Scan operation panel renders that cause as an archive-read warning without exposing a storage path. Owned-content proof failures remain terminal because their isolated read-only verifier has not proven the staged bytes.
+Archive member enumeration uses a no-output interval per extractor, not a total
+byte-processing budget. A continuously streaming large 7z or RAR may therefore
+finish, while a stalled extractor fails closed. The affected ROM retains a raw
+container hash and no `archive_members`, and the existing scan-operation warning
+records its game name without exposing a storage path. Other ROMs, mappings and
+platforms continue, so an archive-member timeout alone does not fail the scan.
+ISO files take the ordinary file path. Windows folders such as FitGirl repacks
+remain one nested ROM and their files are not content-hashed during discovery.
+The Windows quick inventory is metadata-only (names, stat fields and bounded
+directory traversal), while owned-content proof protects only ZA-owned staged
+media and generated outputs, never library game bytes. Its finite byte-aware
+proof budget consequently cannot terminate a PC library scan.
 
 ### PC models, metadata, DLC and descriptions
 

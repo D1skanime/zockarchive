@@ -171,7 +171,6 @@ async def run_scan_operation(operation_id):
         ScanStats,
         _get_socket_manager,
         execute_mapping_scan,
-        execute_mixed_scans,
     )
     from handler.scan_handler import ScanType
     from handler.scan_retry_execution import RetryCoordinator, bind_retry_coordinator
@@ -223,7 +222,6 @@ async def run_scan_operation(operation_id):
                 retry_items = (
                     repository.retry_items(operation_id, retry_ids) if retry_ids else []
                 )
-                archive_failures: list[str] = []
                 commands = current["command"]["commands"]
                 if retry_ids:
                     batches = [
@@ -237,36 +235,7 @@ async def run_scan_operation(operation_id):
                         invalidate_refresh_baselines,
                     )
 
-                    batches = []
-                    for data in commands:
-                        invalidate_refresh_baselines(decode_command(data), policy)
-                    try:
-                        with bind_scan_stats_base(combined.to_dict(), total_known=True):
-                            combined = await execute_mixed_scans(
-                                [decode_command(data) for data in commands],
-                                platform_ids=policy.get("platforms", []),
-                                platform_fs_slugs=policy.get("platform_fs_slugs", []),
-                                metadata_sources=policy.get("apis", []),
-                                # Operations accepted before the type field was persisted
-                                # remain valid quick scans when their durable snapshot is replayed.
-                                scan_type=ScanType(
-                                    policy.get("type", ScanType.QUICK.value)
-                                ),
-                                roms_ids=policy.get("roms_ids", []),
-                                metadata_only=policy.get("metadata_only", False),
-                                media_only=policy.get("media_only", False),
-                                metadata_locale=policy["metadata_locale"],
-                                launchbox_remote_enabled=policy.get(
-                                    "launchbox_remote_enabled", True
-                                ),
-                                playmatch_enabled=policy.get("playmatch_enabled", True),
-                            )
-                    except Exception as error:
-                        from utils.archives import ArchiveReadError
-
-                        if not isinstance(error, ArchiveReadError):
-                            raise
-                        archive_failures.append(str(error))
+                    batches = [(data, None) for data in commands]
                 for batch_index, (data, retry_item) in enumerate(batches):
                     check_worker_boundary()
                     command = decode_command(data)
@@ -285,46 +254,34 @@ async def run_scan_operation(operation_id):
 
                         validate_game_evidence(command, retry_item["source_evidence"])
                         command = replace(command, scan_type=ScanType.COMPLETE.value)
-                    try:
-                        with bind_scan_stats_base(
-                            combined.to_dict(),
-                            total_known=batch_index == len(batches) - 1,
-                            retry=bool(retry_ids),
-                        ), bind_checkpoint_command(command):
-                            stats = await execute_mapping_scan(
-                                command,
-                                metadata_sources=(
-                                    [retry_item["provider"]]
-                                    if retry_item
-                                    else policy.get("apis", [])
-                                ),
-                                roms_ids=(
-                                    [retry_item["checkpoint"]["rom_id"]]
-                                    if retry_item
-                                    else policy.get("roms_ids", [])
-                                ),
-                                metadata_only=bool(retry_item)
-                                or policy.get("metadata_only", False),
-                                media_only=policy.get("media_only", False),
-                                launchbox_remote_enabled=policy.get(
-                                    "launchbox_remote_enabled", True
-                                ),
-                                playmatch_enabled=policy.get("playmatch_enabled", True),
-                                metadata_locale=policy["metadata_locale"],
-                            )
-                    except Exception as error:
-                        from utils.archives import ArchiveReadError
-
-                        if not isinstance(error, ArchiveReadError):
-                            raise
-                        archive_failures.append(str(error))
-                        continue
+                    with bind_scan_stats_base(
+                        combined.to_dict(),
+                        total_known=batch_index == len(batches) - 1,
+                        retry=bool(retry_ids),
+                    ), bind_checkpoint_command(command):
+                        stats = await execute_mapping_scan(
+                            command,
+                            metadata_sources=(
+                                [retry_item["provider"]]
+                                if retry_item
+                                else policy.get("apis", [])
+                            ),
+                            roms_ids=(
+                                [retry_item["checkpoint"]["rom_id"]]
+                                if retry_item
+                                else policy.get("roms_ids", [])
+                            ),
+                            metadata_only=bool(retry_item)
+                            or policy.get("metadata_only", False),
+                            media_only=policy.get("media_only", False),
+                            launchbox_remote_enabled=policy.get(
+                                "launchbox_remote_enabled", True
+                            ),
+                            playmatch_enabled=policy.get("playmatch_enabled", True),
+                            metadata_locale=policy["metadata_locale"],
+                        )
                     for field, value in stats.to_dict().items():
                         setattr(combined, field, getattr(combined, field) + value)
-                if archive_failures:
-                    from utils.archives import ArchiveReadError
-
-                    raise ArchiveReadError("; ".join(archive_failures))
                 check_worker_boundary()
                 if not retry_ids:
                     with bind_scan_stats_base(combined.to_dict(), retry=True):
@@ -394,12 +351,9 @@ async def run_scan_operation(operation_id):
 
 def _failure_outcome(error):
     from handler.scan_operation_checkpoint import SourceEvidenceRejected
-    from utils.archives import ArchiveReadError
 
     if isinstance(error, SourceEvidenceRejected):
         return "blocked", error.code, "new_scan"
-    if isinstance(error, ArchiveReadError):
-        return "failed", "archive_evidence_incomplete", "new_scan"
     from exceptions.storage_read import (
         MissingMappedContentError,
         StaleMappedReadError,

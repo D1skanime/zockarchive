@@ -20,7 +20,7 @@ import zipfile_inflate64  # trunk-ignore(ruff/F401): Patches zipfile to support 
 from config import SEVEN_ZIP_TIMEOUT
 from handler.filesystem.storage_access import ReadCapability
 from logger.logger import log
-from utils.archive_streaming import stream_process_stdout_until_deadline
+from utils.archive_streaming import stream_process_stdout_until_idle
 from utils.filesystem import COMPRESSED_FILE_EXTENSIONS
 
 # 7zip archives are read through 7zz.
@@ -180,7 +180,11 @@ def _process_largest_7z_member(
 
         log.debug(f"Extracting {largest_file} from {file_path}...")
 
-        start_decompression_time = time.monotonic()
+        timed_out = False
+
+        def _mark_timed_out() -> None:
+            nonlocal timed_out
+            timed_out = True
 
         with subprocess.Popen(
             [SEVEN_ZIP_PATH, "e", str(file_path), largest_file, "-so", "-y", "-spd"],
@@ -189,13 +193,16 @@ def _process_largest_7z_member(
             shell=False,  # trunk-ignore(bandit/B603): 7z path is hardcoded, args are validated
         ) as process:
             if process.stdout:
-                while chunk := process.stdout.read(FILE_READ_CHUNK_SIZE):
-                    if time.monotonic() - start_decompression_time > SEVEN_ZIP_TIMEOUT:
-                        process.terminate()
-                        log.error("7z extraction timed out")
-                        return False
+                for chunk in _stream_7z_chunks(
+                    process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
+                ):
                     fn_hash_update(chunk)
 
+        if timed_out:
+            # A busy extractor may exceed the interval. Only a lack of output
+            # is unsafe because it leaves no complete member evidence.
+            log.error("7z extraction stalled without output")
+            return False
         if process.returncode != 0:
             log.error(f"7z extraction failed with return code {process.returncode}")
             return False
@@ -311,7 +318,7 @@ def read_tar_archive_files(
 
 def _stream_7z_chunks(
     process: subprocess.Popen[bytes],
-    deadline: float,
+    idle_seconds: float,
     on_timeout: Callable[[], None],
 ) -> Iterator[bytes]:
     def _reap_on_timeout() -> None:
@@ -323,8 +330,8 @@ def _stream_7z_chunks(
             process.wait()
         on_timeout()
 
-    yield from stream_process_stdout_until_deadline(
-        process, deadline, _reap_on_timeout, chunk_size=FILE_READ_CHUNK_SIZE
+    yield from stream_process_stdout_until_idle(
+        process, idle_seconds, _reap_on_timeout, chunk_size=FILE_READ_CHUNK_SIZE
     )
 
 
@@ -348,13 +355,12 @@ def _stream_archive_members(
 ) -> Iterator[tuple[str, int, Iterator[bytes]]]:
     """Stream each listed member of an archive, one subprocess at a time.
 
-    Members are yielded in ASCII path order under a single time budget shared
-    by the whole archive. Raises `ArchiveReadError` if any member fails or the
-    budget is spent, so callers never mistake a partial read for a complete one.
+    Members are yielded in ASCII path order. Each extractor has a bounded
+    no-output interval, so a large archive may stream longer than the interval
+    while a stalled extractor still fails closed.
     """
     entries = sorted(entries, key=lambda e: e[0])
 
-    deadline = time.monotonic() + SEVEN_ZIP_TIMEOUT
     timed_out = False
 
     def _mark_timed_out() -> None:
@@ -362,9 +368,7 @@ def _stream_archive_members(
         timed_out = True
 
     for name, size in entries:
-        # Do not spawn a new extractor after the shared archive budget expires.
-        if timed_out or time.monotonic() > deadline:
-            timed_out = True
+        if timed_out:
             break
         try:
             with subprocess.Popen(
@@ -375,7 +379,9 @@ def _stream_archive_members(
             ) as process:
                 if process.stdout is None:
                     continue
-                yield name, size, _stream_7z_chunks(process, deadline, _mark_timed_out)
+                yield name, size, _stream_7z_chunks(
+                    process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
+                )
             # A timed-out extractor is reaped above, so its return code is expected.
             if not timed_out and process.returncode != 0:
                 raise ArchiveReadError(

@@ -257,11 +257,27 @@ async def _identify_platform(
                         socket_manager, quick, rom, existing_game=True
                     )
                 if quick.decision == QuickScanDecision.INCOMPLETE:
-                    from handler.filesystem.pc_scan_inventory import InventoryIncomplete
+                    # An inventory is a freshness optimization, not authority to
+                    # discard a discovered PC game. Keep this ROM present and
+                    # surface a per-game warning while later games continue.
+                    if rom is None:
+                        # New games have no prior manifest to refresh. Fall back
+                        # to the ordinary discovery path, which does not read
+                        # every byte on Windows, rather than treating a slow
+                        # metadata walk as a failed game.
+                        quick_contexts.pop(id(fs_rom), None)
+                        roms_to_scan.append((fs_rom, rom))
+                        continue
+                    from handler.scan_operation_checkpoint import record_checked_game
 
-                    raise InventoryIncomplete(
-                        quick.before.reason or "incomplete_evidence"
+                    log.warning(
+                        "PC inventory incomplete for game %s: %s",
+                        rom.fs_name,
+                        quick.before.reason or "incomplete_evidence",
                     )
+                    record_checked_game(rom, outcome="warning")
+                    skipped_rom_ids.append(rom.id)
+                    continue
                 if quick.decision in {
                     QuickScanDecision.REUSE,
                     QuickScanDecision.METADATA_ONLY,

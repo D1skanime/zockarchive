@@ -2,7 +2,6 @@
 
 import os
 import select
-import time
 from collections.abc import Callable, Iterator
 from typing import IO, Any, Protocol
 
@@ -13,36 +12,30 @@ class ArchiveExtractor(Protocol):
     stdout: IO[Any] | None
 
 
-def stream_process_stdout_until_deadline(
+def stream_process_stdout_until_idle(
     process: ArchiveExtractor,
-    deadline: float,
+    idle_seconds: float,
     on_timeout: Callable[[], None],
     *,
     chunk_size: int,
 ) -> Iterator[bytes]:
-    """Yield extractor output without allowing an idle pipe past ``deadline``.
+    """Yield extractor output without allowing an idle pipe past ``idle_seconds``.
 
-    The caller owns the single archive deadline and reaps its exact child from
-    the timeout callback before reporting the archive read failure.
+    Every delivered chunk renews the idle allowance, so a large but continuously
+    streaming archive is not treated as stalled. The caller reaps its exact
+    child from the timeout callback before reporting the archive read failure.
     """
     assert process.stdout is not None
     output_fd = process.stdout.fileno()
     if not isinstance(output_fd, int):
         while chunk := process.stdout.read(chunk_size):
-            if time.monotonic() >= deadline:
-                on_timeout()
-                return
             yield chunk
         return
     while True:
-        remaining = deadline - time.monotonic()
-        if remaining <= 0:
+        readable, _, _ = select.select([output_fd], [], [], idle_seconds)
+        if not readable:
             on_timeout()
             return
-
-        readable, _, _ = select.select([output_fd], [], [], remaining)
-        if not readable:
-            continue
         chunk = os.read(output_fd, chunk_size)
         if not chunk:
             return

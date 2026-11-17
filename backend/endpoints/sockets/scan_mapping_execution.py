@@ -123,42 +123,22 @@ async def execute_mapping_scans(
     metadata_only: bool = False,
     media_only: bool = False,
 ) -> ScanStats:
-    """Execute every mapping, then fail if archive evidence was incomplete."""
+    """Execute every mapping and aggregate their normal scan statistics."""
     combined = ScanStats()
-    archive_failures: list[str] = []
     for command in commands:
-        try:
-            with bind_checkpoint_command(command):
-                result = await execute_mapping_scan(
-                    command,
-                    metadata_sources=metadata_sources,
-                    roms_ids=roms_ids,
-                    launchbox_remote_enabled=launchbox_remote_enabled,
-                    playmatch_enabled=playmatch_enabled,
-                    metadata_locale=metadata_locale,
-                    metadata_only=metadata_only,
-                    media_only=media_only,
-                )
-        except Exception as error:
-            # This import cannot run during endpoint initialization because it
-            # would re-enter filesystem handler initialization.
-            from utils.archives import ArchiveReadError
-
-            if not isinstance(error, ArchiveReadError):
-                raise
-            archive_failures.append(str(error))
-            log.error(
-                "Scan evidence failed for mapped platform %s: %s",
-                command.mapping_id,
-                error,
+        with bind_checkpoint_command(command):
+            result = await execute_mapping_scan(
+                command,
+                metadata_sources=metadata_sources,
+                roms_ids=roms_ids,
+                launchbox_remote_enabled=launchbox_remote_enabled,
+                playmatch_enabled=playmatch_enabled,
+                metadata_locale=metadata_locale,
+                metadata_only=metadata_only,
+                media_only=media_only,
             )
-            continue
         for field in result.to_dict():
             setattr(combined, field, getattr(combined, field) + getattr(result, field))
-    if archive_failures:
-        from utils.archives import ArchiveReadError
-
-        raise ArchiveReadError("; ".join(archive_failures))
     return combined
 
 
@@ -178,32 +158,23 @@ async def execute_mixed_scans(
 ) -> ScanStats:
     """Run protected PC mappings and writable legacy platforms exactly once."""
     combined = ScanStats()
-    archive_failures: list[str] = []
     if commands:
-        try:
-            mapped_result = await execute_mapping_scans(
-                commands,
-                metadata_sources=metadata_sources,
-                roms_ids=roms_ids,
-                launchbox_remote_enabled=launchbox_remote_enabled,
-                playmatch_enabled=playmatch_enabled,
-                metadata_locale=metadata_locale,
-                metadata_only=metadata_only,
-                media_only=media_only,
+        mapped_result = await execute_mapping_scans(
+            commands,
+            metadata_sources=metadata_sources,
+            roms_ids=roms_ids,
+            launchbox_remote_enabled=launchbox_remote_enabled,
+            playmatch_enabled=playmatch_enabled,
+            metadata_locale=metadata_locale,
+            metadata_only=metadata_only,
+            media_only=media_only,
+        )
+        for field in mapped_result.to_dict():
+            setattr(
+                combined,
+                field,
+                getattr(combined, field) + getattr(mapped_result, field),
             )
-        except Exception as error:
-            from utils.archives import ArchiveReadError
-
-            if not isinstance(error, ArchiveReadError):
-                raise
-            archive_failures.append(str(error))
-        else:
-            for field in mapped_result.to_dict():
-                setattr(
-                    combined,
-                    field,
-                    getattr(combined, field) + getattr(mapped_result, field),
-                )
 
     mapped_platform_ids = {
         db_storage_handler.get_mapping(command.mapping_id).platform_id
@@ -237,34 +208,22 @@ async def execute_mixed_scans(
         or legacy_fs_slugs
         or (not platform_ids and not platform_fs_slugs and not mapped_platform_ids)
     ):
-        try:
-            legacy_result = await scan_platforms(
-                platform_ids=legacy_ids,
-                metadata_sources=metadata_sources,
-                scan_type=scan_type,
-                roms_ids=roms_ids,
-                launchbox_remote_enabled=launchbox_remote_enabled,
-                playmatch_enabled=playmatch_enabled,
-                platform_fs_slugs=legacy_fs_slugs,
-                metadata_locale=metadata_locale,
-                metadata_only=metadata_only,
-                media_only=media_only,
+        legacy_result = await scan_platforms(
+            platform_ids=legacy_ids,
+            metadata_sources=metadata_sources,
+            scan_type=scan_type,
+            roms_ids=roms_ids,
+            launchbox_remote_enabled=launchbox_remote_enabled,
+            playmatch_enabled=playmatch_enabled,
+            platform_fs_slugs=legacy_fs_slugs,
+            metadata_locale=metadata_locale,
+            metadata_only=metadata_only,
+            media_only=media_only,
+        )
+        for field in legacy_result.to_dict():
+            setattr(
+                combined,
+                field,
+                getattr(combined, field) + getattr(legacy_result, field),
             )
-        except Exception as error:
-            from utils.archives import ArchiveReadError
-
-            if not isinstance(error, ArchiveReadError):
-                raise
-            archive_failures.append(str(error))
-        else:
-            for field in legacy_result.to_dict():
-                setattr(
-                    combined,
-                    field,
-                    getattr(combined, field) + getattr(legacy_result, field),
-                )
-    if archive_failures:
-        from utils.archives import ArchiveReadError
-
-        raise ArchiveReadError("; ".join(archive_failures))
     return combined

@@ -1030,12 +1030,19 @@ class FSRomsHandler(ExternalFSHandler):
                             }
                         )
                 except ArchiveReadError as e:
-                    log.error(f"Incomplete read of archive {rom_dir}: {e}")
-                    # A raw container hash cannot stand in for a complete member
-                    # inventory. Callers must fail the scan attempt explicitly.
-                    raise ArchiveReadError(
-                        f"Archive member inventory incomplete: {rom.fs_name}"
-                    ) from e
+                    # The container is still a valid ROM input. Keep its raw hash
+                    # and deliberately omit member evidence, rather than losing
+                    # later games in this platform because one extractor stalled.
+                    from handler.scan_metadata_result import record_auxiliary_warning
+
+                    log.warning(
+                        "Archive members incomplete for game %s; using container hash",
+                        rom.fs_name,
+                    )
+                    record_auxiliary_warning(
+                        "filesystem", rom.fs_name, "archive_member_inventory_incomplete"
+                    )
+                    return [], crc, md5_h, sha1_h
                 return members, crc, md5_h, sha1_h
 
             members, rom_crc_c, archive_md5_h, archive_sha1_h = await asyncio.to_thread(
