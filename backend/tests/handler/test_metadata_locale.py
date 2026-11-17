@@ -196,9 +196,18 @@ async def test_actual_scheduled_acceptance_uses_global_not_actor_profile(
     )
 
 
+@pytest.mark.parametrize(
+    ("snapshot_type", "expected_scan_type"),
+    [(None, "quick"), ("complete", "complete")],
+)
 @pytest.mark.asyncio
 async def test_actual_worker_and_retry_use_only_accepted_snapshot(
-    admin_user, command, preference, monkeypatch
+    admin_user,
+    command,
+    preference,
+    monkeypatch,
+    snapshot_type,
+    expected_scan_type,
 ):
     from tests.handler.test_windows_quick_execution import binding
 
@@ -207,10 +216,11 @@ async def test_actual_worker_and_retry_use_only_accepted_snapshot(
     from handler import scan_retry_execution as retry
 
     repository = DBScanOperationsHandler()
+    policy = {"apis": ["steam"], "metadata_locale": "de-CH"}
+    if snapshot_type is not None:
+        policy["type"] = snapshot_type
     accepted = repository.accept(
-        admin_user.id,
-        "worker-locale",
-        request(command, {"apis": ["steam"], "metadata_locale": "de-CH"}),
+        admin_user.id, "worker-locale", request(command, policy)
     )
     ready = queued(repository, accepted)
     preference.SCAN_LANGUAGE_PRIORITY = ["fr"]
@@ -218,7 +228,7 @@ async def test_actual_worker_and_retry_use_only_accepted_snapshot(
 
     async def scan_mixed(*args, **kwargs):
         observed.append(kwargs["metadata_locale"])
-        assert kwargs["scan_type"].value == "quick"
+        assert kwargs["scan_type"].value == expected_scan_type
         preference.SCAN_LANGUAGE_PRIORITY = ["en"]
         return scan.ScanStats()
 

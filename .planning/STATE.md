@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261117-coq
+
+| 261117-coq | Add post-UAT scan snapshot logic tests | 2026-11-17 | Complete: direct SQL worker coverage now proves both legacy missing-type quick fallback and explicit complete-type preservation, while retaining the accepted metadata locale. MariaDB shards 5 and 6 passed, including archive continuation and owned-proof coverage. No product code changed. | [post-UAT scan snapshot tests](./quick/261117-coq-post-uat-scan-snapshot-tests/) |
+
 ## Quick Task 261116-p8z
 
 | 261116-p8z | Repair post-UAT locale contracts and legacy scan snapshots | 2026-11-16 | Complete: approved all 18 translated scan contracts, retained full locale validator coverage with a CI-safe budget, and restored the quick-scan default for durable snapshots without `type`. Focused Vitest (64 tests) and isolated MariaDB shard 5 passed. | [locale and scan snapshot regression](./quick/261116-p8z-regression-locale-and-scan-snapshot/) |
