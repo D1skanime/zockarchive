@@ -382,7 +382,8 @@ def _stream_archive_members(
                 yield name, size, _stream_7z_chunks(
                     process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
                 )
-            # A timed-out extractor is reaped above, so its return code is expected.
+            # Do not start another member after an idle timeout. The reaped
+            # extractor remains incomplete evidence, never a success result.
             if not timed_out and process.returncode != 0:
                 raise ArchiveReadError(
                     f"Extraction of {name} from {file_path} failed "
@@ -690,7 +691,7 @@ def extract_chd_hash(file_path: Path) -> str:
     metadata like CD track layouts which are essential for proper disc image
     identification.
 
-    For reference, check out "chd.h" in the MAME source tree.
+    Format reference: https://github.com/mamedev/mame/blob/master/src/lib/util/chd.h
 
     ---------------------------------- Why? ----------------------------------
     CHDMAN does not produce nor guarantee stable, byte-for-byte identical
