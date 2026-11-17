@@ -20,7 +20,7 @@ import zipfile_inflate64  # trunk-ignore(ruff/F401): Patches zipfile to support 
 from config import SEVEN_ZIP_TIMEOUT
 from handler.filesystem.storage_access import ReadCapability
 from logger.logger import log
-from utils.archive_streaming import stream_process_stdout_until_idle
+from utils.archive_streaming import stream_extractor_until_idle
 from utils.filesystem import COMPRESSED_FILE_EXTENSIONS
 
 # 7zip archives are read through 7zz.
@@ -193,7 +193,7 @@ def _process_largest_7z_member(
             shell=False,  # trunk-ignore(bandit/B603): 7z path is hardcoded, args are validated
         ) as process:
             if process.stdout:
-                for chunk in _stream_7z_chunks(
+                for chunk in stream_extractor_until_idle(
                     process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
                 ):
                     fn_hash_update(chunk)
@@ -316,25 +316,6 @@ def read_tar_archive_files(
         return
 
 
-def _stream_7z_chunks(
-    process: subprocess.Popen[bytes],
-    idle_seconds: float,
-    on_timeout: Callable[[], None],
-) -> Iterator[bytes]:
-    def _reap_on_timeout() -> None:
-        process.terminate()
-        try:
-            process.wait(timeout=5)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            process.wait()
-        on_timeout()
-
-    yield from stream_process_stdout_until_idle(
-        process, idle_seconds, _reap_on_timeout, chunk_size=FILE_READ_CHUNK_SIZE
-    )
-
-
 def _is_member_excluded(
     member: str,
     excluded_names: list[str],
@@ -379,7 +360,7 @@ def _stream_archive_members(
             ) as process:
                 if process.stdout is None:
                     continue
-                yield name, size, _stream_7z_chunks(
+                yield name, size, stream_extractor_until_idle(
                     process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
                 )
             # Do not start another member after an idle timeout. The reaped

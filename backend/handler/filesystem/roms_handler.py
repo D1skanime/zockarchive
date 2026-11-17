@@ -61,6 +61,7 @@ from utils.hashing import crc32_to_hex
 from utils.platform_slugs import resolve_filesystem_slug
 from utils.rate_limiter import ConcurrencyLimiter
 
+from .archive_recovery import note_incomplete_archive
 from .base_handler import (
     LANGUAGES_BY_SHORTCODE,
     LANGUAGES_NAME_KEYS,
@@ -1033,15 +1034,7 @@ class FSRomsHandler(ExternalFSHandler):
                     # The container is still a valid ROM input. Keep its raw hash
                     # and deliberately omit member evidence, rather than losing
                     # later games in this platform because one extractor stalled.
-                    from handler.scan_metadata_result import record_auxiliary_warning
-
-                    log.warning(
-                        "Archive members incomplete for game %s; using container hash",
-                        rom.fs_name,
-                    )
-                    record_auxiliary_warning(
-                        "filesystem", rom.fs_name, "archive_member_inventory_incomplete"
-                    )
+                    note_incomplete_archive(rom.fs_name)
                     return [], crc, md5_h, sha1_h
                 return members, crc, md5_h, sha1_h
 

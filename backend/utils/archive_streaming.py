@@ -2,6 +2,7 @@
 
 import os
 import select
+import subprocess
 from collections.abc import Callable, Iterator
 from typing import IO, Any, Protocol
 
@@ -40,3 +41,20 @@ def stream_process_stdout_until_idle(
         if not chunk:
             return
         yield chunk
+
+
+def stream_extractor_until_idle(process, idle_seconds, on_timeout, *, chunk_size):
+    """Reap a stalled extractor before handing its timeout to the caller."""
+
+    def reap():
+        process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
+        on_timeout()
+
+    yield from stream_process_stdout_until_idle(
+        process, idle_seconds, reap, chunk_size=chunk_size
+    )
