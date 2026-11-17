@@ -2,7 +2,7 @@
 
 import os
 import select
-import subprocess
+import subprocess  # nosec B404, reaps only the caller-provided extractor
 from collections.abc import Callable, Iterator
 from typing import IO, Any, Protocol
 

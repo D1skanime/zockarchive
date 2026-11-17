@@ -194,7 +194,10 @@ def _process_largest_7z_member(
         ) as process:
             if process.stdout:
                 for chunk in stream_extractor_until_idle(
-                    process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
+                    process,
+                    SEVEN_ZIP_TIMEOUT,
+                    _mark_timed_out,
+                    chunk_size=FILE_READ_CHUNK_SIZE,
                 ):
                     fn_hash_update(chunk)
 
@@ -361,7 +364,10 @@ def _stream_archive_members(
                 if process.stdout is None:
                     continue
                 yield name, size, stream_extractor_until_idle(
-                    process, SEVEN_ZIP_TIMEOUT, _mark_timed_out
+                    process,
+                    SEVEN_ZIP_TIMEOUT,
+                    _mark_timed_out,
+                    chunk_size=FILE_READ_CHUNK_SIZE,
                 )
             # Do not start another member after an idle timeout. The reaped
             # extractor remains incomplete evidence, never a success result.

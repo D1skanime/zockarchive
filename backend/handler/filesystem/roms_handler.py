@@ -29,7 +29,6 @@ from exceptions.fs_exceptions import (
 )
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from handler.scan_inventory_contracts import InventoryEvidence
-from logger.logger import log
 from models.download_manifest import DownloadManifestMember
 from models.platform import Platform
 from models.rom import (
