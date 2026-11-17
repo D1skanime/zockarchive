@@ -488,7 +488,7 @@ def _list_rar_file_members(file_path: Path) -> list[tuple[str, int]]:
         FileNotFoundError,
     ) as e:
         log.error(f"Error listing RAR archive {file_path}: {e}")
-        return []
+        raise ArchiveReadError("RAR member listing incomplete") from e
 
     entries: list[tuple[str, int]] = []
     for line in result.stdout.splitlines():
@@ -555,7 +555,7 @@ def _list_archive_file_members(file_path: Path) -> list[tuple[str, int]]:
         FileNotFoundError,
     ) as e:
         log.error(f"Error listing archive {file_path}: {e}")
-        return []
+        raise ArchiveReadError("Archive member listing incomplete") from e
 
     entries: list[tuple[str, int]] = []
     current_file: str | None = None
