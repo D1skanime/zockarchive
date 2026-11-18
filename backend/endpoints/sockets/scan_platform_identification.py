@@ -27,6 +27,28 @@ from logger.logger import log
 from models.rom import Rom
 from utils import emoji
 
+_OWNED_CONTENT_TIMEOUT = "owned_content_verification_timeout"
+
+
+def _record_owned_content_timeout(platform, fs_rom, rom):
+    """Keep the confirmed game result when generated-media proof times out."""
+    from handler.scan_operation_checkpoint import record_checked_game
+
+    if rom is None:
+        rom = db_rom_handler.get_roms_by_fs_name(platform.id, {fs_rom["fs_name"]}).get(
+            fs_rom["fs_name"]
+        )
+    if rom is not None:
+        record_checked_game(rom, outcome="failed", cause_code=_OWNED_CONTENT_TIMEOUT)
+        game = rom.fs_name
+    else:
+        game = fs_rom["fs_name"]
+    log.warning(
+        "Owned content verification timed out for game %s on platform %s",
+        game,
+        platform.custom_name or platform.name,
+    )
+
 
 async def _identify_platform(
     platform_slug: str,
@@ -183,23 +205,38 @@ async def _identify_platform(
 
     async def scan_rom_with_semaphore(fs_rom: FSRom, rom: Rom | None) -> None:
         """Scan a single ROM with semaphore limiting"""
+        from handler.filesystem.owned_content_proof import (
+            OwnedContentProofRejected,
+            owned_content_proof_timed_out,
+        )
+
         async with scan_semaphore:
             with bind_windows_quick(quick_contexts.get(id(fs_rom))):
-                await identify_collection_game(
-                    fs_rom,
-                    _identify_rom,
-                    platform=platform,
-                    rom=rom,
-                    scan_type=scan_type,
-                    roms_ids=roms_ids,
-                    metadata_sources=metadata_sources,
-                    launchbox_remote_enabled=launchbox_remote_enabled,
-                    playmatch_enabled=playmatch_enabled,
-                    metadata_locale=metadata_locale,
-                    metadata_only=metadata_only,
-                    socket_manager=socket_manager,
-                    scan_stats=scan_stats,
-                )
+                try:
+                    await identify_collection_game(
+                        fs_rom,
+                        _identify_rom,
+                        platform=platform,
+                        rom=rom,
+                        scan_type=scan_type,
+                        roms_ids=roms_ids,
+                        metadata_sources=metadata_sources,
+                        launchbox_remote_enabled=launchbox_remote_enabled,
+                        playmatch_enabled=playmatch_enabled,
+                        metadata_locale=metadata_locale,
+                        metadata_only=metadata_only,
+                        socket_manager=socket_manager,
+                        scan_stats=scan_stats,
+                    )
+                except OwnedContentProofRejected as error:
+                    if not owned_content_proof_timed_out(error):
+                        raise
+                    _record_owned_content_timeout(platform, fs_rom, rom)
+                    await scan_stats.increment(
+                        socket_manager=socket_manager,
+                        owned_content_proof_timeouts=1,
+                    )
+                    return
                 quick = quick_contexts.get(id(fs_rom))
                 if quick is not None and quick.binding is not None:
                     completed = db_rom_handler.get_rom(quick.binding.rom_id)

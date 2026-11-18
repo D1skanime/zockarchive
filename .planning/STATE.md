@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-grp
+
+| 261118-grp | Surface owned-content proof timeout in Scan operations | 2026-11-18 | Complete: exact owned-media proof timeouts now persist a confirmed failed game result when available, increment a dedicated counter and end the durable operation as failed after retained work. Isolated verifier and terminal-projection checks passed; authenticated desktop/mobile browser flows passed. | [owned proof timeout](./quick/261118-grp-owned-content-proof-timeout/) |
+
 ## Quick Task 261118-e72
 
 | 261118-e72 | Keep active Scan progress beside settings on wide layouts | 2026-11-18 | Complete: wide Scan layout places configuration/actions beside the active live log, while narrow views retain normal document flow. Authenticated desktop/mobile browser checks started and stopped scans without post-login errors; the supplied library was empty, so no platform/game rows could be emitted. | [live scan layout](./quick/261118-e72-scan-live-progress-layout/) |

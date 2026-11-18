@@ -90,6 +90,7 @@ const cause = computed(() => {
     return "worker";
   if (code === "mapping_changed") return "mapping";
   if (code === "archive_evidence_incomplete") return "archive";
+  if (code === "owned_content_verification_timeout") return "owned-content";
   if (code?.startsWith("source_")) return "source";
   if (
     code ||

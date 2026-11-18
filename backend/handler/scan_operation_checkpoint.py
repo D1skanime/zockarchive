@@ -196,7 +196,7 @@ def record_completed_game(rom):
     record_checked_game(rom, outcome="completed")
 
 
-def record_checked_game(rom, *, outcome):
+def record_checked_game(rom, *, outcome, cause_code=None):
     """Persist one canonical result per scanned game, independent of providers."""
     from handler.database.scan_write_fence import current_scan_write_context
 
@@ -227,6 +227,7 @@ def record_checked_game(rom, *, outcome):
             "relative_path": relative_path,
             "provider": "",
             "outcome": outcome,
+            "cause_code": cause_code,
         },
         checkpoint={"rom_id": rom.id, "game_result": True},
     )

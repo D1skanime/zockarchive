@@ -295,6 +295,14 @@ async def run_scan_operation(operation_id):
                     }
                 final_stats |= counts
                 final_stats = persist_scan_stats(final_stats)
+                if combined.owned_content_proof_timeouts:
+                    from handler.filesystem.owned_content_proof import (
+                        OwnedContentProofRejected,
+                    )
+
+                    raise OwnedContentProofRejected(
+                        "Owned content verification timed out"
+                    )
                 has_warnings = (
                     counts["metadata_warning_items"]
                     or counts["metadata_failed_items"]
@@ -359,7 +367,11 @@ def _failure_outcome(error):
         StaleMappedReadError,
         UnreachableMappedStorageError,
     )
+    from handler.filesystem.owned_content_proof import owned_content_proof_timed_out
     from handler.filesystem.storage_access import IndeterminateOwnedPublicationError
+
+    if owned_content_proof_timed_out(error):
+        return "failed", "owned_content_verification_timeout", "check_storage"
 
     if isinstance(error, StaleMappedReadError):
         return "blocked", "mapping_changed", "new_scan"
