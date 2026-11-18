@@ -3,7 +3,6 @@ import hashlib
 from pathlib import Path
 
 import pytest
-import startup  # noqa: F401
 
 from config.config_manager import Config
 from handler.filesystem import roms_handler

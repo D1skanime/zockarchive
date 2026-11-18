@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-ctp
+
+| 261118-ctp | Remove CRC recovery test import suppression | 2026-11-18 | Complete: removed the quality-gate-reported noqa suppression without changing the CRC recovery assertions. Targeted Trunk passed; no tests were run before renewed UAT. | [test import suppression](./quick/261118-ctp-remove-test-import-suppression/) |
+
 ## Quick Task 261118-cgg
 
 | 261118-cgg | Preserve raw archive hashes after member-reader failure | 2026-11-18 | Complete: interrupted archive member inventory now restores the pristine CRC/MD5/SHA1 state before raw-file fallback. One isolated focused regression test passed; authenticated desktop and mobile Scan browser checks passed. | [archive CRC raw fallback](./quick/261118-cgg-archive-crc-raw-fallback/) |
