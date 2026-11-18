@@ -119,7 +119,7 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 - Save and State are user-owned ROM assets with retained catalog identity, device linkage and visibility. Handlers are backend/handler/database/saves_handler.py and states_handler.py. SaveBackup is a separate owner-scoped ZIP aggregate; it validates archive topology without extraction and treats Windows restore paths as metadata only.
 - Device save synchronization uses backend/models/device_save_sync.py and backend/models/sync_session.py.
-- PC download selection snapshots component evidence in backend/models/download_manifest.py.
+- PC download selection snapshots evidence for every scanner-created PC component in backend/models/download_manifest.py. The manifest endpoint first verifies ROM visibility, then returns a bounded 409 rejection code for stale or unavailable members of that visible ROM; absent or non-visible ROMs still receive the generic manifest 404.
 - Resumable transfer attempts, item states and event lineage live in backend/models/download_transfer.py; endpoints are backend/endpoints/download_manifests.py and backend/endpoints/download_transfers.py.
 - Source changes invalidate manifests/transfers. The frontend consumes them via frontend/src/v2/data/adapters/legacy/services/api/downloadTransfers.ts.
 

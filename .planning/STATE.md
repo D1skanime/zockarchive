@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-lfr
+
+| 261118-lfr | PC manifest-member download recovery | 2026-11-18 | Complete: scanner-created PC components are now consistently manifest-downloadable, while visible-Rom rejection is a bounded 409 code and non-visible resources retain generic 404 masking. Isolated HTTP proof created a one-member MP3 manifest (201) and downloaded its exact 29 bytes (200); all resources were removed. The supplied current browser service exposed the action on desktop/mobile but returned 401 after login, so its interactive MP3 proof remains an environment follow-up. | [PC member download](./quick/261118-lfr-pc-manifest-member-download/) |
+
 ## Quick Task 261118-hkh
 
 | 261118-hkh | Safe direct-folder reassignment and scan-error filtering | 2026-11-18 | Complete implementation: active direct mappings require the existing explicit exclusion transition; catalog cleanup and any later scan remain manual. Current-branch desktop/mobile UI showed the guidance and disabled ordinary Save. Remaining UAT is a disposable current-stack POST/reload/reassign/manual-scan sequence; the old supplied instance is not current and one optional health request aborted in the shared test API. | [reassignment and filter recovery](./quick/261118-hkh-za-prod-uat-sichere-direkte-ordner-neuzu/) |

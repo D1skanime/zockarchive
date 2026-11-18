@@ -22,6 +22,7 @@ from handler.database import (
 )
 from handler.filesystem import fs_rom_handler
 from handler.filesystem.roms_handler import DownloadManifestTransferState
+from logger.logger import log
 from models.download_manifest import DownloadManifest, DownloadManifestStatus
 from utils.router import APIRouter
 
@@ -37,10 +38,29 @@ _STATE_ERRORS = {
         "manifest_source_changed",
     ),
 }
+_CREATE_ERROR_CODES = {
+    "manifest components are unavailable": "manifest_components_unavailable",
+    "manifest member selection is unavailable": "manifest_members_unavailable",
+    "manifest member selection is empty": "manifest_members_empty",
+    "manifest components need source members": "manifest_source_members_unavailable",
+    "manifest member hash evidence is unavailable": "manifest_hash_evidence_unavailable",
+    "PC component manifest source is unavailable": "manifest_source_unavailable",
+    "PC component manifest source changed": "manifest_source_changed",
+}
 
 
 def _not_found() -> NoReturn:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=_NOT_FOUND)
+
+
+def _manifest_create_rejected(rom_id: int, error: ValueError) -> NoReturn:
+    """Expose a bounded cause only after the ROM visibility check has passed."""
+    reason = str(error)
+    log.warning("Download manifest rejected for visible ROM %s: %s", rom_id, reason)
+    raise HTTPException(
+        status_code=status.HTTP_409_CONFLICT,
+        detail={"code": _CREATE_ERROR_CODES.get(reason, "manifest_unavailable")},
+    )
 
 
 def _serialize(manifest: DownloadManifest) -> DownloadManifestResponse:
@@ -191,8 +211,8 @@ async def create_download_manifest(
             archive_set_id=payload.archive_set_id,
             selected_member_ids=payload.selected_member_ids,
         )
-    except ValueError:
-        _not_found()
+    except ValueError as error:
+        _manifest_create_rejected(rom.id, error)
     manifest = db_download_manifest_handler.get_manifest(manifest.id, request.user.id)
     return _serialize(_valid_or_error(manifest))
 
