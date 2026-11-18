@@ -1,7 +1,7 @@
 ---
 quick_id: 261118-hkh
 title: Safe direct-folder reassignment and scan-error filtering
-status: ready
+status: complete
 tasks:
   - id: mapping-recovery
     files:

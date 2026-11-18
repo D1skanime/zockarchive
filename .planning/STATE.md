@@ -18,7 +18,7 @@ progress:
 
 ## Quick Task 261118-hkh
 
-| 261118-hkh | Safe direct-folder reassignment and scan-error filtering | 2026-11-18 | Complete: active direct mappings now use the existing explicit exclusion transition before reassignment, preserving catalog entries and server conflict checks. Filtered empty operation-result pages retain a terminal non-game cause and next action. Typecheck passed; browser UAT must be repeated on a current served build because the provided instance did not finish fresh login before the automation deadline. | [reassignment and filter recovery](./quick/261118-hkh-za-prod-uat-sichere-direkte-ordner-neuzu/) |
+| 261118-hkh | Safe direct-folder reassignment and scan-error filtering | 2026-11-18 | Complete implementation: active direct mappings require the existing explicit exclusion transition; catalog cleanup and any later scan remain manual. Current-branch desktop/mobile UI showed the guidance and disabled ordinary Save. Remaining UAT is a disposable current-stack POST/reload/reassign/manual-scan sequence; the old supplied instance is not current and one optional health request aborted in the shared test API. | [reassignment and filter recovery](./quick/261118-hkh-za-prod-uat-sichere-direkte-ordner-neuzu/) |
 
 ## Quick Task 261118-grp
 

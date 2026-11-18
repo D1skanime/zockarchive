@@ -7,17 +7,20 @@ status: complete
 
 ## Outcome
 
-- Completed-setup direct-folder mappings now keep the backend conflict guard and
+- Completed-setup direct-folder mappings keep the backend conflict guard and
   guide a changed active platform through the existing explicit exclusion save.
-  The guidance states that catalog entries are retained, reloads the authority
-  after exclusion, and only then permits the replacement platform.
+  The guidance states that catalog entries are untouched: an administrator
+  cleans up wrongly scanned catalog entries manually, records `Do not scan`,
+  reloads the authority, chooses the replacement platform, and starts any
+  later scan manually. Neither UI action infers a platform or starts a scan.
 - A filtered empty operation-result page repeats a terminal, non-game-specific
   cause and safe next action. A game-specific failure remains a normal result
   row and therefore remains filterable.
-- The direct-mapping and result explorer flows were prepared for authenticated
-  desktop and mobile inspection. The provided running instance did not finish
-  the fresh normal login before the browser automation deadline, so its UAT
-  evidence is intentionally recorded as incomplete rather than asserted.
+- The current frontend was served through a temporary isolated Vite harness
+  against the supplied test API. Authenticated desktop and mobile checks both
+  changed an existing mapping locally, displayed the `Do not scan first`
+  guidance, and confirmed that ordinary Save was disabled. No assignment was
+  sent, so no shared test data changed.
 
 ## Verification
 
@@ -27,7 +30,12 @@ status: complete
 
 ## Follow-up
 
-Run the authenticated desktop and mobile UAT against a current served build:
-change one already assigned direct folder, use the explicit exclusion action,
-reload, select its replacement platform, and verify both a non-game terminal
-failure and a game-scoped failure with the Failed filter.
+The supplied UAT instance still serves an older backend/frontend combination.
+The remaining UAT proof is a disposable, current-stack run of the two POSTs:
+after the user manually removes wrong catalog entries, save `Do not scan`,
+reload, select and save the replacement platform, then manually start a fresh
+scan. Confirm that no old entries were modified automatically. The isolated
+desktop harness also observed one aborted optional `/api/setup/status` request
+from the shared test API; it is handled as an unknown health indicator and did
+not affect the mapping interaction. Repeat this check on the current deployed
+stack before treating it as a clean network result.
