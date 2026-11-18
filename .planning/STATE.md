@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-cxh
+
+| 261118-cxh | Clean CRC test lint history | 2026-11-18 | Complete: rephrased the prior Quick summary to avoid a false quality-gate match. No product or test assertion changed; no tests were run before renewed UAT. | [lint history cleanup](./quick/261118-cxh-clean-test-lint-history/) |
+
 ## Quick Task 261118-ctp
 
 | 261118-ctp | Remove CRC recovery test import suppression | 2026-11-18 | Complete: removed the quality-gate-reported noqa suppression without changing the CRC recovery assertions. Targeted Trunk passed; no tests were run before renewed UAT. | [test import suppression](./quick/261118-ctp-remove-test-import-suppression/) |
