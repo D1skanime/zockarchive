@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-e72
+
+| 261118-e72 | Keep active Scan progress beside settings on wide layouts | 2026-11-18 | Complete: wide Scan layout places configuration/actions beside the active live log, while narrow views retain normal document flow. Authenticated desktop/mobile browser checks started and stopped scans without post-login errors; the supplied library was empty, so no platform/game rows could be emitted. | [live scan layout](./quick/261118-e72-scan-live-progress-layout/) |
+
 ## Quick Task 261118-cxh
 
 | 261118-cxh | Clean CRC test lint history | 2026-11-18 | Complete: rephrased the prior Quick summary to avoid a false quality-gate match. No product or test assertion changed; no tests were run before renewed UAT. | [lint history cleanup](./quick/261118-cxh-clean-test-lint-history/) |

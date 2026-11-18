@@ -1,12 +1,24 @@
 .r-v2-scan {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.r-v2-scan__main {
   display: grid;
   grid-template-columns: minmax(360px, 1fr) minmax(0, 1.6fr);
   gap: 18px;
   align-items: stretch;
 }
 
+.r-v2-scan__configuration {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
 .r-v2-scan__operation {
-  grid-column: 1 / -1;
   min-width: 0;
   overflow-wrap: anywhere;
 }
@@ -374,7 +386,7 @@
   }
 }
 
-html[data-bp~="md-and-down"] .r-v2-scan {
+html[data-bp~="md-and-down"] .r-v2-scan__main {
   grid-template-columns: 1fr;
 }
 html[data-bp~="md-and-down"] .r-v2-scan-card,
@@ -403,7 +415,7 @@ html[data-bp~="xs"] .r-v2-scan-live__status {
    scan configuration into a separate flow. The regular spacing remains on
    wider screens, where the two-column layout provides the required room. */
 html[data-bp~="xs"] .r-v2-scan {
-  row-gap: 0;
+  gap: 0;
 }
 html[data-bp~="xs"] .r-v2-scan-card {
   gap: 10px;
