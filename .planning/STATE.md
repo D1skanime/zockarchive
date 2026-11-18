@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-t2j
+
+| 261118-t2j | Repair ESLint process termination in locale parity test | 2026-11-18 | Complete: restored Trunk ESLint batching and removed unused TypeScript project-service activation, so changed frontend files no longer allocate competing type-aware programs. Direct ESLint, targeted Trunk, and the complete 118-file branch-diff Trunk check passed with no new issues. No test suite was run. | [ESLint batch repair](./quick/261118-t2j-repair-the-quality-gate-eslint-process-t/) |
+
 ## Quick Task 261118-s68
 
 | 261118-s68 | Publish ZockArchive Beta 9 for NAS UAT | 2026-11-18 | Complete: operator-published prerelease `v0.1.0-beta.9` targets `51cde4ec6`; GitHub Actions run `44391902111` succeeded. The public GHCR OCI index `ghcr.io/d1skanime/zockarchive:0.1.0-beta.9` resolves to `sha256:cb9af309aa310073a90b521b571a8eab243b7f3904a44133db082d40843a3364` with amd64 and arm64 manifests. No NAS, Portainer, production, merge, or accept action occurred. | [Beta 9 release](./quick/261118-s68-publish-zockarchive-beta-9-from-the-curr/) |
