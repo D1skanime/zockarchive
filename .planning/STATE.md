@@ -18,7 +18,7 @@ progress:
 
 ## Quick Task 261118-s68
 
-| 261118-s68 | Publish ZockArchive Beta 9 for NAS UAT | 2026-11-18 | Blocked: Release convention and target `v0.1.0-beta.9` for `51cde4ec6` were verified, but the mandatory ki-run pre-push guard rejected publication. The commit is not available on GitHub, so neither a prerelease nor GHCR image can be created. No NAS, Portainer, production, merge, or accept action occurred. | [Beta 9 release attempt](./quick/261118-s68-publish-zockarchive-beta-9-from-the-curr/) |
+| 261118-s68 | Publish ZockArchive Beta 9 for NAS UAT | 2026-11-18 | Complete: operator-published prerelease `v0.1.0-beta.9` targets `51cde4ec6`; GitHub Actions run `44391902111` succeeded. The public GHCR OCI index `ghcr.io/d1skanime/zockarchive:0.1.0-beta.9` resolves to `sha256:cb9af309aa310073a90b521b571a8eab243b7f3904a44133db082d40843a3364` with amd64 and arm64 manifests. No NAS, Portainer, production, merge, or accept action occurred. | [Beta 9 release](./quick/261118-s68-publish-zockarchive-beta-9-from-the-curr/) |
 
 ## Quick Task 261118-lfr
 
