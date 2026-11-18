@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-cgg
+
+| 261118-cgg | Preserve raw archive hashes after member-reader failure | 2026-11-18 | Complete: interrupted archive member inventory now restores the pristine CRC/MD5/SHA1 state before raw-file fallback. One isolated focused regression test passed; authenticated desktop and mobile Scan browser checks passed. | [archive CRC raw fallback](./quick/261118-cgg-archive-crc-raw-fallback/) |
+
 ## Quick Task 261117-fu2
 
 | 261117-fu2 | Archive idle timeout and ROM-local recovery | 2026-11-17 | In progress: archive member stalls now fall back to the individual container and no longer abort platform, mapping or worker. The required current isolated ISO, multipart-RAR and repack proof remains open. | [archive idle recovery](./quick/261117-fu2-archive-idle-and-rom-local-recovery/) |

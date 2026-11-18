@@ -1000,8 +1000,9 @@ class FSRomsHandler(ExternalFSHandler):
             def _hash_archive_entries(
                 crc: int, md5_h: Any, sha1_h: Any
             ) -> tuple[list[dict[str, Any]], int, Any, Any]:
-                # Accumulate into copies so an archive we can't read in full
-                # leaves the caller's hashers untouched for the raw fallback.
+                # Preserve the raw archive state. Member hashing uses copies so
+                # an incomplete inventory falls back to its exact file hash.
+                original_crc, original_md5_h, original_sha1_h = crc, md5_h, sha1_h
                 md5_h, sha1_h = md5_h.copy(), sha1_h.copy()
                 members: list[dict[str, Any]] = []
                 try:
@@ -1034,7 +1035,7 @@ class FSRomsHandler(ExternalFSHandler):
                     # and deliberately omit member evidence, rather than losing
                     # later games in this platform because one extractor stalled.
                     note_incomplete_archive(rom.fs_name)
-                    return [], crc, md5_h, sha1_h
+                    return [], original_crc, original_md5_h, original_sha1_h
                 return members, crc, md5_h, sha1_h
 
             members, rom_crc_c, archive_md5_h, archive_sha1_h = await asyncio.to_thread(
