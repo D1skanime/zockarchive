@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "Save \"Do not scan\" first",
+  "direct-folder-reassignment-guidance": "To change an assigned folder's platform, first save \"Do not scan\". This stops new scans from that folder but does not delete existing library entries. Then select the new platform and save again.",
   "disable-animations": "Disable animations",
   "disable-animations-desc": "Disable all animations in the gallery (CD spinning, cartridge loading, hover videos)",
   "disable-user": "Disable {username}",

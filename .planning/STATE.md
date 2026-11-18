@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-hkh
+
+| 261118-hkh | Safe direct-folder reassignment and scan-error filtering | 2026-11-18 | Complete: active direct mappings now use the existing explicit exclusion transition before reassignment, preserving catalog entries and server conflict checks. Filtered empty operation-result pages retain a terminal non-game cause and next action. Typecheck passed; browser UAT must be repeated on a current served build because the provided instance did not finish fresh login before the automation deadline. | [reassignment and filter recovery](./quick/261118-hkh-za-prod-uat-sichere-direkte-ordner-neuzu/) |
+
 ## Quick Task 261118-grp
 
 | 261118-grp | Surface owned-content proof timeout in Scan operations | 2026-11-18 | Complete: exact owned-media proof timeouts now persist a confirmed failed game result when available, increment a dedicated counter and end the durable operation as failed after retained work. Isolated verifier and terminal-projection checks passed; authenticated desktop/mobile browser flows passed. | [owned proof timeout](./quick/261118-grp-owned-content-proof-timeout/) |

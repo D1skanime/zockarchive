@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "Nejprve uložit „Neskenovat“",
+  "direct-folder-reassignment-guidance": "Chcete-li změnit platformu přiřazené složky, nejprve uložte „Neskenovat“. Tím se zastaví nové skeny z této složky, ale nesmažou se stávající položky knihovny. Poté vyberte novou platformu a znovu uložte.",
   "disable-animations": "Zakázat animace",
   "disable-animations-desc": "Zakáže všechny animace v galerii (otáčení CD, vkládání cartridge, hover videa)",
   "disable-user": "Zakázat {username}",

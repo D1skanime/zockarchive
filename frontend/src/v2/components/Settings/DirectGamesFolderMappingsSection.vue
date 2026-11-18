@@ -50,6 +50,23 @@ const dirtyFolders = computed(
     ),
 );
 
+const reassignmentFolders = computed(
+  () =>
+    new Set(
+      folders.value
+        .filter((folder) => {
+          const saved = loadedSelections.value[folder.name];
+          const selected = selections.value[folder.name];
+          return (
+            typeof saved === "string" &&
+            typeof selected === "string" &&
+            saved !== selected
+          );
+        })
+        .map((folder) => folder.name),
+    ),
+);
+
 function updateSelection(folderName: string, value: unknown) {
   selections.value = {
     ...selections.value,
@@ -162,6 +179,31 @@ async function save() {
   }
 }
 
+async function saveExclusionFirst(folderName: string) {
+  submitting.value = true;
+  try {
+    await setupApi.assignFolders(
+      folders.value.map((folder) => {
+        const platformSlug =
+          folder.name === folderName
+            ? null
+            : (selections.value[folder.name] ?? null);
+        return {
+          folder_name: folder.name,
+          disposition: platformSlug ? "platform" : "excluded",
+          platform_slug: platformSlug,
+        };
+      }),
+    );
+    snackbar.success(t("settings.platform-mapping-updated"));
+    await load();
+  } catch (error) {
+    rowErrors.value = { ...rowErrors.value, [folderName]: saveError(error) };
+  } finally {
+    submitting.value = false;
+  }
+}
+
 watch(
   canAdmin,
   (isAdmin) => {
@@ -242,6 +284,20 @@ watch(
           >
             {{ t("settings.scan-unsaved-changes") }}
           </span>
+          <ZAAlert
+            v-if="reassignmentFolders.has(folder.name)"
+            class="r-v2-direct-mappings__reassignment"
+            type="warning"
+          >
+            <p>{{ t("settings.direct-folder-reassignment-guidance") }}</p>
+            <ZABtn
+              :loading="submitting"
+              variant="outlined"
+              @click="saveExclusionFirst(folder.name)"
+            >
+              {{ t("settings.direct-folder-reassignment-exclude") }}
+            </ZABtn>
+          </ZAAlert>
           <span
             v-if="rowErrors[folder.name]"
             class="r-v2-direct-mappings__error"
@@ -256,7 +312,7 @@ watch(
           color="primary"
           variant="flat"
           :loading="submitting"
-          :disabled="dirtyFolders.size === 0"
+          :disabled="dirtyFolders.size === 0 || reassignmentFolders.size > 0"
           @click="save"
         >
           {{ t("common.save") }}
@@ -297,9 +353,13 @@ watch(
   white-space: nowrap;
 }
 .r-v2-direct-mappings__dirty,
-.r-v2-direct-mappings__error {
+.r-v2-direct-mappings__error,
+.r-v2-direct-mappings__reassignment {
   grid-column: 2;
   font-size: var(--r-font-size-sm);
+}
+.r-v2-direct-mappings__reassignment p {
+  margin: 0 0 8px;
 }
 .r-v2-direct-mappings__dirty {
   color: var(--r-color-fg-secondary);
@@ -316,7 +376,8 @@ html[data-bp~="sm-and-down"] .r-v2-direct-mappings__row {
   grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
 }
 html[data-bp~="sm-and-down"] .r-v2-direct-mappings__dirty,
-html[data-bp~="sm-and-down"] .r-v2-direct-mappings__error {
+html[data-bp~="sm-and-down"] .r-v2-direct-mappings__error,
+html[data-bp~="sm-and-down"] .r-v2-direct-mappings__reassignment {
   grid-column: 2;
 }
 </style>

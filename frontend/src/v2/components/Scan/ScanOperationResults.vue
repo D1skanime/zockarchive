@@ -75,6 +75,18 @@ const pageItems = computed(() => {
   const last = Math.min(pageCount.value, first + 4);
   return Array.from({ length: last - first + 1 }, (_, index) => first + index);
 });
+const terminalFailure = computed(() => {
+  const code = props.snapshot?.cause_code;
+  if (!code || !["failed", "blocked"].includes(props.snapshot?.state ?? ""))
+    return null;
+  if (code === "owned_content_verification_timeout") return "owned-content";
+  if (code === "archive_evidence_incomplete") return "archive";
+  if (code === "mapping_changed") return "mapping";
+  if (code.startsWith("metadata_") || code === "malformed_provider_response")
+    return "metadata";
+  if (code.startsWith("source_")) return "source";
+  return "failed";
+});
 
 async function focusResults() {
   await nextTick();
@@ -214,6 +226,19 @@ defineExpose({ openActionRequired });
         >
           <p>{{ t("scan.operation-results-empty") }}</p>
           <p>{{ t("scan.operation-results-empty-help") }}</p>
+          <template v-if="terminalFailure">
+            <p>{{ t("scan.recovery-cause-" + terminalFailure) }}</p>
+            <p>
+              {{
+                t(
+                  "scan.recovery-action-" +
+                    (terminalFailure === "archive"
+                      ? "failed"
+                      : terminalFailure),
+                )
+              }}
+            </p>
+          </template>
         </div>
         <ul v-else class="r-v2-scan-operation-results__list">
           <li

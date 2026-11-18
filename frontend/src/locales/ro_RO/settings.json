@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "Salvează mai întâi „Nu scana”",
+  "direct-folder-reassignment-guidance": "Pentru a schimba platforma unui folder atribuit, salvează mai întâi „Nu scana”. Aceasta oprește scanările noi din acel folder, dar nu șterge intrările existente din bibliotecă. Apoi selectează noua platformă și salvează din nou.",
   "disable-animations": "Dezactivează animațiile",
   "disable-animations-desc": "Dezactivează toate animațiile din galerie (rotirea CD-ului, încărcarea cartușului, videoclipurile la trecerea mouse-ului)",
   "disable-user": "Dezactivează {username}",

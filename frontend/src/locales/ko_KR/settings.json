@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "먼저 ‘스캔 안 함’ 저장",
+  "direct-folder-reassignment-guidance": "할당된 폴더의 플랫폼을 바꾸려면 먼저 ‘스캔 안 함’을 저장하세요. 그러면 해당 폴더의 새 스캔은 중지되지만 기존 라이브러리 항목은 삭제되지 않습니다. 그런 다음 새 플랫폼을 선택하고 다시 저장하세요.",
   "disable-animations": "애니메이션 비활성화",
   "disable-animations-desc": "갤러리의 모든 애니메이션 비활성화 (CD 회전, 카트리지 로딩, 호버 비디오)",
   "disable-user": "{username} 비활성화",

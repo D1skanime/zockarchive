@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "Enregistrer d’abord « Ne pas analyser »",
+  "direct-folder-reassignment-guidance": "Pour changer la plateforme d’un dossier attribué, enregistrez d’abord « Ne pas analyser ». Cela arrête les nouvelles analyses de ce dossier sans supprimer les entrées existantes de la bibliothèque. Sélectionnez ensuite la nouvelle plateforme et enregistrez à nouveau.",
   "disable-animations": "Désactiver les animations",
   "disable-animations-desc": "Désactiver toutes les animations dans la galerie (rotation de CD, chargement de cartouche, vidéos au survol)",
   "disable-user": "Désactiver {username}",

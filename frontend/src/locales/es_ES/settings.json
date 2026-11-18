@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "Guardar primero «No escanear»",
+  "direct-folder-reassignment-guidance": "Para cambiar la plataforma de una carpeta asignada, primero guarda «No escanear». Esto detiene los nuevos escaneos de la carpeta, pero no elimina las entradas existentes de la biblioteca. Después selecciona la nueva plataforma y vuelve a guardar.",
   "disable-animations": "Desactivar animaciones",
   "disable-animations-desc": "Desactivar todas las animaciones en la galería (rotación de CD, carga de cartuchos, videos al pasar el ratón)",
   "disable-user": "Deshabilitar usuario",

@@ -114,6 +114,8 @@
   "device-auth-no-code": "No pairing code provided.",
   "device-auth-scopes-label": "This device is requesting:",
   "device-auth-subheading": "A device is requesting access to your ZockArchive library.",
+  "direct-folder-reassignment-exclude": "先に「スキャンしない」を保存",
+  "direct-folder-reassignment-guidance": "割り当て済みフォルダーのプラットフォームを変更するには、先に「スキャンしない」を保存してください。これによりそのフォルダーの新しいスキャンは停止しますが、既存のライブラリエントリーは削除されません。その後、新しいプラットフォームを選択して再度保存してください。",
   "disable-animations": "アニメーションを無効化",
   "disable-animations-desc": "ギャラリー内のすべてのアニメーションを無効化（CD回転、カートリッジ読み込み、ホバービデオ）",
   "disable-user": "{username}を無効化",
