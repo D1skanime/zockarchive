@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261118-s68
+
+| 261118-s68 | Publish ZockArchive Beta 9 for NAS UAT | 2026-11-18 | Blocked: Release convention and target `v0.1.0-beta.9` for `51cde4ec6` were verified, but the mandatory ki-run pre-push guard rejected publication. The commit is not available on GitHub, so neither a prerelease nor GHCR image can be created. No NAS, Portainer, production, merge, or accept action occurred. | [Beta 9 release attempt](./quick/261118-s68-publish-zockarchive-beta-9-from-the-curr/) |
+
 ## Quick Task 261118-lfr
 
 | 261118-lfr | PC manifest-member download recovery | 2026-11-18 | Complete: scanner-created PC components are now consistently manifest-downloadable, while visible-Rom rejection is a bounded 409 code and non-visible resources retain generic 404 masking. Isolated HTTP proof created a one-member MP3 manifest (201) and downloaded its exact 29 bytes (200); all resources were removed. The supplied current browser service exposed the action on desktop/mobile but returned 401 after login, so its interactive MP3 proof remains an environment follow-up. | [PC member download](./quick/261118-lfr-pc-manifest-member-download/) |
