@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261119-m72
+
+| 261119-m72 | Resume interrupted Scan view inspection | 2026-11-19 | Complete: after the VM restart, only the current ZA development container was restarted and normal local login plus Scan-route initialization succeeded on unchanged commit `159a4ca4`. The same-commit desktop/mobile 22-row wheel-scroll evidence remains recorded in the job sight-inspection report. No test suite ran before live UAT. | [Resume Scan inspection](./quick/261119-m72-fortsetzung-der-durch-vm-neustart-unterb/) |
+
 ## Quick Task 261119-kpu
 
 | 261119-kpu | Restore Scan live-progress scrolling | 2026-11-19 | Complete: ScanLiveProgress descendants now receive the feature scroll layout and mobile logs reserve BottomNav clearance. An isolated 22-row PlayStation 3 browser projection reached the final Unidentified row with wheel scrolling in active and terminal states at desktop and mobile widths. Targeted Trunk and frontend typecheck passed; no test suite ran before live UAT. | [Scan progress scrolling](./quick/261119-kpu-scan-live-progress-scroll-chain/) |
