@@ -146,7 +146,10 @@ async function loadLibraryInfo() {
 }
 
 const mappingReady = computed(() => mappingReadiness.value === "ready");
-const mappingRoute = { name: ROUTES.LIBRARY_MANAGEMENT };
+const mappingRoute = {
+  name: ROUTES.LIBRARY_MANAGEMENT,
+  query: { tab: "direct" },
+};
 
 async function loadMappingReadiness() {
   if (mappingReadiness.value === "loading") return;
