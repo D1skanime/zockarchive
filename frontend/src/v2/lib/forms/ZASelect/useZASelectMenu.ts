@@ -48,7 +48,7 @@ export function useZASelectMenu(
   const placement = computed<Placement>(
     () => placementMap[props.menuLocation ?? "bottom"] ?? "bottom-start",
   );
-  const { floatingStyles } = useFloating(activatorRef, panelRef, {
+  const { floatingStyles, update } = useFloating(activatorRef, panelRef, {
     placement,
     strategy: "fixed",
     open: isOpen,
@@ -112,6 +112,7 @@ export function useZASelectMenu(
         items.isSelected(item.value),
       ),
     );
+    nextTick(update);
     emit("open");
   };
   const closeMenu = () => {

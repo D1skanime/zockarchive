@@ -912,6 +912,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261119-g7m | Anchor the scanned-result filter popup after scroll | 2026-11-19 | this commit | [261119-g7m](./quick/261119-g7m-anchor-scan-filter-popup/) |
 | 261116-mce | Add post-UAT direct scan timeout regression coverage | 2026-11-16 | this commit | [261116-mce](./quick/261116-mce-post-uat-scan-tests/) |
 | 261116-uat02 | Complete isolated mapped archive-timeout browser evidence | 2026-11-16 | this commit | [261116-uat02](./quick/261116-uat02-postfix-isolated-proof/) |
 | 261116-review01 | Fix owned-proof budget and mixed archive continuation review findings | 2026-11-16 | this commit | [261116-review01](./quick/261116-review01-owned-proof-and-mixed-scan/) |

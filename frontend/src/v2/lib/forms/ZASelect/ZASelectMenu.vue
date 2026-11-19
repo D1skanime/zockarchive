@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CSSProperties, Ref } from "vue";
+import type { ComponentPublicInstance, CSSProperties } from "vue";
 import ZADivider from "../../primitives/ZADivider/ZADivider.vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZATextField from "../ZATextField/ZATextField.vue";
@@ -8,7 +8,7 @@ import type { NormalisedItem, ZASelectProps } from "./types";
 defineProps<{
   props: ZASelectProps;
   isOpen: boolean;
-  panelRef: Ref<HTMLElement | null>;
+  panelRef: (element: Element | ComponentPublicInstance | null) => void;
   floatingStyles: CSSProperties;
   internalSearch: string;
   autofocusSearch: boolean;
@@ -33,7 +33,7 @@ defineEmits<{
     ><Transition name="r-select-pop"
       ><div
         v-if="isOpen"
-        ref="panelRef"
+        :ref="panelRef"
         class="r-select__panel"
         :style="floatingStyles"
         role="listbox"
