@@ -16,6 +16,13 @@ progress:
 
 # Project State
 
+## Quick Task 261119-o22
+
+Desktop evidence confirms the isolated regular OST subfolder scan and a
+single MP3 manifest download. The concrete mobile fixture run remains open,
+because the disposable worker dispatched outside the browser time window; it
+is explicitly recorded in the UAT report and not marked passed.
+
 ## Quick Task 261119-m72
 
 | 261119-m72 | Resume interrupted Scan view inspection | 2026-11-19 | Complete: after the VM restart, only the current ZA development container was restarted and normal local login plus Scan-route initialization succeeded on unchanged commit `159a4ca4`. The same-commit desktop/mobile 22-row wheel-scroll evidence remains recorded in the job sight-inspection report. No test suite ran before live UAT. | [Resume Scan inspection](./quick/261119-m72-fortsetzung-der-durch-vm-neustart-unterb/) |
