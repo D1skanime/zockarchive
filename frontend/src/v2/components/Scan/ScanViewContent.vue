@@ -378,8 +378,8 @@ provide(scanViewKey, proxyRefs(view));
               </p>
             </section>
           </div>
+          <ScanCardFooter />
         </section>
-        <ScanCardFooter v-if="mappingReady" />
       </div>
       <ScanLiveProgress />
     </div>
