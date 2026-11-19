@@ -198,11 +198,12 @@ export function useScanView() {
     return t("scan.live-progress");
   });
 
-  // The paginated operation explorer is the terminal record. Legacy socket rows
-  // remain available for live inspection and subfolder actions only while a scan
-  // is active, so a completed large scan cannot render a second full result list.
+  // The paginated operation explorer is the terminal record. Keep the transient
+  // socket rows for this page lifetime as well: a Windows folder row owns the
+  // safe subfolder picker, which must remain reachable after the operation
+  // completes. Navigating away or reloading still clears the transient list.
   const showLivePlatformRows = computed(
-    () => scanning.value || !snapshot.value,
+    () => scanningPlatforms.value.length > 0,
   );
 
   function scan(subfolder?: SubfolderScanRequest) {

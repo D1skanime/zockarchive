@@ -193,10 +193,14 @@ def record_completed_game(rom):
     from handler.scan_collection_finalize import finalize_completed_game
 
     finalize_completed_game(rom, command)
-    record_checked_game(rom, outcome="completed")
+    record_checked_game(
+        rom,
+        outcome="completed",
+        metadata_identified=not rom.is_unidentified,
+    )
 
 
-def record_checked_game(rom, *, outcome, cause_code=None):
+def record_checked_game(rom, *, outcome, cause_code=None, metadata_identified=None):
     """Persist one canonical result per scanned game, independent of providers."""
     from handler.database.scan_write_fence import current_scan_write_context
 
@@ -229,5 +233,13 @@ def record_checked_game(rom, *, outcome, cause_code=None):
             "outcome": outcome,
             "cause_code": cause_code,
         },
-        checkpoint={"rom_id": rom.id, "game_result": True},
+        checkpoint={
+            "rom_id": rom.id,
+            "game_result": True,
+            **(
+                {"metadata_identified": metadata_identified}
+                if metadata_identified is not None
+                else {}
+            ),
+        },
     )

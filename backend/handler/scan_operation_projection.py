@@ -18,7 +18,10 @@ from models.storage import PlatformStorageMapping
 def _classification(item):
     inventory = item.checkpoint.get("inventory_status", {})
     provider = item.checkpoint.get("provider_observation", {})
-    if inventory.get("identified_windows") is False:
+    if (
+        inventory.get("identified_windows") is False
+        or item.checkpoint.get("metadata_identified") is False
+    ):
         return "unidentified"
     if item.outcome == "failed" or provider.get("outcome") == "failed":
         return "failed"
@@ -28,9 +31,12 @@ def _classification(item):
 
 
 def _unidentified_predicate(item):
-    """Match only the durable JSON boolean false, never an absent fact."""
+    """Match only durable false facts, never an absent identity observation."""
     inventory = item.checkpoint["inventory_status"]
-    return inventory["identified_windows"].as_string() == "false"
+    return or_(
+        inventory["identified_windows"].as_string() == "false",
+        item.checkpoint["metadata_identified"].as_string() == "false",
+    )
 
 
 def _classification_predicate(item, outcome):
