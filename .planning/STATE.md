@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261119-jd8
+
+| 261119-jd8 | Restore Home source line budget | 2026-11-19 | Complete: preserved the direct Library Management route and removed redundant local declaration whitespace, returning Home.vue to its 684-line baseline. Targeted Trunk formatting and static checking passed. No tests were run before live UAT. | [Home line budget](./quick/261119-jd8-restore-home-line-budget/) |
+
 ## Quick Task 261119-fwx
 
 | 261119-fwx | Retain Scan subfolder actions and classify unmatched results | 2026-11-19 | Complete: terminal snapshots now retain transient Scan rows for page-lifetime PC subfolder actions, and durable explicit metadata-identity facts classify metadata-free games as Unidentified across platforms. Targeted Trunk passed; current Dev browser confirmed anchored Scan-type popups at 1440 px and 390 px. The supplied instance lacked retained UAT CPS3 terminal rows for exact filter UAT. | [Scan terminal actions and classification](./quick/261119-fwx-retain-scan-subfolder-actions-and-unmatched/) |
