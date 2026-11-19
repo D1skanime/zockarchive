@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261119-bpn
+
+| 261119-bpn | Clarify Scan type selector and remove technical copy | 2026-11-19 | Complete: removed the two technical quick-scan paragraphs and made the existing Scan type selector a visibly outlined control with chevron and keyboard focus. Isolated normal-login browser checks at 1440 px and 390 px confirmed opening options and no scan-action overlap while scrolling. No test suite was run before live UAT. | [Scan type cleanup](./quick/261119-bpn-remove-both-technical-quick-scan-paragra/) |
+
 ## Quick Task 261119-bhu
 
 | 261119-bhu | Keep Scan actions clear of quick-scan copy | 2026-11-19 | Complete: Scan actions now belong to the sticky configuration card, so they remain below the full quick-scan description while scrolling. Browser checks at 1310 px and 390 px confirmed no overlap and working Library Management navigation. No test suite was run. | [Scan action layout](./quick/261119-bhu-fix-the-confirmed-desktop-scan-page-over/) |

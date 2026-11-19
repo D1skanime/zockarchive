@@ -348,34 +348,31 @@ provide(scanViewKey, proxyRefs(view));
               <h3 class="r-v2-scan-card__section-title">
                 {{ t("scan.section-scan-type") }}
               </h3>
-              <ZASelect
-                v-model="scanType"
-                :items="scanOptions"
-                :label="t('scan.scan-options')"
-                prepend-inner-icon="mdi-magnify-scan"
-                hide-details
-                variant="outlined"
-              >
-                <template #item="{ props: itemProps, item }">
-                  <li v-bind="itemProps">
-                    <div class="r-select__item-stack">
-                      <div class="r-select__item-title">{{ item.title }}</div>
-                      <div
-                        v-if="item.raw.subtitle"
-                        class="r-select__item-subtitle"
-                      >
-                        {{ item.raw.subtitle }}
+              <div class="r-v2-scan-card__type-select">
+                <ZASelect
+                  v-model="scanType"
+                  :items="scanOptions"
+                  :label="t('scan.scan-options')"
+                  prepend-inner-icon="mdi-magnify-scan"
+                  append-inner-icon="mdi-chevron-down"
+                  hide-details
+                  variant="outlined"
+                >
+                  <template #item="{ props: itemProps, item }">
+                    <li v-bind="itemProps">
+                      <div class="r-select__item-stack">
+                        <div class="r-select__item-title">{{ item.title }}</div>
+                        <div
+                          v-if="item.raw.subtitle"
+                          class="r-select__item-subtitle"
+                        >
+                          {{ item.raw.subtitle }}
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                </template>
-              </ZASelect>
-              <p v-if="scanType === 'quick'" class="text-body-2">
-                {{ t("scan.quick-scan-help") }}
-              </p>
-              <p v-if="scanType === 'quick'" class="text-body-2">
-                {{ t("scan.inventory-advisory") }}
-              </p>
+                    </li>
+                  </template>
+                </ZASelect>
+              </div>
             </section>
           </div>
           <ScanCardFooter />
