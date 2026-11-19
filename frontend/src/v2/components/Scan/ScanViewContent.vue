@@ -402,4 +402,4 @@ provide(scanViewKey, proxyRefs(view));
   </div>
 </template>
 
-<style scoped src="@/v2/views/Scan.css"></style>
+<style src="@/v2/views/Scan.css"></style>

@@ -86,7 +86,7 @@
     border-color var(--r-motion-med) var(--r-motion-ease-out),
     box-shadow var(--r-motion-med) var(--r-motion-ease-out);
 }
-.r-v2-scan-card__type-select :deep(.r-select--focused .r-select__field) {
+.r-v2-scan-card__type-select .r-select--focused .r-select__field {
   outline: 2px solid var(--r-color-brand-primary);
   outline-offset: 2px;
 }
@@ -416,6 +416,14 @@ html[data-bp~="md-and-down"] .r-v2-scan-live {
 
 html[data-bp~="sm-and-down"] .r-v2-scan-card__matchers {
   align-self: flex-start;
+}
+/* The bottom navigation overlays the mobile viewport. Reserve its height in
+   the live-card viewport so the final internal-log row is never obscured. */
+html[data-bp~="sm-and-down"] .r-v2-scan-live {
+  max-height: calc(100dvh - var(--r-nav-h) - var(--r-bottom-nav-h) - 160px);
+}
+html[data-bp~="sm-and-down"] .r-v2-scan-live__log {
+  padding-bottom: calc(12px + var(--r-bottom-nav-h));
 }
 html[data-bp~="sm-and-down"] .r-v2-scan-card {
   padding: 14px;

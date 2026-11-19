@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261119-kpu
+
+| 261119-kpu | Restore Scan live-progress scrolling | 2026-11-19 | Complete: ScanLiveProgress descendants now receive the feature scroll layout and mobile logs reserve BottomNav clearance. An isolated 22-row PlayStation 3 browser projection reached the final Unidentified row with wheel scrolling in active and terminal states at desktop and mobile widths. Targeted Trunk and frontend typecheck passed; no test suite ran before live UAT. | [Scan progress scrolling](./quick/261119-kpu-scan-live-progress-scroll-chain/) |
+
 ## Quick Task 261119-jd8
 
 | 261119-jd8 | Restore Home source line budget | 2026-11-19 | Complete: preserved the direct Library Management route and removed redundant local declaration whitespace, returning Home.vue to its 684-line baseline. Targeted Trunk formatting and static checking passed. No tests were run before live UAT. | [Home line budget](./quick/261119-jd8-restore-home-line-budget/) |
