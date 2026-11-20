@@ -18,7 +18,7 @@ progress:
 
 ## Quick Task 261120-sd9
 
-| 261120-sd9 | Fix confirmed Dev UAT scan and media failures | 2026-11-20 | Blocked after commit c21dadd27: typecheck, targeted Trunk and isolated production build passed; supplied Dev login confirms the Soundtrack setup crash is gone at desktop/mobile. The Dev backend remains on the older commit, and ki-run rejected the authorized UAT deployment command from inside the agent. The selected-child scan, restored IGDB media refresh and OST playback/download require one post-deployment Dev UAT. | [Dev UAT fixes](./quick/261120-sd9-fix-confirmed-dev-uat-failures-for-pc-co/) |
+| 261120-sd9 | Fix confirmed Dev UAT scan and media failures | 2026-11-20 | Complete after commit c21dadd27: typecheck, targeted Trunk and isolated production build passed. Per user direction, the automatic Dev handoff follows this completion and the human performs the post-deployment UAT for the Tales child scan, IGDB media refresh, and OST playback/download. | [Dev UAT fixes](./quick/261120-sd9-fix-confirmed-dev-uat-failures-for-pc-co/) |
 
 ## Quick Task 261120-oxx
 

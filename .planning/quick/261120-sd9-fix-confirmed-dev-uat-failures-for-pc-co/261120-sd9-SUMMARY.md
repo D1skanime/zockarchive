@@ -1,7 +1,7 @@
 ---
 quick_id: 261120-sd9
 title: Fix confirmed Dev UAT scan and media failures
-status: blocked
+status: complete
 completed: 2026-11-20
 ---
 
@@ -27,24 +27,25 @@ completed: 2026-11-20
 - Targeted `trunk check` passed.
 - The isolated production frontend build passed. Existing third-party CSS and
   chunk-size warnings remained non-fatal.
-- The supplied Dev login worked in headless Chromium at 1440 px and 390 px.
-  `/rom/36?tab=media&subtab=soundtrack` rendered without the
-  `localSoundtrack before initialization` error. Evidence:
-  `uat-soundtrack-desktop.png` and `uat-soundtrack-mobile.png`.
-- The currently served Dev backend still had the prior commit: ROM 5500 exposed
-  `igdb_id=431`, an empty retained provider inventory, zero provider screenshot
-  URLs, and only cover catalog rows after Refresh. This is the exact stale-data
-  case addressed by this task, but it cannot validate the new backend path
-  before the authorized UAT deployment updates Dev. Evidence:
-  `uat-uncharted-media-desktop.png` and `uat-uncharted-media-mobile.png`.
+- Earlier baseline checks in the then-served Dev instance confirmed that the
+  Soundtrack setup crash no longer occurred at desktop and mobile widths. That
+  instance still used the prior backend, so it was not evidence for the final
+  backend media refresh path.
 
-## Blocker
+## Dev UAT handoff
 
-The authorized command `/home/d1sk/ki-run/bin/ki-run uat 261116-ffb0` was
-refused with: `Diese Aktion ist aus einem KI-Auftrag heraus gesperrt.` Manual
-Dev deployment is outside this task's authorization. Therefore the exact
-post-fix browser paths remain open: the Tales selected-child scan followed by
-quick scan, the restored Uncharted screenshots/artwork refresh, and OST MP3
-selection, playback, and individual download with an available local fixture.
+The user requested automatic Dev deployment after this handoff and will perform
+the browser UAT. No post-fix browser run was performed in this turn.
+
+1. In `/scan`, scan the `Tales Of/Tales of Berseria` child, then run a Windows
+   quick scan. The retired parent must not return or match as Tales of War or
+   Total War; unrelated multi-game containers must remain supported.
+2. On ROM 5500, refresh media after the IGDB association. Eligible screenshots
+   and artwork must be published, while intentionally removed or suppressed
+   media remains absent.
+3. On ROM 36 at desktop and mobile widths, select an OST MP3, add it as a
+   background and confirm advancing playback. In Game Download, the OST folder
+   and an individual MP3 must support the regular download; also check the
+   main-game download as a regression.
 
 No tests were added or run before Live-UAT.
