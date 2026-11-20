@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261120-oxx
+
+| 261120-oxx | Finalize reused selected PC collection children | 2026-11-20 | Complete: a selected Windows child now passes through the existing completion fence even when quick inventory reuses it, retiring the parent before the next quick scan. Typecheck, targeted Trunk and production build passed. Desktop/mobile Dev verification remains open because normal form login received HTTP 401 from `/api/users/me`. | [Tales collection completion](./quick/261120-oxx-prevent-a-completed-pc-subfolder-scan-fr/) |
+
 ## Quick Task 261120-ira
 
 | 261120-ira | Stop browser harness and verify auth path | 2026-11-20 | Complete: removed only this job's interrupted harness containers and network, preserved non-owned volumes and the shared stack. Static review confirms the current line-limit extraction cannot cause the observed post-login `/api/users/me` 401. Typecheck, targeted Trunk and containerized production build passed; no browser automation or tests ran. | [Harness stop and auth trace](./quick/261120-ira-stop-isolated-browser-harness-work-and-s/) |

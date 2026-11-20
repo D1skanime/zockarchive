@@ -200,6 +200,50 @@ def record_completed_game(rom):
     )
 
 
+def is_selected_collection_child(rom):
+    """Whether this skipped ROM is the child chosen for parent retirement.
+
+    A quick Windows inventory may safely reuse an existing child without
+    entering the normal identification path. The explicit collection choice
+    still has to reach the same completion fence, otherwise its parent remains
+    eligible for a later discovery scan.
+    """
+    from handler.database.scan_operations_handler import DBScanOperationsHandler
+    from handler.database.scan_write_fence import current_scan_write_context
+
+    context = current_scan_write_context()
+    command = current_checkpoint_command()
+    if context is None or command is None:
+        return False
+    intent = (
+        DBScanOperationsHandler()
+        .execution(context.operation_id)["command"]
+        .get("collection_promotion")
+    )
+    if intent is None or (
+        command.mapping_id,
+        command.expected_revision,
+        dict(command.options).get("relative_path"),
+    ) != (
+        intent["mapping_id"],
+        intent["expected_revision"],
+        intent["selected_child_relative_path"],
+    ):
+        return False
+    mapping = MappingReadContext(
+        command.mapping_id, command.expected_revision
+    ).validate()
+    try:
+        relative_path = (
+            (PurePosixPath(rom.fs_path) / rom.fs_name)
+            .relative_to(PurePosixPath(mapping.relative_path))
+            .as_posix()
+        )
+    except ValueError:
+        return False
+    return relative_path == intent["selected_child_relative_path"]
+
+
 def record_checked_game(rom, *, outcome, cause_code=None, metadata_identified=None):
     """Persist one canonical result per scanned game, independent of providers."""
     from handler.database.scan_write_fence import current_scan_write_context

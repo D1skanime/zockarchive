@@ -228,7 +228,10 @@ remain one nested ROM and their files are not content-hashed during discovery.
 The Windows quick inventory is metadata-only (names, stat fields and bounded
 directory traversal), while owned-content proof protects only ZA-owned staged
 media and generated outputs, never library game bytes. Its finite byte-aware
-proof budget consequently cannot terminate a PC library scan. A rejected
+proof budget consequently cannot terminate a PC library scan. An explicit PC
+subfolder choice is finalized even when its existing child can be reused by
+that inventory: the completion fence retires the chosen parent before a later
+quick scan can rediscover and metadata-match it as a separate game. A rejected
 generated-media proof remains fail-closed: when the scan can associate it with
 a ROM, it persists a failed result with the platform and game, increments the
 owned-content timeout counter, keeps earlier results, and ends the durable

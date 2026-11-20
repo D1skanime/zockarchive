@@ -320,6 +320,15 @@ async def _identify_platform(
                     QuickScanDecision.METADATA_ONLY,
                 }:
                     assert rom is not None
+                    from handler.scan_operation_checkpoint import (
+                        is_selected_collection_child,
+                        record_completed_game,
+                    )
+
+                    if is_selected_collection_child(rom):
+                        # Reused children do not enter _identify_rom, but an
+                        # explicit child choice must still retire its parent.
+                        record_completed_game(rom)
                     skipped_rom_ids.append(rom.id)
                     continue
             if quick is not None or should_scan_rom(
