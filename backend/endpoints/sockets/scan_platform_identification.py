@@ -149,6 +149,7 @@ async def _identify_platform(
         collection_inventory,
         filesystem_identity,
         identify_collection_game,
+        selected_child_legacy_rom,
     )
 
     fs_roms, _ = collection_inventory(platform, fs_roms, filesystem_scope_path)
@@ -279,6 +280,10 @@ async def _identify_platform(
                 if mapping_inventory
                 else roms_by_fs_name.get(fs_rom["fs_name"])
             )
+            if mapping_inventory and rom is None:
+                rom = selected_child_legacy_rom(
+                    roms_by_fs_name.get(fs_rom["fs_name"]), fs_rom
+                )
             quick = await inspect_discovered_game(
                 platform,
                 fs_rom,

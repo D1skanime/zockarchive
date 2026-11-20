@@ -2,6 +2,7 @@
 
 import stat
 from dataclasses import replace
+from pathlib import PurePosixPath
 
 from sqlalchemy import select
 
@@ -14,6 +15,7 @@ from handler.scan_collection_policy import digest_path, mapping_binding
 from handler.scan_operation_checkpoint import (
     bind_checkpoint_command,
     current_checkpoint_command,
+    is_selected_collection_scope,
 )
 from handler.storage.read_context import MappingReadContext
 from models.scan_collection import ScanCollectionFolder
@@ -106,6 +108,26 @@ def filesystem_identity(handler, platform, entry):
         ),
         entry["fs_name"],
     )
+
+
+def selected_child_legacy_rom(rom, entry):
+    """Allow an explicit child selection to reclaim its matching missing record.
+
+    Direct mappings can move while a legacy catalog row still owns the globally
+    unique child folder name. The operator-selected child and its old relative
+    suffix must agree before that row can be scanned at the new mapping path.
+    """
+    scope = entry.get("scan_relative_path")
+    if (
+        rom is None
+        or not rom.missing_from_fs
+        or not scope
+        or not is_selected_collection_scope(scope)
+    ):
+        return None
+    target = PurePosixPath(scope)
+    legacy = PurePosixPath(rom.fs_path) / rom.fs_name
+    return rom if legacy.parts[-len(target.parts) :] == target.parts else None
 
 
 async def identify_collection_game(fs_rom, identify, **kwargs):

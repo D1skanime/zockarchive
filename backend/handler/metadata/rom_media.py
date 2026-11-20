@@ -202,7 +202,14 @@ async def prepare_provider_media_refresh(rom, expected_version):
     """
     provider = persisted_provider_media_source(rom)
     source = persisted_provider_media(rom, provider)
-    if _has_provider_media(source) or not rom.igdb_id:
+    retained_igdb = (
+        rom.igdb_metadata.get("provider_media")
+        if isinstance(rom.igdb_metadata, dict)
+        else None
+    )
+    if isinstance(retained_igdb, dict) and _has_provider_media(retained_igdb):
+        return rom, "igdb", retained_igdb
+    if not rom.igdb_id:
         return rom, provider, source
 
     from handler.metadata import meta_igdb_handler

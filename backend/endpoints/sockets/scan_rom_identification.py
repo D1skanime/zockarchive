@@ -80,6 +80,14 @@ async def _identify_rom(
         "url_screenshots": [],
     }
 
+    from handler.scan_collection_discovery import selected_child_legacy_rom
+
+    if selected_child_legacy_rom(rom, fs_rom) is not None:
+        # Keep the existing catalog identity, but let the successful scan merge
+        # move it from its old mapping root to the operator-selected child.
+        rom.fs_path = roms_path
+        rom.missing_from_fs = False
+
     calculate_hashes = not cm.get_config().SKIP_HASH_CALCULATION
 
     from handler.windows_quick_execution import (
