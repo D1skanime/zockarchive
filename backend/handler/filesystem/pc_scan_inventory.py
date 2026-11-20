@@ -217,6 +217,12 @@ def classify_components(evidence: InventoryEvidence) -> tuple[ComponentInventory
         else:
             top = parts[0]
             if category_matches(RomFileCategory.SOUNDTRACK.value, [top.lower()]):
+                # Local soundtrack discovery still creates RomFile rows for the
+                # Media tab. Keep the same files in an explicit extra component
+                # too: a component manifest is the authorization boundary for
+                # ordinary per-file game downloads.
+                key = (top, RomComponentKind.EXTRA)
+                grouped.setdefault(key, []).append(entry)
                 continue
             kind = parse_pc_component_layout(top)
             if top in nested_dlc:

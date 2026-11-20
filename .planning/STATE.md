@@ -18,10 +18,12 @@ progress:
 
 ## Quick Task 261119-o22
 
-Desktop evidence confirms the isolated regular OST subfolder scan and a
-single MP3 manifest download. The concrete mobile fixture run remains open,
-because the disposable worker dispatched outside the browser time window; it
-is explicitly recorded in the UAT report and not marked passed.
+The resumed isolated current-branch harness now confirms the regular Windows
+OST scan at desktop and mobile sizes. A valid local MP3 plays through the
+authorized file route with advancing playback, and the same OST folder is an
+extra component for a successful single-member manifest download; the base-game
+download also succeeded. The shared Dev-UAT for the separately fixed Tales and
+Uncharted data remains pending until the supplied older Dev instance is updated.
 
 ## Quick Task 261119-m72
 

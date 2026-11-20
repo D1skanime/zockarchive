@@ -55,6 +55,17 @@ def _mapped_relative_path(full_path: str, mapping_relative_path: str) -> str:
     return PurePath(*parts[1:]).as_posix()
 
 
+def _mapped_catalog_path(rom, file) -> str:
+    """Return a file path in the same root-relative namespace as mappings.
+
+    PC file rows retain paths relative to their game directory while a storage
+    mapping owns the platform directory. Prefixing the ROM filesystem path
+    keeps local soundtrack files and ordinary game members on the same
+    authorized mapped-read path.
+    """
+    return PurePath(rom.fs_path, file.full_path).as_posix()
+
+
 def _content_disposition(disposition: str, filename: str) -> str:
     if any(
         ord(character) < 0x20 or 0x7F <= ord(character) <= 0x9F
@@ -72,11 +83,12 @@ def _content_disposition(disposition: str, filename: str) -> str:
 
 def preflight_mapped_download(rom, file, *, first_use_operation: str = "download"):
     """Authorize the current mapping revision and open one download handle."""
-    mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
+    catalog_path = _mapped_catalog_path(rom, file)
+    mapping = db_storage_handler.path_mapping(rom.platform_id, catalog_path)
     context = MappingReadContext(mapping.id, mapping.version)
     access = context.open(
         StorageOperation.DOWNLOAD,
-        _mapped_relative_path(file.full_path, mapping.relative_path),
+        _mapped_relative_path(catalog_path, mapping.relative_path),
         first_use_operation=first_use_operation,
     )
     try:
@@ -90,11 +102,12 @@ def preflight_mapped_download(rom, file, *, first_use_operation: str = "download
 
 def preflight_mapped_stat(rom, file) -> int:
     """Authorize the current mapping revision and read non-productive metadata."""
-    mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
+    catalog_path = _mapped_catalog_path(rom, file)
+    mapping = db_storage_handler.path_mapping(rom.platform_id, catalog_path)
     context = MappingReadContext(mapping.id, mapping.version)
     with context.open(
         StorageOperation.STAT,
-        _mapped_relative_path(file.full_path, mapping.relative_path),
+        _mapped_relative_path(catalog_path, mapping.relative_path),
     ) as access:
         metadata = access.stat()
         if not stat_lib.S_ISREG(metadata.st_mode):

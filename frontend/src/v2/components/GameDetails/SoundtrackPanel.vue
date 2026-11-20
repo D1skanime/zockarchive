@@ -2,7 +2,7 @@
 import { ZABtn, ZADropzone, ZAEmptyState, ZASlider } from "@v2/lib";
 import axios from "axios";
 import { storeToRefs } from "pinia";
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import type { RomOwnedMediaSchema } from "@/__generated__";
 import MediaManagementAction from "@/v2/components/GameDetails/MediaManagementAction.vue";
@@ -80,38 +80,66 @@ const selectedLocalTrackIds = computed(
 const selectedOwnedTrackIds = computed(
   () => new Set(props.rom.owned_background_audio_media_ids ?? []),
 );
-const activeTrackId = computed(() =>
+const selectedLocalTracks = computed(() =>
+  localTracks.value
+    .filter((file) => selectedLocalTrackIds.value.has(file.id))
+    .slice()
+    .sort((left, right) => left.file_name.localeCompare(right.file_name)),
+);
+const activeOwnedTrackId = computed(() =>
   activeStoreTrack.value?.romId === props.rom.id
-    ? activeStoreTrack.value.mediaId
+    ? activeStoreTrack.value.mediaId > 0
+      ? activeStoreTrack.value.mediaId
+      : null
     : null,
 );
 const activeTrack = computed(() =>
-  includedTracks.value.find((item) => item.id === activeTrackId.value),
+  activeStoreTrack.value?.romId === props.rom.id
+    ? activeStoreTrack.value
+    : null,
 );
 
 function mediaContentUrl(mediaId: number) {
   return `/api/roms/${props.rom.id}/media/${mediaId}/content`;
 }
+function localContentUrl(file: { id: number; file_name: string }) {
+  return `/api/roms/${file.id}/files/content/${encodeURIComponent(file.file_name)}`;
+}
 function playerTracks(): PlayerTrack[] {
-  return includedTracks.value.map((item) => ({
-    romId: props.rom.id,
-    mediaId: item.id,
-    fileName: item.display_label,
-    url: mediaContentUrl(item.id),
-  }));
+  return [
+    ...selectedLocalTracks.value.map((file) => ({
+      romId: props.rom.id,
+      // File and owned-media tables have independent positive identifiers.
+      // Negative playlist IDs keep local selections collision-free in the
+      // shared player without changing either persisted identifier.
+      mediaId: -file.id,
+      fileName: file.file_name,
+      url: localContentUrl(file),
+    })),
+    ...includedTracks.value.map((item) => ({
+      romId: props.rom.id,
+      mediaId: item.id,
+      fileName: item.display_label,
+      url: mediaContentUrl(item.id),
+    })),
+  ];
 }
 function playerMetas(): Record<number, PlayerMeta> {
-  return Object.fromEntries(
-    includedTracks.value.map((item) => [
+  return Object.fromEntries([
+    ...selectedLocalTracks.value.map((file) => [
+      -file.id,
+      { title: file.file_name },
+    ]),
+    ...includedTracks.value.map((item) => [
       item.id,
       { title: item.display_label },
     ]),
-  );
+  ]);
 }
 function syncPlaylist() {
   player.loadPlaylistForRom(props.rom.id, playerTracks(), playerMetas());
 }
-watch(includedTracks, () => {
+watch([includedTracks, selectedLocalTracks], () => {
   if (player.activePlaylistRomId === props.rom.id) syncPlaylist();
 });
 async function refreshCanonical() {
@@ -195,12 +223,40 @@ async function toggleLocalBackgroundAudio(fileId: number) {
   if (nextFileIds.has(fileId)) nextFileIds.delete(fileId);
   else nextFileIds.add(fileId);
   try {
-    await romApi.replaceLocalBackgroundAudio({
+    const response = await romApi.replaceLocalBackgroundAudio({
       romId: props.rom.id,
       fileIds: [...nextFileIds],
       expectedVersion: props.rom.updated_at,
     });
     await refreshCanonical();
+    await nextTick();
+    syncPlaylist();
+    if (nextFileIds.has(fileId)) {
+      // The component prop can still contain the previous canonical snapshot
+      // for this tick. Use the version-checked mutation response to start the
+      // explicitly user-selected local track immediately; the watcher then
+      // reconciles the durable playlist once the refreshed prop arrives.
+      const file = response.data.files.find((item) => item.id === fileId);
+      if (file) {
+        const selected: PlayerTrack = {
+          romId: props.rom.id,
+          mediaId: -file.id,
+          fileName: file.file_name,
+          url: localContentUrl(file),
+        };
+        player.loadPlaylistForRom(
+          props.rom.id,
+          [
+            selected,
+            ...playerTracks().filter((track) => track.mediaId !== -fileId),
+          ],
+          { ...playerMetas(), [selected.mediaId]: { title: file.file_name } },
+        );
+        player.play(selected, { title: file.file_name });
+      }
+    } else if (activeTrack.value?.mediaId === -fileId) {
+      player.stop();
+    }
   } catch (error) {
     if (!(await handleConflict(error))) snackbar.error(errorMessage(error));
   } finally {
@@ -255,10 +311,14 @@ function selectTrack(item: RomOwnedMediaSchema) {
   if (selected) player.play(selected, playerMetas()[item.id] ?? {});
 }
 function retryActiveTrack() {
-  if (activeTrack.value) selectTrack(activeTrack.value);
+  if (activeTrack.value)
+    player.play(
+      activeTrack.value,
+      playerMetas()[activeTrack.value.mediaId] ?? {},
+    );
 }
 async function deleteTrack(item: RomOwnedMediaSchema) {
-  if (activeTrackId.value === item.id) player.stop();
+  if (activeOwnedTrackId.value === item.id) player.stop();
   if (
     !(await confirm({
       title: t("rom.delete-soundtrack-title"),

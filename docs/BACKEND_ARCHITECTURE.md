@@ -131,6 +131,8 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 **Storage descriptors and grants:** Composition-owned immutable descriptors authorize operations before path opening. See backend/handler/filesystem/storage_composition.py, storage_access.py and storage_policy.py.
 
+**Mapped PC downloads:** `endpoints/roms/files.py` resolves a catalog file against the platform-owned storage mapping before opening it. PC file rows are game-relative, so the resolver prefixes the ROM filesystem path for both ordinary game members and local `OST`/Soundtrack media; it then opens only the mapping-relative suffix through the existing descriptor and permission boundary.
+
 **Provider normalization:** Typed adapter, provider handler, merge/priority policy and response schema preserve raw evidence while exposing common/localized fields. See backend/handler/metadata/steam_merge.py, rom_media.py and backend/models/rom.py.
 
 **Frontend v2 tiers:** Domain-free primitives live in frontend/src/v2/lib/, shared composites in frontend/src/v2/components/shared/, and feature composites in frontend/src/v2/components/GameDetails/ or another feature folder.
@@ -235,7 +237,7 @@ ambiguous owned-media receipt instead of publishing it.
 
 ### PC models, metadata, DLC and descriptions
 
-RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
+RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. A top-level `OST`/`Soundtrack` folder is intentionally projected both as local soundtrack media and as an `extra` component: the former powers the Media player, while the latter gives the ordinary, manifest-authorized download flow a selectable folder and individual files. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
 
 #### DLC-owned manuals and media
 
