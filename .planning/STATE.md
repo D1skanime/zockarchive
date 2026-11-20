@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261120-sd9
+
+| 261120-sd9 | Fix confirmed Dev UAT scan and media failures | 2026-11-20 | Blocked after commit c21dadd27: typecheck, targeted Trunk and isolated production build passed; supplied Dev login confirms the Soundtrack setup crash is gone at desktop/mobile. The Dev backend remains on the older commit, and ki-run rejected the authorized UAT deployment command from inside the agent. The selected-child scan, restored IGDB media refresh and OST playback/download require one post-deployment Dev UAT. | [Dev UAT fixes](./quick/261120-sd9-fix-confirmed-dev-uat-failures-for-pc-co/) |
+
 ## Quick Task 261120-oxx
 
 | 261120-oxx | Finalize reused selected PC collection children | 2026-11-20 | Complete: a selected Windows child now passes through the existing completion fence even when quick inventory reuses it, retiring the parent before the next quick scan. Typecheck, targeted Trunk and production build passed. Desktop/mobile Dev verification remains open because normal form login received HTTP 401 from `/api/users/me`. | [Tales collection completion](./quick/261120-oxx-prevent-a-completed-pc-subfolder-scan-fr/) |
