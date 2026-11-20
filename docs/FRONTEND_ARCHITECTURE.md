@@ -247,7 +247,7 @@ Home.vue uses CardRow and v2 home adapters. Platform, Search, and Collection vie
 
 ### ROM detail
 
-GameDetails.vue is a cover column plus tab panel. ?tab= is persistent. The typed resolveDescription contract in useManualDescription selects requested exact/base manual text, requested exact/base provider text, manual English, provider English, then empty. It exposes source and resolved language, labels English fallback, and never displays the scalar legacy summary as a description. Tabs cover overview, metadata/providers, files/downloads, media, saves/states, achievements, notes, patcher, related games, screenshots, artwork, soundtrack, and PC components.
+GameDetails.vue is a cover column plus tab panel. ?tab= is persistent. The typed resolveDescription contract in useManualDescription selects requested exact/base manual text, requested exact/base provider text, manual English, provider English, then empty. A persisted IGDB English summary is an explicit provider candidate only when the ROM has an IGDB identity, so manual text still wins and unrelated scalar legacy summaries stay hidden. It exposes source and resolved language and labels English fallback. Tabs cover overview, metadata/providers, files/downloads, media, saves/states, achievements, notes, patcher, related games, screenshots, artwork, soundtrack, and PC components.
 
 The Overview Similar games section is controlled by the persisted, per-account
 `showSimilarGamesOutsideLibrary` UI setting from `useUISettings`. An absent

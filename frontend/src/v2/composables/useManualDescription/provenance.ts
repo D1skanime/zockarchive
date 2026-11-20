@@ -1,7 +1,7 @@
 import type { SteamTextVariantSchema } from "@/__generated__";
 import { normalizeLocale } from "@/v2/composables/useProviderResolution";
 
-export type DescriptionProvider = "steam" | "screenscraper";
+export type DescriptionProvider = "steam" | "screenscraper" | "igdb";
 export type DescriptionSource = "manual" | DescriptionProvider | "none";
 export interface DescriptionResolution {
   text: string | null;

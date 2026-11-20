@@ -65,6 +65,7 @@ const props = defineProps<{
   description: DescriptionResolution;
   descriptionProvider?: DescriptionProvider | null;
   ssMetadata?: ProviderMetadata | null;
+  igdbSummary?: string | null;
   sections: InfoGridSection[];
   playerCount: string | null;
   userCollections: UserCollectionSchema[];
@@ -321,6 +322,7 @@ const youtubeEmbedUrl = computed(() =>
           :manual-metadata="rom.manual_metadata"
           :steam-metadata="rom.steam_metadata"
           :ss-metadata="ssMetadata"
+          :igdb-summary="igdbSummary"
           :provider="descriptionProvider ?? null"
           @saved="
             () => {

@@ -424,12 +424,26 @@ async def _identify_rom(
     from handler.scan_operation_checkpoint import record_completed_game
     from handler.scan_pc_automation_observation import observe_pc_automation
 
-    await observe_pc_automation(
-        process_pc_automation_after_scan,
-        platform,
-        scanned_rom,
-        _added_rom,
-        newly_added,
-        selected=MetadataSource.STEAM in metadata_sources,
-        completed=record_completed_game,
-    )
+    completed = False
+
+    def record_completion(completed_rom: Rom) -> None:
+        nonlocal completed
+        record_completed_game(completed_rom)
+        completed = True
+
+    try:
+        await observe_pc_automation(
+            process_pc_automation_after_scan,
+            platform,
+            scanned_rom,
+            _added_rom,
+            newly_added,
+            selected=MetadataSource.STEAM in metadata_sources,
+            completed=record_completion,
+        )
+    finally:
+        # A completed discovery must commit its scoped collection decision even
+        # when optional PC automation cannot complete. Otherwise the next quick
+        # scan reintroduces the retired parent folder as a separate game.
+        if not completed:
+            record_completion(_added_rom)

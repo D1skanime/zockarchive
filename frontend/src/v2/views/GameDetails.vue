@@ -124,6 +124,7 @@ const overviewDescription = computed(() => {
     manualMetadata: rom?.manual_metadata,
     steamMetadata: rom?.steam_metadata,
     ssMetadata: rom?.ss_metadata,
+    igdbSummary: rom?.igdb_id ? rom.summary : null,
     locale: locale.value,
     provider: !rom ? null : isPcRom.value ? "steam" : "screenscraper",
   });
@@ -499,6 +500,7 @@ const tabs = computed<ZATabNavItem[]>(() => [
             :description-provider="isPcRom ? 'steam' : 'screenscraper'"
             :sections="overviewSections"
             :ss-metadata="currentRom.ss_metadata"
+            :igdb-summary="currentRom.igdb_id ? currentRom.summary : null"
             :player-count="playerCount"
             :user-collections="userCollections"
             :hltb="currentRom.hltb_metadata"

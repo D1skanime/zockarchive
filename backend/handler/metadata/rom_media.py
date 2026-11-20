@@ -113,16 +113,28 @@ async def _download_provider_image(
     )
 
 
-async def refresh_provider_owned_media(rom, expected_version, provider: str):
-    """Refresh selected provider images within their publication transaction."""
-    if not isinstance(provider, str) or not provider:
-        raise ValueError("Provider is required")
+def persisted_provider_media(rom, provider: str) -> dict[str, object]:
+    """Return the retained provider inventory needed by later media refreshes."""
+    metadata = getattr(rom, f"{provider}_metadata", None)
+    if isinstance(metadata, dict):
+        source = metadata.get("provider_media")
+        if isinstance(source, dict):
+            return source
     original_cover = getattr(rom, "original_cover_url", None) or rom.url_cover
-    source = {
+    return {
         "url_covers": [original_cover] if original_cover else [],
         "url_screenshots": rom.url_screenshots or [],
         "url_artworks": [],
     }
+
+
+async def refresh_provider_owned_media(
+    rom, expected_version, provider: str, source: dict[str, object] | None = None
+):
+    """Refresh persisted provider images within their publication transaction."""
+    if not isinstance(provider, str) or not provider:
+        raise ValueError("Provider is required")
+    source = source if source is not None else persisted_provider_media(rom, provider)
     failures: list[ProviderMediaFailure] = []
     candidates = discover_provider_media(provider, source)
     suppressed = db_rom_handler.get_provider_media_suppressions(rom.id, candidates)

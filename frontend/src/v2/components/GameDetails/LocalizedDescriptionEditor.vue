@@ -28,6 +28,7 @@ const props = withDefaults(
     manualMetadata?: ManualMetadata | null;
     steamMetadata?: SteamMetadataSchema | null;
     ssMetadata?: ProviderMetadata | null;
+    igdbSummary?: string | null;
     provider: DescriptionProvider | null;
     canEdit?: boolean;
   }>(),
@@ -38,6 +39,7 @@ const props = withDefaults(
     manualMetadata: null,
     steamMetadata: null,
     ssMetadata: null,
+    igdbSummary: null,
   },
 );
 const emit = defineEmits<{
@@ -78,6 +80,7 @@ const resolution = computed(() =>
     manualMetadata: props.manualMetadata,
     steamMetadata: props.steamMetadata,
     ssMetadata: props.ssMetadata,
+    igdbSummary: props.igdbSummary,
     provider: props.provider,
     locale: selectedLocale.value,
   }),
@@ -94,7 +97,9 @@ const provenance = computed(() => {
         ? t("rom.description-manual-label")
         : result.source === "steam"
           ? "Steam"
-          : "ScreenScraper",
+          : result.source === "igdb"
+            ? "IGDB"
+            : "ScreenScraper",
     language: result.resolvedLocale
       ? (names.of(result.resolvedLocale) ?? result.resolvedLocale)
       : "",
