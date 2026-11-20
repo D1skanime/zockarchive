@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261120-ira
+
+| 261120-ira | Stop browser harness and verify auth path | 2026-11-20 | Complete: removed only this job's interrupted harness containers and network, preserved non-owned volumes and the shared stack. Static review confirms the current line-limit extraction cannot cause the observed post-login `/api/users/me` 401. Typecheck, targeted Trunk and containerized production build passed; no browser automation or tests ran. | [Harness stop and auth trace](./quick/261120-ira-stop-isolated-browser-harness-work-and-s/) |
+
 ## Quick Task 261120-ftg
 
 | 261120-ftg | Restore changed-file line-limit baselines | 2026-11-20 | Complete: moved manual IGDB media retention/publication to the existing metadata-media owner and OST playlist selection to a focused GameDetails composable. Reported source files are at or below their baselines; frontend typecheck and targeted Trunk checks passed. No test suite was run before Live-UAT. | [Line-limit baseline restoration](./quick/261120-ftg-restore-line-limit-baselines-by-extracti/) |
