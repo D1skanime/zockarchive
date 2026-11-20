@@ -229,9 +229,9 @@ The Windows quick inventory is metadata-only (names, stat fields and bounded
 directory traversal), while owned-content proof protects only ZA-owned staged
 media and generated outputs, never library game bytes. Its finite byte-aware
 proof budget consequently cannot terminate a PC library scan. An explicit PC
-subfolder choice is finalized even when its existing child can be reused by
-that inventory: the completion fence retires the chosen parent before a later
-quick scan can rediscover and metadata-match it as a separate game. A rejected
+subfolder choice bypasses inventory reuse and reaches the normal completion
+fence, which retires the chosen parent before a later quick scan can rediscover
+and metadata-match it as a separate game. A rejected
 generated-media proof remains fail-closed: when the scan can associate it with
 a ROM, it persists a failed result with the platform and game, increments the
 owned-content timeout counter, keeps earlier results, and ends the durable
@@ -241,6 +241,8 @@ ambiguous owned-media receipt instead of publishing it.
 ### PC models, metadata, DLC and descriptions
 
 RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. A top-level `OST`/`Soundtrack` folder is intentionally projected both as local soundtrack media and as an `extra` component: the former powers the Media player, while the latter gives the ordinary, manifest-authorized download flow a selectable folder and individual files. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
+
+Manual IGDB matching retains its complete cover, screenshot and artwork source inventory in `igdb_metadata.provider_media`. The explicit parent-media refresh chooses that retained provider inventory before legacy URL fields. For older manual matches that retain only a known IGDB id, it restores this inventory from that same provider record before reconciling screenshots and artwork. Provider-media suppressions remain durable and are checked before every candidate is republished.
 
 #### DLC-owned manuals and media
 

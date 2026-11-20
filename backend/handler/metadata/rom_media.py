@@ -177,6 +177,51 @@ def persisted_provider_media(rom, provider: str) -> dict[str, object]:
     }
 
 
+def persisted_provider_media_source(rom) -> str:
+    """Choose the retained provider inventory before using legacy URL fields."""
+    metadata = getattr(rom, "igdb_metadata", None)
+    if isinstance(metadata, dict) and isinstance(metadata.get("provider_media"), dict):
+        return "igdb"
+    return "provider"
+
+
+def _has_provider_media(media: dict[str, object]) -> bool:
+    return any(
+        isinstance(media.get(key), list) and media[key]
+        for key in ("url_covers", "url_screenshots", "url_artworks")
+    )
+
+
+async def prepare_provider_media_refresh(rom, expected_version):
+    """Restore a manually matched IGDB inventory before an explicit refresh.
+
+    Older manual matches can hold an IGDB id after their legacy image URLs were
+    consumed, without the retained provider inventory introduced for owned
+    media. Re-fetching only that known provider record preserves the match and
+    lets the normal suppression-aware reconciler handle every candidate.
+    """
+    provider = persisted_provider_media_source(rom)
+    source = persisted_provider_media(rom, provider)
+    if _has_provider_media(source) or not rom.igdb_id:
+        return rom, provider, source
+
+    from handler.metadata import meta_igdb_handler
+
+    igdb_rom = await meta_igdb_handler.get_rom_by_id(rom, rom.igdb_id)
+    if not igdb_rom.get("igdb_id"):
+        return rom, provider, source
+    data: dict[str, object] = {"igdb_metadata": dict(rom.igdb_metadata or {})}
+    source = retain_igdb_media(data, igdb_rom)
+    updated = db_rom_handler.update_rom(
+        rom.id,
+        {"igdb_metadata": data["igdb_metadata"]},
+        expected_updated_at=expected_version,
+    )
+    if updated is None:
+        raise ValueError("Media catalog changed")
+    return updated, "igdb", source
+
+
 async def refresh_provider_owned_media(
     rom, expected_version, provider: str, source: dict[str, object] | None = None
 ):

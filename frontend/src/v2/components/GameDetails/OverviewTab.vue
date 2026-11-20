@@ -246,10 +246,7 @@ const coverSource = computed(() => {
 
 const pcMetadata = computed(() => props.rom.metadatum);
 const releaseDate = computed(() => {
-  const timestamp =
-    pcMetadata.value?.pc_release_date ??
-    pcMetadata.value?.first_release_date ??
-    null;
+  const timestamp = pcMetadata.value?.pc_release_date ?? null;
   if (!timestamp) return null;
   return new Date(Number(timestamp) * 1000).toLocaleDateString(
     toBrowserLocale(locale.value),

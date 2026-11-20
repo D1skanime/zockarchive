@@ -211,24 +211,20 @@ def is_selected_collection_child(rom):
     from handler.database.scan_operations_handler import DBScanOperationsHandler
     from handler.database.scan_write_fence import current_scan_write_context
 
-    context = current_scan_write_context()
     command = current_checkpoint_command()
-    if context is None or command is None:
+    if command is None or not is_selected_collection_scope(
+        dict(command.options).get("relative_path", "")
+    ):
+        return False
+    context = current_scan_write_context()
+    if context is None:
         return False
     intent = (
         DBScanOperationsHandler()
         .execution(context.operation_id)["command"]
         .get("collection_promotion")
     )
-    if intent is None or (
-        command.mapping_id,
-        command.expected_revision,
-        dict(command.options).get("relative_path"),
-    ) != (
-        intent["mapping_id"],
-        intent["expected_revision"],
-        intent["selected_child_relative_path"],
-    ):
+    if intent is None:
         return False
     mapping = MappingReadContext(
         command.mapping_id, command.expected_revision
@@ -242,6 +238,36 @@ def is_selected_collection_child(rom):
     except ValueError:
         return False
     return relative_path == intent["selected_child_relative_path"]
+
+
+def is_selected_collection_scope(relative_path):
+    """Whether the active mapped command is an explicit child selection."""
+    from handler.database.scan_operations_handler import DBScanOperationsHandler
+    from handler.database.scan_write_fence import current_scan_write_context
+
+    context = current_scan_write_context()
+    command = current_checkpoint_command()
+    if context is None or command is None:
+        return False
+    scoped_path = dict(command.options).get("relative_path")
+    if not scoped_path or scoped_path != relative_path:
+        return False
+    intent = (
+        DBScanOperationsHandler()
+        .execution(context.operation_id)["command"]
+        .get("collection_promotion")
+    )
+    return intent is not None and (
+        command.mapping_id,
+        command.expected_revision,
+        scoped_path,
+        relative_path,
+    ) == (
+        intent["mapping_id"],
+        intent["expected_revision"],
+        intent["selected_child_relative_path"],
+        intent["selected_child_relative_path"],
+    )
 
 
 def record_checked_game(rom, *, outcome, cause_code=None, metadata_identified=None):

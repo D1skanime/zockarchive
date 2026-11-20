@@ -49,6 +49,16 @@ const movingId = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
 const uploadFailures = ref<string[]>([]);
 const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
+const localSoundtrack = useLocalSoundtrackPlaylist({
+  rom: () => props.rom,
+  player,
+  refreshCanonical,
+  syncPlaylist,
+  playlist: () => ({ tracks: playerTracks(), metas: playerMetas() }),
+  handleError: async (error) => {
+    if (!(await handleConflict(error))) snackbar.error(errorMessage(error));
+  },
+});
 const ownedTracks = computed(() =>
   (props.rom.owned_media ?? []).filter(
     (item) => item.role === "soundtrack" && item.state === "active",
@@ -129,17 +139,6 @@ async function handleConflict(error: unknown) {
   }
   return false;
 }
-const localSoundtrack = useLocalSoundtrackPlaylist({
-  rom: () => props.rom,
-  player,
-  refreshCanonical,
-  syncPlaylist,
-  playlist: () => ({ tracks: playerTracks(), metas: playerMetas() }),
-  handleError: async (error) => {
-    if (!(await handleConflict(error))) snackbar.error(errorMessage(error));
-  },
-});
-
 async function uploadTracks(files: File[]) {
   if (!files.length || uploading.value) return;
   uploading.value = true;
