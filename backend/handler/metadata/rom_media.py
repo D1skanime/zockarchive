@@ -17,7 +17,9 @@ from handler.database.provider_media_suppression import candidate_key
 from handler.database.scan_write_fence import current_scan_write_context
 from handler.filesystem import fs_resource_handler
 from handler.filesystem.scan_media_publication import ScanMediaBatch
-from models.rom import RomOwnedMediaRole, derive_owned_media_display_label
+from handler.metadata.igdb_handler import IGDBRom
+from logger.logger import log
+from models.rom import Rom, RomOwnedMediaRole, derive_owned_media_display_label
 from utils.context import ctx_httpx_client
 
 _MAX_PROVIDER_MEDIA = 500
@@ -92,6 +94,53 @@ def discover_provider_media(
             raise ValueError("Provider media list is invalid or exceeds the limit")
         candidates.extend(_candidate(provider, value, role) for value in values)
     return candidates
+
+
+def retain_igdb_media(
+    cleaned_data: dict[str, object], igdb_rom: IGDBRom
+) -> dict[str, object]:
+    """Persist the complete IGDB image inventory for later owned-media refreshes."""
+    artwork_urls = list(igdb_rom.get("url_artworks", []))
+    media: dict[str, object] = {
+        "url_covers": [igdb_rom["url_cover"]] if igdb_rom.get("url_cover") else [],
+        "url_screenshots": [
+            url
+            for url in igdb_rom.get("url_screenshots", [])
+            if url not in artwork_urls
+        ],
+        "url_artworks": artwork_urls,
+    }
+    existing_metadata = cleaned_data.get("igdb_metadata")
+    retained_metadata = (
+        dict(existing_metadata) if isinstance(existing_metadata, dict) else {}
+    )
+    retained_metadata["provider_media"] = media
+    cleaned_data["igdb_metadata"] = retained_metadata
+    return media
+
+
+async def publish_igdb(rom: Rom, media: dict[str, object] | None) -> Rom:
+    """Publish retained manual-IGDB media without replacing user choices."""
+    if media is None:
+        return rom
+    try:
+        refreshed_rom, failures = await refresh_provider_owned_media(
+            rom, rom.updated_at, "igdb", media
+        )
+        for failure in failures:
+            log.warning(
+                "Manual IGDB media retained prior catalog state for ROM %s (%s)",
+                refreshed_rom.id,
+                failure.reason,
+            )
+        return refreshed_rom
+    except (ValueError, OSError) as error:
+        log.warning(
+            "Manual IGDB media catalog refresh failed for ROM %s (%s)",
+            rom.id,
+            type(error).__name__,
+        )
+        return rom
 
 
 async def _download_provider_image(

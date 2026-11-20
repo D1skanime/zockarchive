@@ -88,8 +88,8 @@ from handler.metadata import (
     meta_ss_handler,
     meta_steam_handler,
 )
+from handler.metadata import rom_media as rm
 from handler.metadata.launchbox_handler.media import populate_rom_specific_paths
-from handler.metadata.rom_media import refresh_provider_owned_media
 from handler.metadata.ss_handler import add_ss_auth_to_url, get_preferred_media_types
 from handler.rom_conversion import promote_single_file_to_folder
 from logger.formatter import BLUE
@@ -1878,32 +1878,15 @@ async def update_rom(
             cleaned_data.update(steam_rom)
     elif rom.steam_id and not cleaned_data["steam_id"]:
         cleaned_data.update({"steam_id": None, "steam_metadata": {}})
-
     manual_igdb_media: dict[str, object] | None = None
     if cleaned_data["igdb_id"] and int(cleaned_data["igdb_id"]) != rom.igdb_id:
         igdb_rom = await meta_igdb_handler.get_rom_by_id(rom, cleaned_data["igdb_id"])
         if igdb_rom.get("igdb_id"):
             cleaned_data.update(igdb_rom)
-            artwork_urls = list(igdb_rom.get("url_artworks", []))
-            manual_igdb_media = {
-                "url_covers": (
-                    [igdb_rom["url_cover"]] if igdb_rom.get("url_cover") else []
-                ),
-                "url_screenshots": [
-                    url
-                    for url in igdb_rom.get("url_screenshots", [])
-                    if url not in artwork_urls
-                ],
-                "url_artworks": artwork_urls,
-            }
-            igdb_metadata = dict(cleaned_data.get("igdb_metadata") or {})
-            igdb_metadata["provider_media"] = manual_igdb_media
-            cleaned_data["igdb_metadata"] = igdb_metadata
+            manual_igdb_media = rm.retain_igdb_media(cleaned_data, igdb_rom)
     elif rom.igdb_id and not cleaned_data["igdb_id"]:
         cleaned_data.update({"igdb_id": None, "igdb_metadata": {}})
-
     cleaned_data.pop("url_artworks", None)
-
     url_screenshots = cleaned_data.get("url_screenshots", [])
     screenshots_changed = pydash.xor(url_screenshots, rom.url_screenshots or [])
     if url_screenshots:
@@ -2102,13 +2085,11 @@ async def update_rom(
     log.debug(
         f"Updating {hl(cleaned_data.get('name', ''), color=BLUE)} [{hl(cleaned_data.get('fs_name', ''))}] with data {cleaned_data}"
     )
-
     from endpoints.roms.edited_cover import persist_rom_cover_edit
 
     await persist_rom_cover_edit(
         rom, id, cleaned_data, expected_version, searched_cover_url
     )
-
     # Rename the file/folder if the name has changed
     if should_update_fs:
         try:
@@ -2139,23 +2120,7 @@ async def update_rom(
     if not rom:
         raise RomNotFoundInDatabaseException(id)
 
-    if manual_igdb_media is not None:
-        try:
-            rom, failures = await refresh_provider_owned_media(
-                rom, rom.updated_at, "igdb", manual_igdb_media
-            )
-            for failure in failures:
-                log.warning(
-                    "Manual IGDB media retained prior catalog state for ROM %s (%s)",
-                    rom.id,
-                    failure.reason,
-                )
-        except (ValueError, OSError) as error:
-            log.warning(
-                "Manual IGDB media catalog refresh failed for ROM %s (%s)",
-                rom.id,
-                type(error).__name__,
-            )
+    rom = await rm.publish_igdb(rom, manual_igdb_media)
 
     for provider in ("ss", "steam"):
         field = provider + "_id"

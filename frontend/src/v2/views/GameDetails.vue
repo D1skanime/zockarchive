@@ -92,7 +92,6 @@ onBeforeRouteUpdate(async (to) => {
   // its own page): the panel is the sole scroll context here.
   panelEl.value?.scrollTo({ top: 0, behavior: "smooth" });
 });
-
 // Active tab — URL-persistent via `?tab=`.
 const tab = ref<string>((route.query.tab as string) || "overview");
 watch(tab, (value) => {
@@ -500,7 +499,6 @@ const tabs = computed<ZATabNavItem[]>(() => [
             :description-provider="isPcRom ? 'steam' : 'screenscraper'"
             :sections="overviewSections"
             :ss-metadata="currentRom.ss_metadata"
-            :igdb-summary="currentRom.igdb_id ? currentRom.summary : null"
             :player-count="playerCount"
             :user-collections="userCollections"
             :hltb="currentRom.hltb_metadata"

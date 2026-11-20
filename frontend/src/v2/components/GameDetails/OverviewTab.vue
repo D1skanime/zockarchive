@@ -65,7 +65,6 @@ const props = defineProps<{
   description: DescriptionResolution;
   descriptionProvider?: DescriptionProvider | null;
   ssMetadata?: ProviderMetadata | null;
-  igdbSummary?: string | null;
   sections: InfoGridSection[];
   playerCount: string | null;
   userCollections: UserCollectionSchema[];
@@ -104,7 +103,6 @@ const editPermission = getActivePinia()
   : null;
 const canEdit = computed(() => editPermission?.value ?? false);
 const descriptionEditorOpen = ref(false);
-
 const hasAgeRatings = computed(
   () => (props.rom.metadatum?.age_ratings?.length ?? 0) > 0,
 );
@@ -322,7 +320,7 @@ const youtubeEmbedUrl = computed(() =>
           :manual-metadata="rom.manual_metadata"
           :steam-metadata="rom.steam_metadata"
           :ss-metadata="ssMetadata"
-          :igdb-summary="igdbSummary"
+          :igdb-summary="rom.igdb_id ? rom.summary : null"
           :provider="descriptionProvider ?? null"
           @saved="
             () => {

@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261120-ftg
+
+| 261120-ftg | Restore changed-file line-limit baselines | 2026-11-20 | Complete: moved manual IGDB media retention/publication to the existing metadata-media owner and OST playlist selection to a focused GameDetails composable. Reported source files are at or below their baselines; frontend typecheck and targeted Trunk checks passed. No test suite was run before Live-UAT. | [Line-limit baseline restoration](./quick/261120-ftg-restore-line-limit-baselines-by-extracti/) |
+
 ## Quick Task 261119-o22
 
 The resumed isolated current-branch harness now confirms the regular Windows
