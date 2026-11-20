@@ -95,7 +95,7 @@ export function resolveDescription(
         : [];
   const igdbSummary = descriptionText(input.igdbSummary);
   if (igdbSummary) {
-    providers.push({ locale: "en", text: igdbSummary, source: "igdb" });
+    providers.unshift({ locale: "en", text: igdbSummary, source: "igdb" });
   }
   return selectDescription(
     input.locale,
