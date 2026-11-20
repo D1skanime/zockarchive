@@ -250,17 +250,23 @@ def is_selected_collection_scope(relative_path):
     if context is None or command is None:
         return False
     scoped_path = dict(command.options).get("relative_path")
-    if not scoped_path or scoped_path != relative_path:
+    if scoped_path and scoped_path != relative_path:
         return False
     intent = (
         DBScanOperationsHandler()
         .execution(context.operation_id)["command"]
         .get("collection_promotion")
     )
-    return intent is not None and (
+    if intent is None:
+        return False
+    # Discovery decides whether a known child can be reused before it binds the
+    # narrowed filesystem handler. Accept the promotion's exact child target in
+    # that earlier phase as well, so it is refreshed rather than silently reused.
+    expected_path = scoped_path or intent["selected_child_relative_path"]
+    return (
         command.mapping_id,
         command.expected_revision,
-        scoped_path,
+        expected_path,
         relative_path,
     ) == (
         intent["mapping_id"],

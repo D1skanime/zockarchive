@@ -203,6 +203,20 @@ async def _identify_platform(
     quick_contexts: dict[int, WindowsQuickContext] = {}
     # Create semaphore to limit concurrent ROM scanning
     scan_semaphore = asyncio.Semaphore(SCAN_WORKERS)
+    checkpoint_command = current_checkpoint_command()
+    selected_scope = (
+        dict(checkpoint_command.options).get("relative_path")
+        if checkpoint_command is not None
+        else None
+    )
+    if selected_scope and len(fs_roms) == 1:
+        # A directly selected mapping child is already rooted at that child, so
+        # get_roms() cannot infer the full mapping-relative path from its name.
+        # Preserve it for legacy-identity recovery and the quick-inventory fence.
+        fs_roms[0]["scan_relative_path"] = selected_scope
+        fs_roms[0][
+            "logical_fs_path"
+        ] = get_fs_rom_handler().get_logical_roms_fs_structure(platform.fs_slug)
 
     async def scan_rom_with_semaphore(fs_rom: FSRom, rom: Rom | None) -> None:
         """Scan a single ROM with semaphore limiting"""
@@ -284,14 +298,21 @@ async def _identify_platform(
                 rom = selected_child_legacy_rom(
                     roms_by_fs_name.get(fs_rom["fs_name"]), fs_rom
                 )
-            quick = await inspect_discovered_game(
-                platform,
-                fs_rom,
-                rom,
-                scan_type=scan_type.value,
-                rom_ids=roms_ids,
-                metadata_only=metadata_only,
-            )
+            selected_legacy = selected_child_legacy_rom(rom, fs_rom)
+            if selected_legacy is not None:
+                # The catalog identity is still rooted at an old mapping. Do
+                # not enlist it in the quick baseline until _identify_rom has
+                # moved it under the selected mapping and rebuilt its files.
+                quick = None
+            else:
+                quick = await inspect_discovered_game(
+                    platform,
+                    fs_rom,
+                    rom,
+                    scan_type=scan_type.value,
+                    rom_ids=roms_ids,
+                    metadata_only=metadata_only,
+                )
             if quick is not None:
                 quick_contexts[id(fs_rom)] = quick
                 if rom is not None:

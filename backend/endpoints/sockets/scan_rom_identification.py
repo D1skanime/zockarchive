@@ -23,6 +23,7 @@ from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from handler.metadata.rom_media import refresh_provider_owned_media
 from handler.metadata.ss_handler import add_ss_auth_to_url, get_preferred_media_types
 from handler.redis_handler import redis_client
+from handler.scan_collection_discovery import prepare_selected_legacy_child
 from handler.scan_handler import (
     MetadataSource,
     ScanType,
@@ -79,17 +80,8 @@ async def _identify_rom(
         "url_manual": "",
         "url_screenshots": [],
     }
-
-    from handler.scan_collection_discovery import selected_child_legacy_rom
-
-    if selected_child_legacy_rom(rom, fs_rom) is not None:
-        # Keep the existing catalog identity, but let the successful scan merge
-        # move it from its old mapping root to the operator-selected child.
-        rom.fs_path = roms_path
-        rom.missing_from_fs = False
-
+    selected_legacy_child = prepare_selected_legacy_child(rom, fs_rom, roms_path)
     calculate_hashes = not cm.get_config().SKIP_HASH_CALCULATION
-
     from handler.windows_quick_execution import (
         current_windows_quick,
         inventory_binding,
@@ -175,6 +167,7 @@ async def _identify_rom(
     should_update_files = not metadata_only and (
         quick is not None
         or reassociated
+        or selected_legacy_child
         or _should_get_rom_files(
             scan_type=scan_type,
             rom=rom,

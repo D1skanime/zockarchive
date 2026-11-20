@@ -130,6 +130,15 @@ def selected_child_legacy_rom(rom, entry):
     return rom if legacy.parts[-len(target.parts) :] == target.parts else None
 
 
+def prepare_selected_legacy_child(rom, entry, roms_path):
+    """Move an explicitly chosen legacy child onto the active mapping root."""
+    selected = selected_child_legacy_rom(rom, entry)
+    if selected is not None:
+        selected.fs_path = roms_path
+        selected.missing_from_fs = False
+    return selected is not None
+
+
 async def identify_collection_game(fs_rom, identify, **kwargs):
     scope = fs_rom.get("scan_relative_path")
     if scope is None:

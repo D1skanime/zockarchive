@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261120-u60
+
+| 261120-u60 | Diagnose Dev UAT Windows selected-subfolder recurrence | 2026-11-20 | Complete: actual Dev database evidence identified a missing legacy child under the former mapping that could not reach the completion fence. The selected child is now rebuilt at the active mapping before quick-inventory reuse. A normal Dev child scan followed by Windows quick scan showed no parent recurrence at desktop or mobile. The related IGDB media refresh correction retrieved and published 12 screenshots plus 12 artwork records. Scoped Trunk, backend syntax, frontend typecheck and the Dev-container production build passed. | [Dev UAT diagnosis and repair](./quick/261120-u60-diagnose-and-fix-dev-uat-windows-selecte/) |
+
 ## Quick Task 261120-sd9
 
 | 261120-sd9 | Fix confirmed Dev UAT scan and media failures | 2026-11-20 | Complete after commit c21dadd27: typecheck, targeted Trunk and isolated production build passed. Per user direction, the automatic Dev handoff follows this completion and the human performs the post-deployment UAT for the Tales child scan, IGDB media refresh, and OST playback/download. | [Dev UAT fixes](./quick/261120-sd9-fix-confirmed-dev-uat-failures-for-pc-co/) |
