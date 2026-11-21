@@ -151,6 +151,7 @@ async def _identify_platform(
         identify_collection_game,
         selected_child_legacy_rom,
     )
+    from handler.scan_mapping_identity_recovery import recover_mapping_identity
 
     fs_roms, _ = collection_inventory(platform, fs_roms, filesystem_scope_path)
     # A mapping-backed scan has an authoritative logical root. File names alone
@@ -294,12 +295,15 @@ async def _identify_platform(
                 if mapping_inventory
                 else roms_by_fs_name.get(fs_rom["fs_name"])
             )
-            if mapping_inventory and rom is None:
-                rom = selected_child_legacy_rom(
-                    roms_by_fs_name.get(fs_rom["fs_name"]), fs_rom
-                )
+            rom, mapping_rebound = recover_mapping_identity(
+                mapping_inventory,
+                rom,
+                roms_by_fs_name.get(fs_rom["fs_name"]),
+                fs_rom,
+                selected_child_legacy_rom,
+            )
             selected_legacy = selected_child_legacy_rom(rom, fs_rom)
-            if selected_legacy is not None:
+            if selected_legacy is not None or mapping_rebound:
                 # The catalog identity is still rooted at an old mapping. Do
                 # not enlist it in the quick baseline until _identify_rom has
                 # moved it under the selected mapping and rebuilt its files.
@@ -357,12 +361,16 @@ async def _identify_platform(
                         record_completed_game(rom)
                     skipped_rom_ids.append(rom.id)
                     continue
-            if quick is not None or should_scan_rom(
-                scan_type=scan_type,
-                rom=rom,
-                roms_ids=roms_ids,
-                metadata_sources=metadata_sources,
-                fs_rom=fs_rom,
+            if (
+                mapping_rebound
+                or quick is not None
+                or should_scan_rom(
+                    scan_type=scan_type,
+                    rom=rom,
+                    roms_ids=roms_ids,
+                    metadata_sources=metadata_sources,
+                    fs_rom=fs_rom,
+                )
             ):
                 roms_to_scan.append((fs_rom, rom))
             elif rom:

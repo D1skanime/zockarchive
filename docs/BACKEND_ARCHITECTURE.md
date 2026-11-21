@@ -242,12 +242,24 @@ subfolder choice reclaims a same-named missing catalog child from an older
 mapping before inventory reuse. It rebuilds that child's files at the active
 mapping path and reaches the normal completion fence, which retires the chosen
 parent before a later quick scan can rediscover and metadata-match it as a
-separate game. A rejected
+separate game. The same recovery also applies to an ordinary missing Windows
+game after an explicit direct-mapping rename, but only when an inactive mapping
+on the same storage root yields the exact same mapping-relative game suffix.
+It reuses the existing catalog row and rebuilds its PC files, including local
+soundtrack rows, rather than creating a duplicate or guessing by display name.
+A rejected
 generated-media proof remains fail-closed: when the scan can associate it with
 a ROM, it persists a failed result with the platform and game, increments the
 owned-content timeout counter, keeps earlier results, and ends the durable
 operation as failed after later work has completed. Recovery retains the
 ambiguous owned-media receipt instead of publishing it.
+
+Scan lifecycle recovery never clears the active execution slot directly. It
+requires the owned-media verifier to be idle and every live RQ worker to deny
+ownership before recovering a terminal or restart-orphaned `STARTED` attempt.
+This distinguishes an RQ status record retained after a worker restart from a
+live writer, preserving the fencing boundary while letting the existing recovery
+flow release the stale attempt safely.
 
 ### PC models, metadata, DLC and descriptions
 

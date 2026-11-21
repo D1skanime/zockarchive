@@ -132,6 +132,8 @@ def selected_child_legacy_rom(rom, entry):
 
 def prepare_selected_legacy_child(rom, entry, roms_path):
     """Move an explicitly chosen legacy child onto the active mapping root."""
+    if entry.get("mapping_identity_rebound", False):
+        return True
     selected = selected_child_legacy_rom(rom, entry)
     if selected is not None:
         selected.fs_path = roms_path

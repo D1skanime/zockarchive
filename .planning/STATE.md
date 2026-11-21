@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261121-hd2
+
+| 261121-hd2 | Rebind legacy Windows catalog identity for local soundtrack inventory | 2026-11-21 | Complete: a missing Windows game from an inactive direct mapping is reconnected only for an exact same-root, same-relative-suffix identity. Normal inventory rebuilt Hades' local OST as Soundtrack media and a selectable Game Download component. Dev desktop/mobile playback advanced through the protected file route and a one-member OST download completed; full and following quick scans completed. Scoped Ruff, backend syntax, frontend typecheck and the Dev-container production build passed. | [Hades OST mapping recovery](./quick/261121-hd2-rebind-legacy-windows-rom-inventory/) |
+
 ## Quick Task 261121-iu1
 
 | 261121-iu1 | Recover stalled Dev scan lifecycle | 2026-11-21 | Complete: the Dev operation with a terminal RQ job but no `ended_at` is no longer held indefinitely as worker-unconfirmed. Recovery keeps fencing intact, exposes the real active operation over stale local status, and uses the existing safe Stop action before a new scan. Dev browser checks confirmed a completed All/Quick scan and a completed ROM metadata refresh after restart. Scoped Trunk, frontend typecheck, backend syntax and containerized production build passed. | [Stalled scan recovery](./quick/261121-iu1-recover-stalled-dev-scan-lifecycle/) |
