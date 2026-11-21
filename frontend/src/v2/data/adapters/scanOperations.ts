@@ -14,6 +14,11 @@ import {
   toScanOperationRequest,
 } from "../operations";
 import {
+  scanOperationResponseDetail,
+  scanOperationStatusCode,
+  scanOperationUncertain,
+} from "./scanOperationHttp";
+import {
   normalizeStatusQuery,
   type ScanOperationStatusQuery,
 } from "./scanOperationStatusQuery";
@@ -180,16 +185,6 @@ function confirmed(
   return snapshot;
 }
 
-function statusCode(error: unknown) {
-  return axios.isAxiosError(error) ? error.response?.status : undefined;
-}
-function uncertain(error: unknown) {
-  return (
-    axios.isAxiosError(error) &&
-    (!error.response || error.response.status >= 500)
-  );
-}
-
 async function lookup(context: Session, key: string) {
   const { data } = await api.get<ScanOperationSnapshot>(
     `/scan-operations/by-request/${requestKey(key)}`,
@@ -251,6 +246,10 @@ async function active() {
 
 async function restore() {
   const context = session();
+  // The execution slot is authoritative across browser sessions. Prefer it to
+  // a completed operation retained in local storage after a worker restart.
+  const current = await active();
+  if (current) return current;
   const saved = readIdentity(context);
   if (saved) {
     try {
@@ -258,7 +257,7 @@ async function restore() {
         ? await status(saved.operation_id)
         : await lookup(context, saved.request_key);
     } catch (error) {
-      if (statusCode(error) !== 404) throw error;
+      if (scanOperationStatusCode(error) !== 404) throw error;
       clear();
       return active();
     }
@@ -290,7 +289,7 @@ async function submitRequest(context: Session, payload: ScanOperationRequest) {
       )
         return previous;
     } catch (error) {
-      if (statusCode(error) !== 404) throw error;
+      if (scanOperationStatusCode(error) !== 404) throw error;
       // An authoritative absence permits a new identity after a database reset.
     }
   }
@@ -299,7 +298,14 @@ async function submitRequest(context: Session, payload: ScanOperationRequest) {
   try {
     return await post(context, payload);
   } catch (error) {
-    if (!uncertain(error)) throw error;
+    if (
+      scanOperationStatusCode(error) === 409 &&
+      scanOperationResponseDetail(error) === "scan_already_active"
+    ) {
+      const current = await active();
+      if (current) return current;
+    }
+    if (!scanOperationUncertain(error)) throw error;
     try {
       return await lookup(context, payload.request_key);
     } catch {
@@ -360,7 +366,7 @@ async function mutate(
       snapshot.id,
     );
   } catch (error) {
-    if (!uncertain(error)) throw error;
+    if (!scanOperationUncertain(error)) throw error;
     const current = await lookup(context, snapshot.request_key);
     if (current.id !== snapshot.id)
       throw new OperationTranslationError("scan_response_identity_mismatch");
@@ -375,7 +381,7 @@ async function mutate(
         snapshot.id,
       );
     } catch (retryError) {
-      if (!uncertain(retryError)) throw retryError;
+      if (!scanOperationUncertain(retryError)) throw retryError;
       return lookup(context, snapshot.request_key);
     }
   }

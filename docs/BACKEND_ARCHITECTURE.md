@@ -72,6 +72,15 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 
 Scan-operation reads remain protected by the existing task scope and operation ownership checks. The operation projection exposes a compact, data-minimized snapshot for lifecycle polling and accepts an explicit validated result query only when the client opens the explorer. Every list, matching count, platform option, and actionable sample is scoped to the operation's current attempt; the result query uses bounded pagination, normalized name search, numeric platform filtering, and an allow-listed outcome filter. The snapshot never exposes host paths, raw worker checkpoints, or provider exception text. This lets the frontend show authoritative progress and a compact actionable summary without preloading an operation's rows.
 
+The singleton execution slot remains owned until lifecycle reconciliation has
+proved that the previous attempt can no longer write. Recovery requires an
+idle owned-media verifier, a terminal RQ job state, and no RQ worker reporting
+that job as current. A process restart may leave terminal RQ metadata without
+an end timestamp, so that timestamp is never used as a substitute for the
+terminal-state and worker-ownership fence. Browser restoration first asks for
+the active slot, which prevents a completed operation saved in local storage
+from obscuring an interrupted operation and its supported resume action.
+
 ### Metadata, Localization and Media
 
 - Parent metadata is provider JSON plus roms_metadata and filter-oriented roms_facets in backend/models/rom.py.

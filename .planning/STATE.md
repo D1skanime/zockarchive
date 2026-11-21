@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261121-iu1
+
+| 261121-iu1 | Recover stalled Dev scan lifecycle | 2026-11-21 | Complete: the Dev operation with a terminal RQ job but no `ended_at` is no longer held indefinitely as worker-unconfirmed. Recovery keeps fencing intact, exposes the real active operation over stale local status, and uses the existing safe Stop action before a new scan. Dev browser checks confirmed a completed All/Quick scan and a completed ROM metadata refresh after restart. Scoped Trunk, frontend typecheck, backend syntax and containerized production build passed. | [Stalled scan recovery](./quick/261121-iu1-recover-stalled-dev-scan-lifecycle/) |
+
 ## Quick Task 261120-u60
 
 | 261120-u60 | Diagnose Dev UAT Windows selected-subfolder recurrence | 2026-11-20 | Complete: actual Dev database evidence identified a missing legacy child under the former mapping that could not reach the completion fence. The selected child is now rebuilt at the active mapping before quick-inventory reuse. A normal Dev child scan followed by Windows quick scan showed no parent recurrence at desktop or mobile. The related IGDB media refresh correction retrieved and published 12 screenshots plus 12 artwork records. Scoped Trunk, backend syntax, frontend typecheck and the Dev-container production build passed. | [Dev UAT diagnosis and repair](./quick/261120-u60-diagnose-and-fix-dev-uat-windows-selecte/) |

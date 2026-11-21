@@ -165,12 +165,15 @@ def worker_exit_confirmed(execution):
         return True
     try:
         job = Job.fetch(identity, connection=redis_client)
-        if (
-            job.get_status(refresh=True)
-            not in {JobStatus.FINISHED, JobStatus.FAILED, JobStatus.STOPPED}
-            or job.ended_at is None
-        ):
+        if job.get_status(refresh=True) not in {
+            JobStatus.FINISHED,
+            JobStatus.FAILED,
+            JobStatus.STOPPED,
+        }:
             return False
+        # A process restart can leave RQ's terminal job record without an
+        # ended_at timestamp. Terminal status plus no worker ownership is the
+        # durable proof that this attempt can no longer write.
         for worker in Worker.all(connection=redis_client):
             active = worker.get_current_job()
             if active is not None and active.id == job.id:
