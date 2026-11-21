@@ -1,5 +1,7 @@
 from unittest.mock import Mock
 
+from rq.job import JobStatus
+
 from handler import scan_operation_recovery as recovery
 
 
@@ -73,4 +75,38 @@ def test_expired_lease_does_not_prove_worker_stopped(monkeypatch):
     repository.confirm_stopped.assert_not_called()
     repository.note_execution_cause.assert_called_once_with(
         "operation", 3, "worker_stop_unconfirmed", "check_worker"
+    )
+
+
+def test_orphaned_started_job_confirms_worker_exit(monkeypatch):
+    job = Mock(id="job")
+    job.get_status.return_value = JobStatus.STARTED
+    worker = Mock()
+    worker.get_current_job.return_value = None
+
+    monkeypatch.setattr(
+        "handler.filesystem.owned_content_proof.owned_verifier_idle", lambda: True
+    )
+    monkeypatch.setattr("rq.job.Job.fetch", Mock(return_value=job))
+    monkeypatch.setattr("rq.Worker.all", Mock(return_value=[worker]))
+
+    assert recovery.worker_exit_confirmed(
+        {"rq_job_id": "job", "attempt_id": "attempt", "checkpoint": {}}
+    )
+
+
+def test_started_job_with_live_worker_remains_fenced(monkeypatch):
+    job = Mock(id="job")
+    job.get_status.return_value = JobStatus.STARTED
+    worker = Mock()
+    worker.get_current_job.return_value = job
+
+    monkeypatch.setattr(
+        "handler.filesystem.owned_content_proof.owned_verifier_idle", lambda: True
+    )
+    monkeypatch.setattr("rq.job.Job.fetch", Mock(return_value=job))
+    monkeypatch.setattr("rq.Worker.all", Mock(return_value=[worker]))
+
+    assert not recovery.worker_exit_confirmed(
+        {"rq_job_id": "job", "attempt_id": "attempt", "checkpoint": {}}
     )

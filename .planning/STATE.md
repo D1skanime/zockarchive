@@ -16,6 +16,10 @@ progress:
 
 # Project State
 
+## Quick Task 261121-hd3
+
+| 261121-hd3 | Add accepted mapping recovery logic tests | 2026-11-21 | Complete: direct tests cover exact rebind, rejected ambiguity, fallback retention, orphaned RQ STARTED recovery and live-worker fencing. The isolated MariaDB target passed 11 tests with zero failures, errors or skips. | [Mapping recovery tests](./quick/261121-hd3-post-uat-mapping-recovery-tests/) |
+
 ## Quick Task 261121-hd2
 
 | 261121-hd2 | Rebind legacy Windows catalog identity for local soundtrack inventory | 2026-11-21 | Complete: a missing Windows game from an inactive direct mapping is reconnected only for an exact same-root, same-relative-suffix identity. Normal inventory rebuilt Hades' local OST as Soundtrack media and a selectable Game Download component. Dev desktop/mobile playback advanced through the protected file route and a one-member OST download completed; full and following quick scans completed. Scoped Ruff, backend syntax, frontend typecheck and the Dev-container production build passed. | [Hades OST mapping recovery](./quick/261121-hd2-rebind-legacy-windows-rom-inventory/) |
