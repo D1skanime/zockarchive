@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261122-0ek completed: selected-child completion fencing now spans every
+  post-identification step and preserves the original scan error.
 - 261121-r46 completed: regression repair for mapped downloads, accepted scan
   type replay, archive/OST contracts, and local frontend build cache ownership.
 

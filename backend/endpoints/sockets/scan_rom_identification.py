@@ -31,6 +31,11 @@ from handler.scan_handler import (
     process_pc_automation_after_scan,
     scan_rom,
 )
+from handler.scan_identification_completion import (
+    bind_identification_completion,
+    protect_identification_completion,
+    record_identification_completion,
+)
 from logger.formatter import BLUE
 from logger.formatter import highlight as hl
 from logger.logger import log
@@ -40,6 +45,7 @@ from models.rom import Rom
 catalog_lifecycle_handler = CatalogLifecycleHandler()
 
 
+@protect_identification_completion
 async def _identify_rom(
     platform: Platform,
     fs_rom: FSRom,
@@ -220,6 +226,7 @@ async def _identify_rom(
     )
 
     _added_rom = merge_scan_rom(scanned_rom)
+    bind_identification_completion(_added_rom)
 
     catalog_lifecycle_handler.reconnect_retained_identity(
         rom_id=_added_rom.id,
@@ -292,9 +299,7 @@ async def _identify_rom(
 
     # Short circuit if the scan type is hashes
     if scan_type == ScanType.HASHES or metadata_only:
-        from handler.scan_operation_checkpoint import record_completed_game
-
-        record_completed_game(_added_rom)
+        record_identification_completion(_added_rom)
         return
 
     try:
@@ -422,29 +427,14 @@ async def _identify_rom(
             )
     await _emit_scanning_rom(socket_manager, _added_rom)
 
-    from handler.scan_operation_checkpoint import record_completed_game
     from handler.scan_pc_automation_observation import observe_pc_automation
 
-    completed = False
-
-    def record_completion(completed_rom: Rom) -> None:
-        nonlocal completed
-        record_completed_game(completed_rom)
-        completed = True
-
-    try:
-        await observe_pc_automation(
-            process_pc_automation_after_scan,
-            platform,
-            scanned_rom,
-            _added_rom,
-            newly_added,
-            selected=MetadataSource.STEAM in metadata_sources,
-            completed=record_completion,
-        )
-    finally:
-        # A completed discovery must commit its scoped collection decision even
-        # when optional PC automation cannot complete. Otherwise the next quick
-        # scan reintroduces the retired parent folder as a separate game.
-        if not completed:
-            record_completion(_added_rom)
+    await observe_pc_automation(
+        process_pc_automation_after_scan,
+        platform,
+        scanned_rom,
+        _added_rom,
+        newly_added,
+        selected=MetadataSource.STEAM in metadata_sources,
+        completed=record_identification_completion,
+    )
