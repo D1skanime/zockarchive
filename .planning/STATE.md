@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261122-rah-tests completed: direct RAHasher coverage proves incomplete
+  archive-member evidence omits only the optional hash and launches no helper.
 - 261122-r51 completed: frontend regression contracts now model active-slot
   recovery and extracted local soundtrack behavior.
 - 261122-lpp completed: direct scan-progress visibility contracts cover the
