@@ -203,7 +203,8 @@ export function useScanView() {
   // safe subfolder picker, which must remain reachable after the operation
   // completes. Navigating away or reloading still clears the transient list.
   const showLivePlatformRows = computed(
-    () => scanningPlatforms.value.length > 0,
+    () =>
+      scanning.value || !snapshot.value || scanningPlatforms.value.length > 0,
   );
 
   function scan(subfolder?: SubfolderScanRequest) {
