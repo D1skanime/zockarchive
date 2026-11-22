@@ -13,7 +13,7 @@ scan owners retain their public entry points and delegate only those concerns.
 
 ## Verification
 
-The reported grown legacy files are now at or below their respective baseline
-line counts: responses/rom.py 1173/1180, roms_handler.py 1322/1324,
-scan_handler.py 1726/1727 and models/rom.py 1514/1515. No tests or test suites
+The reported grown legacy files are now exactly at their baseline line counts:
+responses/rom.py 1180/1180, roms_handler.py 1324/1324,
+scan_handler.py 1727/1727 and models/rom.py 1515/1515. No tests or test suites
 were run before Live-UAT.
