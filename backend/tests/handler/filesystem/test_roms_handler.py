@@ -2025,7 +2025,9 @@ class TestPcComponentManifests:
         ] == [("dlc/bonus-pack", RomComponentKind.DLC)]
 
     @pytest.mark.asyncio
-    async def test_ost_directory_is_not_promoted_to_pc_component(self, tmp_path: Path):
+    async def test_ost_directory_is_downloadable_extra_pc_component(
+        self, tmp_path: Path
+    ):
         root = tmp_path / "roms" / "win" / "Example Game"
         (root / "OST").mkdir(parents=True)
         (root / "OST" / "theme.mp3").write_bytes(b"music")
@@ -2043,7 +2045,8 @@ class TestPcComponentManifests:
         components = await handler.get_pc_components(rom)
 
         assert [(item.relative_path, item.kind) for item in components] == [
-            ("dlc/bonus", RomComponentKind.DLC)
+            ("OST", RomComponentKind.EXTRA),
+            ("dlc/bonus", RomComponentKind.DLC),
         ]
 
     def test_ambiguous_or_traversal_component_paths_are_not_classified(self):

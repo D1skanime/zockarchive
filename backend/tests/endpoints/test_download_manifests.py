@@ -295,23 +295,26 @@ def test_create_exact_components_rejects_invalid_or_foreign_selection(
         component.id for component in selected
     ]
 
-    invalid_payloads: tuple[dict[str, object], ...] = (
-        {"component_ids": []},
-        {"component_ids": [selected[0].id, selected[0].id]},
-        {"component_ids": [0]},
-        {"component_ids": [999999]},
-        {"component_ids": None, "source_path": "/nas/private"},
+    invalid_payloads: tuple[tuple[dict[str, object], int], ...] = (
+        ({"component_ids": []}, status.HTTP_422_UNPROCESSABLE_ENTITY),
+        (
+            {"component_ids": [selected[0].id, selected[0].id]},
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+        ),
+        ({"component_ids": [0]}, status.HTTP_422_UNPROCESSABLE_ENTITY),
+        ({"component_ids": [999999]}, status.HTTP_409_CONFLICT),
+        (
+            {"component_ids": None, "source_path": "/nas/private"},
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+        ),
     )
-    for payload in invalid_payloads:
+    for payload, expected_status in invalid_payloads:
         response = client.post(
             f"/api/roms/{rom.id}/download-manifests",
             headers=_headers(access_token),
             json=payload,
         )
-        assert response.status_code in {
-            status.HTTP_404_NOT_FOUND,
-            status.HTTP_422_UNPROCESSABLE_ENTITY,
-        }
+        assert response.status_code == expected_status
         assert "/nas/private" not in response.text
 
 

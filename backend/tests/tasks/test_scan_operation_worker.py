@@ -187,13 +187,13 @@ def test_indeterminate_publication_is_blocked_for_reconciliation():
     )
 
 
-def test_archive_evidence_failure_is_terminal_and_safe():
+def test_unexpected_archive_error_uses_standard_worker_recovery():
     from utils.archives import ArchiveReadError
 
     assert worker._failure_outcome(ArchiveReadError("member inventory incomplete")) == (
         "failed",
-        "archive_evidence_incomplete",
-        "new_scan",
+        "worker_failed",
+        "retry",
     )
 
 

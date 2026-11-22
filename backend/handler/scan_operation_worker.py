@@ -240,10 +240,16 @@ async def run_scan_operation(operation_id):
                     check_worker_boundary()
                     command = decode_command(data)
                     if retry_item is None:
+                        from dataclasses import replace
+
                         from handler.scan_retry_execution import (
                             invalidate_refresh_baselines,
                         )
 
+                        command = replace(
+                            command,
+                            scan_type=policy.get("type", command.scan_type),
+                        )
                         invalidate_refresh_baselines(command, policy)
                     if retry_item is not None:
                         from dataclasses import replace

@@ -16,6 +16,11 @@ progress:
 
 # Project State
 
+## Latest quick task
+
+- 261121-r46 completed: regression repair for mapped downloads, accepted scan
+  type replay, archive/OST contracts, and local frontend build cache ownership.
+
 ## Quick Task 261121-hd3
 
 | 261121-hd3 | Add accepted mapping recovery logic tests | 2026-11-21 | Complete: direct tests cover exact rebind, rejected ambiguity, fallback retention, orphaned RQ STARTED recovery and live-worker fencing. The isolated MariaDB target passed 11 tests with zero failures, errors or skips. | [Mapping recovery tests](./quick/261121-hd3-post-uat-mapping-recovery-tests/) |

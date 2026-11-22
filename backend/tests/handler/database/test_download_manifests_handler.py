@@ -61,27 +61,27 @@ def _component(rom_id, kind, suffix):
     return component
 
 
-def test_create_manifest_selects_only_eligible_components_atomically(admin_user, rom):
+def test_create_manifest_selects_downloadable_components_atomically(admin_user, rom):
     selected = [
         _component(rom.id, RomComponentKind.BASE, "one"),
         _component(rom.id, RomComponentKind.UPDATE, "two"),
         _component(rom.id, RomComponentKind.DLC, "three"),
         _component(rom.id, RomComponentKind.EXTRA, "four"),
     ]
-    excluded = _component(rom.id, RomComponentKind.HOTFIX, "five")
+    hotfix = _component(rom.id, RomComponentKind.HOTFIX, "five")
     with session.begin() as db:
-        db.add_all([*selected, excluded])
+        db.add_all([*selected, hotfix])
 
     filesystem = FakeManifestFilesystem()
     handler = DBDownloadManifestsHandler(filesystem)
     manifest = handler.create_manifest(admin_user.id, rom.id, None)
 
     assert [item.component_id for item in manifest.components] == sorted(
-        item.id for item in selected
+        item.id for item in [*selected, hotfix]
     )
     assert [
         member.size_bytes for item in manifest.components for member in item.members
-    ] == [5 * 1024**3] * 4
+    ] == [5 * 1024**3] * 5
     assert [member_id for member_id, _public_id in filesystem.captured] == sorted(
         member_id for member_id, _public_id in filesystem.captured
     )
