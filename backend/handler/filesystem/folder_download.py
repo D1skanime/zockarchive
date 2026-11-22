@@ -12,9 +12,14 @@ from models.rom import RomComponent, RomComponentKind, RomComponentManifestMembe
 
 
 async def build_folder_download_component(
-    open_access, rom_path: str, evidence: InventoryEvidence
+    handler, rom, inventory: InventoryEvidence | None
 ) -> RomComponent:
     """Hash stable inventory entries into one neutral manifest component."""
+    evidence = inventory or await handler.get_folder_inventory(rom)
+    if not evidence.complete:
+        raise InventoryIncomplete(evidence.reason or "incomplete_evidence")
+    open_access = handler._pc_inventory_access
+    rom_path = handler._pc_game_path(rom)
     members = tuple(entry for entry in evidence.observations if entry.kind == "file")
     if not members:
         raise InventoryIncomplete("empty_inventory")

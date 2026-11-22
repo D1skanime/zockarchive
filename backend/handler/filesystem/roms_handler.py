@@ -576,21 +576,12 @@ class FSRomsHandler(ExternalFSHandler):
             self._pc_inventory_access, self._pc_game_path(rom)
         )
 
-    async def get_pc_inventory(self, rom: Rom) -> InventoryEvidence:
-        return await self.get_folder_inventory(rom)
+    get_pc_inventory = get_folder_inventory
 
     async def get_folder_download_component(
         self, rom: Rom, inventory: InventoryEvidence | None = None
     ) -> RomComponent:
-        """Build one neutral component only from a complete verified inventory."""
-        evidence = (
-            inventory if inventory is not None else await self.get_folder_inventory(rom)
-        )
-        if not evidence.complete:
-            raise InventoryIncomplete(evidence.reason or "incomplete_evidence")
-        return await build_folder_download_component(
-            self._pc_inventory_access, self._pc_game_path(rom), evidence
-        )
+        return await build_folder_download_component(self, rom, inventory)
 
     async def get_pc_components(
         self, rom: Rom, inventory: InventoryEvidence | None = None
