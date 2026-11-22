@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261122-rap completed: MariaDB CI Shard 6 reproduced the two
+  RetroAchievements progress failures, then passed all 827 tests after the
+  test doubles were bound to the task's imported singleton collaborators.
 - 261122-rah-tests completed: direct RAHasher coverage proves incomplete
   archive-member evidence omits only the optional hash and launches no helper.
 - 261122-r51 completed: frontend regression contracts now model active-slot
