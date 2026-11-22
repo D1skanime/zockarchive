@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261122-r51 completed: frontend regression contracts now model active-slot
+  recovery and extracted local soundtrack behavior.
 - 261122-lpp completed: direct scan-progress visibility contracts cover the
   accepted empty state and retained platform rows.
 - 261122-qcr completed: live scan progress now displays its immediate empty
@@ -978,6 +980,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261122-r51 | Reconcile frontend regression expectations | 2026-11-22 | this commit | [261122-r51](./quick/261122-r51-reconcile-frontend-regression-expectations/) |
 | 261122-lpp | Add direct live-progress visibility contracts | 2026-11-22 | this commit | [261122-lpp](./quick/261122-lpp-add-live-progress-visibility-tests/) |
 | 261122-qcr | Restore immediate live scan progress feedback | 2026-11-22 | this commit | [261122-qcr](./quick/261122-qcr-restore-live-scan-empty-state/) |
 | 261122-klq | Finalize selected-child completion on normal return | 2026-11-22 | this commit | [261122-klq](./quick/261122-klq-add-direct-post-uat-tests-for-selected-c/) |

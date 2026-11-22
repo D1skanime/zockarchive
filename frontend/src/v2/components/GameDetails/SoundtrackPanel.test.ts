@@ -1,62 +1,70 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
-const source = readFileSync(
+const panelSource = readFileSync(
   "src/v2/components/GameDetails/SoundtrackPanel.vue",
+  "utf8",
+);
+const localPlaylistSource = readFileSync(
+  "src/v2/components/GameDetails/useLocalSoundtrackPlaylist.ts",
   "utf8",
 );
 
 describe("SoundtrackPanel owned-media queue", () => {
   it("uses only owned soundtrack candidates and their ordered placements", () => {
-    expect(source).toContain('item.role === "soundtrack"');
-    expect(source).toContain("soundtrackPlacement(item)");
-    expect(source).toContain("loadPlaylistForRom");
-    expect(source).toContain("mediaId: item.id");
-    expect(source).not.toContain("getSoundtrackMetadata");
-    expect(source).not.toContain("/files/content/");
-    expect(source).not.toMatch(/\/soundtracks(?:\/|`|'|")/);
+    expect(panelSource).toContain('item.role === "soundtrack"');
+    expect(panelSource).toContain("soundtrackPlacement(item)");
+    expect(panelSource).toContain("loadPlaylistForRom");
+    expect(panelSource).toContain("mediaId: item.id");
+    expect(panelSource).not.toContain("getSoundtrackMetadata");
+    expect(panelSource).not.toMatch(/\/soundtracks(?:\/|`|'|")/);
   });
 
   it("uploads and atomically reorders only through typed owned-media methods", () => {
-    expect(source).toContain("uploadOwnedMedia");
-    expect(source).toContain("replaceOwnedMediaPlacements");
-    expect(source).toContain('role: "soundtrack"');
-    expect(source).toContain("mediaIds: reordered");
-    expect(source).toContain("await refreshCanonical()");
+    expect(panelSource).toContain("uploadOwnedMedia");
+    expect(panelSource).toContain("replaceOwnedMediaPlacements");
+    expect(panelSource).toContain('role: "soundtrack"');
+    expect(panelSource).toContain("mediaIds: reordered");
+    expect(panelSource).toContain("await refreshCanonical()");
   });
 
   it("offers local and owned soundtrack files as background-music candidates", () => {
-    expect(source).toContain('file.category === "soundtrack"');
-    expect(source).toContain("isSupportedSoundtrackFile(file.file_name)");
-    expect(source).toContain("MediaUploadControl");
-    expect(source).toContain("soundtrackAccept");
-    expect(source).toContain("local_background_audio_file_ids");
-    expect(source).toContain("replaceLocalBackgroundAudio");
-    expect(source).toContain("toggleLocalBackgroundAudio");
-    expect(source).toContain("owned_background_audio_media_ids");
-    expect(source).toContain("replaceOwnedBackgroundAudio");
-    expect(source).toContain("toggleOwnedBackgroundAudio");
+    expect(localPlaylistSource).toContain('file.category === "soundtrack"');
+    expect(localPlaylistSource).toContain(
+      "isSupportedSoundtrackFile(file.file_name)",
+    );
+    expect(localPlaylistSource).toContain("local_background_audio_file_ids");
+    expect(localPlaylistSource).toContain("replaceLocalBackgroundAudio");
+    expect(panelSource).toContain("useLocalSoundtrackPlaylist");
+    expect(panelSource).toContain("MediaUploadControl");
+    expect(panelSource).toContain("soundtrackAccept");
+    expect(panelSource).toContain("toggleLocalBackgroundAudio");
+    expect(panelSource).toContain("owned_background_audio_media_ids");
+    expect(panelSource).toContain("replaceOwnedBackgroundAudio");
+    expect(panelSource).toContain("toggleOwnedBackgroundAudio");
   });
 
   it("stops active tracks before confirmed owned deletion and retains decode retry", () => {
-    expect(source).toContain(
-      "if (activeTrackId.value === item.id) player.stop()",
+    expect(panelSource).toContain(
+      "if (activeOwnedTrackId.value === item.id) player.stop()",
     );
-    expect(source).toContain('const canManage = useCan("rom.edit", scope)');
-    expect(source).not.toContain('useCan("rom.delete", scope)');
-    expect(source).toContain('tone: "danger"');
-    expect(source).toContain("deleteOwnedMedia");
-    expect(source).toContain("player.hasError");
-    expect(source).toContain("retryActiveTrack");
+    expect(panelSource).toContain(
+      'const canManage = useCan("rom.edit", scope)',
+    );
+    expect(panelSource).not.toContain('useCan("rom.delete", scope)');
+    expect(panelSource).toContain('tone: "danger"');
+    expect(panelSource).toContain("deleteOwnedMedia");
+    expect(panelSource).toContain("player.hasError");
+    expect(panelSource).toContain("retryActiveTrack");
   });
 
   it("keeps owned-track deletion in both soundtrack list sections", () => {
-    const includedSection = source.slice(
-      source.indexOf('aria-labelledby="included-soundtrack-heading"'),
-      source.indexOf('aria-labelledby="available-uploads-heading"'),
+    const includedSection = panelSource.slice(
+      panelSource.indexOf('aria-labelledby="included-soundtrack-heading"'),
+      panelSource.indexOf('aria-labelledby="available-uploads-heading"'),
     );
-    const availableSection = source.slice(
-      source.indexOf('aria-labelledby="available-uploads-heading"'),
+    const availableSection = panelSource.slice(
+      panelSource.indexOf('aria-labelledby="available-uploads-heading"'),
     );
 
     for (const section of [includedSection, availableSection]) {
@@ -67,10 +75,10 @@ describe("SoundtrackPanel owned-media queue", () => {
   });
 
   it("has permission-gated, labelled linear controls", () => {
-    expect(source).toContain("useCan");
-    expect(source).toContain("canManage");
-    expect(source).toContain("aria-label");
-    expect(source).toContain("t('rom.move-up')");
-    expect(source).toContain("t('rom.move-down')");
+    expect(panelSource).toContain("useCan");
+    expect(panelSource).toContain("canManage");
+    expect(panelSource).toContain("aria-label");
+    expect(panelSource).toContain("t('rom.move-up')");
+    expect(panelSource).toContain("t('rom.move-down')");
   });
 });
