@@ -982,6 +982,7 @@ Recent decisions affecting current work:
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
 | 261122-r51 | Reconcile frontend regression expectations | 2026-11-22 | this commit | [261122-r51](./quick/261122-r51-reconcile-frontend-regression-expectations/) |
 | 261122-lpp | Add direct live-progress visibility contracts | 2026-11-22 | this commit | [261122-lpp](./quick/261122-lpp-add-live-progress-visibility-tests/) |
+| 261122-gate51-backend-regressions | Repair Gate 51 backend regression failures | 2026-11-22 | this commit | [261122-gate51-backend-regressions](./quick/261122-gate51-backend-regressions/) |
 | 261122-qcr | Restore immediate live scan progress feedback | 2026-11-22 | this commit | [261122-qcr](./quick/261122-qcr-restore-live-scan-empty-state/) |
 | 261122-klq | Finalize selected-child completion on normal return | 2026-11-22 | this commit | [261122-klq](./quick/261122-klq-add-direct-post-uat-tests-for-selected-c/) |
 | 261119-j47 | Open Platform folders from library entry points | 2026-11-19 | this commit | [261119-j47](./quick/261119-j47-library-entry-and-select-anchor/) |

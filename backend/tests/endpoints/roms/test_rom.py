@@ -959,13 +959,20 @@ def test_update_rom_records_manual_title_summary_and_pc_release_authority(
         url_artworks=["https://images.igdb.com/igdb/image/upload/t_720p/artwork.jpg"],
     ),
 )
+@patch.object(
+    roms_endpoint.rm,
+    "publish_igdb",
+    new_callable=AsyncMock,
+)
 def test_update_rom_uses_igdb_artwork_without_persisting_its_url(
+    publish_igdb_mock: AsyncMock,
     get_rom_by_id_mock: AsyncMock,
     client: TestClient,
     access_token: str,
     rom: Rom,
 ):
     """Transient IGDB artwork URLs must not become Rom table update fields."""
+    publish_igdb_mock.side_effect = lambda updated_rom, _media: updated_rom
     response = client.put(
         f"/api/roms/{rom.id}",
         headers={"Authorization": f"Bearer {access_token}"},
@@ -976,6 +983,7 @@ def test_update_rom_uses_igdb_artwork_without_persisting_its_url(
     assert response.json()["igdb_id"] == MOCK_IGDB_ID
     assert response.json()["name"] == "Kingdom Come: Deliverance II"
     get_rom_by_id_mock.assert_awaited_once()
+    publish_igdb_mock.assert_awaited_once()
 
 
 @patch.object(FSRomsHandler, "rename_fs_rom")
