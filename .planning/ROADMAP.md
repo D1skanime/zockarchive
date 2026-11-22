@@ -1268,3 +1268,28 @@ normal quick-scan behavior in the browser without NAS changes.
 
 Plans:
 - [ ] `46-01-PLAN.md` - Interrupt archive reads, calibrate and classify owned proofs, then document and browser-verify the safe scan outcome
+
+### Phase 47: ZA: Game-Download-Ansicht bereinigen und vorhandenen PC-Downloader für PS3 nutzen
+
+**Goal:** Keep the Game Download panel focused on transfer work and let eligible
+PS3 folder games reuse the existing bounded, manifest-backed browser download
+manager without exposing source paths or changing ISO/single-file behavior.
+**Requirements**: ZA-DOWNLOAD-47-01, ZA-DOWNLOAD-47-02, ZA-DOWNLOAD-47-03,
+ZA-DOWNLOAD-47-04, ZA-DOWNLOAD-47-05
+**Depends on:** Phase 46
+**Status:** Implementation and pre-UAT technical gates complete. Human Dev UAT
+is pending; no browser inspection, deployment, test suite, merge, or push was
+performed.
+**Plans:** 5 plans in 4 waves
+
+Plans:
+- [x] `47-01-PLAN.md` - Persist a neutral, complete-inventory folder group for PS3 scans.
+- [x] `47-02-PLAN.md` - Expose the safe capability and server-resolved whole-folder manifests.
+- [x] `47-03-PLAN.md` - Reuse the existing v2 queue and remove misplaced Game Download actions.
+- [x] `47-04-PLAN.md` - Add isolated fixture evidence and update the architecture documentation.
+- [x] `47-05-PLAN.md` - Run the permitted pre-UAT technical gates and prepare human UAT.
+
+**Wave 1:** 47-01
+**Wave 2:** 47-02
+**Wave 3:** 47-03, 47-04
+**Wave 4:** 47-05

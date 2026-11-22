@@ -44,6 +44,7 @@ _CREATE_ERROR_CODES = {
     "manifest member selection is empty": "manifest_members_empty",
     "manifest components need source members": "manifest_source_members_unavailable",
     "manifest member hash evidence is unavailable": "manifest_hash_evidence_unavailable",
+    "manifest folder inventory is unavailable": "manifest_folder_inventory_unavailable",
     "PC component manifest source is unavailable": "manifest_source_unavailable",
     "PC component manifest source changed": "manifest_source_changed",
 }
@@ -210,6 +211,7 @@ async def create_download_manifest(
             payload.component_ids,
             archive_set_id=payload.archive_set_id,
             selected_member_ids=payload.selected_member_ids,
+            whole_folder=payload.whole_folder is True,
         )
     except ValueError as error:
         _manifest_create_rejected(rom.id, error)

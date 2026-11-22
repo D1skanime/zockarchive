@@ -19,10 +19,16 @@ import DownloadSelectionDialog, {
   type DownloadArchiveSet,
 } from "./DownloadSelectionDialog.vue";
 
+export type FolderDownloadCapability = {
+  member_count: number;
+  total_size_bytes: number;
+};
+
 defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{
   components: PcComponentSchema[];
+  folderDownload?: FolderDownloadCapability;
   romId: number;
   parentName?: string;
   archiveSets?: DownloadArchiveSet[];
@@ -75,6 +81,7 @@ async function startDownload(payload: {
   archiveSetId?: number;
   selectedMemberIds: number[];
   componentIds: number[];
+  wholeFolder?: boolean;
   mode: "standard" | "enhanced";
 }) {
   if (
@@ -92,11 +99,15 @@ async function startDownload(payload: {
     if (payload.mode === "enhanced" && !selectedRoot) return;
     const response = await api.post<DownloadManifestResponse>(
       `/roms/${props.romId}/download-manifests`,
-      {
-        archive_set_id: payload.archiveSetId,
-        selected_member_ids: payload.selectedMemberIds,
-        component_ids: payload.archiveSetId ? undefined : payload.componentIds,
-      },
+      payload.wholeFolder
+        ? { whole_folder: true }
+        : {
+            archive_set_id: payload.archiveSetId,
+            selected_member_ids: payload.selectedMemberIds,
+            component_ids: payload.archiveSetId
+              ? undefined
+              : payload.componentIds,
+          },
     );
     selectedManifestId.value = response.data.id;
     selectedComponentLabels.value = response.data.components
@@ -107,6 +118,9 @@ async function startDownload(payload: {
       )
       .filter((component): component is PcComponentSchema => !!component)
       .map((component) => componentLabel(component));
+    if (payload.wholeFolder) {
+      selectedComponentLabels.value = [t("rom.download-game")];
+    }
     if (payload.mode === "enhanced") {
       await queue.startEnhanced(response.data, selectedRoot);
     } else {
@@ -240,6 +254,7 @@ const groupedComponents = computed(() =>
     <DownloadSelectionDialog
       v-model="showDownload"
       :components="components"
+      :folder-download="folderDownload"
       :archive-sets="archiveSets"
       @start="startDownload"
     />
@@ -258,12 +273,13 @@ const groupedComponents = computed(() =>
     />
 
     <ZAEmptyState
-      v-if="groupedComponents.length === 0"
+      v-if="!folderDownload && groupedComponents.length === 0"
       icon="mdi-package-variant-closed"
       :title="t('rom.pc-no-components')"
     />
 
     <section
+      v-if="!folderDownload"
       v-for="group in groupedComponents"
       :key="group.kind"
       class="pc-components__group"

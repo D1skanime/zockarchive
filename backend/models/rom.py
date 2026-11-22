@@ -108,6 +108,7 @@ class RomComponentKind(enum.StrEnum):
     LANGUAGE_PACK = "language_pack"
     EXTRA = "extra"
     UNRESOLVED = "unresolved"
+    FOLDER = "folder"
 
 
 class RomComponentLocalMediaRole(enum.StrEnum):

@@ -676,6 +676,13 @@ class PcComponentSchema(BaseModel):
     owned_media: list[PcComponentOwnedMediaSchema] = Field(default_factory=list)
 
 
+class FolderDownloadCapabilitySchema(BaseModel):
+    """Safe summary of one verified server-owned folder download source."""
+
+    member_count: int = Field(ge=1)
+    total_size_bytes: int = Field(ge=0)
+
+
 class SoundtrackTrackMetaSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -996,6 +1003,10 @@ class UserCollectionSchema(BaseModel):
 
 
 class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
+    components: list[PcComponentSchema] = Field(
+        default_factory=list, validation_alias="download_components"
+    )
+    folder_download: FolderDownloadCapabilitySchema | None = None
     steam_metadata: SteamMetadataSchema | None
     user_saves: list[SaveSchema]
     user_states: list[StateSchema]
@@ -1017,6 +1028,30 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
     def from_orm_with_request(cls, db_rom: Rom, request: Request) -> DetailedRomSchema:
         user_id = request.user.id
         db_rom = cls.populate_properties(db_rom, request)
+
+        # Folder membership can contain thousands of entries. It stays behind
+        # the manifest endpoint; detail clients receive only this aggregate.
+        folder_components = [
+            component
+            for component in db_rom.components
+            if component.kind is RomComponentKind.FOLDER
+        ]
+        db_rom.download_components = [  # type: ignore[assignment]
+            component
+            for component in db_rom.components
+            if component.kind is not RomComponentKind.FOLDER
+        ]
+        if len(folder_components) == 1:
+            members = folder_components[0].manifest_members
+            if members and all(not member.missing_from_fs for member in members):
+                db_rom.folder_download = FolderDownloadCapabilitySchema(  # type: ignore[assignment]
+                    member_count=len(members),
+                    total_size_bytes=sum(member.size_bytes for member in members),
+                )
+            else:
+                db_rom.folder_download = None  # type: ignore[assignment]
+        else:
+            db_rom.folder_download = None  # type: ignore[assignment]
 
         sorted_siblings = sorted(
             (

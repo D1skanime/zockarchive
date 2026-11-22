@@ -9,6 +9,7 @@ import socketio  # type: ignore
 from adapters.services.screenscraper import ScreenScraperRateLimitError
 from config.config_manager import config_manager as cm
 from endpoints.responses.rom import SimpleRomSchema
+from exceptions.storage_read import MappedReadError
 from handler.database import db_platform_handler, db_rom_handler
 from handler.database.scan_write_fence import (
     current_scan_write_context,
@@ -24,6 +25,7 @@ from handler.filesystem import (
     open_storage_access,
     use_fs_rom_handler,
 )
+from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.roms_handler import FSRom
 from handler.filesystem.scan_media_publication import (
     ScanMediaBatch,
@@ -755,6 +757,37 @@ async def scan_rom(
                 _added_rom.fs_name,
                 exc,
                 extra=LOGGER_MODULE_NAME,
+            )
+
+    if (
+        not metadata_only
+        and quick is None
+        and platform.slug == UPS.PS3
+        and fs_rom["nested"]
+    ):
+        try:
+            folder_component = await get_fs_rom_handler().get_folder_download_component(
+                _added_rom
+            )
+        except (InventoryIncomplete, MappedReadError, OSError, ValueError) as exc:
+            # An incomplete scan must retire stale membership instead of exposing
+            # a partial folder through a previously persisted manifest source.
+            log.warning(
+                "Folder download inventory unavailable for %s: %s",
+                _added_rom.fs_name,
+                exc,
+                extra=LOGGER_MODULE_NAME,
+            )
+            folder_component = None
+        with ScanMediaBatch(
+            _added_rom.id, _added_rom.platform_id, fs_resource_handler.storage
+        ) as unit:
+            unit.publish_and_associate(
+                lambda session: db_rom_handler.sync_rom_components(
+                    _added_rom.id,
+                    [folder_component] if folder_component is not None else [],
+                    session=session,
+                )
             )
 
     from handler.scan_metadata_result import (

@@ -40,6 +40,8 @@ ELIGIBLE_COMPONENT_KINDS = frozenset(
     }
 )
 
+FOLDER_DOWNLOAD_COMPONENT_KIND = RomComponentKind.FOLDER
+
 
 class ManifestFilesystem(Protocol):
     def capture_download_manifest_member(
@@ -73,8 +75,11 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         component_ids: Sequence[int] | None,
         archive_set_id: int | None = None,
         selected_member_ids: Sequence[int] | None = None,
+        whole_folder: bool = False,
         session: Session = None,  # type: ignore
     ) -> DownloadManifest:
+        if not isinstance(whole_folder, bool):
+            raise ValueError("invalid whole folder selection")
         if component_ids is not None:
             if not component_ids or any(
                 not isinstance(component_id, int) or component_id <= 0
@@ -99,6 +104,11 @@ class DBDownloadManifestsHandler(DBBaseHandler):
                 raise ValueError("invalid manifest member selection")
         if archive_set_id is not None and component_ids is not None:
             raise ValueError("manifest policy selection cannot include components")
+        if whole_folder and any(
+            selection is not None
+            for selection in (component_ids, archive_set_id, selected_member_ids)
+        ):
+            raise ValueError("whole folder selection cannot include other selections")
 
         rom = session.scalar(
             select(Rom).where(Rom.id == rom_id).with_for_update(of=Rom)
@@ -107,7 +117,32 @@ class DBDownloadManifestsHandler(DBBaseHandler):
             raise ValueError("manifest ROM is unavailable")
 
         policy_members: list[DownloadArchiveSetMember] | None = None
-        if archive_set_id is not None:
+        if whole_folder:
+            components = list(
+                session.scalars(
+                    select(RomComponent)
+                    .where(
+                        RomComponent.rom_id == rom_id,
+                        RomComponent.kind == FOLDER_DOWNLOAD_COMPONENT_KIND,
+                    )
+                    .with_for_update(of=RomComponent)
+                )
+            )
+            if len(components) != 1:
+                raise ValueError("manifest folder inventory is unavailable")
+            member_rows = list(
+                session.scalars(
+                    select(RomComponentManifestMember)
+                    .where(
+                        RomComponentManifestMember.component_id == components[0].id,
+                    )
+                    .order_by(RomComponentManifestMember.id)
+                    .with_for_update(of=RomComponentManifestMember)
+                )
+            )
+            if not member_rows or any(member.missing_from_fs for member in member_rows):
+                raise ValueError("manifest folder inventory is unavailable")
+        elif archive_set_id is not None:
             policy_members = list(
                 session.scalars(
                     select(DownloadArchiveSetMember)

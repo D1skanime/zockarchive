@@ -37,7 +37,9 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 **Key Characteristics:**
 
 - Thin endpoints delegate to handlers and typed schemas.
-- Rom is the catalog aggregate. PC installs add RomComponent children and immutable manifest members.
+- Rom is the catalog aggregate. Folder-backed downloads use neutral persisted
+  component groups and immutable manifest members without making a console game
+  a PC install.
 - The external library is read-only. Generated/uploaded content uses classified owned roots.
 - Raw provider metadata is retained and normalized into common fields and provider-qualified facets.
 - New frontend behavior belongs in frontend/src/v2/; v1 paths are frozen.
@@ -66,7 +68,9 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 
 1. backend/tasks/scheduled/scan_library.py or scan endpoints create bounded mapped commands.
 2. backend/handler/scan_handler.py reads the external root, hashes files, persists Rom/RomFile, and reconciles PC layouts defined in backend/handler/filesystem/roms_handler.py. Every mapped scan uses its logical mapped path plus filename as the catalog identity, so a direct-folder rename cannot reuse an identically named ROM from a stale path.
-3. RomComponent represents base, update, DLC, hotfix, language pack, extra or unresolved entries. RomComponentManifestMember retains relative path, size, SHA-256 and missing-from-filesystem state.
+3. RomComponent represents base, update, DLC, hotfix, language pack, extra,
+   unresolved, or neutral folder entries. RomComponentManifestMember retains
+   relative path, size, SHA-256 and missing-from-filesystem state.
 4. pc_steam_enrichment.py resolves guarded Steam patches; pc_match_handler.py collects reviewable candidates.
 5. pc_automation.py applies only unique guarded matches. Ambiguity or protected/manual targets enter pc_automation_queue.
 
@@ -144,7 +148,19 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 - Save and State are user-owned ROM assets with retained catalog identity, device linkage and visibility. Handlers are backend/handler/database/saves_handler.py and states_handler.py. SaveBackup is a separate owner-scoped ZIP aggregate; it validates archive topology without extraction and treats Windows restore paths as metadata only.
 - Device save synchronization uses backend/models/device_save_sync.py and backend/models/sync_session.py.
-- PC download selection snapshots evidence for every scanner-created PC component in backend/models/download_manifest.py. The manifest endpoint first verifies ROM visibility, then returns a bounded 409 rejection code for stale or unavailable members of that visible ROM; absent or non-visible ROMs still receive the generic manifest 404.
+- Folder-download selection snapshots immutable evidence from persisted,
+  scanner-created manifest members in backend/models/download_manifest.py. A
+  complete folder inventory creates one neutral eligible group for a whole-folder
+  request, while component, archive-set, and selected-member requests keep their
+  existing scopes. The manifest endpoint first verifies ROM visibility, resolves
+  whole-folder membership server-side under the ROM and component locks, then
+  returns a bounded 409 rejection code when the inventory is stale, incomplete,
+  duplicated, missing, or otherwise unavailable. It never returns a partial
+  folder. Absent or non-visible ROMs still receive the generic manifest 404.
+- Manifest IDs and member IDs are opaque and user-scoped. The member stream
+  rechecks ROM visibility, manifest validity, source identity, snapshot evidence,
+  and safe relative-path resolution before it opens a file. The browser cannot
+  supply a source-library path or enumerate persisted member rows.
 - Resumable transfer attempts, item states and event lineage live in backend/models/download_transfer.py; endpoints are backend/endpoints/download_manifests.py and backend/endpoints/download_transfers.py.
 - Source changes invalidate manifests/transfers. The frontend consumes them via frontend/src/v2/data/adapters/legacy/services/api/downloadTransfers.ts.
 
@@ -152,7 +168,12 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 ## Key Abstractions
 
-**ROM aggregate with PC components:** A parent Rom owns cascading components, manifest members, metadata, media and notes. See backend/models/rom.py, backend/handler/scan_handler.py and frontend/src/v2/components/GameDetails/PcComponents.vue.
+**ROM aggregate with folder-download groups:** A parent Rom owns cascading
+components and manifest members. PC-specific component metadata, media, and
+notes remain attached only to their appropriate install groups; a neutral folder
+group carries no PC classification and provides the shared folder-download
+capability. See backend/models/rom.py, backend/handler/scan_handler.py and
+frontend/src/v2/components/GameDetails/PcComponents.vue.
 
 **Storage descriptors and grants:** Composition-owned immutable descriptors authorize operations before path opening. See backend/handler/filesystem/storage_composition.py, storage_access.py and storage_policy.py.
 
@@ -282,7 +303,22 @@ flow release the stale attempt safely.
 
 ### PC models, metadata, DLC and descriptions
 
-RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. A top-level `OST`/`Soundtrack` folder is intentionally projected both as local soundtrack media and as an `extra` component: the former powers the Media player, while the latter gives the ordinary, manifest-authorized download flow a selectable folder and individual files. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
+RomComponent and RomComponentManifestMember in backend/models/rom.py represent
+base, update, DLC, hotfix, language_pack, extra, unresolved, and neutral folder
+groups with relative paths, size, SHA-256 and missing-file state. The neutral
+`folder` group exists solely when a scan has a complete folder inventory and is
+the shared whole-folder download source for PC and console games. It is not
+projected as a PC component or eligible for PC metadata/media workflows. A
+top-level `OST`/`Soundtrack` folder is intentionally projected both as local
+soundtrack media and as an `extra` component: the former powers the Media player,
+while the latter gives the ordinary, manifest-authorized download flow a
+selectable folder and individual files. RomComponentMetadata, local media, owned
+media, placements and notes preserve component-specific catalog data.
+pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames,
+SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data.
+DLC matching is limited to related IGDB expansions or validated Steam DLC.
+manual_description.py stores locale-keyed descriptions and resolves exact locale,
+English and provider fallbacks.
 
 Manual IGDB matching retains its complete cover, screenshot and artwork source inventory in `igdb_metadata.provider_media`. The explicit parent-media refresh chooses that retained provider inventory before legacy URL fields. For older manual matches that retain only a known IGDB id, it restores this inventory from that same provider record before reconciling screenshots and artwork. Provider-media suppressions remain durable and are checked before every candidate is republished.
 

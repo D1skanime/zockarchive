@@ -34,6 +34,7 @@ from models.platform import Platform
 from models.rom import (
     Rom,
     RomComponent,
+    RomComponentKind,
     RomComponentManifestMember,
     RomFile,
     RomFileCategory,
@@ -70,7 +71,7 @@ from .base_handler import (
 )
 from .pc_scan_inventory import (
     InventoryIncomplete,
-    async_collect_pc_inventory,
+    async_collect_folder_inventory,
     classify_components,
 )
 from .pc_scan_inventory import parse_pc_component_layout as parse_pc_component_layout
@@ -569,17 +570,90 @@ class FSRomsHandler(ExternalFSHandler):
             return context.open(operation, relative_path)
         return self.open_access(operation, relative_path)
 
-    async def get_pc_inventory(self, rom: Rom) -> InventoryEvidence:
-        return await async_collect_pc_inventory(
+    async def get_folder_inventory(self, rom: Rom) -> InventoryEvidence:
+        """Collect bounded evidence before any folder becomes downloadable."""
+        return await async_collect_folder_inventory(
             self._pc_inventory_access, self._pc_game_path(rom)
         )
+
+    async def get_pc_inventory(self, rom: Rom) -> InventoryEvidence:
+        return await self.get_folder_inventory(rom)
+
+    async def get_folder_download_component(
+        self, rom: Rom, inventory: InventoryEvidence | None = None
+    ) -> RomComponent:
+        """Build one neutral component only from a complete verified inventory."""
+        evidence = (
+            inventory if inventory is not None else await self.get_folder_inventory(rom)
+        )
+        if not evidence.complete:
+            raise InventoryIncomplete(evidence.reason or "incomplete_evidence")
+        members = tuple(
+            entry for entry in evidence.observations if entry.kind == "file"
+        )
+        if not members:
+            raise InventoryIncomplete("empty_inventory")
+        rom_path = self._pc_game_path(rom)
+
+        def build():
+            from handler.scan_operation_worker import check_worker_boundary
+
+            verified_members: list[RomComponentManifestMember] = []
+            for entry in members:
+                check_worker_boundary()
+                path = PurePosixPath(entry.relative_path)
+                if (
+                    not entry.relative_path
+                    or path.is_absolute()
+                    or ".." in path.parts
+                    or any(part in {"", "."} for part in path.parts)
+                ):
+                    raise InventoryIncomplete("invalid_relative_path")
+                file_path = f"{rom_path}/{entry.relative_path}"
+                with self._pc_inventory_access(
+                    StorageOperation.HASH, file_path
+                ) as source:
+                    before = os.fstat(source.fileno())
+                    if (
+                        before.st_size,
+                        before.st_mtime_ns,
+                        before.st_ctime_ns,
+                        before.st_dev,
+                        before.st_ino,
+                    ) != (
+                        entry.size,
+                        entry.mtime_ns,
+                        entry.ctime_ns,
+                        entry.device,
+                        entry.inode,
+                    ):
+                        raise InventoryIncomplete("unstable_file")
+                    sha256 = source.hash("sha256")
+                    if directory_signature(before) != directory_signature(
+                        os.fstat(source.fileno())
+                    ):
+                        raise InventoryIncomplete("unstable_file")
+                verified_members.append(
+                    RomComponentManifestMember(
+                        relative_path=entry.relative_path,
+                        size_bytes=entry.size,
+                        sha256=sha256,
+                    )
+                )
+            return RomComponent(
+                relative_path="folder-download",
+                kind=RomComponentKind.FOLDER,
+                manifest_members=verified_members,
+            )
+
+        return await asyncio.to_thread(build)
 
     async def get_pc_components(
         self, rom: Rom, inventory: InventoryEvidence | None = None
     ) -> list[RomComponent]:
         """Build manifests only from a complete shared inventory."""
         evidence = (
-            inventory if inventory is not None else await self.get_pc_inventory(rom)
+            inventory if inventory is not None else await self.get_folder_inventory(rom)
         )
         groups = classify_components(evidence)
         rom_path = self._pc_game_path(rom)

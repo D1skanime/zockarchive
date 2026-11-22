@@ -196,7 +196,7 @@
   "download-served": "Von ZockArchive bereitgestellt",
   "download-source-changed": "Quelle geändert. Bereiten Sie den Download erneut vor.",
   "download-stale": "Quelle geändert. Bereiten Sie den Download erneut vor.",
-  "download-standard-description": "Ihr Browser verarbeitet jede Datei. ZockArchive kann nicht bestätigen, dass eine Datei fertiggestellt wurde oder ihre Prüfsumme übereinstimmt.",
+  "download-standard-description": "Ihr Browser erhält jede Datei einzeln und bewahrt die Ordnerstruktur möglicherweise nicht. ZockArchive kann nicht bestätigen, dass eine Datei fertiggestellt wurde oder ihre Prüfsumme übereinstimmt.",
   "download-start": "Download starten",
   "download-state-downloading": "Wird heruntergeladen",
   "download-state-paused": "Pausiert",

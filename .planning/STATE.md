@@ -1135,6 +1135,8 @@ Resume file: None
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 46 added: Diagnose and harden terminal owned-content verification for Beta 5 NAS UAT without changing NAS data.
+- Phase 47 added: Remove misplaced Game Download metadata actions and reuse the shared browser downloader for PS3 folder games.
+- Phase 47 implemented: neutral PS3 folder inventory and server-owned manifests reuse the existing browser queue; typecheck, scoped Trunk and production build pass, with human Dev UAT pending.
 - Quick task 261116-qg1 completed: restored the missing Phase 46 summary and
   verification artifacts with an explicit partial verdict; the owned-content
   proof work remains open.

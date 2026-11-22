@@ -1,4 +1,4 @@
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 
 from .base import BaseModel, UTCDatetime
 
@@ -11,6 +11,7 @@ class DownloadManifestCreateRequest(BaseModel):
     selected_member_ids: list[int] | None = Field(
         default=None, min_length=1, max_length=100
     )
+    whole_folder: bool | None = None
 
     @field_validator("component_ids")
     @classmethod
@@ -28,6 +29,24 @@ class DownloadManifestCreateRequest(BaseModel):
         if value is not None and len(value) != len(set(value)):
             raise ValueError("selected member ids must be unique")
         return value
+
+    @model_validator(mode="after")
+    def validate_whole_folder_selection(self) -> "DownloadManifestCreateRequest":
+        """Keep the server-resolved folder mode separate from client selections."""
+        if self.whole_folder is not True:
+            if self.whole_folder is False:
+                raise ValueError("whole folder selection must be enabled")
+            return self
+        if any(
+            selection is not None
+            for selection in (
+                self.component_ids,
+                self.archive_set_id,
+                self.selected_member_ids,
+            )
+        ):
+            raise ValueError("whole folder selection cannot include other selections")
+        return self
 
 
 class DownloadManifestComponentSchema(BaseModel):
