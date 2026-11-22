@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261122-u1d completed: committed the required 261122-2d7c to Phase 47 GSD
+  binding after the quality gate found that the local ignored artifact was not
+  part of the implementation commit.
 - 261122-rhc completed: a direct RecoveryWalk contract now confirms that a
   disappeared directory entry resets only the current advisory cursor cookie.
 - 261122-r3p completed: a vanished scan-media receipt directory resets the
