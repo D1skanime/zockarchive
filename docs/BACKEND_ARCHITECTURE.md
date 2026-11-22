@@ -245,6 +245,9 @@ finish, while a stalled extractor fails closed. The affected ROM retains a raw
 container hash and no `archive_members`, and the existing scan-operation warning
 records its game name without exposing a storage path. Other ROMs, mappings and
 platforms continue, so an archive-member timeout alone does not fail the scan.
+RetroAchievements extraction treats the same incomplete inventory as an absent
+optional RA hash for that ROM; it never converts the evidence failure into a
+platform-level scan failure.
 ISO files take the ordinary file path. Windows folders such as FitGirl repacks
 remain one nested ROM and their files are not content-hashed during discovery.
 The Windows quick inventory is metadata-only (names, stat fields and bounded

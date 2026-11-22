@@ -980,6 +980,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261122-rah | Contain RAHasher archive inventory failures | 2026-11-22 | this commit | [261122-rah](./quick/261122-rah-archive-error/) |
 | 261122-smp-tests | Cover and repair scan-media recovery cursor regression | 2026-11-22 | this commit | [261122-smp-tests](./quick/261122-smp-tests/) |
 | 261122-smp | Make scan-media crash recovery deterministic | 2026-11-22 | this commit | [261122-smp](./quick/261122-smp-crash-recovery/) |
 | 261122-r51 | Reconcile frontend regression expectations | 2026-11-22 | this commit | [261122-r51](./quick/261122-r51-reconcile-frontend-regression-expectations/) |

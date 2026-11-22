@@ -8,7 +8,7 @@ from handler.metadata.ra_handler import RAGamesPlatform
 from logger.formatter import LIGHTMAGENTA
 from logger.formatter import highlight as hl
 from logger.logger import log
-from utils.archives import extract_largest_archive_member
+from utils.archives import ArchiveReadError, extract_largest_archive_member
 from utils.filesystem import COMPRESSED_FILE_EXTENSIONS
 from utils.psp_hasher import calculate_psp_ra_hash, is_psp_native_hash_file
 from utils.rvz_hasher import (
@@ -284,9 +284,18 @@ class RAHasherService:
             and platform["ra_id"] != ARCADE_RA_ID
         ):
             with tempfile.TemporaryDirectory(prefix="romm_rahasher_") as tmp_dir:
-                extracted = await asyncio.to_thread(
-                    extract_largest_archive_member, Path(file_path), Path(tmp_dir)
-                )
+                try:
+                    extracted = await asyncio.to_thread(
+                        extract_largest_archive_member, Path(file_path), Path(tmp_dir)
+                    )
+                except ArchiveReadError:
+                    # Member inventory is evidence for the optional RA hash,
+                    # not permission to abort this ROM or platform scan.
+                    log.warning(
+                        f"Skipping {hl('RAHasher', color=LIGHTMAGENTA)} for "
+                        f"{hl(file_path)}: archive member inventory is incomplete"
+                    )
+                    return ""
                 if extracted is None:
                     log.debug(
                         f"Skipping {hl('RAHasher', color=LIGHTMAGENTA)} for "

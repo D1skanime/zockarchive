@@ -628,7 +628,8 @@ def extract_largest_archive_member(file_path: Path, dest_dir: Path) -> Path | No
 
     Compressed tarballs (.tgz/.tbz2/.txz) list only their inner .tar, so one
     nested extraction pass unwraps it; deeper nesting gives up. Returns the
-    extracted file's path, or None on any failure (no partial files remain).
+    extracted file's path, or None when extraction fails (no partial files
+    remain). Raises `ArchiveReadError` when member inventory is incomplete.
     """
     deadline = time.monotonic() + SEVEN_ZIP_TIMEOUT
     source = file_path
