@@ -2,6 +2,8 @@
 
 **Gathered:** 2026-11-22
 **Status:** Ready for planning
+**ki-run job:** `261122-2d7c`
+**Job binding:** `.planning/ki-run/261122-2d7c.json`
 
 <domain>
 ## Phase Boundary

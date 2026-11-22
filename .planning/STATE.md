@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261122-u3o completed: Phase 47's CONTEXT now explicitly identifies ki-run
+  job 261122-2d7c, satisfying the job-specific GSD contract in addition to the
+  committed manifest binding.
 - 261122-u1d completed: committed the required 261122-2d7c to Phase 47 GSD
   binding after the quality gate found that the local ignored artifact was not
   part of the implementation commit.
