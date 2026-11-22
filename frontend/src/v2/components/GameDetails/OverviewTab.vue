@@ -103,7 +103,6 @@ const editPermission = getActivePinia()
   : null;
 const canEdit = computed(() => editPermission?.value ?? false);
 const descriptionEditorOpen = ref(false);
-
 const hasAgeRatings = computed(
   () => (props.rom.metadatum?.age_ratings?.length ?? 0) > 0,
 );
@@ -247,10 +246,7 @@ const coverSource = computed(() => {
 
 const pcMetadata = computed(() => props.rom.metadatum);
 const releaseDate = computed(() => {
-  const timestamp =
-    pcMetadata.value?.pc_release_date ??
-    pcMetadata.value?.first_release_date ??
-    null;
+  const timestamp = pcMetadata.value?.pc_release_date ?? null;
   if (!timestamp) return null;
   return new Date(Number(timestamp) * 1000).toLocaleDateString(
     toBrowserLocale(locale.value),
@@ -321,6 +317,7 @@ const youtubeEmbedUrl = computed(() =>
           :manual-metadata="rom.manual_metadata"
           :steam-metadata="rom.steam_metadata"
           :ss-metadata="ssMetadata"
+          :igdb-summary="rom.igdb_id ? rom.summary : null"
           :provider="descriptionProvider ?? null"
           @saved="
             () => {

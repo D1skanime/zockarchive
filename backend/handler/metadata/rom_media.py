@@ -17,7 +17,9 @@ from handler.database.provider_media_suppression import candidate_key
 from handler.database.scan_write_fence import current_scan_write_context
 from handler.filesystem import fs_resource_handler
 from handler.filesystem.scan_media_publication import ScanMediaBatch
-from models.rom import RomOwnedMediaRole, derive_owned_media_display_label
+from handler.metadata.igdb_handler import IGDBRom
+from logger.logger import log
+from models.rom import Rom, RomOwnedMediaRole, derive_owned_media_display_label
 from utils.context import ctx_httpx_client
 
 _MAX_PROVIDER_MEDIA = 500
@@ -94,6 +96,53 @@ def discover_provider_media(
     return candidates
 
 
+def retain_igdb_media(
+    cleaned_data: dict[str, object], igdb_rom: IGDBRom
+) -> dict[str, object]:
+    """Persist the complete IGDB image inventory for later owned-media refreshes."""
+    artwork_urls = list(igdb_rom.get("url_artworks", []))
+    media: dict[str, object] = {
+        "url_covers": [igdb_rom["url_cover"]] if igdb_rom.get("url_cover") else [],
+        "url_screenshots": [
+            url
+            for url in igdb_rom.get("url_screenshots", [])
+            if url not in artwork_urls
+        ],
+        "url_artworks": artwork_urls,
+    }
+    existing_metadata = cleaned_data.get("igdb_metadata")
+    retained_metadata = (
+        dict(existing_metadata) if isinstance(existing_metadata, dict) else {}
+    )
+    retained_metadata["provider_media"] = media
+    cleaned_data["igdb_metadata"] = retained_metadata
+    return media
+
+
+async def publish_igdb(rom: Rom, media: dict[str, object] | None) -> Rom:
+    """Publish retained manual-IGDB media without replacing user choices."""
+    if media is None:
+        return rom
+    try:
+        refreshed_rom, failures = await refresh_provider_owned_media(
+            rom, rom.updated_at, "igdb", media
+        )
+        for failure in failures:
+            log.warning(
+                "Manual IGDB media retained prior catalog state for ROM %s (%s)",
+                refreshed_rom.id,
+                failure.reason,
+            )
+        return refreshed_rom
+    except (ValueError, OSError) as error:
+        log.warning(
+            "Manual IGDB media catalog refresh failed for ROM %s (%s)",
+            rom.id,
+            type(error).__name__,
+        )
+        return rom
+
+
 async def _download_provider_image(
     rom, candidate: ProviderMediaCandidate
 ) -> tuple[str, str]:
@@ -113,16 +162,80 @@ async def _download_provider_image(
     )
 
 
-async def refresh_provider_owned_media(rom, expected_version, provider: str):
-    """Refresh selected provider images within their publication transaction."""
-    if not isinstance(provider, str) or not provider:
-        raise ValueError("Provider is required")
+def persisted_provider_media(rom, provider: str) -> dict[str, object]:
+    """Return the retained provider inventory needed by later media refreshes."""
+    metadata = getattr(rom, f"{provider}_metadata", None)
+    if isinstance(metadata, dict):
+        source = metadata.get("provider_media")
+        if isinstance(source, dict):
+            return source
     original_cover = getattr(rom, "original_cover_url", None) or rom.url_cover
-    source = {
+    return {
         "url_covers": [original_cover] if original_cover else [],
         "url_screenshots": rom.url_screenshots or [],
         "url_artworks": [],
     }
+
+
+def persisted_provider_media_source(rom) -> str:
+    """Choose the retained provider inventory before using legacy URL fields."""
+    metadata = getattr(rom, "igdb_metadata", None)
+    if isinstance(metadata, dict) and isinstance(metadata.get("provider_media"), dict):
+        return "igdb"
+    return "provider"
+
+
+def _has_provider_media(media: dict[str, object]) -> bool:
+    return any(
+        isinstance(media.get(key), list) and media[key]
+        for key in ("url_covers", "url_screenshots", "url_artworks")
+    )
+
+
+async def prepare_provider_media_refresh(rom, expected_version):
+    """Restore a manually matched IGDB inventory before an explicit refresh.
+
+    Older manual matches can hold an IGDB id after their legacy image URLs were
+    consumed, without the retained provider inventory introduced for owned
+    media. Re-fetching only that known provider record preserves the match and
+    lets the normal suppression-aware reconciler handle every candidate.
+    """
+    provider = persisted_provider_media_source(rom)
+    source = persisted_provider_media(rom, provider)
+    retained_igdb = (
+        rom.igdb_metadata.get("provider_media")
+        if isinstance(rom.igdb_metadata, dict)
+        else None
+    )
+    if isinstance(retained_igdb, dict) and _has_provider_media(retained_igdb):
+        return rom, "igdb", retained_igdb
+    if not rom.igdb_id:
+        return rom, provider, source
+
+    from handler.metadata import meta_igdb_handler
+
+    igdb_rom = await meta_igdb_handler.get_rom_by_id(rom, rom.igdb_id)
+    if not igdb_rom.get("igdb_id"):
+        return rom, provider, source
+    data: dict[str, object] = {"igdb_metadata": dict(rom.igdb_metadata or {})}
+    source = retain_igdb_media(data, igdb_rom)
+    updated = db_rom_handler.update_rom(
+        rom.id,
+        {"igdb_metadata": data["igdb_metadata"]},
+        expected_updated_at=expected_version,
+    )
+    if updated is None:
+        raise ValueError("Media catalog changed")
+    return updated, "igdb", source
+
+
+async def refresh_provider_owned_media(
+    rom, expected_version, provider: str, source: dict[str, object] | None = None
+):
+    """Refresh persisted provider images within their publication transaction."""
+    if not isinstance(provider, str) or not provider:
+        raise ValueError("Provider is required")
+    source = source if source is not None else persisted_provider_media(rom, provider)
     failures: list[ProviderMediaFailure] = []
     candidates = discover_provider_media(provider, source)
     suppressed = db_rom_handler.get_provider_media_suppressions(rom.id, candidates)

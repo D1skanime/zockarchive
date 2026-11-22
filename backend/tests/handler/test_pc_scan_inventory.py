@@ -347,6 +347,7 @@ async def test_components_share_inventory_classifier_and_keep_soundtrack(
         ("base", RomComponentKind.BASE),
         ("dlc", RomComponentKind.UNRESOLVED),
         ("dlc/one", RomComponentKind.DLC),
+        ("ost", RomComponentKind.EXTRA),
         ("update", RomComponentKind.UPDATE),
     ]
     assert any(
@@ -355,7 +356,13 @@ async def test_components_share_inventory_classifier_and_keep_soundtrack(
     )
     assert [
         member.relative_path for item in components for member in item.manifest_members
-    ] == ["base.bin", "dlc/README.txt", "dlc/one/data.bin", "update/patch.bin"]
+    ] == [
+        "base.bin",
+        "dlc/README.txt",
+        "dlc/one/data.bin",
+        "ost/track.flac",
+        "update/patch.bin",
+    ]
 
 
 @pytest.mark.asyncio

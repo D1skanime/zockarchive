@@ -27,6 +27,28 @@ from logger.logger import log
 from models.rom import Rom
 from utils import emoji
 
+_OWNED_CONTENT_TIMEOUT = "owned_content_verification_timeout"
+
+
+def _record_owned_content_timeout(platform, fs_rom, rom):
+    """Keep the confirmed game result when generated-media proof times out."""
+    from handler.scan_operation_checkpoint import record_checked_game
+
+    if rom is None:
+        rom = db_rom_handler.get_roms_by_fs_name(platform.id, {fs_rom["fs_name"]}).get(
+            fs_rom["fs_name"]
+        )
+    if rom is not None:
+        record_checked_game(rom, outcome="failed", cause_code=_OWNED_CONTENT_TIMEOUT)
+        game = rom.fs_name
+    else:
+        game = fs_rom["fs_name"]
+    log.warning(
+        "Owned content verification timed out for game %s on platform %s",
+        game,
+        platform.custom_name or platform.name,
+    )
+
 
 async def _identify_platform(
     platform_slug: str,
@@ -127,7 +149,9 @@ async def _identify_platform(
         collection_inventory,
         filesystem_identity,
         identify_collection_game,
+        selected_child_legacy_rom,
     )
+    from handler.scan_mapping_identity_recovery import recover_mapping_identity
 
     fs_roms, _ = collection_inventory(platform, fs_roms, filesystem_scope_path)
     # A mapping-backed scan has an authoritative logical root. File names alone
@@ -180,26 +204,55 @@ async def _identify_platform(
     quick_contexts: dict[int, WindowsQuickContext] = {}
     # Create semaphore to limit concurrent ROM scanning
     scan_semaphore = asyncio.Semaphore(SCAN_WORKERS)
+    checkpoint_command = current_checkpoint_command()
+    selected_scope = (
+        dict(checkpoint_command.options).get("relative_path")
+        if checkpoint_command is not None
+        else None
+    )
+    if selected_scope and len(fs_roms) == 1:
+        # A directly selected mapping child is already rooted at that child, so
+        # get_roms() cannot infer the full mapping-relative path from its name.
+        # Preserve it for legacy-identity recovery and the quick-inventory fence.
+        fs_roms[0]["scan_relative_path"] = selected_scope
+        fs_roms[0][
+            "logical_fs_path"
+        ] = get_fs_rom_handler().get_logical_roms_fs_structure(platform.fs_slug)
 
     async def scan_rom_with_semaphore(fs_rom: FSRom, rom: Rom | None) -> None:
         """Scan a single ROM with semaphore limiting"""
+        from handler.filesystem.owned_content_proof import (
+            OwnedContentProofRejected,
+            owned_content_proof_timed_out,
+        )
+
         async with scan_semaphore:
             with bind_windows_quick(quick_contexts.get(id(fs_rom))):
-                await identify_collection_game(
-                    fs_rom,
-                    _identify_rom,
-                    platform=platform,
-                    rom=rom,
-                    scan_type=scan_type,
-                    roms_ids=roms_ids,
-                    metadata_sources=metadata_sources,
-                    launchbox_remote_enabled=launchbox_remote_enabled,
-                    playmatch_enabled=playmatch_enabled,
-                    metadata_locale=metadata_locale,
-                    metadata_only=metadata_only,
-                    socket_manager=socket_manager,
-                    scan_stats=scan_stats,
-                )
+                try:
+                    await identify_collection_game(
+                        fs_rom,
+                        _identify_rom,
+                        platform=platform,
+                        rom=rom,
+                        scan_type=scan_type,
+                        roms_ids=roms_ids,
+                        metadata_sources=metadata_sources,
+                        launchbox_remote_enabled=launchbox_remote_enabled,
+                        playmatch_enabled=playmatch_enabled,
+                        metadata_locale=metadata_locale,
+                        metadata_only=metadata_only,
+                        socket_manager=socket_manager,
+                        scan_stats=scan_stats,
+                    )
+                except OwnedContentProofRejected as error:
+                    if not owned_content_proof_timed_out(error):
+                        raise
+                    _record_owned_content_timeout(platform, fs_rom, rom)
+                    await scan_stats.increment(
+                        socket_manager=socket_manager,
+                        owned_content_proof_timeouts=1,
+                    )
+                    return
                 quick = quick_contexts.get(id(fs_rom))
                 if quick is not None and quick.binding is not None:
                     completed = db_rom_handler.get_rom(quick.binding.rom_id)
@@ -242,14 +295,28 @@ async def _identify_platform(
                 if mapping_inventory
                 else roms_by_fs_name.get(fs_rom["fs_name"])
             )
-            quick = await inspect_discovered_game(
-                platform,
-                fs_rom,
+            rom, mapping_rebound = recover_mapping_identity(
+                mapping_inventory,
                 rom,
-                scan_type=scan_type.value,
-                rom_ids=roms_ids,
-                metadata_only=metadata_only,
+                roms_by_fs_name.get(fs_rom["fs_name"]),
+                fs_rom,
+                selected_child_legacy_rom,
             )
+            selected_legacy = selected_child_legacy_rom(rom, fs_rom)
+            if selected_legacy is not None or mapping_rebound:
+                # The catalog identity is still rooted at an old mapping. Do
+                # not enlist it in the quick baseline until _identify_rom has
+                # moved it under the selected mapping and rebuilt its files.
+                quick = None
+            else:
+                quick = await inspect_discovered_game(
+                    platform,
+                    fs_rom,
+                    rom,
+                    scan_type=scan_type.value,
+                    rom_ids=roms_ids,
+                    metadata_only=metadata_only,
+                )
             if quick is not None:
                 quick_contexts[id(fs_rom)] = quick
                 if rom is not None:
@@ -257,24 +324,53 @@ async def _identify_platform(
                         socket_manager, quick, rom, existing_game=True
                     )
                 if quick.decision == QuickScanDecision.INCOMPLETE:
-                    from handler.filesystem.pc_scan_inventory import InventoryIncomplete
+                    # An inventory is a freshness optimization, not authority to
+                    # discard a discovered PC game. Keep this ROM present and
+                    # surface a per-game warning while later games continue.
+                    if rom is None:
+                        # New games have no prior manifest to refresh. Fall back
+                        # to the ordinary discovery path, which does not read
+                        # every byte on Windows, rather than treating a slow
+                        # metadata walk as a failed game.
+                        quick_contexts.pop(id(fs_rom), None)
+                        roms_to_scan.append((fs_rom, rom))
+                        continue
+                    from handler.scan_operation_checkpoint import record_checked_game
 
-                    raise InventoryIncomplete(
-                        quick.before.reason or "incomplete_evidence"
+                    log.warning(
+                        "PC inventory incomplete for game %s: %s",
+                        rom.fs_name,
+                        quick.before.reason or "incomplete_evidence",
                     )
+                    record_checked_game(rom, outcome="warning")
+                    skipped_rom_ids.append(rom.id)
+                    continue
                 if quick.decision in {
                     QuickScanDecision.REUSE,
                     QuickScanDecision.METADATA_ONLY,
                 }:
                     assert rom is not None
+                    from handler.scan_operation_checkpoint import (
+                        is_selected_collection_child,
+                        record_completed_game,
+                    )
+
+                    if is_selected_collection_child(rom):
+                        # Reused children do not enter _identify_rom, but an
+                        # explicit child choice must still retire its parent.
+                        record_completed_game(rom)
                     skipped_rom_ids.append(rom.id)
                     continue
-            if quick is not None or should_scan_rom(
-                scan_type=scan_type,
-                rom=rom,
-                roms_ids=roms_ids,
-                metadata_sources=metadata_sources,
-                fs_rom=fs_rom,
+            if (
+                mapping_rebound
+                or quick is not None
+                or should_scan_rom(
+                    scan_type=scan_type,
+                    rom=rom,
+                    roms_ids=roms_ids,
+                    metadata_sources=metadata_sources,
+                    fs_rom=fs_rom,
+                )
             ):
                 roms_to_scan.append((fs_rom, rom))
             elif rom:

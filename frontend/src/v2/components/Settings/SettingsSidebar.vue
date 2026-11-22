@@ -40,7 +40,11 @@ const logsViewerEnabled = computed(
 interface Entry {
   icon: string;
   label: string;
-  to: { name: string; params?: Record<string, string | number> };
+  to: {
+    name: string;
+    params?: Record<string, string | number>;
+    query?: Record<string, string | number>;
+  };
   visible: boolean;
   /** Optional trailing badge text (e.g. "Beta") shown after the label. */
   badge?: string;
@@ -88,7 +92,7 @@ const groups = computed<Group[]>(() => {
         {
           icon: "mdi-table-cog",
           label: t("common.library-management"),
-          to: { name: ROUTES.LIBRARY_MANAGEMENT },
+          to: { name: ROUTES.LIBRARY_MANAGEMENT, query: { tab: "direct" } },
           visible: scopes.value.includes("platforms.write"),
         },
         {

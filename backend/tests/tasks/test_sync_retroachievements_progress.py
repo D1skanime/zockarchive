@@ -2,6 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
+import tasks.scheduled.sync_retroachievements_progress as sync_progress_module
 from adapters.services.retroachievements_types import RAUserCompletionProgressKind
 from handler.database.roms_handler import DBRomsHandler
 from handler.database.users_handler import DBUsersHandler
@@ -103,11 +104,19 @@ class TestSyncRetroAchievementsProgressTask:
 
     async def test_run_saves_progress(self, task, viewer_user, mocker):
         """Test run method saves retrieved progress."""
-        mocker.patch.object(DBUsersHandler, "get_users", return_value=[viewer_user])
-        mock_update_user = mocker.patch.object(DBUsersHandler, "update_user")
+        mocker.patch.object(
+            sync_progress_module.db_user_handler,
+            "get_users",
+            return_value=[viewer_user],
+        )
+        mock_update_user = mocker.patch.object(
+            sync_progress_module.db_user_handler, "update_user"
+        )
         user_progression = {"total": 0, "results": []}
         mocker.patch.object(
-            RAHandler, "get_user_progression", return_value=user_progression
+            sync_progress_module.meta_ra_handler,
+            "get_user_progression",
+            return_value=user_progression,
         )
 
         await task.run()
@@ -122,11 +131,13 @@ class TestSyncRetroAchievementsProgressTask:
     ):
         """Test run method saves retrieved progress for a user even if another user fails."""
         mocker.patch.object(
-            DBUsersHandler, "get_users", return_value=[viewer_user, editor_user]
+            sync_progress_module.db_user_handler,
+            "get_users",
+            return_value=[viewer_user, editor_user],
         )
         user_progression = {"total": 0, "results": []}
         mocker.patch.object(
-            RAHandler,
+            sync_progress_module.meta_ra_handler,
             "get_user_progression",
             side_effect=[
                 # Call for first user raises an exception.
@@ -135,7 +146,9 @@ class TestSyncRetroAchievementsProgressTask:
                 user_progression,
             ],
         )
-        mock_update_user = mocker.patch.object(DBUsersHandler, "update_user")
+        mock_update_user = mocker.patch.object(
+            sync_progress_module.db_user_handler, "update_user"
+        )
 
         await task.run()
 

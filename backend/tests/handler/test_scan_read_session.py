@@ -120,13 +120,16 @@ event("complete")
                     )
                     process.stdin.close()
                     process.stdin = None
-                    deadline = time.monotonic() + 10
+                    # Cold imports compete with the parallel MariaDB shards. This
+                    # stays bounded while allowing the child to reach the lock
+                    # ordering assertion under normal CI contention.
+                    deadline = time.monotonic() + 30
                     while not events.exists() or not events.read_text().splitlines():
                         assert process.poll() is None, process.communicate()[1]
                         assert time.monotonic() < deadline
                         time.sleep(0.01)
                     assert events.read_text().splitlines()[0] == "domain"
-            stdout, stderr = process.communicate(timeout=15)
+            stdout, stderr = process.communicate(timeout=45)
             assert process.returncode == 0, (stdout + stderr)[-3000:]
             assert events.read_text().splitlines()[-1] == "complete"
         finally:
@@ -155,7 +158,7 @@ def test_publication_and_database_import_orders():
             [sys.executable, "-c", prefix + modules],
             capture_output=True,
             text=True,
-            timeout=15,
+            timeout=45,
             check=False,
         )
         assert result.returncode == 0, result.stderr[-3000:]

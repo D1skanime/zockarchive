@@ -13,6 +13,7 @@ from adapters.services.rahasher import (
     _pick_ra_file,
 )
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
+from utils.archives import ArchiveReadError
 
 
 class TestRAHasherValidHashRegex:
@@ -1257,6 +1258,28 @@ class TestRAHasherArchiveExtraction:
         ):
             result = await service.calculate_hash(
                 {"ra_id": gba_id, "slug": "gba"}, "/roms/gba/game.rar"
+            )
+
+        assert result == ""
+        extractor.assert_called_once()
+        mock_subprocess.assert_not_called()
+
+    @pytest.mark.asyncio
+    async def test_incomplete_archive_inventory_returns_empty_hash_without_rahasher(
+        self, service: RAHasherService
+    ):
+        """Incomplete evidence cannot turn optional RA hashing into a scan error."""
+        gba_id = PLATFORM_SLUG_TO_RETROACHIEVEMENTS_ID[UPS.GBA]
+
+        with (
+            patch(
+                "adapters.services.rahasher.extract_largest_archive_member",
+                side_effect=ArchiveReadError("member listing timed out"),
+            ) as extractor,
+            patch("asyncio.create_subprocess_exec") as mock_subprocess,
+        ):
+            result = await service.calculate_hash(
+                {"ra_id": gba_id, "slug": "gba"}, "/roms/gba/game.7z"
             )
 
         assert result == ""

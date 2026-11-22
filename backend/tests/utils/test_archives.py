@@ -1,14 +1,13 @@
 import os
 import subprocess
 import sys
-import time
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from handler.filesystem.storage_access import ReadCapability
-from utils import archives
+from utils import archive_streaming, archives
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -81,14 +80,24 @@ def _mock_popen_streaming(
     return popen
 
 
-def test_stream_7z_chunks_yields_until_eof():
+def test_idle_stream_yields_until_eof(monkeypatch):
     process = MagicMock()
-    process.stdout.read.side_effect = [b"abc", b"def", b""]
+    process.stdout.fileno.return_value = 9
     on_timeout = MagicMock()
+    monkeypatch.setattr(
+        archive_streaming.select,
+        "select",
+        lambda *_args: ([9], [], []),
+    )
+    monkeypatch.setattr(
+        archive_streaming.os,
+        "read",
+        MagicMock(side_effect=[b"abc", b"def", b""]),
+    )
 
     chunks = list(
-        archives._stream_7z_chunks(
-            process, deadline=time.monotonic() + 1000, on_timeout=on_timeout
+        archive_streaming.stream_extractor_until_idle(
+            process, idle_seconds=1000, on_timeout=on_timeout, chunk_size=1024
         )
     )
 
@@ -97,14 +106,16 @@ def test_stream_7z_chunks_yields_until_eof():
     process.terminate.assert_not_called()
 
 
-def test_stream_7z_chunks_timeout_terminates_and_signals_once():
+def test_idle_stream_timeout_terminates_and_signals_once(monkeypatch):
     process = MagicMock()
-    process.stdout.read.side_effect = [b"abc", b"def", b""]
+    process.stdout.fileno.return_value = 9
     on_timeout = MagicMock()
+    monkeypatch.setattr(archive_streaming.select, "select", lambda *_args: ([], [], []))
 
-    # A deadline in the past trips on the first chunk.
     chunks = list(
-        archives._stream_7z_chunks(process, deadline=0.0, on_timeout=on_timeout)
+        archive_streaming.stream_extractor_until_idle(
+            process, idle_seconds=1, on_timeout=on_timeout, chunk_size=1024
+        )
     )
 
     assert chunks == []
@@ -113,22 +124,24 @@ def test_stream_7z_chunks_timeout_terminates_and_signals_once():
 
 
 def test_read_7z_archive_files_timeout_raises_without_spawning_per_member(monkeypatch):
-    """Once the shared budget is spent, no subprocess is spawned per remaining
-    member and the caller is told the archive was not read in full."""
+    """An idle extractor stops later members and reports incomplete evidence."""
     names = [f"file{i:02d}.bin" for i in range(20)]
     listing = MagicMock(stdout=_fake_7z_listing(names))
 
-    # Force the per-archive deadline to be already in the past.
-    monkeypatch.setattr(archives, "SEVEN_ZIP_TIMEOUT", -1)
+    def stalled(_process, _idle_seconds, on_timeout, *, chunk_size):
+        on_timeout()
+        if False:
+            yield b""
 
     with (
         patch.object(archives.subprocess, "run", return_value=listing),
         patch.object(archives.subprocess, "Popen") as popen_patch,
+        patch.object(archives, "stream_extractor_until_idle", stalled),
         pytest.raises(archives.ArchiveReadError),
     ):
         list(archives.read_7z_archive_files(Path("/fake.7z"), [], []))
 
-    popen_patch.assert_not_called()
+    assert popen_patch.call_count == 1
 
 
 def test_read_7z_archive_files_raises_when_a_member_fails_midway():
@@ -273,17 +286,14 @@ class TestExtractLargestArchiveMember:
         assert result is None
         assert list(tmp_path.iterdir()) == []
 
-    def test_returns_none_when_listing_fails(self, tmp_path):
+    def test_listing_failure_is_incomplete_evidence(self, tmp_path):
         with patch.object(
             archives.subprocess,
             "run",
             side_effect=archives.subprocess.CalledProcessError(2, "7zz"),
         ):
-            result = archives.extract_largest_archive_member(
-                Path("/fake/game.7z"), tmp_path
-            )
-
-        assert result is None
+            with pytest.raises(archives.ArchiveReadError):
+                archives.extract_largest_archive_member(Path("/fake/game.7z"), tmp_path)
 
     def test_returns_none_when_archive_has_no_members(self, tmp_path):
         listing = MagicMock(stdout="")
@@ -387,7 +397,7 @@ class TestRarArchives:
 
         assert members == [("café #1\\x.gba", 500)]
 
-    def test_returns_no_members_when_listing_fails(self):
+    def test_listing_failure_is_incomplete_evidence(self):
         """Encrypted headers and corrupt archives make bsdtar exit non-zero."""
         with (
             patch.object(
@@ -397,9 +407,8 @@ class TestRarArchives:
             ),
             patch.object(archives.log, "error") as log_error,
         ):
-            members = archives._list_rar_file_members(Path("/fake/game.rar"))
-
-        assert members == []
+            with pytest.raises(archives.ArchiveReadError):
+                archives._list_rar_file_members(Path("/fake/game.rar"))
         log_error.assert_called_once()
 
     def test_member_pattern_escapes_glob_metacharacters(self):

@@ -8,6 +8,9 @@ type ViewScanType = ReturnType<typeof useScanView>["scanType"]["value"];
 const api = vi.hoisted(() => ({
   start: vi.fn().mockResolvedValue(undefined),
   providers: ["igdb"],
+  snapshot: null as object | null,
+  scanning: false,
+  scanningPlatforms: [{ id: 3, roms: [{ id: 41 }] }],
   getDirectFolderMappingReadiness: vi.fn().mockResolvedValue({ ready: true }),
 }));
 const uuid = vi.hoisted(() => ({ createUuid: vi.fn() }));
@@ -26,7 +29,7 @@ vi.mock("@/v2/composables/useSnackbar", () => ({
 }));
 vi.mock("@/v2/composables/useLibraryOperation", () => ({
   useLibraryOperation: () => ({
-    snapshot: ref(null),
+    snapshot: ref(api.snapshot),
     checking: ref(false),
     uncertain: ref(false),
     disconnected: ref(false),
@@ -69,8 +72,8 @@ vi.mock("@/v2/data/adapters/legacy/stores/platforms", () => ({
 }));
 vi.mock("@/v2/data/adapters/legacy/stores/scanning", () => ({
   default: () => ({
-    scanning: ref(false),
-    scanningPlatforms: ref([{ id: 3, roms: [{ id: 41 }] }]),
+    scanning: ref(api.scanning),
+    scanningPlatforms: ref(api.scanningPlatforms),
     scanStats: ref({}),
     reset: vi.fn(),
   }),
@@ -101,10 +104,34 @@ async function mountScanView() {
 describe("Scan collection selection request", () => {
   beforeEach(() => {
     api.start.mockClear();
+    api.snapshot = null;
+    api.scanning = false;
+    api.scanningPlatforms = [{ id: 3, roms: [{ id: 41 }] }];
     uuid.createUuid.mockReset().mockReturnValue("fallback-uuid");
     api.getDirectFolderMappingReadiness.mockReset().mockResolvedValue({
       ready: true,
     });
+  });
+
+  it("keeps live progress visible from acceptance through retained rows", async () => {
+    api.snapshot = { state: "accepted" };
+    api.scanning = true;
+    api.scanningPlatforms = [];
+    let mounted = await mountScanView();
+    expect(mounted.view.showLivePlatformRows.value).toBe(true);
+    mounted.wrapper.unmount();
+
+    api.snapshot = { state: "completed" };
+    api.scanning = false;
+    api.scanningPlatforms = [{ id: 3, roms: [{ id: 41 }] }];
+    mounted = await mountScanView();
+    expect(mounted.view.showLivePlatformRows.value).toBe(true);
+    mounted.wrapper.unmount();
+
+    api.scanningPlatforms = [];
+    mounted = await mountScanView();
+    expect(mounted.view.showLivePlatformRows.value).toBe(false);
+    mounted.wrapper.unmount();
   });
 
   it("uses the shared UUID source for normal and subfolder scan requests", async () => {

@@ -70,17 +70,31 @@ The backend owns catalog state and API shapes. The Vue frontend never accesses t
 4. pc_steam_enrichment.py resolves guarded Steam patches; pc_match_handler.py collects reviewable candidates.
 5. pc_automation.py applies only unique guarded matches. Ambiguity or protected/manual targets enter pc_automation_queue.
 
+After a ROM has been merged into the catalog, its completion fence remains active
+through optional media publication and PC enrichment. A selected collection child
+therefore retires its parent even when later non-critical work fails, while the
+original scan error remains visible to the operation.
+
 Scan-operation reads remain protected by the existing task scope and operation ownership checks. The operation projection exposes a compact, data-minimized snapshot for lifecycle polling and accepts an explicit validated result query only when the client opens the explorer. Every list, matching count, platform option, and actionable sample is scoped to the operation's current attempt; the result query uses bounded pagination, normalized name search, numeric platform filtering, and an allow-listed outcome filter. The snapshot never exposes host paths, raw worker checkpoints, or provider exception text. This lets the frontend show authoritative progress and a compact actionable summary without preloading an operation's rows.
+
+The singleton execution slot remains owned until lifecycle reconciliation has
+proved that the previous attempt can no longer write. Recovery requires an
+idle owned-media verifier, a terminal RQ job state, and no RQ worker reporting
+that job as current. A process restart may leave terminal RQ metadata without
+an end timestamp, so that timestamp is never used as a substitute for the
+terminal-state and worker-ownership fence. Browser restoration first asks for
+the active slot, which prevents a completed operation saved in local storage
+from obscuring an interrupted operation and its supported resume action.
 
 ### Metadata, Localization and Media
 
 - Parent metadata is provider JSON plus roms_metadata and filter-oriented roms_facets in backend/models/rom.py.
 - Components have RomComponentMetadata, preserving DLC/provider identity separately from the parent.
-- Manual descriptions remain in `manual_metadata.descriptions`. Steam PC/Windows and ScreenScraper console descriptions retain validated language/source variants. English may be collected alongside the requested language, but stays in its English slot. Scalar legacy summary is retained as historical data and is not an active v2 description fallback.
+- Manual descriptions remain in `manual_metadata.descriptions`. Steam PC/Windows and ScreenScraper console descriptions retain validated language/source variants. English may be collected alongside the requested language, but stays in its English slot. A ROM with an IGDB identity may expose its persisted IGDB English summary as an explicit IGDB fallback; unrelated scalar legacy summaries remain historical data and are not an active v2 description fallback.
 - `backend/config/scan_language.py` updates the existing shared language priority using administrative permission and compare-and-set checks. `backend/handler/metadata/metadata_locale.py` captures the effective locale into accepted scan commands; queued, scheduled and recovered work retains that snapshot.
 - `backend/handler/scan_description_retry.py` shares the existing retry coordinator across unidentified and missing-description work. It selects at most five distinct games per operation and eight existing targets per game. Complete warm targets need no provider request; description-only repair avoids inventory and media work.
 - `backend/handler/database/description_state.py` applies narrow provider-text patches with current identity, version/digest and execution-authority checks. Partial provider replies preserve valid variants and all stored manual text. Existing interactive matching and refresh paths use `backend/handler/metadata/manual_description_refresh.py` and the same provider/merge owners.
-- Library images are RomComponentLocalMedia; uploaded/provider media is copied to owned resources as RomOwnedMedia or RomComponentOwnedMedia, with roles and placements.
+- Library images are RomComponentLocalMedia; uploaded/provider media is copied to owned resources as RomOwnedMedia or RomComponentOwnedMedia, with roles and placements. Manual IGDB matching retains the selected cover, screenshot and artwork inventory in IGDB metadata before legacy paths are generated. `handler/metadata/rom_media.py` then uses the same suppression-aware owned-media publisher to populate and later refresh the managed catalog.
 - backend/endpoints/roms/media.py and backend/endpoints/roms/pc_component_resources.py expose owned media. The v2 detail view selects overview, background and audio placements. A normal parent `pc-metadata-selection` downloads one selected provider or scraper Cover through the bounded HTTPS owned-image store, preserving its verified GIF, WebP, JPEG, or PNG bytes and MIME as a parent-owned `cover` candidate. It then selects that exact row with the existing version-checked parent Cover mutation. The active hero reads `/api/roms/{rom_id}/media/{media_id}/content`, not a generated `path_cover_*` derivative. Component selection retains the corresponding component-owned candidate, and its detail hero reads `/api/roms/{rom_id}/pc-components/{component_id}/media/{media_id}/content`; neither flow can substitute a sibling or parent row. The separate legacy provider/scraper cover downloader preserves an `image/gif` or `image/webp` large cover as validated raw bytes at a matching `.gif` or `.webp` resource path, so its assets-backed hero receives the real MIME and can animate. Its small preview and other static cover inputs retain the existing generated derivatives. Header and decoded-image formats must agree before publication. Generated static thumbnails remain valid for legacy/list use, but do not replace an active owned hero source. Migration 0146 records an existing current cover only for rows whose original-source fields were all absent, preserving recoverable legacy media without creating assets or changing selected candidates. A legacy static derivative without a retained original URL or path is irrecoverable and must not be advertised as an original.
 
 ### Provider image deletion and placement
@@ -109,6 +123,17 @@ unfiltered list. Suppression is rechecked under the publication transaction's pa
 lock and fence before staged output publication and again before association.
 A deletion during download rejects that attempt; the existing batch abort removes
 its private outputs. Publication failures retain the existing recovery protocol.
+The bounded receipt walker preserves its advisory directory cursor, but a resumed
+cursor that reaches its end makes one fresh pass within the same fixed step budget.
+This promptly discovers a newly terminal crash receipt without weakening manifest,
+content-proof, ownership, or scan-write-fence validation.
+If a receipt directory disappears after its entry was read, the walker restarts
+that bounded directory pass instead of trusting the invalidated directory cookie,
+so later sibling receipts remain reachable.
+Recent terminal scan attempts are also reconciled directly before the generic
+walk. That priority path is limited to the normal receipt budget and performs
+the same manifest and ownership checks, so an older cursor cannot defer a
+current crash receipt behind live batches.
 
 Removing a placement leaves an active candidate in the catalog. Steam inventory
 reconciliation can seed empty overview/background surfaces again, so placement
@@ -119,7 +144,7 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 - Save and State are user-owned ROM assets with retained catalog identity, device linkage and visibility. Handlers are backend/handler/database/saves_handler.py and states_handler.py. SaveBackup is a separate owner-scoped ZIP aggregate; it validates archive topology without extraction and treats Windows restore paths as metadata only.
 - Device save synchronization uses backend/models/device_save_sync.py and backend/models/sync_session.py.
-- PC download selection snapshots component evidence in backend/models/download_manifest.py.
+- PC download selection snapshots evidence for every scanner-created PC component in backend/models/download_manifest.py. The manifest endpoint first verifies ROM visibility, then returns a bounded 409 rejection code for stale or unavailable members of that visible ROM; absent or non-visible ROMs still receive the generic manifest 404.
 - Resumable transfer attempts, item states and event lineage live in backend/models/download_transfer.py; endpoints are backend/endpoints/download_manifests.py and backend/endpoints/download_transfers.py.
 - Source changes invalidate manifests/transfers. The frontend consumes them via frontend/src/v2/data/adapters/legacy/services/api/downloadTransfers.ts.
 
@@ -130,6 +155,8 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 **ROM aggregate with PC components:** A parent Rom owns cascading components, manifest members, metadata, media and notes. See backend/models/rom.py, backend/handler/scan_handler.py and frontend/src/v2/components/GameDetails/PcComponents.vue.
 
 **Storage descriptors and grants:** Composition-owned immutable descriptors authorize operations before path opening. See backend/handler/filesystem/storage_composition.py, storage_access.py and storage_policy.py.
+
+**Mapped PC downloads:** `endpoints/roms/files.py` resolves a catalog file against the platform-owned storage mapping before opening it. PC file rows are game-relative, so the resolver prefixes the ROM filesystem path for both ordinary game members and local `OST`/Soundtrack media; it then opens only the mapping-relative suffix through the existing descriptor and permission boundary.
 
 **Provider normalization:** Typed adapter, provider handler, merge/priority policy and response schema preserve raw evidence while exposing common/localized fields. See backend/handler/metadata/steam_merge.py, rom_media.py and backend/models/rom.py.
 
@@ -215,9 +242,49 @@ StorageRoot and PlatformStorageMapping in backend/models/storage.py model extern
 
 The mapping scan coordinator emits one immutable MappedScanCommand per active mapping, in mapping-id order. A catalog path resolves to exactly one owner, and the mixed scan excludes every mapped platform route plus persisted setup exclusions from legacy fallback. Consequently a physical direct Games folder is scanned at most once. The 0148 migration only removes a surviving historical platform-wide unique constraint after dialect inspection. It preserves rows and audit history on MariaDB, MySQL, and PostgreSQL, and its downgrade refuses to restore singular uniqueness while plural platform data exists. After completed setup, `GET /setup/folders/assignments` gives an authenticated administrator a bounded current-discovery projection of every direct-folder disposition, including a pending suggested or excluded state for a newly discovered child. A changed direct-child inventory never reopens setup for an enrolled administrator. `POST /setup/folders/assign` atomically writes the current complete set and deactivates only vanished direct mappings during that explicit save, preserving an audit trail and avoiding stale scan paths. An administrator may explicitly replace an active direct mapping with `excluded`; the transaction deactivates that mapping before creating the mutually exclusive exclusion, and a later explicit platform selection creates a new mapping. Changing one active platform directly to a different platform remains a conflict. It is not the unrelated config-file exclusion list. backend/handler/storage/read_context.py validates mapping revision and root health. backend/handler/filesystem/storage_policy.py permits only resolve/list/stat/read/scan/hash/stream/download on external roots; writes go to classified ZockArchive-owned roots.
 
+Archive member enumeration uses a no-output interval per extractor, not a total
+byte-processing budget. A continuously streaming large 7z or RAR may therefore
+finish, while a stalled extractor fails closed. The affected ROM retains a raw
+container hash and no `archive_members`, and the existing scan-operation warning
+records its game name without exposing a storage path. Other ROMs, mappings and
+platforms continue, so an archive-member timeout alone does not fail the scan.
+RetroAchievements extraction treats the same incomplete inventory as an absent
+optional RA hash for that ROM; it never converts the evidence failure into a
+platform-level scan failure.
+ISO files take the ordinary file path. Windows folders such as FitGirl repacks
+remain one nested ROM and their files are not content-hashed during discovery.
+The Windows quick inventory is metadata-only (names, stat fields and bounded
+directory traversal), while owned-content proof protects only ZA-owned staged
+media and generated outputs, never library game bytes. Its finite byte-aware
+proof budget consequently cannot terminate a PC library scan. An explicit PC
+subfolder choice reclaims a same-named missing catalog child from an older
+mapping before inventory reuse. It rebuilds that child's files at the active
+mapping path and reaches the normal completion fence, which retires the chosen
+parent before a later quick scan can rediscover and metadata-match it as a
+separate game. The same recovery also applies to an ordinary missing Windows
+game after an explicit direct-mapping rename, but only when an inactive mapping
+on the same storage root yields the exact same mapping-relative game suffix.
+It reuses the existing catalog row and rebuilds its PC files, including local
+soundtrack rows, rather than creating a duplicate or guessing by display name.
+A rejected
+generated-media proof remains fail-closed: when the scan can associate it with
+a ROM, it persists a failed result with the platform and game, increments the
+owned-content timeout counter, keeps earlier results, and ends the durable
+operation as failed after later work has completed. Recovery retains the
+ambiguous owned-media receipt instead of publishing it.
+
+Scan lifecycle recovery never clears the active execution slot directly. It
+requires the owned-media verifier to be idle and every live RQ worker to deny
+ownership before recovering a terminal or restart-orphaned `STARTED` attempt.
+This distinguishes an RQ status record retained after a worker restart from a
+live writer, preserving the fencing boundary while letting the existing recovery
+flow release the stale attempt safely.
+
 ### PC models, metadata, DLC and descriptions
 
-RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
+RomComponent and RomComponentManifestMember in backend/models/rom.py represent base, update, DLC, hotfix, language_pack, extra and unresolved install components with relative paths, size, SHA-256 and missing-file state. A top-level `OST`/`Soundtrack` folder is intentionally projected both as local soundtrack media and as an `extra` component: the former powers the Media player, while the latter gives the ordinary, manifest-authorized download flow a selectable folder and individual files. RomComponentMetadata, local media, owned media, placements and notes preserve component-specific catalog data. pc_match_handler.py collects review candidates from IGDB, Steam, MobyGames, SteamGridDB and LaunchBox. pc_steam_enrichment.py applies guarded Steam data. DLC matching is limited to related IGDB expansions or validated Steam DLC. manual_description.py stores locale-keyed descriptions and resolves exact locale, English and provider fallbacks.
+
+Manual IGDB matching retains its complete cover, screenshot and artwork source inventory in `igdb_metadata.provider_media`. The explicit parent-media refresh chooses that retained provider inventory before legacy URL fields. For older manual matches that retain only a known IGDB id, it restores this inventory from that same provider record before reconciling screenshots and artwork. Provider-media suppressions remain durable and are checked before every candidate is republished.
 
 #### DLC-owned manuals and media
 

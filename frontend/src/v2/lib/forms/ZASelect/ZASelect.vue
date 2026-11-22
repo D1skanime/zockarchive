@@ -7,6 +7,7 @@ import {
   useSlots,
   watch,
 } from "vue";
+import type { ComponentPublicInstance } from "vue";
 import { shouldAutofocusSearch } from "@/v2/utils/autofocus";
 import { useZAFormRegistration } from "../ZAForm/context";
 import ZASelectActivator from "./ZASelectActivator.vue";
@@ -107,6 +108,15 @@ const menu = useZASelectMenu(
   activatePinnedAction,
   runRules,
 );
+const assignElementRef =
+  (target: { value: HTMLElement | null }) =>
+  (element: Element | ComponentPublicInstance | null) => {
+    target.value = element instanceof HTMLElement ? element : null;
+  };
+const setActivatorRef = assignElementRef(menu.activatorRef);
+const setValueRef = assignElementRef(items.valueRef);
+const setMeasureRef = assignElementRef(items.measureRef);
+const setPanelRef = assignElementRef(menu.panelRef);
 menuControl.close = menu.closeMenu;
 const externalMessages = computed(() =>
   Array.isArray(props.errorMessages)
@@ -204,9 +214,9 @@ useZAFormRegistration({
     :visible-chips="items.visibleChips.value"
     :overflow-count="items.overflowCount.value"
     :is-all-selected="selection.isAllSelected.value"
-    :activator-ref="menu.activatorRef"
-    :value-ref="items.valueRef"
-    :measure-ref="items.measureRef"
+    :activator-ref="setActivatorRef"
+    :value-ref="setValueRef"
+    :measure-ref="setMeasureRef"
     @toggle="menu.toggleMenu"
     @key="menu.onActivatorKey"
     @focus="onFocus"
@@ -227,7 +237,7 @@ useZAFormRegistration({
   <ZASelectMenu
     :props="props"
     :is-open="menu.isOpen.value"
-    :panel-ref="menu.panelRef"
+    :panel-ref="setPanelRef"
     :floating-styles="menu.floatingStyles.value"
     :internal-search="items.internalSearch.value"
     :autofocus-search="autofocusSearch"

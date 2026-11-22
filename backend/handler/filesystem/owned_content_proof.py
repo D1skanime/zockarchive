@@ -19,10 +19,18 @@ from exceptions.storage_exceptions import StorageResolutionError
 from handler.filesystem.owned_writer_domain import lock_descriptor
 
 _ACTIVE = ContextVar("owned_content_proof", default=None)
+_TIMEOUT_MESSAGE = "Owned content verification timed out"
 
 
 class OwnedContentProofRejected(StorageResolutionError):
     """Uncertain bytes confer no mutation authority."""
+
+
+def owned_content_proof_timed_out(error):
+    """Identify the bounded verifier timeout without accepting failed proof."""
+    return (
+        isinstance(error, OwnedContentProofRejected) and str(error) == _TIMEOUT_MESSAGE
+    )
 
 
 class OwnedContentProof:
@@ -78,7 +86,7 @@ class OwnedContentProof:
             self.deadline = time.monotonic() + self.seconds
         remaining = self.deadline - time.monotonic()
         if remaining <= 0:
-            raise OwnedContentProofRejected("Owned content verification timed out")
+            raise OwnedContentProofRejected(_TIMEOUT_MESSAGE)
         return remaining
 
     def _receive(self):
@@ -86,7 +94,7 @@ class OwnedContentProof:
         if channel is None:
             raise OwnedContentProofRejected("Owned verifier is closed")
         if not select.select([channel], [], [], self._remaining())[0]:
-            raise OwnedContentProofRejected("Owned content verification timed out")
+            raise OwnedContentProofRejected(_TIMEOUT_MESSAGE)
         frame, _, flags, _ = channel.recvmsg(4096)
         if flags or not frame:
             raise OwnedContentProofRejected("Owned content proof incomplete")
@@ -114,7 +122,7 @@ class OwnedContentProof:
             raise OwnedContentProofRejected("Owned content proof frame")
         try:
             if not select.select([], [self.channel], [], self._remaining())[1]:
-                raise OwnedContentProofRejected("Owned content verification timed out")
+                raise OwnedContentProofRejected(_TIMEOUT_MESSAGE)
             sent = self.channel.sendmsg(
                 [frame],
                 [
@@ -218,7 +226,10 @@ def content_proof_scope(
 def verify_owned_content(descriptor, digest, size, identity):
     if digest is None or size is None:
         raise OwnedContentProofRejected("Owned content has no expected digest")
-    with content_proof_scope() as proof:
+    # Direct publication must reserve the same finite byte-aware proof budget
+    # as batch publication. The verifier still re-reads every byte and checks
+    # digest, identity, and request echo before a write can proceed.
+    with content_proof_scope(expected_bytes=size, expected_records=1) as proof:
         proof.verify(descriptor, digest, size, identity)
 
 

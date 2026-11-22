@@ -16,6 +16,151 @@ progress:
 
 # Project State
 
+## Latest quick task
+
+- 261122-rhc completed: a direct RecoveryWalk contract now confirms that a
+  disappeared directory entry resets only the current advisory cursor cookie.
+- 261122-r3p completed: a vanished scan-media receipt directory resets the
+  bounded cursor pass, so later siblings remain reachable while terminal
+  receipt priority continues to run first.
+- 261122-smr-tests completed: a direct scan-media recovery contract proves a
+  confirmed terminal receipt consumes the bounded recovery budget before the
+  advisory cursor traversal begins.
+- 261122-rap completed: MariaDB CI Shard 6 reproduced the two
+  RetroAchievements progress failures, then passed all 827 tests after the
+  test doubles were bound to the task's imported singleton collaborators.
+- 261122-rah-tests completed: direct RAHasher coverage proves incomplete
+  archive-member evidence omits only the optional hash and launches no helper.
+- 261122-r51 completed: frontend regression contracts now model active-slot
+  recovery and extracted local soundtrack behavior.
+- 261122-lpp completed: direct scan-progress visibility contracts cover the
+  accepted empty state and retained platform rows.
+- 261122-qcr completed: live scan progress now displays its immediate empty
+  state while it awaits the first platform socket row.
+- 261122-klq completed: normal selected-child completion now commits its
+  retirement checkpoint before returning, with direct regression coverage.
+- 261122-0ek completed: selected-child completion fencing now spans every
+  post-identification step and preserves the original scan error.
+- 261121-r46 completed: regression repair for mapped downloads, accepted scan
+  type replay, archive/OST contracts, and local frontend build cache ownership.
+
+## Quick Task 261121-hd3
+
+| 261121-hd3 | Add accepted mapping recovery logic tests | 2026-11-21 | Complete: direct tests cover exact rebind, rejected ambiguity, fallback retention, orphaned RQ STARTED recovery and live-worker fencing. The isolated MariaDB target passed 11 tests with zero failures, errors or skips. | [Mapping recovery tests](./quick/261121-hd3-post-uat-mapping-recovery-tests/) |
+
+## Quick Task 261121-hd2
+
+| 261121-hd2 | Rebind legacy Windows catalog identity for local soundtrack inventory | 2026-11-21 | Complete: a missing Windows game from an inactive direct mapping is reconnected only for an exact same-root, same-relative-suffix identity. Normal inventory rebuilt Hades' local OST as Soundtrack media and a selectable Game Download component. Dev desktop/mobile playback advanced through the protected file route and a one-member OST download completed; full and following quick scans completed. Scoped Ruff, backend syntax, frontend typecheck and the Dev-container production build passed. | [Hades OST mapping recovery](./quick/261121-hd2-rebind-legacy-windows-rom-inventory/) |
+
+## Quick Task 261121-iu1
+
+| 261121-iu1 | Recover stalled Dev scan lifecycle | 2026-11-21 | Complete: the Dev operation with a terminal RQ job but no `ended_at` is no longer held indefinitely as worker-unconfirmed. Recovery keeps fencing intact, exposes the real active operation over stale local status, and uses the existing safe Stop action before a new scan. Dev browser checks confirmed a completed All/Quick scan and a completed ROM metadata refresh after restart. Scoped Trunk, frontend typecheck, backend syntax and containerized production build passed. | [Stalled scan recovery](./quick/261121-iu1-recover-stalled-dev-scan-lifecycle/) |
+
+## Quick Task 261120-u60
+
+| 261120-u60 | Diagnose Dev UAT Windows selected-subfolder recurrence | 2026-11-20 | Complete: actual Dev database evidence identified a missing legacy child under the former mapping that could not reach the completion fence. The selected child is now rebuilt at the active mapping before quick-inventory reuse. A normal Dev child scan followed by Windows quick scan showed no parent recurrence at desktop or mobile. The related IGDB media refresh correction retrieved and published 12 screenshots plus 12 artwork records. Scoped Trunk, backend syntax, frontend typecheck and the Dev-container production build passed. | [Dev UAT diagnosis and repair](./quick/261120-u60-diagnose-and-fix-dev-uat-windows-selecte/) |
+
+## Quick Task 261120-sd9
+
+| 261120-sd9 | Fix confirmed Dev UAT scan and media failures | 2026-11-20 | Complete after commit c21dadd27: typecheck, targeted Trunk and isolated production build passed. Per user direction, the automatic Dev handoff follows this completion and the human performs the post-deployment UAT for the Tales child scan, IGDB media refresh, and OST playback/download. | [Dev UAT fixes](./quick/261120-sd9-fix-confirmed-dev-uat-failures-for-pc-co/) |
+
+## Quick Task 261120-oxx
+
+| 261120-oxx | Finalize reused selected PC collection children | 2026-11-20 | Complete: a selected Windows child now passes through the existing completion fence even when quick inventory reuses it, retiring the parent before the next quick scan. Typecheck, targeted Trunk and production build passed. Desktop/mobile Dev verification remains open because normal form login received HTTP 401 from `/api/users/me`. | [Tales collection completion](./quick/261120-oxx-prevent-a-completed-pc-subfolder-scan-fr/) |
+
+## Quick Task 261120-ira
+
+| 261120-ira | Stop browser harness and verify auth path | 2026-11-20 | Complete: removed only this job's interrupted harness containers and network, preserved non-owned volumes and the shared stack. Static review confirms the current line-limit extraction cannot cause the observed post-login `/api/users/me` 401. Typecheck, targeted Trunk and containerized production build passed; no browser automation or tests ran. | [Harness stop and auth trace](./quick/261120-ira-stop-isolated-browser-harness-work-and-s/) |
+
+## Quick Task 261120-ftg
+
+| 261120-ftg | Restore changed-file line-limit baselines | 2026-11-20 | Complete: moved manual IGDB media retention/publication to the existing metadata-media owner and OST playlist selection to a focused GameDetails composable. Reported source files are at or below their baselines; frontend typecheck and targeted Trunk checks passed. No test suite was run before Live-UAT. | [Line-limit baseline restoration](./quick/261120-ftg-restore-line-limit-baselines-by-extracti/) |
+
+## Quick Task 261119-o22
+
+The resumed isolated current-branch harness now confirms the regular Windows
+OST scan at desktop and mobile sizes. A valid local MP3 plays through the
+authorized file route with advancing playback, and the same OST folder is an
+extra component for a successful single-member manifest download; the base-game
+download also succeeded. The shared Dev-UAT for the separately fixed Tales and
+Uncharted data remains pending until the supplied older Dev instance is updated.
+
+## Quick Task 261119-m72
+
+| 261119-m72 | Resume interrupted Scan view inspection | 2026-11-19 | Complete: after the VM restart, only the current ZA development container was restarted and normal local login plus Scan-route initialization succeeded on unchanged commit `159a4ca4`. The same-commit desktop/mobile 22-row wheel-scroll evidence remains recorded in the job sight-inspection report. No test suite ran before live UAT. | [Resume Scan inspection](./quick/261119-m72-fortsetzung-der-durch-vm-neustart-unterb/) |
+
+## Quick Task 261119-kpu
+
+| 261119-kpu | Restore Scan live-progress scrolling | 2026-11-19 | Complete: ScanLiveProgress descendants now receive the feature scroll layout and mobile logs reserve BottomNav clearance. An isolated 22-row PlayStation 3 browser projection reached the final Unidentified row with wheel scrolling in active and terminal states at desktop and mobile widths. Targeted Trunk and frontend typecheck passed; no test suite ran before live UAT. | [Scan progress scrolling](./quick/261119-kpu-scan-live-progress-scroll-chain/) |
+
+## Quick Task 261119-jd8
+
+| 261119-jd8 | Restore Home source line budget | 2026-11-19 | Complete: preserved the direct Library Management route and removed redundant local declaration whitespace, returning Home.vue to its 684-line baseline. Targeted Trunk formatting and static checking passed. No tests were run before live UAT. | [Home line budget](./quick/261119-jd8-restore-home-line-budget/) |
+
+## Quick Task 261119-fwx
+
+| 261119-fwx | Retain Scan subfolder actions and classify unmatched results | 2026-11-19 | Complete: terminal snapshots now retain transient Scan rows for page-lifetime PC subfolder actions, and durable explicit metadata-identity facts classify metadata-free games as Unidentified across platforms. Targeted Trunk passed; current Dev browser confirmed anchored Scan-type popups at 1440 px and 390 px. The supplied instance lacked retained UAT CPS3 terminal rows for exact filter UAT. | [Scan terminal actions and classification](./quick/261119-fwx-retain-scan-subfolder-actions-and-unmatched/) |
+
+## Quick Task 261119-bpn
+
+| 261119-bpn | Clarify Scan type selector and remove technical copy | 2026-11-19 | Complete: removed the two technical quick-scan paragraphs and made the existing Scan type selector a visibly outlined control with chevron and keyboard focus. Isolated normal-login browser checks at 1440 px and 390 px confirmed opening options and no scan-action overlap while scrolling. No test suite was run before live UAT. | [Scan type cleanup](./quick/261119-bpn-remove-both-technical-quick-scan-paragra/) |
+
+## Quick Task 261119-bhu
+
+| 261119-bhu | Keep Scan actions clear of quick-scan copy | 2026-11-19 | Complete: Scan actions now belong to the sticky configuration card, so they remain below the full quick-scan description while scrolling. Browser checks at 1310 px and 390 px confirmed no overlap and working Library Management navigation. No test suite was run. | [Scan action layout](./quick/261119-bhu-fix-the-confirmed-desktop-scan-page-over/) |
+
+## Quick Task 261118-t2j
+
+| 261118-t2j | Repair ESLint process termination in locale parity test | 2026-11-18 | Complete: restored Trunk ESLint batching and removed unused TypeScript project-service activation, so changed frontend files no longer allocate competing type-aware programs. Direct ESLint, targeted Trunk, and the complete 118-file branch-diff Trunk check passed with no new issues. No test suite was run. | [ESLint batch repair](./quick/261118-t2j-repair-the-quality-gate-eslint-process-t/) |
+
+## Quick Task 261118-s68
+
+| 261118-s68 | Publish ZockArchive Beta 9 for NAS UAT | 2026-11-18 | Complete: operator-published prerelease `v0.1.0-beta.9` targets `51cde4ec6`; GitHub Actions run `44391902111` succeeded. The public GHCR OCI index `ghcr.io/d1skanime/zockarchive:0.1.0-beta.9` resolves to `sha256:cb9af309aa310073a90b521b571a8eab243b7f3904a44133db082d40843a3364` with amd64 and arm64 manifests. No NAS, Portainer, production, merge, or accept action occurred. | [Beta 9 release](./quick/261118-s68-publish-zockarchive-beta-9-from-the-curr/) |
+
+## Quick Task 261118-lfr
+
+| 261118-lfr | PC manifest-member download recovery | 2026-11-18 | Complete: scanner-created PC components are now consistently manifest-downloadable, while visible-Rom rejection is a bounded 409 code and non-visible resources retain generic 404 masking. Isolated HTTP proof created a one-member MP3 manifest (201) and downloaded its exact 29 bytes (200); all resources were removed. The supplied current browser service exposed the action on desktop/mobile but returned 401 after login, so its interactive MP3 proof remains an environment follow-up. | [PC member download](./quick/261118-lfr-pc-manifest-member-download/) |
+
+## Quick Task 261118-hkh
+
+| 261118-hkh | Safe direct-folder reassignment and scan-error filtering | 2026-11-18 | Complete implementation: active direct mappings require the existing explicit exclusion transition; catalog cleanup and any later scan remain manual. Current-branch desktop/mobile UI showed the guidance and disabled ordinary Save. Remaining UAT is a disposable current-stack POST/reload/reassign/manual-scan sequence; the old supplied instance is not current and one optional health request aborted in the shared test API. | [reassignment and filter recovery](./quick/261118-hkh-za-prod-uat-sichere-direkte-ordner-neuzu/) |
+
+## Quick Task 261118-grp
+
+| 261118-grp | Surface owned-content proof timeout in Scan operations | 2026-11-18 | Complete: exact owned-media proof timeouts now persist a confirmed failed game result when available, increment a dedicated counter and end the durable operation as failed after retained work. Isolated verifier and terminal-projection checks passed; authenticated desktop/mobile browser flows passed. | [owned proof timeout](./quick/261118-grp-owned-content-proof-timeout/) |
+
+## Quick Task 261118-e72
+
+| 261118-e72 | Keep active Scan progress beside settings on wide layouts | 2026-11-18 | Complete: wide Scan layout places configuration/actions beside the active live log, while narrow views retain normal document flow. Authenticated desktop/mobile browser checks started and stopped scans without post-login errors; the supplied library was empty, so no platform/game rows could be emitted. | [live scan layout](./quick/261118-e72-scan-live-progress-layout/) |
+
+## Quick Task 261118-cxh
+
+| 261118-cxh | Clean CRC test lint history | 2026-11-18 | Complete: rephrased the prior Quick summary to avoid a false quality-gate match. No product or test assertion changed; no tests were run before renewed UAT. | [lint history cleanup](./quick/261118-cxh-clean-test-lint-history/) |
+
+## Quick Task 261118-ctp
+
+| 261118-ctp | Remove CRC recovery test import suppression | 2026-11-18 | Complete: removed the quality-gate-reported noqa suppression without changing the CRC recovery assertions. Targeted Trunk passed; no tests were run before renewed UAT. | [test import suppression](./quick/261118-ctp-remove-test-import-suppression/) |
+
+## Quick Task 261118-cgg
+
+| 261118-cgg | Preserve raw archive hashes after member-reader failure | 2026-11-18 | Complete: interrupted archive member inventory now restores the pristine CRC/MD5/SHA1 state before raw-file fallback. One isolated focused regression test passed; authenticated desktop and mobile Scan browser checks passed. | [archive CRC raw fallback](./quick/261118-cgg-archive-crc-raw-fallback/) |
+
+## Quick Task 261117-fu2
+
+| 261117-fu2 | Archive idle timeout and ROM-local recovery | 2026-11-17 | In progress: archive member stalls now fall back to the individual container and no longer abort platform, mapping or worker. The required current isolated ISO, multipart-RAR and repack proof remains open. | [archive idle recovery](./quick/261117-fu2-archive-idle-and-rom-local-recovery/) |
+
+## Quick Task 261117-f1s
+
+| 261117-f1s | Stabilize scan read session process regression | 2026-11-17 | Complete: retained subprocess lock-order and import-alias assertions while increasing finite cold-import budgets for parallel MariaDB CI. Shard 6 passed with cleanup and source-immutability checks. No product code changed. | [scan read session regression](./quick/261117-f1s-stabilize-scan-read-session-regression/) |
+
+## Quick Task 261117-coq
+
+| 261117-coq | Add post-UAT scan snapshot logic tests | 2026-11-17 | Complete: direct SQL worker coverage now proves both legacy missing-type quick fallback and explicit complete-type preservation, while retaining the accepted metadata locale. MariaDB shards 5 and 6 passed, including archive continuation and owned-proof coverage. No product code changed. | [post-UAT scan snapshot tests](./quick/261117-coq-post-uat-scan-snapshot-tests/) |
+
+## Quick Task 261116-p8z
+
+| 261116-p8z | Repair post-UAT locale contracts and legacy scan snapshots | 2026-11-16 | Complete: approved all 18 translated scan contracts, retained full locale validator coverage with a CI-safe budget, and restored the quick-scan default for durable snapshots without `type`. Focused Vitest (64 tests) and isolated MariaDB shard 5 passed. | [locale and scan snapshot regression](./quick/261116-p8z-regression-locale-and-scan-snapshot/) |
+
 ## Quick Task 261115-u1y
 
 | 261115-u1y | Repair post-UAT HTTP scan test typecheck | 2026-11-15 | Complete: corrected the partial Web Crypto test double and complete subfolder request fixture. Frontend typecheck and four focused frontend test files, 65 tests, passed. No product code changed. | [post-UAT test typecheck repair](./quick/261115-u1y-fix-post-uat-test-typecheck/) |
@@ -848,6 +993,20 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261122-rah | Contain RAHasher archive inventory failures | 2026-11-22 | this commit | [261122-rah](./quick/261122-rah-archive-error/) |
+| 261122-smp-tests | Cover and repair scan-media recovery cursor regression | 2026-11-22 | this commit | [261122-smp-tests](./quick/261122-smp-tests/) |
+| 261122-smp | Make scan-media crash recovery deterministic | 2026-11-22 | this commit | [261122-smp](./quick/261122-smp-crash-recovery/) |
+| 261122-r51 | Reconcile frontend regression expectations | 2026-11-22 | this commit | [261122-r51](./quick/261122-r51-reconcile-frontend-regression-expectations/) |
+| 261122-lpp | Add direct live-progress visibility contracts | 2026-11-22 | this commit | [261122-lpp](./quick/261122-lpp-add-live-progress-visibility-tests/) |
+| 261122-gate51-backend-regressions | Repair Gate 51 backend regression failures | 2026-11-22 | this commit | [261122-gate51-backend-regressions](./quick/261122-gate51-backend-regressions/) |
+| 261122-qcr | Restore immediate live scan progress feedback | 2026-11-22 | this commit | [261122-qcr](./quick/261122-qcr-restore-live-scan-empty-state/) |
+| 261122-klq | Finalize selected-child completion on normal return | 2026-11-22 | this commit | [261122-klq](./quick/261122-klq-add-direct-post-uat-tests-for-selected-c/) |
+| 261119-j47 | Open Platform folders from library entry points | 2026-11-19 | this commit | [261119-j47](./quick/261119-j47-library-entry-and-select-anchor/) |
+| 261119-g7m | Anchor the scanned-result filter popup after scroll | 2026-11-19 | this commit | [261119-g7m](./quick/261119-g7m-anchor-scan-filter-popup/) |
+| 261116-mce | Add post-UAT direct scan timeout regression coverage | 2026-11-16 | this commit | [261116-mce](./quick/261116-mce-post-uat-scan-tests/) |
+| 261116-uat02 | Complete isolated mapped archive-timeout browser evidence | 2026-11-16 | this commit | [261116-uat02](./quick/261116-uat02-postfix-isolated-proof/) |
+| 261116-review01 | Fix owned-proof budget and mixed archive continuation review findings | 2026-11-16 | this commit | [261116-review01](./quick/261116-review01-owned-proof-and-mixed-scan/) |
+| 261116-gate02 | Fix Phase 46 trunk and source-size quality-gate findings | 2026-11-16 | this commit | [261116-gate02](./quick/261116-gate02-fix-trunk-and-line-limit/) |
 | 261113-c9k | Classify the retained ScreenScraper compatibility input for the quality gate | 2026-11-13 | 62baa3eb1 | [261113-c9k](./quick/261113-c9k-quality-gate-namensklassifizierung-und-host-contracts/) |
 | 261111-ke4 | Fix ShellCheck SC1003 in the ZockArchive init banner | 2026-11-11 | this commit | [261111-ke4](./quick/261111-ke4-fix-shellcheck-sc1003-in-zockarchive-doc/) |
 | 261111-0faa | Brand Docker init banner and log prefix as ZockArchive | 2026-11-11 | this commit | N/A |
@@ -975,6 +1134,10 @@ Resume file: None
 | 261106-m05 | Preserve animated provider and scraper cover originals through normal selection | 2026-11-06 | isolated backend target: 375 passed, 1 skipped; authenticated read-only browser passed, animated-source UAT pending | [261106-m05-preserve-animated-provider-and-scraper-c](./quick/261106-m05-preserve-animated-provider-and-scraper-c/) |
 
 - Phase 25 added: Scan-/Medien-Integration härten
+- Phase 46 added: Diagnose and harden terminal owned-content verification for Beta 5 NAS UAT without changing NAS data.
+- Quick task 261116-qg1 completed: restored the missing Phase 46 summary and
+  verification artifacts with an explicit partial verdict; the owned-content
+  proof work remains open.
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.
   \n## Quick Task 261010-skc\n\n| 261010-skc | Match PC DLC overview media image grid to main game overview layout | 2026-10-10 | pending | [261010-skc-match-pc-dlc-overview-media-image-grid-t](./quick/261010-skc-match-pc-dlc-overview-media-image-grid-t/) |\n

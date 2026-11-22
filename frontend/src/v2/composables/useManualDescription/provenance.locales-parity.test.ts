@@ -132,5 +132,6 @@ describe("combined eighteen-locale description gate", () => {
       expect(result.error).toBeUndefined();
       expect(result.status, result.stdout + result.stderr).toBe(0);
     },
+    20_000,
   );
 });

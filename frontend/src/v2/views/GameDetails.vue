@@ -92,7 +92,6 @@ onBeforeRouteUpdate(async (to) => {
   // its own page): the panel is the sole scroll context here.
   panelEl.value?.scrollTo({ top: 0, behavior: "smooth" });
 });
-
 // Active tab — URL-persistent via `?tab=`.
 const tab = ref<string>((route.query.tab as string) || "overview");
 watch(tab, (value) => {
@@ -124,6 +123,7 @@ const overviewDescription = computed(() => {
     manualMetadata: rom?.manual_metadata,
     steamMetadata: rom?.steam_metadata,
     ssMetadata: rom?.ss_metadata,
+    igdbSummary: rom?.igdb_id ? rom.summary : null,
     locale: locale.value,
     provider: !rom ? null : isPcRom.value ? "steam" : "screenscraper",
   });

@@ -3,6 +3,7 @@
 import importlib
 import json
 import os
+from uuid import uuid4
 
 import pytest
 from tests.handler.media_recovery_helpers import attempt as attempt
@@ -32,6 +33,29 @@ from handler.filesystem.storage_policy import StorageOperation
 from tasks.scheduled.owned_media_cleanup import owned_media_cleanup_task
 
 
+def test_disappearing_entry_resets_its_directory_cookie(monkeypatch, tmp_path):
+    """A vanished entry restarts its directory instead of skipping siblings."""
+    module = importlib.import_module("handler.filesystem.scan_media_traversal")
+    walk = RecoveryWalk(object())
+    walk.stack = [walk._frame(RESERVED)]
+    name = str(uuid4())
+
+    monkeypatch.setattr(
+        module, "open_directory", lambda *_: os.open(tmp_path, os.O_RDONLY)
+    )
+    monkeypatch.setattr(module, "_entry", lambda *_: (123, name))
+
+    def vanished(*_, **__):
+        raise FileNotFoundError(name)
+
+    monkeypatch.setattr(module.os, "stat", vanished)
+
+    assert walk.step() == ("skip", RESERVED)
+    assert len(walk.stack) == 1
+    assert walk.stack[0]["path"] == RESERVED
+    assert walk.stack[0]["cookie"] == 0
+
+
 @pytest.mark.asyncio
 async def test_disappearing_child_preserves_directory_continuity(
     attempt, rom, admin_user, monkeypatch
@@ -46,6 +70,7 @@ async def test_disappearing_child_preserves_directory_continuity(
     ]
     removed, later = ordered[0], ordered[1]
     module = importlib.import_module("handler.filesystem.scan_media_traversal")
+    recovery = importlib.import_module("handler.filesystem.scan_media_recovery")
     actual = module._entry
     raced: list[str] = []
 
@@ -81,6 +106,7 @@ async def test_disappearing_child_preserves_directory_continuity(
         if reached:
             break
     assert reached, "test directory was not reached within bounded cursor sessions"
+    monkeypatch.setattr(recovery, "_recent_terminal_attempt_directories", lambda _: [])
     monkeypatch.setattr(module, "_entry", disappear)
     await owned_media_cleanup_task.run()
     assert raced == [removed.name]

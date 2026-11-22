@@ -20,6 +20,7 @@ import zipfile_inflate64  # trunk-ignore(ruff/F401): Patches zipfile to support 
 from config import SEVEN_ZIP_TIMEOUT
 from handler.filesystem.storage_access import ReadCapability
 from logger.logger import log
+from utils.archive_streaming import stream_extractor_until_idle
 from utils.filesystem import COMPRESSED_FILE_EXTENSIONS
 
 # 7zip archives are read through 7zz.
@@ -28,7 +29,6 @@ SEVEN_ZIP_PATH = "/usr/bin/7zz"
 BSDTAR_PATH = "/usr/bin/bsdtar"
 
 RAR_FILE_EXTENSIONS: Final = (".rar",)
-
 # libarchive escapes the backslash and every byte outside printable ASCII as a
 # 3-digit octal sequence in the mtree listings we parse RAR members from.
 _MTREE_OCTAL_ESCAPE: Final = re.compile(rb"\\([0-7]{3})")
@@ -48,8 +48,6 @@ COMPRESSED_MIME_TYPES: Final = frozenset(
     )
 )
 
-# CHD (Compressed Hunks of Data) v5 format constants
-# See: https://github.com/mamedev/mame/blob/master/src/lib/util/chd.h
 CHD_SIGNATURE: Final = b"MComprHD"
 CHD_SIGNATURE_LENGTH: Final = 8
 CHD_MIN_HEADER_LENGTH: Final = 16  # Minimum to read signature and version
@@ -182,7 +180,11 @@ def _process_largest_7z_member(
 
         log.debug(f"Extracting {largest_file} from {file_path}...")
 
-        start_decompression_time = time.monotonic()
+        timed_out = False
+
+        def _mark_timed_out() -> None:
+            nonlocal timed_out
+            timed_out = True
 
         with subprocess.Popen(
             [SEVEN_ZIP_PATH, "e", str(file_path), largest_file, "-so", "-y", "-spd"],
@@ -191,13 +193,19 @@ def _process_largest_7z_member(
             shell=False,  # trunk-ignore(bandit/B603): 7z path is hardcoded, args are validated
         ) as process:
             if process.stdout:
-                while chunk := process.stdout.read(FILE_READ_CHUNK_SIZE):
-                    if time.monotonic() - start_decompression_time > SEVEN_ZIP_TIMEOUT:
-                        process.terminate()
-                        log.error("7z extraction timed out")
-                        return False
+                for chunk in stream_extractor_until_idle(
+                    process,
+                    SEVEN_ZIP_TIMEOUT,
+                    _mark_timed_out,
+                    chunk_size=FILE_READ_CHUNK_SIZE,
+                ):
                     fn_hash_update(chunk)
 
+        if timed_out:
+            # A busy extractor may exceed the interval. Only a lack of output
+            # is unsafe because it leaves no complete member evidence.
+            log.error("7z extraction stalled without output")
+            return False
         if process.returncode != 0:
             log.error(f"7z extraction failed with return code {process.returncode}")
             return False
@@ -311,20 +319,6 @@ def read_tar_archive_files(
         return
 
 
-def _stream_7z_chunks(
-    process: subprocess.Popen[bytes],
-    deadline: float,
-    on_timeout: Callable[[], None],
-) -> Iterator[bytes]:
-    assert process.stdout is not None
-    while chunk := process.stdout.read(FILE_READ_CHUNK_SIZE):
-        if time.monotonic() > deadline:
-            process.terminate()
-            on_timeout()
-            return
-        yield chunk
-
-
 def _is_member_excluded(
     member: str,
     excluded_names: list[str],
@@ -345,13 +339,12 @@ def _stream_archive_members(
 ) -> Iterator[tuple[str, int, Iterator[bytes]]]:
     """Stream each listed member of an archive, one subprocess at a time.
 
-    Members are yielded in ASCII path order under a single time budget shared
-    by the whole archive. Raises `ArchiveReadError` if any member fails or the
-    budget is spent, so callers never mistake a partial read for a complete one.
+    Members are yielded in ASCII path order. Each extractor has a bounded
+    no-output interval, so a large archive may stream longer than the interval
+    while a stalled extractor still fails closed.
     """
     entries = sorted(entries, key=lambda e: e[0])
 
-    deadline = time.monotonic() + SEVEN_ZIP_TIMEOUT
     timed_out = False
 
     def _mark_timed_out() -> None:
@@ -359,11 +352,7 @@ def _stream_archive_members(
         timed_out = True
 
     for name, size in entries:
-        # Once the shared budget is spent, stop spawning a subprocess per
-        # remaining member; otherwise each one trips the deadline and spams
-        # an identical error line for every entry left in the archive.
-        if timed_out or time.monotonic() > deadline:
-            timed_out = True
+        if timed_out:
             break
         try:
             with subprocess.Popen(
@@ -374,9 +363,14 @@ def _stream_archive_members(
             ) as process:
                 if process.stdout is None:
                     continue
-                yield name, size, _stream_7z_chunks(process, deadline, _mark_timed_out)
-            # A timeout terminates the subprocess, so a non-zero return code is
-            # expected then and is covered by the single raise below.
+                yield name, size, stream_extractor_until_idle(
+                    process,
+                    SEVEN_ZIP_TIMEOUT,
+                    _mark_timed_out,
+                    chunk_size=FILE_READ_CHUNK_SIZE,
+                )
+            # Do not start another member after an idle timeout. The reaped
+            # extractor remains incomplete evidence, never a success result.
             if not timed_out and process.returncode != 0:
                 raise ArchiveReadError(
                     f"Extraction of {name} from {file_path} failed "
@@ -481,7 +475,7 @@ def _list_rar_file_members(file_path: Path) -> list[tuple[str, int]]:
         FileNotFoundError,
     ) as e:
         log.error(f"Error listing RAR archive {file_path}: {e}")
-        return []
+        raise ArchiveReadError("RAR member listing incomplete") from e
 
     entries: list[tuple[str, int]] = []
     for line in result.stdout.splitlines():
@@ -548,7 +542,7 @@ def _list_archive_file_members(file_path: Path) -> list[tuple[str, int]]:
         FileNotFoundError,
     ) as e:
         log.error(f"Error listing archive {file_path}: {e}")
-        return []
+        raise ArchiveReadError("Archive member listing incomplete") from e
 
     entries: list[tuple[str, int]] = []
     current_file: str | None = None
@@ -634,7 +628,8 @@ def extract_largest_archive_member(file_path: Path, dest_dir: Path) -> Path | No
 
     Compressed tarballs (.tgz/.tbz2/.txz) list only their inner .tar, so one
     nested extraction pass unwraps it; deeper nesting gives up. Returns the
-    extracted file's path, or None on any failure (no partial files remain).
+    extracted file's path, or None when extraction fails (no partial files
+    remain). Raises `ArchiveReadError` when member inventory is incomplete.
     """
     deadline = time.monotonic() + SEVEN_ZIP_TIMEOUT
     source = file_path
@@ -684,7 +679,7 @@ def extract_chd_hash(file_path: Path) -> str:
     metadata like CD track layouts which are essential for proper disc image
     identification.
 
-    For reference, check out "chd.h" in the MAME source tree.
+    Format reference: https://github.com/mamedev/mame/blob/master/src/lib/util/chd.h
 
     ---------------------------------- Why? ----------------------------------
     CHDMAN does not produce nor guarantee stable, byte-for-byte identical

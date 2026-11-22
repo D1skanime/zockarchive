@@ -23,12 +23,18 @@ from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from handler.metadata.rom_media import refresh_provider_owned_media
 from handler.metadata.ss_handler import add_ss_auth_to_url, get_preferred_media_types
 from handler.redis_handler import redis_client
+from handler.scan_collection_discovery import prepare_selected_legacy_child
 from handler.scan_handler import (
     MetadataSource,
     ScanType,
     persist_soundtrack_cover,
     process_pc_automation_after_scan,
     scan_rom,
+)
+from handler.scan_identification_completion import (
+    bind_identification_completion,
+    protect_identification_completion,
+    record_identification_completion,
 )
 from logger.formatter import BLUE
 from logger.formatter import highlight as hl
@@ -39,6 +45,7 @@ from models.rom import Rom
 catalog_lifecycle_handler = CatalogLifecycleHandler()
 
 
+@protect_identification_completion
 async def _identify_rom(
     platform: Platform,
     fs_rom: FSRom,
@@ -79,9 +86,8 @@ async def _identify_rom(
         "url_manual": "",
         "url_screenshots": [],
     }
-
+    selected_legacy_child = prepare_selected_legacy_child(rom, fs_rom, roms_path)
     calculate_hashes = not cm.get_config().SKIP_HASH_CALCULATION
-
     from handler.windows_quick_execution import (
         current_windows_quick,
         inventory_binding,
@@ -167,6 +173,7 @@ async def _identify_rom(
     should_update_files = not metadata_only and (
         quick is not None
         or reassociated
+        or selected_legacy_child
         or _should_get_rom_files(
             scan_type=scan_type,
             rom=rom,
@@ -219,6 +226,7 @@ async def _identify_rom(
     )
 
     _added_rom = merge_scan_rom(scanned_rom)
+    bind_identification_completion(_added_rom)
 
     catalog_lifecycle_handler.reconnect_retained_identity(
         rom_id=_added_rom.id,
@@ -291,9 +299,7 @@ async def _identify_rom(
 
     # Short circuit if the scan type is hashes
     if scan_type == ScanType.HASHES or metadata_only:
-        from handler.scan_operation_checkpoint import record_completed_game
-
-        record_completed_game(_added_rom)
+        record_identification_completion(_added_rom)
         return
 
     try:
@@ -421,7 +427,6 @@ async def _identify_rom(
             )
     await _emit_scanning_rom(socket_manager, _added_rom)
 
-    from handler.scan_operation_checkpoint import record_completed_game
     from handler.scan_pc_automation_observation import observe_pc_automation
 
     await observe_pc_automation(
@@ -431,5 +436,5 @@ async def _identify_rom(
         _added_rom,
         newly_added,
         selected=MetadataSource.STEAM in metadata_sources,
-        completed=record_completed_game,
+        completed=record_identification_completion,
     )

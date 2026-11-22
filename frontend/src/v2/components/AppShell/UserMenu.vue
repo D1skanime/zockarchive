@@ -197,7 +197,7 @@ async function onLogout() {
       />
       <ZAMenuItem
         v-if="canSeeLibraryMgmt"
-        :to="{ name: ROUTES.LIBRARY_MANAGEMENT }"
+        :to="{ name: ROUTES.LIBRARY_MANAGEMENT, query: { tab: 'direct' } }"
         icon="mdi-table-cog"
         :label="t('common.library-management')"
         @click="open = false"

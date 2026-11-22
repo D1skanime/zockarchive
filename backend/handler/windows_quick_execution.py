@@ -108,6 +108,17 @@ async def inspect_windows_quick(
     if binding is None:
         return WindowsQuickContext(None, evidence, QuickScanDecision.REFRESH)
     baseline = load_baseline(binding, evidence)
+    from handler.scan_operation_checkpoint import is_selected_collection_scope
+
+    if is_selected_collection_scope(relative_path):
+        # Parent retirement is part of an explicit child scan. Reuse would skip
+        # its completion fence and leave the parent eligible for rediscovery.
+        return WindowsQuickContext(
+            binding,
+            evidence,
+            QuickScanDecision.REFRESH,
+            assessment=InventoryAssessment.compare(evidence, baseline),
+        )
     decision = decide_windows_quick(
         scan_type=scan_type,
         platform_slug=platform_slug,

@@ -17,6 +17,7 @@ const metrics = [
   ["inventory_changed", "inventory-changed"],
   ["inventory_refresh_required", "inventory-refresh-required"],
   ["inventory_incomplete", "inventory-incomplete"],
+  ["owned_content_proof_timeouts", "content-verification-timeouts"],
 ] as const;
 const available = computed(() =>
   metrics.filter(([field]) => {

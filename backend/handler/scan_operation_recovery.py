@@ -165,12 +165,17 @@ def worker_exit_confirmed(execution):
         return True
     try:
         job = Job.fetch(identity, connection=redis_client)
-        if (
-            job.get_status(refresh=True)
-            not in {JobStatus.FINISHED, JobStatus.FAILED, JobStatus.STOPPED}
-            or job.ended_at is None
-        ):
+        status = job.get_status(refresh=True)
+        if status not in {
+            JobStatus.FINISHED,
+            JobStatus.FAILED,
+            JobStatus.STOPPED,
+            JobStatus.STARTED,
+        }:
             return False
+        # RQ may retain STARTED after a process restart. A terminal record, or
+        # an orphaned STARTED record, is safe only after every live worker has
+        # denied ownership of the attempt.
         for worker in Worker.all(connection=redis_client):
             active = worker.get_current_job()
             if active is not None and active.id == job.id:

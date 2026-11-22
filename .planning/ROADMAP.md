@@ -1255,3 +1255,16 @@ API-compatible UUIDs when the page is served over a LAN HTTP origin where
 
 Plans:
 - [x] `45-01-PLAN.md` - Secure UUID compatibility for scan workflow and HTTP LAN browser proof
+
+### Phase 46: ZA Beta 5 NAS-UAT: Diagnose und Härtung der terminalen Owned-content-Prüfung bei langsamen oder abbrechenden Archiven, mit isolierter Reproduktion, verständlichen Fehlern und bestätigtem Schnellscan-Verhalten ohne NAS-Änderung
+
+**Goal:** Diagnose and harden independently bounded archive-member and terminal
+owned-content proof failures with disposable local reproduction, while keeping
+incomplete evidence and unproven publication as explicit failures and proving
+normal quick-scan behavior in the browser without NAS changes.
+**Requirements**: ZA-SCAN-46-01, ZA-SCAN-46-02, ZA-SCAN-46-03, ZA-SCAN-46-04
+**Depends on:** Phase 45
+**Plans:** 1 plan
+
+Plans:
+- [ ] `46-01-PLAN.md` - Interrupt archive reads, calibrate and classify owned proofs, then document and browser-verify the safe scan outcome

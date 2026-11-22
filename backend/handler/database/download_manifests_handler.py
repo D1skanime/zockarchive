@@ -33,7 +33,10 @@ ELIGIBLE_COMPONENT_KINDS = frozenset(
         RomComponentKind.BASE,
         RomComponentKind.UPDATE,
         RomComponentKind.DLC,
+        RomComponentKind.HOTFIX,
+        RomComponentKind.LANGUAGE_PACK,
         RomComponentKind.EXTRA,
+        RomComponentKind.UNRESOLVED,
     }
 )
 

@@ -6,6 +6,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from threading import Event
+from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
@@ -278,3 +279,108 @@ def test_scheduler_directory_work_is_bounded_even_without_batches(
     recovery().reconcile_scan_media(unit.storage)
     assert len(observed) <= 512
     assert len(list(root.iterdir())) > 100, "one call swept the unbounded hierarchy"
+
+
+def test_resumed_cursor_restarts_once_for_fresh_terminal_receipt(monkeypatch):
+    module = recovery()
+    events = iter(
+        [
+            ("done", RESERVED),
+            ("batch", RESERVED + "/operation/attempt/receipt"),
+        ]
+    )
+
+    class ResumedWalk:
+        resumed = True
+
+        def __init__(self):
+            self.restarts = 0
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            return False
+
+        def step(self):
+            return next(events)
+
+        def restart(self):
+            self.restarts += 1
+            return True
+
+    walk = ResumedWalk()
+    reconciled = []
+    monkeypatch.setattr(module, "_reconcile_recent_terminal_attempts", lambda *_: 0)
+    monkeypatch.setattr(module, "RecoveryWalk", lambda _: walk)
+    monkeypatch.setattr(
+        module, "reconcile_manifest", lambda _, directory: reconciled.append(directory)
+    )
+
+    assert module.reconcile_scan_media(object(), limit=1) == 1
+    assert walk.restarts == 1
+    assert reconciled == [RESERVED + "/operation/attempt/receipt"]
+
+
+def test_fresh_cursor_does_not_restart_when_it_is_done(monkeypatch):
+    module = recovery()
+
+    class FreshWalk:
+        resumed = False
+
+        def __init__(self):
+            self.restarts = 0
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            return False
+
+        def step(self):
+            return "done", RESERVED
+
+        def restart(self):
+            self.restarts += 1
+            return True
+
+    walk = FreshWalk()
+    monkeypatch.setattr(module, "_reconcile_recent_terminal_attempts", lambda *_: 0)
+    monkeypatch.setattr(module, "RecoveryWalk", lambda _: walk)
+
+    assert module.reconcile_scan_media(object()) == 0
+    assert walk.restarts == 0
+
+
+def test_terminal_receipt_is_reconciled_before_cursor_walk(monkeypatch):
+    """A terminal crash receipt consumes recovery budget before cursor traversal."""
+    module = recovery()
+    terminal_attempt = RESERVED + "/terminal-operation/terminal-attempt"
+    receipt = terminal_attempt + "/" + "a" * 32
+    reconciled = []
+
+    monkeypatch.setattr(
+        module, "_recent_terminal_attempt_directories", lambda _: [terminal_attempt]
+    )
+    monkeypatch.setattr(
+        module,
+        "_children",
+        lambda _, path, __: (
+            [SimpleNamespace(name="a" * 32)] if path == terminal_attempt else []
+        ),
+    )
+
+    def reconcile(_, path):
+        reconciled.append(path)
+        return True
+
+    monkeypatch.setattr(module, "reconcile_manifest", reconcile)
+
+    class CursorWalkMustNotStart:
+        def __enter__(self):
+            raise AssertionError("cursor traversal ran before terminal recovery")
+
+    monkeypatch.setattr(module, "RecoveryWalk", lambda _: CursorWalkMustNotStart())
+
+    assert module.reconcile_scan_media(object(), limit=1) == 1
+    assert reconciled == [receipt]

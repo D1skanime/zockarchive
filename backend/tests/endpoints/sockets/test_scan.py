@@ -56,6 +56,43 @@ from models.rom import Rom, RomComponentKind, RomComponentOwnedMediaRole
 scan_command = scan_fixtures.command
 
 
+@pytest.mark.asyncio
+async def test_mapped_archive_recovery_continues_legacy_platforms(mocker):
+    command = MappedScanCommand(
+        7, 1, ScanTrigger.MANUAL, ScanScope.PLATFORM, ScanType.QUICK.value
+    )
+    mocker.patch.object(
+        scan_mapping_execution,
+        "execute_mapping_scans",
+        AsyncMock(return_value=ScanStats(scanned_platforms=1)),
+    )
+    legacy = mocker.patch.object(
+        scan_mapping_execution,
+        "scan_platforms",
+        AsyncMock(return_value=ScanStats(scanned_platforms=3)),
+    )
+    mocker.patch.object(
+        scan_mapping_execution.db_storage_handler,
+        "get_mapping",
+        return_value=SimpleNamespace(platform_id=7),
+    )
+    mocker.patch.object(
+        scan_mapping_execution.db_platform_handler,
+        "get_platforms",
+        return_value=[SimpleNamespace(id=7, fs_slug="dreamcast")],
+    )
+
+    result = await scan_mapping_execution.execute_mixed_scans(
+        [command],
+        platform_ids=[],
+        platform_fs_slugs=["dreamcast", "windows", "wii", "xbox"],
+        metadata_sources=[],
+    )
+
+    assert legacy.await_args.kwargs["platform_fs_slugs"] == ["windows", "wii", "xbox"]
+    assert result.scanned_platforms == 4
+
+
 class ScanModuleSeams:
     """Route legacy scan-facade mocks to the focused module that owns them."""
 

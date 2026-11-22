@@ -187,6 +187,16 @@ def test_indeterminate_publication_is_blocked_for_reconciliation():
     )
 
 
+def test_unexpected_archive_error_uses_standard_worker_recovery():
+    from utils.archives import ArchiveReadError
+
+    assert worker._failure_outcome(ArchiveReadError("member inventory incomplete")) == (
+        "failed",
+        "worker_failed",
+        "retry",
+    )
+
+
 def test_live_progress_and_heartbeat_preserve_cancel_command_version(
     admin_user, command
 ):

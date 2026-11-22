@@ -45,6 +45,9 @@ const retry = computed(() => {
   }
   return state ? t("scan." + retryKeys[state]) : undefined;
 });
+const ownedContentTimeout = computed(
+  () => props.item.cause_code === "owned_content_verification_timeout",
+);
 </script>
 <template>
   <li class="r-v2-inventory-detail">
@@ -55,6 +58,14 @@ const retry = computed(() => {
           provider: item.provider,
         })
       }}
+    </p>
+    <p v-if="item.platform">
+      {{
+        t("scan.operation-active-platform", { platform: item.platform.name })
+      }}
+    </p>
+    <p v-if="ownedContentTimeout">
+      {{ t("scan.owned-content-verification-timeout") }}
     </p>
     <p v-if="facts.unresolved === true">{{ t("scan.not-identified") }}</p>
     <p v-if="facts.inventory">

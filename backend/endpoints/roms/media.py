@@ -24,7 +24,10 @@ from handler.database import db_rom_handler
 from handler.filesystem import fs_resource_handler, storage_composition
 from handler.filesystem.storage_access import OwnedRead, open_owned_access
 from handler.filesystem.storage_policy import OwnedStorageKind, StorageOperation
-from handler.metadata.rom_media import refresh_provider_owned_media
+from handler.metadata.rom_media import (
+    prepare_provider_media_refresh,
+    refresh_provider_owned_media,
+)
 from models.rom import RomOwnedMediaRole
 from utils.router import APIRouter
 
@@ -73,8 +76,11 @@ async def refresh_media(
     """Explicitly reconcile provider images without changing user placements."""
     rom = _visible_rom(request, id)
     try:
+        rom, provider, source = await prepare_provider_media_refresh(
+            rom, expected_version
+        )
         _, failures = await refresh_provider_owned_media(
-            rom, expected_version, "provider"
+            rom, rom.updated_at, provider, source
         )
     except ValueError:
         raise HTTPException(

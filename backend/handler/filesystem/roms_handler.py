@@ -29,7 +29,6 @@ from exceptions.fs_exceptions import (
 )
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from handler.scan_inventory_contracts import InventoryEvidence
-from logger.logger import log
 from models.download_manifest import DownloadManifestMember
 from models.platform import Platform
 from models.rom import (
@@ -61,6 +60,7 @@ from utils.hashing import crc32_to_hex
 from utils.platform_slugs import resolve_filesystem_slug
 from utils.rate_limiter import ConcurrencyLimiter
 
+from .archive_recovery import note_incomplete_archive
 from .base_handler import (
     LANGUAGES_BY_SHORTCODE,
     LANGUAGES_NAME_KEYS,
@@ -992,21 +992,18 @@ class FSRomsHandler(ExternalFSHandler):
                     )
                 )
         elif hashable_platform and rom_ext in ARCHIVE_READERS:
-            # Multi-file archive: compute a composite hash across all
-            # internal entries (in ASCII path order) for hash-database
-            # matching, while still emitting a single RomFile for the
-            # archive file itself. Per-member hashes are stored on that
-            # RomFile in `archive_members` so consumers can identify each
-            # internal file without us inventing RomFile rows whose
-            # full_path would point inside the archive and break downloads.
+            # One archive RomFile has a composite member hash for matching;
+            # archive_members records its internal files without inventing
+            # download rows whose paths would point inside the archive.
             assert rom_md5_h is not None and rom_sha1_h is not None
 
             def _hash_archive_entries(
                 crc: int, md5_h: Any, sha1_h: Any
             ) -> tuple[list[dict[str, Any]], int, Any, Any]:
-                # Accumulate into copies so an archive we can't read in full
-                # leaves the caller's hashers untouched for the raw fallback.
-                original_crc, md5_h, sha1_h = crc, md5_h.copy(), sha1_h.copy()
+                # Preserve the raw archive state. Member hashing uses copies so
+                # an incomplete inventory falls back to its exact file hash.
+                original_crc, original_md5_h, original_sha1_h = crc, md5_h, sha1_h
+                md5_h, sha1_h = md5_h.copy(), sha1_h.copy()
                 members: list[dict[str, Any]] = []
                 try:
                     for name, size, chunks in ARCHIVE_READERS[rom_ext](
@@ -1033,9 +1030,12 @@ class FSRomsHandler(ExternalFSHandler):
                                 "sha1_hash": member_sha1.hexdigest(),
                             }
                         )
-                except ArchiveReadError as e:
-                    log.error(f"Incomplete read of archive {rom_dir}: {e}")
-                    return [], original_crc, None, None
+                except ArchiveReadError:
+                    # The container is still a valid ROM input. Keep its raw hash
+                    # and deliberately omit member evidence, rather than losing
+                    # later games in this platform because one extractor stalled.
+                    note_incomplete_archive(rom.fs_name)
+                    return [], original_crc, original_md5_h, original_sha1_h
                 return members, crc, md5_h, sha1_h
 
             members, rom_crc_c, archive_md5_h, archive_sha1_h = await asyncio.to_thread(

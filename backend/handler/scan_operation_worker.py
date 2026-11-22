@@ -222,22 +222,34 @@ async def run_scan_operation(operation_id):
                 retry_items = (
                     repository.retry_items(operation_id, retry_ids) if retry_ids else []
                 )
-                batches = [(data, None) for data in current["command"]["commands"]]
+                commands = current["command"]["commands"]
                 if retry_ids:
                     batches = [
                         (data, item)
-                        for data in current["command"]["commands"]
+                        for data in commands
                         for item in retry_items
                         if item["mapping_id"] == data["mapping_id"]
                     ]
+                else:
+                    from handler.scan_retry_execution import (
+                        invalidate_refresh_baselines,
+                    )
+
+                    batches = [(data, None) for data in commands]
                 for batch_index, (data, retry_item) in enumerate(batches):
                     check_worker_boundary()
                     command = decode_command(data)
                     if retry_item is None:
+                        from dataclasses import replace
+
                         from handler.scan_retry_execution import (
                             invalidate_refresh_baselines,
                         )
 
+                        command = replace(
+                            command,
+                            scan_type=policy.get("type", command.scan_type),
+                        )
                         invalidate_refresh_baselines(command, policy)
                     if retry_item is not None:
                         from dataclasses import replace
@@ -289,6 +301,14 @@ async def run_scan_operation(operation_id):
                     }
                 final_stats |= counts
                 final_stats = persist_scan_stats(final_stats)
+                if combined.owned_content_proof_timeouts:
+                    from handler.filesystem.owned_content_proof import (
+                        OwnedContentProofRejected,
+                    )
+
+                    raise OwnedContentProofRejected(
+                        "Owned content verification timed out"
+                    )
                 has_warnings = (
                     counts["metadata_warning_items"]
                     or counts["metadata_failed_items"]
@@ -353,7 +373,11 @@ def _failure_outcome(error):
         StaleMappedReadError,
         UnreachableMappedStorageError,
     )
+    from handler.filesystem.owned_content_proof import owned_content_proof_timed_out
     from handler.filesystem.storage_access import IndeterminateOwnedPublicationError
+
+    if owned_content_proof_timed_out(error):
+        return "failed", "owned_content_verification_timeout", "check_storage"
 
     if isinstance(error, StaleMappedReadError):
         return "blocked", "mapping_changed", "new_scan"

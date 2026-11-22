@@ -24,6 +24,7 @@ export interface LocalizedDescriptionInput {
   manualMetadata?: ManualMetadata | null;
   steamMetadata?: SteamMetadataSchema | null;
   ssMetadata?: ProviderMetadata | null;
+  igdbSummary?: string | null;
   locale?: string | null;
   provider: DescriptionProvider | null;
 }
@@ -92,6 +93,10 @@ export function resolveDescription(
       : input.provider === "screenscraper"
         ? providerCandidates(input.ssMetadata, "screenscraper")
         : [];
+  const igdbSummary = descriptionText(input.igdbSummary);
+  if (igdbSummary) {
+    providers.unshift({ locale: "en", text: igdbSummary, source: "igdb" });
+  }
   return selectDescription(
     input.locale,
     manualCandidates(input.manualMetadata),

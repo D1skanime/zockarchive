@@ -120,7 +120,6 @@ const isEmpty = computed(
 // users without it (the chips just stay hidden).
 const libraryInfo = ref<SetupLibraryInfo | null>(null);
 const fetchingLibraryInfo = ref(false);
-
 const detectedPlatformCount = computed(
   () => libraryInfo.value?.existing_platforms.length ?? 0,
 );
@@ -130,7 +129,6 @@ const detectedGameCount = computed(() =>
     0,
   ),
 );
-
 async function loadLibraryInfo() {
   if (libraryInfo.value || fetchingLibraryInfo.value) return;
   fetchingLibraryInfo.value = true;
@@ -146,8 +144,10 @@ async function loadLibraryInfo() {
 }
 
 const mappingReady = computed(() => mappingReadiness.value === "ready");
-const mappingRoute = { name: ROUTES.LIBRARY_MANAGEMENT };
-
+const mappingRoute = {
+  name: ROUTES.LIBRARY_MANAGEMENT,
+  query: { tab: "direct" },
+};
 async function loadMappingReadiness() {
   if (mappingReadiness.value === "loading") return;
   mappingReadiness.value = "loading";

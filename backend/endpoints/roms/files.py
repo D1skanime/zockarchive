@@ -15,6 +15,7 @@ from decorators.auth import protected_route
 from endpoints.responses.rom import RomFileSchema
 from endpoints.storage_policy import authorize_api_storage_operation
 from exceptions.endpoint_exceptions import RomNotFoundInDatabaseException
+from exceptions.storage_exceptions import MissingPlatformStorageMappingError
 from exceptions.storage_read import MappedReadError, MissingMappedContentError
 from handler.auth.constants import Scope
 from handler.auth.dependencies import assert_can, assert_rom_visible, get_permissions
@@ -55,6 +56,33 @@ def _mapped_relative_path(full_path: str, mapping_relative_path: str) -> str:
     return PurePath(*parts[1:]).as_posix()
 
 
+def _mapped_catalog_paths(rom, file) -> tuple[str, ...]:
+    """Return catalog-path candidates without guessing outside known mappings.
+
+    PC file rows retain paths relative to their game directory while a storage
+    mapping owns the platform directory. Prefixing the ROM filesystem path
+    keeps local soundtrack files and ordinary game members on the same
+    authorized mapped-read path.
+    """
+    file_path = PurePath(file.full_path).as_posix()
+    rom_path = PurePath(rom.fs_path)
+    if PurePath(file_path).parts[: len(rom_path.parts)] == rom_path.parts:
+        return (file_path,)
+    return file_path, PurePath(rom_path, file_path).as_posix()
+
+
+def _mapped_catalog_path(rom, file):
+    """Resolve the existing mapping that owns a catalog file path."""
+    for catalog_path in _mapped_catalog_paths(rom, file):
+        try:
+            return catalog_path, db_storage_handler.path_mapping(
+                rom.platform_id, catalog_path
+            )
+        except MissingPlatformStorageMappingError:
+            continue
+    raise MissingPlatformStorageMappingError(rom.platform_id)
+
+
 def _content_disposition(disposition: str, filename: str) -> str:
     if any(
         ord(character) < 0x20 or 0x7F <= ord(character) <= 0x9F
@@ -72,11 +100,11 @@ def _content_disposition(disposition: str, filename: str) -> str:
 
 def preflight_mapped_download(rom, file, *, first_use_operation: str = "download"):
     """Authorize the current mapping revision and open one download handle."""
-    mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
+    catalog_path, mapping = _mapped_catalog_path(rom, file)
     context = MappingReadContext(mapping.id, mapping.version)
     access = context.open(
         StorageOperation.DOWNLOAD,
-        _mapped_relative_path(file.full_path, mapping.relative_path),
+        _mapped_relative_path(catalog_path, mapping.relative_path),
         first_use_operation=first_use_operation,
     )
     try:
@@ -90,11 +118,11 @@ def preflight_mapped_download(rom, file, *, first_use_operation: str = "download
 
 def preflight_mapped_stat(rom, file) -> int:
     """Authorize the current mapping revision and read non-productive metadata."""
-    mapping = db_storage_handler.path_mapping(rom.platform_id, file.full_path)
+    catalog_path, mapping = _mapped_catalog_path(rom, file)
     context = MappingReadContext(mapping.id, mapping.version)
     with context.open(
         StorageOperation.STAT,
-        _mapped_relative_path(file.full_path, mapping.relative_path),
+        _mapped_relative_path(catalog_path, mapping.relative_path),
     ) as access:
         metadata = access.stat()
         if not stat_lib.S_ISREG(metadata.st_mode):

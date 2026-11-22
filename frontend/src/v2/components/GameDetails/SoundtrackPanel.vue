@@ -25,6 +25,7 @@ import useSoundtrackPlayer, {
   type PlayerMeta,
   type PlayerTrack,
 } from "@/v2/data/adapters/legacy/stores/soundtrackPlayer";
+import { useLocalSoundtrackPlaylist } from "./useLocalSoundtrackPlaylist";
 
 const props = defineProps<{ rom: DetailedRom }>();
 const { t } = useI18n();
@@ -43,12 +44,21 @@ const {
 const scope = { kind: "rom", id: props.rom.id } as const;
 const canManage = useCan("rom.edit", scope);
 const uploading = ref(false);
-const localBackgroundAudioUpdating = ref(false);
 const ownedBackgroundAudioUpdating = ref(false);
 const movingId = ref<number | null>(null);
 const deletingId = ref<number | null>(null);
 const uploadFailures = ref<string[]>([]);
 const dropzone = ref<InstanceType<typeof ZADropzone> | null>(null);
+const localSoundtrack = useLocalSoundtrackPlaylist({
+  rom: () => props.rom,
+  player,
+  refreshCanonical,
+  syncPlaylist,
+  playlist: () => ({ tracks: playerTracks(), metas: playerMetas() }),
+  handleError: async (error) => {
+    if (!(await handleConflict(error))) snackbar.error(errorMessage(error));
+  },
+});
 const ownedTracks = computed(() =>
   (props.rom.owned_media ?? []).filter(
     (item) => item.role === "soundtrack" && item.state === "active",
@@ -67,51 +77,49 @@ const includedTracks = computed(() =>
 const availableTracks = computed(() =>
   ownedTracks.value.filter((item) => !soundtrackPlacement(item)),
 );
-const localTracks = computed(() =>
-  props.rom.files.filter(
-    (file) =>
-      file.category === "soundtrack" &&
-      isSupportedSoundtrackFile(file.file_name),
-  ),
-);
-const selectedLocalTrackIds = computed(
-  () => new Set(props.rom.local_background_audio_file_ids ?? []),
-);
 const selectedOwnedTrackIds = computed(
   () => new Set(props.rom.owned_background_audio_media_ids ?? []),
 );
-const activeTrackId = computed(() =>
+const activeOwnedTrackId = computed(() =>
   activeStoreTrack.value?.romId === props.rom.id
-    ? activeStoreTrack.value.mediaId
+    ? activeStoreTrack.value.mediaId > 0
+      ? activeStoreTrack.value.mediaId
+      : null
     : null,
 );
 const activeTrack = computed(() =>
-  includedTracks.value.find((item) => item.id === activeTrackId.value),
+  activeStoreTrack.value?.romId === props.rom.id
+    ? activeStoreTrack.value
+    : null,
 );
 
 function mediaContentUrl(mediaId: number) {
   return `/api/roms/${props.rom.id}/media/${mediaId}/content`;
 }
 function playerTracks(): PlayerTrack[] {
-  return includedTracks.value.map((item) => ({
-    romId: props.rom.id,
-    mediaId: item.id,
-    fileName: item.display_label,
-    url: mediaContentUrl(item.id),
-  }));
+  return [
+    ...localSoundtrack.tracks.value,
+    ...includedTracks.value.map((item) => ({
+      romId: props.rom.id,
+      mediaId: item.id,
+      fileName: item.display_label,
+      url: mediaContentUrl(item.id),
+    })),
+  ];
 }
 function playerMetas(): Record<number, PlayerMeta> {
-  return Object.fromEntries(
-    includedTracks.value.map((item) => [
+  return Object.fromEntries([
+    ...Object.entries(localSoundtrack.metas.value),
+    ...includedTracks.value.map((item) => [
       item.id,
       { title: item.display_label },
     ]),
-  );
+  ]);
 }
 function syncPlaylist() {
   player.loadPlaylistForRom(props.rom.id, playerTracks(), playerMetas());
 }
-watch(includedTracks, () => {
+watch([includedTracks, () => localSoundtrack.selectedTracks.value], () => {
   if (player.activePlaylistRomId === props.rom.id) syncPlaylist();
 });
 async function refreshCanonical() {
@@ -131,7 +139,6 @@ async function handleConflict(error: unknown) {
   }
   return false;
 }
-
 async function uploadTracks(files: File[]) {
   if (!files.length || uploading.value) return;
   uploading.value = true;
@@ -189,23 +196,7 @@ async function toggleIncluded(item: RomOwnedMediaSchema) {
   }
 }
 async function toggleLocalBackgroundAudio(fileId: number) {
-  if (localBackgroundAudioUpdating.value) return;
-  localBackgroundAudioUpdating.value = true;
-  const nextFileIds = new Set(selectedLocalTrackIds.value);
-  if (nextFileIds.has(fileId)) nextFileIds.delete(fileId);
-  else nextFileIds.add(fileId);
-  try {
-    await romApi.replaceLocalBackgroundAudio({
-      romId: props.rom.id,
-      fileIds: [...nextFileIds],
-      expectedVersion: props.rom.updated_at,
-    });
-    await refreshCanonical();
-  } catch (error) {
-    if (!(await handleConflict(error))) snackbar.error(errorMessage(error));
-  } finally {
-    localBackgroundAudioUpdating.value = false;
-  }
+  await localSoundtrack.toggle(fileId);
 }
 async function toggleOwnedBackgroundAudio(mediaId: number) {
   if (ownedBackgroundAudioUpdating.value) return;
@@ -255,10 +246,14 @@ function selectTrack(item: RomOwnedMediaSchema) {
   if (selected) player.play(selected, playerMetas()[item.id] ?? {});
 }
 function retryActiveTrack() {
-  if (activeTrack.value) selectTrack(activeTrack.value);
+  if (activeTrack.value)
+    player.play(
+      activeTrack.value,
+      playerMetas()[activeTrack.value.mediaId] ?? {},
+    );
 }
 async function deleteTrack(item: RomOwnedMediaSchema) {
-  if (activeTrackId.value === item.id) player.stop();
+  if (activeOwnedTrackId.value === item.id) player.stop();
   if (
     !(await confirm({
       title: t("rom.delete-soundtrack-title"),
@@ -334,27 +329,27 @@ function fmt(seconds: number) {
       <li v-for="name in uploadFailures" :key="name">{{ name }}</li>
     </ul>
     <section
-      v-if="localTracks.length"
+      v-if="localSoundtrack.localTracks.value.length"
       aria-labelledby="local-soundtrack-heading"
     >
       <h4 id="local-soundtrack-heading">{{ t("rom.soundtrack-local") }}</h4>
       <ul class="r-v2-stp__list">
-        <li v-for="file in localTracks" :key="file.id">
+        <li v-for="file in localSoundtrack.localTracks.value" :key="file.id">
           <span>{{ file.file_name }}</span>
           <div>
-            <span v-if="selectedLocalTrackIds.has(file.id)">
+            <span v-if="localSoundtrack.selectedTrackIds.value.has(file.id)">
               {{ t("rom.background-music") }}
             </span>
             <MediaManagementAction
               v-if="canManage"
               icon="mdi-image-outline"
               tone="info"
-              :selected="selectedLocalTrackIds.has(file.id)"
-              :loading="localBackgroundAudioUpdating"
-              :disabled="localBackgroundAudioUpdating"
+              :selected="localSoundtrack.selectedTrackIds.value.has(file.id)"
+              :loading="localSoundtrack.updating.value"
+              :disabled="localSoundtrack.updating.value"
               :caption="t('rom.background-music')"
-              :aria-label="`${selectedLocalTrackIds.has(file.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${file.file_name}`"
-              :label="`${selectedLocalTrackIds.has(file.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${file.file_name}`"
+              :aria-label="`${localSoundtrack.selectedTrackIds.value.has(file.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${file.file_name}`"
+              :label="`${localSoundtrack.selectedTrackIds.value.has(file.id) ? t('rom.remove-as-background') : t('rom.add-as-background')}: ${file.file_name}`"
               @click="toggleLocalBackgroundAudio(file.id)"
             />
           </div>

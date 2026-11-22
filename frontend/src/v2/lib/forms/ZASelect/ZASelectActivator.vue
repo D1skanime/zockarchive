@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ComputedRef, Ref } from "vue";
+import type { ComponentPublicInstance, ComputedRef } from "vue";
 import ZABtn from "../../primitives/ZABtn/ZABtn.vue";
 import ZAIcon from "../../primitives/ZAIcon/ZAIcon.vue";
 import ZAProgressCircular from "../../primitives/ZAProgressCircular/ZAProgressCircular.vue";
@@ -27,9 +27,9 @@ defineProps<{
   visibleChips: NormalisedItem[];
   overflowCount: number;
   isAllSelected: boolean;
-  activatorRef: Ref<HTMLElement | null>;
-  valueRef: Ref<HTMLElement | null>;
-  measureRef: Ref<HTMLElement | null>;
+  activatorRef: (element: Element | ComponentPublicInstance | null) => void;
+  valueRef: (element: Element | ComponentPublicInstance | null) => void;
+  measureRef: (element: Element | ComponentPublicInstance | null) => void;
 }>();
 defineEmits<{
   (event: "toggle"): void;
@@ -66,7 +66,7 @@ defineEmits<{
       ><slot name="prefix-label">{{ props.label }}</slot></span
     >
     <div
-      ref="activatorRef"
+      :ref="activatorRef"
       class="r-select__field"
       role="group"
       tabindex="0"
@@ -93,10 +93,10 @@ defineEmits<{
             :icon="props.prependInnerIcon"
             size="x-small" /></slot
       ></span>
-      <span ref="valueRef" class="r-select__value">
+      <span :ref="valueRef" class="r-select__value">
         <span
           v-if="props.multiple && props.chips && hasSelection"
-          ref="measureRef"
+          :ref="measureRef"
           class="r-select__value-mirror"
           aria-hidden="true"
           ><ZATag

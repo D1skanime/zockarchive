@@ -306,8 +306,15 @@ describe("durable scan reconciliation", () => {
     useAuthStore().setCurrentUser(actor());
     localStorage.setItem("pgdp.scan-operation.7", saved);
     transport.mockClear();
+    transport.mockImplementation(async (config) =>
+      response(
+        config,
+        config.url === "/scan-operations/active" ? null : snapshot(),
+      ),
+    );
     expect(await scanOperations.restore()).toEqual(snapshot());
     expect(transport.mock.calls.map(([c]) => [c.method, c.url])).toEqual([
+      ["get", "/scan-operations/active"],
       ["get", "/scan-operations/" + snapshot().id],
     ]);
   });
@@ -317,8 +324,15 @@ describe("durable scan reconciliation", () => {
       "pgdp.scan-operation.7",
       JSON.stringify({ request_key: "request-34-07" }),
     );
+    transport.mockImplementation(async (config) =>
+      response(
+        config,
+        config.url === "/scan-operations/active" ? null : snapshot(),
+      ),
+    );
     expect(await scanOperations.restore()).toEqual(snapshot());
     expect(transport.mock.calls.map(([c]) => [c.method, c.url])).toEqual([
+      ["get", "/scan-operations/active"],
       ["get", "/scan-operations/by-request/request-34-07"],
     ]);
   });
@@ -344,6 +358,7 @@ describe("durable scan reconciliation", () => {
     });
     expect(await scanOperations.restore()).toBeNull();
     expect(transport.mock.calls.map(([c]) => c.url)).toEqual([
+      "/scan-operations/active",
       "/scan-operations/" + snapshot().id,
       "/scan-operations/active",
     ]);

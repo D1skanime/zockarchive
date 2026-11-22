@@ -193,10 +193,90 @@ def record_completed_game(rom):
     from handler.scan_collection_finalize import finalize_completed_game
 
     finalize_completed_game(rom, command)
-    record_checked_game(rom, outcome="completed")
+    record_checked_game(
+        rom,
+        outcome="completed",
+        metadata_identified=not rom.is_unidentified,
+    )
 
 
-def record_checked_game(rom, *, outcome):
+def is_selected_collection_child(rom):
+    """Whether this skipped ROM is the child chosen for parent retirement.
+
+    A quick Windows inventory may safely reuse an existing child without
+    entering the normal identification path. The explicit collection choice
+    still has to reach the same completion fence, otherwise its parent remains
+    eligible for a later discovery scan.
+    """
+    from handler.database.scan_operations_handler import DBScanOperationsHandler
+    from handler.database.scan_write_fence import current_scan_write_context
+
+    command = current_checkpoint_command()
+    if command is None or not is_selected_collection_scope(
+        dict(command.options).get("relative_path", "")
+    ):
+        return False
+    context = current_scan_write_context()
+    if context is None:
+        return False
+    intent = (
+        DBScanOperationsHandler()
+        .execution(context.operation_id)["command"]
+        .get("collection_promotion")
+    )
+    if intent is None:
+        return False
+    mapping = MappingReadContext(
+        command.mapping_id, command.expected_revision
+    ).validate()
+    try:
+        relative_path = (
+            (PurePosixPath(rom.fs_path) / rom.fs_name)
+            .relative_to(PurePosixPath(mapping.relative_path))
+            .as_posix()
+        )
+    except ValueError:
+        return False
+    return relative_path == intent["selected_child_relative_path"]
+
+
+def is_selected_collection_scope(relative_path):
+    """Whether the active mapped command is an explicit child selection."""
+    from handler.database.scan_operations_handler import DBScanOperationsHandler
+    from handler.database.scan_write_fence import current_scan_write_context
+
+    context = current_scan_write_context()
+    command = current_checkpoint_command()
+    if context is None or command is None:
+        return False
+    scoped_path = dict(command.options).get("relative_path")
+    if scoped_path and scoped_path != relative_path:
+        return False
+    intent = (
+        DBScanOperationsHandler()
+        .execution(context.operation_id)["command"]
+        .get("collection_promotion")
+    )
+    if intent is None:
+        return False
+    # Discovery decides whether a known child can be reused before it binds the
+    # narrowed filesystem handler. Accept the promotion's exact child target in
+    # that earlier phase as well, so it is refreshed rather than silently reused.
+    expected_path = scoped_path or intent["selected_child_relative_path"]
+    return (
+        command.mapping_id,
+        command.expected_revision,
+        expected_path,
+        relative_path,
+    ) == (
+        intent["mapping_id"],
+        intent["expected_revision"],
+        intent["selected_child_relative_path"],
+        intent["selected_child_relative_path"],
+    )
+
+
+def record_checked_game(rom, *, outcome, cause_code=None, metadata_identified=None):
     """Persist one canonical result per scanned game, independent of providers."""
     from handler.database.scan_write_fence import current_scan_write_context
 
@@ -227,6 +307,15 @@ def record_checked_game(rom, *, outcome):
             "relative_path": relative_path,
             "provider": "",
             "outcome": outcome,
+            "cause_code": cause_code,
         },
-        checkpoint={"rom_id": rom.id, "game_result": True},
+        checkpoint={
+            "rom_id": rom.id,
+            "game_result": True,
+            **(
+                {"metadata_identified": metadata_identified}
+                if metadata_identified is not None
+                else {}
+            ),
+        },
     )
