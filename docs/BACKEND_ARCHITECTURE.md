@@ -127,6 +127,10 @@ The bounded receipt walker preserves its advisory directory cursor, but a resume
 cursor that reaches its end makes one fresh pass within the same fixed step budget.
 This promptly discovers a newly terminal crash receipt without weakening manifest,
 content-proof, ownership, or scan-write-fence validation.
+Recent terminal scan attempts are also reconciled directly before the generic
+walk. That priority path is limited to the normal receipt budget and performs
+the same manifest and ownership checks, so an older cursor cannot defer a
+current crash receipt behind live batches.
 
 Removing a placement leaves an active candidate in the catalog. Steam inventory
 reconciliation can seed empty overview/background surfaces again, so placement

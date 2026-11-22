@@ -5,6 +5,7 @@ import itertools
 import os
 import re
 from datetime import datetime, timedelta, timezone
+from uuid import UUID
 
 from sqlalchemy import select
 
@@ -22,6 +23,7 @@ from handler.filesystem.owned_publication import _private_metadata
 from handler.filesystem.owned_writer_domain import owned_writer_domain
 from handler.filesystem.scan_media_publication import (
     MAX_MANIFEST_BYTES,
+    RESERVED,
     parse_manifest,
 )
 from handler.filesystem.scan_media_traversal import RecoveryWalk, open_directory
@@ -32,6 +34,7 @@ from handler.filesystem.storage_access import (
     open_owned_access,
 )
 from handler.filesystem.storage_policy import StorageOperation
+from handler.scan_operation_state import TERMINAL
 from logger.logger import log
 from models.owned_media_cleanup import OwnedMediaCleanupIntent, OwnedMediaCleanupState
 from models.scan_operation import ScanExecutionSlot, ScanOperation
@@ -50,6 +53,28 @@ def _children(storage, relative, limit=512):
         return children
     finally:
         os.close(descriptor)
+
+
+@begin_session
+def _recent_terminal_attempt_directories(limit, *, session=None):
+    rows = session.execute(
+        select(ScanOperation.id, ScanOperation.attempt_id)
+        .where(
+            ScanOperation.state.in_(TERMINAL),
+            ScanOperation.attempt_id.is_not(None),
+        )
+        .order_by(ScanOperation.updated_at.desc())
+        .limit(limit)
+    ).all()
+    directories = []
+    for operation, attempt in rows:
+        try:
+            if str(UUID(operation)) != operation or str(UUID(attempt)) != attempt:
+                continue
+        except (TypeError, ValueError, AttributeError):
+            continue
+        directories.append(f"{RESERVED}/{operation}/{attempt}")
+    return directories
 
 
 def _lock_attempt(session, identity):
@@ -298,10 +323,39 @@ def _prune_ancestor(storage, directory, *, session=None):
             raise
 
 
+def _reconcile_recent_terminal_attempts(storage, limit):
+    processed = 0
+    for attempt in _recent_terminal_attempt_directories(limit):
+        try:
+            batches = _children(storage, attempt, limit - processed)
+        except (ValueError, OSError, StorageResolutionError) as error:
+            log.warning(
+                "Scan media recovery retained inaccessible terminal attempt (%s)",
+                type(error).__name__,
+            )
+            continue
+        for batch in batches:
+            if not re.fullmatch(r"[a-f0-9]{32}", batch.name):
+                continue
+            try:
+                if reconcile_manifest(storage, attempt + "/" + batch.name):
+                    processed += 1
+            except (ValueError, OSError, StorageResolutionError) as error:
+                log.warning(
+                    "Scan media recovery retained ambiguous receipt (%s)",
+                    type(error).__name__,
+                )
+            if processed >= limit:
+                return processed
+    return processed
+
+
 def reconcile_scan_media(storage, limit=32):
     if type(limit) is not int or not 1 <= limit <= 32:
         raise ValueError("scan_media_recovery_budget")
-    processed = 0
+    processed = _reconcile_recent_terminal_attempts(storage, limit)
+    if processed >= limit:
+        return processed
     with RecoveryWalk(storage) as walk:
         restarted_cursor = False
         for _ in range(512):
