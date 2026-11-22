@@ -110,6 +110,7 @@ class RecoveryWalk:
         self.lock = None
         self.stack = []
         self.busy = False
+        self.resumed = False
 
     def __enter__(self):
         try:
@@ -179,6 +180,7 @@ class RecoveryWalk:
                     ):
                         raise ValueError("scan_media_recovery_cursor")
                 self.stack = stack
+                self.resumed = bool(stack)
         except MissingStorageTargetError:
             pass
         except (ValueError, TypeError, RecursionError):
@@ -190,6 +192,13 @@ class RecoveryWalk:
     @staticmethod
     def _frame(path):
         return dict(path=path, device=0, inode=0, cookie=0)
+
+    def restart(self):
+        """Restart one advisory pass without changing recovery authority."""
+        if self.busy:
+            return False
+        self.stack = [self._frame(RESERVED)]
+        return True
 
     def __exit__(self, error_type, error, traceback):
         try:

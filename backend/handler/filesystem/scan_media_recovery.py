@@ -303,9 +303,17 @@ def reconcile_scan_media(storage, limit=32):
         raise ValueError("scan_media_recovery_budget")
     processed = 0
     with RecoveryWalk(storage) as walk:
+        restarted_cursor = False
         for _ in range(512):
             kind, path = walk.step()
             if kind == "done":
+                # A saved directory cookie can reach the end immediately after
+                # a crashed writer created a new batch. Restart once within the
+                # fixed traversal budget so terminal receipts do not wait for
+                # the next scheduled cleanup run.
+                if walk.resumed and not restarted_cursor and walk.restart():
+                    restarted_cursor = True
+                    continue
                 break
             try:
                 if kind == "exit":

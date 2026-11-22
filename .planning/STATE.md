@@ -980,6 +980,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261122-smp | Make scan-media crash recovery deterministic | 2026-11-22 | this commit | [261122-smp](./quick/261122-smp-crash-recovery/) |
 | 261122-r51 | Reconcile frontend regression expectations | 2026-11-22 | this commit | [261122-r51](./quick/261122-r51-reconcile-frontend-regression-expectations/) |
 | 261122-lpp | Add direct live-progress visibility contracts | 2026-11-22 | this commit | [261122-lpp](./quick/261122-lpp-add-live-progress-visibility-tests/) |
 | 261122-gate51-backend-regressions | Repair Gate 51 backend regression failures | 2026-11-22 | this commit | [261122-gate51-backend-regressions](./quick/261122-gate51-backend-regressions/) |

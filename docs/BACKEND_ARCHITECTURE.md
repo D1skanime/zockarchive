@@ -123,6 +123,10 @@ unfiltered list. Suppression is rechecked under the publication transaction's pa
 lock and fence before staged output publication and again before association.
 A deletion during download rejects that attempt; the existing batch abort removes
 its private outputs. Publication failures retain the existing recovery protocol.
+The bounded receipt walker preserves its advisory directory cursor, but a resumed
+cursor that reaches its end makes one fresh pass within the same fixed step budget.
+This promptly discovers a newly terminal crash receipt without weakening manifest,
+content-proof, ownership, or scan-write-fence validation.
 
 Removing a placement leaves an active candidate in the catalog. Steam inventory
 reconciliation can seed empty overview/background surfaces again, so placement
