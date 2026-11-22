@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261122-r3p completed: a vanished scan-media receipt directory resets the
+  bounded cursor pass, so later siblings remain reachable while terminal
+  receipt priority continues to run first.
 - 261122-smr-tests completed: a direct scan-media recovery contract proves a
   confirmed terminal receipt consumes the bounded recovery budget before the
   advisory cursor traversal begins.

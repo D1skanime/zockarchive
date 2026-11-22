@@ -249,6 +249,9 @@ class RecoveryWalk:
                 try:
                     info = os.stat(name, dir_fd=descriptor, follow_symlinks=False)
                 except OSError as error:
+                    # Directory cookies are not stable after a sibling disappears.
+                    # Restart this bounded directory pass to retain later receipts.
+                    frame["cookie"] = 0
                     log.warning(
                         "Scan media recovery retained inaccessible entry (%s)",
                         type(error).__name__,

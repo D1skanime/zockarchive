@@ -46,6 +46,7 @@ async def test_disappearing_child_preserves_directory_continuity(
     ]
     removed, later = ordered[0], ordered[1]
     module = importlib.import_module("handler.filesystem.scan_media_traversal")
+    recovery = importlib.import_module("handler.filesystem.scan_media_recovery")
     actual = module._entry
     raced: list[str] = []
 
@@ -81,6 +82,7 @@ async def test_disappearing_child_preserves_directory_continuity(
         if reached:
             break
     assert reached, "test directory was not reached within bounded cursor sessions"
+    monkeypatch.setattr(recovery, "_recent_terminal_attempt_directories", lambda _: [])
     monkeypatch.setattr(module, "_entry", disappear)
     await owned_media_cleanup_task.run()
     assert raced == [removed.name]
