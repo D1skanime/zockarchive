@@ -34,7 +34,6 @@ from models.platform import Platform
 from models.rom import (
     Rom,
     RomComponent,
-    RomComponentKind,
     RomComponentManifestMember,
     RomFile,
     RomFileCategory,
@@ -69,6 +68,7 @@ from .base_handler import (
     REGIONS_NAME_KEYS,
     ExternalFSHandler,
 )
+from .folder_download import build_folder_download_component
 from .pc_scan_inventory import (
     InventoryIncomplete,
     async_collect_folder_inventory,
@@ -588,65 +588,9 @@ class FSRomsHandler(ExternalFSHandler):
         )
         if not evidence.complete:
             raise InventoryIncomplete(evidence.reason or "incomplete_evidence")
-        members = tuple(
-            entry for entry in evidence.observations if entry.kind == "file"
+        return await build_folder_download_component(
+            self._pc_inventory_access, self._pc_game_path(rom), evidence
         )
-        if not members:
-            raise InventoryIncomplete("empty_inventory")
-        rom_path = self._pc_game_path(rom)
-
-        def build():
-            from handler.scan_operation_worker import check_worker_boundary
-
-            verified_members: list[RomComponentManifestMember] = []
-            for entry in members:
-                check_worker_boundary()
-                path = PurePosixPath(entry.relative_path)
-                if (
-                    not entry.relative_path
-                    or path.is_absolute()
-                    or ".." in path.parts
-                    or any(part in {"", "."} for part in path.parts)
-                ):
-                    raise InventoryIncomplete("invalid_relative_path")
-                file_path = f"{rom_path}/{entry.relative_path}"
-                with self._pc_inventory_access(
-                    StorageOperation.HASH, file_path
-                ) as source:
-                    before = os.fstat(source.fileno())
-                    if (
-                        before.st_size,
-                        before.st_mtime_ns,
-                        before.st_ctime_ns,
-                        before.st_dev,
-                        before.st_ino,
-                    ) != (
-                        entry.size,
-                        entry.mtime_ns,
-                        entry.ctime_ns,
-                        entry.device,
-                        entry.inode,
-                    ):
-                        raise InventoryIncomplete("unstable_file")
-                    sha256 = source.hash("sha256")
-                    if directory_signature(before) != directory_signature(
-                        os.fstat(source.fileno())
-                    ):
-                        raise InventoryIncomplete("unstable_file")
-                verified_members.append(
-                    RomComponentManifestMember(
-                        relative_path=entry.relative_path,
-                        size_bytes=entry.size,
-                        sha256=sha256,
-                    )
-                )
-            return RomComponent(
-                relative_path="folder-download",
-                kind=RomComponentKind.FOLDER,
-                manifest_members=verified_members,
-            )
-
-        return await asyncio.to_thread(build)
 
     async def get_pc_components(
         self, rom: Rom, inventory: InventoryEvidence | None = None
@@ -1248,7 +1192,6 @@ class FSRomsHandler(ExternalFSHandler):
         extension = Path(file_path).suffix.lower()
         try:
             file_type = detect_mime_type(file_path)
-
             crc_c = 0
             md5_h = hashlib.md5(usedforsecurity=False)
             sha1_h = hashlib.sha1(usedforsecurity=False)
@@ -1256,11 +1199,9 @@ class FSRomsHandler(ExternalFSHandler):
 
             def update_hashes(chunk: bytes | bytearray):
                 nonlocal crc_c, rom_crc_c
-
                 md5_h.update(chunk)
                 sha1_h.update(chunk)
                 crc_c = binascii.crc32(chunk, crc_c)
-
                 if accumulate:
                     rom_md5_h.update(chunk)
                     rom_sha1_h.update(chunk)
@@ -1271,11 +1212,9 @@ class FSRomsHandler(ExternalFSHandler):
                 with self.open_rom_read(relative_path) as source:
                     for chunk in read_zip_file(source):
                         update_hashes(chunk)
-
             elif extension == ".tar" or file_type == "application/x-tar":
                 for chunk in read_tar_file(file_path):
                     update_hashes(chunk)
-
             elif extension == ".gz" or file_type == "application/x-gzip":
                 for chunk in read_gz_file(file_path):
                     update_hashes(chunk)

@@ -9,7 +9,6 @@ import socketio  # type: ignore
 from adapters.services.screenscraper import ScreenScraperRateLimitError
 from config.config_manager import config_manager as cm
 from endpoints.responses.rom import SimpleRomSchema
-from exceptions.storage_read import MappedReadError
 from handler.database import db_platform_handler, db_rom_handler
 from handler.database.scan_write_fence import (
     current_scan_write_context,
@@ -25,7 +24,6 @@ from handler.filesystem import (
     open_storage_access,
     use_fs_rom_handler,
 )
-from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.roms_handler import FSRom
 from handler.filesystem.scan_media_publication import (
     ScanMediaBatch,
@@ -81,6 +79,7 @@ from handler.metadata.steam_handler import COMPACT_TITLE_BOUNDARY, STEAM_PLATFOR
 from handler.metadata.steam_merge import normalize_steam
 from handler.metadata.steam_owned_media import reconcile_steam_patch_media
 from handler.scan_command import MappedScanCommand as _MappedScanCommand
+from handler.scan_folder_download import reconcile_ps3_folder_download
 from handler.storage.read_context import MappingReadContext
 from logger.formatter import BLUE, LIGHTYELLOW
 from logger.formatter import highlight as hl
@@ -758,38 +757,13 @@ async def scan_rom(
                 exc,
                 extra=LOGGER_MODULE_NAME,
             )
-
     if (
         not metadata_only
         and quick is None
         and platform.slug == UPS.PS3
         and fs_rom["nested"]
     ):
-        try:
-            folder_component = await get_fs_rom_handler().get_folder_download_component(
-                _added_rom
-            )
-        except (InventoryIncomplete, MappedReadError, OSError, ValueError) as exc:
-            # An incomplete scan must retire stale membership instead of exposing
-            # a partial folder through a previously persisted manifest source.
-            log.warning(
-                "Folder download inventory unavailable for %s: %s",
-                _added_rom.fs_name,
-                exc,
-                extra=LOGGER_MODULE_NAME,
-            )
-            folder_component = None
-        with ScanMediaBatch(
-            _added_rom.id, _added_rom.platform_id, fs_resource_handler.storage
-        ) as unit:
-            unit.publish_and_associate(
-                lambda session: db_rom_handler.sync_rom_components(
-                    _added_rom.id,
-                    [folder_component] if folder_component is not None else [],
-                    session=session,
-                )
-            )
-
+        await reconcile_ps3_folder_download(_added_rom, fs_resource_handler.storage)
     from handler.scan_metadata_result import (
         record_provider_result,
         resolve_provider_fetch,
@@ -1570,7 +1544,6 @@ async def scan_rom(
             ]
             valid_names = [name for name in game_names if name]
             return await meta_sgdb_handler.get_details_by_names(valid_names)
-
         return SGDBRom(sgdb_id=None)
 
     sgdb_hander_rom = (
@@ -1590,7 +1563,6 @@ async def scan_rom(
         )
     if sgdb_hander_rom.get("sgdb_id"):
         rom_attrs["sgdb_id"] = sgdb_hander_rom["sgdb_id"]
-
         # Apply SGDB's cover only when it outranks every other source that
         # already produced one under the cover priority, and never over a
         # manually uploaded cover preserved by the UNMATCHED/UPDATE block above.
@@ -1611,23 +1583,19 @@ async def scan_rom(
             )
             if ranked[0] == MetadataSource.SGDB:
                 rom_attrs["url_cover"] = sgdb_cover
-
     log.info(
         f"{hl(rom_attrs['fs_name'])} identified as {hl(rom_attrs.get('name', rom.fs_name), color=BLUE)} {emoji.EMOJI_ALIEN_MONSTER}",
         extra=LOGGER_MODULE_NAME,
     )
-
     if fs_rom["nested"]:
         for file in fs_rom["files"]:
             log.info(
                 f"\t · {hl(file.file_name, color=LIGHTYELLOW)}",
                 extra=LOGGER_MODULE_NAME,
             )
-
     rom_attrs["missing_from_fs"] = False
     scanned_rom = Rom(**rom_attrs)
     preserve_current_scan_media(scanned_rom)
-
     steam_metadata = steam_updates.get("metadata")
     has_steam_metadata = isinstance(steam_metadata, dict) and bool(steam_metadata)
     has_steam_media = isinstance(steam_updates.get("media"), dict) and bool(

@@ -17,6 +17,10 @@ from endpoints.responses.assets import (
     UserStateSchema,
 )
 from endpoints.responses.cover_media import OriginalCoverSourceSchema
+from endpoints.responses.folder_download import (
+    FolderDownloadCapabilitySchema,
+    prepare_folder_download_details,
+)
 from endpoints.responses.pc_component_media import (  # noqa: F401
     OwnedCoverSelectionRequest,
     PcComponentManualSchema,
@@ -37,7 +41,6 @@ from models.pc_automation import PcAutomationQueueState, PcAutomationTargetKind
 from models.rom import (
     Rom,
     RomArchiveMember,
-    RomComponentKind,
     RomComponentLocalMediaRole,
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaRole,
@@ -57,7 +60,6 @@ SORT_COMPARE_REGEX = re.compile(r"^([Tt]he|[Aa]|[Aa]nd)\s")
 
 class CatalogRemovalRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-
     rom_ids: list[int] = Field(min_length=1, max_length=100)
 
     @field_validator("rom_ids")
@@ -676,13 +678,6 @@ class PcComponentSchema(BaseModel):
     owned_media: list[PcComponentOwnedMediaSchema] = Field(default_factory=list)
 
 
-class FolderDownloadCapabilitySchema(BaseModel):
-    """Safe summary of one verified server-owned folder download source."""
-
-    member_count: int = Field(ge=1)
-    total_size_bytes: int = Field(ge=0)
-
-
 class SoundtrackTrackMetaSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -1029,29 +1024,7 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
         user_id = request.user.id
         db_rom = cls.populate_properties(db_rom, request)
 
-        # Folder membership can contain thousands of entries. It stays behind
-        # the manifest endpoint; detail clients receive only this aggregate.
-        folder_components = [
-            component
-            for component in db_rom.components
-            if component.kind is RomComponentKind.FOLDER
-        ]
-        db_rom.download_components = [  # type: ignore[assignment]
-            component
-            for component in db_rom.components
-            if component.kind is not RomComponentKind.FOLDER
-        ]
-        if len(folder_components) == 1:
-            members = folder_components[0].manifest_members
-            if members and all(not member.missing_from_fs for member in members):
-                db_rom.folder_download = FolderDownloadCapabilitySchema(  # type: ignore[assignment]
-                    member_count=len(members),
-                    total_size_bytes=sum(member.size_bytes for member in members),
-                )
-            else:
-                db_rom.folder_download = None  # type: ignore[assignment]
-        else:
-            db_rom.folder_download = None  # type: ignore[assignment]
+        prepare_folder_download_details(db_rom)
 
         sorted_siblings = sorted(
             (

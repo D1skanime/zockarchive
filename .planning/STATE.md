@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261122-u62 completed: extracted PS3 folder-download response projection,
+  immutable manifest building and scan reconciliation from legacy monoliths,
+  returning every grown file to its baseline line count or lower.
 - 261122-u3o completed: Phase 47's CONTEXT now explicitly identifies ki-run
   job 261122-2d7c, satisfying the job-specific GSD contract in addition to the
   committed manifest binding.
