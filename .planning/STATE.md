@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261122-smr-tests completed: a direct scan-media recovery contract proves a
+  confirmed terminal receipt consumes the bounded recovery budget before the
+  advisory cursor traversal begins.
 - 261122-rap completed: MariaDB CI Shard 6 reproduced the two
   RetroAchievements progress failures, then passed all 827 tests after the
   test doubles were bound to the task's imported singleton collaborators.

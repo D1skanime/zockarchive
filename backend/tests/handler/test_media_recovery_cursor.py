@@ -6,6 +6,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from threading import Event
+from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
@@ -349,3 +350,37 @@ def test_fresh_cursor_does_not_restart_when_it_is_done(monkeypatch):
 
     assert module.reconcile_scan_media(object()) == 0
     assert walk.restarts == 0
+
+
+def test_terminal_receipt_is_reconciled_before_cursor_walk(monkeypatch):
+    """A terminal crash receipt consumes recovery budget before cursor traversal."""
+    module = recovery()
+    terminal_attempt = RESERVED + "/terminal-operation/terminal-attempt"
+    receipt = terminal_attempt + "/" + "a" * 32
+    reconciled = []
+
+    monkeypatch.setattr(
+        module, "_recent_terminal_attempt_directories", lambda _: [terminal_attempt]
+    )
+    monkeypatch.setattr(
+        module,
+        "_children",
+        lambda _, path, __: (
+            [SimpleNamespace(name="a" * 32)] if path == terminal_attempt else []
+        ),
+    )
+
+    def reconcile(_, path):
+        reconciled.append(path)
+        return True
+
+    monkeypatch.setattr(module, "reconcile_manifest", reconcile)
+
+    class CursorWalkMustNotStart:
+        def __enter__(self):
+            raise AssertionError("cursor traversal ran before terminal recovery")
+
+    monkeypatch.setattr(module, "RecoveryWalk", lambda _: CursorWalkMustNotStart())
+
+    assert module.reconcile_scan_media(object(), limit=1) == 1
+    assert reconciled == [receipt]
