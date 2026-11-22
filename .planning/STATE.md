@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261122-rhc completed: a direct RecoveryWalk contract now confirms that a
+  disappeared directory entry resets only the current advisory cursor cookie.
 - 261122-r3p completed: a vanished scan-media receipt directory resets the
   bounded cursor pass, so later siblings remain reachable while terminal
   receipt priority continues to run first.
