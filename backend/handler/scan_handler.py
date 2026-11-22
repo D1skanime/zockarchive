@@ -577,7 +577,6 @@ async def scan_rom(
     from handler.windows_quick_execution import current_windows_quick
 
     quick = current_windows_quick()
-    # Empty complete inventories must clear the previous total size.
     if len(fs_rom["files"]) > 0 or quick is not None:
         filesize = sum([file.file_size_bytes for file in fs_rom["files"]])
         rom_attrs.update(

@@ -1233,7 +1233,6 @@ class Rom(BaseModel):
         """
         return any(file.file_extension.lower() == "m3u" for file in self.files)
 
-    # Metadata fields
     @property
     def youtube_video_id(self) -> str | None:
         igdb_video_id = (

@@ -232,7 +232,6 @@ class UserNoteSchema(BaseModel):
     updated_at: UTCDatetime
     user_id: int
     username: str
-    # Author identity for rendering an avatar next to community notes.
     user_avatar_path: str = ""
     user_updated_at: UTCDatetime | None = None
 
@@ -344,7 +343,6 @@ class RomUserSchema(BaseModel):
             if n.user_id == user_id:
                 return cls.model_validate(n)
 
-        # Return a dummy RomUserSchema if the user + rom combination doesn't exist
         return rom_user_schema_factory()
 
 
@@ -776,7 +774,6 @@ class RomSchema(BaseModel):
     slug: str | None
     summary: str | None
 
-    # Metadata fields
     alternative_names: list[str]
     youtube_video_id: str | None
     metadatum: RomMetadataSchema
@@ -1073,7 +1070,6 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
 
         notes = db_rom_handler.get_rom_notes(rom_id=db_rom.id, user_id=user_id)
 
-        # Convert notes to schema format
         all_notes = []
         for note in notes:
             note_dict = {
@@ -1091,7 +1087,6 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
             }
             all_notes.append(UserNoteSchema.model_validate(note_dict))
 
-        # Sort notes by updated_at (most recent first)
         all_notes.sort(key=lambda x: x.updated_at, reverse=True)
         db_rom.all_user_notes = all_notes  # type: ignore[assignment]
 

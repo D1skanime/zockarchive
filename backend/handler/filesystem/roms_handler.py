@@ -87,7 +87,6 @@ if TYPE_CHECKING:
     from handler.storage.read_context import MappingReadContext
 
 
-# PICO-8 cartridges are often stored as PNG files
 PICO8_CARTRIDGE_EXTENSION = ".p8.png"
 PC_LOCAL_IMAGE_EXTENSIONS = frozenset({".png", ".jpg", ".jpeg", ".webp"})
 PC_LOCAL_IMAGE_FORMATS = {
@@ -735,7 +734,6 @@ class FSRomsHandler(ExternalFSHandler):
         for raw_tag in tags:
             lower_tag = raw_tag.lower()
 
-            # Region by code
             if raw_tag in REGIONS_BY_SHORTCODE.keys():
                 regions.append(REGIONS_BY_SHORTCODE[raw_tag])
                 continue
@@ -743,7 +741,6 @@ class FSRomsHandler(ExternalFSHandler):
                 regions.append(raw_tag)
                 continue
 
-            # Language by code
             if raw_tag in LANGUAGES_BY_SHORTCODE.keys():
                 languages.append(LANGUAGES_BY_SHORTCODE[raw_tag])
                 continue
@@ -751,7 +748,6 @@ class FSRomsHandler(ExternalFSHandler):
                 languages.append(raw_tag)
                 continue
 
-            # Version
             version_match = VERSION_TAG_REGEX.match(raw_tag)
             if version_match:
                 version = (version_match[1] or version_match[2] or "").strip()
