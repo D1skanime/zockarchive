@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261122-klq completed: normal selected-child completion now commits its
+  retirement checkpoint before returning, with direct regression coverage.
 - 261122-0ek completed: selected-child completion fencing now spans every
   post-identification step and preserves the original scan error.
 - 261121-r46 completed: regression repair for mapped downloads, accepted scan
@@ -972,6 +974,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261122-klq | Finalize selected-child completion on normal return | 2026-11-22 | this commit | [261122-klq](./quick/261122-klq-add-direct-post-uat-tests-for-selected-c/) |
 | 261119-j47 | Open Platform folders from library entry points | 2026-11-19 | this commit | [261119-j47](./quick/261119-j47-library-entry-and-select-anchor/) |
 | 261119-g7m | Anchor the scanned-result filter popup after scroll | 2026-11-19 | this commit | [261119-g7m](./quick/261119-g7m-anchor-scan-filter-popup/) |
 | 261116-mce | Add post-UAT direct scan timeout regression coverage | 2026-11-16 | this commit | [261116-mce](./quick/261116-mce-post-uat-scan-tests/) |

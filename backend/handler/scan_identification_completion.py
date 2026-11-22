@@ -55,12 +55,12 @@ def protect_identification_completion(
         token = _CURRENT.set(completion)
         try:
             try:
-                return await function(*args, **kwargs)
+                result = await function(*args, **kwargs)
             except BaseException:
                 completion.finalize(preserve_error=True)
                 raise
-            else:
-                completion.finalize(preserve_error=False)
+            completion.finalize(preserve_error=False)
+            return result
         finally:
             _CURRENT.reset(token)
 
