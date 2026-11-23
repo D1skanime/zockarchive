@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261123-9s2 completed: restored the canonical RomComponentKind import at the
+  response-model boundary after the PS3 folder-download extraction.
 - 261122-u62 completed: extracted PS3 folder-download response projection,
   immutable manifest building and scan reconciliation from legacy monoliths,
   returning every grown file to its baseline line count or lower.

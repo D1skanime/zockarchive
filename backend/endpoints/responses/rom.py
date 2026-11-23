@@ -38,6 +38,7 @@ from models.pc_automation import PcAutomationQueueState, PcAutomationTargetKind
 from models.rom import (
     Rom,
     RomArchiveMember,
+    RomComponentKind,
     RomComponentLocalMediaRole,
     RomComponentOwnedMediaOrigin,
     RomComponentOwnedMediaRole,
@@ -731,7 +732,6 @@ class RomMetadataSchema(BaseModel):
             return []
 
         # MySQL/MariaDB returns a scalar string instead of a single-element array
-        # when using JSON_EXTRACT with a [*] wildcard path on a single-element array.
         if isinstance(v, str):
             return sorted([v])
 
