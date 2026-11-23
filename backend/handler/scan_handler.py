@@ -79,7 +79,7 @@ from handler.metadata.steam_handler import COMPACT_TITLE_BOUNDARY, STEAM_PLATFOR
 from handler.metadata.steam_merge import normalize_steam
 from handler.metadata.steam_owned_media import reconcile_steam_patch_media
 from handler.scan_command import MappedScanCommand as _MappedScanCommand
-from handler.scan_folder_download import reconcile_ps3_folder_download
+from handler.scan_folder_download import reconcile_ps3_download_inventory
 from handler.storage.read_context import MappingReadContext
 from logger.formatter import BLUE, LIGHTYELLOW
 from logger.formatter import highlight as hl
@@ -756,13 +756,8 @@ async def scan_rom(
                 exc,
                 extra=LOGGER_MODULE_NAME,
             )
-    if (
-        not metadata_only
-        and quick is None
-        and platform.slug == UPS.PS3
-        and fs_rom["nested"]
-    ):
-        await reconcile_ps3_folder_download(_added_rom, fs_resource_handler.storage)
+    if not metadata_only and quick is None and platform.slug == UPS.PS3:
+        await reconcile_ps3_download_inventory(_added_rom, fs_resource_handler.storage)
     from handler.scan_metadata_result import (
         record_provider_result,
         resolve_provider_fetch,

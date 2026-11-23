@@ -1,20 +1,23 @@
 """Folder-download reconciliation performed during PS3 library scans."""
 
+import asyncio
+
 from exceptions.storage_read import MappedReadError
 from handler.database import db_rom_handler
 from handler.filesystem import get_fs_rom_handler
+from handler.filesystem.folder_download import build_ps3_download_component
 from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.scan_media_publication import ScanMediaBatch
 from logger.logger import log
-from models.rom import Rom
+from models.rom import Rom, RomComponentKind
 
 LOGGER_MODULE_NAME = {"module_name": "scan"}
 
 
-async def reconcile_ps3_folder_download(rom: Rom, resource_storage) -> None:
-    """Replace stale PS3 membership when inventory cannot prove every source file."""
+async def reconcile_ps3_download_inventory(rom: Rom, resource_storage) -> None:
+    """Replace PS3 manifest membership only after its source inventory is verified."""
     try:
-        folder_component = await get_fs_rom_handler().get_folder_download_component(rom)
+        folder_component = await build_ps3_download_component(get_fs_rom_handler(), rom)
     except (InventoryIncomplete, MappedReadError, OSError, ValueError) as exc:
         log.warning(
             "Folder download inventory unavailable for %s: %s",
@@ -31,3 +34,34 @@ async def reconcile_ps3_folder_download(rom: Rom, resource_storage) -> None:
                 session=session,
             )
         )
+
+
+async def ensure_ps3_download_inventory(rom: Rom) -> None:
+    """Materialize missing PS3 membership before the shared manifest is requested."""
+    folder_components = [
+        component
+        for component in rom.components
+        if component.kind is RomComponentKind.FOLDER
+    ]
+    if (
+        len(folder_components) == 1
+        and folder_components[0].manifest_members
+        and not any(
+            member.missing_from_fs for member in folder_components[0].manifest_members
+        )
+    ):
+        return
+    try:
+        folder_component = await build_ps3_download_component(get_fs_rom_handler(), rom)
+    except (InventoryIncomplete, MappedReadError, OSError, ValueError) as exc:
+        raise ValueError("manifest folder inventory is unavailable") from exc
+    retained_components = [
+        component
+        for component in rom.components
+        if component.kind is not RomComponentKind.FOLDER
+    ]
+    await asyncio.to_thread(
+        db_rom_handler.sync_rom_components,
+        rom.id,
+        [*retained_components, folder_component],
+    )

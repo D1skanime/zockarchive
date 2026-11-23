@@ -307,8 +307,12 @@ RomComponent and RomComponentManifestMember in backend/models/rom.py represent
 base, update, DLC, hotfix, language_pack, extra, unresolved, and neutral folder
 groups with relative paths, size, SHA-256 and missing-file state. The neutral
 `folder` group exists solely when a scan has a complete folder inventory and is
-the shared whole-folder download source for PC and console games. It is not
-projected as a PC component or eligible for PC metadata/media workflows. A
+the shared whole-folder download source for PC and console games. For PS3, the
+same neutral group represents either a verified directory tree or exactly one
+verified ISO member. A manifest request materializes missing PS3 inventory via
+the existing bounded storage capability before the regular manifest handler
+locks and captures it. It is not projected as a PC component or eligible for
+PC metadata/media workflows. A
 top-level `OST`/`Soundtrack` folder is intentionally projected both as local
 soundtrack media and as an `extra` component: the former powers the Media player,
 while the latter gives the ordinary, manifest-authorized download flow a

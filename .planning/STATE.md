@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261123-ui2 completed: PS3 directory and ISO downloads now materialize a
+  verified neutral manifest group only when older inventory is absent, then use
+  the existing Game Download dialog, manager, and bounded browser queue.
 - 261123-idc completed: replaced the shadowable folder_download module alias
   with direct schema bindings, restoring Pydantic ForwardRef resolution during
   backend startup and OpenAPI generation.

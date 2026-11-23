@@ -29,6 +29,7 @@ defineOptions({ inheritAttrs: false });
 const props = defineProps<{
   components: PcComponentSchema[];
   folderDownload?: FolderDownloadCapability;
+  folderInventoryRequired?: boolean;
   romId: number;
   parentName?: string;
   archiveSets?: DownloadArchiveSet[];
@@ -255,6 +256,7 @@ const groupedComponents = computed(() =>
       v-model="showDownload"
       :components="components"
       :folder-download="folderDownload"
+      :folder-inventory-required="folderInventoryRequired"
       :archive-sets="archiveSets"
       @start="startDownload"
     />
@@ -273,7 +275,11 @@ const groupedComponents = computed(() =>
     />
 
     <ZAEmptyState
-      v-if="!folderDownload && groupedComponents.length === 0"
+      v-if="
+        !folderDownload &&
+        !folderInventoryRequired &&
+        groupedComponents.length === 0
+      "
       icon="mdi-package-variant-closed"
       :title="t('rom.pc-no-components')"
     />

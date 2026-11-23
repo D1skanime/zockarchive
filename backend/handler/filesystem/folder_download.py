@@ -2,13 +2,14 @@
 
 import asyncio
 import os
+import stat
 from pathlib import PurePosixPath
 
 from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.storage_access import directory_signature
 from handler.filesystem.storage_policy import StorageOperation
 from handler.scan_inventory_contracts import InventoryEvidence
-from models.rom import RomComponent, RomComponentKind, RomComponentManifestMember
+from models.rom import Rom, RomComponent, RomComponentKind, RomComponentManifestMember
 
 
 async def build_folder_download_component(
@@ -75,3 +76,37 @@ async def build_folder_download_component(
         )
 
     return await asyncio.to_thread(build)
+
+
+async def build_single_file_download_component(handler, rom: Rom) -> RomComponent:
+    """Capture a verified single ROM file as the same neutral manifest group."""
+    source_path = handler._pc_game_path(rom)
+
+    def build() -> RomComponent:
+        with handler._pc_inventory_access(StorageOperation.HASH, source_path) as source:
+            before = os.fstat(source.fileno())
+            if not stat.S_ISREG(before.st_mode):
+                raise InventoryIncomplete("single_file_unavailable")
+            sha256 = source.hash("sha256")
+            if directory_signature(before) != directory_signature(
+                os.fstat(source.fileno())
+            ):
+                raise InventoryIncomplete("unstable_file")
+        return RomComponent(
+            relative_path="single-file-download",
+            kind=RomComponentKind.FOLDER,
+            manifest_members=[
+                RomComponentManifestMember(
+                    relative_path="", size_bytes=before.st_size, sha256=sha256
+                )
+            ],
+        )
+
+    return await asyncio.to_thread(build)
+
+
+async def build_ps3_download_component(handler, rom: Rom) -> RomComponent:
+    """Use one neutral group for a PS3 directory or an ISO source."""
+    if rom.has_simple_single_file:
+        return await build_single_file_download_component(handler, rom)
+    return await build_folder_download_component(handler, rom, inventory=None)

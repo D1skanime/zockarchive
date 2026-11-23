@@ -25,6 +25,7 @@ const props = defineProps<{
   modelValue: boolean;
   components: PcComponentSchema[];
   folderDownload?: FolderDownloadCapability;
+  folderInventoryRequired?: boolean;
   archiveSets?: DownloadArchiveSet[];
 }>();
 const emit = defineEmits<{
@@ -46,7 +47,9 @@ const selectedOptional = ref<number[]>([]);
 const selectedMemberIds = ref<number[]>([]);
 const expandedComponentIds = ref<number[]>([]);
 const mode = ref<"standard" | "enhanced">("standard");
-const isWholeFolder = computed(() => props.folderDownload !== undefined);
+const isWholeFolder = computed(
+  () => props.folderDownload !== undefined || props.folderInventoryRequired,
+);
 const currentSet = computed(() =>
   props.archiveSets?.find((set) => set.id === selectedSet.value),
 );
@@ -180,8 +183,15 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
           variant="card"
           disabled
         />
+        <ZACheckbox
+          v-else-if="folderInventoryRequired"
+          :model-value="true"
+          :label="t('rom.download-game')"
+          variant="card"
+          disabled
+        />
         <div
-          v-if="!folderDownload && !archiveSets?.length"
+          v-if="!isWholeFolder && !archiveSets?.length"
           class="download-selection__files"
         >
           <div
@@ -272,7 +282,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
     </template>
     <template #footer>
       <span
-        v-if="!folderDownload && !archiveSets?.length"
+        v-if="!isWholeFolder && !archiveSets?.length"
         class="download-selection__total"
         data-testid="download-selected-total"
         >{{ t("rom.download-selected") }}:

@@ -68,6 +68,10 @@ from .base_handler import (
     REGIONS_NAME_KEYS,
     ExternalFSHandler,
 )
+from .download_manifest_paths import (
+    download_manifest_destination,
+    manifest_member_source_path,
+)
 from .folder_download import build_folder_download_component
 from .pc_scan_inventory import (
     InventoryIncomplete,
@@ -280,25 +284,6 @@ _download_manifest_transfer_limiter = ConcurrencyLimiter(
 )
 
 
-def _download_manifest_destination(rom: Rom, member: RomComponentManifestMember) -> str:
-    """Create a client-safe destination from trusted persisted identities."""
-    relative_path = PurePosixPath(member.relative_path)
-    parts = relative_path.parts
-    if (
-        relative_path.is_absolute()
-        or not parts
-        or any(part in {"", ".", ".."} for part in parts)
-        or "\\" in member.relative_path
-        or any(ord(character) < 32 for character in member.relative_path)
-        or not rom.fs_name
-        or "/" in rom.fs_name
-        or "\\" in rom.fs_name
-        or any(ord(character) < 32 for character in rom.fs_name)
-    ):
-        raise ValueError("PC component manifest path is invalid")
-    return f"{rom.fs_name}/{relative_path.as_posix()}"
-
-
 def _download_manifest_snapshot(
     public_id: str, destination: str, size_bytes: int, sha256: str
 ) -> str:
@@ -388,16 +373,13 @@ class FSRomsHandler(ExternalFSHandler):
     @staticmethod
     def pc_component_member_path(rom: Rom, member: RomComponentManifestMember) -> str:
         """Return a manifest-bound source path without accepting browser paths."""
-        relative_path = PurePosixPath(member.relative_path)
-        if relative_path.is_absolute() or ".." in relative_path.parts:
-            raise ValueError("PC component manifest path is invalid")
-        return f"{rom.fs_path}/{rom.fs_name}/{relative_path.as_posix()}"
+        return manifest_member_source_path(rom, member)
 
     def capture_download_manifest_member(
         self, rom: Rom, member: RomComponentManifestMember, public_id: str
     ) -> DownloadManifestMemberEvidence:
         """Fully verify one persisted source member through a HASH capability."""
-        destination = _download_manifest_destination(rom, member)
+        destination = download_manifest_destination(rom, member)
         try:
             source_path = self.pc_component_member_path(rom, member)
             with self.open_rom_hash(source_path) as source:
@@ -435,7 +417,7 @@ class FSRomsHandler(ExternalFSHandler):
         source = None
         try:
             member = persisted_member.manifest_member
-            destination = _download_manifest_destination(rom, member)
+            destination = download_manifest_destination(rom, member)
             source_path = self.pc_component_member_path(rom, member)
             source = self.open_rom_read(source_path)
             before = os.fstat(source.fileno())

@@ -380,6 +380,7 @@ const filesCount = computed(() => currentRom.value?.files?.length ?? 0);
 const isPcRom = computed(
   () => currentRom.value != null && isPcPlatform(currentRom.value),
 );
+const isPs3Rom = computed(() => currentRom.value?.platform_slug === "ps3");
 // Generated API types are refreshed with the backend schema. Keep this local
 // projection narrow until that generated contract includes folder_download.
 const folderDownload = computed<FolderDownloadCapability | undefined>(() => {
@@ -392,6 +393,7 @@ const folderDownload = computed<FolderDownloadCapability | undefined>(() => {
 });
 const hasGameDownload = computed(
   () =>
+    isPs3Rom.value ||
     folderDownload.value !== undefined ||
     (currentRom.value?.components?.length ?? 0) > 0,
 );
@@ -521,6 +523,7 @@ const tabs = computed<ZATabNavItem[]>(() => [
               :rom-id="currentRom.id"
               :components="currentRom.components ?? []"
               :folder-download="folderDownload"
+              :folder-inventory-required="isPs3Rom && !folderDownload"
               :archive-sets="archiveSets"
               :archive-sets-state="archiveSetsState"
               :refresh="refreshDownloadDetails"
