@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261123-idc completed: replaced the shadowable folder_download module alias
+  with direct schema bindings, restoring Pydantic ForwardRef resolution during
+  backend startup and OpenAPI generation.
 - 261123-a0b completed: removed folder manifest members from list serialization,
   offloaded whole-folder manifest capture from the request event loop, and moved
   local-image selection to the Media tab for PC games.

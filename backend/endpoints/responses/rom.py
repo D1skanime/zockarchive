@@ -8,7 +8,6 @@ from typing import Literal, NotRequired, TypedDict, get_type_hints
 from fastapi import Request
 from pydantic import ConfigDict, Field, computed_field, field_validator, model_validator
 
-from endpoints.responses import folder_download
 from endpoints.responses.assets import (
     SaveSchema,
     ScreenshotSchema,
@@ -18,6 +17,10 @@ from endpoints.responses.assets import (
     UserStateSchema,
 )
 from endpoints.responses.cover_media import OriginalCoverSourceSchema
+from endpoints.responses.folder_download import (
+    FolderDownloadCapabilitySchema,
+    prepare_folder_download_details,
+)
 from endpoints.responses.pc_component_media import (  # noqa: F401
     OwnedCoverSelectionRequest,
     PcComponentManualSchema,
@@ -851,7 +854,7 @@ class RomSchema(BaseModel):
 
     @classmethod
     def from_orm_with_request(cls, db_rom: Rom, _request: Request) -> RomSchema:
-        folder_download.prepare_folder_download_details(db_rom)
+        prepare_folder_download_details(db_rom)
         return cls.model_validate(db_rom)
 
     @field_validator("alternative_names")
@@ -995,7 +998,7 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
     components: list[PcComponentSchema] = Field(
         default_factory=list, validation_alias="download_components"
     )
-    folder_download: folder_download.FolderDownloadCapabilitySchema | None = None
+    folder_download: FolderDownloadCapabilitySchema | None = None
     steam_metadata: SteamMetadataSchema | None
     user_saves: list[SaveSchema]
     user_states: list[StateSchema]
@@ -1018,7 +1021,7 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
         user_id = request.user.id
         db_rom = cls.populate_properties(db_rom, request)
 
-        folder_download.prepare_folder_download_details(db_rom)
+        prepare_folder_download_details(db_rom)
 
         sorted_siblings = sorted(
             (
