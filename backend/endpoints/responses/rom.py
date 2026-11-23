@@ -734,7 +734,6 @@ class RomMetadataSchema(BaseModel):
         if not v:
             return []
 
-        # MySQL/MariaDB returns a scalar string instead of a single-element array
         if isinstance(v, str):
             return sorted([v])
 
@@ -902,7 +901,6 @@ def _visible_siblings(db_rom: Rom, request: Request) -> list[Rom]:
     if not request.user.is_authenticated:
         return siblings
 
-    # Local import: breaks the responses.rom <-> handler.auth.dependencies cycle.
     from handler.auth.dependencies import get_permissions
 
     perms = get_permissions(request)
@@ -982,7 +980,6 @@ class UserCollectionSchema(BaseModel):
     def from_smart_collections(
         cls, smart_collections: Sequence[SmartCollection]
     ) -> list["UserCollectionSchema"]:
-        # Membership + visibility are already filtered at the SQL layer by
         # get_smart_collections_for_rom, so this is a plain mapping (see #3934).
         return [
             UserCollectionSchema(
