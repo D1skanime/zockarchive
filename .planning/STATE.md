@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261123-a0b completed: removed folder manifest members from list serialization,
+  offloaded whole-folder manifest capture from the request event loop, and moved
+  local-image selection to the Media tab for PC games.
 - 261123-9s2 completed: restored the canonical RomComponentKind import at the
   response-model boundary after the PS3 folder-download extraction.
 - 261122-u62 completed: extracted PS3 folder-download response projection,

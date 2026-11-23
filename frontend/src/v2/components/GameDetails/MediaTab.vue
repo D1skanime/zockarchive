@@ -7,8 +7,10 @@ import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import ActiveRomMediaPlacements from "@/v2/components/GameDetails/ActiveRomMediaPlacements.vue";
 import PcCoverMediaTab from "@/v2/components/GameDetails/PcCoverMediaTab.vue";
+import PcLocalMediaReview from "@/v2/components/GameDetails/PcLocalMediaReview.vue";
 import type { PcCoverMediaTarget } from "@/v2/components/GameDetails/pcCoverMediaTarget";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
+import { isPcPlatform } from "@/v2/utils/isPcPlatform";
 
 const ManualSubtab = defineAsyncComponent(
   () => import("@/v2/components/GameDetails/ManualSubtab.vue"),
@@ -28,6 +30,7 @@ const props = defineProps<{
   refresh: () => Promise<boolean>;
 }>();
 const { t } = useI18n();
+const isPcRom = computed(() => isPcPlatform(props.rom));
 
 // ---------- Subtab state ----------
 // Mirrored to `?subtab=` so the SoundtrackMiniPlayer can detect when the full
@@ -184,6 +187,11 @@ const coverTarget = computed<PcCoverMediaTarget>(() => ({
         role="tabpanel"
         aria-labelledby="media-tab-cover"
       >
+        <PcLocalMediaReview
+          v-if="isPcRom"
+          :rom-id="rom.id"
+          @applied="refresh"
+        />
         <PcCoverMediaTab :rom-id="rom.id" :target="coverTarget" />
       </section>
       <!-- All subtab sections stay mounted (v-show, not v-if). The manual,

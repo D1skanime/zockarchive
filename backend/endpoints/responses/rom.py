@@ -826,7 +826,9 @@ class RomSchema(BaseModel):
     merged_ra_metadata: RomRAMetadata | None
 
     files: list[RomFileSchema] = Field(validation_alias="included_files")
-    components: list[PcComponentSchema] = Field(default_factory=list)
+    components: list[PcComponentSchema] = Field(
+        default_factory=list, validation_alias="download_components"
+    )
     sibling_roms: list[SiblingRomSchema] = Field(
         validation_alias="included_sibling_roms"
     )
@@ -849,6 +851,7 @@ class RomSchema(BaseModel):
 
     @classmethod
     def from_orm_with_request(cls, db_rom: Rom, _request: Request) -> RomSchema:
+        folder_download.prepare_folder_download_details(db_rom)
         return cls.model_validate(db_rom)
 
     @field_validator("alternative_names")
@@ -919,11 +922,8 @@ class SimpleRomSchema(RomSchema):
         db_rom.screenshot_path = screenshot_path  # type: ignore[assignment]
 
         # The list endpoint passes pre-fetched `files`/`siblings` (batched via
-        # get_files_for_roms / get_siblings_for_roms, no per-row hydration).
         # Single-rom endpoints (e.g. `/{id}/simple`, loaded via the
-        # `with_details` decorator) pass neither and fall back to the
         # eager-loaded relationships. `None` (not provided) is distinct from an
-        # explicit empty list (e.g. the gallery list, which intentionally omits
         # files unless `with_files` is set).
         if files is None:
             files = db_rom.files

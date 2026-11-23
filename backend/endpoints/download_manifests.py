@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Callable, Iterator
 from typing import NoReturn
 from urllib.parse import quote
@@ -205,7 +206,8 @@ async def create_download_manifest(
         _not_found()
     assert_rom_visible(request, rom, not_found_detail=_NOT_FOUND)
     try:
-        manifest = db_download_manifest_handler.create_manifest(
+        manifest = await asyncio.to_thread(
+            db_download_manifest_handler.create_manifest,
             request.user.id,
             rom.id,
             payload.component_ids,
