@@ -13,6 +13,15 @@ class FolderDownloadCapabilitySchema(BaseModel):
     total_size_bytes: int = Field(ge=0)
 
 
+def prepare_download_components(rom: Rom) -> None:
+    """Project only PC download components into schemas shared by list responses."""
+    rom.download_components = [  # type: ignore[assignment]
+        component
+        for component in rom.components
+        if component.kind is not RomComponentKind.FOLDER
+    ]
+
+
 def prepare_folder_download_details(rom: Rom) -> None:
     """Expose an aggregate only when exactly one complete folder is verified."""
     folder_components = [
@@ -20,11 +29,7 @@ def prepare_folder_download_details(rom: Rom) -> None:
         for component in rom.components
         if component.kind is RomComponentKind.FOLDER
     ]
-    rom.download_components = [  # type: ignore[assignment]
-        component
-        for component in rom.components
-        if component.kind is not RomComponentKind.FOLDER
-    ]
+    prepare_download_components(rom)
     if len(folder_components) != 1:
         rom.folder_download = None  # type: ignore[assignment]
         return

@@ -69,6 +69,7 @@ def test_pc_component_kinds_and_manifest_member_are_persisted(rom: Rom):
             "language_pack",
             "extra",
             "unresolved",
+            "folder",
         }
 
 

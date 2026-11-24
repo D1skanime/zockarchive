@@ -14,7 +14,8 @@ const route = reactive({
     string
   >,
 });
-vi.mock("vue-router", () => ({
+vi.mock("vue-router", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("vue-router")>()),
   useRoute: () => route,
   useRouter: () => ({ replace }),
 }));

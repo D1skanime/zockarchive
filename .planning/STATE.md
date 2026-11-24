@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-15T21:40:00Z"
-last_activity: 2026-11-15 -- repaired post-UAT HTTP scan test typecheck findings
+last_updated: "2026-11-24T12:18:00Z"
+last_activity: 2026-11-24 -- repaired accepted PS3 download regression contracts
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261124-gz5 completed: restored the list projection for ordinary components,
+  excluded neutral folder inventories from library-page hydration, and aligned
+  direct frontend and model contracts with the accepted PS3 download flow.
 - 261124-fls completed: post-UAT direct coverage now protects PS3 ISO manifest
   paths, inventory synchronization and rejection, plus the authorized shared
   whole-folder manifest route.
@@ -1016,6 +1019,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261124-gz5 | Repair accepted PS3 download regression contracts | 2026-11-24 | this commit | [261124-gz5](./quick/261124-gz5-regression-nach-live-freigabe-fuer-ps3-d/) |
 | 261122-rah | Contain RAHasher archive inventory failures | 2026-11-22 | this commit | [261122-rah](./quick/261122-rah-archive-error/) |
 | 261122-smp-tests | Cover and repair scan-media recovery cursor regression | 2026-11-22 | this commit | [261122-smp-tests](./quick/261122-smp-tests/) |
 | 261122-smp | Make scan-media crash recovery deterministic | 2026-11-22 | this commit | [261122-smp](./quick/261122-smp-crash-recovery/) |

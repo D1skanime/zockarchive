@@ -19,6 +19,7 @@ from endpoints.responses.assets import (
 from endpoints.responses.cover_media import OriginalCoverSourceSchema
 from endpoints.responses.folder_download import (
     FolderDownloadCapabilitySchema,
+    prepare_download_components,
     prepare_folder_download_details,
 )
 from endpoints.responses.pc_component_media import (  # noqa: F401
@@ -920,6 +921,7 @@ class SimpleRomSchema(RomSchema):
         screenshot_path: str | None = None,
     ) -> SimpleRomSchema:
         db_rom = cls.populate_properties(db_rom, request)
+        prepare_download_components(db_rom)
         db_rom.screenshot_path = screenshot_path  # type: ignore[assignment]
 
         # The list endpoint passes pre-fetched `files`/`siblings` (batched via
@@ -950,6 +952,7 @@ class SimpleRomSchema(RomSchema):
 
     @classmethod
     def from_orm_with_factory(cls, db_rom: Rom) -> SimpleRomSchema:
+        prepare_download_components(db_rom)
         db_rom.rom_user = rom_user_schema_factory()  # type: ignore[assignment]
         db_rom.included_files = []  # type: ignore[assignment]
         db_rom.included_sibling_roms = []  # type: ignore[assignment]
