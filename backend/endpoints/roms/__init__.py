@@ -99,7 +99,6 @@ from models.permission import PermAction, PermEntity
 from models.rom import (
     Rom,
     RomComponent,
-    RomComponentKind,
     RomComponentOwnedMedia,
     RomOwnedMediaRole,
     RomOwnedMediaState,
@@ -1057,9 +1056,7 @@ def get_roms(
 
         params = resolve_params()
         page_query = query.options(
-            selectinload(
-                Rom.components.and_(RomComponent.kind != RomComponentKind.FOLDER)
-            ).options(
+            selectinload(Rom.components.and_(RomComponent.kind != "folder")).options(
                 selectinload(RomComponent.manifest_members),
                 selectinload(RomComponent.component_metadata),
                 selectinload(RomComponent.owned_media).selectinload(

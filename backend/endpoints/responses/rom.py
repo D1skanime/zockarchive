@@ -924,10 +924,7 @@ class SimpleRomSchema(RomSchema):
         prepare_download_components(db_rom)
         db_rom.screenshot_path = screenshot_path  # type: ignore[assignment]
 
-        # The list endpoint passes pre-fetched `files`/`siblings` (batched via
-        # Single-rom endpoints (e.g. `/{id}/simple`, loaded via the
-        # eager-loaded relationships. `None` (not provided) is distinct from an
-        # files unless `with_files` is set).
+        # `None` uses eager-loaded relationships; explicit empty lists remain valid.
         if files is None:
             files = db_rom.files
         if siblings is None:

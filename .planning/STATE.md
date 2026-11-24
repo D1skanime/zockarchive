@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-24T12:18:00Z"
-last_activity: 2026-11-24 -- repaired accepted PS3 download regression contracts
+last_updated: "2026-11-24T12:23:00Z"
+last_activity: 2026-11-24 -- restored PS3 regression source-size baselines
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,6 +18,8 @@ progress:
 
 ## Latest quick task
 
+- 261124-h4u completed: restored the exact pre-regression line counts in the
+  response serializer and ROM list router without changing the PS3 filter.
 - 261124-gz5 completed: restored the list projection for ordinary components,
   excluded neutral folder inventories from library-page hydration, and aligned
   direct frontend and model contracts with the accepted PS3 download flow.
@@ -1019,6 +1021,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261124-h4u | Restore PS3 regression source-size baselines | 2026-11-24 | this commit | [261124-h4u](./quick/261124-h4u-zeilenlimit-nach-ps3-download-regression/) |
 | 261124-gz5 | Repair accepted PS3 download regression contracts | 2026-11-24 | this commit | [261124-gz5](./quick/261124-gz5-regression-nach-live-freigabe-fuer-ps3-d/) |
 | 261122-rah | Contain RAHasher archive inventory failures | 2026-11-22 | this commit | [261122-rah](./quick/261122-rah-archive-error/) |
 | 261122-smp-tests | Cover and repair scan-media recovery cursor regression | 2026-11-22 | this commit | [261122-smp-tests](./quick/261122-smp-tests/) |
