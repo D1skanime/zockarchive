@@ -13,6 +13,24 @@ def test_single_file_manifest_member_keeps_the_iso_name_at_both_boundaries():
     assert manifest_member_source_path(rom, member) == "ps3/Uncharted.iso"
 
 
+def test_folder_manifest_member_keeps_the_ps3_relative_tree_at_both_boundaries():
+    rom = Rom(fs_path="ps3", fs_name="Uncharted Drakes Fortune")
+    member = RomComponentManifestMember(
+        relative_path="PS3_GAME/USRDIR/EBOOT.BIN",
+        size_bytes=1,
+        sha256="a" * 64,
+    )
+
+    assert (
+        download_manifest_destination(rom, member)
+        == "Uncharted Drakes Fortune/PS3_GAME/USRDIR/EBOOT.BIN"
+    )
+    assert (
+        manifest_member_source_path(rom, member)
+        == "ps3/Uncharted Drakes Fortune/PS3_GAME/USRDIR/EBOOT.BIN"
+    )
+
+
 def test_manifest_member_path_rejects_a_directory_escape():
     rom = Rom(fs_path="ps3", fs_name="Game")
     member = RomComponentManifestMember(

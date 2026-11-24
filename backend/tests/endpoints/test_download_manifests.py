@@ -247,6 +247,32 @@ def test_ps3_inventory_failure_returns_the_existing_safe_manifest_error(
     }
 
 
+def test_ps3_whole_folder_rejects_member_selection_before_inventory_sync(
+    client, access_token, rom, monkeypatch
+):
+    with session.begin() as db:
+        platform = db.get(Platform, rom.platform_id)
+        assert platform is not None
+        platform.slug = "ps3"
+
+    synchronized: list[int] = []
+
+    async def ensure_inventory(current_rom):
+        synchronized.append(current_rom.id)
+
+    monkeypatch.setattr(
+        download_manifests_endpoint, "ensure_ps3_download_inventory", ensure_inventory
+    )
+    response = client.post(
+        f"/api/roms/{rom.id}/download-manifests",
+        headers=_headers(access_token),
+        json={"whole_folder": True, "selected_member_ids": [1]},
+    )
+
+    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+    assert synchronized == []
+
+
 def test_create_policy_manifest_excludes_unselected_optional_member(
     client, access_token, rom
 ):

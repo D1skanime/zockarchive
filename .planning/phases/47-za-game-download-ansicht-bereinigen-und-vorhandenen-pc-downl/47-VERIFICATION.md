@@ -59,3 +59,12 @@ The operator observed an existing navigation-only `AbortError` from
 ViewTransition. It was not accompanied by an API or authentication failure.
 This closes the browser-evidence review finding. Supervisor acceptance and
 regression orchestration remain outside this phase artifact.
+
+## Post-acceptance direct tests, 2026-11-24
+
+After the human accepted Live UAT, direct regression tests were added without
+changing production code. They cover invalid whole-folder request arguments
+before inventory synchronization, nested PS3 member path preservation, and
+the shared queue's active-state and session-creation failure handling. The
+two affected backend test files and one affected frontend hook test file pass
+in their isolated target runners. No full suite was started.

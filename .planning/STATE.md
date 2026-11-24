@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-24T23:05:00Z"
-last_activity: 2026-11-24 -- real Dev PS3 browser evidence recorded for review
+last_updated: "2026-11-24T23:20:00Z"
+last_activity: 2026-11-24 -- post-UAT direct PS3 download tests completed
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,6 +18,10 @@ progress:
 
 ## Latest quick task
 
+- 261124-w68 completed: direct post-UAT tests now cover invalid whole-folder
+  arguments before inventory sync, exact nested PS3 paths, and active/error
+  states of the shared browser queue. The two backend files and one frontend
+  hook file passed in isolated target runners.
 - 261124-hds completed: isolated proof covers a disposable PS3 ISO and
   3,076-file folder, while reviewed real Dev administrator screenshots confirm
   the shared Game Download dialog for unmodified ROMs 5499/5500 on desktop and
@@ -1025,6 +1029,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261124-w68 | Add direct post-UAT PS3 download tests | 2026-11-24 | this commit | [261124-w68](./quick/261124-w68-add-direct-post-uat-tests-for-accepted-p/) |
 | 261124-hds | Record isolated and real Dev PS3 Game Download evidence | 2026-11-24 | this commit | [261124-hds](./quick/261124-hds-review-befund-zur-fehlenden-browser-sich/) |
 | 261124-h4u | Restore PS3 regression source-size baselines | 2026-11-24 | this commit | [261124-h4u](./quick/261124-h4u-zeilenlimit-nach-ps3-download-regression/) |
 | 261124-gz5 | Repair accepted PS3 download regression contracts | 2026-11-24 | this commit | [261124-gz5](./quick/261124-gz5-regression-nach-live-freigabe-fuer-ps3-d/) |
