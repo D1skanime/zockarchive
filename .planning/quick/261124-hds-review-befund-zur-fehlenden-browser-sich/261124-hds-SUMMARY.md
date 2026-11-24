@@ -31,13 +31,31 @@ All eight screenshots were reviewed. They are retained at
 `/tmp/za-261124-hds-browser/isolated/browser-proof/` and are listed in
 `/tmp/ki-uat-keep.txt`.
 
-## Existing Dev limitation
+## Real Dev confirmation
 
-The existing Dev instance still has no valid documented fixture account, so
-ROMs 5499 and 5500 were not logged into or altered. This proof is explicitly
-isolated and does not claim a successful login on that instance. If review
-requires evidence from that exact existing session rather than the authorized
-isolated reproduction, that remains an external authentication prerequisite.
+On 2026-11-24, an operator used the already authenticated Dev administrator
+session to inspect the existing library ROMs 5499 (Uncharted 3 ISO) and 5500
+(Uncharted: Drake's Fortune folder game). The operator opened Game Download,
+opened the shared existing mode-selection dialog, inspected Standard and
+Enhanced folder-download choices, and cancelled both dialogs without starting
+a large transfer. The supplied desktop and 390 x 844 mobile screenshots were
+reviewed from the job evidence directory:
+
+- `operator-live-uat-20261124/ps3-5499-desktop.png`
+- `operator-live-uat-20261124/ps3-5499-mobile.png`
+- `operator-live-uat-20261124/ps3-5500-desktop.png`
+- `operator-live-uat-20261124/ps3-5500-mobile.png`
+
+They show the logged-in `admin` session, the Game Download flow for both
+source types, and fully visible mobile Cancel and Start Download controls.
+The download-area screenshots contain neither Find metadata nor Use local
+images. This closes the prior review gap for the real Dev ROMs without
+changing Dev authentication, library data, or storage.
+
+The full transfer and nested-path proof remains the isolated harness evidence
+above. It was not re-measured against the existing Dev library. The operator
+observed an existing `AbortError` from ViewTransition during navigation only;
+there was no reported API or authentication failure.
 
 ## Verification
 

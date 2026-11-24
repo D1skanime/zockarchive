@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-24T22:35:00Z"
-last_activity: 2026-11-24 -- isolated PS3 browser evidence completed for review
+last_updated: "2026-11-24T23:05:00Z"
+last_activity: 2026-11-24 -- real Dev PS3 browser evidence recorded for review
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,10 +18,10 @@ progress:
 
 ## Latest quick task
 
-- 261124-hds completed: an isolated disposable PS3 ISO and 3,076-file folder
-  browser proof confirmed the shared Game downloads tab and dialog on desktop
-  and mobile, with the two misplaced actions absent. Existing Dev ROMs
-  5499/5500 remain unmodified because its documented fixture login is absent.
+- 261124-hds completed: isolated proof covers a disposable PS3 ISO and
+  3,076-file folder, while reviewed real Dev administrator screenshots confirm
+  the shared Game Download dialog for unmodified ROMs 5499/5500 on desktop and
+  mobile, with the two misplaced actions absent.
 - 261124-h4u completed: restored the exact pre-regression line counts in the
   response serializer and ROM list router without changing the PS3 filter.
 - 261124-gz5 completed: restored the list projection for ordinary components,
@@ -1025,7 +1025,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
-| 261124-hds | Complete isolated PS3 Game Download browser evidence | 2026-11-24 | this commit | [261124-hds](./quick/261124-hds-review-befund-zur-fehlenden-browser-sich/) |
+| 261124-hds | Record isolated and real Dev PS3 Game Download evidence | 2026-11-24 | this commit | [261124-hds](./quick/261124-hds-review-befund-zur-fehlenden-browser-sich/) |
 | 261124-h4u | Restore PS3 regression source-size baselines | 2026-11-24 | this commit | [261124-h4u](./quick/261124-h4u-zeilenlimit-nach-ps3-download-regression/) |
 | 261124-gz5 | Repair accepted PS3 download regression contracts | 2026-11-24 | this commit | [261124-gz5](./quick/261124-gz5-regression-nach-live-freigabe-fuer-ps3-d/) |
 | 261122-rah | Contain RAHasher archive inventory failures | 2026-11-22 | this commit | [261122-rah](./quick/261122-rah-archive-error/) |

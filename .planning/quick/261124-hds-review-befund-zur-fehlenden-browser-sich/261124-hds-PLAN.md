@@ -12,8 +12,9 @@ status: complete
    synthetic PS3 ISO and folder fixtures to inspect the tab and its existing
    dialog on desktop and mobile without starting a download or mutating the
    running Dev library.
-3. Review the resulting screenshots, record observed evidence, update state,
-   and commit the resolved review task.
+3. Review the isolated-harness screenshots and the operator-provided real Dev
+   screenshots for ROMs 5499 and 5500, record their distinct evidence, update
+   state and phase verification, and commit the resolved review task.
 
 ## Documentation
 
