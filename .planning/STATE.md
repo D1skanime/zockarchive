@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-24T12:23:00Z"
-last_activity: 2026-11-24 -- restored PS3 regression source-size baselines
+last_updated: "2026-11-24T12:32:00Z"
+last_activity: 2026-11-24 -- browser-evidence review blocked by active job policy
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261124-hds is blocked: the independent review requests browser screenshots
+  for PS3 ROMs 5499/5500, while the active project policy forbids the required
+  local browser inspection and harness work without an override.
 - 261124-h4u completed: restored the exact pre-regression line counts in the
   response serializer and ROM list router without changing the PS3 filter.
 - 261124-gz5 completed: restored the list projection for ordinary components,
