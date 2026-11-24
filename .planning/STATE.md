@@ -18,6 +18,9 @@ progress:
 
 ## Latest quick task
 
+- 261124-fls completed: post-UAT direct coverage now protects PS3 ISO manifest
+  paths, inventory synchronization and rejection, plus the authorized shared
+  whole-folder manifest route.
 - 261123-ui2 completed: PS3 directory and ISO downloads now materialize a
   verified neutral manifest group only when older inventory is absent, then use
   the existing Game Download dialog, manager, and bounded browser queue.

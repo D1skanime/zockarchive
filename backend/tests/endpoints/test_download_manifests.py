@@ -17,6 +17,7 @@ from handler.filesystem.roms_handler import (
 from models.download_archive_set import DownloadArchiveSet, DownloadArchiveSetMember
 from models.download_manifest import DownloadManifest, DownloadManifestStatus
 from models.permission import HiddenEntity, PermEntity
+from models.platform import Platform
 from models.rom import RomComponent, RomComponentKind, RomComponentManifestMember
 
 
@@ -176,6 +177,74 @@ def test_create_and_retrieve_a_path_free_whole_game_manifest(
     )
     assert fetched.status_code == status.HTTP_200_OK
     assert fetched.json() == body
+
+
+def test_ps3_whole_folder_manifest_uses_the_shared_inventory_hook(
+    client, access_token, rom, monkeypatch
+):
+    component = RomComponent(
+        rom_id=rom.id,
+        relative_path="folder-download",
+        kind=RomComponentKind.FOLDER,
+        manifest_members=[
+            RomComponentManifestMember(
+                relative_path="PS3_GAME/USRDIR/EBOOT.BIN",
+                size_bytes=3,
+                sha256="a" * 64,
+            )
+        ],
+    )
+    with session.begin() as db:
+        platform = db.get(Platform, rom.platform_id)
+        assert platform is not None
+        platform.slug = "ps3"
+        db.add(component)
+
+    synchronized: list[int] = []
+
+    async def ensure_inventory(current_rom):
+        synchronized.append(current_rom.id)
+
+    monkeypatch.setattr(
+        download_manifests_endpoint, "ensure_ps3_download_inventory", ensure_inventory
+    )
+    response = client.post(
+        f"/api/roms/{rom.id}/download-manifests",
+        headers=_headers(access_token),
+        json={"whole_folder": True},
+    )
+
+    assert response.status_code == status.HTTP_201_CREATED
+    assert synchronized == [rom.id]
+    assert (
+        response.json()["members"][0]["destination"] == "Game/PS3_GAME/USRDIR/EBOOT.BIN"
+    )
+
+
+def test_ps3_inventory_failure_returns_the_existing_safe_manifest_error(
+    client, access_token, rom, monkeypatch
+):
+    with session.begin() as db:
+        platform = db.get(Platform, rom.platform_id)
+        assert platform is not None
+        platform.slug = "ps3"
+
+    async def reject_inventory(_rom):
+        raise ValueError("manifest folder inventory is unavailable")
+
+    monkeypatch.setattr(
+        download_manifests_endpoint, "ensure_ps3_download_inventory", reject_inventory
+    )
+    response = client.post(
+        f"/api/roms/{rom.id}/download-manifests",
+        headers=_headers(access_token),
+        json={"whole_folder": True},
+    )
+
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert response.json() == {
+        "detail": {"code": "manifest_folder_inventory_unavailable"}
+    }
 
 
 def test_create_policy_manifest_excludes_unselected_optional_member(
