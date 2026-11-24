@@ -8,12 +8,14 @@ status: blocked
 
 1. Confirm the review identifies a visual-evidence gap, not an implementation
    defect, and inspect the shared PS3 Game Download wiring without mutation.
-2. Follow the project-level browser policy: do not create a browser harness,
-   screenshot, or isolated browser environment in this job.
-3. Record the blocked visual-evidence requirement and request an explicit
-   policy override before performing the prohibited browser work.
+2. Use the existing Dev authentication and Playwright resources to inspect the
+   tab and its existing dialog on desktop and mobile without starting a
+   download or mutating library data. This is blocked until a safe existing
+   Dev authentication state is available.
+3. Review the resulting screenshots, record observed evidence, update state,
+   and commit the resolved review task when authentication is available.
 
 ## Documentation
 
-No product or architecture documentation changes: the reported blocker is an
-evidence-policy conflict rather than a changed application contract.
+No product or architecture documentation changes: this task records UAT
+evidence and does not change any application contract.

@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-24T12:32:00Z"
-last_activity: 2026-11-24 -- browser-evidence review blocked by active job policy
+last_updated: "2026-11-24T13:00:00Z"
+last_activity: 2026-11-24 -- browser-evidence review blocked by missing safe Dev authentication
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,9 +18,10 @@ progress:
 
 ## Latest quick task
 
-- 261124-hds is blocked: the independent review requests browser screenshots
-  for PS3 ROMs 5499/5500, while the active project policy forbids the required
-  local browser inspection and harness work without an override.
+- 261124-hds is blocked: the authorized real-Dev Playwright login returns
+  HTTP 401 because the documented fixture user is absent. The ROM 5499/5500
+  screenshots require a safe existing authenticated Dev session; no Dev users,
+  sessions, library data, or product code were changed.
 - 261124-h4u completed: restored the exact pre-regression line counts in the
   response serializer and ROM list router without changing the PS3 filter.
 - 261124-gz5 completed: restored the list projection for ordinary components,
