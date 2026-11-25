@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-206
-last_updated: "2026-11-25T01:32:14Z"
+stopped_at: Completed quick 261125-v8q
+last_updated: "2026-11-25T01:50:00Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,12 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-v8q completed: shared-download reconciliation now requires a known
+  recorded size of at least 4,000,000,000 bytes before it can enumerate or hash
+  a source. The inclusive threshold is shared with response capability. Targeted
+  Trunk passed. Browser interaction is pending human Dev UAT because no existing
+  Dev session, URL, or correctly sized records were accessible to this agent.
 
 - 261125-206 completed: shared-download scan follow-up now belongs to the
   existing folder-download lifecycle owner, restoring `scan_handler.py` to its
@@ -1075,6 +1081,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261125-v8q | Gate shared inventory by known ROM size before hashing | 2026-11-25 | 3fecf0e84 | [261125-v8q](./quick/261125-v8q-gate-shared-inventory-at-known-size/) |
 | 261125-1dy | Fix Phase 48 review findings for inventory lifecycle and compatibility seams | 2026-11-25 | 4f9c61024 | [261125-1dy](./quick/261125-1dy-behebe-die-zwei-phase-48-code-review-bef/) |
 | 261124-w68 | Add direct post-UAT PS3 download tests | 2026-11-24 | this commit | [261124-w68](./quick/261124-w68-add-direct-post-uat-tests-for-accepted-p/) |
 | 261124-hds | Record isolated and real Dev PS3 Game Download evidence | 2026-11-24 | this commit | [261124-hds](./quick/261124-hds-review-befund-zur-fehlenden-browser-sich/) |

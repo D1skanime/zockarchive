@@ -315,9 +315,11 @@ groups with relative paths, size, SHA-256 and missing-file state. The neutral
 the shared whole-folder download source for PC and console games. It represents
 either a verified directory tree or exactly one verified single-file member.
 The complete inventory is published only by the authorized non-metadata,
-non-quick scan lifecycle through the neutral folder-download reconciler. PC
-scans also publish it for a qualifying simple single-file source, in addition
-to retaining their PC component reconciliation. Detail responses and
+non-quick scan lifecycle through the neutral folder-download reconciler. That
+reconciler first requires the already recorded ROM size to be known and at
+least 4,000,000,000 bytes inclusive, before it enumerates or hashes any source
+files. PC scans also publish it for a qualifying simple single-file source, in
+addition to retaining their PC component reconciliation. Detail responses and
 shared-manifest requests consume that persisted, complete evidence read-only;
 they neither scan, hash, estimate, nor materialize members. It is not projected
 as a PC component or eligible for PC metadata/media workflows. A
