@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-gate06-scan-rom-fixture-contract
-last_updated: "2026-11-25T10:45:00Z"
+stopped_at: Completed quick 261125-gate06-folder-download-test-double-type
+last_updated: "2026-11-25T10:51:27Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,11 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-gate06-folder-download-test-double-type completed: the folder-download
+  eligibility test now casts its deliberately minimal `SimpleNamespace` only at
+  the `Rom` helper boundary. Focused Trunk checked the affected file with no
+  issues; no product code or test behavior changed.
 
 - 261125-gate06-scan-rom-fixture-contract completed: the Steam scan test
   doubles now honor the persisted Windows-ROM contract and explicitly assert
@@ -1109,6 +1114,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261125-gate06-folder-download-test-double-type | Repair the typed folder-download eligibility test double | 2026-11-25 | pending | [261125-gate06-folder-download-test-double-type](./quick/261125-gate06-folder-download-test-double-type/) |
 | 261125-v8q | Gate shared inventory by known ROM size before hashing | 2026-11-25 | 3fecf0e84 | [261125-v8q](./quick/261125-v8q-gate-shared-inventory-at-known-size/) |
 | 261125-1dy | Fix Phase 48 review findings for inventory lifecycle and compatibility seams | 2026-11-25 | 4f9c61024 | [261125-1dy](./quick/261125-1dy-behebe-die-zwei-phase-48-code-review-bef/) |
 | 261124-w68 | Add direct post-UAT PS3 download tests | 2026-11-24 | this commit | [261124-w68](./quick/261124-w68-add-direct-post-uat-tests-for-accepted-p/) |

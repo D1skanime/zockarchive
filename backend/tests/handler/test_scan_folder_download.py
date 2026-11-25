@@ -113,7 +113,9 @@ def test_shared_inventory_eligibility_keeps_legacy_paths_and_gates_new_platforms
     rom = SimpleNamespace(fs_size_bytes=size_bytes, has_simple_single_file=simple_file)
 
     assert (
-        _is_shared_download_inventory_eligible(rom, platform_slug=platform_slug)
+        _is_shared_download_inventory_eligible(
+            cast(Rom, rom), platform_slug=platform_slug
+        )
         is expected
     )
 
