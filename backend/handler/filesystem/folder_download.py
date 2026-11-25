@@ -105,8 +105,8 @@ async def build_single_file_download_component(handler, rom: Rom) -> RomComponen
     return await asyncio.to_thread(build)
 
 
-async def build_ps3_download_component(handler, rom: Rom) -> RomComponent:
-    """Use one neutral group for a PS3 directory or an ISO source."""
+async def build_shared_download_component(handler, rom: Rom) -> RomComponent:
+    """Use one neutral group for an authorized directory or single-file source."""
     if rom.has_simple_single_file:
         return await build_single_file_download_component(handler, rom)
     return await build_folder_download_component(handler, rom, inventory=None)

@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { FolderDownloadCapabilitySchema } from './FolderDownloadCapabilitySchema';
 import type { ManualMetadata } from './ManualMetadata';
 import type { PcComponentSchema } from './PcComponentSchema';
 import type { RomFileSchema } from './RomFileSchema';
@@ -106,6 +107,7 @@ export type DetailedRomSchema = {
     files: Array<RomFileSchema>;
     components?: Array<PcComponentSchema>;
     sibling_roms: Array<SiblingRomSchema>;
+    folder_download?: (FolderDownloadCapabilitySchema | null);
     steam_metadata: (SteamMetadataSchema | null);
     user_saves: Array<SaveSchema>;
     user_states: Array<StateSchema>;
