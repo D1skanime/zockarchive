@@ -1114,6 +1114,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261125-ps3-quick-inventory-contract | Restore the PC/PS3 quick-scan shared-download contract | 2026-11-25 | e63988bc2 | [261125-ps3-quick-inventory-contract](./quick/261125-ps3-quick-inventory-contract/) |
 | 261125-gate06-folder-download-test-double-type | Repair the typed folder-download eligibility test double | 2026-11-25 | pending | [261125-gate06-folder-download-test-double-type](./quick/261125-gate06-folder-download-test-double-type/) |
 | 261125-v8q | Gate shared inventory by known ROM size before hashing | 2026-11-25 | 3fecf0e84 | [261125-v8q](./quick/261125-v8q-gate-shared-inventory-at-known-size/) |
 | 261125-1dy | Fix Phase 48 review findings for inventory lifecycle and compatibility seams | 2026-11-25 | 4f9c61024 | [261125-1dy](./quick/261125-1dy-behebe-die-zwei-phase-48-code-review-bef/) |
