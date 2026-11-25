@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-1uj
-last_updated: "2026-11-25T01:23:06Z"
+stopped_at: Completed quick 261125-206
+last_updated: "2026-11-25T01:32:14Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,12 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-206 completed: shared-download scan follow-up now belongs to the
+  existing folder-download lifecycle owner, restoring `scan_handler.py` to its
+  1,722-line merge-base baseline. The three reported legacy Vue files remained
+  untouched and below their prior baselines. Targeted Trunk found no new issues.
+  No tests or browser checks ran before live UAT.
 
 - 261125-1uj completed: neutral shared-download reconciliation now receives
   the current ROM reloaded after PC component persistence, preserving newly
