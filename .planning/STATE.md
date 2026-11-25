@@ -24,6 +24,10 @@ progress:
 
 ## Latest quick task
 
+- 261125-v4g completed: restored the missing Phase 50 Wave-1 GSD summary with
+  a truthful static reproduction record. No tests, browser work, runtime
+  resources, or product changes were performed.
+
 - 261125-g53-post-uat-quick-scan-contract-tests completed: direct tests now
   preserve PC/PS3 quick-scan authorization, exclude additional platforms from
   quick scans, and assert complete scan-context forwarding. The two affected
