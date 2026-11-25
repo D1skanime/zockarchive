@@ -1316,3 +1316,13 @@ Plans:
 
 **Wave 1:** 48-01, 48-02
 **Wave 2:** 48-03
+
+### Phase 49: ZA: Beta14-Upgrade ohne Downloadinventur reparieren
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 48
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 49 to break down)
