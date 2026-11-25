@@ -697,6 +697,7 @@ async def scan_rom(
 
     _added_rom = db_rom_handler.add_rom(Rom(**rom_attrs))
     _added_rom.is_identifying = True
+    inventory_rom = _added_rom
 
     if socket_manager:
         await socket_manager.emit(
@@ -749,6 +750,9 @@ async def scan_rom(
             rom = db_rom_handler.get_rom(rom.id)
             if rom is None:
                 raise ValueError("scan_media_catalog_missing")
+            # The neutral inventory reconciliation must retain the components
+            # just persisted by the PC scan, not the pre-synchronization snapshot.
+            inventory_rom = rom
         except (OSError, ValueError) as exc:
             log.warning(
                 "Failed to reconcile PC components for %s: %s",
@@ -762,7 +766,7 @@ async def scan_rom(
         and (platform.slug != UPS.WIN or _added_rom.has_simple_single_file)
     ):
         await reconcile_shared_download_inventory(
-            _added_rom, fs_resource_handler.storage
+            inventory_rom, fs_resource_handler.storage
         )
     from handler.scan_metadata_result import (
         record_provider_result,
