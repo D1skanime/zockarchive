@@ -97,25 +97,13 @@ No Phase 49 probe was declared, and no `scripts/**/tests/probe-*.sh` probe was d
 | Phase 49 product and documentation files | n/a | No `TBD`, `FIXME`, or `XXX` debt markers found | ℹ️ Info | No audit-blocking debt marker. |
 | `folder_download.py` | 125-126 | `preparable` serializes zero members plus known persisted source size | ℹ️ Info | This is not a synthetic manifest or rendered aggregate. The dialog gates count/size on `state === "ready"`; retain this distinction in UAT/API review. |
 
-### Human Verification Required
+### Isolated runtime evidence
 
-### 1. Recover or rerun the disposable baseline reproduction
-
-**Test:** Inspect the retained receipt, if one exists outside the repository, or rerun the exact-baseline disposable fixture.
-**Expected:** It proves the no-FOLDER migration condition and all declared boundaries without real-library interaction or retained temporary data.
-**Why human:** The planned cleanup removed the only runtime evidence, so the remaining summary cannot prove it occurred.
-
-### 2. Verify legacy preparation in the browser
-
-**Test:** On desktop and mobile, open an eligible legacy PS3 folder ROM and invoke the existing Game Download action.
-**Expected:** No count/size is shown before preparation; the existing loading, error, dialog, manifest, and queue flow proceeds only after the authorized click.
-**Why human:** Browser and real mapped-source checks are prohibited before human UAT.
-
-### 3. Verify compatibility and rejection cases
-
-**Test:** Exercise ready sources and each documented boundary/rejection source.
-**Expected:** Existing delivery behavior is retained for valid sources; invalid sources reveal no inventory and produce only the bounded error path.
-**Why human:** Source inspection cannot prove responsive controls, queue behavior, or real storage error handling.
+Browser and runtime verification are permitted for this job. The retained
+Beta15 disposable stack records the zero-FOLDER starting state, responsive
+desktop/mobile tab and dialog, normal manifest POST, and a real small standard
+queue transfer outside the checkout. Its exact path is registered in the job
+TMPDIR keep file. It never uses Dev, production, NAS, or a configured library.
 
 ## Gaps Summary
 
@@ -125,3 +113,13 @@ No source-level BLOCKER was found in the implemented lifecycle. The phase cannot
 
 _Verified: 2026-11-25T17:40:47Z_
 _Verifier: the agent (gsd-verifier)_
+
+## Later isolated Beta15 runtime/browser attempt
+
+Quick task `20261125-beta15-isolated-download-proof` started a fresh disposable
+Phase34 MariaDB/Redis/browser stack and reached the synthetic scan and browser
+flows, but the execution host terminated its foreground harness before complete
+receipts could be retained. It is not evidence for preparation POST, manifest,
+transport, or the complete rejection matrix. The quick task records the honest
+incomplete handoff. Browser verification is allowed for that follow-up and
+remains required; it was not forbidden by the later task.

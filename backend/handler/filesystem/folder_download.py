@@ -14,6 +14,17 @@ from models.rom import Rom, RomComponent, RomComponentKind, RomComponentManifest
 SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES = 4_000_000_000
 
 
+def has_shared_download_single_file(rom: Rom) -> bool:
+    """Recognize a direct legacy file even when scans persist its path as dot."""
+    if rom.has_simple_single_file:
+        return True
+    return (
+        len(rom.files) == 1
+        and rom.files[0].file_name == rom.fs_name
+        and rom.files[0].file_path == "."
+    )
+
+
 async def build_folder_download_component(
     handler, rom, inventory: InventoryEvidence | None
 ) -> RomComponent:
@@ -109,6 +120,6 @@ async def build_single_file_download_component(handler, rom: Rom) -> RomComponen
 
 async def build_shared_download_component(handler, rom: Rom) -> RomComponent:
     """Use one neutral group for an authorized directory or single-file source."""
-    if rom.has_simple_single_file:
+    if has_shared_download_single_file(rom):
         return await build_single_file_download_component(handler, rom)
     return await build_folder_download_component(handler, rom, inventory=None)

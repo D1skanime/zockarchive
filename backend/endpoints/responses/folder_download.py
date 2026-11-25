@@ -5,7 +5,10 @@ from typing import Literal
 from pydantic import Field
 
 from endpoints.responses.base import BaseModel
-from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+from handler.filesystem.folder_download import (
+    SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES,
+    has_shared_download_single_file,
+)
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from models.rom import Rom, RomComponentKind
 
@@ -67,7 +70,7 @@ def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | Non
     ):
         return None
 
-    if rom.has_simple_single_file:
+    if has_shared_download_single_file(rom):
         if (
             len(rom.files) != 1
             or folder_component.relative_path != "single-file-download"
@@ -123,7 +126,7 @@ def shared_download_preparation_capability(
 
     return FolderDownloadCapabilitySchema(
         state="preparable",
-        source_kind="file" if rom.has_simple_single_file else "folder",
+        source_kind="file" if has_shared_download_single_file(rom) else "folder",
         member_count=0,
         total_size_bytes=rom.fs_size_bytes,
     )
