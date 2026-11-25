@@ -503,7 +503,9 @@ async def test_steam_media_reconciliation_uses_the_persisted_rom_timestamp():
         )
 
     reconcile.assert_awaited_once_with(refreshed, resolver.return_value, force=True)
-    reconcile_inventory.assert_awaited_once_with(persisted, "win", True, ANY)
+    reconcile_inventory.assert_awaited_once_with(
+        persisted, "win", (False, False, ScanType.COMPLETE), ANY
+    )
 
 
 @pytest.mark.asyncio
@@ -675,7 +677,9 @@ async def test_steam_scan_defers_automation_until_the_final_scan_write():
 
     process_parent.assert_not_awaited()
     assert add_rom.call_args_list[-1].args[0].summary == "Deutsche Zusammenfassung"
-    reconcile_inventory.assert_awaited_once_with(persisted, "win", True, ANY)
+    reconcile_inventory.assert_awaited_once_with(
+        persisted, "win", (False, False, ScanType.NEW_PLATFORMS), ANY
+    )
 
 
 @pytest.mark.asyncio

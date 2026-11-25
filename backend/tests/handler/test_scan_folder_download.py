@@ -12,7 +12,9 @@ from handler.scan_folder_download import (
     _is_shared_download_inventory_eligible,
     ensure_ps3_download_inventory,
     reconcile_scanned_shared_download_inventory,
+    shared_download_scan_allowed,
 )
+from handler.scan_handler import ScanType
 from models.rom import Rom, RomComponentKind
 
 
@@ -118,6 +120,74 @@ def test_shared_inventory_eligibility_keeps_legacy_paths_and_gates_new_platforms
         )
         is expected
     )
+
+
+@pytest.mark.parametrize(
+    (
+        "metadata_only",
+        "windows_quick_context",
+        "platform_slug",
+        "scan_type",
+        "expected",
+    ),
+    [
+        (False, False, UPS.PS3, ScanType.QUICK, True),
+        (False, False, UPS.WIN, ScanType.QUICK, True),
+        (False, False, "snes", ScanType.QUICK, False),
+        (False, False, "snes", ScanType.COMPLETE, True),
+        (True, False, UPS.PS3, ScanType.COMPLETE, False),
+        (False, True, UPS.WIN, ScanType.COMPLETE, False),
+    ],
+)
+def test_shared_download_scan_authorization_preserves_legacy_quick_paths(
+    metadata_only, windows_quick_context, platform_slug, scan_type, expected
+):
+    assert (
+        shared_download_scan_allowed(
+            metadata_only,
+            windows_quick_context,
+            platform_slug,
+            scan_type,
+        )
+        is expected
+    )
+
+
+@pytest.mark.parametrize(
+    ("platform_slug", "scan_context", "expected_reconciliation"),
+    [
+        (UPS.PS3, (False, False, ScanType.QUICK), True),
+        (UPS.WIN, (False, False, ScanType.QUICK), True),
+        ("snes", (False, False, ScanType.QUICK), False),
+    ],
+)
+def test_reconciliation_uses_the_complete_scan_context_tuple(
+    monkeypatch, platform_slug, scan_context, expected_reconciliation
+):
+    reconcile = AsyncMock()
+    rom = SimpleNamespace(
+        id=7,
+        fs_size_bytes=SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES,
+        has_simple_single_file=True,
+    )
+    resource_storage = object()
+    monkeypatch.setattr(
+        "handler.scan_folder_download.reconcile_shared_download_inventory", reconcile
+    )
+    monkeypatch.setattr(
+        "handler.scan_folder_download.db_rom_handler.get_rom", lambda _rom_id: rom
+    )
+
+    asyncio.run(
+        reconcile_scanned_shared_download_inventory(
+            cast(Rom, rom), platform_slug, scan_context, resource_storage
+        )
+    )
+
+    if expected_reconciliation:
+        reconcile.assert_awaited_once_with(rom, resource_storage)
+    else:
+        reconcile.assert_not_awaited()
 
 
 @pytest.mark.parametrize(
