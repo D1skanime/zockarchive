@@ -1324,6 +1324,13 @@ Plans:
 **Depends on:** Phase 48
 **Plans:** 3 plans in 3 waves
 
+**Requirement mapping:** UPG-49-01 restores a reachable preparable legacy
+folder flow; UPG-49-02 preserves threshold and ordinary-download boundaries;
+UPG-49-03 preserves the existing dialog, queue, transfer, retry, cancellation,
+and fallback lifecycle after preparation. SAFE-49-01 preserves authorization,
+mapping, path, and source-integrity failure boundaries. DOC-49-01 documents
+the backend and frontend lifecycle and human UAT path.
+
 Plans:
 - [ ] `49-01-PLAN.md` - Reproduce the exact release upgrade condition in a disposable no-FOLDER fixture.
 - [ ] `49-02-PLAN.md` - Add safe preparable state and mapping-bound authorized inventory preparation to the shared manifest lifecycle.

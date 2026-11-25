@@ -8,6 +8,7 @@
 |---|---|---|
 | UPG-49-01 | Exact-release disposable no-FOLDER upgrade fixture; human desktop/mobile action after implementation | 49-01, 49-02, 49-03 |
 | UPG-49-02 | Fixture boundary matrix for ISO, other platform, below/exactly-at/above 4 GB, and unknown size | 49-01, 49-03 |
+| UPG-49-03 | Static preservation review plus human queue, cancellation, retry, resume, and fallback UAT | 49-03 |
 | SAFE-49-01 | Fixture and static inspection for denied, stale, unreadable, and path-boundary rejection | 49-01, 49-02 |
 | DOC-49-01 | Backend/frontend architecture updates and explicit human UAT handoff | 49-02, 49-03 |
 
