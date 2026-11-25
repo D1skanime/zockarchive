@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-za48
-last_updated: "2026-11-25T02:35:00Z"
+stopped_at: Completed quick 261125-uat-direct-download-evidence
+last_updated: "2026-11-25T03:10:00Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,14 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-uat-direct-download-evidence completed: corrected the isolated
+  browser evidence without changing product code. Exact accessible FileRow
+  download controls, rather than copy-link controls, produced and saved the
+  verified 33-byte fixture at desktop and mobile sizes. Replaced Overview
+  screenshots visibly cover German text, English fallback text, and an empty
+  description without a technical notice. The retained evidence path remains
+  `/tmp/za-261124-hds-browser/isolated/browser-proof`.
 
 - 261125-za48 completed: restored the accepted PC/PS3 shared-download contract
   without creating a second transport path. The inclusive 4-GB gate now applies
