@@ -1339,3 +1339,21 @@ Plans:
 **Wave 1:** 49-01
 **Wave 2:** 49-02
 **Wave 3:** 49-03
+
+### Phase 50: ZA: Gemeinsame PC-Dateiauswahl für große Spiele korrekt wiederverwenden
+
+**Goal:** Reuse the existing PC member-selection, manifest, and browser queue contract for every verified eligible shared FOLDER inventory, including upgraded console folders, while retaining the inclusive 4 GB game-total gate, safe bounded selection transport, and ordinary small direct downloads.
+**Requirements**: SEL-50-01, SEL-50-02, SEL-50-03, UPG-50-01, SAFE-50-01, DOC-50-01
+**Depends on:** Phase 49
+**Plans:** 4 plans
+
+Plans:
+- [ ] `50-01-PLAN.md` - Reproduce the accepted Beta15 selection bypass and inventory/API limits in isolated fixtures.
+- [ ] `50-02-PLAN.md` - Bind verified neutral FOLDER members to the bounded shared manifest-selection contract.
+- [ ] `50-03-PLAN.md` - Render neutral verified members through the existing dialog and queue without a parallel downloader.
+- [ ] `50-04-PLAN.md` - Update architecture documentation and produce permitted technical handoff evidence.
+
+**Wave 1:** 50-01
+**Wave 2:** 50-02
+**Wave 3:** 50-03
+**Wave 4:** 50-04

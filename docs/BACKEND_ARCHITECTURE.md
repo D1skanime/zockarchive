@@ -153,7 +153,11 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
   visible and permitted ROM qualifies only with known source size at least
   4,000,000,000 bytes inclusive: a simple source uses its recorded file size,
   while a folder source requires exactly one complete neutral group and its
-  persisted member aggregate. Unknown, missing, stale, incomplete, or inferred
+  persisted member aggregate. A ready detailed response projects the same
+  verified neutral members into the existing bounded selection contract. The
+  manifest request accepts at most 4,096 unique positive opaque member IDs and
+  locks them to that ROM's one FOLDER component before it snapshots exactly the
+  selected members. Unknown, missing, stale, incomplete, or inferred
   zero-size facts expose no capability. Detail responses read only persisted
   facts and can mark a threshold-eligible legacy folder as `preparable`, never
   transfer-ready. Only the protected whole-folder manifest POST, after ROM

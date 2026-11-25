@@ -105,8 +105,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         if archive_set_id is not None and component_ids is not None:
             raise ValueError("manifest policy selection cannot include components")
         if whole_folder and any(
-            selection is not None
-            for selection in (component_ids, archive_set_id, selected_member_ids)
+            selection is not None for selection in (component_ids, archive_set_id)
         ):
             raise ValueError("whole folder selection cannot include other selections")
 
@@ -142,6 +141,16 @@ class DBDownloadManifestsHandler(DBBaseHandler):
             )
             if not member_rows or any(member.missing_from_fs for member in member_rows):
                 raise ValueError("manifest folder inventory is unavailable")
+            if selected_member_ids is not None:
+                selected_ids = set(selected_member_ids)
+                allowed_ids = {member.id for member in member_rows}
+                if not selected_ids.issubset(allowed_ids):
+                    raise ValueError("manifest member selection is unavailable")
+                member_rows = [
+                    member for member in member_rows if member.id in selected_ids
+                ]
+                if not member_rows:
+                    raise ValueError("manifest member selection is empty")
         elif archive_set_id is not None:
             policy_members = list(
                 session.scalars(

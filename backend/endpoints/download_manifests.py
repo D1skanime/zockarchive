@@ -4,7 +4,7 @@ from pathlib import PurePosixPath
 from typing import NoReturn
 from urllib.parse import quote
 
-from fastapi import HTTPException, Query, Request, status
+from fastapi import HTTPException, Query, Request, Response, status
 from fastapi.responses import StreamingResponse
 from starlette.background import BackgroundTask
 
@@ -232,10 +232,11 @@ def _lease_chunks(
     "/roms/{rom_id}/download-manifests",
     [Scope.ROMS_READ],
     status_code=status.HTTP_201_CREATED,
+    response_model=DownloadManifestResponse,
 )
 async def create_download_manifest(
     request: Request, rom_id: int, payload: DownloadManifestCreateRequest
-) -> DownloadManifestResponse:
+) -> DownloadManifestResponse | Response:
     rom = db_rom_handler.get_rom(rom_id)
     if rom is None:
         _not_found()
@@ -250,6 +251,8 @@ async def create_download_manifest(
             await ensure_shared_download_inventory(rom)
             if not is_shared_download_eligible(rom):
                 raise ValueError("manifest folder inventory is unavailable")
+            if payload.prepare_only:
+                return Response(status_code=status.HTTP_204_NO_CONTENT)
         manifest = await asyncio.to_thread(
             db_download_manifest_handler.create_manifest,
             request.user.id,

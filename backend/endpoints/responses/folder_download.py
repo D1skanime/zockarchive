@@ -144,8 +144,9 @@ def is_shared_download_preparable(rom: Rom) -> bool:
 
 
 def prepare_folder_download_details(rom: Rom) -> None:
-    """Project the shared capability without exposing source paths or members."""
+    """Project a ready shared inventory through the existing member contract."""
     prepare_download_components(rom)
-    rom.folder_download = (  # type: ignore[assignment]
-        shared_download_capability(rom) or shared_download_preparation_capability(rom)
-    )
+    capability = shared_download_capability(rom)
+    rom.folder_download = capability or shared_download_preparation_capability(rom)  # type: ignore[assignment]
+    if capability is not None and capability.state == "ready":
+        rom.download_components = rom.components  # type: ignore[assignment]

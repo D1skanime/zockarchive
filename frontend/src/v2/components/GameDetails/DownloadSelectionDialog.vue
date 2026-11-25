@@ -44,7 +44,10 @@ const selectedOptional = ref<number[]>([]);
 const selectedMemberIds = ref<number[]>([]);
 const expandedComponentIds = ref<number[]>([]);
 const mode = ref<"standard" | "enhanced">("standard");
-const isWholeFolder = computed(() => props.folderDownload !== undefined);
+const isWholeFolder = computed(
+  () => props.folderDownload?.state === "preparable",
+);
+const usesFolderInventory = computed(() => props.folderDownload !== undefined);
 const folderDownloadIsReady = computed(
   () => props.folderDownload?.state === "ready",
 );
@@ -83,12 +86,10 @@ const selectedComponentIds = computed(() =>
         .map((component) => component.id),
 );
 const selectedBytes = computed(() =>
-  folderDownloadIsReady.value
-    ? (props.folderDownload?.total_size_bytes ?? 0)
-    : props.components
-        .flatMap((component) => component.manifest_members)
-        .filter((member) => selectedMembers.value.includes(member.id))
-        .reduce((total, member) => total + member.size_bytes, 0),
+  props.components
+    .flatMap((component) => component.manifest_members)
+    .filter((member) => selectedMembers.value.includes(member.id))
+    .reduce((total, member) => total + member.size_bytes, 0),
 );
 const missing = computed(
   () =>
@@ -128,7 +129,7 @@ function start() {
     archiveSetId: selectedSet.value,
     selectedMemberIds: selectedMembers.value,
     componentIds: selectedComponentIds.value,
-    wholeFolder: isWholeFolder.value || undefined,
+    wholeFolder: usesFolderInventory.value || undefined,
     mode: mode.value,
   });
   emit("update:modelValue", false);

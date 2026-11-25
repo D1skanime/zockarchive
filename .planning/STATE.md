@@ -16,6 +16,12 @@ progress:
 
 # Project State
 
+## Accumulated Context
+
+### Roadmap Evolution
+
+- Phase 50 added: ZA: Gemeinsame PC-Dateiauswahl für große Spiele korrekt wiederverwenden.
+
 ## Latest quick task
 
 - 261125-g53-post-uat-quick-scan-contract-tests completed: direct tests now
