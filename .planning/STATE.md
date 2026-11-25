@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-uat-direct-download-evidence
-last_updated: "2026-11-25T03:10:00Z"
+stopped_at: Completed quick 261125-za48-post-uat-accepted-logic-tests
+last_updated: "2026-11-25T09:40:00Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,12 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-za48-post-uat-accepted-logic-tests completed: post-UAT direct logic
+  tests now cover normal description presentation without technical notices,
+  the inclusive 4-GB shared-download contract, legacy PC/PS3 capability, and
+  scan reconciliation gates. Filtered Vue contracts and the two isolated
+  backend files passed with 30 tests total; no product code changed.
 
 - 261125-uat-direct-download-evidence completed: corrected the isolated
   browser evidence without changing product code. Exact accessible FileRow
