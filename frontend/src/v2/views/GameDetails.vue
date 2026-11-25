@@ -379,8 +379,8 @@ const filesCount = computed(() => currentRom.value?.files?.length ?? 0);
 const isPcRom = computed(
   () => currentRom.value != null && isPcPlatform(currentRom.value),
 );
-// The backend alone approves whole-source downloads from complete, known-size
-// inventory. Missing capability data deliberately leaves the normal download
+// The backend alone publishes whether a whole-source download is ready or may
+// be prepared. Missing capability data deliberately leaves the normal download
 // path unchanged.
 const folderDownload = computed<FolderDownloadCapabilitySchema | undefined>(
   () => currentRom.value?.folder_download ?? undefined,
@@ -439,8 +439,9 @@ async function refreshDownloadDetails(): Promise<void> {
   await refreshPcDetails();
 }
 
-// A manifest-backed component set or a verified folder capability owns the
-// Game Download surface. Console ROMs without either retain their patch flow.
+// A manifest-backed component set or a server-published folder capability owns
+// the Game Download surface. A preparable source still uses the existing
+// manifest action, while console ROMs without either retain their patch flow.
 const tabs = computed<ZATabNavItem[]>(() => [
   { id: "overview", label: t("rom.tab-overview") },
   ...(hasGameDownload.value

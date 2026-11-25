@@ -45,6 +45,9 @@ const selectedMemberIds = ref<number[]>([]);
 const expandedComponentIds = ref<number[]>([]);
 const mode = ref<"standard" | "enhanced">("standard");
 const isWholeFolder = computed(() => props.folderDownload !== undefined);
+const folderDownloadIsReady = computed(
+  () => props.folderDownload?.state === "ready",
+);
 const currentSet = computed(() =>
   props.archiveSets?.find((set) => set.id === selectedSet.value),
 );
@@ -79,13 +82,13 @@ const selectedComponentIds = computed(() =>
         )
         .map((component) => component.id),
 );
-const selectedBytes = computed(
-  () =>
-    props.folderDownload?.total_size_bytes ??
-    props.components
-      .flatMap((component) => component.manifest_members)
-      .filter((member) => selectedMembers.value.includes(member.id))
-      .reduce((total, member) => total + member.size_bytes, 0),
+const selectedBytes = computed(() =>
+  folderDownloadIsReady.value
+    ? (props.folderDownload?.total_size_bytes ?? 0)
+    : props.components
+        .flatMap((component) => component.manifest_members)
+        .filter((member) => selectedMembers.value.includes(member.id))
+        .reduce((total, member) => total + member.size_bytes, 0),
 );
 const missing = computed(
   () =>
@@ -172,7 +175,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
           @update:model-value="selectedSet = set.id"
         />
         <ZACheckbox
-          v-if="folderDownload"
+          v-if="folderDownloadIsReady && folderDownload"
           :model-value="true"
           :label="`${t('rom.download-game')} (${t('rom.files-count-n', { n: folderDownload.member_count })}, ${formatBytes(folderDownload.total_size_bytes)})`"
           variant="card"
