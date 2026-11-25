@@ -1,7 +1,5 @@
 """Folder-download reconciliation at the authorized shared-download boundary."""
 
-import asyncio
-
 from exceptions.storage_read import MappedReadError
 from handler.database import db_rom_handler
 from handler.filesystem import get_fs_rom_handler
@@ -13,13 +11,15 @@ from models.rom import Rom, RomComponentKind
 
 LOGGER_MODULE_NAME = {"module_name": "scan"}
 
+# Retain the established import and monkeypatch seam while all folder sources
+# share one platform-neutral implementation.
+build_ps3_download_component = build_shared_download_component
+
 
 async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> None:
     """Replace manifest membership only after its source inventory is verified."""
     try:
-        folder_component = await build_shared_download_component(
-            get_fs_rom_handler(), rom
-        )
+        folder_component = await build_ps3_download_component(get_fs_rom_handler(), rom)
     except (InventoryIncomplete, MappedReadError, OSError, ValueError) as exc:
         log.warning(
             "Folder download inventory unavailable for %s: %s",
@@ -39,33 +39,17 @@ async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> Non
 
 
 async def ensure_shared_download_inventory(rom: Rom) -> None:
-    """Materialize qualified source membership before a shared manifest is requested."""
+    """Accept only complete inventory published by the authorized scan lifecycle."""
     folder_components = [
         component
         for component in rom.components
         if component.kind is RomComponentKind.FOLDER
     ]
-    if (
-        len(folder_components) == 1
-        and folder_components[0].manifest_members
-        and not any(
-            member.missing_from_fs for member in folder_components[0].manifest_members
-        )
-    ):
-        return
-    try:
-        folder_component = await build_shared_download_component(
-            get_fs_rom_handler(), rom
-        )
-    except (InventoryIncomplete, MappedReadError, OSError, ValueError) as exc:
-        raise ValueError("manifest folder inventory is unavailable") from exc
-    retained_components = [
-        component
-        for component in rom.components
-        if component.kind is not RomComponentKind.FOLDER
-    ]
-    await asyncio.to_thread(
-        db_rom_handler.sync_rom_components,
-        rom.id,
-        [*retained_components, folder_component],
-    )
+    if len(folder_components) != 1 or not folder_components[0].manifest_members:
+        raise ValueError("manifest folder inventory is unavailable")
+    if any(member.missing_from_fs for member in folder_components[0].manifest_members):
+        raise ValueError("manifest folder inventory is unavailable")
+
+
+# Keep existing consumers patchable without reviving PS3-only resolver logic.
+ensure_ps3_download_inventory = ensure_shared_download_inventory

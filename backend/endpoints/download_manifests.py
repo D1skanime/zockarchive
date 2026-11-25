@@ -24,7 +24,7 @@ from handler.database import (
 )
 from handler.filesystem import fs_rom_handler
 from handler.filesystem.roms_handler import DownloadManifestTransferState
-from handler.scan_folder_download import ensure_shared_download_inventory
+from handler.scan_folder_download import ensure_ps3_download_inventory
 from logger.logger import log
 from models.download_manifest import DownloadManifest, DownloadManifestStatus
 from utils.router import APIRouter
@@ -211,7 +211,7 @@ async def create_download_manifest(
         if payload.whole_folder is True:
             if not is_shared_download_eligible(rom):
                 raise ValueError("manifest folder inventory is unavailable")
-            await ensure_shared_download_inventory(rom)
+            await ensure_ps3_download_inventory(rom)
         manifest = await asyncio.to_thread(
             db_download_manifest_handler.create_manifest,
             request.user.id,

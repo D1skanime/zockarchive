@@ -756,7 +756,7 @@ async def scan_rom(
                 exc,
                 extra=LOGGER_MODULE_NAME,
             )
-    if not metadata_only and quick is None and platform.slug == UPS.PS3:
+    if not metadata_only and quick is None and platform.slug != UPS.WIN:
         await reconcile_shared_download_inventory(
             _added_rom, fs_resource_handler.storage
         )

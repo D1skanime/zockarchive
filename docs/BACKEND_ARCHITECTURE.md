@@ -314,10 +314,11 @@ groups with relative paths, size, SHA-256 and missing-file state. The neutral
 `folder` group exists solely when a scan has a complete folder inventory and is
 the shared whole-folder download source for PC and console games. It represents
 either a verified directory tree or exactly one verified single-file member.
-The shared manifest path may materialize qualified source inventory through the
-existing bounded storage capability only after the server has accepted its
-recorded known-size evidence. It is not projected as a PC component or eligible
-for PC metadata/media workflows. A
+The complete inventory is published only by the authorized non-Windows full-scan
+lifecycle through the neutral folder-download reconciler. Detail responses and
+shared-manifest requests consume that persisted, complete evidence read-only;
+they neither scan, hash, estimate, nor materialize members. It is not projected
+as a PC component or eligible for PC metadata/media workflows. A
 top-level `OST`/`Soundtrack` folder is intentionally projected both as local
 soundtrack media and as an `extra` component: the former powers the Media player,
 while the latter gives the ordinary, manifest-authorized download flow a
