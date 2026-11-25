@@ -5,9 +5,8 @@ from typing import Literal
 from pydantic import Field
 
 from endpoints.responses.base import BaseModel
+from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
 from models.rom import Rom, RomComponentKind
-
-SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES = 4_000_000_000
 
 
 class FolderDownloadCapabilitySchema(BaseModel):

@@ -3,7 +3,10 @@
 from exceptions.storage_read import MappedReadError
 from handler.database import db_rom_handler
 from handler.filesystem import get_fs_rom_handler
-from handler.filesystem.folder_download import build_shared_download_component
+from handler.filesystem.folder_download import (
+    SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES,
+    build_shared_download_component,
+)
 from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.scan_media_publication import ScanMediaBatch
 from logger.logger import log
@@ -17,8 +20,12 @@ build_ps3_download_component = build_shared_download_component
 
 
 def _is_shared_download_inventory_eligible(rom: Rom, *, is_windows: bool) -> bool:
-    """Keep Windows folder sources out of the shared manifest lifecycle."""
-    return not is_windows or rom.has_simple_single_file
+    """Require known large sources before scans enumerate or hash a manifest."""
+    return (
+        rom.fs_size_bytes is not None
+        and rom.fs_size_bytes >= SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+        and (not is_windows or rom.has_simple_single_file)
+    )
 
 
 async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> None:

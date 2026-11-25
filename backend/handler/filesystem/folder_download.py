@@ -11,6 +11,8 @@ from handler.filesystem.storage_policy import StorageOperation
 from handler.scan_inventory_contracts import InventoryEvidence
 from models.rom import Rom, RomComponent, RomComponentKind, RomComponentManifestMember
 
+SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES = 4_000_000_000
+
 
 async def build_folder_download_component(
     handler, rom, inventory: InventoryEvidence | None
