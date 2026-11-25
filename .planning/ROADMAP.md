@@ -1293,3 +1293,13 @@ Plans:
 **Wave 2:** 47-02
 **Wave 3:** 47-03, 47-04
 **Wave 4:** 47-05
+
+### Phase 48: ZA: Technische Beschreibungshinweise entfernen und gemeinsamen Downloader ab 4 GB plattformübergreifend erweitern
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 47
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd-plan-phase 48 to break down)
