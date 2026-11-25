@@ -100,7 +100,7 @@ async def reconcile_scanned_shared_download_inventory(
 
 
 async def ensure_shared_download_inventory(rom: Rom) -> None:
-    """Accept only complete inventory published by the authorized scan lifecycle."""
+    """Validate complete persisted inventory before manifest issuance."""
     folder_components = [
         component
         for component in rom.components
@@ -112,5 +112,17 @@ async def ensure_shared_download_inventory(rom: Rom) -> None:
         raise ValueError("manifest folder inventory is unavailable")
 
 
-# Keep existing consumers patchable without reviving PS3-only resolver logic.
-ensure_ps3_download_inventory = ensure_shared_download_inventory
+async def prepare_shared_download_inventory(rom: Rom, mapped_handler) -> None:
+    """Verify and reconcile one mapped legacy source at an authorized boundary.
+
+    The caller owns visibility and mapping-revision validation. This function
+    never selects a storage path and publishes only the builder's verified
+    FOLDER component through the normal component reconciliation transaction.
+    """
+    folder_component = await build_shared_download_component(mapped_handler, rom)
+    retained_components = [
+        component
+        for component in rom.components
+        if component.kind is not RomComponentKind.FOLDER
+    ]
+    db_rom_handler.sync_rom_components(rom.id, [*retained_components, folder_component])

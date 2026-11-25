@@ -8,4 +8,3 @@ export type SetupFolderSchema = {
     association: 'known' | 'unknown';
     suggested_platform?: (string | null);
 };
-
