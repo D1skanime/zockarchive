@@ -755,7 +755,9 @@ async def scan_rom(
     await reconcile_scanned_shared_download_inventory(
         _added_rom,
         platform.slug,
-        not metadata_only and scan_type is not ScanType.QUICK and quick is None,
+        not metadata_only
+        and quick is None
+        and (platform.slug in (UPS.PS3, UPS.WIN) or scan_type is not ScanType.QUICK),
         fs_resource_handler.storage,
     )
     from handler.scan_metadata_result import (

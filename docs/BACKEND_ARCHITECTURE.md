@@ -314,16 +314,17 @@ groups with relative paths, size, SHA-256 and missing-file state. The neutral
 `folder` group exists solely when a scan has a complete folder inventory and is
 the shared whole-folder download source for PC and console games. It represents
 either a verified directory tree or exactly one verified single-file member.
-The complete inventory is published only by the authorized non-metadata,
-non-`ScanType.QUICK` scan lifecycle through the neutral folder-download
-reconciler. The existing PC and PS3 contracts retain their accepted manifest
-paths: PS3 can materialize a missing neutral inventory only after visibility is
-checked for its authorized manifest request, while existing PC component paths
-remain intact. Additional platforms require an already recorded size of at
-least 4,000,000,000 bytes inclusive before scans enumerate or hash source
-files. Unknown or smaller additional sources are never estimated or hashed for
-this feature. `current_windows_quick()` remains a Windows execution context,
-not a replacement for the scan type gate. Detail responses and shared-manifest
+The complete inventory is published only by an authorized non-metadata scan
+lifecycle through the neutral folder-download reconciler. The existing PC and
+PS3 contracts remain authorized during `ScanType.QUICK`; other platforms enter
+the new folder-inventory path only outside that scan type. PS3 can materialize
+a missing neutral inventory only after visibility is checked for its authorized
+manifest request, while existing PC component paths remain intact. Additional
+platforms require an already recorded size of at least 4,000,000,000 bytes
+inclusive before scans enumerate or hash source files. Unknown or smaller
+additional sources are never estimated or hashed for this feature.
+`current_windows_quick()` remains a Windows execution context, not a
+replacement for the scan type gate. Detail responses and shared-manifest
 requests consume complete evidence within the same authorized manifest chain;
 they neither scan, hash, nor estimate for additional platforms. It is not
 projected as a PC component or eligible for PC metadata/media workflows. A
