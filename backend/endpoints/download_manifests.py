@@ -24,6 +24,7 @@ from handler.database import (
 )
 from handler.filesystem import fs_rom_handler
 from handler.filesystem.roms_handler import DownloadManifestTransferState
+from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from handler.scan_folder_download import ensure_ps3_download_inventory
 from logger.logger import log
 from models.download_manifest import DownloadManifest, DownloadManifestStatus
@@ -209,9 +210,13 @@ async def create_download_manifest(
     assert_rom_visible(request, rom, not_found_detail=_NOT_FOUND)
     try:
         if payload.whole_folder is True:
+            # PS3 historically materializes a missing neutral inventory only
+            # after visibility is established and a manifest is requested.
+            if rom.platform_slug == UPS.PS3:
+                await ensure_ps3_download_inventory(rom)
+                rom = db_rom_handler.get_rom(rom.id) or rom
             if not is_shared_download_eligible(rom):
                 raise ValueError("manifest folder inventory is unavailable")
-            await ensure_ps3_download_inventory(rom)
         manifest = await asyncio.to_thread(
             db_download_manifest_handler.create_manifest,
             request.user.id,

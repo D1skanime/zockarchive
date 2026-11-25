@@ -9,6 +9,7 @@ from handler.filesystem.folder_download import (
 )
 from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.scan_media_publication import ScanMediaBatch
+from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from logger.logger import log
 from models.rom import Rom, RomComponentKind
 
@@ -19,12 +20,15 @@ LOGGER_MODULE_NAME = {"module_name": "scan"}
 build_ps3_download_component = build_shared_download_component
 
 
-def _is_shared_download_inventory_eligible(rom: Rom, *, is_windows: bool) -> bool:
-    """Require known large sources before scans enumerate or hash a manifest."""
+def _is_shared_download_inventory_eligible(rom: Rom, *, platform_slug: str) -> bool:
+    """Scope new whole-source inventory work to large additional platforms."""
+    if platform_slug == UPS.PS3:
+        return True
+    if platform_slug == UPS.WIN:
+        return rom.has_simple_single_file
     return (
         rom.fs_size_bytes is not None
         and rom.fs_size_bytes >= SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
-        and (not is_windows or rom.has_simple_single_file)
     )
 
 
@@ -62,16 +66,16 @@ async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> Non
 
 async def reconcile_scanned_shared_download_inventory(
     rom: Rom,
-    is_windows: bool,
+    platform_slug: str,
     is_authorized_scan: bool,
     resource_storage,
 ) -> None:
     """Publish inventory only from a scan source that can prove its membership."""
     if not is_authorized_scan or not _is_shared_download_inventory_eligible(
-        rom, is_windows=is_windows
+        rom, platform_slug=platform_slug
     ):
         return
-    if is_windows:
+    if platform_slug == UPS.WIN:
         rom = db_rom_handler.get_rom(rom.id) or rom
     await reconcile_shared_download_inventory(rom, resource_storage)
 

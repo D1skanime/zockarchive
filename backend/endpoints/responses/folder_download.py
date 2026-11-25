@@ -6,6 +6,7 @@ from pydantic import Field
 
 from endpoints.responses.base import BaseModel
 from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from models.rom import Rom, RomComponentKind
 
 
@@ -24,6 +25,11 @@ def prepare_download_components(rom: Rom) -> None:
         for component in rom.components
         if component.kind is not RomComponentKind.FOLDER
     ]
+
+
+def is_legacy_shared_download_platform(rom: Rom) -> bool:
+    """Keep the accepted PC and PS3 manifest contract independent of new platforms."""
+    return rom.platform_slug in {UPS.WIN, UPS.PS3}
 
 
 def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | None:
@@ -53,7 +59,10 @@ def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | Non
             member.missing_from_fs or member.size_bytes < 0 or len(member.sha256) != 64
             for member in members
         )
-        or total_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+        or (
+            not is_legacy_shared_download_platform(rom)
+            and total_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+        )
     ):
         return None
 

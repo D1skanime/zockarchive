@@ -315,14 +315,18 @@ groups with relative paths, size, SHA-256 and missing-file state. The neutral
 the shared whole-folder download source for PC and console games. It represents
 either a verified directory tree or exactly one verified single-file member.
 The complete inventory is published only by the authorized non-metadata,
-non-quick scan lifecycle through the neutral folder-download reconciler. That
-reconciler first requires the already recorded ROM size to be known and at
-least 4,000,000,000 bytes inclusive, before it enumerates or hashes any source
-files. PC scans also publish it for a qualifying simple single-file source, in
-addition to retaining their PC component reconciliation. Detail responses and
-shared-manifest requests consume that persisted, complete evidence read-only;
-they neither scan, hash, estimate, nor materialize members. It is not projected
-as a PC component or eligible for PC metadata/media workflows. A
+non-`ScanType.QUICK` scan lifecycle through the neutral folder-download
+reconciler. The existing PC and PS3 contracts retain their accepted manifest
+paths: PS3 can materialize a missing neutral inventory only after visibility is
+checked for its authorized manifest request, while existing PC component paths
+remain intact. Additional platforms require an already recorded size of at
+least 4,000,000,000 bytes inclusive before scans enumerate or hash source
+files. Unknown or smaller additional sources are never estimated or hashed for
+this feature. `current_windows_quick()` remains a Windows execution context,
+not a replacement for the scan type gate. Detail responses and shared-manifest
+requests consume complete evidence within the same authorized manifest chain;
+they neither scan, hash, nor estimate for additional platforms. It is not
+projected as a PC component or eligible for PC metadata/media workflows. A
 top-level `OST`/`Soundtrack` folder is intentionally projected both as local
 soundtrack media and as an `extra` component: the former powers the Media player,
 while the latter gives the ordinary, manifest-authorized download flow a
