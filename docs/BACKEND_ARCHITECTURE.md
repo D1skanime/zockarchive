@@ -314,8 +314,10 @@ groups with relative paths, size, SHA-256 and missing-file state. The neutral
 `folder` group exists solely when a scan has a complete folder inventory and is
 the shared whole-folder download source for PC and console games. It represents
 either a verified directory tree or exactly one verified single-file member.
-The complete inventory is published only by the authorized non-Windows full-scan
-lifecycle through the neutral folder-download reconciler. Detail responses and
+The complete inventory is published only by the authorized non-metadata,
+non-quick scan lifecycle through the neutral folder-download reconciler. PC
+scans also publish it for a qualifying simple single-file source, in addition
+to retaining their PC component reconciliation. Detail responses and
 shared-manifest requests consume that persisted, complete evidence read-only;
 they neither scan, hash, estimate, nor materialize members. It is not projected
 as a PC component or eligible for PC metadata/media workflows. A

@@ -42,38 +42,47 @@ def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | Non
         for component in rom.components
         if component.kind is RomComponentKind.FOLDER
     ]
-    if len(folder_components) == 1:
-        members = folder_components[0].manifest_members
-        total_size_bytes = sum(member.size_bytes for member in members)
-        if (
-            members
-            and all(
-                not member.missing_from_fs
-                and member.size_bytes >= 0
-                and len(member.sha256) == 64
-                for member in members
-            )
-            and total_size_bytes >= SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
-        ):
-            return FolderDownloadCapabilitySchema(
-                source_kind="folder",
-                member_count=len(members),
-                total_size_bytes=total_size_bytes,
-            )
-
-    if not rom.has_simple_single_file or len(rom.files) != 1:
+    if len(folder_components) != 1:
         return None
-    simple_file = rom.files[0]
+
+    folder_component = folder_components[0]
+    members = folder_component.manifest_members
+    total_size_bytes = sum(member.size_bytes for member in members)
     if (
-        simple_file.missing_from_fs
-        or simple_file.file_size_bytes != rom.fs_size_bytes
-        or rom.fs_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+        not members
+        or any(
+            member.missing_from_fs or member.size_bytes < 0 or len(member.sha256) != 64
+            for member in members
+        )
+        or total_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
     ):
         return None
+
+    if rom.has_simple_single_file:
+        if (
+            len(rom.files) != 1
+            or folder_component.relative_path != "single-file-download"
+            or len(members) != 1
+            or members[0].relative_path
+        ):
+            return None
+        simple_file = rom.files[0]
+        if (
+            simple_file.missing_from_fs
+            or simple_file.file_size_bytes != rom.fs_size_bytes
+            or members[0].size_bytes != simple_file.file_size_bytes
+        ):
+            return None
+        return FolderDownloadCapabilitySchema(
+            source_kind="file",
+            member_count=1,
+            total_size_bytes=total_size_bytes,
+        )
+
     return FolderDownloadCapabilitySchema(
-        source_kind="file",
-        member_count=1,
-        total_size_bytes=rom.fs_size_bytes,
+        source_kind="folder",
+        member_count=len(members),
+        total_size_bytes=total_size_bytes,
     )
 
 

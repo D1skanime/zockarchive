@@ -756,7 +756,11 @@ async def scan_rom(
                 exc,
                 extra=LOGGER_MODULE_NAME,
             )
-    if not metadata_only and quick is None and platform.slug != UPS.WIN:
+    if (
+        not metadata_only
+        and quick is None
+        and (platform.slug != UPS.WIN or _added_rom.has_simple_single_file)
+    ):
         await reconcile_shared_download_inventory(
             _added_rom, fs_resource_handler.storage
         )

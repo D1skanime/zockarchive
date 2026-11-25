@@ -28,11 +28,21 @@ async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> Non
             extra=LOGGER_MODULE_NAME,
         )
         folder_component = None
+    retained_components = [
+        component
+        for component in rom.components
+        if component.kind is not RomComponentKind.FOLDER
+    ]
+    scanned_components = (
+        [*retained_components, folder_component]
+        if folder_component is not None
+        else retained_components
+    )
     with ScanMediaBatch(rom.id, rom.platform_id, resource_storage) as unit:
         unit.publish_and_associate(
             lambda session: db_rom_handler.sync_rom_components(
                 rom.id,
-                [folder_component] if folder_component is not None else [],
+                scanned_components,
                 session=session,
             )
         )
