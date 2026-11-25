@@ -16,6 +16,11 @@ LOGGER_MODULE_NAME = {"module_name": "scan"}
 build_ps3_download_component = build_shared_download_component
 
 
+def _is_shared_download_inventory_eligible(rom: Rom, *, is_windows: bool) -> bool:
+    """Keep Windows folder sources out of the shared manifest lifecycle."""
+    return not is_windows or rom.has_simple_single_file
+
+
 async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> None:
     """Replace manifest membership only after its source inventory is verified."""
     try:
@@ -46,6 +51,22 @@ async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> Non
                 session=session,
             )
         )
+
+
+async def reconcile_scanned_shared_download_inventory(
+    rom: Rom,
+    is_windows: bool,
+    is_authorized_scan: bool,
+    resource_storage,
+) -> None:
+    """Publish inventory only from a scan source that can prove its membership."""
+    if not is_authorized_scan or not _is_shared_download_inventory_eligible(
+        rom, is_windows=is_windows
+    ):
+        return
+    if is_windows:
+        rom = db_rom_handler.get_rom(rom.id) or rom
+    await reconcile_shared_download_inventory(rom, resource_storage)
 
 
 async def ensure_shared_download_inventory(rom: Rom) -> None:
