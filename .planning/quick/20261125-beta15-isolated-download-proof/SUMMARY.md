@@ -25,3 +25,13 @@ Phase 49's earlier baseline receipt remains the evidence for the initial migrati
 The older isolated helper output contains screenshots, sanitized detail snippets, and two 33-byte synthetic direct downloads selected through the download control rather than a copy-link control. It is reference material only, not a fresh Beta15 assertion.
 
 The retained stack is registered in `ki-uat-keep.txt` for follow-up inspection.
+
+## ISO rerun after commit 34fa9083f
+
+The retained stack was reset only for its synthetic ISO rows after its project,
+container, database, ROM id and preserved folder evidence were checked. Both
+desktop 1440 and mobile 390 then recorded `folder_download.state=preparable`,
+`source_kind=file`, a normal `whole_folder` POST with HTTP 201, exactly one
+manifest member, and a normal browser-queue transfer of the 33-byte synthetic
+ISO. The token-redacted receipts and screenshots are retained below
+`beta15-final-browser/` in the registered job evidence directory.
