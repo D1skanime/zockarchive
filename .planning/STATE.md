@@ -4,7 +4,7 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Completed 48-03-PLAN.md
-last_updated: "2026-11-25T01:04:06.187Z"
+last_updated: "2026-11-25T01:15:19.448Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,13 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-1m3 completed: large PC single-file games now require one matching,
+  persisted neutral manifest component before the shared downloader is exposed.
+  The authorized full scan publishes that evidence without replacing PC
+  components; response and manifest reads remain unable to scan, hash, or
+  estimate. Targeted Trunk passed with no new issues. No tests or browser checks
+  ran before live UAT.
 
 - 261124-w68 completed: direct post-UAT tests now cover invalid whole-folder
   arguments before inventory sync, exact nested PS3 paths, and active/error
@@ -1170,7 +1177,7 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-11-25T01:04:06.168Z
+Last session: 2026-11-25T01:15:19.427Z
 Stopped at: Completed 48-03-PLAN.md
 Resume file: None
 
