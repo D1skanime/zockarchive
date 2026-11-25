@@ -5,12 +5,11 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from exceptions.storage_read import MappedReadError
 from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from handler.scan_folder_download import (
     _is_shared_download_inventory_eligible,
-    ensure_ps3_download_inventory,
+    ensure_shared_download_inventory,
     reconcile_scanned_shared_download_inventory,
     shared_download_scan_allowed,
 )
@@ -18,20 +17,13 @@ from handler.scan_handler import ScanType
 from models.rom import Rom, RomComponentKind
 
 
-def test_verified_ps3_inventory_is_reused_without_a_second_scan(monkeypatch):
+def test_verified_ps3_inventory_is_reused_without_preparation():
     component = SimpleNamespace(
         kind=RomComponentKind.FOLDER,
         manifest_members=[SimpleNamespace(missing_from_fs=False)],
     )
     rom = SimpleNamespace(id=7, components=[component])
-    build = AsyncMock()
-    monkeypatch.setattr(
-        "handler.scan_folder_download.build_ps3_download_component", build
-    )
-
-    asyncio.run(ensure_ps3_download_inventory(cast(Rom, rom)))
-
-    build.assert_not_awaited()
+    asyncio.run(ensure_shared_download_inventory(cast(Rom, rom)))
 
 
 def test_authorized_ps3_scan_syncs_one_neutral_component(monkeypatch):
@@ -78,22 +70,23 @@ def test_authorized_ps3_scan_syncs_one_neutral_component(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "error",
-    [MappedReadError("denied", 1, 1, "denied"), OSError("denied")],
+    "members",
+    [[], [SimpleNamespace(missing_from_fs=True)]],
 )
-def test_ps3_inventory_failure_is_reported_without_syncing(monkeypatch, error):
-    rom = SimpleNamespace(id=7, components=[])
-    build = AsyncMock(side_effect=error)
-    sync = Mock()
-    monkeypatch.setattr(
-        "handler.scan_folder_download.build_ps3_download_component", build
+def test_unverified_inventory_is_reported_without_syncing(monkeypatch, members):
+    rom = SimpleNamespace(
+        id=7,
+        components=[
+            SimpleNamespace(kind=RomComponentKind.FOLDER, manifest_members=members)
+        ],
     )
+    sync = Mock()
     monkeypatch.setattr(
         "handler.scan_folder_download.db_rom_handler.sync_rom_components", sync
     )
 
     with pytest.raises(ValueError, match="manifest folder inventory is unavailable"):
-        asyncio.run(ensure_ps3_download_inventory(cast(Rom, rom)))
+        asyncio.run(ensure_shared_download_inventory(cast(Rom, rom)))
 
     sync.assert_not_called()
 
