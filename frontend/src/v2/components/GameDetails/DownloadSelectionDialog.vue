@@ -48,9 +48,6 @@ const isWholeFolder = computed(
   () => props.folderDownload?.state === "preparable",
 );
 const usesFolderInventory = computed(() => props.folderDownload !== undefined);
-const folderDownloadIsReady = computed(
-  () => props.folderDownload?.state === "ready",
-);
 const currentSet = computed(() =>
   props.archiveSets?.find((set) => set.id === selectedSet.value),
 );
@@ -174,13 +171,6 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
           :label="set.name"
           variant="card"
           @update:model-value="selectedSet = set.id"
-        />
-        <ZACheckbox
-          v-if="folderDownloadIsReady && folderDownload"
-          :model-value="true"
-          :label="`${t('rom.download-game')} (${t('rom.files-count-n', { n: folderDownload.member_count })}, ${formatBytes(folderDownload.total_size_bytes)})`"
-          variant="card"
-          disabled
         />
         <div
           v-if="!isWholeFolder && !archiveSets?.length"

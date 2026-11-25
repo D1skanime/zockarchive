@@ -282,7 +282,7 @@ def test_shared_inventory_preparation_failure_returns_the_safe_manifest_error(
     }
 
 
-def test_ps3_whole_folder_rejects_member_selection_before_inventory_sync(
+def test_ps3_whole_folder_accepts_member_selection_after_inventory_sync(
     client, access_token, rom, monkeypatch
 ):
     with session.begin() as db:
@@ -306,8 +306,8 @@ def test_ps3_whole_folder_rejects_member_selection_before_inventory_sync(
         json={"whole_folder": True, "selected_member_ids": [1]},
     )
 
-    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-    assert synchronized == []
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert synchronized == [rom.id]
 
 
 def test_create_policy_manifest_excludes_unselected_optional_member(

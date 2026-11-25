@@ -24,6 +24,10 @@ progress:
 
 ## Latest quick task
 
+- 261125-veo completed: removed the duplicate ready-folder summary control and
+  aligned the existing manifest endpoint contract test with member selection.
+  No tests ran before UAT.
+
 - 261125-v4g completed: restored the missing Phase 50 Wave-1 GSD summary with
   a truthful static reproduction record. No tests, browser work, runtime
   resources, or product changes were performed.
