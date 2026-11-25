@@ -1296,10 +1296,23 @@ Plans:
 
 ### Phase 48: ZA: Technische Beschreibungshinweise entfernen und gemeinsamen Downloader ab 4 GB plattformübergreifend erweitern
 
-**Goal:** [To be planned]
-**Requirements**: TBD
+**Goal:** Remove automatic technical description provenance from normal game-detail surfaces without changing their selected description or fallback behavior. Extend the existing safe shared browser downloader to authorized games on every platform when the authoritative known size is at least 4,000,000,000 bytes, while retaining ordinary smaller downloads and all current permission, inventory, manifest, progress, cancellation, and browser-fallback safeguards.
+**Requirements**: UI-48-01, UI-48-02, DL-48-01, DL-48-02, DL-48-03, SAFE-48-01, DOC-48-01
 **Depends on:** Phase 47
-**Plans:** 0 plans
+**Success Criteria**:
+
+1. Normal game and PC-DLC detail views retain German, fallback-language, and empty-description content without any automatic technical language, provider, or fallback notice; explicit metadata editing retains its provenance and operational states.
+2. An authorized known single-file or complete folder inventory at 4,000,000,000 bytes or more uses the existing shared Game Download flow regardless of platform, while smaller or unknown-size games retain their established ordinary path.
+3. The server enforces the threshold and existing visibility, inventory completeness, stale-source, and storage-policy checks even when the manifest endpoint is called directly.
+4. Existing PC and PS3 Game Download, small-ROM direct download, Patcher, queue progress, cancellation, retry, and browser fallback remain available.
+5. The affected frontend and backend architecture documentation identifies the normal-view description boundary and platform-neutral known-size eligibility; typecheck, scoped lint, and production build pass before human UAT.
+
+**Plans:** 3/3 plans complete
 
 Plans:
-- [ ] TBD (run /gsd-plan-phase 48 to break down)
+- [ ] `48-01-PLAN.md` - Remove normal-view technical description notices and update frontend architecture documentation.
+- [ ] `48-02-PLAN.md` - Generalize exact known-size shared-download eligibility and preserve manifest safety boundaries.
+- [ ] `48-03-PLAN.md` - Consume the generated capability in the existing v2 downloader and prepare technical/UAT handoff.
+
+**Wave 1:** 48-01, 48-02
+**Wave 2:** 48-03

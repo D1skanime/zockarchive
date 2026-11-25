@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-24T23:20:00Z"
-last_activity: 2026-11-24 -- post-UAT direct PS3 download tests completed
+stopped_at: Completed 48-03-PLAN.md
+last_updated: "2026-11-25T00:54:39.873Z"
+last_activity: 2026-11-25
 progress:
-  total_phases: 45
-  completed_phases: 35
-  total_plans: 335
-  completed_plans: 304
-  percent: 78
+  total_phases: 48
+  completed_phases: 38
+  total_plans: 344
+  completed_plans: 313
+  percent: 79
 ---
 
 # Project State
@@ -22,61 +22,83 @@ progress:
   arguments before inventory sync, exact nested PS3 paths, and active/error
   states of the shared browser queue. The two backend files and one frontend
   hook file passed in isolated target runners.
+
 - 261124-hds completed: isolated proof covers a disposable PS3 ISO and
   3,076-file folder, while reviewed real Dev administrator screenshots confirm
   the shared Game Download dialog for unmodified ROMs 5499/5500 on desktop and
   mobile, with the two misplaced actions absent.
+
 - 261124-h4u completed: restored the exact pre-regression line counts in the
   response serializer and ROM list router without changing the PS3 filter.
+
 - 261124-gz5 completed: restored the list projection for ordinary components,
   excluded neutral folder inventories from library-page hydration, and aligned
   direct frontend and model contracts with the accepted PS3 download flow.
+
 - 261124-fls completed: post-UAT direct coverage now protects PS3 ISO manifest
   paths, inventory synchronization and rejection, plus the authorized shared
   whole-folder manifest route.
+
 - 261123-ui2 completed: PS3 directory and ISO downloads now materialize a
   verified neutral manifest group only when older inventory is absent, then use
   the existing Game Download dialog, manager, and bounded browser queue.
+
 - 261123-idc completed: replaced the shadowable folder_download module alias
   with direct schema bindings, restoring Pydantic ForwardRef resolution during
   backend startup and OpenAPI generation.
+
 - 261123-a0b completed: removed folder manifest members from list serialization,
   offloaded whole-folder manifest capture from the request event loop, and moved
   local-image selection to the Media tab for PC games.
+
 - 261123-9s2 completed: restored the canonical RomComponentKind import at the
   response-model boundary after the PS3 folder-download extraction.
+
 - 261122-u62 completed: extracted PS3 folder-download response projection,
   immutable manifest building and scan reconciliation from legacy monoliths,
   returning every grown file to its baseline line count or lower.
+
 - 261122-u3o completed: Phase 47's CONTEXT now explicitly identifies ki-run
   job 261122-2d7c, satisfying the job-specific GSD contract in addition to the
   committed manifest binding.
+
 - 261122-u1d completed: committed the required 261122-2d7c to Phase 47 GSD
   binding after the quality gate found that the local ignored artifact was not
   part of the implementation commit.
+
 - 261122-rhc completed: a direct RecoveryWalk contract now confirms that a
   disappeared directory entry resets only the current advisory cursor cookie.
+
 - 261122-r3p completed: a vanished scan-media receipt directory resets the
   bounded cursor pass, so later siblings remain reachable while terminal
   receipt priority continues to run first.
+
 - 261122-smr-tests completed: a direct scan-media recovery contract proves a
   confirmed terminal receipt consumes the bounded recovery budget before the
   advisory cursor traversal begins.
+
 - 261122-rap completed: MariaDB CI Shard 6 reproduced the two
   RetroAchievements progress failures, then passed all 827 tests after the
   test doubles were bound to the task's imported singleton collaborators.
+
 - 261122-rah-tests completed: direct RAHasher coverage proves incomplete
   archive-member evidence omits only the optional hash and launches no helper.
+
 - 261122-r51 completed: frontend regression contracts now model active-slot
   recovery and extracted local soundtrack behavior.
+
 - 261122-lpp completed: direct scan-progress visibility contracts cover the
   accepted empty state and retained platform rows.
+
 - 261122-qcr completed: live scan progress now displays its immediate empty
   state while it awaits the first platform socket row.
+
 - 261122-klq completed: normal selected-child completion now commits its
   retirement checkpoint before returning, with direct regression coverage.
+
 - 261122-0ek completed: selected-child completion fencing now spans every
   post-identification step and preserves the original scan error.
+
 - 261121-r46 completed: regression repair for mapped downloads, accepted scan
   type replay, archive/OST contracts, and local frontend build cache ownership.
 
@@ -494,14 +516,14 @@ Uncharted data remains pending until the supplied older Dev instance is updated.
 See: .planning/PROJECT.md (updated 2026-08-31)
 
 **Core value:** RomM adapts to an existing game archive without requiring or permitting any change to the archive's files, directories, or organization.
-**Current focus:** Phase 45 — ZA Hotfix für Beta 4: Scan-Start mit sicherer UUID unter HTTP-LAN
+**Current focus:** Phase 48 — Technical description notice removal and cross-platform shared downloader
 
 ## Current Position
 
-Phase: 45 (ZA Hotfix für Beta 4: Scan-Start mit sicherer UUID unter HTTP-LAN) — EXECUTING
-Plan: 1 of 1
-Status: Executing Phase 45
-Last activity: 2026-11-15 -- Phase 45 execution started
+Phase: 48 (Technical description notice removal and cross-platform shared downloader) — EXECUTING
+Plan: 3 of 3
+Status: Ready to execute
+Last activity: 2026-11-25
 
 Phase40 belongs to ki-run job 261103-4b37. It retains the existing media implementation commits, corrects the exact Storybook language ledger, records the PC-component manual endpoint as owned-resource mutation authority, and refreshes stale DLC navigation source expectations. Targeted technical checks passed: catalog, focused behavior tests, 1,760 frontend tests through the prescribed targeted command, typecheck, temporary-output production build, Storybook build and 369 Storybook interactions. The final isolated MariaDB selection passed 350 tests with 0 failures, 0 errors, and 1 expected permission skip after the runner began copying and read-only mounting the canonical committed PC fixture. The deterministic gate's reproducing MariaDB CI shard 5 then passed 728 tests with 0 failures, errors, or skips after Config persistence rollback restored the original singleton state on serialization/replacement failures. Wave 8 decomposed component-only response, ORM, and database-mutation boundaries: its isolated MariaDB selection passed 20 tests with zero failures/errors/skips, and the prescribed backend targeted check passed 373 tests with one expected skip. Independent review correction Wave 9 moved main-game artwork and soundtrack upload to the documented media composites, filters local tracks by supported audio extension, adds the DLC gallery empty-state contract and repairs visible translations across all 18 locales. Wave 10 replaces the duplicate background Storybook fixture with distinct bright/dark art, adds fallback-only and interactively verified art-to-fallback states, and supplies the localized carousel close label for main-game artwork and DLC media. Its 29 focused tests, typecheck, scoped Trunk, Storybook build, and the 127-test frontend quick selection passed. The normal `frontend/dist` remains an unrelated non-writable generated directory, so the production build used `/tmp/za-261103-4b37-vite-build`; no generated project output was changed. Human UAT still needs `/rom/24?tab=media`, `/rom/24/dlc/20?tab=media`, and the Storybook media/background groups.
 
@@ -714,6 +736,8 @@ _Updated after each plan completion_
 | Phase 38 P06 | 10min | 3 tasks | 21 files |
 | Phase 38 P07 | 7min | 3 tasks | 11 files |
 | Phase 38 P08 | 51min | 3 tasks | 11 files |
+| Phase 48 P02 | 26min | 2 tasks | 9 files |
+| Phase 48 P03 | 12min | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -741,6 +765,7 @@ _Updated after each plan completion_
 - Phase 22 edited: aligned Phase 22 roadmap waves with validated plan dependencies
 - Phase 22 edited: split locale coverage into a dedicated dependent plan and advanced UAT
 - Phase 33 added: Fresh-install first-run PC storage mapping before library scan.
+- Phase 48 added: Remove technical localized-description notices and extend the existing shared browser downloader to all authorized games at or above 4 GB.
 
 ### Decisions
 
@@ -1000,6 +1025,9 @@ Recent decisions affecting current work:
 - [Phase 38]: Keep historical probe branches and planning checks exact; current verification consumes the tracked branding contract without ignored planning.
 - [Phase 38]: Full16-shard backend acceptance remains pending exact pushed Plan09 CI, with full local fallback. Rationale: Plan08 owned integration passed; affected20-case profiles do not fulfill complete backend acceptance
 - [Phase 38]: Runtime receipts retain source0f94a759e; final helperb7a2087b6 adds only the post-start manifest invariant. Rationale: All other backend frontend Docker and locked inputs are equal; image digests are not relabelled
+- [Phase 48]: Shared Game Download eligibility uses one persisted exact-known-size predicate for response projection and manifest creation. — Platform identity cannot grant access; unknown or incomplete sources remain unavailable.
+- [Phase 48]: Consume the generated server-owned capability without platform inference — Known-size eligibility, visibility, and inventory completeness remain backend authority.
+- [Phase 48]: Keep shared delivery and ordinary downloads separate — Eligible sources reuse the existing manifest queue while unknown or below-threshold sources retain direct download behavior.
 
 ### Blockers/Concerns
 
@@ -1141,8 +1169,8 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-11-12T11:00:49.670Z
-Stopped at: Phase 41 technisch verifiziert, menschliche Live-Abnahme ausstehend
+Last session: 2026-11-25T00:54:01.555Z
+Stopped at: Completed 48-03-PLAN.md
 Resume file: None
 
 ## Quick Task 261105-mnt
@@ -1180,6 +1208,7 @@ Resume file: None
 - Quick task 261116-qg1 completed: restored the missing Phase 46 summary and
   verification artifacts with an explicit partial verdict; the owned-content
   proof work remains open.
+
 - Phase 26 added: UI-UX Abschluss und manuelle, mehrsprachige Metadatenpflege.
 - Phase 32 P01 added: PGDP naming inventory and fresh-install Compose/backend/fixture contracts; no live storage mutation.
   \n## Quick Task 261010-skc\n\n| 261010-skc | Match PC DLC overview media image grid to main game overview layout | 2026-10-10 | pending | [261010-skc-match-pc-dlc-overview-media-image-grid-t](./quick/261010-skc-match-pc-dlc-overview-media-image-grid-t/) |\n
