@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-gate06-folder-download-test-double-type
-last_updated: "2026-11-25T10:51:27Z"
+stopped_at: Completed quick 261125-scan-handler-shared-download-authorization
+last_updated: "2026-11-25T11:07:00Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,12 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-scan-handler-shared-download-authorization completed: shared-download
+  reconciliation now owns its scan authorization policy, preserving PC/PS3
+  quick-scan inventory while additional platforms remain quick-scan gated.
+  `scan_handler.py` is back to its 1,722-line main baseline and focused Trunk
+  found no new issues. No tests ran.
 
 - 261125-gate06-folder-download-test-double-type completed: the folder-download
   eligibility test now casts its deliberately minimal `SimpleNamespace` only at
@@ -1114,6 +1120,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261125-scan-handler-shared-download-authorization | Extract shared-download scan authorization from scan handler | 2026-11-25 | this commit | [261125-scan-handler-shared-download-authorization](./quick/261125-scan-handler-shared-download-authorization/) |
 | 261125-ps3-quick-inventory-contract | Restore the PC/PS3 quick-scan shared-download contract | 2026-11-25 | e63988bc2 | [261125-ps3-quick-inventory-contract](./quick/261125-ps3-quick-inventory-contract/) |
 | 261125-gate06-folder-download-test-double-type | Repair the typed folder-download eligibility test double | 2026-11-25 | pending | [261125-gate06-folder-download-test-double-type](./quick/261125-gate06-folder-download-test-double-type/) |
 | 261125-v8q | Gate shared inventory by known ROM size before hashing | 2026-11-25 | 3fecf0e84 | [261125-v8q](./quick/261125-v8q-gate-shared-inventory-at-known-size/) |

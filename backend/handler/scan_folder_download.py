@@ -20,6 +20,18 @@ LOGGER_MODULE_NAME = {"module_name": "scan"}
 build_ps3_download_component = build_shared_download_component
 
 
+def shared_download_scan_allowed(
+    metadata_only: bool,
+    has_windows_quick_context: bool,
+    platform_slug: str,
+    scan_type: str,
+) -> bool:
+    """Authorize scan inventory without duplicating source eligibility."""
+    if metadata_only or has_windows_quick_context:
+        return False
+    return platform_slug in (UPS.PS3, UPS.WIN) or scan_type != "quick"
+
+
 def _is_shared_download_inventory_eligible(rom: Rom, *, platform_slug: str) -> bool:
     """Scope new whole-source inventory work to large additional platforms."""
     if platform_slug == UPS.PS3:
@@ -67,10 +79,17 @@ async def reconcile_shared_download_inventory(rom: Rom, resource_storage) -> Non
 async def reconcile_scanned_shared_download_inventory(
     rom: Rom,
     platform_slug: str,
-    is_authorized_scan: bool,
+    scan_context: bool | tuple[bool, bool, str],
     resource_storage,
 ) -> None:
     """Publish inventory only from a scan source that can prove its membership."""
+    if isinstance(scan_context, bool):
+        is_authorized_scan = scan_context
+    else:
+        metadata_only, has_windows_quick_context, scan_type = scan_context
+        is_authorized_scan = shared_download_scan_allowed(
+            metadata_only, has_windows_quick_context, platform_slug, scan_type
+        )
     if not is_authorized_scan or not _is_shared_download_inventory_eligible(
         rom, platform_slug=platform_slug
     ):
