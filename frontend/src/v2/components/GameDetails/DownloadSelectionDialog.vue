@@ -6,6 +6,11 @@ import type { PcComponentSchema } from "@/__generated__";
 import { formatBytes } from "@/utils";
 import DownloadModeSelector from "./DownloadModeSelector.vue";
 
+export type FolderDownloadCapability = {
+  member_count: number;
+  total_size_bytes: number;
+};
+
 export type DownloadArchiveSet = {
   id: number;
   name: string;
@@ -19,6 +24,8 @@ export type DownloadArchiveSet = {
 const props = defineProps<{
   modelValue: boolean;
   components: PcComponentSchema[];
+  folderDownload?: FolderDownloadCapability;
+  folderInventoryRequired?: boolean;
   archiveSets?: DownloadArchiveSet[];
 }>();
 const emit = defineEmits<{
@@ -29,6 +36,7 @@ const emit = defineEmits<{
       archiveSetId?: number;
       selectedMemberIds: number[];
       componentIds: number[];
+      wholeFolder?: boolean;
       mode: "standard" | "enhanced";
     },
   ): void;
@@ -39,6 +47,9 @@ const selectedOptional = ref<number[]>([]);
 const selectedMemberIds = ref<number[]>([]);
 const expandedComponentIds = ref<number[]>([]);
 const mode = ref<"standard" | "enhanced">("standard");
+const isWholeFolder = computed(
+  () => props.folderDownload !== undefined || props.folderInventoryRequired,
+);
 const currentSet = computed(() =>
   props.archiveSets?.find((set) => set.id === selectedSet.value),
 );
@@ -73,11 +84,13 @@ const selectedComponentIds = computed(() =>
         )
         .map((component) => component.id),
 );
-const selectedBytes = computed(() =>
-  props.components
-    .flatMap((component) => component.manifest_members)
-    .filter((member) => selectedMembers.value.includes(member.id))
-    .reduce((total, member) => total + member.size_bytes, 0),
+const selectedBytes = computed(
+  () =>
+    props.folderDownload?.total_size_bytes ??
+    props.components
+      .flatMap((component) => component.manifest_members)
+      .filter((member) => selectedMembers.value.includes(member.id))
+      .reduce((total, member) => total + member.size_bytes, 0),
 );
 const missing = computed(
   () =>
@@ -90,7 +103,9 @@ const missing = computed(
     ) ?? [],
 );
 const selectionInvalid = computed(
-  () => missing.value.length > 0 || selectedMembers.value.length === 0,
+  () =>
+    !isWholeFolder.value &&
+    (missing.value.length > 0 || selectedMembers.value.length === 0),
 );
 watch(
   () => props.modelValue,
@@ -99,11 +114,12 @@ watch(
       selectedSet.value = props.archiveSets?.[0]?.id;
       selectedOptional.value = [];
       expandedComponentIds.value = [];
-      selectedMemberIds.value = props.archiveSets?.length
-        ? []
-        : props.components.flatMap((component) =>
-            component.manifest_members.map((member) => member.id),
-          );
+      selectedMemberIds.value =
+        isWholeFolder.value || props.archiveSets?.length
+          ? []
+          : props.components.flatMap((component) =>
+              component.manifest_members.map((member) => member.id),
+            );
       mode.value = "standard";
     }
   },
@@ -114,6 +130,7 @@ function start() {
     archiveSetId: selectedSet.value,
     selectedMemberIds: selectedMembers.value,
     componentIds: selectedComponentIds.value,
+    wholeFolder: isWholeFolder.value || undefined,
     mode: mode.value,
   });
   emit("update:modelValue", false);
@@ -159,7 +176,24 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
           variant="card"
           @update:model-value="selectedSet = set.id"
         />
-        <div v-if="!archiveSets?.length" class="download-selection__files">
+        <ZACheckbox
+          v-if="folderDownload"
+          :model-value="true"
+          :label="`${t('rom.download-game')} (${t('rom.files-count-n', { n: folderDownload.member_count })}, ${formatBytes(folderDownload.total_size_bytes)})`"
+          variant="card"
+          disabled
+        />
+        <ZACheckbox
+          v-else-if="folderInventoryRequired"
+          :model-value="true"
+          :label="t('rom.download-game')"
+          variant="card"
+          disabled
+        />
+        <div
+          v-if="!isWholeFolder && !archiveSets?.length"
+          class="download-selection__files"
+        >
           <div
             v-for="component in components"
             :key="component.id"
@@ -248,7 +282,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
     </template>
     <template #footer>
       <span
-        v-if="!archiveSets?.length"
+        v-if="!isWholeFolder && !archiveSets?.length"
         class="download-selection__total"
         data-testid="download-selected-total"
         >{{ t("rom.download-selected") }}:

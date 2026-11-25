@@ -4,8 +4,8 @@ milestone: v1.2
 milestone_name: milestone
 status: executing
 stopped_at: Phase 45 live-abgenommen, vollständige Regression nach Testkorrektur erneut ausstehend
-last_updated: "2026-11-15T21:40:00Z"
-last_activity: 2026-11-15 -- repaired post-UAT HTTP scan test typecheck findings
+last_updated: "2026-11-24T23:20:00Z"
+last_activity: 2026-11-24 -- post-UAT direct PS3 download tests completed
 progress:
   total_phases: 45
   completed_phases: 35
@@ -18,6 +18,42 @@ progress:
 
 ## Latest quick task
 
+- 261124-w68 completed: direct post-UAT tests now cover invalid whole-folder
+  arguments before inventory sync, exact nested PS3 paths, and active/error
+  states of the shared browser queue. The two backend files and one frontend
+  hook file passed in isolated target runners.
+- 261124-hds completed: isolated proof covers a disposable PS3 ISO and
+  3,076-file folder, while reviewed real Dev administrator screenshots confirm
+  the shared Game Download dialog for unmodified ROMs 5499/5500 on desktop and
+  mobile, with the two misplaced actions absent.
+- 261124-h4u completed: restored the exact pre-regression line counts in the
+  response serializer and ROM list router without changing the PS3 filter.
+- 261124-gz5 completed: restored the list projection for ordinary components,
+  excluded neutral folder inventories from library-page hydration, and aligned
+  direct frontend and model contracts with the accepted PS3 download flow.
+- 261124-fls completed: post-UAT direct coverage now protects PS3 ISO manifest
+  paths, inventory synchronization and rejection, plus the authorized shared
+  whole-folder manifest route.
+- 261123-ui2 completed: PS3 directory and ISO downloads now materialize a
+  verified neutral manifest group only when older inventory is absent, then use
+  the existing Game Download dialog, manager, and bounded browser queue.
+- 261123-idc completed: replaced the shadowable folder_download module alias
+  with direct schema bindings, restoring Pydantic ForwardRef resolution during
+  backend startup and OpenAPI generation.
+- 261123-a0b completed: removed folder manifest members from list serialization,
+  offloaded whole-folder manifest capture from the request event loop, and moved
+  local-image selection to the Media tab for PC games.
+- 261123-9s2 completed: restored the canonical RomComponentKind import at the
+  response-model boundary after the PS3 folder-download extraction.
+- 261122-u62 completed: extracted PS3 folder-download response projection,
+  immutable manifest building and scan reconciliation from legacy monoliths,
+  returning every grown file to its baseline line count or lower.
+- 261122-u3o completed: Phase 47's CONTEXT now explicitly identifies ki-run
+  job 261122-2d7c, satisfying the job-specific GSD contract in addition to the
+  committed manifest binding.
+- 261122-u1d completed: committed the required 261122-2d7c to Phase 47 GSD
+  binding after the quality gate found that the local ignored artifact was not
+  part of the implementation commit.
 - 261122-rhc completed: a direct RecoveryWalk contract now confirms that a
   disappeared directory entry resets only the current advisory cursor cookie.
 - 261122-r3p completed: a vanished scan-media receipt directory resets the
@@ -993,6 +1029,10 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261124-w68 | Add direct post-UAT PS3 download tests | 2026-11-24 | this commit | [261124-w68](./quick/261124-w68-add-direct-post-uat-tests-for-accepted-p/) |
+| 261124-hds | Record isolated and real Dev PS3 Game Download evidence | 2026-11-24 | this commit | [261124-hds](./quick/261124-hds-review-befund-zur-fehlenden-browser-sich/) |
+| 261124-h4u | Restore PS3 regression source-size baselines | 2026-11-24 | this commit | [261124-h4u](./quick/261124-h4u-zeilenlimit-nach-ps3-download-regression/) |
+| 261124-gz5 | Repair accepted PS3 download regression contracts | 2026-11-24 | this commit | [261124-gz5](./quick/261124-gz5-regression-nach-live-freigabe-fuer-ps3-d/) |
 | 261122-rah | Contain RAHasher archive inventory failures | 2026-11-22 | this commit | [261122-rah](./quick/261122-rah-archive-error/) |
 | 261122-smp-tests | Cover and repair scan-media recovery cursor regression | 2026-11-22 | this commit | [261122-smp-tests](./quick/261122-smp-tests/) |
 | 261122-smp | Make scan-media crash recovery deterministic | 2026-11-22 | this commit | [261122-smp](./quick/261122-smp-crash-recovery/) |
@@ -1135,6 +1175,8 @@ Resume file: None
 
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 46 added: Diagnose and harden terminal owned-content verification for Beta 5 NAS UAT without changing NAS data.
+- Phase 47 added: Remove misplaced Game Download metadata actions and reuse the shared browser downloader for PS3 folder games.
+- Phase 47 implemented: neutral PS3 folder inventory and server-owned manifests reuse the existing browser queue; typecheck, scoped Trunk and production build pass, with human Dev UAT pending.
 - Quick task 261116-qg1 completed: restored the missing Phase 46 summary and
   verification artifacts with an explicit partial verdict; the owned-content
   proof work remains open.

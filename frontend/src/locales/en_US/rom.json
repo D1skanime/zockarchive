@@ -196,7 +196,7 @@
   "download-served": "Served by ZockArchive",
   "download-source-changed": "Source changed. Prepare the download again.",
   "download-stale": "Source changed. Prepare the download again.",
-  "download-standard-description": "Your browser will handle each file. ZockArchive cannot confirm that a file finished or matches its checksum.",
+  "download-standard-description": "Your browser receives each file separately and may not preserve folder structure. ZockArchive cannot confirm that a file finished or matches its checksum.",
   "download-start": "Start download",
   "download-state-downloading": "Downloading",
   "download-state-paused": "Paused",

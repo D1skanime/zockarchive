@@ -79,6 +79,7 @@ from handler.metadata.steam_handler import COMPACT_TITLE_BOUNDARY, STEAM_PLATFOR
 from handler.metadata.steam_merge import normalize_steam
 from handler.metadata.steam_owned_media import reconcile_steam_patch_media
 from handler.scan_command import MappedScanCommand as _MappedScanCommand
+from handler.scan_folder_download import reconcile_ps3_download_inventory
 from handler.storage.read_context import MappingReadContext
 from logger.formatter import BLUE, LIGHTYELLOW
 from logger.formatter import highlight as hl
@@ -576,7 +577,6 @@ async def scan_rom(
     from handler.windows_quick_execution import current_windows_quick
 
     quick = current_windows_quick()
-    # Empty complete inventories must clear the previous total size.
     if len(fs_rom["files"]) > 0 or quick is not None:
         filesize = sum([file.file_size_bytes for file in fs_rom["files"]])
         rom_attrs.update(
@@ -756,7 +756,8 @@ async def scan_rom(
                 exc,
                 extra=LOGGER_MODULE_NAME,
             )
-
+    if not metadata_only and quick is None and platform.slug == UPS.PS3:
+        await reconcile_ps3_download_inventory(_added_rom, fs_resource_handler.storage)
     from handler.scan_metadata_result import (
         record_provider_result,
         resolve_provider_fetch,
@@ -1537,7 +1538,6 @@ async def scan_rom(
             ]
             valid_names = [name for name in game_names if name]
             return await meta_sgdb_handler.get_details_by_names(valid_names)
-
         return SGDBRom(sgdb_id=None)
 
     sgdb_hander_rom = (
@@ -1557,7 +1557,6 @@ async def scan_rom(
         )
     if sgdb_hander_rom.get("sgdb_id"):
         rom_attrs["sgdb_id"] = sgdb_hander_rom["sgdb_id"]
-
         # Apply SGDB's cover only when it outranks every other source that
         # already produced one under the cover priority, and never over a
         # manually uploaded cover preserved by the UNMATCHED/UPDATE block above.
@@ -1578,23 +1577,19 @@ async def scan_rom(
             )
             if ranked[0] == MetadataSource.SGDB:
                 rom_attrs["url_cover"] = sgdb_cover
-
     log.info(
         f"{hl(rom_attrs['fs_name'])} identified as {hl(rom_attrs.get('name', rom.fs_name), color=BLUE)} {emoji.EMOJI_ALIEN_MONSTER}",
         extra=LOGGER_MODULE_NAME,
     )
-
     if fs_rom["nested"]:
         for file in fs_rom["files"]:
             log.info(
                 f"\t · {hl(file.file_name, color=LIGHTYELLOW)}",
                 extra=LOGGER_MODULE_NAME,
             )
-
     rom_attrs["missing_from_fs"] = False
     scanned_rom = Rom(**rom_attrs)
     preserve_current_scan_media(scanned_rom)
-
     steam_metadata = steam_updates.get("metadata")
     has_steam_metadata = isinstance(steam_metadata, dict) and bool(steam_metadata)
     has_steam_media = isinstance(steam_updates.get("media"), dict) and bool(

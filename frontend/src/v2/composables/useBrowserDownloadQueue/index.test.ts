@@ -185,6 +185,35 @@ describe("useBrowserDownloadQueue standard mode", () => {
     click.mockRestore();
   });
 
+  it("does not start a parallel manifest while a shared queue is active", async () => {
+    const queue = useBrowserDownloadQueue();
+    queue.sessionId.value = "active-session";
+    queue.items.value = [
+      {
+        ...manifest.members[0],
+        status: "queued",
+      },
+    ];
+
+    await expect(queue.start(manifest)).resolves.toBe(false);
+
+    expect(getConfig).not.toHaveBeenCalled();
+    expect(createSession).not.toHaveBeenCalled();
+    expect(queue.sessionId.value).toBe("active-session");
+    expect(queue.items.value[0].status).toBe("queued");
+  });
+
+  it("releases the shared start guard when manifest session creation fails", async () => {
+    createSession.mockRejectedValueOnce(new Error("manifest_unavailable"));
+    const queue = useBrowserDownloadQueue();
+
+    await expect(queue.start(manifest)).rejects.toThrow("manifest_unavailable");
+
+    expect(queue.starting.value).toBe(false);
+    expect(queue.sessionId.value).toBeNull();
+    expect(queue.items.value).toEqual([]);
+  });
+
   it("forgets a completed session when its final local row is cleared", () => {
     const queue = useBrowserDownloadQueue();
     queue.sessionId.value = "completed-session";

@@ -17,6 +17,11 @@ from endpoints.responses.assets import (
     UserStateSchema,
 )
 from endpoints.responses.cover_media import OriginalCoverSourceSchema
+from endpoints.responses.folder_download import (
+    FolderDownloadCapabilitySchema,
+    prepare_download_components,
+    prepare_folder_download_details,
+)
 from endpoints.responses.pc_component_media import (  # noqa: F401
     OwnedCoverSelectionRequest,
     PcComponentManualSchema,
@@ -57,7 +62,6 @@ SORT_COMPARE_REGEX = re.compile(r"^([Tt]he|[Aa]|[Aa]nd)\s")
 
 class CatalogRemovalRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-
     rom_ids: list[int] = Field(min_length=1, max_length=100)
 
     @field_validator("rom_ids")
@@ -233,7 +237,6 @@ class UserNoteSchema(BaseModel):
     updated_at: UTCDatetime
     user_id: int
     username: str
-    # Author identity for rendering an avatar next to community notes.
     user_avatar_path: str = ""
     user_updated_at: UTCDatetime | None = None
 
@@ -345,7 +348,6 @@ class RomUserSchema(BaseModel):
             if n.user_id == user_id:
                 return cls.model_validate(n)
 
-        # Return a dummy RomUserSchema if the user + rom combination doesn't exist
         return rom_user_schema_factory()
 
 
@@ -733,8 +735,6 @@ class RomMetadataSchema(BaseModel):
         if not v:
             return []
 
-        # MySQL/MariaDB returns a scalar string instead of a single-element array
-        # when using JSON_EXTRACT with a [*] wildcard path on a single-element array.
         if isinstance(v, str):
             return sorted([v])
 
@@ -777,7 +777,6 @@ class RomSchema(BaseModel):
     slug: str | None
     summary: str | None
 
-    # Metadata fields
     alternative_names: list[str]
     youtube_video_id: str | None
     metadatum: RomMetadataSchema
@@ -830,7 +829,9 @@ class RomSchema(BaseModel):
     merged_ra_metadata: RomRAMetadata | None
 
     files: list[RomFileSchema] = Field(validation_alias="included_files")
-    components: list[PcComponentSchema] = Field(default_factory=list)
+    components: list[PcComponentSchema] = Field(
+        default_factory=list, validation_alias="download_components"
+    )
     sibling_roms: list[SiblingRomSchema] = Field(
         validation_alias="included_sibling_roms"
     )
@@ -853,6 +854,7 @@ class RomSchema(BaseModel):
 
     @classmethod
     def from_orm_with_request(cls, db_rom: Rom, _request: Request) -> RomSchema:
+        prepare_folder_download_details(db_rom)
         return cls.model_validate(db_rom)
 
     @field_validator("alternative_names")
@@ -900,7 +902,6 @@ def _visible_siblings(db_rom: Rom, request: Request) -> list[Rom]:
     if not request.user.is_authenticated:
         return siblings
 
-    # Local import: breaks the responses.rom <-> handler.auth.dependencies cycle.
     from handler.auth.dependencies import get_permissions
 
     perms = get_permissions(request)
@@ -920,15 +921,10 @@ class SimpleRomSchema(RomSchema):
         screenshot_path: str | None = None,
     ) -> SimpleRomSchema:
         db_rom = cls.populate_properties(db_rom, request)
+        prepare_download_components(db_rom)
         db_rom.screenshot_path = screenshot_path  # type: ignore[assignment]
 
-        # The list endpoint passes pre-fetched `files`/`siblings` (batched via
-        # get_files_for_roms / get_siblings_for_roms, no per-row hydration).
-        # Single-rom endpoints (e.g. `/{id}/simple`, loaded via the
-        # `with_details` decorator) pass neither and fall back to the
-        # eager-loaded relationships. `None` (not provided) is distinct from an
-        # explicit empty list (e.g. the gallery list, which intentionally omits
-        # files unless `with_files` is set).
+        # `None` uses eager-loaded relationships; explicit empty lists remain valid.
         if files is None:
             files = db_rom.files
         if siblings is None:
@@ -953,6 +949,7 @@ class SimpleRomSchema(RomSchema):
 
     @classmethod
     def from_orm_with_factory(cls, db_rom: Rom) -> SimpleRomSchema:
+        prepare_download_components(db_rom)
         db_rom.rom_user = rom_user_schema_factory()  # type: ignore[assignment]
         db_rom.included_files = []  # type: ignore[assignment]
         db_rom.included_sibling_roms = []  # type: ignore[assignment]
@@ -983,7 +980,6 @@ class UserCollectionSchema(BaseModel):
     def from_smart_collections(
         cls, smart_collections: Sequence[SmartCollection]
     ) -> list["UserCollectionSchema"]:
-        # Membership + visibility are already filtered at the SQL layer by
         # get_smart_collections_for_rom, so this is a plain mapping (see #3934).
         return [
             UserCollectionSchema(
@@ -996,6 +992,10 @@ class UserCollectionSchema(BaseModel):
 
 
 class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
+    components: list[PcComponentSchema] = Field(
+        default_factory=list, validation_alias="download_components"
+    )
+    folder_download: FolderDownloadCapabilitySchema | None = None
     steam_metadata: SteamMetadataSchema | None
     user_saves: list[SaveSchema]
     user_states: list[StateSchema]
@@ -1017,6 +1017,8 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
     def from_orm_with_request(cls, db_rom: Rom, request: Request) -> DetailedRomSchema:
         user_id = request.user.id
         db_rom = cls.populate_properties(db_rom, request)
+
+        prepare_folder_download_details(db_rom)
 
         sorted_siblings = sorted(
             (
@@ -1068,7 +1070,6 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
 
         notes = db_rom_handler.get_rom_notes(rom_id=db_rom.id, user_id=user_id)
 
-        # Convert notes to schema format
         all_notes = []
         for note in notes:
             note_dict = {
@@ -1086,7 +1087,6 @@ class DetailedRomSchema(RomSchema, OriginalCoverSourceSchema):
             }
             all_notes.append(UserNoteSchema.model_validate(note_dict))
 
-        # Sort notes by updated_at (most recent first)
         all_notes.sort(key=lambda x: x.updated_at, reverse=True)
         db_rom.all_user_notes = all_notes  # type: ignore[assignment]
 

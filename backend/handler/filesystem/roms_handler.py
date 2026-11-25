@@ -68,9 +68,14 @@ from .base_handler import (
     REGIONS_NAME_KEYS,
     ExternalFSHandler,
 )
+from .download_manifest_paths import (
+    download_manifest_destination,
+    manifest_member_source_path,
+)
+from .folder_download import build_folder_download_component
 from .pc_scan_inventory import (
     InventoryIncomplete,
-    async_collect_pc_inventory,
+    async_collect_folder_inventory,
     classify_components,
 )
 from .pc_scan_inventory import parse_pc_component_layout as parse_pc_component_layout
@@ -86,7 +91,6 @@ if TYPE_CHECKING:
     from handler.storage.read_context import MappingReadContext
 
 
-# PICO-8 cartridges are often stored as PNG files
 PICO8_CARTRIDGE_EXTENSION = ".p8.png"
 PC_LOCAL_IMAGE_EXTENSIONS = frozenset({".png", ".jpg", ".jpeg", ".webp"})
 PC_LOCAL_IMAGE_FORMATS = {
@@ -280,25 +284,6 @@ _download_manifest_transfer_limiter = ConcurrencyLimiter(
 )
 
 
-def _download_manifest_destination(rom: Rom, member: RomComponentManifestMember) -> str:
-    """Create a client-safe destination from trusted persisted identities."""
-    relative_path = PurePosixPath(member.relative_path)
-    parts = relative_path.parts
-    if (
-        relative_path.is_absolute()
-        or not parts
-        or any(part in {"", ".", ".."} for part in parts)
-        or "\\" in member.relative_path
-        or any(ord(character) < 32 for character in member.relative_path)
-        or not rom.fs_name
-        or "/" in rom.fs_name
-        or "\\" in rom.fs_name
-        or any(ord(character) < 32 for character in rom.fs_name)
-    ):
-        raise ValueError("PC component manifest path is invalid")
-    return f"{rom.fs_name}/{relative_path.as_posix()}"
-
-
 def _download_manifest_snapshot(
     public_id: str, destination: str, size_bytes: int, sha256: str
 ) -> str:
@@ -388,16 +373,13 @@ class FSRomsHandler(ExternalFSHandler):
     @staticmethod
     def pc_component_member_path(rom: Rom, member: RomComponentManifestMember) -> str:
         """Return a manifest-bound source path without accepting browser paths."""
-        relative_path = PurePosixPath(member.relative_path)
-        if relative_path.is_absolute() or ".." in relative_path.parts:
-            raise ValueError("PC component manifest path is invalid")
-        return f"{rom.fs_path}/{rom.fs_name}/{relative_path.as_posix()}"
+        return manifest_member_source_path(rom, member)
 
     def capture_download_manifest_member(
         self, rom: Rom, member: RomComponentManifestMember, public_id: str
     ) -> DownloadManifestMemberEvidence:
         """Fully verify one persisted source member through a HASH capability."""
-        destination = _download_manifest_destination(rom, member)
+        destination = download_manifest_destination(rom, member)
         try:
             source_path = self.pc_component_member_path(rom, member)
             with self.open_rom_hash(source_path) as source:
@@ -435,7 +417,7 @@ class FSRomsHandler(ExternalFSHandler):
         source = None
         try:
             member = persisted_member.manifest_member
-            destination = _download_manifest_destination(rom, member)
+            destination = download_manifest_destination(rom, member)
             source_path = self.pc_component_member_path(rom, member)
             source = self.open_rom_read(source_path)
             before = os.fstat(source.fileno())
@@ -569,17 +551,25 @@ class FSRomsHandler(ExternalFSHandler):
             return context.open(operation, relative_path)
         return self.open_access(operation, relative_path)
 
-    async def get_pc_inventory(self, rom: Rom) -> InventoryEvidence:
-        return await async_collect_pc_inventory(
+    async def get_folder_inventory(self, rom: Rom) -> InventoryEvidence:
+        """Collect bounded evidence before any folder becomes downloadable."""
+        return await async_collect_folder_inventory(
             self._pc_inventory_access, self._pc_game_path(rom)
         )
+
+    get_pc_inventory = get_folder_inventory
+
+    async def get_folder_download_component(
+        self, rom: Rom, inventory: InventoryEvidence | None = None
+    ) -> RomComponent:
+        return await build_folder_download_component(self, rom, inventory)
 
     async def get_pc_components(
         self, rom: Rom, inventory: InventoryEvidence | None = None
     ) -> list[RomComponent]:
         """Build manifests only from a complete shared inventory."""
         evidence = (
-            inventory if inventory is not None else await self.get_pc_inventory(rom)
+            inventory if inventory is not None else await self.get_folder_inventory(rom)
         )
         groups = classify_components(evidence)
         rom_path = self._pc_game_path(rom)
@@ -726,7 +716,6 @@ class FSRomsHandler(ExternalFSHandler):
         for raw_tag in tags:
             lower_tag = raw_tag.lower()
 
-            # Region by code
             if raw_tag in REGIONS_BY_SHORTCODE.keys():
                 regions.append(REGIONS_BY_SHORTCODE[raw_tag])
                 continue
@@ -734,7 +723,6 @@ class FSRomsHandler(ExternalFSHandler):
                 regions.append(raw_tag)
                 continue
 
-            # Language by code
             if raw_tag in LANGUAGES_BY_SHORTCODE.keys():
                 languages.append(LANGUAGES_BY_SHORTCODE[raw_tag])
                 continue
@@ -742,7 +730,6 @@ class FSRomsHandler(ExternalFSHandler):
                 languages.append(raw_tag)
                 continue
 
-            # Version
             version_match = VERSION_TAG_REGEX.match(raw_tag)
             if version_match:
                 version = (version_match[1] or version_match[2] or "").strip()
@@ -1174,7 +1161,6 @@ class FSRomsHandler(ExternalFSHandler):
         extension = Path(file_path).suffix.lower()
         try:
             file_type = detect_mime_type(file_path)
-
             crc_c = 0
             md5_h = hashlib.md5(usedforsecurity=False)
             sha1_h = hashlib.sha1(usedforsecurity=False)
@@ -1182,11 +1168,9 @@ class FSRomsHandler(ExternalFSHandler):
 
             def update_hashes(chunk: bytes | bytearray):
                 nonlocal crc_c, rom_crc_c
-
                 md5_h.update(chunk)
                 sha1_h.update(chunk)
                 crc_c = binascii.crc32(chunk, crc_c)
-
                 if accumulate:
                     rom_md5_h.update(chunk)
                     rom_sha1_h.update(chunk)
@@ -1197,11 +1181,9 @@ class FSRomsHandler(ExternalFSHandler):
                 with self.open_rom_read(relative_path) as source:
                     for chunk in read_zip_file(source):
                         update_hashes(chunk)
-
             elif extension == ".tar" or file_type == "application/x-tar":
                 for chunk in read_tar_file(file_path):
                     update_hashes(chunk)
-
             elif extension == ".gz" or file_type == "application/x-gzip":
                 for chunk in read_gz_file(file_path):
                     update_hashes(chunk)

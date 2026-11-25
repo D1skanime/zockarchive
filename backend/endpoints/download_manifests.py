@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Callable, Iterator
 from typing import NoReturn
 from urllib.parse import quote
@@ -22,6 +23,8 @@ from handler.database import (
 )
 from handler.filesystem import fs_rom_handler
 from handler.filesystem.roms_handler import DownloadManifestTransferState
+from handler.metadata.base_handler import UniversalPlatformSlug as UPS
+from handler.scan_folder_download import ensure_ps3_download_inventory
 from logger.logger import log
 from models.download_manifest import DownloadManifest, DownloadManifestStatus
 from utils.router import APIRouter
@@ -44,6 +47,7 @@ _CREATE_ERROR_CODES = {
     "manifest member selection is empty": "manifest_members_empty",
     "manifest components need source members": "manifest_source_members_unavailable",
     "manifest member hash evidence is unavailable": "manifest_hash_evidence_unavailable",
+    "manifest folder inventory is unavailable": "manifest_folder_inventory_unavailable",
     "PC component manifest source is unavailable": "manifest_source_unavailable",
     "PC component manifest source changed": "manifest_source_changed",
 }
@@ -204,12 +208,16 @@ async def create_download_manifest(
         _not_found()
     assert_rom_visible(request, rom, not_found_detail=_NOT_FOUND)
     try:
-        manifest = db_download_manifest_handler.create_manifest(
+        if payload.whole_folder is True and rom.platform.slug == UPS.PS3:
+            await ensure_ps3_download_inventory(rom)
+        manifest = await asyncio.to_thread(
+            db_download_manifest_handler.create_manifest,
             request.user.id,
             rom.id,
             payload.component_ids,
             archive_set_id=payload.archive_set_id,
             selected_member_ids=payload.selected_member_ids,
+            whole_folder=payload.whole_folder is True,
         )
     except ValueError as error:
         _manifest_create_rejected(rom.id, error)

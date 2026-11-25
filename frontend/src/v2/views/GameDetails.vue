@@ -5,14 +5,12 @@
 // tabs, tab panel) stacked in a flex-1 column on the right. Thin
 // orchestrator — data + tab state live here, every visual piece is a
 // sub-component under components/GameDetails/.
-import { ZABtn, ZATabNav, type ZATabNavItem } from "@v2/lib";
-import type { Emitter } from "mitt";
+import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
-import { computed, inject, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import { ROUTES } from "@/plugins/router";
-import type { Events } from "@/types/emitter";
 import { FRONTEND_RESOURCES_PATH } from "@/utils";
 import AchievementsTab from "@/v2/components/GameDetails/AchievementsTab.vue";
 import CoverColumn from "@/v2/components/GameDetails/CoverColumn.vue";
@@ -25,8 +23,9 @@ import MetadataTab from "@/v2/components/GameDetails/MetadataTab.vue";
 import NotesTab from "@/v2/components/GameDetails/NotesTab.vue";
 import OverviewTab from "@/v2/components/GameDetails/OverviewTab.vue";
 import PatcherTab from "@/v2/components/GameDetails/PatcherTab.vue";
-import PcComponents from "@/v2/components/GameDetails/PcComponents.vue";
-import PcLocalMediaReview from "@/v2/components/GameDetails/PcLocalMediaReview.vue";
+import PcComponents, {
+  type FolderDownloadCapability,
+} from "@/v2/components/GameDetails/PcComponents.vue";
 import SaveDataTab from "@/v2/components/GameDetails/SaveDataTab.vue";
 import { useBackgroundArt } from "@/v2/composables/useBackgroundArt";
 import type { BackgroundAudioTrack } from "@/v2/composables/useBackgroundAudio";
@@ -55,7 +54,6 @@ const authStore = storeAuth();
 const { currentRom } = storeToRefs(romsStore);
 const { toWebp } = useWebpSupport();
 const { locale, t } = useI18n();
-const emitter = inject<Emitter<Events>>("emitter");
 
 const setBgArt = useBackgroundArt();
 const backgroundAudio = useBackgroundAudio();
@@ -382,6 +380,23 @@ const filesCount = computed(() => currentRom.value?.files?.length ?? 0);
 const isPcRom = computed(
   () => currentRom.value != null && isPcPlatform(currentRom.value),
 );
+const isPs3Rom = computed(() => currentRom.value?.platform_slug === "ps3");
+// Generated API types are refreshed with the backend schema. Keep this local
+// projection narrow until that generated contract includes folder_download.
+const folderDownload = computed<FolderDownloadCapability | undefined>(() => {
+  const rom = currentRom.value as
+    | (typeof currentRom.value & {
+        folder_download?: FolderDownloadCapability | null;
+      })
+    | null;
+  return rom?.folder_download ?? undefined;
+});
+const hasGameDownload = computed(
+  () =>
+    isPs3Rom.value ||
+    folderDownload.value !== undefined ||
+    (currentRom.value?.components?.length ?? 0) > 0,
+);
 const archiveSets = ref<DownloadArchiveSet[]>([]);
 const archiveSetsState = ref<"idle" | "loading" | "ready" | "error">("idle");
 
@@ -403,9 +418,9 @@ async function loadArchiveSets(romId: number) {
 }
 
 watch(
-  [() => currentRom.value?.id, isPcRom],
-  ([romId, pcRom]) => {
-    if (!romId || !pcRom) {
+  [() => currentRom.value?.id, () => currentRom.value?.components?.length],
+  ([romId, componentCount]) => {
+    if (!romId || !componentCount) {
       archiveSets.value = [];
       archiveSetsState.value = "idle";
       return;
@@ -427,30 +442,18 @@ async function refreshPcDetails(): Promise<boolean> {
   }
 }
 
-async function refreshPcDetailsForEvent(): Promise<void> {
+async function refreshDownloadDetails(): Promise<void> {
   await refreshPcDetails();
 }
 
-function openPcParentMatcher() {
-  if (!currentRom.value) return;
-  emitter?.emit("showPcMatchRomDialog", {
-    target: {
-      kind: "rom",
-      romId: currentRom.value.id,
-      label: currentRom.value.name ?? currentRom.value.fs_name_no_tags,
-    },
-    refresh: refreshPcDetailsForEvent,
-  });
-}
-
-// PC games are delivered as complete downloads, so only ROM platforms expose
-// the patch workflow.
+// A manifest-backed component set or a verified folder capability owns the
+// Game Download surface. Console ROMs without either retain their patch flow.
 const tabs = computed<ZATabNavItem[]>(() => [
   { id: "overview", label: t("rom.tab-overview") },
-  ...(isPcRom.value
+  ...(hasGameDownload.value
     ? [{ id: "pc-components", label: t("rom.game-downloads") }]
     : []),
-  ...(isPcRom.value ? [] : [{ id: "patcher", label: t("common.patcher") }]),
+  ...(!isPcRom.value ? [{ id: "patcher", label: t("common.patcher") }] : []),
   { id: "media", label: t("rom.media") },
   { id: "files", label: t("rom.tab-files"), badge: filesCount.value },
   { id: "notes", label: t("rom.tab-notes") },
@@ -515,24 +518,15 @@ const tabs = computed<ZATabNavItem[]>(() => [
             @refresh="refreshPcDetails"
           />
           <FilesTab v-if="tab === 'files'" :rom="currentRom" />
-          <template v-if="tab === 'pc-components' && isPcRom">
-            <ZABtn
-              data-testid="find-pc-parent-metadata"
-              prepend-icon="mdi-magnify"
-              @click="openPcParentMatcher"
-            >
-              {{ t("rom.pc-find-metadata") }}
-            </ZABtn>
-            <PcLocalMediaReview
-              :rom-id="currentRom.id"
-              @applied="refreshPcDetails"
-            />
+          <template v-if="tab === 'pc-components' && hasGameDownload">
             <PcComponents
               :rom-id="currentRom.id"
               :components="currentRom.components ?? []"
+              :folder-download="folderDownload"
+              :folder-inventory-required="isPs3Rom && !folderDownload"
               :archive-sets="archiveSets"
               :archive-sets-state="archiveSetsState"
-              :refresh="refreshPcDetailsForEvent"
+              :refresh="refreshDownloadDetails"
               :parent-name="currentRom.name ?? currentRom.fs_name_no_tags"
             />
           </template>

@@ -1,4 +1,4 @@
-"""Bounded stat inventory and the shared PC component layout owner.
+"""Bounded folder inventory and the shared PC component layout owner.
 
 Deadlines are checked between syscalls. A blocked filesystem syscall cannot be
 interrupted by this deadline. Observations never prove content equality.
@@ -58,7 +58,7 @@ def parse_pc_component_layout(relative_path: str) -> RomComponentKind:
 class InventoryIncomplete(RuntimeError):
     def __init__(self, reason: str):
         self.reason = reason
-        super().__init__("PC inventory incomplete: " + reason)
+        super().__init__("folder inventory incomplete: " + reason)
 
 
 def digest_inventory(entries: tuple[InventoryEntry, ...]) -> str:
@@ -85,7 +85,7 @@ def _worker_check():
     check_worker_boundary()
 
 
-def collect_pc_inventory(
+def collect_folder_inventory(
     open_access,
     relative_path: str,
     *,
@@ -169,7 +169,7 @@ def collect_pc_inventory(
     )
 
 
-async def async_collect_pc_inventory(open_access, relative_path: str, **kwargs):
+async def async_collect_folder_inventory(open_access, relative_path: str, **kwargs):
     cancelled = threading.Event()
     check = kwargs.pop("check", _worker_check)
 
@@ -180,10 +180,19 @@ async def async_collect_pc_inventory(open_access, relative_path: str, **kwargs):
 
     try:
         return await asyncio.to_thread(
-            collect_pc_inventory, open_access, relative_path, check=boundary, **kwargs
+            collect_folder_inventory,
+            open_access,
+            relative_path,
+            check=boundary,
+            **kwargs,
         )
     finally:
         cancelled.set()
+
+
+# Kept while Windows quick-scan call sites migrate to the neutral capability.
+collect_pc_inventory = collect_folder_inventory
+async_collect_pc_inventory = async_collect_folder_inventory
 
 
 @dataclass(frozen=True, slots=True)
