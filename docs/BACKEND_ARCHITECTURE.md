@@ -154,14 +154,15 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
   4,000,000,000 bytes inclusive: a simple source uses its recorded file size,
   while a folder source requires exactly one complete neutral group and its
   persisted member aggregate. Unknown, missing, stale, incomplete, or inferred
-  zero-size facts expose no capability. The manifest endpoint repeats this
-  server-owned eligibility check after ROM visibility and before any authorized
-  inventory materialization, then resolves whole-folder membership under the ROM
-  and component locks. It returns a bounded 409 rejection when evidence is
-  unavailable and never returns a partial folder. Qualifying requests use the
-  same user-scoped immutable manifest and queue delivery; below-threshold sources
-  retain their ordinary direct-download path. Absent or non-visible ROMs still
-  receive the generic manifest 404.
+  zero-size facts expose no capability. Detail responses read only persisted
+  facts and can mark a threshold-eligible legacy folder as `preparable`, never
+  transfer-ready. Only the protected whole-folder manifest POST, after ROM
+  visibility, may bind the current mapping revision, verify and reconcile that
+  source into neutral FOLDER members, reload the ROM, and issue the unchanged
+  user-scoped immutable manifest. It returns a bounded 409 rejection when
+  evidence is unavailable and never returns a partial folder. Below-threshold
+  sources retain their ordinary direct-download path. Absent or non-visible ROMs
+  still receive the generic manifest 404.
 - Manifest IDs and member IDs are opaque and user-scoped. The member stream
   rechecks ROM visibility, manifest validity, source identity, snapshot evidence,
   and safe relative-path resolution before it opens a file. The browser cannot

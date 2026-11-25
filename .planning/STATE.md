@@ -1126,6 +1126,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 20261125-shared-inventory-test-contract | Repair stale shared inventory test seams after full regression collection failure | 2026-11-25 | 8321274b1 | [20261125-shared-inventory-test-contract](./quick/20261125-shared-inventory-test-contract/) |
 | 261125-scan-handler-shared-download-authorization | Extract shared-download scan authorization from scan handler | 2026-11-25 | this commit | [261125-scan-handler-shared-download-authorization](./quick/261125-scan-handler-shared-download-authorization/) |
 | 261125-ps3-quick-inventory-contract | Restore the PC/PS3 quick-scan shared-download contract | 2026-11-25 | e63988bc2 | [261125-ps3-quick-inventory-contract](./quick/261125-ps3-quick-inventory-contract/) |
 | 261125-gate06-folder-download-test-double-type | Repair the typed folder-download eligibility test double | 2026-11-25 | pending | [261125-gate06-folder-download-test-double-type](./quick/261125-gate06-folder-download-test-double-type/) |
@@ -1279,6 +1280,7 @@ Resume file: None
 - Phase 25 added: Scan-/Medien-Integration härten
 - Phase 46 added: Diagnose and harden terminal owned-content verification for Beta 5 NAS UAT without changing NAS data.
 - Phase 47 added: Remove misplaced Game Download metadata actions and reuse the shared browser downloader for PS3 folder games.
+- Phase 49 added: Repair the Beta14 upgrade path when legacy eligible games have RomFiles but no persisted shared-download inventory.
 - Phase 47 implemented: neutral PS3 folder inventory and server-owned manifests reuse the existing browser queue; typecheck, scoped Trunk and production build pass, with human Dev UAT pending.
 - Quick task 261116-qg1 completed: restored the missing Phase 46 summary and
   verification artifacts with an explicit partial verdict; the owned-content

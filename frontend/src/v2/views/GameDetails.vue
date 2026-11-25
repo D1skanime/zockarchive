@@ -1,21 +1,12 @@
 <script setup lang="ts">
-// GameDetails — artist-mockup layout.
-//
-// Two-column body: fixed cover column on the left, everything else (header,
-// tabs, tab panel) stacked in a flex-1 column on the right. Thin
-// orchestrator — data + tab state live here, every visual piece is a
-// sub-component under components/GameDetails/.
 import { ZATabNav, type ZATabNavItem } from "@v2/lib";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
-import type { FolderDownloadCapabilitySchema } from "@/__generated__";
 import { ROUTES } from "@/plugins/router";
-import { FRONTEND_RESOURCES_PATH } from "@/utils";
 import AchievementsTab from "@/v2/components/GameDetails/AchievementsTab.vue";
 import CoverColumn from "@/v2/components/GameDetails/CoverColumn.vue";
-import type { DownloadArchiveSet } from "@/v2/components/GameDetails/DownloadSelectionDialog.vue";
 import FilesTab from "@/v2/components/GameDetails/FilesTab/FilesTab.vue";
 import GameHeader from "@/v2/components/GameDetails/GameHeader.vue";
 import type { InfoGridSection } from "@/v2/components/GameDetails/InfoGrid.vue";
@@ -33,13 +24,14 @@ import {
   scheduleBackgroundRotation,
   selectedBackgroundAudioTracks,
 } from "@/v2/composables/useGameDetailsMedia";
+import { useGameDownloadDetails } from "@/v2/composables/useGameDownloadDetails";
+import { useLocalDlcOverviewCandidates } from "@/v2/composables/useLocalDlcOverviewCandidates";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
 import { usePageTitle } from "@/v2/composables/usePageTitle";
 import { useReducedMotion } from "@/v2/composables/useReducedMotion";
 import { useRightStickScroll } from "@/v2/composables/useRightStickScroll";
 import { useVisibleSimilarGames } from "@/v2/composables/useVisibleSimilarGames";
 import { useWebpSupport } from "@/v2/composables/useWebpSupport";
-import api from "@/v2/data/adapters/legacy/services/api";
 import romApi from "@/v2/data/adapters/legacy/services/api/rom";
 import storeAuth from "@/v2/data/adapters/legacy/stores/auth";
 import storeRoms from "@/v2/data/adapters/legacy/stores/roms";
@@ -317,59 +309,8 @@ const remakes = computed(() => igdb.value?.remakes ?? []);
 const remasters = computed(() => igdb.value?.remasters ?? []);
 const expansions = computed(() => igdb.value?.expansions ?? []);
 const dlcs = computed(() => igdb.value?.dlcs ?? []);
-type LocalDlcOverviewCandidate = {
-  igdbId: number;
-  componentId: number;
-  name: string;
-  coverUrl: string;
-};
-
-const localDlcOverviewCandidates = computed<LocalDlcOverviewCandidate[]>(() =>
-  (currentRom.value?.components ?? []).flatMap((component) => {
-    const metadata = component.component_metadata;
-    const cover =
-      component.owned_media?.find((media) => media.role === "cover") ??
-      component.local_media?.find((media) => media.role === "cover");
-    const name = metadata?.name?.trim();
-    if (
-      component.kind !== "dlc" ||
-      !metadata?.igdb_id ||
-      metadata.igdb_id <= 0 ||
-      !name ||
-      !cover
-    ) {
-      return [];
-    }
-    return [
-      {
-        igdbId: metadata.igdb_id,
-        componentId: component.id,
-        name,
-        coverUrl: `${FRONTEND_RESOURCES_PATH}/${cover.owned_path}`,
-      },
-    ];
-  }),
-);
-const localExpansionCandidates = computed(() =>
-  localDlcOverviewCandidates.value.filter((candidate) => {
-    const component = currentRom.value?.components?.find(
-      (item) => item.id === candidate.componentId,
-    );
-    const layout =
-      component?.relative_path.split("/", 1)[0]?.toLocaleLowerCase() ?? "";
-    return ["expansion", "expansions"].includes(layout);
-  }),
-);
-const localDlcCandidates = computed(() =>
-  localDlcOverviewCandidates.value.filter((candidate) => {
-    const component = currentRom.value?.components?.find(
-      (item) => item.id === candidate.componentId,
-    );
-    const layout =
-      component?.relative_path.split("/", 1)[0]?.toLocaleLowerCase() ?? "";
-    return !["expansion", "expansions"].includes(layout);
-  }),
-);
+const { localDlcCandidates, localExpansionCandidates } =
+  useLocalDlcOverviewCandidates(currentRom);
 
 const savesCount = computed(() => currentRom.value?.user_saves?.length ?? 0);
 const statesCount = computed(() => currentRom.value?.user_states?.length ?? 0);
@@ -379,49 +320,8 @@ const filesCount = computed(() => currentRom.value?.files?.length ?? 0);
 const isPcRom = computed(
   () => currentRom.value != null && isPcPlatform(currentRom.value),
 );
-// The backend alone approves whole-source downloads from complete, known-size
-// inventory. Missing capability data deliberately leaves the normal download
-// path unchanged.
-const folderDownload = computed<FolderDownloadCapabilitySchema | undefined>(
-  () => currentRom.value?.folder_download ?? undefined,
-);
-const hasGameDownload = computed(
-  () =>
-    folderDownload.value !== undefined ||
-    (currentRom.value?.components?.length ?? 0) > 0,
-);
-const archiveSets = ref<DownloadArchiveSet[]>([]);
-const archiveSetsState = ref<"idle" | "loading" | "ready" | "error">("idle");
-
-async function loadArchiveSets(romId: number) {
-  archiveSetsState.value = "loading";
-  archiveSets.value = [];
-  try {
-    const { data } = await api.get<DownloadArchiveSet[]>(
-      `/roms/${romId}/download-archive-sets`,
-    );
-    if (currentRom.value?.id !== romId) return;
-    archiveSets.value = data;
-    archiveSetsState.value = "ready";
-  } catch (error) {
-    if (currentRom.value?.id !== romId) return;
-    archiveSetsState.value = "error";
-    console.error("[GameDetails] Could not load download archive sets", error);
-  }
-}
-
-watch(
-  [() => currentRom.value?.id, () => currentRom.value?.components?.length],
-  ([romId, componentCount]) => {
-    if (!romId || !componentCount) {
-      archiveSets.value = [];
-      archiveSetsState.value = "idle";
-      return;
-    }
-    void loadArchiveSets(romId);
-  },
-  { immediate: true },
-);
+const { archiveSets, archiveSetsState, folderDownload, hasGameDownload } =
+  useGameDownloadDetails(currentRom);
 
 async function refreshPcDetails(): Promise<boolean> {
   if (!currentRom.value) return false;
@@ -439,8 +339,9 @@ async function refreshDownloadDetails(): Promise<void> {
   await refreshPcDetails();
 }
 
-// A manifest-backed component set or a verified folder capability owns the
-// Game Download surface. Console ROMs without either retain their patch flow.
+// A manifest-backed component set or a server-published folder capability owns
+// the Game Download surface. A preparable source still uses the existing
+// manifest action, while console ROMs without either retain their patch flow.
 const tabs = computed<ZATabNavItem[]>(() => [
   { id: "overview", label: t("rom.tab-overview") },
   ...(hasGameDownload.value

@@ -6,6 +6,7 @@
  * Safe aggregate for a shared-download source with recorded size evidence.
  */
 export type FolderDownloadCapabilitySchema = {
+    state?: 'ready' | 'preparable';
     source_kind: 'file' | 'folder';
     member_count: number;
     total_size_bytes: number;

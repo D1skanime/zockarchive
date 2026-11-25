@@ -8,4 +8,3 @@ export type SetupFolderMappingSchema = {
     mapping_id: number;
     relative_path: string;
 };
-

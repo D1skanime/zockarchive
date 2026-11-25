@@ -7,6 +7,7 @@ from sqlalchemy import select
 from tests.conftest import session
 
 from endpoints import download_manifests as download_manifests_endpoint
+from exceptions.storage_read import MappedReadError
 from handler.database import db_download_manifest_handler, db_rom_handler
 from handler.filesystem.roms_handler import (
     DownloadManifestMemberEvidence,
@@ -179,7 +180,7 @@ def test_create_and_retrieve_a_path_free_whole_game_manifest(
     assert fetched.json() == body
 
 
-def test_ps3_whole_folder_manifest_uses_the_shared_inventory_hook(
+def test_ps3_whole_folder_manifest_validates_the_shared_inventory_hook(
     client, access_token, rom, monkeypatch
 ):
     component = RomComponent(
@@ -206,7 +207,9 @@ def test_ps3_whole_folder_manifest_uses_the_shared_inventory_hook(
         synchronized.append(current_rom.id)
 
     monkeypatch.setattr(
-        download_manifests_endpoint, "ensure_ps3_download_inventory", ensure_inventory
+        download_manifests_endpoint,
+        "ensure_shared_download_inventory",
+        ensure_inventory,
     )
     response = client.post(
         f"/api/roms/{rom.id}/download-manifests",
@@ -221,7 +224,7 @@ def test_ps3_whole_folder_manifest_uses_the_shared_inventory_hook(
     )
 
 
-def test_ps3_inventory_failure_returns_the_existing_safe_manifest_error(
+def test_shared_inventory_failure_returns_the_existing_safe_manifest_error(
     client, access_token, rom, monkeypatch
 ):
     with session.begin() as db:
@@ -233,7 +236,39 @@ def test_ps3_inventory_failure_returns_the_existing_safe_manifest_error(
         raise ValueError("manifest folder inventory is unavailable")
 
     monkeypatch.setattr(
-        download_manifests_endpoint, "ensure_ps3_download_inventory", reject_inventory
+        download_manifests_endpoint,
+        "ensure_shared_download_inventory",
+        reject_inventory,
+    )
+    response = client.post(
+        f"/api/roms/{rom.id}/download-manifests",
+        headers=_headers(access_token),
+        json={"whole_folder": True},
+    )
+
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert response.json() == {
+        "detail": {"code": "manifest_folder_inventory_unavailable"}
+    }
+
+
+@pytest.mark.parametrize(
+    "error",
+    [MappedReadError("denied", 1, 1, "denied"), OSError("denied")],
+)
+def test_shared_inventory_preparation_failure_returns_the_safe_manifest_error(
+    client, access_token, rom, monkeypatch, error
+):
+    async def reject_preparation(_rom):
+        raise error
+
+    monkeypatch.setattr(
+        download_manifests_endpoint, "is_shared_download_preparable", lambda _rom: True
+    )
+    monkeypatch.setattr(
+        download_manifests_endpoint,
+        "_prepare_shared_download_inventory",
+        reject_preparation,
     )
     response = client.post(
         f"/api/roms/{rom.id}/download-manifests",
@@ -261,7 +296,9 @@ def test_ps3_whole_folder_rejects_member_selection_before_inventory_sync(
         synchronized.append(current_rom.id)
 
     monkeypatch.setattr(
-        download_manifests_endpoint, "ensure_ps3_download_inventory", ensure_inventory
+        download_manifests_endpoint,
+        "ensure_shared_download_inventory",
+        ensure_inventory,
     )
     response = client.post(
         f"/api/roms/{rom.id}/download-manifests",

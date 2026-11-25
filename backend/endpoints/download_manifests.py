@@ -1,5 +1,6 @@
 import asyncio
 from collections.abc import Callable, Iterator
+from pathlib import PurePosixPath
 from typing import NoReturn
 from urllib.parse import quote
 
@@ -14,18 +15,28 @@ from endpoints.responses.download_manifest import (
     DownloadManifestMemberSchema,
     DownloadManifestResponse,
 )
-from endpoints.responses.folder_download import is_shared_download_eligible
+from endpoints.responses.folder_download import (
+    is_shared_download_eligible,
+    is_shared_download_preparable,
+)
+from exceptions.storage_exceptions import StorageResolutionError
 from handler.auth.constants import Scope
 from handler.auth.dependencies import assert_rom_visible
 from handler.database import (
     db_download_manifest_handler,
     db_download_transfer_handler,
     db_rom_handler,
+    db_storage_handler,
 )
 from handler.filesystem import fs_rom_handler
-from handler.filesystem.roms_handler import DownloadManifestTransferState
-from handler.metadata.base_handler import UniversalPlatformSlug as UPS
-from handler.scan_folder_download import ensure_ps3_download_inventory
+from handler.filesystem.pc_scan_inventory import InventoryIncomplete
+from handler.filesystem.roms_handler import DownloadManifestTransferState, FSRomsHandler
+from handler.filesystem.storage_resolver import normalize_relative_path
+from handler.scan_folder_download import (
+    ensure_shared_download_inventory,
+    prepare_shared_download_inventory,
+)
+from handler.storage.read_context import MappingReadContext
 from logger.logger import log
 from models.download_manifest import DownloadManifest, DownloadManifestStatus
 from utils.router import APIRouter
@@ -66,6 +77,27 @@ def _manifest_create_rejected(rom_id: int, error: ValueError) -> NoReturn:
         status_code=status.HTTP_409_CONFLICT,
         detail={"code": _CREATE_ERROR_CODES.get(reason, "manifest_unavailable")},
     )
+
+
+def _mapped_rom_relative_path(rom, mapping) -> str:
+    """Derive one safe ROM path relative to its already-selected mapping."""
+    try:
+        relative_path = PurePosixPath(rom.full_path).relative_to(
+            PurePosixPath(mapping.relative_path)
+        )
+    except ValueError:
+        raise ValueError("manifest folder inventory is unavailable") from None
+    return normalize_relative_path(relative_path.as_posix())
+
+
+async def _prepare_shared_download_inventory(rom) -> None:
+    """Bind legacy preparation to the active mapping before source inspection."""
+    mapping = db_storage_handler.path_mapping(rom.platform_id, rom.full_path)
+    MappingReadContext(mapping.id, mapping.version).validate()
+    mapped_handler = FSRomsHandler.for_mapping(
+        mapping, _mapped_rom_relative_path(rom, mapping)
+    )
+    await prepare_shared_download_inventory(rom, mapped_handler)
 
 
 def _serialize(manifest: DownloadManifest) -> DownloadManifestResponse:
@@ -210,11 +242,12 @@ async def create_download_manifest(
     assert_rom_visible(request, rom, not_found_detail=_NOT_FOUND)
     try:
         if payload.whole_folder is True:
-            # PS3 historically materializes a missing neutral inventory only
-            # after visibility is established and a manifest is requested.
-            if rom.platform_slug == UPS.PS3:
-                await ensure_ps3_download_inventory(rom)
-                rom = db_rom_handler.get_rom(rom.id) or rom
+            if is_shared_download_preparable(rom):
+                await _prepare_shared_download_inventory(rom)
+                rom = db_rom_handler.get_rom(rom.id)
+                if rom is None:
+                    raise ValueError("manifest folder inventory is unavailable")
+            await ensure_shared_download_inventory(rom)
             if not is_shared_download_eligible(rom):
                 raise ValueError("manifest folder inventory is unavailable")
         manifest = await asyncio.to_thread(
@@ -225,6 +258,10 @@ async def create_download_manifest(
             archive_set_id=payload.archive_set_id,
             selected_member_ids=payload.selected_member_ids,
             whole_folder=payload.whole_folder is True,
+        )
+    except (InventoryIncomplete, OSError, StorageResolutionError):
+        _manifest_create_rejected(
+            rom.id, ValueError("manifest folder inventory is unavailable")
         )
     except ValueError as error:
         _manifest_create_rejected(rom.id, error)

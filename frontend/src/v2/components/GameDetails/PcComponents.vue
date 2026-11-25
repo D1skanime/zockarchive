@@ -42,7 +42,11 @@ const queue = useBrowserDownloadQueue();
 const queueItems = computed(() => queue.items.value);
 const selectedManifestId = ref<string | null>(null);
 const selectedComponentLabels = ref<string[]>([]);
+const preparingFolderDownload = ref(false);
 const currentSessionId = computed(() => queue.sessionId.value);
+const folderDownloadIsPreparable = computed(
+  () => props.folderDownload?.state === "preparable",
+);
 
 function openComponentMatcher(component: PcComponentSchema) {
   if (component.kind === "unresolved") return;
@@ -88,6 +92,9 @@ async function startDownload(payload: {
   ) {
     return;
   }
+  const preparesFolderDownload =
+    payload.wholeFolder === true && folderDownloadIsPreparable.value;
+  if (preparesFolderDownload) preparingFolderDownload.value = true;
   try {
     // The File System Access picker must be opened while the click activation is
     // still alive. Waiting for the manifest request first makes Chromium reject
@@ -137,6 +144,8 @@ async function startDownload(payload: {
           : "rom.download-failed-description",
       ),
     );
+  } finally {
+    if (preparesFolderDownload) preparingFolderDownload.value = false;
   }
 }
 
@@ -241,8 +250,8 @@ const groupedComponents = computed(() =>
       class="align-self-start"
       data-testid="download-components"
       prepend-icon="mdi-download"
-      :loading="archiveSetsState === 'loading'"
-      :disabled="archiveSetsState === 'error'"
+      :loading="archiveSetsState === 'loading' || preparingFolderDownload"
+      :disabled="archiveSetsState === 'error' || preparingFolderDownload"
       @click="showDownload = true"
       >{{ t("rom.download-game") }}</ZABtn
     >

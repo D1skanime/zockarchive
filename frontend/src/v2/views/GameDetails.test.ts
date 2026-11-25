@@ -68,11 +68,20 @@ describe("GameDetails", () => {
   });
 
   it("loads archive-set policy before enabling PC downloads", () => {
-    const source = readFileSync("src/v2/views/GameDetails.vue", "utf8");
+    const viewSource = readFileSync("src/v2/views/GameDetails.vue", "utf8");
+    const downloadSource = readFileSync(
+      "src/v2/composables/useGameDownloadDetails/index.ts",
+      "utf8",
+    );
 
-    expect(source).toContain("download-archive-sets");
-    expect(source).toContain(':archive-sets="archiveSets"');
-    expect(source).toContain(':archive-sets-state="archiveSetsState"');
+    expect(downloadSource).toContain("download-archive-sets");
+    expect(downloadSource).toContain('archiveSetsState.value = "loading"');
+    expect(downloadSource).toContain('archiveSetsState.value = "ready"');
+    expect(downloadSource.indexOf("download-archive-sets")).toBeLessThan(
+      downloadSource.indexOf('archiveSetsState.value = "ready"'),
+    );
+    expect(viewSource).toContain(':archive-sets="archiveSets"');
+    expect(viewSource).toContain(':archive-sets-state="archiveSetsState"');
   });
 
   it("keeps the patcher tab out of PC game details", () => {

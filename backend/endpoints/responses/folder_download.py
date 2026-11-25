@@ -5,7 +5,10 @@ from typing import Literal
 from pydantic import Field
 
 from endpoints.responses.base import BaseModel
-from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+from handler.filesystem.folder_download import (
+    SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES,
+    has_shared_download_single_file,
+)
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from models.rom import Rom, RomComponentKind
 
@@ -13,8 +16,9 @@ from models.rom import Rom, RomComponentKind
 class FolderDownloadCapabilitySchema(BaseModel):
     """Safe aggregate for a shared-download source with recorded size evidence."""
 
+    state: Literal["ready", "preparable"] = "ready"
     source_kind: Literal["file", "folder"]
-    member_count: int = Field(ge=1)
+    member_count: int = Field(ge=0)
     total_size_bytes: int = Field(ge=0)
 
 
@@ -66,7 +70,7 @@ def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | Non
     ):
         return None
 
-    if rom.has_simple_single_file:
+    if has_shared_download_single_file(rom):
         if (
             len(rom.files) != 1
             or folder_component.relative_path != "single-file-download"
@@ -94,12 +98,54 @@ def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | Non
     )
 
 
+def shared_download_preparation_capability(
+    rom: Rom,
+) -> FolderDownloadCapabilitySchema | None:
+    """Project a legacy folder as preparable without treating it as verified.
+
+    This intentionally consults persisted ROM facts only. Source traversal and
+    component publication remain exclusive to the authorized manifest request.
+    """
+    if (
+        rom.missing_from_fs
+        or rom.fs_size_bytes is None
+        or (
+            not is_legacy_shared_download_platform(rom)
+            and rom.fs_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+        )
+    ):
+        return None
+
+    folder_components = [
+        component
+        for component in rom.components
+        if component.kind is RomComponentKind.FOLDER
+    ]
+    if folder_components:
+        return None
+
+    return FolderDownloadCapabilitySchema(
+        state="preparable",
+        source_kind="file" if has_shared_download_single_file(rom) else "folder",
+        member_count=0,
+        total_size_bytes=rom.fs_size_bytes,
+    )
+
+
 def is_shared_download_eligible(rom: Rom) -> bool:
-    """Answer whether existing recorded facts authorize whole-source preparation."""
-    return shared_download_capability(rom) is not None
+    """Answer whether verified persisted evidence authorizes whole-source delivery."""
+    capability = shared_download_capability(rom)
+    return capability is not None and capability.state == "ready"
+
+
+def is_shared_download_preparable(rom: Rom) -> bool:
+    """Answer whether a legacy folder may be verified at the POST boundary."""
+    return shared_download_preparation_capability(rom) is not None
 
 
 def prepare_folder_download_details(rom: Rom) -> None:
     """Project the shared capability without exposing source paths or members."""
     prepare_download_components(rom)
-    rom.folder_download = shared_download_capability(rom)  # type: ignore[assignment]
+    rom.folder_download = (  # type: ignore[assignment]
+        shared_download_capability(rom) or shared_download_preparation_capability(rom)
+    )

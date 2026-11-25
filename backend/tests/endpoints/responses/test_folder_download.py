@@ -3,8 +3,14 @@ from typing import cast
 
 import pytest
 
-from endpoints.responses.folder_download import shared_download_capability
-from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+from endpoints.responses.folder_download import (
+    shared_download_capability,
+    shared_download_preparation_capability,
+)
+from handler.filesystem.folder_download import (
+    SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES,
+    has_shared_download_single_file,
+)
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from models.rom import Rom, RomComponentKind
 
@@ -118,3 +124,45 @@ def test_single_file_capability_rejects_inconsistent_size_without_estimating():
     rom.components[0].manifest_members[0].relative_path = ""
 
     assert shared_download_capability(rom) is None
+
+
+def test_legacy_dot_path_iso_is_preparable_as_a_single_file_without_inventory():
+    rom = cast(
+        Rom,
+        SimpleNamespace(
+            platform_slug=UPS.PS3,
+            missing_from_fs=False,
+            fs_size_bytes=33,
+            has_simple_single_file=False,
+            fs_name="Uncharted.iso",
+            files=[
+                SimpleNamespace(
+                    file_name="Uncharted.iso",
+                    file_path=".",
+                    file_size_bytes=33,
+                    missing_from_fs=False,
+                )
+            ],
+            components=[],
+        ),
+    )
+
+    capability = shared_download_preparation_capability(rom)
+
+    assert has_shared_download_single_file(rom) is True
+    assert capability is not None
+    assert capability.state == "preparable"
+    assert capability.source_kind == "file"
+
+
+def test_dot_path_requires_the_exact_direct_rom_filename():
+    rom = cast(
+        Rom,
+        SimpleNamespace(
+            has_simple_single_file=False,
+            fs_name="Uncharted.iso",
+            files=[SimpleNamespace(file_name="other.iso", file_path=".")],
+        ),
+    )
+
+    assert has_shared_download_single_file(rom) is False

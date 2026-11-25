@@ -6,4 +6,3 @@ export type SetupFolderAssignmentSchema = {
     folder_name: string;
     platform_slug: string;
 };
-

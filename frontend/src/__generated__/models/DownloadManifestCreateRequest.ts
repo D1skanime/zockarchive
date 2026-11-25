@@ -7,4 +7,3 @@ export type DownloadManifestCreateRequest = {
     archive_set_id?: (number | null);
     selected_member_ids?: (Array<number> | null);
 };
-

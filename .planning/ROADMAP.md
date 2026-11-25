@@ -1316,3 +1316,26 @@ Plans:
 
 **Wave 1:** 48-01, 48-02
 **Wave 2:** 48-03
+
+### Phase 49: ZA: Beta14-Upgrade ohne Downloadinventur reparieren
+
+**Goal:** Safely restore the existing shared Game Download lifecycle for eligible Beta14-upgraded libraries that retain ordinary `RomFile` records but lack the later verified FOLDER inventory, without a rescan, storage bypass, new downloader, or detail-read mutation.
+**Requirements**: UPG-49-01, UPG-49-02, UPG-49-03, SAFE-49-01, DOC-49-01
+**Depends on:** Phase 48
+**Plans:** 3 plans in 3 waves
+
+**Requirement mapping:** UPG-49-01 restores a reachable preparable legacy
+folder flow; UPG-49-02 preserves threshold and ordinary-download boundaries;
+UPG-49-03 preserves the existing dialog, queue, transfer, retry, cancellation,
+and fallback lifecycle after preparation. SAFE-49-01 preserves authorization,
+mapping, path, and source-integrity failure boundaries. DOC-49-01 documents
+the backend and frontend lifecycle and human UAT path.
+
+Plans:
+- [ ] `49-01-PLAN.md` - Reproduce the exact release upgrade condition in a disposable no-FOLDER fixture.
+- [ ] `49-02-PLAN.md` - Add safe preparable state and mapping-bound authorized inventory preparation to the shared manifest lifecycle.
+- [ ] `49-03-PLAN.md` - Reuse the existing v2 downloader surface, document the lifecycle, and prepare the non-browser UAT handoff.
+
+**Wave 1:** 49-01
+**Wave 2:** 49-02
+**Wave 3:** 49-03
