@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-scan-handler-shared-download-authorization
-last_updated: "2026-11-25T11:07:00Z"
+stopped_at: Completed quick 261125-g53-post-uat-quick-scan-contract-tests
+last_updated: "2026-11-25T11:41:42Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,12 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-g53-post-uat-quick-scan-contract-tests completed: direct tests now
+  preserve PC/PS3 quick-scan authorization, exclude additional platforms from
+  quick scans, and assert complete scan-context forwarding. The two affected
+  backend files passed 61 tests in the disposable MariaDB runner; no product
+  code changed.
 
 - 261125-scan-handler-shared-download-authorization completed: shared-download
   reconciliation now owns its scan authorization policy, preserving PC/PS3
@@ -1123,6 +1129,7 @@ Recent decisions affecting current work:
 | 261125-scan-handler-shared-download-authorization | Extract shared-download scan authorization from scan handler | 2026-11-25 | this commit | [261125-scan-handler-shared-download-authorization](./quick/261125-scan-handler-shared-download-authorization/) |
 | 261125-ps3-quick-inventory-contract | Restore the PC/PS3 quick-scan shared-download contract | 2026-11-25 | e63988bc2 | [261125-ps3-quick-inventory-contract](./quick/261125-ps3-quick-inventory-contract/) |
 | 261125-gate06-folder-download-test-double-type | Repair the typed folder-download eligibility test double | 2026-11-25 | pending | [261125-gate06-folder-download-test-double-type](./quick/261125-gate06-folder-download-test-double-type/) |
+| 261125-g53-post-uat-quick-scan-contract-tests | Add direct accepted quick-scan authorization contracts | 2026-11-25 | dfafc93e7 | [261125-g53-post-uat-quick-scan-contract-tests](./quick/261125-g53-post-uat-quick-scan-contract-tests/) |
 | 261125-v8q | Gate shared inventory by known ROM size before hashing | 2026-11-25 | 3fecf0e84 | [261125-v8q](./quick/261125-v8q-gate-shared-inventory-at-known-size/) |
 | 261125-1dy | Fix Phase 48 review findings for inventory lifecycle and compatibility seams | 2026-11-25 | 4f9c61024 | [261125-1dy](./quick/261125-1dy-behebe-die-zwei-phase-48-code-review-bef/) |
 | 261124-w68 | Add direct post-UAT PS3 download tests | 2026-11-24 | this commit | [261124-w68](./quick/261124-w68-add-direct-post-uat-tests-for-accepted-p/) |
