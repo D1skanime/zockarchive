@@ -42,7 +42,7 @@ completed: 2026-11-25
 ## Task Commits
 
 1. **Task 1: Consume the generated capability through the existing shared downloader** - `083800e0e` (`feat`)
-2. **Task 2: Complete documentation and the permitted pre-UAT technical handoff** - pending metadata commit
+2. **Task 2: Complete documentation and the permitted pre-UAT technical handoff** - `93ccde375` (`docs`)
 
 ## Verification
 
@@ -71,4 +71,4 @@ None.
 
 ## Self-Check: PASSED
 
-- Confirmed the generated capability model, UI integration files, and task commit `083800e0e` exist.
+- Confirmed the generated capability model, UI integration files, and task commits `083800e0e` and `93ccde375` exist.
