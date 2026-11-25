@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-v8q
-last_updated: "2026-11-25T01:50:00Z"
+stopped_at: Completed quick 261125-za48
+last_updated: "2026-11-25T02:35:00Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,13 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-za48 completed: restored the accepted PC/PS3 shared-download contract
+  without creating a second transport path. The inclusive 4-GB gate now applies
+  only to additional platforms with known size; scan reconciliation distinguishes
+  `ScanType.QUICK` from the Windows quick context. Isolated browser UAT covered
+  desktop/mobile descriptions, boundary visibility, PC/PS3 dialog and abort;
+  normal views no longer show a technical empty-description notice.
 
 - 261125-v8q completed: shared-download reconciliation now requires a known
   recorded size of at least 4,000,000,000 bytes before it can enumerate or hash
