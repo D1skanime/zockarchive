@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-za48-post-uat-accepted-logic-tests
-last_updated: "2026-11-25T09:40:00Z"
+stopped_at: Completed quick 261125-gate06-scan-rom-fixture-contract
+last_updated: "2026-11-25T10:45:00Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,13 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-gate06-scan-rom-fixture-contract completed: the Steam scan test
+  doubles now honor the persisted Windows-ROM contract and explicitly assert
+  the separately covered shared-download reconciliation call. The two
+  reproduced failures and the directly affected handler file passed in the
+  disposable MariaDB runner (2 selected, then 39 total); no product code
+  changed.
 
 - 261125-za48-post-uat-accepted-logic-tests completed: post-UAT direct logic
   tests now cover normal description presentation without technical notices,

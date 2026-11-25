@@ -443,8 +443,22 @@ async def test_empty_or_text_only_steam_patch_never_reconciles_media(patch_data:
 @pytest.mark.asyncio
 async def test_steam_media_reconciliation_uses_the_persisted_rom_timestamp():
     platform, rom = _igdb_scan_fixture(platform_slug="win", steam_id=292030)
-    persisted = SimpleNamespace(id=rom.id, updated_at="stale-in-memory-timestamp")
-    refreshed = SimpleNamespace(id=rom.id, updated_at="database-timestamp")
+    persisted = SimpleNamespace(
+        id=rom.id,
+        updated_at="stale-in-memory-timestamp",
+        has_simple_single_file=True,
+        fs_path=platform.slug,
+        fs_name="The Witcher.exe",
+        components=[],
+    )
+    refreshed = SimpleNamespace(
+        id=rom.id,
+        updated_at="database-timestamp",
+        has_simple_single_file=True,
+        fs_path=platform.slug,
+        fs_name="The Witcher.exe",
+        components=[],
+    )
     resolver = AsyncMock(
         return_value={
             "steam_id": 292030,
@@ -462,6 +476,10 @@ async def test_steam_media_reconciliation_uses_the_persisted_rom_timestamp():
         ),
         patch("handler.scan_handler.resolve_steam_pc_enrichment", resolver),
         patch("handler.scan_handler.reconcile_steam_patch_media", reconcile),
+        patch(
+            "handler.scan_handler.reconcile_scanned_shared_download_inventory",
+            new_callable=AsyncMock,
+        ) as reconcile_inventory,
         patch(
             "handler.scan_handler.fs_rom_handler.get_pico8_cover_url", return_value=None
         ),
@@ -485,6 +503,7 @@ async def test_steam_media_reconciliation_uses_the_persisted_rom_timestamp():
         )
 
     reconcile.assert_awaited_once_with(refreshed, resolver.return_value, force=True)
+    reconcile_inventory.assert_awaited_once_with(persisted, "win", True, ANY)
 
 
 @pytest.mark.asyncio
@@ -576,8 +595,22 @@ async def test_steam_structured_metadata_persists_through_rom_not_metadata_view(
 async def test_steam_scan_defers_automation_until_the_final_scan_write():
     """The caller owns automation after all scan-side writes are durable."""
     platform, rom = _igdb_scan_fixture(platform_slug="win")
-    persisted = SimpleNamespace(id=rom.id, updated_at="initial-version")
-    after_structured_overlay = SimpleNamespace(id=rom.id, updated_at="overlay-version")
+    persisted = SimpleNamespace(
+        id=rom.id,
+        updated_at="initial-version",
+        has_simple_single_file=True,
+        fs_path=platform.slug,
+        fs_name="Cyberpunk 2077.exe",
+        components=[],
+    )
+    after_structured_overlay = SimpleNamespace(
+        id=rom.id,
+        updated_at="overlay-version",
+        has_simple_single_file=True,
+        fs_path=platform.slug,
+        fs_name="Cyberpunk 2077.exe",
+        components=[],
+    )
     resolver = AsyncMock(
         return_value={
             "steam_id": 1091500,
@@ -612,6 +645,10 @@ async def test_steam_scan_defers_automation_until_the_final_scan_write():
         ),
         patch("handler.scan_handler.resolve_steam_pc_enrichment", resolver),
         patch(
+            "handler.scan_handler.reconcile_scanned_shared_download_inventory",
+            new_callable=AsyncMock,
+        ) as reconcile_inventory,
+        patch(
             "handler.scan_handler.pc_automation_handler.process_parent", process_parent
         ),
         patch(
@@ -638,6 +675,7 @@ async def test_steam_scan_defers_automation_until_the_final_scan_write():
 
     process_parent.assert_not_awaited()
     assert add_rom.call_args_list[-1].args[0].summary == "Deutsche Zusammenfassung"
+    reconcile_inventory.assert_awaited_once_with(persisted, "win", True, ANY)
 
 
 @pytest.mark.asyncio
