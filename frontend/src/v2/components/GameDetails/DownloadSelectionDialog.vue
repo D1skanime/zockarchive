@@ -2,14 +2,12 @@
 import { ZABtn, ZACheckbox, ZACollapsible, ZADialog } from "@v2/lib";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import type { PcComponentSchema } from "@/__generated__";
+import type {
+  FolderDownloadCapabilitySchema,
+  PcComponentSchema,
+} from "@/__generated__";
 import { formatBytes } from "@/utils";
 import DownloadModeSelector from "./DownloadModeSelector.vue";
-
-export type FolderDownloadCapability = {
-  member_count: number;
-  total_size_bytes: number;
-};
 
 export type DownloadArchiveSet = {
   id: number;
@@ -24,8 +22,7 @@ export type DownloadArchiveSet = {
 const props = defineProps<{
   modelValue: boolean;
   components: PcComponentSchema[];
-  folderDownload?: FolderDownloadCapability;
-  folderInventoryRequired?: boolean;
+  folderDownload?: FolderDownloadCapabilitySchema;
   archiveSets?: DownloadArchiveSet[];
 }>();
 const emit = defineEmits<{
@@ -47,9 +44,7 @@ const selectedOptional = ref<number[]>([]);
 const selectedMemberIds = ref<number[]>([]);
 const expandedComponentIds = ref<number[]>([]);
 const mode = ref<"standard" | "enhanced">("standard");
-const isWholeFolder = computed(
-  () => props.folderDownload !== undefined || props.folderInventoryRequired,
-);
+const isWholeFolder = computed(() => props.folderDownload !== undefined);
 const currentSet = computed(() =>
   props.archiveSets?.find((set) => set.id === selectedSet.value),
 );
@@ -180,13 +175,6 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
           v-if="folderDownload"
           :model-value="true"
           :label="`${t('rom.download-game')} (${t('rom.files-count-n', { n: folderDownload.member_count })}, ${formatBytes(folderDownload.total_size_bytes)})`"
-          variant="card"
-          disabled
-        />
-        <ZACheckbox
-          v-else-if="folderInventoryRequired"
-          :model-value="true"
-          :label="t('rom.download-game')"
           variant="card"
           disabled
         />

@@ -46,10 +46,7 @@ import type {
   DescriptionProvider,
   DescriptionResolution,
 } from "@/v2/composables/useManualDescription";
-import {
-  descriptionPresentation,
-  type ProviderMetadata,
-} from "@/v2/composables/useManualDescription/provenance";
+import type { ProviderMetadata } from "@/v2/composables/useManualDescription/provenance";
 import type { SimilarGameLibraryEntry } from "@/v2/composables/useSimilarGameLibraryResolution";
 import { useWebpSupport } from "@/v2/composables/useWebpSupport";
 import storeCollections from "@/v2/data/adapters/legacy/stores/collections";
@@ -128,25 +125,6 @@ const hasHltb = computed(() => {
 // Falls back to a bare entry if the store is empty (e.g. deep-link before
 // the AppLayout fetch resolves).
 const { t, locale } = useI18n();
-const provenance = computed(() => {
-  const result = props.description;
-  const names = new Intl.DisplayNames([toBrowserLocale(locale.value)], {
-    type: "language",
-  });
-  return descriptionPresentation(result, {
-    source:
-      result.source === "manual"
-        ? t("rom.description-manual-label")
-        : result.source === "steam"
-          ? "Steam"
-          : "ScreenScraper",
-    language: result.resolvedLocale
-      ? (names.of(result.resolvedLocale) ?? result.resolvedLocale)
-      : "",
-    requestedLanguage:
-      names.of(result.requestedLocale) ?? result.requestedLocale,
-  });
-});
 watch(
   () => props.rom.id,
   () => {
@@ -290,12 +268,6 @@ const youtubeEmbedUrl = computed(() =>
           :lang="description.resolvedLocale ?? undefined"
         >
           {{ description.text }}
-        </p>
-        <p v-else class="overview-tab__summary overview-tab__summary--muted">
-          {{ t("rom.description-empty") }}
-        </p>
-        <p class="overview-tab__muted">
-          {{ t(provenance.key, provenance.params) }}
         </p>
       </div>
       <ZABtn

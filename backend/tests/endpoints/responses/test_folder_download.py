@@ -1,0 +1,120 @@
+from types import SimpleNamespace
+from typing import cast
+
+import pytest
+
+from endpoints.responses.folder_download import shared_download_capability
+from handler.filesystem.folder_download import SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+from handler.metadata.base_handler import UniversalPlatformSlug as UPS
+from models.rom import Rom, RomComponentKind
+
+
+def _member(size_bytes: int, *, sha256: str = "a" * 64, missing: bool = False):
+    return SimpleNamespace(
+        relative_path="content.bin",
+        size_bytes=size_bytes,
+        sha256=sha256,
+        missing_from_fs=missing,
+    )
+
+
+def _folder_rom(
+    platform_slug: str,
+    members,
+    *,
+    missing_from_fs: bool = False,
+):
+    return cast(
+        Rom,
+        SimpleNamespace(
+            platform_slug=platform_slug,
+            missing_from_fs=missing_from_fs,
+            has_simple_single_file=False,
+            files=[],
+            fs_size_bytes=None,
+            components=[
+                SimpleNamespace(
+                    kind=RomComponentKind.FOLDER,
+                    relative_path="folder-download",
+                    manifest_members=members,
+                )
+            ],
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    ("size_bytes", "expected"),
+    [
+        (SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES - 1, False),
+        (SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES, True),
+        (SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES + 1, True),
+    ],
+)
+def test_additional_platform_folder_capability_uses_the_inclusive_recorded_threshold(
+    size_bytes, expected
+):
+    capability = shared_download_capability(_folder_rom("snes", [_member(size_bytes)]))
+
+    assert (capability is not None) is expected
+    if capability is not None:
+        assert capability.source_kind == "folder"
+        assert capability.total_size_bytes == size_bytes
+
+
+@pytest.mark.parametrize("platform_slug", [UPS.WIN, UPS.PS3])
+def test_legacy_platforms_keep_small_verified_folder_capability(platform_slug):
+    capability = shared_download_capability(_folder_rom(platform_slug, [_member(1)]))
+
+    assert capability is not None
+    assert capability.source_kind == "folder"
+    assert capability.total_size_bytes == 1
+
+
+def test_single_file_capability_requires_matching_recorded_file_evidence():
+    size_bytes = SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+    member = _member(size_bytes)
+    rom = _folder_rom("snes", [member])
+    rom.has_simple_single_file = True
+    rom.fs_size_bytes = size_bytes
+    rom.files = [SimpleNamespace(file_size_bytes=size_bytes, missing_from_fs=False)]
+    rom.components[0].relative_path = "single-file-download"
+    member.relative_path = ""
+
+    capability = shared_download_capability(rom)
+
+    assert capability is not None
+    assert capability.source_kind == "file"
+    assert capability.total_size_bytes == size_bytes
+
+
+@pytest.mark.parametrize(
+    "members, missing_from_fs",
+    [
+        ([], False),
+        ([_member(1, sha256="short")], False),
+        ([_member(SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES, missing=True)], False),
+        ([_member(SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES)], True),
+    ],
+)
+def test_folder_capability_rejects_missing_or_incomplete_persisted_inventory(
+    members, missing_from_fs
+):
+    assert (
+        shared_download_capability(
+            _folder_rom("snes", members, missing_from_fs=missing_from_fs)
+        )
+        is None
+    )
+
+
+def test_single_file_capability_rejects_inconsistent_size_without_estimating():
+    size_bytes = SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
+    rom = _folder_rom("snes", [_member(size_bytes)])
+    rom.has_simple_single_file = True
+    rom.fs_size_bytes = size_bytes
+    rom.files = [SimpleNamespace(file_size_bytes=size_bytes - 1, missing_from_fs=False)]
+    rom.components[0].relative_path = "single-file-download"
+    rom.components[0].manifest_members[0].relative_path = ""
+
+    assert shared_download_capability(rom) is None

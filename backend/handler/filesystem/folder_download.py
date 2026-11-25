@@ -11,6 +11,8 @@ from handler.filesystem.storage_policy import StorageOperation
 from handler.scan_inventory_contracts import InventoryEvidence
 from models.rom import Rom, RomComponent, RomComponentKind, RomComponentManifestMember
 
+SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES = 4_000_000_000
+
 
 async def build_folder_download_component(
     handler, rom, inventory: InventoryEvidence | None
@@ -105,8 +107,8 @@ async def build_single_file_download_component(handler, rom: Rom) -> RomComponen
     return await asyncio.to_thread(build)
 
 
-async def build_ps3_download_component(handler, rom: Rom) -> RomComponent:
-    """Use one neutral group for a PS3 directory or an ISO source."""
+async def build_shared_download_component(handler, rom: Rom) -> RomComponent:
+    """Use one neutral group for an authorized directory or single-file source."""
     if rom.has_simple_single_file:
         return await build_single_file_download_component(handler, rom)
     return await build_folder_download_component(handler, rom, inventory=None)

@@ -14,6 +14,7 @@ from endpoints.responses.download_manifest import (
     DownloadManifestMemberSchema,
     DownloadManifestResponse,
 )
+from endpoints.responses.folder_download import is_shared_download_eligible
 from handler.auth.constants import Scope
 from handler.auth.dependencies import assert_rom_visible
 from handler.database import (
@@ -208,8 +209,14 @@ async def create_download_manifest(
         _not_found()
     assert_rom_visible(request, rom, not_found_detail=_NOT_FOUND)
     try:
-        if payload.whole_folder is True and rom.platform.slug == UPS.PS3:
-            await ensure_ps3_download_inventory(rom)
+        if payload.whole_folder is True:
+            # PS3 historically materializes a missing neutral inventory only
+            # after visibility is established and a manifest is requested.
+            if rom.platform_slug == UPS.PS3:
+                await ensure_ps3_download_inventory(rom)
+                rom = db_rom_handler.get_rom(rom.id) or rom
+            if not is_shared_download_eligible(rom):
+                raise ValueError("manifest folder inventory is unavailable")
         manifest = await asyncio.to_thread(
             db_download_manifest_handler.create_manifest,
             request.user.id,

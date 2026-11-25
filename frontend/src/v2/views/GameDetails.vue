@@ -10,6 +10,7 @@ import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
+import type { FolderDownloadCapabilitySchema } from "@/__generated__";
 import { ROUTES } from "@/plugins/router";
 import { FRONTEND_RESOURCES_PATH } from "@/utils";
 import AchievementsTab from "@/v2/components/GameDetails/AchievementsTab.vue";
@@ -23,9 +24,7 @@ import MetadataTab from "@/v2/components/GameDetails/MetadataTab.vue";
 import NotesTab from "@/v2/components/GameDetails/NotesTab.vue";
 import OverviewTab from "@/v2/components/GameDetails/OverviewTab.vue";
 import PatcherTab from "@/v2/components/GameDetails/PatcherTab.vue";
-import PcComponents, {
-  type FolderDownloadCapability,
-} from "@/v2/components/GameDetails/PcComponents.vue";
+import PcComponents from "@/v2/components/GameDetails/PcComponents.vue";
 import SaveDataTab from "@/v2/components/GameDetails/SaveDataTab.vue";
 import { useBackgroundArt } from "@/v2/composables/useBackgroundArt";
 import type { BackgroundAudioTrack } from "@/v2/composables/useBackgroundAudio";
@@ -380,20 +379,14 @@ const filesCount = computed(() => currentRom.value?.files?.length ?? 0);
 const isPcRom = computed(
   () => currentRom.value != null && isPcPlatform(currentRom.value),
 );
-const isPs3Rom = computed(() => currentRom.value?.platform_slug === "ps3");
-// Generated API types are refreshed with the backend schema. Keep this local
-// projection narrow until that generated contract includes folder_download.
-const folderDownload = computed<FolderDownloadCapability | undefined>(() => {
-  const rom = currentRom.value as
-    | (typeof currentRom.value & {
-        folder_download?: FolderDownloadCapability | null;
-      })
-    | null;
-  return rom?.folder_download ?? undefined;
-});
+// The backend alone approves whole-source downloads from complete, known-size
+// inventory. Missing capability data deliberately leaves the normal download
+// path unchanged.
+const folderDownload = computed<FolderDownloadCapabilitySchema | undefined>(
+  () => currentRom.value?.folder_download ?? undefined,
+);
 const hasGameDownload = computed(
   () =>
-    isPs3Rom.value ||
     folderDownload.value !== undefined ||
     (currentRom.value?.components?.length ?? 0) > 0,
 );
@@ -523,7 +516,6 @@ const tabs = computed<ZATabNavItem[]>(() => [
               :rom-id="currentRom.id"
               :components="currentRom.components ?? []"
               :folder-download="folderDownload"
-              :folder-inventory-required="isPs3Rom && !folderDownload"
               :archive-sets="archiveSets"
               :archive-sets-state="archiveSetsState"
               :refresh="refreshDownloadDetails"

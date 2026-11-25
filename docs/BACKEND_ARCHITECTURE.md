@@ -148,15 +148,20 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
 
 - Save and State are user-owned ROM assets with retained catalog identity, device linkage and visibility. Handlers are backend/handler/database/saves_handler.py and states_handler.py. SaveBackup is a separate owner-scoped ZIP aggregate; it validates archive topology without extraction and treats Windows restore paths as metadata only.
 - Device save synchronization uses backend/models/device_save_sync.py and backend/models/sync_session.py.
-- Folder-download selection snapshots immutable evidence from persisted,
+- Shared Game Download selection snapshots immutable evidence from persisted,
   scanner-created manifest members in backend/models/download_manifest.py. A
-  complete folder inventory creates one neutral eligible group for a whole-folder
-  request, while component, archive-set, and selected-member requests keep their
-  existing scopes. The manifest endpoint first verifies ROM visibility, resolves
-  whole-folder membership server-side under the ROM and component locks, then
-  returns a bounded 409 rejection code when the inventory is stale, incomplete,
-  duplicated, missing, or otherwise unavailable. It never returns a partial
-  folder. Absent or non-visible ROMs still receive the generic manifest 404.
+  visible and permitted ROM qualifies only with known source size at least
+  4,000,000,000 bytes inclusive: a simple source uses its recorded file size,
+  while a folder source requires exactly one complete neutral group and its
+  persisted member aggregate. Unknown, missing, stale, incomplete, or inferred
+  zero-size facts expose no capability. The manifest endpoint repeats this
+  server-owned eligibility check after ROM visibility and before any authorized
+  inventory materialization, then resolves whole-folder membership under the ROM
+  and component locks. It returns a bounded 409 rejection when evidence is
+  unavailable and never returns a partial folder. Qualifying requests use the
+  same user-scoped immutable manifest and queue delivery; below-threshold sources
+  retain their ordinary direct-download path. Absent or non-visible ROMs still
+  receive the generic manifest 404.
 - Manifest IDs and member IDs are opaque and user-scoped. The member stream
   rechecks ROM visibility, manifest validity, source identity, snapshot evidence,
   and safe relative-path resolution before it opens a file. The browser cannot
@@ -307,12 +312,22 @@ RomComponent and RomComponentManifestMember in backend/models/rom.py represent
 base, update, DLC, hotfix, language_pack, extra, unresolved, and neutral folder
 groups with relative paths, size, SHA-256 and missing-file state. The neutral
 `folder` group exists solely when a scan has a complete folder inventory and is
-the shared whole-folder download source for PC and console games. For PS3, the
-same neutral group represents either a verified directory tree or exactly one
-verified ISO member. A manifest request materializes missing PS3 inventory via
-the existing bounded storage capability before the regular manifest handler
-locks and captures it. It is not projected as a PC component or eligible for
-PC metadata/media workflows. A
+the shared whole-folder download source for PC and console games. It represents
+either a verified directory tree or exactly one verified single-file member.
+The complete inventory is published only by an authorized non-metadata scan
+lifecycle through the neutral folder-download reconciler. The existing PC and
+PS3 contracts remain authorized during `ScanType.QUICK`; other platforms enter
+the new folder-inventory path only outside that scan type. PS3 can materialize
+a missing neutral inventory only after visibility is checked for its authorized
+manifest request, while existing PC component paths remain intact. Additional
+platforms require an already recorded size of at least 4,000,000,000 bytes
+inclusive before scans enumerate or hash source files. Unknown or smaller
+additional sources are never estimated or hashed for this feature.
+`current_windows_quick()` remains a Windows execution context, not a
+replacement for the scan type gate. Detail responses and shared-manifest
+requests consume complete evidence within the same authorized manifest chain;
+they neither scan, hash, nor estimate for additional platforms. It is not
+projected as a PC component or eligible for PC metadata/media workflows. A
 top-level `OST`/`Soundtrack` folder is intentionally projected both as local
 soundtrack media and as an `extra` component: the former powers the Media player,
 while the latter gives the ordinary, manifest-authorized download flow a

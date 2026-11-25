@@ -101,6 +101,7 @@ export type { ExclusionPayload } from './models/ExclusionPayload';
 export type { FacetValueSchema } from './models/FacetValueSchema';
 export type { FilesystemDict } from './models/FilesystemDict';
 export type { FirmwareSchema } from './models/FirmwareSchema';
+export type { FolderDownloadCapabilitySchema } from './models/FolderDownloadCapabilitySchema';
 export type { FrontendDict } from './models/FrontendDict';
 export type { GenericTaskMeta } from './models/GenericTaskMeta';
 export type { GenericTaskStatusResponse } from './models/GenericTaskStatusResponse';

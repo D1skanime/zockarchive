@@ -90,20 +90,25 @@ describe("OverviewTab", () => {
       global: { stubs: { ZABtn: { template: "<button />" } } },
     });
     expect(wrapper.text()).not.toContain("Unknown legacy prose");
-    expect(wrapper.text()).toContain("rom.description-empty");
+    expect(wrapper.find(".overview-tab__summary").exists()).toBe(false);
+    expect(wrapper.text()).not.toContain("rom.description-");
     expect(
       wrapper.find("[data-testid='overview-description-edit']").exists(),
     ).toBe(true);
   });
 
   it.each([
-    ["manual", "en", "english_fallback"],
-    ["steam", "en", "english_fallback"],
-    ["screenscraper", "de", "base"],
+    ["German", "de", "German description", "screenscraper", "base"],
+    [
+      "English fallback",
+      "en",
+      "English ScreenScraper fallback",
+      "screenscraper",
+      "english_fallback",
+    ],
   ] as const)(
-    "renders safe %s prose with actual %s language and %s provenance",
-    async (source, resolvedLocale, match) => {
-      const text = "<img src=x onerror=alert(1)>";
+    "description contract keeps %s prose without technical notice",
+    (label, resolvedLocale, text, source, match) => {
       const description = {
         text,
         requestedLocale: "de-DE",
@@ -136,29 +141,38 @@ describe("OverviewTab", () => {
       expect(wrapper.get(".overview-tab__summary").attributes("lang")).toBe(
         resolvedLocale,
       );
+      expect(wrapper.text()).not.toContain("rom.description-");
       expect(wrapper.find("img").exists()).toBe(false);
-      expect(wrapper.text()).toContain(
-        resolvedLocale === "en" ? "English" : "German",
-      );
-      expect(wrapper.text()).toContain(
-        source === "steam"
-          ? "Steam"
-          : source === "screenscraper"
-            ? "ScreenScraper"
-            : "rom.description-manual-label",
-      );
-      expect(wrapper.text()).toContain(
-        match === "english_fallback"
-          ? "rom.description-language-fallback"
-          : "rom.description-source-localized",
-      );
-      await wrapper.setProps({
-        rom: { ...rom, id: 99 },
-        description: resolveDescription({ provider: null }),
-      });
-      expect(wrapper.text()).not.toContain(text);
+      expect(label).toBeTruthy();
     },
   );
+
+  it("description contract leaves a missing description without a notice area", () => {
+    const wrapper = mount(OverviewTab, {
+      props: {
+        rom,
+        description: resolveDescription({ provider: null, locale: "de-DE" }),
+        parentRomId: 42,
+        sections: [],
+        playerCount: null,
+        userCollections: [],
+        hltb: null,
+        lastPlayed: null,
+        revision: null,
+        screenshots: [],
+        expansions: [],
+        dlcs: [],
+        localDlcCandidates: [],
+        localExpansionCandidates: [],
+        remakes: [],
+        remasters: [],
+        similarGames: [],
+      },
+    });
+
+    expect(wrapper.find(".overview-tab__summary").exists()).toBe(false);
+    expect(wrapper.text()).not.toContain("rom.description-");
+  });
 
   it("renders a local DLC overview section without IGDB suggestions", () => {
     const wrapper = mount(OverviewTab, {

@@ -196,7 +196,8 @@ describe("PcDlcDetail", () => {
       },
     });
     expect(wrapper.text()).not.toContain("Legacy unknown text.");
-    expect(wrapper.text()).toContain("rom.description-empty");
+    expect(wrapper.find(".pc-dlc-detail__summary").exists()).toBe(false);
+    expect(wrapper.text()).not.toContain("rom.description-");
     await wrapper
       .get("[data-testid='pc-dlc-description-edit']")
       .trigger("click");
@@ -220,14 +221,11 @@ describe("PcDlcDetail", () => {
       "de-DE",
       "Manual Deutsch",
       "de",
-      false,
     ],
-    [{ en: "Manual English" }, "de-DE", "Provider Deutsch", "de", false],
-    [{ en: "Manual English" }, "fr-FR", "Manual English", "en", true],
-    [{}, "fr-FR", "Provider English", "en", true],
+    [{}, "fr-FR", "Provider English", "en"],
   ] as const)(
-    "resolves component requested-language and English controls %#",
-    (descriptions, requested, text, lang, fallback) => {
+    "description contract keeps component prose without technical notice %#",
+    (descriptions, requested, text, lang) => {
       locale.value = requested;
       const wrapper = mountDetail({
         ...selectedDlc,
@@ -247,11 +245,23 @@ describe("PcDlcDetail", () => {
       expect(wrapper.get(".pc-dlc-detail__summary").attributes("lang")).toBe(
         lang,
       );
-      expect(wrapper.text().includes("rom.description-language-fallback")).toBe(
-        fallback,
-      );
+      expect(wrapper.text()).not.toContain("rom.description-");
     },
   );
+
+  it("description contract leaves a missing component description without a notice area", () => {
+    const wrapper = mountDetail({
+      ...selectedDlc,
+      component_metadata: {
+        ...selectedDlc.component_metadata,
+        manual_metadata: null,
+        steam_metadata: null,
+      },
+    });
+
+    expect(wrapper.find(".pc-dlc-detail__summary").exists()).toBe(false);
+    expect(wrapper.text()).not.toContain("rom.description-");
+  });
 
   it("renders untrusted provider markup as text and replaces it on entity refetch", async () => {
     locale.value = "de-DE";

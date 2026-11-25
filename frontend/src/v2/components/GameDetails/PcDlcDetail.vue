@@ -20,7 +20,6 @@ import { resolvePcDlcCoverPresentation } from "@/v2/components/GameDetails/pcDlc
 import { usePcDlcPrimaryTabSync } from "@/v2/components/GameDetails/pcDlcPrimaryTabSync";
 import { useCan } from "@/v2/composables/useCan";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
-import { descriptionPresentation } from "@/v2/composables/useManualDescription/provenance";
 
 defineOptions({ inheritAttrs: false });
 
@@ -82,21 +81,6 @@ const description = computed(() => {
     steamMetadata: metadata?.steam_metadata,
     locale: locale.value,
     provider: "steam",
-  });
-});
-const provenance = computed(() => {
-  const result = description.value;
-  const names = new Intl.DisplayNames([toBrowserLocale(locale.value)], {
-    type: "language",
-  });
-  return descriptionPresentation(result, {
-    source:
-      result.source === "manual" ? t("rom.description-manual-label") : "Steam",
-    language: result.resolvedLocale
-      ? (names.of(result.resolvedLocale) ?? result.resolvedLocale)
-      : "",
-    requestedLanguage:
-      names.of(result.requestedLocale) ?? result.requestedLocale,
   });
 });
 watch(
@@ -260,12 +244,6 @@ function showMedia() {
                   :lang="description.resolvedLocale ?? undefined"
                 >
                   {{ description.text }}
-                </p>
-                <p v-else class="pc-dlc-detail__summary">
-                  {{ t("rom.description-empty") }}
-                </p>
-                <p class="pc-dlc-detail__provenance">
-                  {{ t(provenance.key, provenance.params) }}
                 </p>
               </div>
               <ZABtn
@@ -498,9 +476,6 @@ function showMedia() {
 .pc-dlc-detail__description {
   min-width: 0;
   overflow-wrap: anywhere;
-}
-.pc-dlc-detail__provenance {
-  color: var(--r-color-fg-muted);
 }
 .pc-dlc-detail__summary {
   white-space: pre-line;
