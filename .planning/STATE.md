@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed 48-03-PLAN.md
-last_updated: "2026-11-25T01:15:19.448Z"
+stopped_at: Completed quick 261125-1uj
+last_updated: "2026-11-25T01:23:06Z"
 last_activity: 2026-11-25
 progress:
   total_phases: 48
@@ -17,6 +17,11 @@ progress:
 # Project State
 
 ## Latest quick task
+
+- 261125-1uj completed: neutral shared-download reconciliation now receives
+  the current ROM reloaded after PC component persistence, preserving newly
+  scanned non-`FOLDER` components. Targeted Trunk found no new issues. No tests
+  or browser checks ran before live UAT.
 
 - 261125-1m3 completed: large PC single-file games now require one matching,
   persisted neutral manifest component before the shared downloader is exposed.
