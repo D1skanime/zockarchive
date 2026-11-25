@@ -245,9 +245,6 @@ function showMedia() {
                 >
                   {{ description.text }}
                 </p>
-                <p v-else class="pc-dlc-detail__summary">
-                  {{ t("rom.description-empty") }}
-                </p>
               </div>
               <ZABtn
                 v-if="canEdit"

@@ -269,9 +269,6 @@ const youtubeEmbedUrl = computed(() =>
         >
           {{ description.text }}
         </p>
-        <p v-else class="overview-tab__summary overview-tab__summary--muted">
-          {{ t("rom.description-empty") }}
-        </p>
       </div>
       <ZABtn
         v-if="canEdit"
