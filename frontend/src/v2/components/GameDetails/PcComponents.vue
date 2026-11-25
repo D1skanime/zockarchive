@@ -5,8 +5,11 @@ import type { Emitter } from "mitt";
 import { computed, inject, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
-import type { PcComponentSchema } from "@/__generated__";
-import type { DownloadManifestResponse } from "@/__generated__";
+import type {
+  DownloadManifestResponse,
+  FolderDownloadCapabilitySchema,
+  PcComponentSchema,
+} from "@/__generated__";
 import { ROUTES } from "@/plugins/router";
 import type { Events } from "@/types/emitter";
 import { formatBytes } from "@/utils";
@@ -19,17 +22,11 @@ import DownloadSelectionDialog, {
   type DownloadArchiveSet,
 } from "./DownloadSelectionDialog.vue";
 
-export type FolderDownloadCapability = {
-  member_count: number;
-  total_size_bytes: number;
-};
-
 defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{
   components: PcComponentSchema[];
-  folderDownload?: FolderDownloadCapability;
-  folderInventoryRequired?: boolean;
+  folderDownload?: FolderDownloadCapabilitySchema;
   romId: number;
   parentName?: string;
   archiveSets?: DownloadArchiveSet[];
@@ -256,7 +253,6 @@ const groupedComponents = computed(() =>
       v-model="showDownload"
       :components="components"
       :folder-download="folderDownload"
-      :folder-inventory-required="folderInventoryRequired"
       :archive-sets="archiveSets"
       @start="startDownload"
     />
@@ -275,11 +271,7 @@ const groupedComponents = computed(() =>
     />
 
     <ZAEmptyState
-      v-if="
-        !folderDownload &&
-        !folderInventoryRequired &&
-        groupedComponents.length === 0
-      "
+      v-if="!folderDownload && groupedComponents.length === 0"
       icon="mdi-package-variant-closed"
       :title="t('rom.pc-no-components')"
     />
