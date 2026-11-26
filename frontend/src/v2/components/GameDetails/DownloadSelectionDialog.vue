@@ -24,6 +24,7 @@ const props = defineProps<{
   components: PcComponentSchema[];
   folderDownload?: FolderDownloadCapabilitySchema;
   archiveSets?: DownloadArchiveSet[];
+  romFileName?: string;
 }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: boolean): void;
@@ -147,6 +148,16 @@ function memberComponentLabel(componentId: number) {
 function componentFilesExpanded(componentId: number) {
   return expandedComponentIds.value.includes(componentId);
 }
+function componentLabel(component: PcComponentSchema) {
+  return component.kind === "base"
+    ? t("rom.pc-base-game")
+    : component.kind === "folder"
+      ? t("rom.file")
+      : component.relative_path;
+}
+function memberLabel(member: PcComponentSchema["manifest_members"][number]) {
+  return member.relative_path || props.romFileName || t("rom.file");
+}
 function setComponentFilesExpanded(componentId: number, expanded: boolean) {
   expandedComponentIds.value = expanded
     ? [...new Set([...expandedComponentIds.value, componentId])]
@@ -187,11 +198,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
                   selectedMemberIds.includes(member.id),
                 )
               "
-              :label="
-                component.kind === 'base'
-                  ? t('rom.pc-base-game')
-                  : component.relative_path
-              "
+              :label="componentLabel(component)"
               variant="card"
               @update:model-value="
                 (checked) =>
@@ -227,7 +234,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
                   v-for="member in component.manifest_members"
                   :key="`file-${member.id}`"
                   :model-value="selectedMemberIds.includes(member.id)"
-                  :label="`${member.relative_path} (${formatBytes(member.size_bytes)})`"
+                  :label="`${memberLabel(member)} (${formatBytes(member.size_bytes)})`"
                   @update:model-value="
                     (checked) =>
                       (selectedMemberIds = checked

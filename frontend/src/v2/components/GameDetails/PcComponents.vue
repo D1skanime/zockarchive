@@ -29,6 +29,7 @@ const props = defineProps<{
   folderDownload?: FolderDownloadCapabilitySchema;
   romId: number;
   parentName?: string;
+  romFileName?: string;
   archiveSets?: DownloadArchiveSet[];
   archiveSetsState?: "idle" | "loading" | "ready" | "error";
   refresh?: () => Promise<void>;
@@ -277,6 +278,7 @@ const groupedComponents = computed(() =>
       :components="components"
       :folder-download="folderDownload"
       :archive-sets="archiveSets"
+      :rom-file-name="romFileName"
       @start="startDownload"
     />
     <DownloadManager
