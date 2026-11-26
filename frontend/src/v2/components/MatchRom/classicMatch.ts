@@ -28,7 +28,7 @@ export function createClassicMatchPayload(
   target: SimpleRom,
   matched: MatchSearchRom,
   cover: MatchedSource | undefined,
-): ClassicMatchPayload {
+): SimpleRom {
   const urlCover =
     cover?.url_cover ??
     matched.igdb_url_cover ??
