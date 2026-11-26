@@ -347,6 +347,30 @@ English and provider fallbacks.
 
 Manual IGDB matching retains its complete cover, screenshot and artwork source inventory in `igdb_metadata.provider_media`. The explicit parent-media refresh chooses that retained provider inventory before legacy URL fields. For older manual matches that retain only a known IGDB id, it restores this inventory from that same provider record before reconciling screenshots and artwork. Provider-media suppressions remain durable and are checked before every candidate is republished.
 
+#### Current provider-media refresh
+
+An explicit same-ID IGDB assignment and `POST /api/roms/{id}/media/refresh`
+retrieve the current provider catalog before reconciling it. A confirmed catalog,
+including an empty catalog, replaces the retained provider snapshot. An empty
+snapshot never retires catalog rows, placements, selected covers, uploads, or
+`provider_media_suppressions`; a lookup failure leaves the prior snapshot intact.
+
+`refresh_provider_owned_media` discovers provider-qualified stable candidates,
+filters suppressed candidates before I/O, and reuses an active owned path only
+when its candidate key and role match. Missing, non-suppressed candidates are
+downloaded to staged owned storage and reconciled under the existing ROM version
+lock. That locked reconciliation checks suppression again, preserves manually
+uploaded media, placements, and selected covers, and cleans staged output when
+publication cannot complete. The protected route returns the canonical detailed
+ROM only after every candidate succeeds. Lookup, normalization, download,
+storage, and publication failures return a retryable HTTP 409 detail that names
+the failed stage. The refresh never writes to the source library.
+
+Administrator UAT checks the same-ID assignment, a newly offered provider item,
+a deliberately deleted URL-size alias, manual upload and cover preservation, a
+retry after a transient failure, and the returned partial or error feedback. Do
+not use the procedure to restore deleted provider media or access source paths.
+
 #### DLC-owned manuals and media
 
 `backend/endpoints/roms/pc_component_resources.py` exposes component resources
