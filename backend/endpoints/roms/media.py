@@ -25,6 +25,7 @@ from handler.filesystem import fs_resource_handler, storage_composition
 from handler.filesystem.storage_access import OwnedRead, open_owned_access
 from handler.filesystem.storage_policy import OwnedStorageKind, StorageOperation
 from handler.metadata.rom_media import (
+    ProviderMediaOperationError,
     prepare_provider_media_refresh,
     refresh_provider_owned_media,
 )
@@ -60,6 +61,11 @@ def _detailed_rom_response(rom_id: int, request: Request) -> DetailedRomSchema:
     return DetailedRomSchema.from_orm_with_request(rom, request)
 
 
+def _provider_media_conflict_detail(stage: str, candidate: str | None = None) -> str:
+    detail = f"Provider media {stage} failed"
+    return f"{detail}: {candidate}" if candidate else detail
+
+
 @protected_route(router.get, "/{id}/media", [Scope.ROMS_READ])
 async def get_media(request: Request, id: int) -> list[RomOwnedMediaSchema]:
     _visible_rom(request, id)
@@ -82,15 +88,23 @@ async def refresh_media(
         _, failures = await refresh_provider_owned_media(
             rom, rom.updated_at, provider, source
         )
-    except ValueError:
+    except ProviderMediaOperationError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Provider media could not be refreshed",
+            detail=_provider_media_conflict_detail(exc.stage),
         ) from None
-    if failures:
+    except ValueError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="Provider media could not be refreshed",
+            detail=_provider_media_conflict_detail("normalization"),
+        ) from exc
+    if failures:
+        failure = failures[0]
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=_provider_media_conflict_detail(
+                failure.stage, failure.provider_media_id or None
+            ),
         )
     return _detailed_rom_response(id, request)
 
