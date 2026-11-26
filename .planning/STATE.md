@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-s45-nach-freigegebener-live-abnahme-direkte-
-last_updated: "2026-11-26T20:19:37Z"
+stopped_at: Completed quick 261126-s46-frontend-typecheck-test-payloads
+last_updated: "2026-11-26T21:16:00Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -24,6 +24,13 @@ progress:
 - Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-s46 completed: the accepted Edit ROM composable regression test now
+  builds complete generated `UpdateRom` payloads for its success, recovered
+  provider-media conflict, and generic error cases. The original assertions
+  remain unchanged. Its focused Vitest target passed 3 tests and frontend
+  typecheck passed. No product code, full suite, browser, or runtime resource
+  changed.
 
 - 261126-s45 completed after live acceptance: direct composable contracts now
   cover Edit ROM success synchronization, durable-update provider-media 409
@@ -1240,6 +1247,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-s46 | Repair typed Edit ROM update test payloads | 2026-11-26 | c7fbc249a | [typed Edit ROM update test payloads](./quick/261126-s46-frontend-typecheck-test-payloads/) |
 | 261126-rqo | Recover Edit ROM after provider-media conflict | 2026-11-26 | 38f9d1161 | [Edit ROM provider-media recovery](./quick/261126-rqo-review-fix-edit-rom-dialog-muss-den-best/) |
 | 261126-r9v | Isolate and repair the Gate07 provider-media suppression race test | 2026-11-26 | 1d7c7f024 | [Gate07 suppression race test](./quick/261126-r9v-gate07-isolierten-suppression-race-test-/) |
 | 261126-p8z | Correct only approved Gate05 locale digest references | 2026-11-26 | this commit | [Gate05 locale digest correction](./quick/261126-p8z-gate05-nur-die-bestehende-freigegebene-m/) |
