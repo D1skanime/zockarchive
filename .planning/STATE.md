@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-mog-quality-gate-job-261126-d0af-im-phase-51
-last_updated: "2026-11-26T16:23:15Z"
+stopped_at: Completed quick 261126-nf1-review-fix-same-id-match-mit-cover-und-p
+last_updated: "2026-11-26T17:01:45Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -24,6 +24,15 @@ progress:
 - Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-nf1 completed: same-IGDB manual matches now choose owned-media
+  refresh only after a complete typed payload comparison. Changed title, slug,
+  selected normalized cover, manual metadata state, or serialised provider ID
+  follows the established update and canonical-recovery path. Trunk, frontend
+  typecheck, and production build passed. Browser interaction was unavailable:
+  port 3000 was local-only, but no approved browser binary or control capability
+  existed. No test suite, Docker, provider, NAS, deployment, or live runtime
+  resource was used.
 
 - 261126-mog completed: Phase 51 now explicitly binds ki-run job 261126-d0af
   to its canonical phase directory. The authoritative job manifest was parsed
