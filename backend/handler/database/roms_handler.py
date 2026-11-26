@@ -764,6 +764,38 @@ class DBRomsHandler(
         return suppressed_candidates(session, rom_id, candidates)
 
     @begin_session
+    def get_provider_media_inventory(
+        self, rom_id, candidates, *, session=None
+    ) -> dict[tuple[str, str, RomOwnedMediaRole], RomOwnedMedia]:
+        """Return usable active provider rows keyed by the shared candidate identity."""
+        keys = {
+            (candidate.provider, candidate.provider_media_id, candidate.role)
+            for candidate in candidates
+        }
+        if not keys:
+            return {}
+        providers = {provider for provider, _, _ in keys}
+        identities = {identity for _, identity, _ in keys}
+        rows = session.scalars(
+            select(RomOwnedMedia).where(
+                RomOwnedMedia.rom_id == rom_id,
+                RomOwnedMedia.origin == RomOwnedMediaOrigin.PROVIDER,
+                RomOwnedMedia.state == RomOwnedMediaState.ACTIVE,
+                RomOwnedMedia.provider.in_(providers),
+                RomOwnedMedia.provider_media_id.in_(identities),
+                RomOwnedMedia.owned_path.is_not(None),
+                RomOwnedMedia.owned_path != "",
+            )
+        )
+        return {
+            (media.provider, media.provider_media_id, media.role): media
+            for media in rows
+            if (media.provider, media.provider_media_id, media.role) in keys
+            and media.provider is not None
+            and media.provider_media_id is not None
+        }
+
+    @begin_session
     def get_steam_owned_media_inventory(
         self,
         rom_id: int,
