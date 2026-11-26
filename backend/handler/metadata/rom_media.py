@@ -262,7 +262,6 @@ async def refresh_provider_owned_media(
         reusable = active.get(candidate_key(candidate))
         if (
             reusable is not None
-            and reusable.role == candidate.role
             and isinstance(reusable.owned_path, str)
             and reusable.owned_path
         ):
@@ -319,7 +318,7 @@ async def refresh_provider_owned_media(
                     (
                         exc.stage
                         if isinstance(exc, ProviderMediaOperationError)
-                        else "download"
+                        else "publication" if path is not None else "storage"
                     ),
                     str(exc),
                 )
