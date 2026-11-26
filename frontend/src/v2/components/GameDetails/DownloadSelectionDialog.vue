@@ -121,6 +121,20 @@ watch(
     }
   },
 );
+watch(
+  () => props.folderDownload?.state,
+  (state, previousState) => {
+    if (
+      props.modelValue &&
+      previousState === "preparable" &&
+      state === "ready"
+    ) {
+      selectedMemberIds.value = props.components.flatMap((component) =>
+        component.manifest_members.map((member) => member.id),
+      );
+    }
+  },
+);
 function start() {
   if (selectionInvalid.value) return;
   emit("start", {
