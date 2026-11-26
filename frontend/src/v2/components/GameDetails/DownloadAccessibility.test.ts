@@ -389,10 +389,31 @@ describe("browser download accessibility and truthful state contract", () => {
   });
 
   it("preselects prepared folder members when the open dialog becomes ready", async () => {
+    const preparedComponents: PcComponentSchema[] = [
+      {
+        id: 91,
+        relative_path: "folder-download",
+        kind: "base",
+        manifest_members: [
+          {
+            id: 701,
+            relative_path: "PS3_GAME/USRDIR/EBOOT.BIN",
+            size_bytes: 1024,
+            sha256: "a".repeat(64),
+          },
+          {
+            id: 702,
+            relative_path: "PS3_GAME/USRDIR/DATA.BIN",
+            size_bytes: 2048,
+            sha256: "b".repeat(64),
+          },
+        ],
+      },
+    ];
     const wrapper = mount(DownloadSelectionDialog, {
       props: {
         modelValue: false,
-        components,
+        components: preparedComponents,
         folderDownload: {
           state: "preparable",
           source_kind: "folder",
@@ -409,7 +430,7 @@ describe("browser download accessibility and truthful state contract", () => {
       folderDownload: {
         state: "ready",
         source_kind: "folder",
-        member_count: 2,
+        member_count: preparedComponents[0].manifest_members.length,
         total_size_bytes: 4_000_000_000,
       },
     });
@@ -419,7 +440,7 @@ describe("browser download accessibility and truthful state contract", () => {
     expect(
       wrapper
         .findAll("input[type=checkbox]")
-        .every((input) => input.element.checked),
+        .every((input) => (input.element as HTMLInputElement).checked),
     ).toBe(true);
     expect(
       wrapper
