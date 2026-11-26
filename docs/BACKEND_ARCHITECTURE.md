@@ -153,7 +153,11 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
   visible and permitted ROM qualifies only with known source size at least
   4,000,000,000 bytes inclusive: a simple source uses its recorded file size,
   while a folder source requires exactly one complete neutral group and its
-  persisted member aggregate. Unknown, missing, stale, incomplete, or inferred
+  persisted member aggregate. A ready detailed response projects the same
+  verified neutral members into the existing bounded selection contract. The
+  manifest request accepts at most 4,096 unique positive opaque member IDs and
+  locks them to that ROM's one FOLDER component before it snapshots exactly the
+  selected members. Unknown, missing, stale, incomplete, or inferred
   zero-size facts expose no capability. Detail responses read only persisted
   facts and can mark a threshold-eligible legacy folder as `preparable`, never
   transfer-ready. Only the protected whole-folder manifest POST, after ROM
@@ -163,10 +167,11 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
   evidence is unavailable and never returns a partial folder. Below-threshold
   sources retain their ordinary direct-download path. Absent or non-visible ROMs
   still receive the generic manifest 404.
-- Manifest IDs and member IDs are opaque and user-scoped. The member stream
-  rechecks ROM visibility, manifest validity, source identity, snapshot evidence,
-  and safe relative-path resolution before it opens a file. The browser cannot
-  supply a source-library path or enumerate persisted member rows.
+- Manifest IDs and member IDs are opaque and user-scoped. Manifest capture,
+  revalidation, and member streaming resolve the ROM's current mapping revision
+  for every source read, then recheck visibility, source identity, snapshot
+  evidence, and safe relative-path resolution. The browser cannot supply a
+  source-library path or enumerate persisted member rows.
 - Resumable transfer attempts, item states and event lineage live in backend/models/download_transfer.py; endpoints are backend/endpoints/download_manifests.py and backend/endpoints/download_transfers.py.
 - Source changes invalidate manifests/transfers. The frontend consumes them via frontend/src/v2/data/adapters/legacy/services/api/downloadTransfers.ts.
 

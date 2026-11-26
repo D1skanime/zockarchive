@@ -421,6 +421,7 @@ const tabs = computed<ZATabNavItem[]>(() => [
               :archive-sets-state="archiveSetsState"
               :refresh="refreshDownloadDetails"
               :parent-name="currentRom.name ?? currentRom.fs_name_no_tags"
+              :rom-file-name="currentRom.fs_name"
             />
           </template>
           <PatcherTab v-if="tab === 'patcher' && !isPcRom" :rom="currentRom" />
@@ -446,5 +447,4 @@ const tabs = computed<ZATabNavItem[]>(() => [
     <p>{{ t("rom.loading-rom") }}</p>
   </section>
 </template>
-
 <style scoped src="./gameDetails.css" />

@@ -24,6 +24,7 @@ const props = defineProps<{
   components: PcComponentSchema[];
   folderDownload?: FolderDownloadCapabilitySchema;
   archiveSets?: DownloadArchiveSet[];
+  romFileName?: string;
 }>();
 const emit = defineEmits<{
   (e: "update:modelValue", value: boolean): void;
@@ -44,10 +45,10 @@ const selectedOptional = ref<number[]>([]);
 const selectedMemberIds = ref<number[]>([]);
 const expandedComponentIds = ref<number[]>([]);
 const mode = ref<"standard" | "enhanced">("standard");
-const isWholeFolder = computed(() => props.folderDownload !== undefined);
-const folderDownloadIsReady = computed(
-  () => props.folderDownload?.state === "ready",
+const isWholeFolder = computed(
+  () => props.folderDownload?.state === "preparable",
 );
+const usesFolderInventory = computed(() => props.folderDownload !== undefined);
 const currentSet = computed(() =>
   props.archiveSets?.find((set) => set.id === selectedSet.value),
 );
@@ -83,12 +84,10 @@ const selectedComponentIds = computed(() =>
         .map((component) => component.id),
 );
 const selectedBytes = computed(() =>
-  folderDownloadIsReady.value
-    ? (props.folderDownload?.total_size_bytes ?? 0)
-    : props.components
-        .flatMap((component) => component.manifest_members)
-        .filter((member) => selectedMembers.value.includes(member.id))
-        .reduce((total, member) => total + member.size_bytes, 0),
+  props.components
+    .flatMap((component) => component.manifest_members)
+    .filter((member) => selectedMembers.value.includes(member.id))
+    .reduce((total, member) => total + member.size_bytes, 0),
 );
 const missing = computed(
   () =>
@@ -122,13 +121,27 @@ watch(
     }
   },
 );
+watch(
+  () => props.folderDownload?.state,
+  (state, previousState) => {
+    if (
+      props.modelValue &&
+      previousState === "preparable" &&
+      state === "ready"
+    ) {
+      selectedMemberIds.value = props.components.flatMap((component) =>
+        component.manifest_members.map((member) => member.id),
+      );
+    }
+  },
+);
 function start() {
   if (selectionInvalid.value) return;
   emit("start", {
     archiveSetId: selectedSet.value,
     selectedMemberIds: selectedMembers.value,
     componentIds: selectedComponentIds.value,
-    wholeFolder: isWholeFolder.value || undefined,
+    wholeFolder: usesFolderInventory.value || undefined,
     mode: mode.value,
   });
   emit("update:modelValue", false);
@@ -148,6 +161,16 @@ function memberComponentLabel(componentId: number) {
 }
 function componentFilesExpanded(componentId: number) {
   return expandedComponentIds.value.includes(componentId);
+}
+function componentLabel(component: PcComponentSchema) {
+  return usesFolderInventory.value
+    ? t("rom.file")
+    : component.kind === "base"
+      ? t("rom.pc-base-game")
+      : component.relative_path;
+}
+function memberLabel(member: PcComponentSchema["manifest_members"][number]) {
+  return member.relative_path || props.romFileName || t("rom.file");
 }
 function setComponentFilesExpanded(componentId: number, expanded: boolean) {
   expandedComponentIds.value = expanded
@@ -174,13 +197,6 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
           variant="card"
           @update:model-value="selectedSet = set.id"
         />
-        <ZACheckbox
-          v-if="folderDownloadIsReady && folderDownload"
-          :model-value="true"
-          :label="`${t('rom.download-game')} (${t('rom.files-count-n', { n: folderDownload.member_count })}, ${formatBytes(folderDownload.total_size_bytes)})`"
-          variant="card"
-          disabled
-        />
         <div
           v-if="!isWholeFolder && !archiveSets?.length"
           class="download-selection__files"
@@ -196,11 +212,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
                   selectedMemberIds.includes(member.id),
                 )
               "
-              :label="
-                component.kind === 'base'
-                  ? t('rom.pc-base-game')
-                  : component.relative_path
-              "
+              :label="componentLabel(component)"
               variant="card"
               @update:model-value="
                 (checked) =>
@@ -236,7 +248,7 @@ function setComponentFilesExpanded(componentId: number, expanded: boolean) {
                   v-for="member in component.manifest_members"
                   :key="`file-${member.id}`"
                   :model-value="selectedMemberIds.includes(member.id)"
-                  :label="`${member.relative_path} (${formatBytes(member.size_bytes)})`"
+                  :label="`${memberLabel(member)} (${formatBytes(member.size_bytes)})`"
                   @update:model-value="
                     (checked) =>
                       (selectedMemberIds = checked

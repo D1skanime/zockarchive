@@ -9,7 +9,6 @@ from handler.filesystem.folder_download import (
     SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES,
     has_shared_download_single_file,
 )
-from handler.metadata.base_handler import UniversalPlatformSlug as UPS
 from models.rom import Rom, RomComponentKind
 
 
@@ -29,11 +28,6 @@ def prepare_download_components(rom: Rom) -> None:
         for component in rom.components
         if component.kind is not RomComponentKind.FOLDER
     ]
-
-
-def is_legacy_shared_download_platform(rom: Rom) -> bool:
-    """Keep the accepted PC and PS3 manifest contract independent of new platforms."""
-    return rom.platform_slug in {UPS.WIN, UPS.PS3}
 
 
 def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | None:
@@ -63,10 +57,7 @@ def shared_download_capability(rom: Rom) -> FolderDownloadCapabilitySchema | Non
             member.missing_from_fs or member.size_bytes < 0 or len(member.sha256) != 64
             for member in members
         )
-        or (
-            not is_legacy_shared_download_platform(rom)
-            and total_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
-        )
+        or total_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
     ):
         return None
 
@@ -109,10 +100,7 @@ def shared_download_preparation_capability(
     if (
         rom.missing_from_fs
         or rom.fs_size_bytes is None
-        or (
-            not is_legacy_shared_download_platform(rom)
-            and rom.fs_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
-        )
+        or rom.fs_size_bytes < SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
     ):
         return None
 
@@ -144,8 +132,9 @@ def is_shared_download_preparable(rom: Rom) -> bool:
 
 
 def prepare_folder_download_details(rom: Rom) -> None:
-    """Project the shared capability without exposing source paths or members."""
+    """Project a ready shared inventory through the existing member contract."""
     prepare_download_components(rom)
-    rom.folder_download = (  # type: ignore[assignment]
-        shared_download_capability(rom) or shared_download_preparation_capability(rom)
-    )
+    capability = shared_download_capability(rom)
+    rom.folder_download = capability or shared_download_preparation_capability(rom)  # type: ignore[assignment]
+    if capability is not None and capability.state == "ready":
+        rom.download_components = rom.components  # type: ignore[assignment]

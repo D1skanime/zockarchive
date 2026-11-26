@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261125-g53-post-uat-quick-scan-contract-tests
-last_updated: "2026-11-25T11:41:42Z"
-last_activity: 2026-11-25
+stopped_at: Completed quick 261126-edh-quality-gate-rom-handler-zeilenlimit-nac
+last_updated: "2026-11-26T10:22:00Z"
+last_activity: 2026-11-26
 progress:
   total_phases: 48
   completed_phases: 38
@@ -16,7 +16,34 @@ progress:
 
 # Project State
 
+## Accumulated Context
+
+### Roadmap Evolution
+
+- Phase 50 added: ZA: Gemeinsame PC-Dateiauswahl für große Spiele korrekt wiederverwenden.
+
 ## Latest quick task
+
+- 261126-edh completed: restored the ROM handler to its 1,306-line baseline
+  after mapping-helper extraction. No tests ran before UAT.
+
+- 261126-e98 completed: restored the manifest transfer test seam and extracted
+  mapped manifest helpers to satisfy Trunk and handler line limits. No tests
+  ran before UAT.
+
+- 261126-dkf completed: real isolated MariaDB, Redis and Uvicorn evidence
+  exposed and repaired mapped manifest capture, revalidation and streaming.
+  The retained receipt covers a prepared 564-member legacy source, exact
+  563-member selection, a standard transfer-session stream, and 3000 unique
+  selected member IDs. No tests ran before UAT.
+
+- 261125-veo completed: removed the duplicate ready-folder summary control and
+  aligned the existing manifest endpoint contract test with member selection.
+  No tests ran before UAT.
+
+- 261125-v4g completed: restored the missing Phase 50 Wave-1 GSD summary with
+  a truthful static reproduction record. No tests, browser work, runtime
+  resources, or product changes were performed.
 
 - 261125-g53-post-uat-quick-scan-contract-tests completed: direct tests now
   preserve PC/PS3 quick-scan authorization, exclude additional platforms from
@@ -1126,6 +1153,9 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-edh | Restore ROM handler line-limit baseline after mapping helper extraction | 2026-11-26 | this commit | [261126-edh-quality-gate-rom-handler-zeilenlimit-nac](./quick/261126-edh-quality-gate-rom-handler-zeilenlimit-nac/) |
+| 261126-e98 | Repair mapping manifest lint and line-limit gate findings | 2026-11-26 | this commit | [261126-e98-quality-gate-mapping-manifest-lint-und-z](./quick/261126-e98-quality-gate-mapping-manifest-lint-und-z/) |
+| 261126-dkf | Record and repair real isolated mapped manifest evidence for Phase 50 | 2026-11-26 | this commit | [261126-dkf-echter-isolierter-backend-nachweis-f-r-p](./quick/261126-dkf-echter-isolierter-backend-nachweis-f-r-p/) |
 | 20261125-shared-inventory-test-contract | Repair stale shared inventory test seams after full regression collection failure | 2026-11-25 | 8321274b1 | [20261125-shared-inventory-test-contract](./quick/20261125-shared-inventory-test-contract/) |
 | 261125-scan-handler-shared-download-authorization | Extract shared-download scan authorization from scan handler | 2026-11-25 | this commit | [261125-scan-handler-shared-download-authorization](./quick/261125-scan-handler-shared-download-authorization/) |
 | 261125-ps3-quick-inventory-contract | Restore the PC/PS3 quick-scan shared-download contract | 2026-11-25 | e63988bc2 | [261125-ps3-quick-inventory-contract](./quick/261125-ps3-quick-inventory-contract/) |

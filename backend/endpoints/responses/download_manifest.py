@@ -9,9 +9,10 @@ class DownloadManifestCreateRequest(BaseModel):
     component_ids: list[int] | None = Field(default=None, min_length=1, max_length=100)
     archive_set_id: int | None = Field(default=None, ge=1)
     selected_member_ids: list[int] | None = Field(
-        default=None, min_length=1, max_length=100
+        default=None, min_length=1, max_length=4096
     )
     whole_folder: bool | None = None
+    prepare_only: bool = False
 
     @field_validator("component_ids")
     @classmethod
@@ -32,8 +33,10 @@ class DownloadManifestCreateRequest(BaseModel):
 
     @model_validator(mode="after")
     def validate_whole_folder_selection(self) -> "DownloadManifestCreateRequest":
-        """Keep the server-resolved folder mode separate from client selections."""
+        """Keep folder selection bound to its verified server-side inventory."""
         if self.whole_folder is not True:
+            if self.prepare_only:
+                raise ValueError("folder preparation requires whole folder mode")
             if self.whole_folder is False:
                 raise ValueError("whole folder selection must be enabled")
             return self
@@ -42,10 +45,11 @@ class DownloadManifestCreateRequest(BaseModel):
             for selection in (
                 self.component_ids,
                 self.archive_set_id,
-                self.selected_member_ids,
             )
         ):
             raise ValueError("whole folder selection cannot include other selections")
+        if self.prepare_only and self.selected_member_ids is not None:
+            raise ValueError("folder preparation cannot include member selection")
         return self
 
 

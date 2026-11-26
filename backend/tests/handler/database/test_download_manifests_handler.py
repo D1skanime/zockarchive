@@ -37,6 +37,9 @@ class FakeManifestFilesystem:
             else "UNCHANGED_BY_LIGHT_CHECK"
         )
 
+    async def open_verified_download_manifest_member(self, _rom, _persisted_member):
+        raise AssertionError("manifest creation must not open a transfer")
+
 
 @pytest.fixture(autouse=True)
 def clear_download_manifests():
@@ -125,6 +128,69 @@ def test_create_manifest_allows_explicit_file_selection_without_archive_policy(
         selected_id
     ]
     assert [member_id for member_id, _public_id in filesystem.captured] == [selected_id]
+
+
+def test_create_manifest_whole_folder_captures_exact_selected_members(admin_user, rom):
+    folder = _component(rom.id, RomComponentKind.FOLDER, "library")
+    folder.manifest_members.extend(
+        [
+            RomComponentManifestMember(
+                relative_path="folder-library/optional-one.bin",
+                size_bytes=7,
+                sha256="b" * 64,
+            ),
+            RomComponentManifestMember(
+                relative_path="folder-library/optional-two.bin",
+                size_bytes=11,
+                sha256="c" * 64,
+            ),
+        ]
+    )
+    with session.begin() as db:
+        db.add(folder)
+        db.flush()
+        selected_ids = [
+            folder.manifest_members[0].id,
+            folder.manifest_members[2].id,
+        ]
+
+    filesystem = FakeManifestFilesystem()
+    manifest = DBDownloadManifestsHandler(filesystem).create_manifest(
+        admin_user.id,
+        rom.id,
+        None,
+        selected_member_ids=selected_ids,
+        whole_folder=True,
+    )
+
+    manifest_ids = [
+        member.manifest_member_id
+        for component in manifest.components
+        for member in component.members
+    ]
+    assert set(manifest_ids) == set(selected_ids)
+    assert set(member_id for member_id, _public_id in filesystem.captured) == set(
+        selected_ids
+    )
+
+
+def test_create_manifest_whole_folder_rejects_empty_selection_before_capture(
+    admin_user, rom
+):
+    folder = _component(rom.id, RomComponentKind.FOLDER, "empty")
+    with session.begin() as db:
+        db.add(folder)
+
+    filesystem = FakeManifestFilesystem()
+    with pytest.raises(ValueError):
+        DBDownloadManifestsHandler(filesystem).create_manifest(
+            admin_user.id,
+            rom.id,
+            None,
+            selected_member_ids=[],
+            whole_folder=True,
+        )
+    assert filesystem.captured == []
 
 
 def test_create_manifest_enforces_archive_set_and_captures_only_selected_members(

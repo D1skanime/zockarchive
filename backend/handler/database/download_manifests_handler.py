@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session, joinedload, selectinload
 
 from config import DOWNLOAD_MANIFEST_TTL_SECONDS
 from decorators.database import begin_session
+from handler.download_manifest_mapping import filesystem_for_manifest_rom
 from models.download_archive_set import DownloadArchiveSet, DownloadArchiveSetMember
 from models.download_manifest import (
     DownloadManifest,
@@ -25,6 +26,7 @@ from .base_handler import DBBaseHandler
 if TYPE_CHECKING:
     from handler.filesystem.roms_handler import (
         DownloadManifestMemberEvidence,
+        DownloadManifestTransferResult,
     )
 
 
@@ -52,6 +54,10 @@ class ManifestFilesystem(Protocol):
         self, rom: Rom, member: RomComponentManifestMember, evidence: object
     ) -> str: ...
 
+    async def open_verified_download_manifest_member(
+        self, rom: Rom, persisted_member: DownloadManifestMember
+    ) -> DownloadManifestTransferResult: ...
+
 
 class DBDownloadManifestsHandler(DBBaseHandler):
     """Create and evaluate path-free immutable download aggregates."""
@@ -59,13 +65,9 @@ class DBDownloadManifestsHandler(DBBaseHandler):
     def __init__(self, filesystem_handler: ManifestFilesystem | None = None) -> None:
         self._filesystem_handler = filesystem_handler
 
-    @property
-    def filesystem_handler(self) -> ManifestFilesystem:
-        if self._filesystem_handler is None:
-            from handler.filesystem.roms_handler import FSRomsHandler
-
-            self._filesystem_handler = FSRomsHandler()
-        return self._filesystem_handler
+    def filesystem_handler_for_rom(self, rom: Rom) -> ManifestFilesystem:
+        """Keep injected test handlers, otherwise bind reads to the ROM mapping."""
+        return self._filesystem_handler or filesystem_for_manifest_rom(rom)
 
     @begin_session
     def create_manifest(
@@ -105,8 +107,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         if archive_set_id is not None and component_ids is not None:
             raise ValueError("manifest policy selection cannot include components")
         if whole_folder and any(
-            selection is not None
-            for selection in (component_ids, archive_set_id, selected_member_ids)
+            selection is not None for selection in (component_ids, archive_set_id)
         ):
             raise ValueError("whole folder selection cannot include other selections")
 
@@ -142,6 +143,16 @@ class DBDownloadManifestsHandler(DBBaseHandler):
             )
             if not member_rows or any(member.missing_from_fs for member in member_rows):
                 raise ValueError("manifest folder inventory is unavailable")
+            if selected_member_ids is not None:
+                selected_ids = set(selected_member_ids)
+                allowed_ids = {member.id for member in member_rows}
+                if not selected_ids.issubset(allowed_ids):
+                    raise ValueError("manifest member selection is unavailable")
+                member_rows = [
+                    member for member in member_rows if member.id in selected_ids
+                ]
+                if not member_rows:
+                    raise ValueError("manifest member selection is empty")
         elif archive_set_id is not None:
             policy_members = list(
                 session.scalars(
@@ -286,6 +297,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         ):
             raise ValueError("manifest components need source members")
 
+        filesystem = self.filesystem_handler_for_rom(rom)
         manifest = DownloadManifest(
             user_id=user_id,
             rom_id=rom.id,
@@ -323,7 +335,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
                     manifest_member=member,
                 )
                 selected_components[component.id].members.append(pending_member)
-                evidence = self.filesystem_handler.capture_download_manifest_member(
+                evidence = filesystem.capture_download_manifest_member(
                     rom, member, pending_member.public_id
                 )
                 pending_member.destination = evidence.destination
@@ -365,10 +377,11 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         if datetime.now(timezone.utc) >= to_utc(manifest.expires_at):
             manifest.status = DownloadManifestStatus.EXPIRED
             return manifest
+        filesystem = self.filesystem_handler_for_rom(manifest.rom)
         for component in manifest.components:
             for member in component.members:
                 if (
-                    self.filesystem_handler.light_revalidate_download_manifest_member(
+                    filesystem.light_revalidate_download_manifest_member(
                         component.component.rom, member.manifest_member, member
                     )
                     == "SOURCE_CHANGED"

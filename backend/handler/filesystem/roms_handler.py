@@ -70,7 +70,7 @@ from .base_handler import (
 )
 from .download_manifest_paths import (
     download_manifest_destination,
-    manifest_member_source_path,
+    manifest_member_source_path_for_root,
 )
 from .folder_download import build_folder_download_component
 from .pc_scan_inventory import (
@@ -370,10 +370,10 @@ class FSRomsHandler(ExternalFSHandler):
             raise ValueError("PC local media is not a PNG, JPEG, or WebP image")
         return content, image_type
 
-    @staticmethod
-    def pc_component_member_path(rom: Rom, member: RomComponentManifestMember) -> str:
-        """Return a manifest-bound source path without accepting browser paths."""
-        return manifest_member_source_path(rom, member)
+    def pc_component_member_path(
+        self, rom: Rom, member: RomComponentManifestMember
+    ) -> str:
+        return manifest_member_source_path_for_root(self._logical_root, rom, member)
 
     def capture_download_manifest_member(
         self, rom: Rom, member: RomComponentManifestMember, public_id: str

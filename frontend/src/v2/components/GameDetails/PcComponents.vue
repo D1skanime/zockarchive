@@ -29,6 +29,7 @@ const props = defineProps<{
   folderDownload?: FolderDownloadCapabilitySchema;
   romId: number;
   parentName?: string;
+  romFileName?: string;
   archiveSets?: DownloadArchiveSet[];
   archiveSetsState?: "idle" | "loading" | "ready" | "error";
   refresh?: () => Promise<void>;
@@ -96,6 +97,15 @@ async function startDownload(payload: {
     payload.wholeFolder === true && folderDownloadIsPreparable.value;
   if (preparesFolderDownload) preparingFolderDownload.value = true;
   try {
+    if (preparesFolderDownload) {
+      await api.post<void>(`/roms/${props.romId}/download-manifests`, {
+        whole_folder: true,
+        prepare_only: true,
+      });
+      await props.refresh?.();
+      showDownload.value = true;
+      return;
+    }
     // The File System Access picker must be opened while the click activation is
     // still alive. Waiting for the manifest request first makes Chromium reject
     // the picker with NotAllowedError.
@@ -105,7 +115,12 @@ async function startDownload(payload: {
     const response = await api.post<DownloadManifestResponse>(
       `/roms/${props.romId}/download-manifests`,
       payload.wholeFolder
-        ? { whole_folder: true }
+        ? {
+            whole_folder: true,
+            ...(payload.selectedMemberIds.length
+              ? { selected_member_ids: payload.selectedMemberIds }
+              : {}),
+          }
         : {
             archive_set_id: payload.archiveSetId,
             selected_member_ids: payload.selectedMemberIds,
@@ -263,6 +278,7 @@ const groupedComponents = computed(() =>
       :components="components"
       :folder-download="folderDownload"
       :archive-sets="archiveSets"
+      :rom-file-name="romFileName"
       @start="startDownload"
     />
     <DownloadManager

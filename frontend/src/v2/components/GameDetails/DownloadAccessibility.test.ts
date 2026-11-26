@@ -388,6 +388,68 @@ describe("browser download accessibility and truthful state contract", () => {
     expect(wrapper.text()).not.toContain("11");
   });
 
+  it("preselects prepared folder members when the open dialog becomes ready", async () => {
+    const preparedComponents: PcComponentSchema[] = [
+      {
+        id: 91,
+        relative_path: "folder-download",
+        kind: "base",
+        manifest_members: [
+          {
+            id: 701,
+            relative_path: "PS3_GAME/USRDIR/EBOOT.BIN",
+            size_bytes: 1024,
+            sha256: "a".repeat(64),
+          },
+          {
+            id: 702,
+            relative_path: "PS3_GAME/USRDIR/DATA.BIN",
+            size_bytes: 2048,
+            sha256: "b".repeat(64),
+          },
+        ],
+      },
+    ];
+    const wrapper = mount(DownloadSelectionDialog, {
+      props: {
+        modelValue: false,
+        components: preparedComponents,
+        folderDownload: {
+          state: "preparable",
+          source_kind: "folder",
+          member_count: 0,
+          total_size_bytes: 4_000_000_000,
+        },
+      },
+      global: selectionGlobal,
+    });
+
+    await wrapper.setProps({ modelValue: true });
+    await nextTick();
+    await wrapper.setProps({
+      folderDownload: {
+        state: "ready",
+        source_kind: "folder",
+        member_count: preparedComponents[0].manifest_members.length,
+        total_size_bytes: 4_000_000_000,
+      },
+    });
+    await nextTick();
+    await nextTick();
+
+    expect(
+      wrapper
+        .findAll("input[type=checkbox]")
+        .every((input) => (input.element as HTMLInputElement).checked),
+    ).toBe(true);
+    expect(
+      wrapper
+        .findAll("button")
+        .find((button) => button.text() === "Start download")
+        ?.attributes("disabled"),
+    ).toBeUndefined();
+  });
+
   it("uses only truthful status vocabulary and never exposes source values", () => {
     const wrapper = mount(DownloadTransferHistory, {
       props: {

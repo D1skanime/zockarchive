@@ -64,10 +64,10 @@ def _install_ready_transfer(monkeypatch, content: bytes):
             lease=cast(DownloadManifestTransferLease, lease),
         )
 
+    filesystem = db_download_manifest_handler._filesystem_handler
+    assert filesystem is not None
     monkeypatch.setattr(
-        download_manifests_endpoint.fs_rom_handler,
-        "open_verified_download_manifest_member",
-        open_verified,
+        filesystem, "open_verified_download_manifest_member", open_verified
     )
     return leases
 
@@ -97,6 +97,13 @@ class _ManifestFilesystem:
 
     def light_revalidate_download_manifest_member(self, _rom, _member, _evidence):
         return "UNCHANGED_BY_LIGHT_CHECK"
+
+    async def open_verified_download_manifest_member(self, _rom, persisted_member):
+        lease = _TransferLease(b"manifest fixture", persisted_member.snapshot)
+        return DownloadManifestTransferResult(
+            state=DownloadManifestTransferState.READY,
+            lease=cast(DownloadManifestTransferLease, lease),
+        )
 
 
 @pytest.fixture(autouse=True)
@@ -190,7 +197,7 @@ def test_ps3_whole_folder_manifest_validates_the_shared_inventory_hook(
         manifest_members=[
             RomComponentManifestMember(
                 relative_path="PS3_GAME/USRDIR/EBOOT.BIN",
-                size_bytes=3,
+                size_bytes=4_000_000_000,
                 sha256="a" * 64,
             )
         ],
@@ -282,7 +289,7 @@ def test_shared_inventory_preparation_failure_returns_the_safe_manifest_error(
     }
 
 
-def test_ps3_whole_folder_rejects_member_selection_before_inventory_sync(
+def test_ps3_whole_folder_accepts_member_selection_after_inventory_sync(
     client, access_token, rom, monkeypatch
 ):
     with session.begin() as db:
@@ -306,8 +313,8 @@ def test_ps3_whole_folder_rejects_member_selection_before_inventory_sync(
         json={"whole_folder": True, "selected_member_ids": [1]},
     )
 
-    assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-    assert synchronized == []
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert synchronized == [rom.id]
 
 
 def test_create_policy_manifest_excludes_unselected_optional_member(
@@ -741,10 +748,10 @@ def test_manifest_member_source_change_has_no_lease_or_source_bytes(
             state=DownloadManifestTransferState.SOURCE_CHANGED
         )
 
+    filesystem = db_download_manifest_handler._filesystem_handler
+    assert filesystem is not None
     monkeypatch.setattr(
-        download_manifests_endpoint.fs_rom_handler,
-        "open_verified_download_manifest_member",
-        changed_source,
+        filesystem, "open_verified_download_manifest_member", changed_source
     )
     response = client.get(
         url,

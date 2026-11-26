@@ -37,3 +37,20 @@ def manifest_member_source_path(rom: Rom, member: RomComponentManifestMember) ->
     ):
         raise ValueError("PC component manifest path is invalid")
     return f"{rom.fs_path}/{rom.fs_name}/{relative_path.as_posix()}"
+
+
+def manifest_member_source_path_for_root(
+    logical_root: str, rom: Rom, member: RomComponentManifestMember
+) -> str:
+    """Return a persisted member path relative to an authorized mapped root."""
+    source_path = manifest_member_source_path(rom, member)
+    if not logical_root:
+        return source_path
+    try:
+        return (
+            PurePosixPath(source_path)
+            .relative_to(PurePosixPath(logical_root))
+            .as_posix()
+        )
+    except ValueError as error:
+        raise ValueError("PC component manifest source is unavailable") from error
