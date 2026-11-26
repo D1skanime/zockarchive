@@ -275,7 +275,13 @@ async def refresh_provider_owned_media(
                 else nullcontext()
             )
             with scope as unit:
-                path, mime_type = await _download_provider_image(rom, candidate)
+                try:
+                    path, mime_type = await _download_provider_image(rom, candidate)
+                except ProviderMediaOperationError:
+                    raise
+                except (ValueError, OSError) as exc:
+                    # Once the downloader returns a path, later failures are publication.
+                    raise ProviderMediaOperationError("download", str(exc)) from exc
 
                 def reconcile(
                     session,
