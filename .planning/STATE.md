@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-rqo-review-fix-edit-rom-dialog-muss-den-best
-last_updated: "2026-11-26T20:02:00Z"
+stopped_at: Completed quick 261126-rwv-gate05-den-gewachsenen-edit-rom-update-u
+last_updated: "2026-11-26T20:20:00Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -24,6 +24,16 @@ progress:
 - Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-rwv completed: Gate05's Edit ROM dialog line-limit finding was
+  confirmed. The dialog is now 534 lines and delegates its complete mutation,
+  canonical provider-media recovery, store and active-detail synchronization,
+  notifications, saving guard, and settlement to the 82-line
+  `useEditRomUpdate` composable. Scoped Trunk, frontend typecheck, and the
+  production build passed. No tests or browser interaction ran before live
+  acceptance; browser control is unavailable on this host. No architecture
+  documentation update was needed because the public API and v2 data flow are
+  unchanged.
 
 - 261126-rqo completed: Edit ROM now uses the established canonical
   provider-media conflict recovery after a persisted metadata-ID update returns
