@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session, joinedload, selectinload
 
 from config import DOWNLOAD_MANIFEST_TTL_SECONDS
 from decorators.database import begin_session
-from handler.filesystem.download_manifest_mapping import filesystem_for_manifest_rom
+from handler.download_manifest_mapping import filesystem_for_manifest_rom
 from models.download_archive_set import DownloadArchiveSet, DownloadArchiveSetMember
 from models.download_manifest import (
     DownloadManifest,
