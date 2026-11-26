@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-p8z-gate05-nur-die-bestehende-freigegebene-m
-last_updated: "2026-11-26T18:15:34Z"
+stopped_at: Completed quick 261126-pyz-nach-freigegebener-live-abnahme-die-dire
+last_updated: "2026-11-26T18:44:26Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -24,6 +24,12 @@ progress:
 - Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-pyz completed: direct same-ID classic-match payload coverage now
+  treats changed `name_sort_key` and changed `summary` independently as an
+  update, rather than an owned-media refresh-only path. The focused
+  MatchRomDialog Vitest target passed 22 tests. No product code, fixture,
+  browser, snapshot, full suite, merge, push, or runtime resource changed.
 
 - 261126-p8z completed: confirmed the `main...HEAD` locale semantic diff is
   exactly 18 additive `match-media-publication-failed` entries with `{detail}`.

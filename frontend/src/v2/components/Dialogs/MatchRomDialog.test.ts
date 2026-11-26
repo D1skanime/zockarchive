@@ -319,7 +319,9 @@ describe("matching captured language event flow", () => {
       "tgdb_id",
       "hltb_id",
       "name",
+      "name_sort_key",
       "slug",
+      "summary",
       "url_cover",
       "manual_metadata",
     ] as const) {
