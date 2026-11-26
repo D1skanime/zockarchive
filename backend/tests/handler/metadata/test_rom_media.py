@@ -166,14 +166,13 @@ async def test_refresh_reuses_active_media_and_retries_failed_missing_candidate(
         "get_provider_media_suppressions",
         MagicMock(return_value=set()),
     )
+    inventory = MagicMock(
+        return_value={("igdb", "cover-1", rom_media.RomOwnedMediaRole.COVER): reusable}
+    )
     monkeypatch.setattr(
         rom_media.db_provider_media_inventory_handler,
         "get_active_provider_media",
-        MagicMock(
-            return_value={
-                ("igdb", "cover-1", rom_media.RomOwnedMediaRole.COVER): reusable
-            }
-        ),
+        inventory,
     )
     download = AsyncMock(
         side_effect=[ValueError("temporary"), ("roms/73/shot.webp", "image/webp")]
@@ -203,5 +202,6 @@ async def test_refresh_reuses_active_media_and_retries_failed_missing_candidate(
         "shot-1",
         "shot-1",
     ]
+    assert inventory.call_count == 2
     assert reconcile.call_count == 1
     assert reconcile.call_args.args[3] == "shot-1"
