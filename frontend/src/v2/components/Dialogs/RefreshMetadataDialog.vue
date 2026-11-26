@@ -16,6 +16,7 @@ import {
   ZATooltip,
 } from "@v2/lib";
 import { useLocalStorage } from "@vueuse/core";
+import axios from "axios";
 import type { Emitter } from "mitt";
 import { storeToRefs } from "pinia";
 import { computed, inject, onBeforeUnmount, ref, watch } from "vue";
@@ -62,6 +63,7 @@ const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
 const libraryOperation = useLibraryOperation();
 const show = ref(false);
+const refreshingMedia = ref(false);
 // Accept either a single rom or an array — the SelectionBar passes
 // many at once, individual menus pass one. Internally we always
 // normalise to an array so the scan emit groups by platform without
@@ -305,22 +307,35 @@ const singleRomTitle = computed(() => {
   return r ? (r.name ?? r.fs_name) : "";
 });
 
-function onScan() {
+function errorMessage(error: unknown): string {
+  if (axios.isAxiosError(error)) {
+    const detail = error.response?.data?.detail;
+    if (typeof detail === "string" && detail) return detail;
+    return error.message;
+  }
+
+  return error instanceof Error ? error.message : t("common.error");
+}
+
+async function onScan() {
   if (roms.value.length === 0) return;
 
   if (scanType.value === "media" && !isBulk.value) {
+    if (refreshingMedia.value) return;
     const rom = roms.value[0];
-    void romApi.refreshOwnedMedia({
-      romId: rom.id,
-      expectedVersion: rom.updated_at,
-    });
-    snackbar.info(
-      t("rom.refreshing-media", { name: rom.name ?? rom.fs_name }),
-      {
-        icon: "mdi-loading mdi-spin",
-      },
-    );
-    closeDialog();
+    refreshingMedia.value = true;
+    try {
+      await romApi.refreshOwnedMedia({
+        romId: rom.id,
+        expectedVersion: rom.updated_at,
+      });
+      snackbar.success(t("common.refresh"));
+      closeDialog();
+    } catch (error) {
+      snackbar.error(errorMessage(error));
+    } finally {
+      refreshingMedia.value = false;
+    }
     return;
   }
 
@@ -702,8 +717,10 @@ function closeDialog() {
         variant="translucent"
         color="primary"
         prepend-icon="mdi-magnify-scan"
+        :loading="refreshingMedia"
         :disabled="
-          effectiveMetadataSources.length === 0 && scanType !== 'media'
+          refreshingMedia ||
+          (effectiveMetadataSources.length === 0 && scanType !== 'media')
         "
         @click="onScan"
       >
