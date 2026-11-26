@@ -21,8 +21,17 @@ progress:
 ### Roadmap Evolution
 
 - Phase 50 added: ZA: Gemeinsame PC-Dateiauswahl für große Spiele korrekt wiederverwenden.
+- Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-lg6 completed: repaired all five Phase 51 review blockers. Ordinary
+  unchanged-ID edits no longer trigger provider work; explicit same-ID matching
+  uses the protected refresh route; provider failures are stage-aware and
+  retryable; scan callers keep item roles valid; and the refresh dialog reloads
+  its canonical version after a partial failure. Synthetic runtime evidence and
+  Trunk passed. Frontend typecheck/build could not complete under this session's
+  30-second command limit after the corrected TypeScript diagnostic.
 
 - 261126-edh completed: restored the ROM handler to its 1,306-line baseline
   after mapping-helper extraction. No tests ran before UAT.

@@ -299,9 +299,10 @@ MediaTab has manual, screenshots, artwork, and soundtrack subtabs. ManualSubtab 
 
 `RefreshMetadataDialog` uses the existing `romApi.refreshOwnedMedia` request for
 a single-ROM media refresh. It awaits settlement before showing success and
-closing. A rejected request keeps the dialog open, clears its in-flight guard,
-and shows the server detail through the shared snackbar, so the administrator
-can retry the same request. UAT verifies a same-ID refresh, a new provider item,
+closing. On a retryable 409 it reloads and replaces the canonical ROM before
+clearing its in-flight guard, then shows the server detail through the shared
+snackbar. This preserves the optimistic version after snapshot persistence, so
+the administrator can retry the same request. UAT verifies a same-ID refresh, a new provider item,
 a deleted provider URL alias, manual-media preservation, retry after failure,
 and visible partial or error feedback.
 

@@ -349,8 +349,10 @@ Manual IGDB matching retains its complete cover, screenshot and artwork source i
 
 #### Current provider-media refresh
 
-An explicit same-ID IGDB assignment and `POST /api/roms/{id}/media/refresh`
-retrieve the current provider catalog before reconciling it. A confirmed catalog,
+An explicit same-ID choice in the metadata match dialog uses `POST /api/roms/{id}/media/refresh`;
+ordinary ROM edits with an unchanged serialized IGDB ID do not contact the provider
+or publish media. Both explicit paths retrieve the current provider catalog before
+reconciling it. A confirmed catalog,
 including an empty catalog, replaces the retained provider snapshot. An empty
 snapshot never retires catalog rows, placements, selected covers, uploads, or
 `provider_media_suppressions`; a lookup failure leaves the prior snapshot intact.
@@ -364,7 +366,10 @@ uploaded media, placements, and selected covers, and cleans staged output when
 publication cannot complete. The protected route returns the canonical detailed
 ROM only after every candidate succeeds. Lookup, normalization, download,
 storage, and publication failures return a retryable HTTP 409 detail that names
-the failed stage. The refresh never writes to the source library.
+the failed stage. Provider transport errors are classified at lookup or download
+boundaries without exposing transport internals. Snapshot persistence may advance
+the canonical ROM version before an item fails, so retrying clients must reload
+that version. The refresh never writes to the source library.
 
 Administrator UAT checks the same-ID assignment, a newly offered provider item,
 a deliberately deleted URL-size alias, manual upload and cover preservation, a

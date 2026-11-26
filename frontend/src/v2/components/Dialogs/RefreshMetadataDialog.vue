@@ -29,7 +29,9 @@ import storeConfig from "@/v2/data/adapters/legacy/stores/config";
 import storeHeartbeat, {
   type MetadataOption,
 } from "@/v2/data/adapters/legacy/stores/heartbeat";
-import { type SimpleRom } from "@/v2/data/adapters/legacy/stores/roms";
+import storeRoms, {
+  type SimpleRom,
+} from "@/v2/data/adapters/legacy/stores/roms";
 import { buildLibraryScanRequest } from "@/v2/data/operations";
 
 defineOptions({ inheritAttrs: false });
@@ -61,6 +63,7 @@ const SPECIFIC_PROVIDER_KEYS = new Set(["ra", "sgdb", "hltb"]);
 const { t, locale } = useI18n();
 const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
+const romsStore = storeRoms();
 const libraryOperation = useLibraryOperation();
 const show = ref(false);
 const refreshingMedia = ref(false);
@@ -332,6 +335,10 @@ async function onScan() {
       snackbar.success(t("common.refresh"));
       closeDialog();
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        const canonicalRom = await romsStore.refreshRom(rom.id);
+        roms.value = [canonicalRom];
+      }
       snackbar.error(errorMessage(error));
     } finally {
       refreshingMedia.value = false;

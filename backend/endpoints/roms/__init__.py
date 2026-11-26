@@ -1594,7 +1594,7 @@ async def get_rom_content(
     router.put,
     "/{id}",
     [Scope.ROMS_WRITE],
-    responses={status.HTTP_404_NOT_FOUND: {}},
+    responses={status.HTTP_404_NOT_FOUND: {}, status.HTTP_409_CONFLICT: {}},
 )
 async def update_rom(
     request: Request,
@@ -1884,18 +1884,6 @@ async def update_rom(
         if igdb_rom.get("igdb_id"):
             cleaned_data.update(igdb_rom)
             manual_igdb_media = rm.retain_igdb_media(cleaned_data, igdb_rom)
-    elif (
-        "igdb_id" in provided_fields
-        and cleaned_data["igdb_id"]
-        and int(cleaned_data["igdb_id"]) == rom.igdb_id
-    ):
-        igdb_rom = await meta_igdb_handler.get_rom_by_id(rom, cleaned_data["igdb_id"])
-        if not igdb_rom.get("igdb_id"):
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="Provider catalog was not found",
-            )
-        manual_igdb_media = rm.retain_igdb_media(cleaned_data, igdb_rom)
     elif rom.igdb_id and not cleaned_data["igdb_id"]:
         cleaned_data.update({"igdb_id": None, "igdb_metadata": {}})
     cleaned_data.pop("url_artworks", None)
@@ -2132,7 +2120,13 @@ async def update_rom(
     if not rom:
         raise RomNotFoundInDatabaseException(id)
 
-    rom = await rm.publish_igdb(rom, manual_igdb_media)
+    try:
+        rom = await rm.publish_igdb(rom, manual_igdb_media)
+    except rm.ProviderMediaOperationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Provider media {exc.stage} failed",
+        ) from None
 
     for provider in ("ss", "steam"):
         field = provider + "_id"

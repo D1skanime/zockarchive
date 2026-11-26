@@ -20,7 +20,10 @@ from handler.filesystem.scan_media_publication import (
     publish_rom_resources,
 )
 from handler.metadata.base_handler import UniversalPlatformSlug as UPS
-from handler.metadata.rom_media import refresh_provider_owned_media
+from handler.metadata.rom_media import (
+    ProviderMediaOperationError,
+    refresh_provider_owned_media,
+)
 from handler.metadata.ss_handler import add_ss_auth_to_url, get_preferred_media_types
 from handler.redis_handler import redis_client
 from handler.scan_collection_discovery import prepare_selected_legacy_child
@@ -338,6 +341,12 @@ async def _identify_rom(
                     failure.provider_media_id,
                     failure.reason,
                 )
+        except ProviderMediaOperationError as exc:
+            log.warning(
+                "Provider media catalog refresh failed for ROM %s (%s)",
+                _added_rom.id,
+                exc.stage,
+            )
         except (ValueError, OSError, TransportError, DecodingError) as exc:
             log.warning(
                 "Provider media catalog refresh failed for ROM %s: %s",

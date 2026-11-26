@@ -464,11 +464,20 @@ async function onBodyConfirm(payload: ConfirmPayload) {
   }
 
   try {
-    const { data } = await romApi.updateRom({
-      rom: updatedRom,
-      metadataLocale,
-      expectedVersion: consoleExpectedVersion.value,
-    });
+    const sameIgdbSelection =
+      updatedRom.igdb_id !== null &&
+      targetRom.igdb_id !== null &&
+      Number(updatedRom.igdb_id) === Number(targetRom.igdb_id);
+    const { data } = sameIgdbSelection
+      ? await romApi.refreshOwnedMedia({
+          romId: targetRom.id,
+          expectedVersion: consoleExpectedVersion.value ?? targetRom.updated_at,
+        })
+      : await romApi.updateRom({
+          rom: updatedRom,
+          metadataLocale,
+          expectedVersion: consoleExpectedVersion.value,
+        });
     if (!matchLanguage.isCurrent(capture)) return;
     snackbar.success(t("rom.rom-updated-successfully"), {
       icon: "mdi-check-bold",
