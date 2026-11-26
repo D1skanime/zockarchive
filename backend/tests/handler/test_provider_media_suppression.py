@@ -12,7 +12,7 @@ from tests.handler.test_scan_media_publication import attempt as attempt
 from tests.handler.test_scan_media_publication import command as command
 from tests.handler.test_scan_write_fence import context
 
-from handler.database import db_rom_handler
+from handler.database import db_provider_media_inventory_handler, db_rom_handler
 from handler.database.scan_write_fence import bind_scan_write_context
 from handler.filesystem import fs_resource_handler
 from handler.filesystem.scan_media_publication import publish_rom_resources
@@ -172,12 +172,30 @@ async def test_suppression_steam_skips_before_force(rom, force, monkeypatch):
 @pytest.mark.asyncio
 async def test_suppression_generic_delete_during_download(rom, monkeypatch):
     added = seed(rom, "igdb", RomOwnedMediaRole.SCREENSHOT)
+    seeded = candidate("igdb", RomOwnedMediaRole.SCREENSHOT)
+    active = db_provider_media_inventory_handler.get_active_provider_media(
+        rom.id, [seeded]
+    )
+    assert list(active) == [
+        ("igdb", seeded.provider_media_id, RomOwnedMediaRole.SCREENSHOT)
+    ]
+    assert active[("igdb", seeded.provider_media_id, seeded.role)].owned_path.endswith(
+        "/owned-media/seed.png"
+    )
+    replacement = candidate(
+        "igdb",
+        RomOwnedMediaRole.SCREENSHOT,
+        "https://fixture.invalid/replacement.png?a=1&b=2",
+    )
+    assert replacement.provider_media_id != seeded.provider_media_id
     current = db_rom_handler.update_rom(
-        rom.id, {"url_screenshots": [URL], "url_cover": ""}
+        rom.id, {"url_screenshots": [replacement.url], "url_cover": ""}
     )
     path = f"{rom.fs_resources_path}/owned-media/attempt.png"
 
-    async def download(*args):
+    async def download(actual_rom, actual_candidate):
+        assert actual_rom.id == rom.id
+        assert actual_candidate == replacement
         assert (
             db_rom_handler.delete_owned_media(
                 rom.id, added.media.id, current.updated_at
@@ -187,9 +205,11 @@ async def test_suppression_generic_delete_during_download(rom, monkeypatch):
         return path, "image/png"
 
     remove = AsyncMock()
-    monkeypatch.setattr(rom_media, "_download_provider_image", download)
+    download_mock = AsyncMock(side_effect=download)
+    monkeypatch.setattr(rom_media, "_download_provider_image", download_mock)
     monkeypatch.setattr(fs_resource_handler, "remove_file", remove)
     await rom_media.refresh_provider_owned_media(current, current.updated_at, "igdb")
+    download_mock.assert_awaited_once_with(current, replacement)
     assert_suppressed(rom.id, added.media.id)
     remove.assert_awaited_once_with(path)
 

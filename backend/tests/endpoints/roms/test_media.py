@@ -7,7 +7,11 @@ from fastapi import status
 from fastapi.testclient import TestClient
 
 from handler.database import db_rom_handler
-from handler.metadata.rom_media import discover_provider_media
+from handler.metadata.rom_media import (
+    ProviderMediaFailure,
+    ProviderMediaOperationError,
+    discover_provider_media,
+)
 from models.rom import (
     Rom,
     RomFile,
@@ -167,6 +171,90 @@ def test_explicit_refresh_preserves_suppression_policy(
     )
     assert response.status_code == 200
     assert "restore_suppressed" not in refresh.call_args.kwargs
+
+
+def test_explicit_refresh_hands_prepared_catalog_to_owned_media_reconciliation(
+    client: TestClient, access_token: str, rom: Rom, monkeypatch
+) -> None:
+    prepared = db_rom_handler.update_rom(rom.id, {"igdb_id": 73})
+    assert prepared is not None
+    source = {"url_screenshots": ["https://images.example/current.webp"]}
+    prepare = AsyncMock(return_value=(prepared, "igdb", source))
+    refresh = AsyncMock(return_value=(prepared, []))
+    monkeypatch.setattr("endpoints.roms.media.prepare_provider_media_refresh", prepare)
+    monkeypatch.setattr("endpoints.roms.media.refresh_provider_owned_media", refresh)
+
+    response = client.post(
+        f"/api/roms/{rom.id}/media/refresh",
+        headers={"Authorization": f"Bearer {access_token}"},
+        params={"expected_version": rom.updated_at.isoformat()},
+    )
+
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json()["id"] == rom.id
+    assert prepare.await_count == 1
+    prepare_call = prepare.await_args
+    assert prepare_call is not None
+    prepared_rom, requested_version = prepare_call.args
+    assert prepared_rom.id == rom.id
+    assert requested_version.isoformat() == rom.updated_at.isoformat()
+    refresh.assert_awaited_once_with(prepared, prepared.updated_at, "igdb", source)
+
+
+@pytest.mark.parametrize(
+    ("error", "detail"),
+    [
+        (ProviderMediaOperationError("lookup", "provider unavailable"), "lookup"),
+        (ValueError("invalid provider media"), "normalization"),
+    ],
+)
+def test_explicit_refresh_returns_retryable_conflicts_for_prepare_failures(
+    client: TestClient, access_token: str, rom: Rom, monkeypatch, error, detail: str
+) -> None:
+    monkeypatch.setattr(
+        "endpoints.roms.media.prepare_provider_media_refresh",
+        AsyncMock(side_effect=error),
+    )
+
+    response = client.post(
+        f"/api/roms/{rom.id}/media/refresh",
+        headers={"Authorization": f"Bearer {access_token}"},
+        params={"expected_version": rom.updated_at.isoformat()},
+    )
+
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert response.json()["detail"] == f"Provider media {detail} failed"
+
+
+def test_explicit_refresh_identifies_the_partial_candidate_in_its_conflict(
+    client: TestClient, access_token: str, rom: Rom, monkeypatch
+) -> None:
+    source = {"url_screenshots": ["https://images.example/current.webp"]}
+    prepare = AsyncMock(return_value=(rom, "igdb", source))
+    refresh = AsyncMock(
+        return_value=(
+            rom,
+            [
+                ProviderMediaFailure(
+                    "screenshot-7",
+                    RomOwnedMediaRole.SCREENSHOT,
+                    "download",
+                    "timeout",
+                )
+            ],
+        )
+    )
+    monkeypatch.setattr("endpoints.roms.media.prepare_provider_media_refresh", prepare)
+    monkeypatch.setattr("endpoints.roms.media.refresh_provider_owned_media", refresh)
+
+    response = client.post(
+        f"/api/roms/{rom.id}/media/refresh",
+        headers={"Authorization": f"Bearer {access_token}"},
+        params={"expected_version": rom.updated_at.isoformat()},
+    )
+
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert response.json()["detail"] == ("Provider media download failed: screenshot-7")
 
 
 def test_delete_original_cover_is_versioned_and_preserves_uploads(

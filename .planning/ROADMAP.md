@@ -1357,3 +1357,16 @@ Plans:
 **Wave 2:** 50-02
 **Wave 3:** 50-03
 **Wave 4:** 50-04
+
+### Phase 51: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten
+
+**Goal:** On an explicit same-provider reassignment or media refresh, reconcile the current provider catalog additively so missing and newly offered provider media is imported while durable explicit deletions and all manual media choices remain authoritative.
+**Requirements**: MEDIA-51-01, MEDIA-51-02, MEDIA-51-03, MEDIA-51-04, MEDIA-51-05, DOC-51-01
+**Depends on:** Phase 50
+**Plans:** 4 plans
+
+Plans:
+- [x] 51-01-PLAN.md — Reproduce the legacy path and repair shared additive provider-media reconciliation.
+- [x] 51-02-PLAN.md — Wire same-ID assignment and truthful refresh outcomes through protected endpoints.
+- [x] 51-03-PLAN.md — Await the existing v2 refresh call and preserve retryable failure feedback.
+- [x] 51-04-PLAN.md — Capture isolated evidence, update architecture documentation and prepare UAT quality gates.

@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-edh-quality-gate-rom-handler-zeilenlimit-nac
-last_updated: "2026-11-26T10:22:00Z"
+stopped_at: Completed quick 261126-s46-frontend-typecheck-test-payloads
+last_updated: "2026-11-26T21:16:00Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -21,8 +21,102 @@ progress:
 ### Roadmap Evolution
 
 - Phase 50 added: ZA: Gemeinsame PC-Dateiauswahl für große Spiele korrekt wiederverwenden.
+- Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-s46 completed: the accepted Edit ROM composable regression test now
+  builds complete generated `UpdateRom` payloads for its success, recovered
+  provider-media conflict, and generic error cases. The original assertions
+  remain unchanged. Its focused Vitest target passed 3 tests and frontend
+  typecheck passed. No product code, full suite, browser, or runtime resource
+  changed.
+
+- 261126-s45 completed after live acceptance: direct composable contracts now
+  cover Edit ROM success synchronization, durable-update provider-media 409
+  canonical recovery, and the unrecoverable generic error path. The focused
+  Vitest target passed 3 tests twice, including after formatting. Only the new
+  test and GSD artifacts changed; no production code, snapshot, browser,
+  runtime resource, or full suite was used.
+
+- 261126-rwv completed: Gate05's Edit ROM dialog line-limit finding was
+  confirmed. The dialog is now 534 lines and delegates its complete mutation,
+  canonical provider-media recovery, store and active-detail synchronization,
+  notifications, saving guard, and settlement to the 82-line
+  `useEditRomUpdate` composable. Scoped Trunk, frontend typecheck, and the
+  production build passed. No tests or browser interaction ran before live
+  acceptance; browser control is unavailable on this host. No architecture
+  documentation update was needed because the public API and v2 data flow are
+  unchanged.
+
+- 261126-rqo completed: Edit ROM now uses the established canonical
+  provider-media conflict recovery after a persisted metadata-ID update returns
+  HTTP 409. Recovered state replaces both the list record and active ROM detail,
+  while the UI reports the translated partial publication failure. Scoped Trunk
+  and frontend typecheck passed. No tests or browser interaction ran; browser
+  UAT remains with the authorized human flow because this host has no supported
+  browser control.
+
+- 261126-r9v completed: Gate07's failing suppression-race fixture had reused a
+  matching active IGDB screenshot with a usable owned path, so its download
+  callback was unreachable. The revised test proves that active inventory state,
+  requests a distinct candidate, records one callback, and retains all deletion,
+  tombstone, and temporary cleanup assertions. The direct MariaDB runner passed
+  the named test and both affected modules, 31 tests total. Targeted Trunk was
+  clean. No product code, product documentation, Gate07 shard, or full suite
+  was run.
+
+- 261126-pyz completed: direct same-ID classic-match payload coverage now
+  treats changed `name_sort_key` and changed `summary` independently as an
+  update, rather than an owned-media refresh-only path. The focused
+  MatchRomDialog Vitest target passed 22 tests. No product code, fixture,
+  browser, snapshot, full suite, merge, push, or runtime resource changed.
+
+- 261126-p8z completed: confirmed the `main...HEAD` locale semantic diff is
+  exactly 18 additive `match-media-publication-failed` entries with `{detail}`.
+  Only the corresponding approved `rom` digest references changed; a direct
+  Vue I18n contract now proves every locale keeps and interpolates the detail.
+  The focused locale test passed 21 tests. No full frontend suite or backend
+  test was run, and no product locale or production file changed.
+
+- 261126-ono completed: added direct post-acceptance regression contracts for
+  Phase 51 same-ID provider-media refresh routing, full classic payload changes,
+  endpoint hand-off and retryable stage-specific failures, current-catalog
+  snapshot replacement, active-media reuse, and failed-candidate retry. The
+  focused frontend test passed 22 tests and the focused backend tests passed 20
+  tests in 7.66 seconds. No product code, generated file, product documentation,
+  browser, full suite, provider, NAS, Docker, deployment, or live runtime
+  resource was used.
+
+- 261126-nf1 completed: same-IGDB manual matches now choose owned-media
+  refresh only after a complete typed payload comparison. Changed title, slug,
+  selected normalized cover, manual metadata state, or serialised provider ID
+  follows the established update and canonical-recovery path. Trunk, frontend
+  typecheck, and production build passed. Browser interaction was unavailable:
+  port 3000 was local-only, but no approved browser binary or control capability
+  existed. No test suite, Docker, provider, NAS, deployment, or live runtime
+  resource was used.
+
+- 261126-mog completed: Phase 51 now explicitly binds ki-run job 261126-d0af
+  to its canonical phase directory. The authoritative job manifest was parsed
+  read-only and already matched, so it remains unchanged. JSON mapping and
+  whitespace checks passed. No tests, browser automation, Docker, production,
+  NAS, secrets, or runtime resources were used.
+
+- 261126-mdh completed: a failed canonical reload after a single-ROM,
+  owned-media HTTP 409 now logs only the secondary GET failure and preserves
+  the original protected refresh error, leaving the dialog retryable. The
+  disposable source contract, Trunk, frontend typecheck, and production build
+  passed. No test suite, browser automation, Docker, provider service, NAS,
+  deployment, or live runtime resource was used.
+
+- 261126-lg6 completed: repaired all five Phase 51 review blockers. Ordinary
+  unchanged-ID edits no longer trigger provider work; explicit same-ID matching
+  uses the protected refresh route; provider failures are stage-aware and
+  retryable; scan callers keep item roles valid; and the refresh dialog reloads
+  its canonical version after a partial failure. Synthetic runtime evidence and
+  Trunk passed. Frontend typecheck/build could not complete under this session's
+  30-second command limit after the corrected TypeScript diagnostic.
 
 - 261126-edh completed: restored the ROM handler to its 1,306-line baseline
   after mapping-helper extraction. No tests ran before UAT.
@@ -1153,6 +1247,14 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-s46 | Repair typed Edit ROM update test payloads | 2026-11-26 | c7fbc249a | [typed Edit ROM update test payloads](./quick/261126-s46-frontend-typecheck-test-payloads/) |
+| 261126-rqo | Recover Edit ROM after provider-media conflict | 2026-11-26 | 38f9d1161 | [Edit ROM provider-media recovery](./quick/261126-rqo-review-fix-edit-rom-dialog-muss-den-best/) |
+| 261126-r9v | Isolate and repair the Gate07 provider-media suppression race test | 2026-11-26 | 1d7c7f024 | [Gate07 suppression race test](./quick/261126-r9v-gate07-isolierten-suppression-race-test-/) |
+| 261126-p8z | Correct only approved Gate05 locale digest references | 2026-11-26 | this commit | [Gate05 locale digest correction](./quick/261126-p8z-gate05-nur-die-bestehende-freigegebene-m/) |
+| 261126-mtb | Extract Phase 51 provider-media boundaries from ROM and dialog monoliths | 2026-11-26 | this commit | [provider-media quality gate](./quick/261126-mtb-quality-gate-phase-51-nderungen-aus-berg/) |
+| 261126-ono | Add targeted direct tests after accepted Phase 51 live UAT | 2026-11-26 | f5829d3c8 | [targeted direct Phase 51 regression tests](./quick/261126-ono-nach-freigegebener-live-abnahme-gezielte/) |
+| 261126-mog | Bind the Phase 51 context to its ki-run job | 2026-11-26 | this commit | [261126-mog-quality-gate-job-261126-d0af-im-phase-51](./quick/261126-mog-quality-gate-job-261126-d0af-im-phase-51/) |
+| 261126-ly4 | Repair Phase 51 canonical media re-review blockers | 2026-11-26 | this commit | [261126-ly4-phase-51-re-review-kanonischen-medien-re](./quick/261126-ly4-phase-51-re-review-kanonischen-medien-re/) |
 | 261126-edh | Restore ROM handler line-limit baseline after mapping helper extraction | 2026-11-26 | this commit | [261126-edh-quality-gate-rom-handler-zeilenlimit-nac](./quick/261126-edh-quality-gate-rom-handler-zeilenlimit-nac/) |
 | 261126-e98 | Repair mapping manifest lint and line-limit gate findings | 2026-11-26 | this commit | [261126-e98-quality-gate-mapping-manifest-lint-und-z](./quick/261126-e98-quality-gate-mapping-manifest-lint-und-z/) |
 | 261126-dkf | Record and repair real isolated mapped manifest evidence for Phase 50 | 2026-11-26 | this commit | [261126-dkf-echter-isolierter-backend-nachweis-f-r-p](./quick/261126-dkf-echter-isolierter-backend-nachweis-f-r-p/) |
@@ -1325,6 +1427,10 @@ Resume file: None
 ## Quick Task 20261017-pc-automation-card-layout
 
 | 20261017-pc-automation-card-layout | Clarify PC automation review cards | 2026-10-17 | e8187fed5 | [20261017-pc-automation-card-layout](./quick/20261017-pc-automation-card-layout/) |
+
+## Quick Task 261126-pnn
+
+| 261126-pnn | Repair the three new Gate05 mypy findings in targeted media tests | 2026-11-26 | complete, scoped Trunk check only | [261126-pnn-gate05-drei-neue-mypy-fehler-in-den-gezi](./quick/261126-pnn-gate05-drei-neue-mypy-fehler-in-den-gezi/) |
 
 - [Phase 35 P03]: Keep retry policy advisory, reuse the existing complete binding/identity owner, and gather every mapping before applying one five-game operation budget.
 

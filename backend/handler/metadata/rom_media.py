@@ -10,15 +10,15 @@ from hashlib import sha256
 from pathlib import PurePosixPath
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
+import httpx
 from fastapi import status
 
-from handler.database import db_rom_handler
+from handler.database import db_provider_media_inventory_handler, db_rom_handler
 from handler.database.provider_media_suppression import candidate_key
 from handler.database.scan_write_fence import current_scan_write_context
 from handler.filesystem import fs_resource_handler
 from handler.filesystem.scan_media_publication import ScanMediaBatch
 from handler.metadata.igdb_handler import IGDBRom
-from logger.logger import log
 from models.rom import Rom, RomOwnedMediaRole, derive_owned_media_display_label
 from utils.context import ctx_httpx_client
 
@@ -41,7 +41,16 @@ class ProviderMediaFailure:
 
     provider_media_id: str
     role: RomOwnedMediaRole
+    stage: str
     reason: str
+
+
+class ProviderMediaOperationError(ValueError):
+    """Classify a bounded provider-media operation without exposing its transport."""
+
+    def __init__(self, stage: str, reason: str):
+        super().__init__(reason)
+        self.stage = stage
 
 
 def normalize_provider_url(value: str) -> str:
@@ -127,39 +136,49 @@ async def publish_igdb(rom: Rom, media: dict[str, object] | None) -> Rom:
         refreshed_rom, failures = await refresh_provider_owned_media(
             rom, rom.updated_at, "igdb", media
         )
-        for failure in failures:
-            log.warning(
-                "Manual IGDB media retained prior catalog state for ROM %s (%s)",
-                refreshed_rom.id,
-                failure.reason,
-            )
-        return refreshed_rom
-    except (ValueError, OSError) as error:
-        log.warning(
-            "Manual IGDB media catalog refresh failed for ROM %s (%s)",
-            rom.id,
-            type(error).__name__,
+    except ProviderMediaOperationError:
+        raise
+    except (ValueError, OSError) as exc:
+        raise ProviderMediaOperationError(
+            "publication", "Provider media could not be published"
+        ) from exc
+    if failures:
+        failure = failures[0]
+        raise ProviderMediaOperationError(
+            failure.stage, "Provider media could not be published"
         )
-        return rom
+    return refreshed_rom
 
 
 async def _download_provider_image(
     rom, candidate: ProviderMediaCandidate
 ) -> tuple[str, str]:
     client = ctx_httpx_client.get()
-    async with client.stream("GET", candidate.url, timeout=30) as response:
-        if response.status_code != status.HTTP_200_OK:
-            raise ValueError("Provider media could not be downloaded")
-        chunks: list[bytes] = []
-        total = 0
-        async for chunk in response.aiter_bytes():
-            total += len(chunk)
-            if total > _IMAGE_LIMIT:
-                raise ValueError("Provider media exceeds the 10 MiB limit")
-            chunks.append(chunk)
-    return await fs_resource_handler.store_owned_media_image(
-        rom, candidate.role, b"".join(chunks)
-    )
+    try:
+        async with client.stream("GET", candidate.url, timeout=30) as response:
+            if response.status_code != status.HTTP_200_OK:
+                raise ProviderMediaOperationError(
+                    "download", "Provider media could not be downloaded"
+                )
+            chunks: list[bytes] = []
+            total = 0
+            async for chunk in response.aiter_bytes():
+                total += len(chunk)
+                if total > _IMAGE_LIMIT:
+                    raise ProviderMediaOperationError(
+                        "download", "Provider media exceeds the 10 MiB limit"
+                    )
+                chunks.append(chunk)
+    except httpx.RequestError as exc:
+        raise ProviderMediaOperationError(
+            "download", "Provider media could not be downloaded"
+        ) from exc
+    try:
+        return await fs_resource_handler.store_owned_media_image(
+            rom, candidate.role, b"".join(chunks)
+        )
+    except (ValueError, OSError) as exc:
+        raise ProviderMediaOperationError("storage", str(exc)) from exc
 
 
 def persisted_provider_media(rom, provider: str) -> dict[str, object]:
@@ -185,38 +204,28 @@ def persisted_provider_media_source(rom) -> str:
     return "provider"
 
 
-def _has_provider_media(media: dict[str, object]) -> bool:
-    return any(
-        isinstance(media.get(key), list) and media[key]
-        for key in ("url_covers", "url_screenshots", "url_artworks")
-    )
-
-
 async def prepare_provider_media_refresh(rom, expected_version):
-    """Restore a manually matched IGDB inventory before an explicit refresh.
+    """Persist the current explicit IGDB snapshot without retiring owned media.
 
-    Older manual matches can hold an IGDB id after their legacy image URLs were
-    consumed, without the retained provider inventory introduced for owned
-    media. Re-fetching only that known provider record preserves the match and
-    lets the normal suppression-aware reconciler handle every candidate.
+    A confirmed empty provider snapshot replaces stale provider metadata only.
+    It deliberately never retires rows, placements, cover selection, uploads,
+    or suppression records. A lookup failure leaves the prior snapshot intact.
     """
     provider = persisted_provider_media_source(rom)
     source = persisted_provider_media(rom, provider)
-    retained_igdb = (
-        rom.igdb_metadata.get("provider_media")
-        if isinstance(rom.igdb_metadata, dict)
-        else None
-    )
-    if isinstance(retained_igdb, dict) and _has_provider_media(retained_igdb):
-        return rom, "igdb", retained_igdb
     if not rom.igdb_id:
         return rom, provider, source
 
     from handler.metadata import meta_igdb_handler
 
-    igdb_rom = await meta_igdb_handler.get_rom_by_id(rom, rom.igdb_id)
+    try:
+        igdb_rom = await meta_igdb_handler.get_rom_by_id(rom, rom.igdb_id)
+    except httpx.RequestError as exc:
+        raise ProviderMediaOperationError(
+            "lookup", "Provider catalog could not be retrieved"
+        ) from exc
     if not igdb_rom.get("igdb_id"):
-        return rom, provider, source
+        raise ProviderMediaOperationError("lookup", "Provider catalog was not found")
     data: dict[str, object] = {"igdb_metadata": dict(rom.igdb_metadata or {})}
     source = retain_igdb_media(data, igdb_rom)
     updated = db_rom_handler.update_rom(
@@ -225,7 +234,7 @@ async def prepare_provider_media_refresh(rom, expected_version):
         expected_updated_at=expected_version,
     )
     if updated is None:
-        raise ValueError("Media catalog changed")
+        raise ProviderMediaOperationError("publication", "Media catalog changed")
     return updated, "igdb", source
 
 
@@ -237,10 +246,26 @@ async def refresh_provider_owned_media(
         raise ValueError("Provider is required")
     source = source if source is not None else persisted_provider_media(rom, provider)
     failures: list[ProviderMediaFailure] = []
-    candidates = discover_provider_media(provider, source)
+    try:
+        candidates = discover_provider_media(provider, source)
+    except ValueError as exc:
+        raise ProviderMediaOperationError(
+            "normalization", "Provider media catalog is invalid"
+        ) from exc
     suppressed = db_rom_handler.get_provider_media_suppressions(rom.id, candidates)
+    active = db_provider_media_inventory_handler.get_active_provider_media(
+        rom.id, candidates
+    )
     for candidate in candidates:
         if candidate_key(candidate) in suppressed:
+            continue
+        reusable = active.get(candidate_key(candidate))
+        if (
+            reusable is not None
+            and reusable.role == candidate.role
+            and isinstance(reusable.owned_path, str)
+            and reusable.owned_path
+        ):
             continue
         path = None
         unit = None
@@ -274,7 +299,9 @@ async def refresh_provider_owned_media(
                         **kwargs,
                     )
                     if applied is None:
-                        raise ValueError("Media catalog changed")
+                        raise ProviderMediaOperationError(
+                            "publication", "Media catalog changed"
+                        )
                     return applied
 
                 applied = (
@@ -287,7 +314,14 @@ async def refresh_provider_owned_media(
                 await fs_resource_handler.remove_file(path)
             failures.append(
                 ProviderMediaFailure(
-                    candidate.provider_media_id, candidate.role, str(exc)
+                    candidate.provider_media_id,
+                    candidate.role,
+                    (
+                        exc.stage
+                        if isinstance(exc, ProviderMediaOperationError)
+                        else "download"
+                    ),
+                    str(exc),
                 )
             )
     return rom, failures

@@ -1,11 +1,4 @@
 <script setup lang="ts">
-// MatchRomDialog — manual metadata match flow. The shell owns search +
-// filters + the update API call; the actual "pick a match → pick a
-// cover selection step is delegated to one of two body
-// variants (see `components/MatchRom/`): grid (cards + overlay) or
-// list (master/detail). The variant is switchable at runtime via the
-// segmented control in the toolbar, mirroring the gallery's
-// grid/list toggle.
 import {
   ZABtn,
   ZADialog,
@@ -23,7 +16,10 @@ import type { Events } from "@/types/emitter";
 import MatchRomBodyGrid from "@/v2/components/MatchRom/MatchRomBodyGrid.vue";
 import MatchRomBodyList from "@/v2/components/MatchRom/MatchRomBodyList.vue";
 import MatchRomProviderFilter from "@/v2/components/MatchRom/MatchRomProviderFilter.vue";
-import { getPcCandidateCover } from "@/v2/components/MatchRom/types";
+import {
+  getPcCandidateCover,
+  isUnchangedClassicMatchPayload,
+} from "@/v2/components/MatchRom/types";
 import type {
   ConfirmPayload,
   MatchSearchRom,
@@ -33,6 +29,7 @@ import type {
 import { useBreakpoint } from "@/v2/composables/useBreakpoint";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
 import { useMetadataMatchLanguage } from "@/v2/composables/useMetadataMatchLanguage";
+import { useOwnedMediaRefresh } from "@/v2/composables/useOwnedMediaRefresh";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 import romApi, {
   type PcMatcherCandidate,
@@ -74,11 +71,6 @@ const pcExpectedVersion = ref<string | null>(null);
 const pcCandidates = ref(new Map<number, PcMatcherCandidate>());
 const romsStore = storeRoms();
 const searching = ref(false);
-// In-flight flag for the post-pick `updateRom` call. v1 leaned on the
-// global `showLoadingDialog` event for feedback, but v2 has no listener
-// for it, so the dialog used to close instantly and the user had no
-// idea the network call was running. Keeping the dialog open with a
-// spinner overlay matches the v2 pattern (inline loading, §VI.B).
 const matching = ref(false);
 const route = useRoute();
 const searchText = ref("");
@@ -87,11 +79,10 @@ const searched = ref(false);
 const matchedRoms = ref<MatchSearchRom[]>([]);
 const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
+const { refreshOwnedMedia, recoverProviderMediaConflict } =
+  useOwnedMediaRefresh();
 const heartbeat = storeHeartbeat();
 
-// Active body variant — the toolbar selector toggles between the
-// gallery-style grid and the master/detail list, mirroring the
-// gallery's own layout switcher vocabulary.
 const variant = ref<MatchVariant>("grid");
 
 const variantItems = computed<
@@ -464,21 +455,50 @@ async function onBodyConfirm(payload: ConfirmPayload) {
   }
 
   try {
-    const { data } = await romApi.updateRom({
-      rom: updatedRom,
-      metadataLocale,
-      expectedVersion: consoleExpectedVersion.value,
-    });
+    const data = isUnchangedClassicMatchPayload(targetRom, updatedRom)
+      ? await refreshOwnedMedia(
+          targetRom.id,
+          consoleExpectedVersion.value ?? targetRom.updated_at,
+        )
+      : {
+          status: "success" as const,
+          rom: (
+            await romApi.updateRom({
+              rom: updatedRom,
+              metadataLocale,
+              expectedVersion: consoleExpectedVersion.value,
+            })
+          ).data,
+        };
+    if (data.status === "error") throw data.error;
     if (!matchLanguage.isCurrent(capture)) return;
     snackbar.success(t("rom.rom-updated-successfully"), {
       icon: "mdi-check-bold",
     });
-    romsStore.update(data as SimpleRom);
-    if (route.name === "rom") romsStore.currentRom = data;
+    romsStore.update(data.rom as SimpleRom);
+    if (route.name === "rom") romsStore.currentRom = data.rom;
     closeDialog();
   } catch (error: unknown) {
     if (!matchLanguage.isCurrent(capture)) return;
-    const axiosErr = error as { response?: { data?: { detail?: string } } };
+    const axiosErr = error as {
+      response?: { status?: number; data?: { detail?: string } };
+    };
+    const recovery = await recoverProviderMediaConflict(targetRom.id, error);
+    if (recovery.status === "recovered") {
+      if (!matchLanguage.isCurrent(capture)) return;
+      rom.value = recovery.rom;
+      consoleExpectedVersion.value = recovery.rom.updated_at;
+      snackbar.error(
+        t("rom.match-media-publication-failed", {
+          detail: axiosErr.response?.data?.detail ?? t("rom.update-failed"),
+        }),
+        { icon: "mdi-close-circle" },
+      );
+      return;
+    }
+    if (recovery.status === "recovery-failed") {
+      console.error("Match ROM canonical refresh failed", recovery.error);
+    }
     snackbar.error(axiosErr.response?.data?.detail ?? t("rom.update-failed"), {
       icon: "mdi-close-circle",
     });
@@ -511,8 +531,6 @@ function closeDialog() {
     <template #header>
       <div class="r-v2-match__header">
         <span>{{ t("rom.match-rom") }}</span>
-        <!-- The file name is the ground truth for a mismatched game, so it
-             stays visible while the dialog covers the gallery card. -->
         <span
           v-if="rom || pcTarget"
           class="r-v2-match__header-file"
@@ -540,10 +558,6 @@ function closeDialog() {
             @toggle="toggleSourceFilter(f.name)"
           />
 
-          <!-- Layout switcher — grid vs list. Mirrors the gallery's own
-               toggle. Pushed right and always present, so the provider chips
-               stay flush left and the row never reflows on search (the
-               results count now lives in the footer). -->
           <div class="r-v2-match__filters-end">
             <ZASliderBtnGroup
               :model-value="variant"
@@ -609,10 +623,6 @@ function closeDialog() {
           :searched="searched"
           @confirm="onBodyConfirm"
         />
-        <!-- Saving overlay — covers the body with a centered spinner so
-             the user sees the update is in flight. The dialog stays
-             modal (no scrim click / Escape) until closeDialog runs in
-             the `finally` of `onBodyConfirm`. -->
         <div
           v-if="matching"
           class="r-v2-match__saving"
@@ -632,8 +642,6 @@ function closeDialog() {
         {{ t("common.cancel") }}
       </ZABtn>
       <div class="r-v2-match__footer-spacer" />
-      <!-- Results count lives here (not the filter row) so appearing after a
-           search never reflows the toolbar above. -->
       <div v-if="searched && !searching" class="r-v2-match__results">
         <span>{{ t("rom.results-found") }}</span>
         <span class="r-v2-match__results-count">
@@ -645,8 +653,6 @@ function closeDialog() {
 </template>
 
 <style scoped>
-/* Header — dialog title plus the ROM's file name, which truncates to a
-   single line and keeps the full name in the hover title. */
 .r-v2-match__header {
   display: flex;
   align-items: baseline;
@@ -664,14 +670,7 @@ function closeDialog() {
   color: var(--r-color-fg-muted);
 }
 
-/* Saving-overlay anchor — has to pass the dialog body's column layout
-   through (`flex: 1`, `min-height: 0`, `display: flex; flex-direction:
-   column`) so the variant inside still sees the same shape it would
-   have as a direct child of `.r-dialog__body`. Without this, grid /
-   list bodies that rely on `flex: 1` to fill the dialog collapse to
-   their content size — the grid's secondary detail panel anchors to
-   the wrong rect (it's `position: absolute` against `.match-grid`),
-   and the list's two columns lose their internal scroll. */
+/* Preserve the dialog body's flex contract for both result variants. */
 .r-v2-match__body {
   position: relative;
   flex: 1 1 auto;
@@ -722,8 +721,6 @@ function closeDialog() {
 }
 
 .r-v2-match__filters-end {
-  /* Pushes the variant switcher to the right of the filter row; always
-     present, so the switcher never slides as the search state changes. */
   margin-left: auto;
   display: inline-flex;
   align-items: center;
@@ -759,18 +756,11 @@ function closeDialog() {
   gap: 8px;
   align-items: stretch;
 }
-/* Grid children default to `min-width: auto`, so each track can't shrink below
-   its content's min width. The search field's min width changes when its
-   `clear` button appears/disappears (e.g. once a search disables the field),
-   which would otherwise steal/return width from the fixed selector track and
-   make the name/id selector visibly jump. `min-width: 0` pins the tracks to
-   their declared sizes regardless of content. */
+/* Prevent search controls from widening grid tracks. */
 .r-v2-match__search-row > * {
   min-width: 0;
 }
 
-/* Phones: keep the text field (2/3) and the name/id selector (1/3) on one
-   row; the search button drops to its own full-width row below. */
 html[data-bp~="xs"] .r-v2-match__search-row {
   grid-template-columns: 2fr 1fr;
 }

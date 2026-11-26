@@ -285,6 +285,7 @@
   "match-by-label": "przez",
   "match-filter-provider": "Filtruj dopasowania {label}",
   "match-flow-variant": "Wariant dopasowania",
+  "match-media-publication-failed": "Dopasowanie metadanych zostało zastosowane, ale nie udało się opublikować multimediów dostawcy: {detail}. Możesz spróbować ponownie.",
   "match-no-cover-info": "To dopasowanie nie zawiera okładki. Możesz je nadal zastosować — ROM zachowa istniejącą okładkę.",
   "match-provider-disabled": "Źródło {label} jest wyłączone",
   "match-rename-on-disk": "Zmień nazwę pliku na dysku",

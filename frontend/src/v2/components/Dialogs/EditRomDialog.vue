@@ -20,21 +20,20 @@ import type { ZATabNavItem } from "@v2/lib/primitives/ZATabNav/types";
 import type { Emitter } from "mitt";
 import { computed, inject, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRoute } from "vue-router";
 import type { Events } from "@/types/emitter";
 import AdditionalDetails from "@/v2/components/EditRom/AdditionalDetails.vue";
 import MetadataIdSection from "@/v2/components/EditRom/MetadataIdSection.vue";
 import RawMetadataPanel from "@/v2/components/EditRom/RawMetadataPanel.vue";
 import GameCard from "@/v2/components/GameCard/GameCard.vue";
 import { useBreakpoint } from "@/v2/composables/useBreakpoint";
-import { useSnackbar } from "@/v2/composables/useSnackbar";
+import { useEditRomUpdate } from "@/v2/composables/useEditRomUpdate";
 import romApi, {
   type UpdateRom,
 } from "@/v2/data/adapters/legacy/services/api/rom";
 import storeHeartbeat from "@/v2/data/adapters/legacy/stores/heartbeat";
-import storeRoms, {
-  type DetailedRom,
-  type SimpleRom,
+import type {
+  DetailedRom,
+  SimpleRom,
 } from "@/v2/data/adapters/legacy/stores/roms";
 import { getMissingCoverImage } from "@/v2/utils/covers";
 import { isValidYoutubeVideoId } from "@/v2/utils/validation";
@@ -44,27 +43,16 @@ defineOptions({ inheritAttrs: false });
 const { t } = useI18n();
 const { lgAndUp } = useBreakpoint();
 const heartbeat = storeHeartbeat();
-const route = useRoute();
 const show = ref(false);
 // `UpdateRom = SimpleRom & {...}` but we keep a DetailedRom-compatible
 // shape internally so the per-provider raw-metadata panels can read
 // their payloads. Widen at edit/emit boundaries.
 type EditableRom = DetailedRom & UpdateRom;
 const rom = ref<EditableRom | null>(null);
-const romsStore = storeRoms();
 const imagePreviewUrl = ref<string | undefined>("");
 const removeCover = ref(false);
 const coverFileInput = ref<HTMLInputElement | null>(null);
-// In-flight flag for the PUT — drives the footer button's spinner so
-// the user sees the action is running. v1 leaned on a global
-// `showLoadingDialog` event for the same feedback, but v2 has no
-// listener for it (intentionally — inline `:loading` on the control
-// itself is the v2 pattern, see CLAUDE.md §VI.B), so the emit was a
-// no-op and the dialog appeared frozen during slow uploads / SGDB
-// fetches.
-const saving = ref(false);
 const emitter = inject<Emitter<Events>>("emitter");
-const snackbar = useSnackbar();
 
 const openHandler = async (romToEdit: SimpleRom) => {
   show.value = true;
@@ -243,32 +231,17 @@ function removeArtwork() {
   removeCover.value = true;
 }
 
-async function handleRomUpdate(
-  options: { rom: UpdateRom; removeCover?: boolean; unmatch?: boolean },
-  successMessage: string,
-) {
-  if (saving.value) return;
-  saving.value = true;
-  try {
-    const { data } = await romApi.updateRom(options);
-    snackbar.success(successMessage, { icon: "mdi-check-bold" });
-    romsStore.update(data as SimpleRom);
-    if (route.name === "rom") romsStore.currentRom = data;
-  } catch (error: unknown) {
-    console.error(error);
-    const axiosErr = error as { response?: { data?: { detail?: string } } };
-    snackbar.error(axiosErr.response?.data?.detail ?? t("rom.update-failed"), {
-      icon: "mdi-close-circle",
-    });
-  } finally {
-    saving.value = false;
-    closeDialog();
-  }
-}
+const { saving, submitUpdate } = useEditRomUpdate({
+  getActiveRomId: () => rom.value?.id,
+  onRomUpdated: (updatedRom) => {
+    rom.value = updatedRom as EditableRom;
+  },
+  onSettled: closeDialog,
+});
 
 async function unmatchRom() {
   if (!rom.value) return;
-  await handleRomUpdate(
+  await submitUpdate(
     { rom: rom.value, unmatch: true },
     t("rom.unmatch-success"),
   );
@@ -276,7 +249,7 @@ async function unmatchRom() {
 
 async function updateRom() {
   if (!rom.value) return;
-  await handleRomUpdate(
+  await submitUpdate(
     { rom: rom.value, removeCover: removeCover.value },
     t("rom.update-success"),
   );

@@ -285,6 +285,7 @@
   "match-by-label": "di",
   "match-filter-provider": "Filtra le corrispondenze {label}",
   "match-flow-variant": "Variante del flusso di associazione",
+  "match-media-publication-failed": "La corrispondenza dei metadati è stata applicata, ma non è stato possibile pubblicare i contenuti multimediali del fornitore: {detail}. Puoi riprovare.",
   "match-no-cover-info": "Questa corrispondenza non include la copertina. Puoi comunque applicarla: la ROM manterrà la sua copertina attuale.",
   "match-provider-disabled": "La fonte {label} non è abilitata",
   "match-rename-on-disk": "Rinomina il file su disco",

@@ -285,6 +285,7 @@
   "match-by-label": "ile",
   "match-filter-provider": "{label} eşleşmelerini filtrele",
   "match-flow-variant": "Eşleştirme akış varyantı",
+  "match-media-publication-failed": "Meta veri eşleşmesi uygulandı, ancak sağlayıcı medyası yayınlanamadı: {detail}. Yeniden deneyebilirsiniz.",
   "match-no-cover-info": "Bu eşleşme kapak görseli içermiyor. Yine de uygulayabilirsiniz — ROM mevcut kapak görselini korur.",
   "match-provider-disabled": "{label} kaynağı etkin değil",
   "match-rename-on-disk": "Dosyayı diskte yeniden adlandır",

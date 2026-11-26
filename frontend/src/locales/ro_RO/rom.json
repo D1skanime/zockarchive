@@ -285,6 +285,7 @@
   "match-by-label": "de",
   "match-filter-provider": "Filtrează potrivirile {label}",
   "match-flow-variant": "Variantă flux de asociere",
+  "match-media-publication-failed": "Potrivirea metadatelor a fost aplicată, dar conținutul media al furnizorului nu a putut fi publicat: {detail}. Puteți încerca din nou.",
   "match-no-cover-info": "Această potrivire nu include o copertă. O poți aplica oricum — ROM-ul își păstrează coperta existentă.",
   "match-provider-disabled": "Sursa {label} nu este activată",
   "match-rename-on-disk": "Redenumește fișierul pe disc",

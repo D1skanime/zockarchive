@@ -2,7 +2,10 @@
 // list). The dialog shell owns search state and API calls; each body
 // variant renders results and the per-match cover picker in
 // its own visual language.
-import type { SearchRom } from "@/v2/data/adapters/legacy/stores/roms";
+import type {
+  SearchRom,
+  SimpleRom,
+} from "@/v2/data/adapters/legacy/stores/roms";
 
 export type PcMatchableComponentKind =
   "base" | "update" | "dlc" | "hotfix" | "language_pack" | "extra";
@@ -188,6 +191,54 @@ export function firstAvailableCover(r: MatchSearchRom): string | null {
 export interface ConfirmPayload {
   matchedRom: MatchSearchRom;
   cover: MatchedSource | undefined;
+}
+
+type ClassicMatchPayload = Pick<
+  SimpleRom,
+  | "igdb_id"
+  | "steam_id"
+  | "sgdb_id"
+  | "ss_id"
+  | "moby_id"
+  | "flashpoint_id"
+  | "launchbox_id"
+  | "libretro_id"
+  | "ra_id"
+  | "hasheous_id"
+  | "tgdb_id"
+  | "hltb_id"
+  | "name"
+  | "name_sort_key"
+  | "slug"
+  | "summary"
+  | "url_cover"
+  | "manual_metadata"
+>;
+
+export function isUnchangedClassicMatchPayload(
+  target: ClassicMatchPayload,
+  proposed: ClassicMatchPayload,
+): boolean {
+  return (
+    target.igdb_id === proposed.igdb_id &&
+    target.steam_id === proposed.steam_id &&
+    target.sgdb_id === proposed.sgdb_id &&
+    target.ss_id === proposed.ss_id &&
+    target.moby_id === proposed.moby_id &&
+    target.flashpoint_id === proposed.flashpoint_id &&
+    target.launchbox_id === proposed.launchbox_id &&
+    target.libretro_id === proposed.libretro_id &&
+    target.ra_id === proposed.ra_id &&
+    target.hasheous_id === proposed.hasheous_id &&
+    target.tgdb_id === proposed.tgdb_id &&
+    target.hltb_id === proposed.hltb_id &&
+    target.name === proposed.name &&
+    target.name_sort_key === proposed.name_sort_key &&
+    target.slug === proposed.slug &&
+    target.summary === proposed.summary &&
+    target.url_cover === proposed.url_cover &&
+    target.manual_metadata === proposed.manual_metadata
+  );
 }
 
 export type MatchVariant = "list" | "grid";

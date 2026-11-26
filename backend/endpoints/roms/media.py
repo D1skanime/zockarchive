@@ -25,6 +25,7 @@ from handler.filesystem import fs_resource_handler, storage_composition
 from handler.filesystem.storage_access import OwnedRead, open_owned_access
 from handler.filesystem.storage_policy import OwnedStorageKind, StorageOperation
 from handler.metadata.rom_media import (
+    ProviderMediaOperationError,
     prepare_provider_media_refresh,
     refresh_provider_owned_media,
 )
@@ -34,6 +35,9 @@ from utils.router import APIRouter
 router = APIRouter()
 _AUDIO_LIMIT = 512 * 1024 * 1024
 _IMAGE_LIMIT = 10 * 1024 * 1024
+PROVIDER_MEDIA_CONFLICT_RESPONSE: dict[int, dict[str, object]] = {
+    status.HTTP_409_CONFLICT: {}
+}
 
 
 def _visible_rom(request: Request, rom_id: int):
@@ -60,6 +64,14 @@ def _detailed_rom_response(rom_id: int, request: Request) -> DetailedRomSchema:
     return DetailedRomSchema.from_orm_with_request(rom, request)
 
 
+def provider_media_conflict(stage: str, candidate: str | None = None) -> HTTPException:
+    """Translate provider-media operation failures at the HTTP boundary."""
+    detail = f"Provider media {stage} failed"
+    if candidate:
+        detail = f"{detail}: {candidate}"
+    return HTTPException(status_code=status.HTTP_409_CONFLICT, detail=detail)
+
+
 @protected_route(router.get, "/{id}/media", [Scope.ROMS_READ])
 async def get_media(request: Request, id: int) -> list[RomOwnedMediaSchema]:
     _visible_rom(request, id)
@@ -82,16 +94,13 @@ async def refresh_media(
         _, failures = await refresh_provider_owned_media(
             rom, rom.updated_at, provider, source
         )
-    except ValueError:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Provider media could not be refreshed",
-        ) from None
+    except ProviderMediaOperationError as exc:
+        raise provider_media_conflict(exc.stage) from None
+    except ValueError as exc:
+        raise provider_media_conflict("normalization") from exc
     if failures:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Provider media could not be refreshed",
-        )
+        failure = failures[0]
+        raise provider_media_conflict(failure.stage, failure.provider_media_id or None)
     return _detailed_rom_response(id, request)
 
 

@@ -285,6 +285,7 @@
   "match-by-label": "von",
   "match-filter-provider": "{label}-Treffer filtern",
   "match-flow-variant": "Match-Flow-Variante",
+  "match-media-publication-failed": "Die Metadatenzuordnung wurde übernommen, aber Anbieter-Medien konnten nicht veröffentlicht werden: {detail}. Du kannst es erneut versuchen.",
   "match-no-cover-info": "Dieser Treffer enthält kein Coverbild. Du kannst ihn trotzdem anwenden — die ROM behält ihr aktuelles Cover.",
   "match-provider-disabled": "{label}-Quelle ist nicht aktiviert",
   "match-rename-on-disk": "Datei auf dem Datenträger umbenennen",

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from typing import cast
 
+from httpx import DecodingError, TransportError
 from rq import get_current_job
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -38,7 +39,10 @@ from handler.filesystem.storage_access import (
 )
 from handler.filesystem.storage_policy import StorageOperation
 from handler.metadata import meta_gamelist_handler, meta_hltb_handler
-from handler.metadata.rom_media import refresh_provider_owned_media
+from handler.metadata.rom_media import (
+    ProviderMediaOperationError,
+    refresh_provider_owned_media,
+)
 from handler.metadata.ss_handler import begin_scan as begin_ss_scan
 from handler.metadata.ss_handler import log_scan_summary as log_ss_scan_summary
 from handler.redis_handler import redis_client
@@ -137,6 +141,20 @@ async def scan_platforms(
                         hydrated_provider
                         or (metadata_sources[0] if metadata_sources else "provider"),
                     )
+                except (TransportError, DecodingError) as exc:
+                    log.warning(
+                        "Media-only refresh transport/decode failure for %s (%s)",
+                        rom.id,
+                        type(exc).__name__,
+                    )
+                    return
+                except ProviderMediaOperationError as exc:
+                    log.warning(
+                        "Media-only catalog refresh failed for %s (%s)",
+                        rom.id,
+                        exc.stage,
+                    )
+                    return
                 except (ValueError, OSError) as exc:
                     log.warning("Media-only refresh failed for %s: %s", rom.id, exc)
                     return

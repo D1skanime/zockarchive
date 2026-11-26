@@ -9,6 +9,7 @@ import type { Events } from "@/types/emitter";
 import MatchRomDialog from "@/v2/components/Dialogs/MatchRomDialog.vue";
 import {
   isPcMatchTarget,
+  isUnchangedClassicMatchPayload,
   type PcMatchTarget,
 } from "@/v2/components/MatchRom/types";
 import { resolveDescription } from "@/v2/composables/useManualDescription";
@@ -91,6 +92,8 @@ const dialogMocks = vi.hoisted(() => ({
   selectPcComponentMetadataCandidate: vi.fn(),
   updateRom: vi.fn(),
   update: vi.fn(),
+  refreshOwnedMedia: vi.fn(),
+  recoverProviderMediaConflict: vi.fn(),
   success: vi.fn(),
   error: vi.fn(),
 }));
@@ -116,6 +119,12 @@ vi.mock("@/v2/data/adapters/legacy/services/api/rom", () => ({
 vi.mock("@/v2/data/adapters/legacy/stores/roms", () => ({
   default: () => ({
     update: dialogMocks.update,
+  }),
+}));
+vi.mock("@/v2/composables/useOwnedMediaRefresh", () => ({
+  useOwnedMediaRefresh: () => ({
+    refreshOwnedMedia: dialogMocks.refreshOwnedMedia,
+    recoverProviderMediaConflict: dialogMocks.recoverProviderMediaConflict,
   }),
 }));
 vi.mock("@/v2/data/adapters/legacy/stores/heartbeat", () => ({
@@ -179,6 +188,32 @@ const targetFields: Partial<SimpleRom> = {
   manual_metadata: { descriptions: { en: "Saved English" } },
 };
 const target = targetFields as SimpleRom;
+const sameIdTarget = {
+  ...target,
+  igdb_id: 9,
+  steam_id: null,
+  sgdb_id: null,
+  ss_id: null,
+  moby_id: null,
+  flashpoint_id: null,
+  launchbox_id: null,
+  libretro_id: null,
+  ra_id: null,
+  hasheous_id: null,
+  tgdb_id: null,
+  hltb_id: null,
+  name: "Game",
+  name_sort_key: null,
+  slug: null,
+  summary: null,
+  url_cover: null,
+  manual_metadata: null,
+} as SimpleRom;
+const sameIgdbMatch = {
+  ...matched,
+  igdb_id: 9,
+  ss_id: undefined,
+};
 const pcCandidate = {
   id: "steam:33",
   provider: "steam",
@@ -207,7 +242,7 @@ function mountDialog() {
       stubs: {
         ZADialog: {
           name: "ZADialog",
-          props: ["modelValue"],
+          props: ["modelValue", "persistent"],
           template:
             "<div><slot name='toolbar' /><slot name='content' /><slot name='footer' /></div>",
         },
@@ -248,6 +283,13 @@ describe("matching captured language event flow", () => {
     dialogMocks.selectPcMetadataCandidate.mockResolvedValue({});
     dialogMocks.selectPcComponentMetadataCandidate.mockResolvedValue({});
     dialogMocks.updateRom.mockResolvedValue({ data: target });
+    dialogMocks.refreshOwnedMedia.mockResolvedValue({
+      status: "success",
+      rom: sameIdTarget,
+    });
+    dialogMocks.recoverProviderMediaConflict.mockResolvedValue({
+      status: "not-provider-media-conflict",
+    });
   });
   afterEach(() => {
     mounted.splice(0).forEach(({ wrapper }) => wrapper.unmount());
@@ -257,6 +299,98 @@ describe("matching captured language event flow", () => {
     mounted.push(result);
     return result;
   }
+
+  it("treats only an exact classic payload as a same-ID media refresh", () => {
+    expect(isUnchangedClassicMatchPayload(sameIdTarget, sameIdTarget)).toBe(
+      true,
+    );
+
+    for (const field of [
+      "igdb_id",
+      "steam_id",
+      "sgdb_id",
+      "ss_id",
+      "moby_id",
+      "flashpoint_id",
+      "launchbox_id",
+      "libretro_id",
+      "ra_id",
+      "hasheous_id",
+      "tgdb_id",
+      "hltb_id",
+      "name",
+      "name_sort_key",
+      "slug",
+      "summary",
+      "url_cover",
+      "manual_metadata",
+    ] as const) {
+      expect(
+        isUnchangedClassicMatchPayload(sameIdTarget, {
+          ...sameIdTarget,
+          [field]: field === "manual_metadata" ? {} : "changed",
+        }),
+      ).toBe(false);
+    }
+  });
+
+  it("refreshes an exact same-IGDB confirmation without issuing an update", async () => {
+    const ui = setup();
+    dialogMocks.searchRom.mockResolvedValueOnce({ data: [sameIgdbMatch] });
+    ui.emitter.emit("showMatchRomDialog", sameIdTarget);
+    await ui.search();
+    await ui.confirm();
+
+    expect(dialogMocks.refreshOwnedMedia).toHaveBeenCalledWith(41, version);
+    expect(dialogMocks.updateRom).not.toHaveBeenCalled();
+    expect(dialogMocks.update).toHaveBeenCalledWith(sameIdTarget);
+  });
+
+  it("updates changed same-IGDB metadata and recovers a retryable 409", async () => {
+    const recovered = {
+      ...sameIdTarget,
+      updated_at: "2026-10-23T08:00:00+00:00",
+    };
+    const conflict = {
+      response: {
+        status: 409,
+        data: { detail: "Provider media download failed" },
+      },
+    };
+    dialogMocks.updateRom.mockRejectedValueOnce(conflict);
+    dialogMocks.recoverProviderMediaConflict.mockResolvedValueOnce({
+      status: "recovered",
+      rom: recovered,
+    });
+    const ui = setup();
+    dialogMocks.searchRom.mockResolvedValueOnce({ data: [sameIgdbMatch] });
+    ui.emitter.emit("showMatchRomDialog", {
+      ...sameIdTarget,
+      manual_metadata: { descriptions: { en: "Keep this" } },
+    });
+    await ui.search();
+    await ui.confirm();
+
+    expect(dialogMocks.updateRom).toHaveBeenCalledWith(
+      expect.objectContaining({
+        metadataLocale: "de",
+        expectedVersion: version,
+      }),
+    );
+    expect(dialogMocks.refreshOwnedMedia).not.toHaveBeenCalled();
+    expect(dialogMocks.recoverProviderMediaConflict).toHaveBeenCalledWith(
+      41,
+      conflict,
+    );
+    expect(dialogMocks.error).toHaveBeenCalledOnce();
+    expect(ui.body().props("results")).toHaveLength(1);
+    expect(
+      ui.wrapper.findComponent({ name: "ZADialog" }).props("modelValue"),
+    ).toBe(true);
+    expect(
+      ui.wrapper.findComponent({ name: "ZADialog" }).props("persistent"),
+    ).toBe(false);
+  });
 
   it.each(["de", "fr", "en"])(
     "captures %s search and confirmation without copying display text into a draft",

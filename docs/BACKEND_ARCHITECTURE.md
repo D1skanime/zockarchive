@@ -106,6 +106,11 @@ from obscuring an interrupted operation and its supported resume action.
 Deleting parent provider media keeps its catalog identity as a tombstone with
 `operator_suppressed=True`, removes its placements and clears its owned path.
 Normal, media-only, COMPLETE and explicit provider refresh preserve this intent.
+During media-only scans, provider transport or decode failures while hydrating
+one ROM are advisory per-ROM failures: the worker logs the ROM and exception
+class, returns only that refresh coroutine, and preserves the normal scan-done
+signal for sibling work. Normal scans and explicit refreshes keep their existing
+failure semantics.
 Automatic inventory disappearance instead uses a tombstone with
 `operator_suppressed=False`; that candidate may return with a later inventory.
 Uploads retain their separate deletion and placement behavior.
@@ -346,6 +351,39 @@ manual_description.py stores locale-keyed descriptions and resolves exact locale
 English and provider fallbacks.
 
 Manual IGDB matching retains its complete cover, screenshot and artwork source inventory in `igdb_metadata.provider_media`. The explicit parent-media refresh chooses that retained provider inventory before legacy URL fields. For older manual matches that retain only a known IGDB id, it restores this inventory from that same provider record before reconciling screenshots and artwork. Provider-media suppressions remain durable and are checked before every candidate is republished.
+
+#### Current provider-media refresh
+
+An explicit same-ID choice in the metadata match dialog uses `POST /api/roms/{id}/media/refresh`;
+ordinary ROM edits with an unchanged serialized IGDB ID do not contact the provider
+or publish media. Both explicit paths retrieve the current provider catalog before
+reconciling it. A confirmed catalog,
+including an empty catalog, replaces the retained provider snapshot. An empty
+snapshot never retires catalog rows, placements, selected covers, uploads, or
+`provider_media_suppressions`; a lookup failure leaves the prior snapshot intact.
+
+`refresh_provider_owned_media` discovers provider-qualified stable candidates.
+`handler/database/provider_media_inventory.py` owns the active, provider-owned
+path inventory lookup, while `endpoints/roms/media.py` owns conversion of
+provider-media operation failures into the shared retryable HTTP 409 response.
+The publisher
+filters suppressed candidates before I/O, and reuses an active owned path only
+when its candidate key and role match. Missing, non-suppressed candidates are
+downloaded to staged owned storage and reconciled under the existing ROM version
+lock. That locked reconciliation checks suppression again, preserves manually
+uploaded media, placements, and selected covers, and cleans staged output when
+publication cannot complete. The protected route returns the canonical detailed
+ROM only after every candidate succeeds. Lookup, normalization, download,
+storage, and publication failures return a retryable HTTP 409 detail that names
+the failed stage. Provider transport errors are classified at lookup or download
+boundaries without exposing transport internals. Snapshot persistence may advance
+the canonical ROM version before an item fails, so retrying clients must reload
+that version. The refresh never writes to the source library.
+
+Administrator UAT checks the same-ID assignment, a newly offered provider item,
+a deliberately deleted URL-size alias, manual upload and cover preservation, a
+retry after a transient failure, and the returned partial or error feedback. Do
+not use the procedure to restore deleted provider media or access source paths.
 
 #### DLC-owned manuals and media
 

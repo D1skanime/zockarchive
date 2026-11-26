@@ -285,6 +285,7 @@
   "match-by-label": "by",
   "match-filter-provider": "{label}のマッチを絞り込み",
   "match-flow-variant": "マッチフローのバリアント",
+  "match-media-publication-failed": "メタデータの一致は適用されましたが、プロバイダーのメディアを公開できませんでした: {detail}。再試行できます。",
   "match-no-cover-info": "このマッチにはカバーアートが含まれていません。それでも適用できます。ROMの既存のカバーは保持されます。",
   "match-provider-disabled": "{label}ソースは有効になっていません",
   "match-rename-on-disk": "ディスク上のファイル名を変更",
