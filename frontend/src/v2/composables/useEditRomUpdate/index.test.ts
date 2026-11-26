@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { UpdateRom } from "@/v2/data/adapters/legacy/services/api/rom";
 import type { DetailedRom } from "@/v2/data/adapters/legacy/stores/roms";
 import { useEditRomUpdate } from "./index";
 
@@ -44,6 +45,112 @@ vi.mock("@/v2/data/adapters/legacy/stores/roms", () => ({
 const savedRom = { id: 19, name: "Saved ROM" } as DetailedRom;
 const recoveredRom = { id: 19, name: "Canonical ROM" } as DetailedRom;
 
+function createUpdateRom(overrides: Partial<UpdateRom> = {}): UpdateRom {
+  return {
+    id: 19,
+    igdb_id: null,
+    sgdb_id: null,
+    moby_id: null,
+    ss_id: null,
+    ra_id: null,
+    launchbox_id: null,
+    hasheous_id: null,
+    tgdb_id: null,
+    flashpoint_id: null,
+    hltb_id: null,
+    gamelist_id: null,
+    libretro_id: null,
+    steam_id: null,
+    platform_id: 1,
+    platform_slug: "ps3",
+    platform_fs_slug: "ps3",
+    platform_custom_name: null,
+    platform_display_name: "PlayStation 3",
+    fs_name: "saved-rom.iso",
+    fs_name_no_tags: "saved-rom",
+    fs_name_no_ext: "saved-rom",
+    fs_extension: "iso",
+    fs_path: "/roms/ps3",
+    fs_size_bytes: 1024,
+    name: "Saved ROM",
+    name_sort_key: "saved rom",
+    slug: "saved-rom",
+    summary: null,
+    alternative_names: [],
+    youtube_video_id: null,
+    metadatum: {
+      rom_id: 19,
+      genres: [],
+      franchises: [],
+      collections: [],
+      companies: [],
+      main_developer: null,
+      game_modes: [],
+      age_ratings: [],
+      player_count: "",
+      first_release_date: null,
+      pc_release_date: null,
+      average_rating: null,
+    },
+    igdb_metadata: null,
+    moby_metadata: null,
+    ss_metadata: null,
+    launchbox_metadata: null,
+    hasheous_metadata: null,
+    flashpoint_metadata: null,
+    hltb_metadata: null,
+    gamelist_metadata: null,
+    manual_metadata: null,
+    path_cover_small: null,
+    path_cover_large: null,
+    url_cover: null,
+    has_manual: false,
+    has_soundtrack: false,
+    path_manual: null,
+    url_manual: null,
+    path_video: null,
+    is_unidentified: false,
+    is_identified: true,
+    revision: null,
+    regions: [],
+    languages: [],
+    tags: [],
+    crc_hash: null,
+    md5_hash: null,
+    sha1_hash: null,
+    ra_hash: null,
+    has_simple_single_file: true,
+    has_nested_single_file: false,
+    has_multiple_files: false,
+    full_path: "/roms/ps3/saved-rom.iso",
+    created_at: "2026-11-26T00:00:00Z",
+    updated_at: "2026-11-26T00:00:00Z",
+    missing_from_fs: false,
+    has_notes: false,
+    rom_user: {
+      id: 1,
+      user_id: 1,
+      rom_id: 19,
+      created_at: "2026-11-26T00:00:00Z",
+      updated_at: "2026-11-26T00:00:00Z",
+      last_played: null,
+      is_main_sibling: true,
+      backlogged: false,
+      now_playing: false,
+      hidden: false,
+      rating: 0,
+      difficulty: 0,
+      completion: 0,
+      status: null,
+    },
+    merged_screenshots: [],
+    merged_ra_metadata: null,
+    files: [],
+    sibling_roms: [],
+    ...overrides,
+  };
+}
+
 describe("useEditRomUpdate", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -63,7 +170,7 @@ describe("useEditRomUpdate", () => {
       onRomUpdated,
       onSettled,
     });
-    const options = { rom: { name: "Saved ROM" } };
+    const options = { rom: createUpdateRom({ name: "Saved ROM" }) };
 
     const submission = update.submitUpdate(options, "rom-updated-successfully");
 
@@ -100,7 +207,10 @@ describe("useEditRomUpdate", () => {
       onSettled,
     });
 
-    await update.submitUpdate({ rom: { igdb_id: 7376 } }, "unused-success");
+    await update.submitUpdate(
+      { rom: createUpdateRom({ igdb_id: 7376 }) },
+      "unused-success",
+    );
 
     expect(mocks.recoverProviderMediaConflict).toHaveBeenCalledWith(
       19,
@@ -130,7 +240,7 @@ describe("useEditRomUpdate", () => {
     });
 
     await update.submitUpdate(
-      { rom: { name: "Rejected ROM" } },
+      { rom: createUpdateRom({ name: "Rejected ROM" }) },
       "unused-success",
     );
 
