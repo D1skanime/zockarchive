@@ -1378,6 +1378,10 @@ Resume file: None
 
 | 20261017-pc-automation-card-layout | Clarify PC automation review cards | 2026-10-17 | e8187fed5 | [20261017-pc-automation-card-layout](./quick/20261017-pc-automation-card-layout/) |
 
+## Quick Task 261126-pnn
+
+| 261126-pnn | Repair the three new Gate05 mypy findings in targeted media tests | 2026-11-26 | complete, scoped Trunk check only | [261126-pnn-gate05-drei-neue-mypy-fehler-in-den-gezi](./quick/261126-pnn-gate05-drei-neue-mypy-fehler-in-den-gezi/) |
+
 - [Phase 35 P03]: Keep retry policy advisory, reuse the existing complete binding/identity owner, and gather every mapping before applying one five-game operation budget.
 
 - [Phase 35 P11]: Reuse actual HTTP/RQ and scheduler owners with token-bound disposable barriers; preserve production incarnation immutability.

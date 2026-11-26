@@ -193,7 +193,9 @@ def test_explicit_refresh_hands_prepared_catalog_to_owned_media_reconciliation(
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["id"] == rom.id
     assert prepare.await_count == 1
-    prepared_rom, requested_version = prepare.await_args.args
+    prepare_call = prepare.await_args
+    assert prepare_call is not None
+    prepared_rom, requested_version = prepare_call.args
     assert prepared_rom.id == rom.id
     assert requested_version.isoformat() == rom.updated_at.isoformat()
     refresh.assert_awaited_once_with(prepared, prepared.updated_at, "igdb", source)

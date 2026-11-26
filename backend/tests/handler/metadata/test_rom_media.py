@@ -151,7 +151,7 @@ async def test_refresh_reuses_active_media_and_retries_failed_missing_candidate(
     monkeypatch,
 ):
     rom = _rom()
-    source = {
+    source: dict[str, object] = {
         "url_covers": [{"id": "cover-1", "url": "https://images.example/cover.webp"}],
         "url_screenshots": [
             {"id": "shot-1", "url": "https://images.example/shot.webp"}
