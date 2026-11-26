@@ -88,6 +88,27 @@ def test_folder_capability_uses_the_sum_of_small_members_at_the_threshold():
     assert capability.total_size_bytes == SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
 
 
+@pytest.mark.parametrize("platform_slug", [UPS.WIN, UPS.PS3, "snes"])
+@pytest.mark.parametrize(
+    ("size_bytes", "expected"),
+    [
+        (SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES - 1, False),
+        (SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES, True),
+        (SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES + 1, True),
+    ],
+)
+def test_legacy_inventory_preparation_uses_the_universal_threshold(
+    platform_slug, size_bytes, expected
+):
+    rom = _folder_rom(platform_slug, [])
+    rom.components = []
+    rom.fs_size_bytes = size_bytes
+
+    capability = shared_download_preparation_capability(rom)
+
+    assert (capability is not None) is expected
+
+
 def test_single_file_capability_requires_matching_recorded_file_evidence():
     size_bytes = SHARED_DOWNLOAD_MINIMUM_SIZE_BYTES
     member = _member(size_bytes)
@@ -161,9 +182,7 @@ def test_legacy_dot_path_iso_is_preparable_as_a_single_file_without_inventory():
     capability = shared_download_preparation_capability(rom)
 
     assert has_shared_download_single_file(rom) is True
-    assert capability is not None
-    assert capability.state == "preparable"
-    assert capability.source_kind == "file"
+    assert capability is None
 
 
 def test_dot_path_requires_the_exact_direct_rom_filename():

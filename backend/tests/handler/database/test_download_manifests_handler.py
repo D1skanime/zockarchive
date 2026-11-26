@@ -37,6 +37,9 @@ class FakeManifestFilesystem:
             else "UNCHANGED_BY_LIGHT_CHECK"
         )
 
+    async def open_verified_download_manifest_member(self, _rom, _persisted_member):
+        raise AssertionError("manifest creation must not open a transfer")
+
 
 @pytest.fixture(autouse=True)
 def clear_download_manifests():
