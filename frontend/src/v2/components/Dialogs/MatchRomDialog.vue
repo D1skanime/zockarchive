@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Manual metadata matching keeps provider filtering and candidate selection in
+// this shell while the grid and list bodies only render the chosen variant.
 import {
   ZABtn,
   ZADialog,
@@ -71,6 +73,8 @@ const pcExpectedVersion = ref<string | null>(null);
 const pcCandidates = ref(new Map<number, PcMatcherCandidate>());
 const romsStore = storeRoms();
 const searching = ref(false);
+// Keep the dialog modal until its mutation settles, preventing duplicate
+// matches while the canonical ROM may already have changed.
 const matching = ref(false);
 const route = useRoute();
 const searchText = ref("");
@@ -83,6 +87,8 @@ const { refreshOwnedMedia, recoverProviderMediaConflict } =
   useOwnedMediaRefresh();
 const heartbeat = storeHeartbeat();
 
+// Both bodies share one result source, so changing the presentation must not
+// rerun a provider search or discard the selected candidate.
 const variant = ref<MatchVariant>("grid");
 
 const variantItems = computed<
@@ -455,6 +461,9 @@ async function onBodyConfirm(payload: ConfirmPayload) {
   }
 
   try {
+    // An unchanged classic match has no metadata mutation to submit. Refresh
+    // its persisted provider inventory instead, while changed data follows the
+    // normal versioned ROM update path.
     const data = isUnchangedClassicMatchPayload(targetRom, updatedRom)
       ? await refreshOwnedMedia(
           targetRom.id,
@@ -531,6 +540,8 @@ function closeDialog() {
     <template #header>
       <div class="r-v2-match__header">
         <span>{{ t("rom.match-rom") }}</span>
+        <!-- The stored filename remains the reliable identity while a manual
+             match can replace the display title. -->
         <span
           v-if="rom || pcTarget"
           class="r-v2-match__header-file"
@@ -558,6 +569,8 @@ function closeDialog() {
             @toggle="toggleSourceFilter(f.name)"
           />
 
+          <!-- Switching layout preserves the current provider-filtered result
+               set, so it is safe while comparing candidates. -->
           <div class="r-v2-match__filters-end">
             <ZASliderBtnGroup
               :model-value="variant"
@@ -623,6 +636,8 @@ function closeDialog() {
           :searched="searched"
           @confirm="onBodyConfirm"
         />
+        <!-- The body stays covered during persistence because a match may
+             update metadata, media, and the canonical response separately. -->
         <div
           v-if="matching"
           class="r-v2-match__saving"

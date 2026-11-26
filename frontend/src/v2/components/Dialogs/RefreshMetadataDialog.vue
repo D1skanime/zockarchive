@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// RefreshMetadataDialog starts a scoped metadata scan, or reconciles owned
+// provider media for one ROM without changing its placements.
 import {
   ZAAvatar,
   ZAAlert,
@@ -36,6 +38,7 @@ const LOCAL_STORAGE_LAUNCHBOX_REMOTE_ENABLED_KEY =
 const LOCAL_STORAGE_HASHEOUS_ENABLED_KEY = "scan.hasheousEnabled";
 const LOCAL_STORAGE_PLAYMATCH_ENABLED_KEY = "scan.playmatchEnabled";
 
+// Hash matchers enrich catalog identity and are separate from metadata sources.
 const HASH_MATCHER_KEYS = ["hasheous", "playmatch"] as const;
 
 const GENERAL_PROVIDER_KEYS = new Set([
@@ -53,6 +56,8 @@ const SPECIFIC_PROVIDER_KEYS = new Set(["ra", "sgdb", "hltb"]);
 const { t, locale } = useI18n();
 const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
+// A media-only refresh waits for a canonical result so partial publication
+// conflicts can reload the persisted ROM before the dialog reports failure.
 const { refreshOwnedMedia, recoverProviderMediaConflict } =
   useOwnedMediaRefresh();
 const romsStore = storeRoms();
