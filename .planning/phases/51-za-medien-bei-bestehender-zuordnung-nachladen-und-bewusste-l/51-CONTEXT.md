@@ -3,6 +3,8 @@
 **Gathered:** 2026-11-26
 **Status:** Ready for planning
 
+**ki-run traceability:** This Phase 51 work is bound to ki-run job 261126-d0af and canonical directory `.planning/phases/51-za-medien-bei-bestehender-zuordnung-nachladen-und-bewusste-l`.
+
 <domain>
 ## Phase Boundary
 
