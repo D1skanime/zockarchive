@@ -373,7 +373,6 @@ class FSRomsHandler(ExternalFSHandler):
     def pc_component_member_path(
         self, rom: Rom, member: RomComponentManifestMember
     ) -> str:
-        """Return a manifest member below this handler's authorized root."""
         return manifest_member_source_path_for_root(self._logical_root, rom, member)
 
     def capture_download_manifest_member(

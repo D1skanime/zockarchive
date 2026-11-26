@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-e98-quality-gate-mapping-manifest-lint-und-z
-last_updated: "2026-11-26T10:18:00Z"
+stopped_at: Completed quick 261126-edh-quality-gate-rom-handler-zeilenlimit-nac
+last_updated: "2026-11-26T10:22:00Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -23,6 +23,9 @@ progress:
 - Phase 50 added: ZA: Gemeinsame PC-Dateiauswahl für große Spiele korrekt wiederverwenden.
 
 ## Latest quick task
+
+- 261126-edh completed: restored the ROM handler to its 1,306-line baseline
+  after mapping-helper extraction. No tests ran before UAT.
 
 - 261126-e98 completed: restored the manifest transfer test seam and extracted
   mapped manifest helpers to satisfy Trunk and handler line limits. No tests
@@ -1150,6 +1153,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-edh | Restore ROM handler line-limit baseline after mapping helper extraction | 2026-11-26 | this commit | [261126-edh-quality-gate-rom-handler-zeilenlimit-nac](./quick/261126-edh-quality-gate-rom-handler-zeilenlimit-nac/) |
 | 261126-e98 | Repair mapping manifest lint and line-limit gate findings | 2026-11-26 | this commit | [261126-e98-quality-gate-mapping-manifest-lint-und-z](./quick/261126-e98-quality-gate-mapping-manifest-lint-und-z/) |
 | 261126-dkf | Record and repair real isolated mapped manifest evidence for Phase 50 | 2026-11-26 | this commit | [261126-dkf-echter-isolierter-backend-nachweis-f-r-p](./quick/261126-dkf-echter-isolierter-backend-nachweis-f-r-p/) |
 | 20261125-shared-inventory-test-contract | Repair stale shared inventory test seams after full regression collection failure | 2026-11-25 | 8321274b1 | [20261125-shared-inventory-test-contract](./quick/20261125-shared-inventory-test-contract/) |
