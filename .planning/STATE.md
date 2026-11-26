@@ -25,6 +25,13 @@ progress:
 
 ## Latest quick task
 
+- 261126-mdh completed: a failed canonical reload after a single-ROM,
+  owned-media HTTP 409 now logs only the secondary GET failure and preserves
+  the original protected refresh error, leaving the dialog retryable. The
+  disposable source contract, Trunk, frontend typecheck, and production build
+  passed. No test suite, browser automation, Docker, provider service, NAS,
+  deployment, or live runtime resource was used.
+
 - 261126-lg6 completed: repaired all five Phase 51 review blockers. Ordinary
   unchanged-ID edits no longer trigger provider work; explicit same-ID matching
   uses the protected refresh route; provider failures are stage-aware and
