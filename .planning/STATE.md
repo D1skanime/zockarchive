@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-pyz-nach-freigegebener-live-abnahme-die-dire
-last_updated: "2026-11-26T18:44:26Z"
+stopped_at: Completed quick 261126-rqo-review-fix-edit-rom-dialog-muss-den-best
+last_updated: "2026-11-26T20:02:00Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -24,6 +24,14 @@ progress:
 - Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-rqo completed: Edit ROM now uses the established canonical
+  provider-media conflict recovery after a persisted metadata-ID update returns
+  HTTP 409. Recovered state replaces both the list record and active ROM detail,
+  while the UI reports the translated partial publication failure. Scoped Trunk
+  and frontend typecheck passed. No tests or browser interaction ran; browser
+  UAT remains with the authorized human flow because this host has no supported
+  browser control.
 
 - 261126-r9v completed: Gate07's failing suppression-race fixture had reused a
   matching active IGDB screenshot with a usable owned path, so its download
@@ -1215,6 +1223,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-rqo | Recover Edit ROM after provider-media conflict | 2026-11-26 | 38f9d1161 | [Edit ROM provider-media recovery](./quick/261126-rqo-review-fix-edit-rom-dialog-muss-den-best/) |
 | 261126-r9v | Isolate and repair the Gate07 provider-media suppression race test | 2026-11-26 | 1d7c7f024 | [Gate07 suppression race test](./quick/261126-r9v-gate07-isolierten-suppression-race-test-/) |
 | 261126-p8z | Correct only approved Gate05 locale digest references | 2026-11-26 | this commit | [Gate05 locale digest correction](./quick/261126-p8z-gate05-nur-die-bestehende-freigegebene-m/) |
 | 261126-mtb | Extract Phase 51 provider-media boundaries from ROM and dialog monoliths | 2026-11-26 | this commit | [provider-media quality gate](./quick/261126-mtb-quality-gate-phase-51-nderungen-aus-berg/) |
