@@ -447,5 +447,4 @@ const tabs = computed<ZATabNavItem[]>(() => [
     <p>{{ t("rom.loading-rom") }}</p>
   </section>
 </template>
-
 <style scoped src="./gameDetails.css" />

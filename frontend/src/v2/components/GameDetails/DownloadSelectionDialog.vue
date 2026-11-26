@@ -149,10 +149,10 @@ function componentFilesExpanded(componentId: number) {
   return expandedComponentIds.value.includes(componentId);
 }
 function componentLabel(component: PcComponentSchema) {
-  return component.kind === "base"
-    ? t("rom.pc-base-game")
-    : component.kind === "folder"
-      ? t("rom.file")
+  return usesFolderInventory.value
+    ? t("rom.file")
+    : component.kind === "base"
+      ? t("rom.pc-base-game")
       : component.relative_path;
 }
 function memberLabel(member: PcComponentSchema["manifest_members"][number]) {
