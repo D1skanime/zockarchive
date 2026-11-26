@@ -28,6 +28,7 @@ from handler.database import (
     db_rom_handler,
     db_storage_handler,
 )
+from handler.filesystem import fs_rom_handler
 from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.roms_handler import DownloadManifestTransferState, FSRomsHandler
 from handler.filesystem.storage_resolver import normalize_relative_path
@@ -41,6 +42,7 @@ from models.download_manifest import DownloadManifest, DownloadManifestStatus
 from utils.router import APIRouter
 
 router = APIRouter()
+__all__ = ["fs_rom_handler", "router"]
 
 _NOT_FOUND = "Download manifest not found"
 _MAX_U64 = 2**64 - 1

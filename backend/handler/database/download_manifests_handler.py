@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from datetime import datetime, timedelta, timezone
-from pathlib import PurePosixPath
 from typing import TYPE_CHECKING, Protocol
 from uuid import uuid4
 
@@ -11,7 +10,7 @@ from sqlalchemy.orm import Session, joinedload, selectinload
 
 from config import DOWNLOAD_MANIFEST_TTL_SECONDS
 from decorators.database import begin_session
-from exceptions.storage_exceptions import MissingPlatformStorageMappingError
+from handler.filesystem.download_manifest_mapping import filesystem_for_manifest_rom
 from models.download_archive_set import DownloadArchiveSet, DownloadArchiveSetMember
 from models.download_manifest import (
     DownloadManifest,
@@ -66,38 +65,9 @@ class DBDownloadManifestsHandler(DBBaseHandler):
     def __init__(self, filesystem_handler: ManifestFilesystem | None = None) -> None:
         self._filesystem_handler = filesystem_handler
 
-    @property
-    def filesystem_handler(self) -> ManifestFilesystem:
-        if self._filesystem_handler is None:
-            from handler.filesystem.roms_handler import FSRomsHandler
-
-            self._filesystem_handler = FSRomsHandler()
-        return self._filesystem_handler
-
     def filesystem_handler_for_rom(self, rom: Rom) -> ManifestFilesystem:
         """Keep injected test handlers, otherwise bind reads to the ROM mapping."""
-        if self._filesystem_handler is not None:
-            return self._filesystem_handler
-
-        from handler.database import db_storage_handler
-        from handler.filesystem.roms_handler import FSRomsHandler
-        from handler.filesystem.storage_resolver import normalize_relative_path
-        from handler.storage.read_context import MappingReadContext
-
-        try:
-            mapping = db_storage_handler.path_mapping(rom.platform_id, rom.full_path)
-        except MissingPlatformStorageMappingError:
-            return self.filesystem_handler
-        MappingReadContext(mapping.id, mapping.version).validate()
-        try:
-            relative_path = PurePosixPath(rom.full_path).relative_to(
-                PurePosixPath(mapping.relative_path)
-            )
-        except ValueError as error:
-            raise ValueError("manifest folder inventory is unavailable") from error
-        return FSRomsHandler.for_mapping(
-            mapping, normalize_relative_path(relative_path.as_posix())
-        )
+        return self._filesystem_handler or filesystem_for_manifest_rom(rom)
 
     @begin_session
     def create_manifest(
@@ -108,7 +78,6 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         archive_set_id: int | None = None,
         selected_member_ids: Sequence[int] | None = None,
         whole_folder: bool = False,
-        filesystem_handler: ManifestFilesystem | None = None,
         session: Session = None,  # type: ignore
     ) -> DownloadManifest:
         if not isinstance(whole_folder, bool):
@@ -328,7 +297,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         ):
             raise ValueError("manifest components need source members")
 
-        filesystem = filesystem_handler or self.filesystem_handler_for_rom(rom)
+        filesystem = self.filesystem_handler_for_rom(rom)
         manifest = DownloadManifest(
             user_id=user_id,
             rom_id=rom.id,
@@ -385,8 +354,6 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         self,
         manifest_id: str,
         user_id: int,
-        *,
-        filesystem_handler: ManifestFilesystem | None = None,
         session: Session = None,  # type: ignore
     ) -> DownloadManifest | None:
         manifest = session.scalar(
@@ -410,7 +377,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         if datetime.now(timezone.utc) >= to_utc(manifest.expires_at):
             manifest.status = DownloadManifestStatus.EXPIRED
             return manifest
-        filesystem = filesystem_handler or self.filesystem_handler_for_rom(manifest.rom)
+        filesystem = self.filesystem_handler_for_rom(manifest.rom)
         for component in manifest.components:
             for member in component.members:
                 if (

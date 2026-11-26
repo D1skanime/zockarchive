@@ -70,7 +70,7 @@ from .base_handler import (
 )
 from .download_manifest_paths import (
     download_manifest_destination,
-    manifest_member_source_path,
+    manifest_member_source_path_for_root,
 )
 from .folder_download import build_folder_download_component
 from .pc_scan_inventory import (
@@ -374,17 +374,7 @@ class FSRomsHandler(ExternalFSHandler):
         self, rom: Rom, member: RomComponentManifestMember
     ) -> str:
         """Return a manifest member below this handler's authorized root."""
-        source_path = manifest_member_source_path(rom, member)
-        if not self._logical_root:
-            return source_path
-        try:
-            return (
-                PurePosixPath(source_path)
-                .relative_to(PurePosixPath(self._logical_root))
-                .as_posix()
-            )
-        except ValueError as error:
-            raise ValueError("PC component manifest source is unavailable") from error
+        return manifest_member_source_path_for_root(self._logical_root, rom, member)
 
     def capture_download_manifest_member(
         self, rom: Rom, member: RomComponentManifestMember, public_id: str
