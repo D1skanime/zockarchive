@@ -370,10 +370,21 @@ class FSRomsHandler(ExternalFSHandler):
             raise ValueError("PC local media is not a PNG, JPEG, or WebP image")
         return content, image_type
 
-    @staticmethod
-    def pc_component_member_path(rom: Rom, member: RomComponentManifestMember) -> str:
-        """Return a manifest-bound source path without accepting browser paths."""
-        return manifest_member_source_path(rom, member)
+    def pc_component_member_path(
+        self, rom: Rom, member: RomComponentManifestMember
+    ) -> str:
+        """Return a manifest member below this handler's authorized root."""
+        source_path = manifest_member_source_path(rom, member)
+        if not self._logical_root:
+            return source_path
+        try:
+            return (
+                PurePosixPath(source_path)
+                .relative_to(PurePosixPath(self._logical_root))
+                .as_posix()
+            )
+        except ValueError as error:
+            raise ValueError("PC component manifest source is unavailable") from error
 
     def capture_download_manifest_member(
         self, rom: Rom, member: RomComponentManifestMember, public_id: str

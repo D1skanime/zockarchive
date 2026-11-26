@@ -28,7 +28,6 @@ from handler.database import (
     db_rom_handler,
     db_storage_handler,
 )
-from handler.filesystem import fs_rom_handler
 from handler.filesystem.pc_scan_inventory import InventoryIncomplete
 from handler.filesystem.roms_handler import DownloadManifestTransferState, FSRomsHandler
 from handler.filesystem.storage_resolver import normalize_relative_path
@@ -346,9 +345,9 @@ async def get_download_manifest_member(
         _precondition_failed()
     bounds = _transfer_range_bounds(range_header, persisted_member.size_bytes)
 
-    result = await fs_rom_handler.open_verified_download_manifest_member(
-        manifest.rom, persisted_member
-    )
+    result = await db_download_manifest_handler.filesystem_handler_for_rom(
+        manifest.rom
+    ).open_verified_download_manifest_member(manifest.rom, persisted_member)
     if result.state is not DownloadManifestTransferState.READY or result.lease is None:
         mark_attributed_stale()
         raise HTTPException(

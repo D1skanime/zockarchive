@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from datetime import datetime, timedelta, timezone
+from pathlib import PurePosixPath
 from typing import TYPE_CHECKING, Protocol
 from uuid import uuid4
 
@@ -10,6 +11,7 @@ from sqlalchemy.orm import Session, joinedload, selectinload
 
 from config import DOWNLOAD_MANIFEST_TTL_SECONDS
 from decorators.database import begin_session
+from exceptions.storage_exceptions import MissingPlatformStorageMappingError
 from models.download_archive_set import DownloadArchiveSet, DownloadArchiveSetMember
 from models.download_manifest import (
     DownloadManifest,
@@ -25,6 +27,7 @@ from .base_handler import DBBaseHandler
 if TYPE_CHECKING:
     from handler.filesystem.roms_handler import (
         DownloadManifestMemberEvidence,
+        DownloadManifestTransferResult,
     )
 
 
@@ -52,6 +55,10 @@ class ManifestFilesystem(Protocol):
         self, rom: Rom, member: RomComponentManifestMember, evidence: object
     ) -> str: ...
 
+    async def open_verified_download_manifest_member(
+        self, rom: Rom, persisted_member: DownloadManifestMember
+    ) -> DownloadManifestTransferResult: ...
+
 
 class DBDownloadManifestsHandler(DBBaseHandler):
     """Create and evaluate path-free immutable download aggregates."""
@@ -67,6 +74,31 @@ class DBDownloadManifestsHandler(DBBaseHandler):
             self._filesystem_handler = FSRomsHandler()
         return self._filesystem_handler
 
+    def filesystem_handler_for_rom(self, rom: Rom) -> ManifestFilesystem:
+        """Keep injected test handlers, otherwise bind reads to the ROM mapping."""
+        if self._filesystem_handler is not None:
+            return self._filesystem_handler
+
+        from handler.database import db_storage_handler
+        from handler.filesystem.roms_handler import FSRomsHandler
+        from handler.filesystem.storage_resolver import normalize_relative_path
+        from handler.storage.read_context import MappingReadContext
+
+        try:
+            mapping = db_storage_handler.path_mapping(rom.platform_id, rom.full_path)
+        except MissingPlatformStorageMappingError:
+            return self.filesystem_handler
+        MappingReadContext(mapping.id, mapping.version).validate()
+        try:
+            relative_path = PurePosixPath(rom.full_path).relative_to(
+                PurePosixPath(mapping.relative_path)
+            )
+        except ValueError as error:
+            raise ValueError("manifest folder inventory is unavailable") from error
+        return FSRomsHandler.for_mapping(
+            mapping, normalize_relative_path(relative_path.as_posix())
+        )
+
     @begin_session
     def create_manifest(
         self,
@@ -76,6 +108,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         archive_set_id: int | None = None,
         selected_member_ids: Sequence[int] | None = None,
         whole_folder: bool = False,
+        filesystem_handler: ManifestFilesystem | None = None,
         session: Session = None,  # type: ignore
     ) -> DownloadManifest:
         if not isinstance(whole_folder, bool):
@@ -295,6 +328,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         ):
             raise ValueError("manifest components need source members")
 
+        filesystem = filesystem_handler or self.filesystem_handler_for_rom(rom)
         manifest = DownloadManifest(
             user_id=user_id,
             rom_id=rom.id,
@@ -332,7 +366,7 @@ class DBDownloadManifestsHandler(DBBaseHandler):
                     manifest_member=member,
                 )
                 selected_components[component.id].members.append(pending_member)
-                evidence = self.filesystem_handler.capture_download_manifest_member(
+                evidence = filesystem.capture_download_manifest_member(
                     rom, member, pending_member.public_id
                 )
                 pending_member.destination = evidence.destination
@@ -351,6 +385,8 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         self,
         manifest_id: str,
         user_id: int,
+        *,
+        filesystem_handler: ManifestFilesystem | None = None,
         session: Session = None,  # type: ignore
     ) -> DownloadManifest | None:
         manifest = session.scalar(
@@ -374,10 +410,11 @@ class DBDownloadManifestsHandler(DBBaseHandler):
         if datetime.now(timezone.utc) >= to_utc(manifest.expires_at):
             manifest.status = DownloadManifestStatus.EXPIRED
             return manifest
+        filesystem = filesystem_handler or self.filesystem_handler_for_rom(manifest.rom)
         for component in manifest.components:
             for member in component.members:
                 if (
-                    self.filesystem_handler.light_revalidate_download_manifest_member(
+                    filesystem.light_revalidate_download_manifest_member(
                         component.component.rom, member.manifest_member, member
                     )
                     == "SOURCE_CHANGED"

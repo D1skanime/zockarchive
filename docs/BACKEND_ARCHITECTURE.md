@@ -167,10 +167,11 @@ or restore endpoint. Explicit refresh does not restore operator-deleted images.
   evidence is unavailable and never returns a partial folder. Below-threshold
   sources retain their ordinary direct-download path. Absent or non-visible ROMs
   still receive the generic manifest 404.
-- Manifest IDs and member IDs are opaque and user-scoped. The member stream
-  rechecks ROM visibility, manifest validity, source identity, snapshot evidence,
-  and safe relative-path resolution before it opens a file. The browser cannot
-  supply a source-library path or enumerate persisted member rows.
+- Manifest IDs and member IDs are opaque and user-scoped. Manifest capture,
+  revalidation, and member streaming resolve the ROM's current mapping revision
+  for every source read, then recheck visibility, source identity, snapshot
+  evidence, and safe relative-path resolution. The browser cannot supply a
+  source-library path or enumerate persisted member rows.
 - Resumable transfer attempts, item states and event lineage live in backend/models/download_transfer.py; endpoints are backend/endpoints/download_manifests.py and backend/endpoints/download_transfers.py.
 - Source changes invalidate manifests/transfers. The frontend consumes them via frontend/src/v2/data/adapters/legacy/services/api/downloadTransfers.ts.
 
