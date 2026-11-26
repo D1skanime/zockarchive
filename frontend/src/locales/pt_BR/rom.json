@@ -285,6 +285,7 @@
   "match-by-label": "por",
   "match-filter-provider": "Filtrar correspondências de {label}",
   "match-flow-variant": "Variante do fluxo de correspondência",
+  "match-media-publication-failed": "A correspondência de metadados foi aplicada, mas não foi possível publicar a mídia do provedor: {detail}. Você pode tentar novamente.",
   "match-no-cover-info": "Esta correspondência não inclui imagem de capa. Você ainda pode aplicá-la — a ROM mantém sua capa atual.",
   "match-provider-disabled": "A fonte {label} não está habilitada",
   "match-rename-on-disk": "Renomear arquivo no disco",

@@ -285,6 +285,7 @@
   "match-by-label": "általa",
   "match-filter-provider": "{label} találatok szűrése",
   "match-flow-variant": "Egyeztetési folyamat változata",
+  "match-media-publication-failed": "A metaadat-egyezés alkalmazva lett, de a szolgáltatói média közzététele nem sikerült: {detail}. Próbálja újra.",
   "match-no-cover-info": "Ez a találat nem tartalmaz borítóképet. Még alkalmazható — a ROM megtartja a meglévő borítóját.",
   "match-provider-disabled": "A(z) {label} forrás nincs engedélyezve",
   "match-rename-on-disk": "Fájl átnevezése a lemezen",

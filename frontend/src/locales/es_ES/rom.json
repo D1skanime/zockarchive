@@ -285,6 +285,7 @@
   "match-by-label": "Emparejar por",
   "match-filter-provider": "Filtrar coincidencias de {label}",
   "match-flow-variant": "Variante del emparejado",
+  "match-media-publication-failed": "La coincidencia de metadatos se aplicó, pero no se pudo publicar el contenido multimedia del proveedor: {detail}. Puedes volver a intentarlo.",
   "match-no-cover-info": "Esta coincidencia no incluye portada. Puedes aplicarla igualmente — la ROM mantiene su portada actual.",
   "match-provider-disabled": "La fuente {label} no está habilitada",
   "match-rename-on-disk": "Renombrar archivo en disco",

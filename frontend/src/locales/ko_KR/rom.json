@@ -285,6 +285,7 @@
   "match-by-label": "기준",
   "match-filter-provider": "{label} 일치 항목 필터",
   "match-flow-variant": "일치 흐름 변형",
+  "match-media-publication-failed": "메타데이터 일치는 적용되었지만 제공업체 미디어를 게시할 수 없었습니다: {detail}. 다시 시도할 수 있습니다.",
   "match-no-cover-info": "이 일치 항목에는 커버 이미지가 포함되어 있지 않습니다. 그래도 적용할 수 있으며 ROM은 기존 커버를 유지합니다.",
   "match-provider-disabled": "{label} 소스가 활성화되지 않았습니다",
   "match-rename-on-disk": "디스크의 파일 이름 변경",

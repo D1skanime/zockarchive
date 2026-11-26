@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 from typing import cast
 
+from httpx import DecodingError, TransportError
 from rq import get_current_job
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -140,6 +141,13 @@ async def scan_platforms(
                         hydrated_provider
                         or (metadata_sources[0] if metadata_sources else "provider"),
                     )
+                except (TransportError, DecodingError) as exc:
+                    log.warning(
+                        "Media-only refresh transport/decode failure for %s (%s)",
+                        rom.id,
+                        type(exc).__name__,
+                    )
+                    return
                 except ProviderMediaOperationError as exc:
                     log.warning(
                         "Media-only catalog refresh failed for %s (%s)",

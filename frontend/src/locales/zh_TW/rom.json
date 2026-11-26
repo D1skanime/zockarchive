@@ -285,6 +285,7 @@
   "match-by-label": "依",
   "match-filter-provider": "篩選 {label} 匹配項",
   "match-flow-variant": "匹配流程變體",
+  "match-media-publication-failed": "已套用中繼資料比對，但無法發布提供者媒體：{detail}。您可以重試。",
   "match-no-cover-info": "此匹配項不含封面圖片。您仍可套用 — ROM 會保留現有封面。",
   "match-provider-disabled": "{label} 來源未啟用",
   "match-rename-on-disk": "重新命名磁碟上的檔案",

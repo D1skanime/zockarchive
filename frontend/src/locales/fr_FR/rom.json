@@ -285,6 +285,7 @@
   "match-by-label": "par",
   "match-filter-provider": "Filtrer les correspondances {label}",
   "match-flow-variant": "Variante du flux de correspondance",
+  "match-media-publication-failed": "La correspondance des métadonnées a été appliquée, mais le média du fournisseur n'a pas pu être publié : {detail}. Vous pouvez réessayer.",
   "match-no-cover-info": "Cette correspondance n'inclut pas de jaquette. Vous pouvez tout de même l'appliquer — la ROM conserve sa jaquette actuelle.",
   "match-provider-disabled": "La source {label} n'est pas activée",
   "match-rename-on-disk": "Renommer le fichier sur le disque",

@@ -487,7 +487,29 @@ async function onBodyConfirm(payload: ConfirmPayload) {
     closeDialog();
   } catch (error: unknown) {
     if (!matchLanguage.isCurrent(capture)) return;
-    const axiosErr = error as { response?: { data?: { detail?: string } } };
+    const axiosErr = error as {
+      response?: { status?: number; data?: { detail?: string } };
+    };
+    if (
+      axiosErr.response?.status === 409 &&
+      axiosErr.response.data?.detail?.startsWith("Provider media ")
+    ) {
+      try {
+        const canonicalRom = await romsStore.refreshRom(targetRom.id);
+        if (!matchLanguage.isCurrent(capture)) return;
+        rom.value = canonicalRom;
+        consoleExpectedVersion.value = canonicalRom.updated_at;
+        snackbar.error(
+          t("rom.match-media-publication-failed", {
+            detail: axiosErr.response.data?.detail ?? t("rom.update-failed"),
+          }),
+          { icon: "mdi-close-circle" },
+        );
+        return;
+      } catch (refreshError: unknown) {
+        console.error("Match ROM canonical refresh failed", refreshError);
+      }
+    }
     snackbar.error(axiosErr.response?.data?.detail ?? t("rom.update-failed"), {
       icon: "mdi-close-circle",
     });

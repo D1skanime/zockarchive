@@ -285,6 +285,7 @@
   "match-by-label": "od",
   "match-filter-provider": "Filtrovat shody {label}",
   "match-flow-variant": "Varianta procesu párování",
+  "match-media-publication-failed": "Shoda metadat byla použita, ale média poskytovatele se nepodařilo publikovat: {detail}. Můžete to zkusit znovu.",
   "match-no-cover-info": "Tato shoda neobsahuje obal. Stále ji můžete použít — ROM si ponechá svůj stávající obal.",
   "match-provider-disabled": "Zdroj {label} není povolen",
   "match-rename-on-disk": "Přejmenovat soubor na disku",

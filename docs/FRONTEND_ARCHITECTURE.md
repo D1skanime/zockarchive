@@ -306,6 +306,13 @@ the administrator can retry the same request. UAT verifies a same-ID refresh, a 
 a deleted provider URL alias, manual-media preservation, retry after failure,
 and visible partial or error feedback.
 
+Successful explicit media refreshes install their returned canonical ROM in the
+ROM store, the displayed detail and the dialog payload before success feedback
+or close. A changed manual match that persists metadata but receives the owned
+media publication 409 reloads that same canonical ROM before retry, retains its
+selected candidate, and reports the server detail as a partial result rather
+than full success.
+
 ---
 
 ### PC save folder backups

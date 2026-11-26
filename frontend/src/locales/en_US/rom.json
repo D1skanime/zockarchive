@@ -285,6 +285,7 @@
   "match-by-label": "by",
   "match-filter-provider": "Filter {label} matches",
   "match-flow-variant": "Match flow variant",
+  "match-media-publication-failed": "The metadata match was applied, but provider media could not be published: {detail}. You can retry.",
   "match-no-cover-info": "This match doesn't include cover artwork. You can still apply it — the ROM keeps its existing cover.",
   "match-provider-disabled": "{label} source is not enabled",
   "match-rename-on-disk": "Rename file on disk",

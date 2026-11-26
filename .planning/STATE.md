@@ -1162,6 +1162,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-ly4 | Repair Phase 51 canonical media re-review blockers | 2026-11-26 | this commit | [261126-ly4-phase-51-re-review-kanonischen-medien-re](./quick/261126-ly4-phase-51-re-review-kanonischen-medien-re/) |
 | 261126-edh | Restore ROM handler line-limit baseline after mapping helper extraction | 2026-11-26 | this commit | [261126-edh-quality-gate-rom-handler-zeilenlimit-nac](./quick/261126-edh-quality-gate-rom-handler-zeilenlimit-nac/) |
 | 261126-e98 | Repair mapping manifest lint and line-limit gate findings | 2026-11-26 | this commit | [261126-e98-quality-gate-mapping-manifest-lint-und-z](./quick/261126-e98-quality-gate-mapping-manifest-lint-und-z/) |
 | 261126-dkf | Record and repair real isolated mapped manifest evidence for Phase 50 | 2026-11-26 | this commit | [261126-dkf-echter-isolierter-backend-nachweis-f-r-p](./quick/261126-dkf-echter-isolierter-backend-nachweis-f-r-p/) |

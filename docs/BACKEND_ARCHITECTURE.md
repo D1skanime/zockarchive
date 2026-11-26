@@ -106,6 +106,11 @@ from obscuring an interrupted operation and its supported resume action.
 Deleting parent provider media keeps its catalog identity as a tombstone with
 `operator_suppressed=True`, removes its placements and clears its owned path.
 Normal, media-only, COMPLETE and explicit provider refresh preserve this intent.
+During media-only scans, provider transport or decode failures while hydrating
+one ROM are advisory per-ROM failures: the worker logs the ROM and exception
+class, returns only that refresh coroutine, and preserves the normal scan-done
+signal for sibling work. Normal scans and explicit refreshes keep their existing
+failure semantics.
 Automatic inventory disappearance instead uses a tombstone with
 `operator_suppressed=False`; that candidate may return with a later inventory.
 Uploads retain their separate deletion and placement behavior.

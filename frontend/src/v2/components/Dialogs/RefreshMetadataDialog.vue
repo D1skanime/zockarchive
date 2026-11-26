@@ -328,10 +328,13 @@ async function onScan() {
     const rom = roms.value[0];
     refreshingMedia.value = true;
     try {
-      await romApi.refreshOwnedMedia({
+      const { data } = await romApi.refreshOwnedMedia({
         romId: rom.id,
         expectedVersion: rom.updated_at,
       });
+      romsStore.update(data as SimpleRom);
+      romsStore.currentRom = data;
+      roms.value = [data];
       snackbar.success(t("common.refresh"));
       closeDialog();
     } catch (error) {

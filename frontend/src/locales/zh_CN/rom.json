@@ -285,6 +285,7 @@
   "match-by-label": "来源",
   "match-filter-provider": "筛选 {label} 匹配项",
   "match-flow-variant": "匹配流程变体",
+  "match-media-publication-failed": "元数据匹配已应用，但无法发布提供方媒体：{detail}。您可以重试。",
   "match-no-cover-info": "此匹配项不包含封面图。您仍可应用它 — ROM 将保留现有封面。",
   "match-provider-disabled": "未启用 {label} 来源",
   "match-rename-on-disk": "重命名磁盘上的文件",
