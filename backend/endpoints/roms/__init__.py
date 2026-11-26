@@ -2118,10 +2118,13 @@ async def update_rom(
     if not rom:
         raise RomNotFoundInDatabaseException(id)
 
+    media_error: rm.ProviderMediaOperationError | None = None
     try:
         rom = await rm.publish_igdb(rom, manual_igdb_media)
     except rm.ProviderMediaOperationError as exc:
-        raise provider_media_conflict(exc.stage) from None
+        # Metadata and filesystem changes already committed. Preserve this
+        # partial failure until the remaining manual-match side effects settle.
+        media_error = exc
 
     for provider in ("ss", "steam"):
         field = provider + "_id"
@@ -2140,6 +2143,8 @@ async def update_rom(
 
     db_rom_handler.invalidate_filter_values_cache()
     refresh_affected_smart_collections([id])
+    if media_error is not None:
+        raise provider_media_conflict(media_error.stage) from None
     return DetailedRomSchema.from_orm_with_request(rom, request)
 
 
