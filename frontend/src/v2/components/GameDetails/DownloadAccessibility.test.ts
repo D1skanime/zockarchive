@@ -388,6 +388,47 @@ describe("browser download accessibility and truthful state contract", () => {
     expect(wrapper.text()).not.toContain("11");
   });
 
+  it("preselects prepared folder members when the open dialog becomes ready", async () => {
+    const wrapper = mount(DownloadSelectionDialog, {
+      props: {
+        modelValue: false,
+        components,
+        folderDownload: {
+          state: "preparable",
+          source_kind: "folder",
+          member_count: 0,
+          total_size_bytes: 4_000_000_000,
+        },
+      },
+      global: selectionGlobal,
+    });
+
+    await wrapper.setProps({ modelValue: true });
+    await nextTick();
+    await wrapper.setProps({
+      folderDownload: {
+        state: "ready",
+        source_kind: "folder",
+        member_count: 2,
+        total_size_bytes: 4_000_000_000,
+      },
+    });
+    await nextTick();
+    await nextTick();
+
+    expect(
+      wrapper
+        .findAll("input[type=checkbox]")
+        .every((input) => input.element.checked),
+    ).toBe(true);
+    expect(
+      wrapper
+        .findAll("button")
+        .find((button) => button.text() === "Start download")
+        ?.attributes("disabled"),
+    ).toBeUndefined();
+  });
+
   it("uses only truthful status vocabulary and never exposes source values", () => {
     const wrapper = mount(DownloadTransferHistory, {
       props: {
