@@ -63,3 +63,4 @@ None.
 - `frontend/src/v2/components/Dialogs/RefreshMetadataDialog.vue` exists with
   the guarded 409 recovery.
 - The disposable source contract completed successfully.
+- `5df1b497e` and `730ddc60f` exist in Git history.
