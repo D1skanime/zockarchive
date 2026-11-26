@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: milestone
 status: executing
-stopped_at: Completed quick 261126-ono-nach-freigegebener-live-abnahme-gezielte
-last_updated: "2026-11-26T17:55:33Z"
+stopped_at: Completed quick 261126-p8z-gate05-nur-die-bestehende-freigegebene-m
+last_updated: "2026-11-26T18:15:34Z"
 last_activity: 2026-11-26
 progress:
   total_phases: 48
@@ -24,6 +24,13 @@ progress:
 - Phase 51 added: ZA: Medien bei bestehender Zuordnung nachladen und bewusste Löschungen erhalten.
 
 ## Latest quick task
+
+- 261126-p8z completed: confirmed the `main...HEAD` locale semantic diff is
+  exactly 18 additive `match-media-publication-failed` entries with `{detail}`.
+  Only the corresponding approved `rom` digest references changed; a direct
+  Vue I18n contract now proves every locale keeps and interpolates the detail.
+  The focused locale test passed 21 tests. No full frontend suite or backend
+  test was run, and no product locale or production file changed.
 
 - 261126-ono completed: added direct post-acceptance regression contracts for
   Phase 51 same-ID provider-media refresh routing, full classic payload changes,
@@ -1193,6 +1200,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-p8z | Correct only approved Gate05 locale digest references | 2026-11-26 | this commit | [Gate05 locale digest correction](./quick/261126-p8z-gate05-nur-die-bestehende-freigegebene-m/) |
 | 261126-mtb | Extract Phase 51 provider-media boundaries from ROM and dialog monoliths | 2026-11-26 | this commit | [provider-media quality gate](./quick/261126-mtb-quality-gate-phase-51-nderungen-aus-berg/) |
 | 261126-ono | Add targeted direct tests after accepted Phase 51 live UAT | 2026-11-26 | f5829d3c8 | [targeted direct Phase 51 regression tests](./quick/261126-ono-nach-freigegebener-live-abnahme-gezielte/) |
 | 261126-mog | Bind the Phase 51 context to its ki-run job | 2026-11-26 | this commit | [261126-mog-quality-gate-job-261126-d0af-im-phase-51](./quick/261126-mog-quality-gate-job-261126-d0af-im-phase-51/) |

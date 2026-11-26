@@ -101,4 +101,32 @@ describe("localized product identity", () => {
       }),
     ).toContain("Details: Invalid syntax");
   });
+
+  it("renders the approved provider media publication detail in every locale", () => {
+    const detail = "Media publication rejected";
+
+    for (const locale of Object.keys(baseline)) {
+      const rom = JSON.parse(
+        readFileSync(resolve(root, locale, "rom.json"), "utf8"),
+      ) as Record<string, string>;
+      const message = rom["match-media-publication-failed"];
+      const i18n = createI18n({
+        legacy: false,
+        locale,
+        messages: { [locale]: { rom } },
+      });
+
+      expect(message, `${locale}.rom.match-media-publication-failed`).toEqual(
+        expect.any(String),
+      );
+      expect(message.trim()).not.toBe("");
+      expect(message).toContain("{detail}");
+      expect(
+        i18n.global.t("rom.match-media-publication-failed", { detail }),
+      ).toContain(detail);
+      expect(
+        i18n.global.t("rom.match-media-publication-failed", { detail }),
+      ).not.toContain("{detail}");
+    }
+  });
 });
