@@ -174,6 +174,25 @@ def test_create_manifest_whole_folder_captures_exact_selected_members(admin_user
     )
 
 
+def test_create_manifest_whole_folder_rejects_empty_selection_before_capture(
+    admin_user, rom
+):
+    folder = _component(rom.id, RomComponentKind.FOLDER, "empty")
+    with session.begin() as db:
+        db.add(folder)
+
+    filesystem = FakeManifestFilesystem()
+    with pytest.raises(ValueError):
+        DBDownloadManifestsHandler(filesystem).create_manifest(
+            admin_user.id,
+            rom.id,
+            None,
+            selected_member_ids=[],
+            whole_folder=True,
+        )
+    assert filesystem.captured == []
+
+
 def test_create_manifest_enforces_archive_set_and_captures_only_selected_members(
     admin_user, rom
 ):
