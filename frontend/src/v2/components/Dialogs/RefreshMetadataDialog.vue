@@ -339,8 +339,15 @@ async function onScan() {
       closeDialog();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        const canonicalRom = await romsStore.refreshRom(rom.id);
-        roms.value = [canonicalRom];
+        try {
+          const canonicalRom = await romsStore.refreshRom(rom.id);
+          roms.value = [canonicalRom];
+        } catch (refreshError: unknown) {
+          console.error(
+            "Refresh metadata canonical reload failed",
+            refreshError,
+          );
+        }
       }
       snackbar.error(errorMessage(error));
     } finally {
