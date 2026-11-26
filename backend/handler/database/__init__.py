@@ -13,6 +13,7 @@ from .music_playlists_handler import DBMusicPlaylistsHandler
 from .permissions_handler import DBPermissionsHandler
 from .platforms_handler import DBPlatformsHandler
 from .play_sessions_handler import DBPlaySessionsHandler
+from .provider_media_inventory import DBProviderMediaInventoryHandler
 from .roms_handler import DBRomsHandler
 from .save_backups_handler import DBSaveBackupsHandler
 from .saves_handler import DBSavesHandler
@@ -38,6 +39,7 @@ db_music_playlist_handler = DBMusicPlaylistsHandler()
 db_permission_handler = DBPermissionsHandler()
 db_platform_handler = DBPlatformsHandler()
 db_play_session_handler = DBPlaySessionsHandler()
+db_provider_media_inventory_handler = DBProviderMediaInventoryHandler()
 db_rom_handler = DBRomsHandler()
 db_save_handler = DBSavesHandler()
 db_save_backup_handler = DBSaveBackupsHandler()

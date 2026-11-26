@@ -136,6 +136,7 @@ from .files import (
 )
 from .files import router as files_router
 from .manual import router as manual_router
+from .media import PROVIDER_MEDIA_CONFLICT_RESPONSE, provider_media_conflict
 from .media import router as media_router
 from .notes import router as notes_router
 from .patch import router as patch_router
@@ -1594,7 +1595,7 @@ async def get_rom_content(
     router.put,
     "/{id}",
     [Scope.ROMS_WRITE],
-    responses={status.HTTP_404_NOT_FOUND: {}, status.HTTP_409_CONFLICT: {}},
+    responses={status.HTTP_404_NOT_FOUND: {}, **PROVIDER_MEDIA_CONFLICT_RESPONSE},
 )
 async def update_rom(
     request: Request,
@@ -1615,7 +1616,6 @@ async def update_rom(
         Query(description="Whether to remove the metadata matches for this game."),
     ] = False,
 ) -> DetailedRomSchema:
-    """Update a rom."""
     rom = db_rom_handler.get_rom(id)
 
     if not rom:
@@ -2090,7 +2090,6 @@ async def update_rom(
     await persist_rom_cover_edit(
         rom, id, cleaned_data, expected_version, searched_cover_url
     )
-    # Rename the file/folder if the name has changed
     if should_update_fs:
         try:
             await fs_rom_handler.rename_fs_rom(
@@ -2115,7 +2114,6 @@ async def update_rom(
                 },
             )
 
-    # Refetch the rom from the database
     rom = db_rom_handler.get_rom(id)
     if not rom:
         raise RomNotFoundInDatabaseException(id)
@@ -2123,10 +2121,7 @@ async def update_rom(
     try:
         rom = await rm.publish_igdb(rom, manual_igdb_media)
     except rm.ProviderMediaOperationError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Provider media {exc.stage} failed",
-        ) from None
+        raise provider_media_conflict(exc.stage) from None
 
     for provider in ("ss", "steam"):
         field = provider + "_id"
@@ -2321,8 +2316,6 @@ async def update_rom_user(
     if "hidden" in cleaned_data:
         db_rom_handler.invalidate_filter_values_cache()
 
-    # The statuses filter reads all four of these, and `hidden` also drops the
-    # ROM from every user-scoped query, so any of them can move membership.
     if STATUS_MEMBERSHIP_FIELDS & cleaned_data.keys():
         refresh_affected_smart_collections([id], membership_only=True)
 

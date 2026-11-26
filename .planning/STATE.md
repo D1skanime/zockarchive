@@ -1175,6 +1175,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-mtb | Extract Phase 51 provider-media boundaries from ROM and dialog monoliths | 2026-11-26 | this commit | [provider-media quality gate](./quick/261126-mtb-quality-gate-phase-51-nderungen-aus-berg/) |
 | 261126-mog | Bind the Phase 51 context to its ki-run job | 2026-11-26 | this commit | [261126-mog-quality-gate-job-261126-d0af-im-phase-51](./quick/261126-mog-quality-gate-job-261126-d0af-im-phase-51/) |
 | 261126-ly4 | Repair Phase 51 canonical media re-review blockers | 2026-11-26 | this commit | [261126-ly4-phase-51-re-review-kanonischen-medien-re](./quick/261126-ly4-phase-51-re-review-kanonischen-medien-re/) |
 | 261126-edh | Restore ROM handler line-limit baseline after mapping helper extraction | 2026-11-26 | this commit | [261126-edh-quality-gate-rom-handler-zeilenlimit-nac](./quick/261126-edh-quality-gate-rom-handler-zeilenlimit-nac/) |

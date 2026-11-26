@@ -13,7 +13,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 import httpx
 from fastapi import status
 
-from handler.database import db_rom_handler
+from handler.database import db_provider_media_inventory_handler, db_rom_handler
 from handler.database.provider_media_suppression import candidate_key
 from handler.database.scan_write_fence import current_scan_write_context
 from handler.filesystem import fs_resource_handler
@@ -253,7 +253,9 @@ async def refresh_provider_owned_media(
             "normalization", "Provider media catalog is invalid"
         ) from exc
     suppressed = db_rom_handler.get_provider_media_suppressions(rom.id, candidates)
-    active = db_rom_handler.get_provider_media_inventory(rom.id, candidates)
+    active = db_provider_media_inventory_handler.get_active_provider_media(
+        rom.id, candidates
+    )
     for candidate in candidates:
         if candidate_key(candidate) in suppressed:
             continue

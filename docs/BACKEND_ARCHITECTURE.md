@@ -362,7 +362,11 @@ including an empty catalog, replaces the retained provider snapshot. An empty
 snapshot never retires catalog rows, placements, selected covers, uploads, or
 `provider_media_suppressions`; a lookup failure leaves the prior snapshot intact.
 
-`refresh_provider_owned_media` discovers provider-qualified stable candidates,
+`refresh_provider_owned_media` discovers provider-qualified stable candidates.
+`handler/database/provider_media_inventory.py` owns the active, provider-owned
+path inventory lookup, while `endpoints/roms/media.py` owns conversion of
+provider-media operation failures into the shared retryable HTTP 409 response.
+The publisher
 filters suppressed candidates before I/O, and reuses an active owned path only
 when its candidate key and role match. Missing, non-suppressed candidates are
 downloaded to staged owned storage and reconciled under the existing ROM version

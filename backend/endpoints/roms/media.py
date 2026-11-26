@@ -35,6 +35,9 @@ from utils.router import APIRouter
 router = APIRouter()
 _AUDIO_LIMIT = 512 * 1024 * 1024
 _IMAGE_LIMIT = 10 * 1024 * 1024
+PROVIDER_MEDIA_CONFLICT_RESPONSE: dict[int, dict[str, object]] = {
+    status.HTTP_409_CONFLICT: {}
+}
 
 
 def _visible_rom(request: Request, rom_id: int):
@@ -61,9 +64,12 @@ def _detailed_rom_response(rom_id: int, request: Request) -> DetailedRomSchema:
     return DetailedRomSchema.from_orm_with_request(rom, request)
 
 
-def _provider_media_conflict_detail(stage: str, candidate: str | None = None) -> str:
+def provider_media_conflict(stage: str, candidate: str | None = None) -> HTTPException:
+    """Translate provider-media operation failures at the HTTP boundary."""
     detail = f"Provider media {stage} failed"
-    return f"{detail}: {candidate}" if candidate else detail
+    if candidate:
+        detail = f"{detail}: {candidate}"
+    return HTTPException(status_code=status.HTTP_409_CONFLICT, detail=detail)
 
 
 @protected_route(router.get, "/{id}/media", [Scope.ROMS_READ])
@@ -89,23 +95,12 @@ async def refresh_media(
             rom, rom.updated_at, provider, source
         )
     except ProviderMediaOperationError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=_provider_media_conflict_detail(exc.stage),
-        ) from None
+        raise provider_media_conflict(exc.stage) from None
     except ValueError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=_provider_media_conflict_detail("normalization"),
-        ) from exc
+        raise provider_media_conflict("normalization") from exc
     if failures:
         failure = failures[0]
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=_provider_media_conflict_detail(
-                failure.stage, failure.provider_media_id or None
-            ),
-        )
+        raise provider_media_conflict(failure.stage, failure.provider_media_id or None)
     return _detailed_rom_response(id, request)
 
 

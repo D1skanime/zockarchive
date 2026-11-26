@@ -1,10 +1,4 @@
 <script setup lang="ts">
-// RefreshMetadataDialog — kicks off a per-ROM (or bulk) metadata
-// re-scan. Shares the visual vocabulary of the Scan view config card:
-// provider selects split into General / Specific, hash-matcher proxies
-// rendered as switch pills, and a scan-type select with two per-ROM-
-// friendly options. Emits the same `scan` socket event as the main Scan
-// view (lifecycle handlers live globally in AppLayout).
 import {
   ZAAvatar,
   ZAAlert,
@@ -23,6 +17,7 @@ import { computed, inject, onBeforeUnmount, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import type { Events } from "@/types/emitter";
 import { useLibraryOperation } from "@/v2/composables/useLibraryOperation";
+import { useOwnedMediaRefresh } from "@/v2/composables/useOwnedMediaRefresh";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 import romApi from "@/v2/data/adapters/legacy/services/api/rom";
 import storeConfig from "@/v2/data/adapters/legacy/stores/config";
@@ -41,13 +36,8 @@ const LOCAL_STORAGE_LAUNCHBOX_REMOTE_ENABLED_KEY =
 const LOCAL_STORAGE_HASHEOUS_ENABLED_KEY = "scan.hasheousEnabled";
 const LOCAL_STORAGE_PLAYMATCH_ENABLED_KEY = "scan.playmatchEnabled";
 
-// Hash-matcher providers — proxies that match files by hash and feed
-// IDs into the primary catalogs. Filtered out of the main provider
-// select and rendered as switch pills so users don't read them as
-// standalone sources.
 const HASH_MATCHER_KEYS = ["hasheous", "playmatch"] as const;
 
-// Provider categorisation mirrors the Scan view's split so this dialog reads as a sibling surface.
 const GENERAL_PROVIDER_KEYS = new Set([
   "igdb",
   "steam",
@@ -63,14 +53,12 @@ const SPECIFIC_PROVIDER_KEYS = new Set(["ra", "sgdb", "hltb"]);
 const { t, locale } = useI18n();
 const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
+const { refreshOwnedMedia, recoverProviderMediaConflict } =
+  useOwnedMediaRefresh();
 const romsStore = storeRoms();
 const libraryOperation = useLibraryOperation();
 const show = ref(false);
 const refreshingMedia = ref(false);
-// Accept either a single rom or an array — the SelectionBar passes
-// many at once, individual menus pass one. Internally we always
-// normalise to an array so the scan emit groups by platform without
-// branching on the input shape.
 const roms = ref<SimpleRom[]>([]);
 const heartbeat = storeHeartbeat();
 const configStore = storeConfig();
@@ -328,26 +316,22 @@ async function onScan() {
     const rom = roms.value[0];
     refreshingMedia.value = true;
     try {
-      const { data } = await romApi.refreshOwnedMedia({
-        romId: rom.id,
-        expectedVersion: rom.updated_at,
-      });
-      romsStore.update(data as SimpleRom);
-      romsStore.currentRom = data;
-      roms.value = [data];
+      const settlement = await refreshOwnedMedia(rom.id, rom.updated_at);
+      if (settlement.status === "error") throw settlement.error;
+      romsStore.update(settlement.rom as SimpleRom);
+      romsStore.currentRom = settlement.rom;
+      roms.value = [settlement.rom];
       snackbar.success(t("common.refresh"));
       closeDialog();
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 409) {
-        try {
-          const canonicalRom = await romsStore.refreshRom(rom.id);
-          roms.value = [canonicalRom];
-        } catch (refreshError: unknown) {
-          console.error(
-            "Refresh metadata canonical reload failed",
-            refreshError,
-          );
-        }
+      const recovery = await recoverProviderMediaConflict(rom.id, error);
+      if (recovery.status === "recovered") {
+        roms.value = [recovery.rom];
+      } else if (recovery.status === "recovery-failed") {
+        console.error(
+          "Refresh metadata canonical reload failed",
+          recovery.error,
+        );
       }
       snackbar.error(errorMessage(error));
     } finally {
@@ -444,9 +428,6 @@ function closeDialog() {
     </template>
     <template #content>
       <div class="r-v2-refresh">
-        <!-- ROM identity row — cover + name for the single-ROM case
-             (visual consistency with EditRomDialog / DeleteRomDialog),
-             count chip for bulk. -->
         <div v-if="singleRom" class="r-v2-refresh__rom">
           <div class="r-v2-refresh__cover">
             <img
@@ -476,7 +457,6 @@ function closeDialog() {
           <span>{{ t("rom.selection-count", { n: roms.length }) }}</span>
         </div>
 
-        <!-- General and specific selects share one provider selection. -->
         <section class="r-v2-refresh__section">
           <h3 class="r-v2-refresh__section-title">
             {{ t("scan.section-providers") }}
@@ -537,9 +517,6 @@ function closeDialog() {
                     </div>
                   </div>
 
-                  <!-- LaunchBox Local/Cloud toggle — inline inside its
-                       dropdown row, disabled until LaunchBox itself is
-                       selected. Same pattern as Scan.vue. -->
                   <div
                     v-if="item.raw.value === 'launchbox'"
                     class="r-v2-refresh__lb-toggle"
@@ -635,8 +612,6 @@ function closeDialog() {
           </div>
         </section>
 
-        <!-- 2. Proxies (hash matchers) — compact switch pills, same as
-             the Scan view. -->
         <section class="r-v2-refresh__section">
           <h3 class="r-v2-refresh__section-title">
             {{ t("scan.section-proxies") }}
@@ -684,7 +659,6 @@ function closeDialog() {
           </div>
         </section>
 
-        <!-- 3. Scan type — per-ROM friendly options. -->
         <section class="r-v2-refresh__section">
           <h3 class="r-v2-refresh__section-title">
             {{ t("scan.section-scan-type") }}
@@ -754,9 +728,6 @@ function closeDialog() {
   gap: 16px;
 }
 
-/* ROM identity row — cover + name + filename. Mirrors the row layout
-   in DeleteRomDialog so the two "do-something-with-this-ROM" dialogs
-   read as siblings. */
 .r-v2-refresh__rom {
   display: flex;
   align-items: center;
@@ -779,7 +750,6 @@ function closeDialog() {
 .r-v2-refresh__cover img {
   width: 100%;
   height: 100%;
-  /* Whole cover at its natural aspect (no crop); the slot stays uniform. */
   object-fit: contain;
   display: block;
 }
@@ -822,8 +792,6 @@ function closeDialog() {
   align-self: flex-start;
 }
 
-/* Section vocabulary — small uppercase label above the controls,
-   hairline divider between sections. Same rhythm as Scan.vue. */
 .r-v2-refresh__section {
   display: flex;
   flex-direction: column;
@@ -844,9 +812,6 @@ function closeDialog() {
   color: var(--r-color-fg-muted);
 }
 
-/* Provider groups (General / Specific) — same layout as Scan.vue: a
-   small caption above each ZASelect, two groups stacked with a tight
-   inter-group margin. */
 .r-v2-refresh__providers-group {
   display: flex;
   flex-direction: column;
@@ -868,7 +833,6 @@ function closeDialog() {
   gap: var(--r-space-1);
 }
 
-/* Hash matcher pills — same compact icon + switch rows as Scan.vue. */
 .r-v2-refresh__matchers {
   display: flex;
   flex-direction: row;
@@ -894,7 +858,6 @@ function closeDialog() {
   flex-shrink: 0;
 }
 
-/* LaunchBox Local/Cloud inline toggle inside its dropdown row. */
 .r-v2-refresh__lb-toggle {
   display: inline-flex;
   align-items: center;
