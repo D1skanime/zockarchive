@@ -25,6 +25,15 @@ progress:
 
 ## Latest quick task
 
+- 261126-r9v completed: Gate07's failing suppression-race fixture had reused a
+  matching active IGDB screenshot with a usable owned path, so its download
+  callback was unreachable. The revised test proves that active inventory state,
+  requests a distinct candidate, records one callback, and retains all deletion,
+  tombstone, and temporary cleanup assertions. The direct MariaDB runner passed
+  the named test and both affected modules, 31 tests total. Targeted Trunk was
+  clean. No product code, product documentation, Gate07 shard, or full suite
+  was run.
+
 - 261126-pyz completed: direct same-ID classic-match payload coverage now
   treats changed `name_sort_key` and changed `summary` independently as an
   update, rather than an owned-media refresh-only path. The focused
@@ -1206,6 +1215,7 @@ Recent decisions affecting current work:
 
 | #                         | Description                                                                                                                 | Date       | Commit       | Directory                                                                                                           |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 261126-r9v | Isolate and repair the Gate07 provider-media suppression race test | 2026-11-26 | 1d7c7f024 | [Gate07 suppression race test](./quick/261126-r9v-gate07-isolierten-suppression-race-test-/) |
 | 261126-p8z | Correct only approved Gate05 locale digest references | 2026-11-26 | this commit | [Gate05 locale digest correction](./quick/261126-p8z-gate05-nur-die-bestehende-freigegebene-m/) |
 | 261126-mtb | Extract Phase 51 provider-media boundaries from ROM and dialog monoliths | 2026-11-26 | this commit | [provider-media quality gate](./quick/261126-mtb-quality-gate-phase-51-nderungen-aus-berg/) |
 | 261126-ono | Add targeted direct tests after accepted Phase 51 live UAT | 2026-11-26 | f5829d3c8 | [targeted direct Phase 51 regression tests](./quick/261126-ono-nach-freigegebener-live-abnahme-gezielte/) |
