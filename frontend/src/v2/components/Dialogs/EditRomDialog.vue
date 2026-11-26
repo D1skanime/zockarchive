@@ -27,6 +27,7 @@ import MetadataIdSection from "@/v2/components/EditRom/MetadataIdSection.vue";
 import RawMetadataPanel from "@/v2/components/EditRom/RawMetadataPanel.vue";
 import GameCard from "@/v2/components/GameCard/GameCard.vue";
 import { useBreakpoint } from "@/v2/composables/useBreakpoint";
+import { useOwnedMediaRefresh } from "@/v2/composables/useOwnedMediaRefresh";
 import { useSnackbar } from "@/v2/composables/useSnackbar";
 import romApi, {
   type UpdateRom,
@@ -65,6 +66,7 @@ const coverFileInput = ref<HTMLInputElement | null>(null);
 const saving = ref(false);
 const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
+const { recoverProviderMediaConflict } = useOwnedMediaRefresh();
 
 const openHandler = async (romToEdit: SimpleRom) => {
   show.value = true;
@@ -248,6 +250,7 @@ async function handleRomUpdate(
   successMessage: string,
 ) {
   if (saving.value) return;
+  const activeRomId = rom.value?.id;
   saving.value = true;
   try {
     const { data } = await romApi.updateRom(options);
@@ -257,7 +260,23 @@ async function handleRomUpdate(
   } catch (error: unknown) {
     console.error(error);
     const axiosErr = error as { response?: { data?: { detail?: string } } };
-    snackbar.error(axiosErr.response?.data?.detail ?? t("rom.update-failed"), {
+    const detail = axiosErr.response?.data?.detail ?? t("rom.update-failed");
+    if (activeRomId !== undefined) {
+      const recovery = await recoverProviderMediaConflict(activeRomId, error);
+      if (recovery.status === "recovered") {
+        rom.value = recovery.rom as EditableRom;
+        romsStore.update(recovery.rom as SimpleRom);
+        if (route.name === "rom") romsStore.currentRom = recovery.rom;
+        snackbar.error(t("rom.match-media-publication-failed", { detail }), {
+          icon: "mdi-close-circle",
+        });
+        return;
+      }
+      if (recovery.status === "recovery-failed") {
+        console.error("Edit ROM canonical refresh failed", recovery.error);
+      }
+    }
+    snackbar.error(detail, {
       icon: "mdi-close-circle",
     });
   } finally {
