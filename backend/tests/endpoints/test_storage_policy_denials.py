@@ -960,7 +960,7 @@ async def test_update_rom_same_fs_name_keeps_metadata_and_owned_resources(
         AsyncMock(return_value="manual.pdf"),
     )
     monkeypatch.setattr(
-        rom_endpoints.meta_playmatch_handler,
+        rom_endpoints.manual_match.meta_playmatch_handler,
         "is_manual_match",
         Mock(return_value=False),
     )

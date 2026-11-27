@@ -47,7 +47,9 @@ describe("MatchRomDialog operation parity guards", () => {
   it("keeps the classic match context until the update succeeds", () => {
     const source = matchDialogSource();
 
-    expect(source).toContain("const updatedRom = {\n    ...targetRom");
+    expect(source).toContain(
+      "const updatedRom = createClassicMatchPayload(\n    targetRom,\n    payload.matchedRom,\n    payload.cover,\n  );",
+    );
     expect(source).toContain("closeDialog();\n  } catch");
     expect(source).not.toContain(
       "} finally {\n    matching.value = false;\n    closeDialog();",
