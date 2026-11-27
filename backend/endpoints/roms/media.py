@@ -99,6 +99,9 @@ async def refresh_media(
     except ValueError as exc:
         raise provider_media_conflict("normalization") from exc
     if failures:
+        if len(failures) > 1:
+            stages = ", ".join(sorted({failure.stage for failure in failures}))
+            raise provider_media_conflict(f"{len(failures)} items ({stages})")
         failure = failures[0]
         raise provider_media_conflict(failure.stage, failure.provider_media_id or None)
     return _detailed_rom_response(id, request)

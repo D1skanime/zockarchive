@@ -16,6 +16,11 @@ type OwnedMediaRefreshFailure = {
 export type OwnedMediaRefreshSettlement =
   OwnedMediaRefreshSuccess | OwnedMediaRefreshFailure;
 
+export type SettledOwnedMediaRefresh =
+  | OwnedMediaRefreshSuccess
+  | { status: "provider-media-conflict"; rom: DetailedRom; error: unknown }
+  | OwnedMediaRefreshFailure;
+
 export type ProviderMediaConflictRecovery =
   | { status: "not-provider-media-conflict" }
   | { status: "recovered"; rom: DetailedRom }
@@ -61,5 +66,28 @@ export function useOwnedMediaRefresh() {
     }
   }
 
-  return { refreshOwnedMedia, recoverProviderMediaConflict };
+  /** Reload canonical state with the original conflict when publication persisted partially. */
+  async function settleOwnedMediaRefresh(
+    romId: number,
+    expectedVersion: string,
+  ): Promise<SettledOwnedMediaRefresh> {
+    const refresh = await refreshOwnedMedia(romId, expectedVersion);
+    if (refresh.status === "success") return refresh;
+
+    const recovery = await recoverProviderMediaConflict(romId, refresh.error);
+    if (recovery.status === "recovered") {
+      return {
+        status: "provider-media-conflict",
+        rom: recovery.rom,
+        error: refresh.error,
+      };
+    }
+    return refresh;
+  }
+
+  return {
+    refreshOwnedMedia,
+    recoverProviderMediaConflict,
+    settleOwnedMediaRefresh,
+  };
 }

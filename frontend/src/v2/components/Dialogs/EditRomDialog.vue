@@ -1,20 +1,6 @@
 <script setup lang="ts">
-// EditRomDialog — v2 chrome around the ROM-edit form.
-//
-// Scope: identity (name / filename / summary), cover artwork, and the
-// metadata override / raw provider tabs. Manual + soundtrack +
-// screenshots are intentionally absent — those flows now live in the
-// GameDetails Media tab (`v2/components/GameDetails/MediaTab.vue`).
-// Pulling them out of the edit dialog kept it focused on "data that
-// describes this ROM" and freed the form column from the icon-button
-// row that fought visually with the field stack.
-//
-// Layout: a hero row (cover + name/filename/summary) at the top, and a
-// tabbed editing surface below — "Details" and "Metadata IDs" are
-// always present; one tab per metadata provider with a populated ID is
-// appended dynamically (and disappears once the rom is unmatched from
-// that provider). Cover actions, AdditionalDetails and MetadataIdSection
-// remain deep domain composites pulled from the EditRom feature folder.
+// EditRomDialog owns ROM identity, cover edits, and provider metadata fields.
+// Media collection workflows remain in the game-details media tab.
 import { ZABtn, ZADialog, ZAIcon, ZATabNav, ZATextField } from "@v2/lib";
 import type { ZATabNavItem } from "@v2/lib/primitives/ZATabNav/types";
 import type { Emitter } from "mitt";
@@ -101,19 +87,14 @@ const fullPath = computed(() => {
   return [rom.value.fs_path, rom.value.fs_name].filter(Boolean).join("/");
 });
 
-// ── Tabbed editing surface ───────────────────────────────────────
-// "Details" + "Metadata IDs" are always present; each provider with a
-// populated id appends its own tab so the raw-JSON editing surface
-// only ever shows panels that actually have data.
+// Provider tabs appear only when their retained payload is available to edit.
 interface ProviderConfig {
-  /** Tab id — also the discriminant for the rendered panel. */
+  /** Tab id selects the provider payload panel. */
   tabId: string;
   idField: keyof SimpleRom;
   metadataField: keyof SimpleRom;
   label: string;
-  /** Public asset path for the provider logo. Surfaced in the tab nav
-   *  next to the label so the surface reads as "you're editing IGDB's
-   *  payload" without having to read the text. */
+  /** Provider logo keeps raw-payload tabs identifiable at a glance. */
   iconSrc: string;
 }
 

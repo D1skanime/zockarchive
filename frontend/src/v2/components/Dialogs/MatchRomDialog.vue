@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Manual metadata matching keeps provider filtering and candidate selection in
+// this shell while the grid and list bodies only render the chosen variant.
 import {
   ZABtn,
   ZADialog,
@@ -17,9 +19,10 @@ import MatchRomBodyGrid from "@/v2/components/MatchRom/MatchRomBodyGrid.vue";
 import MatchRomBodyList from "@/v2/components/MatchRom/MatchRomBodyList.vue";
 import MatchRomProviderFilter from "@/v2/components/MatchRom/MatchRomProviderFilter.vue";
 import {
-  getPcCandidateCover,
+  createClassicMatchPayload,
   isUnchangedClassicMatchPayload,
-} from "@/v2/components/MatchRom/types";
+} from "@/v2/components/MatchRom/classicMatch";
+import { getPcCandidateCover } from "@/v2/components/MatchRom/types";
 import type {
   ConfirmPayload,
   MatchSearchRom,
@@ -71,6 +74,8 @@ const pcExpectedVersion = ref<string | null>(null);
 const pcCandidates = ref(new Map<number, PcMatcherCandidate>());
 const romsStore = storeRoms();
 const searching = ref(false);
+// Keep the dialog modal until its mutation settles, preventing duplicate
+// matches while the canonical ROM may already have changed.
 const matching = ref(false);
 const route = useRoute();
 const searchText = ref("");
@@ -83,6 +88,8 @@ const { refreshOwnedMedia, recoverProviderMediaConflict } =
   useOwnedMediaRefresh();
 const heartbeat = storeHeartbeat();
 
+// Both bodies share one result source, so changing the presentation must not
+// rerun a provider search or discard the selected candidate.
 const variant = ref<MatchVariant>("grid");
 
 const variantItems = computed<
@@ -422,39 +429,16 @@ async function onBodyConfirm(payload: ConfirmPayload) {
     matching.value = false;
     return;
   }
-  const { matchedRom, cover } = payload;
-  const updatedRom = {
-    ...targetRom,
-    manual_metadata: null,
-    igdb_id: matchedRom.igdb_id || null,
-    steam_id: matchedRom.steam_id || null,
-    ss_id: matchedRom.ss_id || null,
-    moby_id: matchedRom.moby_id || null,
-    flashpoint_id: matchedRom.flashpoint_id || null,
-    launchbox_id: matchedRom.launchbox_id || null,
-    libretro_id: matchedRom.libretro_id || null,
-    name: matchedRom.name || null,
-    slug: matchedRom.slug || null,
-    summary: targetRom.summary,
-    url_cover:
-      cover?.url_cover ||
-      matchedRom.igdb_url_cover ||
-      matchedRom.steam_url_cover ||
-      matchedRom.ss_url_cover ||
-      matchedRom.moby_url_cover ||
-      matchedRom.flashpoint_url_cover ||
-      matchedRom.launchbox_url_cover ||
-      matchedRom.libretro_url_cover ||
-      null,
-  };
-  if (updatedRom.url_cover) {
-    updatedRom.url_cover = updatedRom.url_cover.replace(
-      "t_cover_big",
-      "t_1080p",
-    );
-  }
+  const updatedRom = createClassicMatchPayload(
+    targetRom,
+    payload.matchedRom,
+    payload.cover,
+  );
 
   try {
+    // An unchanged classic match has no metadata mutation to submit. Refresh
+    // its persisted provider inventory instead, while changed data follows the
+    // normal versioned ROM update path.
     const data = isUnchangedClassicMatchPayload(targetRom, updatedRom)
       ? await refreshOwnedMedia(
           targetRom.id,
@@ -531,6 +515,8 @@ function closeDialog() {
     <template #header>
       <div class="r-v2-match__header">
         <span>{{ t("rom.match-rom") }}</span>
+        <!-- The stored filename remains the reliable identity while a manual
+             match can replace the display title. -->
         <span
           v-if="rom || pcTarget"
           class="r-v2-match__header-file"
@@ -558,6 +544,8 @@ function closeDialog() {
             @toggle="toggleSourceFilter(f.name)"
           />
 
+          <!-- Switching layout preserves the current provider-filtered result
+               set, so it is safe while comparing candidates. -->
           <div class="r-v2-match__filters-end">
             <ZASliderBtnGroup
               :model-value="variant"
@@ -623,6 +611,8 @@ function closeDialog() {
           :searched="searched"
           @confirm="onBodyConfirm"
         />
+        <!-- The body stays covered during persistence because a match may
+             update metadata, media, and the canonical response separately. -->
         <div
           v-if="matching"
           class="r-v2-match__saving"

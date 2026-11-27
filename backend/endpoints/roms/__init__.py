@@ -83,7 +83,6 @@ from handler.metadata import (
     meta_igdb_handler,
     meta_launchbox_handler,
     meta_moby_handler,
-    meta_playmatch_handler,
     meta_ra_handler,
     meta_ss_handler,
     meta_steam_handler,
@@ -106,7 +105,6 @@ from models.rom import (
     RomUserStatus,
     compute_name_sort_key,
 )
-from utils.background_tasks import fire_and_forget
 from utils.database import safe_int, safe_str_to_bool
 from utils.datetime import to_utc
 from utils.filesystem import sanitize_filename
@@ -136,6 +134,7 @@ from .files import (
 )
 from .files import router as files_router
 from .manual import router as manual_router
+from .manual_match import finalize_manual_match
 from .media import PROVIDER_MEDIA_CONFLICT_RESPONSE, provider_media_conflict
 from .media import router as media_router
 from .notes import router as notes_router
@@ -2118,28 +2117,14 @@ async def update_rom(
     if not rom:
         raise RomNotFoundInDatabaseException(id)
 
-    try:
-        rom = await rm.publish_igdb(rom, manual_igdb_media)
-    except rm.ProviderMediaOperationError as exc:
-        raise provider_media_conflict(exc.stage) from None
-
-    for provider in ("ss", "steam"):
-        field = provider + "_id"
-        if (
-            field in provided_fields
-            and getattr(rom, field)
-            and (safe_int_or_none(getattr(form_data, field)) == getattr(rom, field))
-        ):
-            await refresh_manual_descriptions(
-                rom, provider, captured_locale, rom.updated_at
-            )
-            rom = db_rom_handler.get_rom(id)
-
-    if meta_playmatch_handler.is_manual_match(form_data.model_fields_set):
-        fire_and_forget(meta_playmatch_handler.submit_manual_match_suggestion(rom))
+    rom, media_error = await finalize_manual_match(
+        rom, manual_igdb_media, provided_fields, form_data, captured_locale
+    )
 
     db_rom_handler.invalidate_filter_values_cache()
     refresh_affected_smart_collections([id])
+    if media_error is not None:
+        raise provider_media_conflict(media_error.stage) from None
     return DetailedRomSchema.from_orm_with_request(rom, request)
 
 

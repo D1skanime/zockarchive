@@ -262,7 +262,6 @@ async def refresh_provider_owned_media(
         reusable = active.get(candidate_key(candidate))
         if (
             reusable is not None
-            and reusable.role == candidate.role
             and isinstance(reusable.owned_path, str)
             and reusable.owned_path
         ):
@@ -276,7 +275,13 @@ async def refresh_provider_owned_media(
                 else nullcontext()
             )
             with scope as unit:
-                path, mime_type = await _download_provider_image(rom, candidate)
+                try:
+                    path, mime_type = await _download_provider_image(rom, candidate)
+                except ProviderMediaOperationError:
+                    raise
+                except (ValueError, OSError) as exc:
+                    # Once the downloader returns a path, later failures are publication.
+                    raise ProviderMediaOperationError("download", str(exc)) from exc
 
                 def reconcile(
                     session,
@@ -319,7 +324,7 @@ async def refresh_provider_owned_media(
                     (
                         exc.stage
                         if isinstance(exc, ProviderMediaOperationError)
-                        else "download"
+                        else "publication" if path is not None else "storage"
                     ),
                     str(exc),
                 )

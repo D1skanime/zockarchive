@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// RefreshMetadataDialog starts a scoped metadata scan, or reconciles owned
+// provider media for one ROM without changing its placements.
 import {
   ZAAvatar,
   ZAAlert,
@@ -36,6 +38,7 @@ const LOCAL_STORAGE_LAUNCHBOX_REMOTE_ENABLED_KEY =
 const LOCAL_STORAGE_HASHEOUS_ENABLED_KEY = "scan.hasheousEnabled";
 const LOCAL_STORAGE_PLAYMATCH_ENABLED_KEY = "scan.playmatchEnabled";
 
+// Hash matchers enrich catalog identity and are separate from metadata sources.
 const HASH_MATCHER_KEYS = ["hasheous", "playmatch"] as const;
 
 const GENERAL_PROVIDER_KEYS = new Set([
@@ -53,8 +56,8 @@ const SPECIFIC_PROVIDER_KEYS = new Set(["ra", "sgdb", "hltb"]);
 const { t, locale } = useI18n();
 const emitter = inject<Emitter<Events>>("emitter");
 const snackbar = useSnackbar();
-const { refreshOwnedMedia, recoverProviderMediaConflict } =
-  useOwnedMediaRefresh();
+// A media-only refresh keeps the canonical ROM when partial publication fails.
+const { settleOwnedMediaRefresh } = useOwnedMediaRefresh();
 const romsStore = storeRoms();
 const libraryOperation = useLibraryOperation();
 const show = ref(false);
@@ -316,23 +319,18 @@ async function onScan() {
     const rom = roms.value[0];
     refreshingMedia.value = true;
     try {
-      const settlement = await refreshOwnedMedia(rom.id, rom.updated_at);
+      const settlement = await settleOwnedMediaRefresh(rom.id, rom.updated_at);
       if (settlement.status === "error") throw settlement.error;
       romsStore.update(settlement.rom as SimpleRom);
       romsStore.currentRom = settlement.rom;
       roms.value = [settlement.rom];
+      if (settlement.status === "provider-media-conflict") {
+        snackbar.error(errorMessage(settlement.error));
+        return;
+      }
       snackbar.success(t("common.refresh"));
       closeDialog();
     } catch (error) {
-      const recovery = await recoverProviderMediaConflict(rom.id, error);
-      if (recovery.status === "recovered") {
-        roms.value = [recovery.rom];
-      } else if (recovery.status === "recovery-failed") {
-        console.error(
-          "Refresh metadata canonical reload failed",
-          recovery.error,
-        );
-      }
       snackbar.error(errorMessage(error));
     } finally {
       refreshingMedia.value = false;
